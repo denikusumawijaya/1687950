@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Tutoring: Lines and Angles</title>
+    <!-- Link ke CSS -->
+/* --- IMPORT FONTS & VARIABLES --- */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Patrick+Hand&display=swap');
+
+:root {
+    --primary: #FFD93D; /* Happy Yellow */
+    --secondary: #6BCB77; /* Fresh Green */
+    --accent: #FF6B6B; /* Playful Red */
+    --blue: #4D96FF; /* Sky Blue */
+    --dark: #2C3E50;
+    --light: #F7F9FC;
+    --white: #FFFFFF;
+    --shadow: 0 8px 0px rgba(0,0,0,0.1);
+    --shadow-active: 0 4px 0px rgba(0,0,0,0.1);
+    --radius: 20px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Nunito', sans-serif;
+    background-color: #E0F7FA;
+    background-image: radial-gradient(#B2EBF2 15%, transparent 16%), radial-gradient(#B2EBF2 15%, transparent 16%);
+    background-size: 60px 60px;
+    background-position: 0 0, 30px 30px;
+    color: var(--dark);
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden; /* Main scroll handled inside containers */
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- LAYOUT --- */
+header {
+    background-color: var(--white);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    z-index: 100;
+    flex-shrink: 0;
+    border-bottom: 3px solid var(--primary);
+}
+
+.header-info h1 {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 2rem;
+    color: var(--accent);
+    margin: 0;
+}
+
+.header-info p {
+    margin: 0;
+    font-weight: 700;
+    color: var(--blue);
+}
+
+.class-rules {
+    background-color: #FFF3CD;
+    border: 2px dashed #FFC107;
+    padding: 8px 15px;
+    border-radius: var(--radius);
+    font-size: 0.85rem;
+    max-width: 40%;
+}
+
+.main-container {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    height: 100%;
+}
+
+/* --- LEFT SIDE: CONTENT (3/4) --- */
+.content-area {
+    flex: 3;
+    padding: 20px;
+    overflow-y: auto;
+    position: relative;
+    scroll-behavior: smooth;
+}
+
+.section-container {
+    display: none; /* Hidden by default */
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 30px;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+    border: 3px solid transparent;
+    transition: transform 0.3s ease;
+    animation: popIn 0.5s ease;
+}
+
+.section-container.active {
+    display: block;
+    border-color: var(--blue);
+}
+
+@keyframes popIn {
+    0% { transform: scale(0.95); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px dashed #eee;
+}
+
+.timer-badge {
+    background: var(--accent);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 0 #d64545;
+}
+
+h2 {
+    color: var(--blue);
+    margin: 0;
+}
+
+p.translation {
+    font-size: 0.85rem;
+    color: #888;
+    font-style: italic;
+    margin-top: -10px;
+    margin-bottom: 15px;
+}
+
+/* --- RIGHT SIDE: CANVAS (1/4) --- */
+.sidebar {
+    flex: 1;
+    background: var(--white);
+    border-left: 3px solid var(--primary);
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    min-width: 250px;
+    box-shadow: -5px 0 15px rgba(0,0,0,0.05);
+}
+
+.sidebar h3 {
+    text-align: center;
+    color: var(--secondary);
+    font-family: 'Patrick Hand', cursive;
+    font-size: 1.5rem;
+    margin: 10px 0;
+}
+
+#drawingCanvas {
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    cursor: crosshair;
+    background: #fff;
+    touch-action: none;
+    flex-grow: 1; /* Fill available space */
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.tools {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.color-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+.color-btn:active { transform: scale(0.9); }
+.color-btn.active { border: 2px solid var(--dark); transform: scale(1.1); }
+
+.tool-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-tool {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    background: #eee;
+    color: var(--dark);
+    transition: all 0.2s;
+}
+
+.btn-tool:hover { background: #ddd; }
+
+/* --- UI ELEMENTS --- */
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 50px;
+    font-weight: 800;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-primary {
+    background-color: var(--blue);
+    color: white;
+    box-shadow: 0 5px 0 #2b5fb8;
+}
+.btn-primary:active { transform: translateY(3px); box-shadow: 0 2px 0 #2b5fb8; }
+
+.btn-success {
+    background-color: var(--secondary);
+    color: white;
+    box-shadow: 0 5px 0 #3a8f44;
+}
+.btn-success:active { transform: translateY(3px); box-shadow: 0 2px 0 #3a8f44; }
+
+.btn-reset {
+    background-color: var(--accent);
+    color: white;
+    box-shadow: 0 5px 0 #c0392b;
+}
+.btn-reset:active { transform: translateY(3px); box-shadow: 0 2px 0 #c0392b; }
+
+.nav-controls {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 20px;
+    z-index: 200;
+    background: rgba(255,255,255,0.9);
+    padding: 10px 20px;
+    border-radius: 50px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+/* --- INTERACTIVE GAMES --- */
+.game-card {
+    background: #F0F4F8;
+    padding: 20px;
+    border-radius: 15px;
+    margin: 15px 0;
+    border: 2px solid #dce4ec;
+}
+
+.input-math {
+    font-family: 'Times New Roman', serif;
+    font-size: 1.2rem;
+    padding: 8px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    width: 100px;
+    text-align: center;
+}
+
+.feedback-msg {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: bold;
+    display: none;
+}
+.feedback-msg.correct { background: #d4edda; color: #155724; display: block; }
+.feedback-msg.wrong { background: #f8d7da; color: #721c24; display: block; }
+
+/* --- ASSESSMENT TABS --- */
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    background: #eee;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.tab-btn.active {
+    background: var(--primary);
+    color: var(--dark);
+}
+
+.assessment-content { display: none; }
+.assessment-content.active { display: block; }
+
+.question-block {
+    margin-bottom: 25px;
+    padding: 15px;
+    background: #fff;
+    border-left: 5px solid var(--secondary);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* --- PRINT STYLES --- */
+@media print {
+    body { height: auto; overflow: visible; background: white; }
+    header, .sidebar, .nav-controls, .tabs, .btn, .section-header { display: none !important; }
+    .content-area { overflow: visible; }
+    .section-container {
+        display: none !important;
+        box-shadow: none;
+        border: none;
+        padding: 0;
+    }
+    /* Only show active assessment group for printing */
+    .assessment-content.active {
+        display: block !important;
+    }
+
+    /* Print Header */
+    .print-header {
+        display: block !important;
+        text-align: center;
+        margin-bottom: 30px;
+        border-bottom: 2px solid #000;
+        padding-bottom: 10px;
+    }
+    .print-header h1 { font-size: 24px; margin: 0; }
+    .print-header p { margin: 5px 0; }
+
+    .question-block {
+        break-inside: avoid;
+        border: 1px solid #ccc;
+    }
+
+    /* Hide user inputs, show values */
+    input, select {
+        border: none;
+        border-bottom: 1px solid #000;
+        font-weight: bold;
+    }
+}
+
+.print-header { display: none; }
+
+/* --- ANIMATIONS & VISUALS --- */
+.math-illustration {
+    width: 100%;
+    height: 150px;
+    background: #eef;
+    border-radius: 10px;
+    margin: 10px 0;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.angle-svg { width: 80%; height: 80%; }
+
+/* --- DRAG & DROP PLACEHOLDER STYLES --- */
+.draggable-item {
+    background: var(--white);
+    border: 2px solid var(--blue);
+    padding: 5px 10px;
+    border-radius: 8px;
+    display: inline-block;
+    margin: 5px;
+    cursor: pointer;
+}
+.drop-zone {
+    min-height: 40px;
+    background: #eee;
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 5px;
+}
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-info">
+            <h1>MATH TUTORING</h1>
+            <p>Topic: Lines and Angles (Complementary & Supplementary) | Tutor: Deni</p>
+        </div>
+        <div class="class-rules">
+            <strong>📋 Class Rules:</strong>
+            <br>1. Take turns speaking.
+            <br>2. Ask permission before leaving Zoom (toilet/drink).
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <div class="main-container">
+        
+        <!-- LEFT: CONTENT AREA -->
+        <main class="content-area" id="mainContent">
+            
+            <!-- SECTION 1: SPIRAL REVIEW -->
+            <div class="section-container active" id="sec1">
+                <div class="section-header">
+                    <h2>1. Spiral Review Warm-up</h2>
+                    <span class="timer-badge">00:00 - 00:10</span>
+                </div>
+                <p>Let's sharpen your 'Agent Algebra' skills! Solve these 4 code locks.</p>
+                <p class="translation">Mari asah kemampuan 'Agent Aljabar' kamu! Pecahkan 4 gembok kode ini.</p>
+
+                <div class="game-card">
+                    <p>1) Give the constant value of: 3x - 7</p>
+                    <p class="translation">Berikan nilai konstanta dari: 3x - 7</p>
+                    <input type="number" id="q1" class="input-math" placeholder="?">
+                </div>
+                <div class="game-card">
+                    <p>2) Identify the variable in: 5y + 12z</p>
+                    <p class="translation">Identifikasi variabel dari: 5y + 12z</p>
+                    <select id="q2" class="input-math" style="width: 150px;">
+                        <option value="">Choose...</option>
+                        <option value="5">5</option>
+                        <option value="12">12</option>
+                        <option value="yz">y and z</option>
+                    </select>
+                </div>
+                <div class="game-card">
+                    <p>3) Expression for '5 more than three times age'?</p>
+                    <p class="translation">Ekspresi untuk '5 lebihnya dari tiga kali umur'?</p>
+                    <input type="text" id="q3" class="input-math" placeholder="e.g. 3x...">
+                </div>
+                <div class="game-card">
+                    <p>4) Total price if x is number of apples, price is 2000 each, buy 4.</p>
+                    <p class="translation">Total harga jika x jumlah apel, harga 2000/buah, beli 4.</p>
+                    <input type="text" id="q4" class="input-math" placeholder="e.g. 4...">
+                </div>
+
+                <div class="feedback-msg" id="fb-sec1"></div>
+                <div style="margin-top:20px;">
+                    <button class="btn btn-success" onclick="checkSection1()">Check Answers</button>
+                    <button class="btn btn-reset" onclick="resetSection1()">Reset</button>
+                </div>
+            </div>
+
+            <!-- SECTION 2: INTRO -->
+            <div class="section-container" id="sec2">
+                <div class="section-header">
+                    <h2>2. Introduction & Real World</h2>
+                    <span class="timer-badge">00:10 - 00:15</span>
+                </div>
+                <p>Have you seen bridges or roof constructions? Architects must ensure angles are precise.</p>
+                <p class="translation">Pernahkah kamu melihat jembatan atau konstruksi atap? Arsitek harus memastikan sudutnya pas.</p>
+                
+                <div class="math-illustration">
+                    <svg width="300" height="150" viewBox="0 0 300 150">
+                        <!-- Simple Bridge Truss -->
+                        <path d="M10,140 L50,40 L90,140" stroke="#FF6B6B" stroke-width="5" fill="none"/>
+                        <path d="M90,140 L130,40 L170,140" stroke="#FF6B6B" stroke-width="5" fill="none"/>
+                        <path d="M170,140 L210,40 L250,140" stroke="#FF6B6B" stroke-width="5" fill="none"/>
+                        <!-- Water -->
+                        <rect x="0" y="140" width="300" height="10" fill="#4D96FF"/>
+                        <!-- Angle Indicator -->
+                        <circle cx="50" cy="140" r="10" stroke="#333" stroke-width="1" fill="none"/>
+                        <text x="35" y="145" font-family="Patrick Hand" font-size="12">30°</text>
+                        <circle cx="90" cy="140" r="10" stroke="#333" stroke-width="1" fill="none"/>
+                        <text x="95" y="145" font-family="Patrick Hand" font-size="12">?</text>
+                    </svg>
+                </div>
+                
+                <div class="game-card">
+                    <p><strong>Think:</strong> If one side is 30° on a straight line, what is the other side to keep it straight?</p>
+                    <p class="translation"><strong>Pikirkan:</strong> Jika satu sisi 30° pada garis lurus, berapa sisi satunya?</p>
+                    <input type="number" id="intro-q" class="input-math">
+                    <button class="btn btn-primary" style="padding: 5px 15px; margin-left: 10px;" onclick="checkIntro()">Check</button>
+                    <div class="feedback-msg" id="fb-intro"></div>
+                </div>
+            </div>
+
+            <!-- SECTION 3: PRIOR KNOWLEDGE -->
+            <div class="section-container" id="sec3">
+                <div class="section-header">
+                    <h2>3. Review: Angle Basics</h2>
+                    <span class="timer-badge">00:15 - 00:20</span>
+                </div>
+                <p>Remember: Angles on a straight line = 180°. Right angle (square symbol) = 90°.</p>
+                <p class="translation">Ingat: Sudut garis lurus = 180°. Sudut siku-siku (kotak) = 90°.</p>
+
+                <!-- Interactive Visualizer -->
+                <div class="math-illustration" style="flex-direction: column;">
+                    <svg width="200" height="200" viewBox="0 0 200 200" id="angleVis">
+                        <line x1="20" y1="150" x2="180" y2="150" stroke="#333" stroke-width="4" />
+                        <line id="movingArm" x1="20" y1="150" x2="150" y2="50" stroke="#FFD93D" stroke-width="4" />
+                        <path id="angleArc" d="M 70 150 A 50 50 0 0 1 60 115" fill="rgba(255, 107, 107, 0.3)" stroke="none"/>
+                        <text id="angleText" x="90" y="140" font-size="20">30°</text>
+                    </svg>
+                </div>
+
+                <label for="angleRange">Adjust Angle:</label>
+                <input type="range" id="angleRange" min="0" max="180" value="30" style="width:100%" oninput="updateVisualizer(this.value)">
+                <p id="angleStatus" style="font-weight:bold; margin-top:10px; color:var(--dark);"></p>
+            </div>
+
+            <!-- SECTION 4: PROBLEM INTRO (Supplementary) -->
+            <div class="section-container" id="sec4">
+                <div class="section-header">
+                    <h2>4. Problem Introduction: Supplementary</h2>
+                    <span class="timer-badge">00:20 - 00:30</span>
+                </div>
+                <p>Level 'Hard': Angles with Algebra! Supplementary angles add up to 180°.</p>
+                <p class="translation">Level 'Hard': Sudut dengan Aljabar! Sudut berpelurus jumlahnya 180°.</p>
+
+                <div class="game-card">
+                    <p>Angle A = (2x + 10)°, Angle B = (3x - 15)°. They are on a straight line.</p>
+                    <p class="translation">Sudut A dan B di garis lurus.</p>
+                    <div style="background:#fff; padding:10px; border:1px solid #ccc; border-radius:8px;">
+                        <span class="math-font">(2x + 10)</span> + <span class="math-font">(3x - 15)</span> = 180
+                    </div>
+                    <br>
+                    <p>Step 1: Combine x terms. How many x's do we have?</p>
+                    <input type="number" id="sec4-q1" class="input-math" placeholder="?x">
+                    <p>Step 2: Combine constants. 10 + (-15) = ?</p>
+                    <input type="number" id="sec4-q2" class="input-math" placeholder="?">
+                    <p>Step 3: Equation is 5x - 5 = 180. Solve for x.</p>
+                    <input type="number" id="sec4-q3" class="input-math" placeholder="x = ?">
+                    
+                    <div class="feedback-msg" id="fb-sec4"></div>
+                    <div style="margin-top:20px;">
+                        <button class="btn btn-success" onclick="checkSection4()">Check Steps</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 5: GUIDED PRACTICE (Complementary) -->
+            <div class="section-container" id="sec5">
+                <div class="section-header">
+                    <h2>5. Guided Practice: Complementary</h2>
+                    <span class="timer-badge">00:30 - 00:45</span>
+                </div>
+                <p>Now let's try Complementary Angles (90° total). Angle 1 = 4x, Angle 2 = 2x + 30.</p>
+                <p class="translation">Mari coba Sudut Berpenyiku (90°). Sudut 1 = 4x, Sudut 2 = 2x + 30.</p>
+
+                <div class="game-card">
+                    <div style="display:flex; justify-content:space-around; align-items:center; margin-bottom:20px;">
+                        <div style="text-align:center; background: #FFD93D; padding:10px; border-radius:10px; width:100px;">4x</div>
+                        <div style="font-size:2rem;">+</div>
+                        <div style="text-align:center; background: #FF6B6B; padding:10px; border-radius:10px; width:100px;">2x+30</div>
+                        <div style="font-size:2rem;">=</div>
+                        <div style="text-align:center; background: #6BCB77; padding:10px; border-radius:10px; width:100px;">90°</div>
+                    </div>
+                    
+                    <p>Set up the equation: <span class="math-font">4x + (2x + 30) = 90</span></p>
+                    <p>Combine x terms: <span class="math-font">6x + 30 = 90</span></p>
+                    <p>Subtract 30 from both sides: <span class="math-font">6x = 60</span></p>
+                    <p>Find x: <input type="number" id="sec5-x" class="input-math"></p>
+                    
+                    <p>Now calculate Angle 1 (4x): <input type="number" id="sec5-a1" class="input-math"></p>
+                    <p>Now calculate Angle 2 (2x+30): <input type="number" id="sec5-a2" class="input-math"></p>
+
+                    <div class="feedback-msg" id="fb-sec5"></div>
+                    <div style="margin-top:20px;">
+                        <button class="btn btn-success" onclick="checkSection5()">Check Calculation</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 6: INDEPENDENT PRACTICE -->
+            <div class="section-container" id="sec6">
+                <div class="section-header">
+                    <h2>6. Independent Practice</h2>
+                    <span class="timer-badge">00:45 - 01:00</span>
+                </div>
+                <p>Mission Solo! Solve these 3 challenges on your paper first, then type the answer.</p>
+                <p class="translation">Misi Mandiri! Selesaikan 3 tantangan di kertas, lalu ketik jawabannya.</p>
+
+                <!-- Challenge 1 -->
+                <div class="game-card">
+                    <h4>Challenge 1: Find supplementary angle of 125°.</h4>
+                    <input type="number" id="ch1" class="input-math">
+                </div>
+                <!-- Challenge 2 -->
+                <div class="game-card">
+                    <h4>Challenge 2: Angles A & B are complementary. A=x+5, B=2x. Find x.</h4>
+                    <input type="number" id="ch2" class="input-math">
+                </div>
+                <!-- Challenge 3 -->
+                <div class="game-card">
+                    <h4>Challenge 3 (Boss Level): Straight line with 3 angles: 2x, 3x, 50°. Find x.</h4>
+                    <p>Hint: (2x + 3x + 50 = 180)</p>
+                    <input type="number" id="ch3" class="input-math">
+                </div>
+
+                <div class="feedback-msg" id="fb-sec6"></div>
+                <div style="margin-top:20px;">
+                    <button class="btn btn-success" onclick="checkSection6()">Submit Challenges</button>
+                    <button class="btn btn-reset" onclick="resetSection6()">Reset</button>
+                </div>
+            </div>
+
+            <!-- SECTION 7: ASSESSMENT -->
+            <div class="section-container" id="sec7">
+                <div class="section-header">
+                    <h2>7. Assessment</h2>
+                    <span class="timer-badge">Post-Lesson</span>
+                </div>
+                <p>Complete the assessment below. Fill in your name first!</p>
+                
+                <div style="margin-bottom: 20px;">
+                    <label>Name: </label>
+                    <input type="text" id="studentName" placeholder="Enter name..." style="padding: 5px; border-radius: 5px; border: 1px solid #ccc;">
+                    <label style="margin-left: 10px;">Date: </label>
+                    <input type="date" id="studentDate" style="padding: 5px; border-radius: 5px; border: 1px solid #ccc;">
+                </div>
+
+                <!-- Tabs -->
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="switchTab(1)">Group 1</button>
+                    <button class="tab-btn" onclick="switchTab(2)">Group 2</button>
+                    <button class="tab-btn" onclick="switchTab(3)">Group 3</button>
+                    <button class="tab-btn" onclick="switchTab(4)">Group 4</button>
+                    <button class="tab-btn" onclick="switchTab(5)">Group 5</button>
+                </div>
+
+                <!-- Print Header (Only visible on Print) -->
+                <div class="print-header">
+                    <h1>Math Assessment Report</h1>
+                    <p>Name: <span id="printName">-</span> | Date: <span id="printDate">-</span></p>
+                    <p>Topic: Complementary and Supplementary Angles</p>
+                </div>
+
+                <!-- Assessment Content -->
+                <form id="assessmentForm">
+                    
+                    <!-- GROUP 1 -->
+                    <div class="assessment-content active" id="group1">
+                        <h3>Group 1: Basic Concepts</h3>
+                        <!-- Q1: Text -->
+                        <div class="question-block">
+                            <p>1. What is the sum of supplementary angles?</p>
+                            <input type="number" name="g1q1" class="input-math"> degrees
+                        </div>
+                        <!-- Q2: Radio -->
+                        <div class="question-block">
+                            <p>2. Which angles are complementary?</p>
+                            <label><input type="radio" name="g1q2" value="A"> 45° and 45°</label><br>
+                            <label><input type="radio" name="g1q2" value="B"> 120° and 60°</label><br>
+                            <label><input type="radio" name="g1q2" value="C"> 30° and 60°</label>
+                        </div>
+                        <!-- Q3: Dropdown -->
+                        <div class="question-block">
+                            <p>3. If angle A is 30°, its complementary angle is...</p>
+                            <select name="g1q3" class="input-math" style="width:150px">
+                                <option value="0">Select</option>
+                                <option value="60">60°</option>
+                                <option value="150">150°</option>
+                                <option value="90">90°</option>
+                            </select>
+                        </div>
+                        <!-- Q4: Text -->
+                        <div class="question-block">
+                            <p>4. A straight line always forms a _____ angle.</p>
+                            <input type="text" name="g1q4" class="input-math" placeholder="type word">
+                        </div>
+                        <!-- Q5: Checkbox -->
+                        <div class="question-block">
+                            <p>5. Which pairs add up to 180°? (Check all)</p>
+                            <label><input type="checkbox" name="g1q5" value="A"> 100° & 80°</label>
+                            <label><input type="checkbox" name="g1q5" value="B"> 90° & 90°</label>
+                            <label><input type="checkbox" name="g1q5" value="C"> 50° & 50°</label>
+                        </div>
+                         <button type="button" class="btn btn-primary" onclick="submitAssessment(1)">Submit Group 1</button>
+                         <button type="button" class="btn btn-reset" onclick="printPDF(1)">Print Group 1</button>
+                         <div class="feedback-msg" id="fb-assess-1"></div>
+                    </div>
+
+                    <!-- GROUP 2 -->
+                    <div class="assessment-content" id="group2">
+                        <h3>Group 2: Algebra in Geometry</h3>
+                        <!-- Q6: Input -->
+                        <div class="question-block">
+                            <p>6. x and 2x are complementary. Find x.</p>
+                            <input type="number" name="g2q6" class="input-math">
+                        </div>
+                        <!-- Q7: Input -->
+                        <div class="question-block">
+                            <p>7. Angle A = (x + 20). Supplementary angle is 110. Find x.</p>
+                            <input type="number" name="g2q7" class="input-math">
+                        </div>
+                         <button type="button" class="btn btn-primary" onclick="submitAssessment(2)">Submit Group 2</button>
+                         <button type="button" class="btn btn-reset" onclick="printPDF(2)">Print Group 2</button>
+                         <div class="feedback-msg" id="fb-assess-2"></div>
+                    </div>
+
+                    <!-- GROUP 3 -->
+                    <div class="assessment-content" id="group3">
+                        <h3>Group 3: Problem Solving</h3>
+                        <div class="question-block">
+                            <p>8. Angles ratio is 2:3 and supplementary. Larger angle?</p>
+                            <input type="number" name="g3q8" class="input-math">
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="submitAssessment(3)">Submit Group 3</button>
+                        <button type="button" class="btn btn-reset" onclick="printPDF(3)">Print Group 3</button>
+                        <div class="feedback-msg" id="fb-assess-3"></div>
+                    </div>
+
+                     <!-- GROUP 4 (Simulated Drag Drop) -->
+                     <div class="assessment-content" id="group4">
+                        <h3>Group 4: Matching</h3>
+                        <p>9. Match the term to definition (Click to select answer)</p>
+                        <div class="question-block">
+                            <p><strong>Complementary:</strong></p>
+                            <select name="g4q9">
+                                <option value="">Select...</option>
+                                <option value="90">Adds to 90°</option>
+                                <option value="180">Adds to 180°</option>
+                                <option value="line">Forms a line</option>
+                            </select>
+                        </div>
+                        <div class="question-block">
+                            <p>10. <strong>Supplementary:</strong></p>
+                            <select name="g4q10">
+                                <option value="">Select...</option>
+                                <option value="90">Adds to 90°</option>
+                                <option value="180">Adds to 180°</option>
+                                <option value="L">Forms an L</option>
+                            </select>
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="submitAssessment(4)">Submit Group 4</button>
+                        <button type="button" class="btn btn-reset" onclick="printPDF(4)">Print Group 4</button>
+                        <div class="feedback-msg" id="fb-assess-4"></div>
+                    </div>
+
+                    <!-- GROUP 5 -->
+                    <div class="assessment-content" id="group5">
+                        <h3>Group 5: Challenge</h3>
+                        <div class="question-block">
+                            <p>Bonus: An angle is 4 times its supplementary. Find the angle.</p>
+                            <input type="number" name="g5bonus" class="input-math">
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="submitAssessment(5)">Submit Group 5</button>
+                        <button type="button" class="btn btn-reset" onclick="printPDF(5)">Print Group 5</button>
+                        <div class="feedback-msg" id="fb-assess-5"></div>
+                    </div>
+
+                </form>
+            </div>
+
+            <!-- SECTION 8: FEEDBACK -->
+            <div class="section-container" id="sec8">
+                <div class="section-header">
+                    <h2>8. End of Class</h2>
+                </div>
+                <p>Great job! Don't forget to login to give feedback.</p>
+                <p class="translation">Kerja bagus! Jangan lupa login untuk memberi feedback.</p>
+                <div style="text-align:center; padding: 20px;">
+                    <a href="https://learn.algonova.id/login" target="_blank" class="btn btn-primary" style="font-size:1.2rem;">
+                        Go to Learn.Algonova.id
+                    </a>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- RIGHT: SCRATCHPAD -->
+        <aside class="sidebar">
+            <h3>🎨 Scratchpad</h3>
+            <canvas id="drawingCanvas"></canvas>
+            
+            <div class="tools">
+                <div class="color-btn active" style="background:black" onclick="setColor('black', this)"></div>
+                <div class="color-btn" style="background:red" onclick="setColor('#FF0000', this)"></div>
+                <div class="color-btn" style="background:green" onclick="setColor('#008000', this)"></div>
+                <div class="color-btn" style="background:blue" onclick="setColor('#0000FF', this)"></div>
+                <div class="color-btn" style="background:white; border-color:#333" onclick="setEraser(this)"></div>
+            </div>
+
+            <div class="tool-actions">
+                <button class="btn-tool" onclick="clearCanvas()">Clear All</button>
+            </div>
+            <p style="font-size:0.7rem; text-align:center; color:#888;">Use this for working on math problems!</p>
+        </aside>
+
+    </div>
+
+    <!-- NAVIGATION -->
+    <div class="nav-controls">
+        <button class="btn btn-primary" id="prevBtn" onclick="changeSection(-1)">Previous</button>
+        <button class="btn btn-primary" id="nextBtn" onclick="changeSection(1)">Next</button>
+    </div>
+
+    <!-- Link ke JS -->
+/* --- GLOBAL STATE --- */
+let currentSection = 0;
+let sections;
+
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    sections = document.querySelectorAll('.section-container');
+    updateUI();
+    
+    // Initial Canvas Setup
+    resizeCanvas();
+});
+
+/* --- NAVIGATION LOGIC --- */
+function updateUI() {
+    if (!sections) return;
+    
+    sections.forEach((sec, index) => {
+        sec.classList.remove('active');
+        if (index === currentSection) {
+            sec.classList.add('active');
+        }
+    });
+
+    // Button visibility
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    if(prevBtn) prevBtn.style.visibility = currentSection === 0 ? 'hidden' : 'visible';
+    if(nextBtn) nextBtn.style.visibility = currentSection === sections.length - 1 ? 'hidden' : 'visible';
+
+    // Scroll to top
+    const content = document.getElementById('mainContent');
+    if(content) content.scrollTop = 0;
+}
+
+function changeSection(dir) {
+    currentSection += dir;
+    if (currentSection < 0) currentSection = 0;
+    if (currentSection >= sections.length) currentSection = sections.length - 1;
+    updateUI();
+}
+
+/* --- CANVAS DRAWING --- */
+const canvas = document.getElementById('drawingCanvas');
+const ctx = canvas.getContext('2d');
+let isDrawing = false;
+let lastX = 0;
+let lastY = 0;
+let currentColor = 'black';
+let isEraser = false;
+
+// Resize canvas to fit sidebar
+function resizeCanvas() {
+    if (!canvas) return;
+    const rect = canvas.parentElement.getBoundingClientRect();
+    canvas.width = rect.width - 20;
+    canvas.height = rect.height - 80; // account for padding/buttons
+    ctx.lineJoin = 'round';
+    ctx.lineCap = 'round';
+    ctx.lineWidth = 3;
+}
+
+window.addEventListener('resize', resizeCanvas);
+
+function draw(e) {
+    if (!isDrawing) return;
+    let x, y;
+    if(e.type.includes('touch')) {
+        x = e.touches[0].clientX - canvas.getBoundingClientRect().left;
+        y = e.touches[0].clientY - canvas.getBoundingClientRect().top;
+    } else {
+        x = e.offsetX;
+        y = e.offsetY;
+    }
+
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+    ctx.lineTo(x, y);
+    ctx.strokeStyle = isEraser ? '#FFFFFF' : currentColor;
+    ctx.lineWidth = isEraser ? 15 : 3;
+    ctx.stroke();
+    [lastX, lastY] = [x, y];
+}
+
+canvas.addEventListener('mousedown', (e) => { isDrawing = true; [lastX, lastY] = [e.offsetX, e.offsetY]; });
+canvas.addEventListener('mousemove', draw);
+canvas.addEventListener('mouseup', () => isDrawing = false);
+canvas.addEventListener('mouseout', () => isDrawing = false);
+
+// Touch support
+canvas.addEventListener('touchstart', (e) => {
+    e.preventDefault(); // prevent scroll
+    isDrawing = true;
+    let touch = e.touches[0];
+    let rect = canvas.getBoundingClientRect();
+    [lastX, lastY] = [touch.clientX - rect.left, touch.clientY - rect.top];
+}, {passive: false});
+canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); }, {passive: false});
+canvas.addEventListener('touchend', () => isDrawing = false);
+
+function setColor(color, btn) {
+    isEraser = false;
+    currentColor = color;
+    document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+}
+
+function setEraser(btn) {
+    isEraser = true;
+    document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+}
+
+function clearCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+/* --- SECTION 1: REVIEW --- */
+function checkSection1() {
+    const q1 = document.getElementById('q1').value;
+    const q2 = document.getElementById('q2').value;
+    const q3 = document.getElementById('q3').value.toLowerCase().replace(/\s/g, '');
+    const q4 = document.getElementById('q4').value.toLowerCase().replace(/\s/g, '');
+
+    let score = 0;
+    let feedback = "";
+
+    if (q1 == "7") score++;
+    if (q2 == "yz") score++;
+    if (q3 == "3x+5" || q3 == "5+3x") score++;
+    if (q4 == "4*2000" || q4 == "8000") score++;
+
+    if (score === 4) {
+        feedback = "Excellent! All codes cracked! 🎉";
+        document.getElementById('fb-sec1').className = "feedback-msg correct";
+    } else {
+        feedback = `You got ${score}/4 correct. Try again! Hint: Q3 is "3x + 5", Q4 is total price.`;
+        document.getElementById('fb-sec1').className = "feedback-msg wrong";
+    }
+    document.getElementById('fb-sec1').innerText = feedback;
+}
+function resetSection1() {
+    document.getElementById('q1').value = '';
+    document.getElementById('q2').value = '';
+    document.getElementById('q3').value = '';
+    document.getElementById('q4').value = '';
+    document.getElementById('fb-sec1').style.display = 'none';
+}
+
+/* --- SECTION 2: INTRO --- */
+function checkIntro() {
+    const val = parseInt(document.getElementById('intro-q').value);
+    const fb = document.getElementById('fb-intro');
+    if (val === 150) {
+        fb.innerText = "Correct! 180 - 30 = 150.";
+        fb.className = "feedback-msg correct";
+    } else {
+        fb.innerText = "Almost. Remember, straight line is 180.";
+        fb.className = "feedback-msg wrong";
+    }
+}
+
+/* --- SECTION 3: VISUALIZER --- */
+function updateVisualizer(val) {
+    const arm = document.getElementById('movingArm');
+    const txt = document.getElementById('angleText');
+    const status = document.getElementById('angleStatus');
+
+    if(arm) arm.setAttribute('transform', `rotate(${-val}, 20, 150)`);
+    if(txt) txt.textContent = val + "°";
+
+    if (val == 90) {
+        status.innerText = "That's a Right Angle! (Complementary base)";
+        status.style.color = "var(--secondary)";
+    } else if (val == 180) {
+        status.innerText = "That's a Straight Line! (Supplementary base)";
+        status.style.color = "var(--accent)";
+    } else {
+        status.innerText = "";
+    }
+}
+
+/* --- SECTION 4: PROBLEM --- */
+function checkSection4() {
+    const s1 = document.getElementById('sec4-q1').value;
+    const s2 = document.getElementById('sec4-q2').value;
+    const s3 = document.getElementById('sec4-q3').value;
+    const fb = document.getElementById('fb-sec4');
+
+    if (s1 == 5 && s2 == -5 && s3 == 37) {
+        fb.innerText = "Perfect! 5x - 5 = 180 -> 5x = 185 -> x = 37.";
+        fb.className = "feedback-msg correct";
+    } else {
+        fb.innerText = "Check steps: 2x+3x=5x. 10+(-15)=-5. 5x=185.";
+        fb.className = "feedback-msg wrong";
+    }
+}
+
+/* --- SECTION 5: GUIDED --- */
+function checkSection5() {
+    const x = parseInt(document.getElementById('sec5-x').value);
+    const a1 = parseInt(document.getElementById('sec5-a1').value);
+    const a2 = parseInt(document.getElementById('sec5-a2').value);
+    const fb = document.getElementById('fb-sec5');
+
+    if (x === 10 && a1 === 40 && a2 === 50) {
+        fb.innerText = "Great! x=10, Angles are 40° and 50°.";
+        fb.className = "feedback-msg correct";
+    } else {
+        fb.innerText = "Hint: 6x=60, so x=10. A1=40, A2=50.";
+        fb.className = "feedback-msg wrong";
+    }
+}
+
+/* --- SECTION 6: INDEPENDENT --- */
+function checkSection6() {
+    const c1 = parseInt(document.getElementById('ch1').value);
+    const c2 = parseFloat(document.getElementById('ch2').value); // Float handling
+    const c3 = parseInt(document.getElementById('ch3').value);
+    const fb = document.getElementById('fb-sec6');
+    let correct = 0;
+
+    if (c1 === 55) correct++;
+    // (x+5)+2x=90 -> 3x=85 -> x=28.33
+    if (c2 > 28 && c2 < 29) correct++;
+    // 2x+3x+50=180 -> 5x=130 -> x=26
+    if (c3 === 26) correct++;
+
+    if (correct === 3) {
+        fb.innerText = "Boss Level Defeated!";
+        fb.className = "feedback-msg correct";
+    } else {
+        fb.innerText = `Check: 180-125=55. (x+5)+2x=90 -> x≈28.33. 5x=130 -> x=26.`;
+        fb.className = "feedback-msg wrong";
+    }
+}
+function resetSection6() {
+    document.getElementById('ch1').value = '';
+    document.getElementById('ch2').value = '';
+    document.getElementById('ch3').value = '';
+    document.getElementById('fb-sec6').style.display = 'none';
+}
+
+/* --- ASSESSMENT LOGIC --- */
+function switchTab(tabId) {
+    // Buttons
+    document.querySelectorAll('.tab-btn').forEach((btn, idx) => {
+        if(idx+1 === tabId) btn.classList.add('active');
+        else btn.classList.remove('active');
+    });
+    // Content
+    document.querySelectorAll('.assessment-content').forEach(content => {
+        content.classList.remove('active');
+    });
+    document.getElementById('group'+tabId).classList.add('active');
+}
+
+function submitAssessment(group) {
+    const fb = document.getElementById(`fb-assess-${group}`);
+    let score = 0;
+    let total = 0;
+
+    if (group === 1) {
+        total = 5;
+        const q1 = document.querySelector('input[name="g1q1"]').value;
+        if (q1 == 180) score++;
+        const q2 = document.querySelector('input[name="g1q2"]:checked');
+        if (q2 && q2.value === "A") score++;
+        const q3 = document.querySelector('select[name="g1q3"]').value;
+        if (q3 == 60) score++;
+        const q4 = document.querySelector('input[name="g1q4"]').value.toLowerCase();
+        if (q4.includes("straight") || q4.includes("180")) score++;
+        const q5Checkboxes = document.querySelectorAll('input[name="g1q5"]:checked');
+        const vals = Array.from(q5Checkboxes).map(cb => cb.value);
+        if (vals.includes("A") && vals.includes("B") && !vals.includes("C")) score++;
+    }
+    else if (group === 2) {
+        total = 2;
+        if (document.querySelector('input[name="g2q6"]').value == 30) score++;
+        if (document.querySelector('input[name="g2q7"]').value == 50) score++;
+    }
+    else if (group === 3) {
+        total = 1;
+        if (document.querySelector('input[name="g3q8"]').value == 108) score++;
+    }
+    else if (group === 4) {
+        total = 2;
+        if (document.querySelector('select[name="g4q9"]').value == 90) score++;
+        if (document.querySelector('select[name="g4q10"]').value == 180) score++;
+    }
+    else if (group === 5) {
+        total = 1;
+        if (document.querySelector('input[name="g5bonus"]').value == 144) score++;
+    }
+
+    fb.innerText = `Score: ${score}/${total}. ${score===total ? "Perfect!" : "See solutions above."}`;
+    fb.className = score === total ? "feedback-msg correct" : "feedback-msg wrong";
+}
+
+function printPDF(group) {
+    // Prepare print header
+    const name = document.getElementById('studentName').value || "Student";
+    const date = document.getElementById('studentDate').value || new Date().toLocaleDateString();
+    document.getElementById('printName').innerText = name;
+    document.getElementById('printDate').innerText = date;
+    
+    window.print();
+}
+</body>
+</html>
