@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <!-- Library for Print to PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <style>
@@ -49,66 +48,70 @@
         .theory-box { background: #F0F8FF; border-left: 5px solid var(--primary); padding: 15px; border-radius: 10px; margin-bottom: 20px; }
 
         .pagination-nav { display: flex; justify-content: space-between; margin-top: 30px; padding-top: 20px; border-top: 2px solid #EEEEEE; }
-        .pag-btn { background: var(--primary); color: var(--white); border: none; padding: 10px 25px; border-radius: 15px; font-family: 'Quicksand', sans-serif; font-weight: 700; cursor: pointer; transition: transform 0.2s, background 0.2s; font-size: 1rem; }
+        .pag-btn { background: var(--primary); color: var(--white); border: none; padding: 10px 25px; border-radius: 15px; font-family: 'Quicksand'; font-weight: 700; cursor: pointer; transition: transform 0.2s; }
         .pag-btn:hover { transform: translateY(-2px); background: #5CA8C3; }
-        .pag-btn:disabled { background: #cccccc; cursor: not-allowed; transform: none; }
+        .pag-btn:disabled { background: #cccccc; cursor: not-allowed; }
 
         .quest-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
         .quest-item { background: #FAFAFA; padding: 15px; border-radius: 15px; border: 2px solid #EEEEEE; display: flex; flex-direction: column; gap: 8px; }
         .quest-label { font-weight: 600; }
-        .quest-input { padding: 10px; border: 2px solid var(--primary); border-radius: 10px; font-family: 'Quicksand', sans-serif; font-size: 1rem; outline: none; }
+        .quest-input { padding: 10px; border: 2px solid var(--primary); border-radius: 10px; font-family: 'Quicksand'; font-size: 1rem; outline: none; }
         .feedback-text { font-size: 0.9rem; font-weight: 600; min-height: 20px; }
         .correct { color: #2E7D32; } .incorrect { color: var(--danger); }
         .action-btns { display: flex; gap: 10px; margin-top: 15px; }
         .check-btn { background: var(--success); border: none; padding: 10px 20px; border-radius: 10px; font-weight: 700; cursor: pointer; font-family: 'Quicksand'; }
         .reset-btn { background: #EEEEEE; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 700; cursor: pointer; font-family: 'Quicksand'; }
-        .mcq-options { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 5px; }
+        
+        /* MCQ & Games */
+        .mcq-options { display: flex; gap: 10px; flex-wrap: wrap; }
         .mcq-btn { background: var(--white); border: 2px solid var(--primary); padding: 8px 20px; border-radius: 10px; font-family: 'Quicksand'; font-weight: 700; cursor: pointer; transition: all 0.2s; }
-        .mcq-btn.selected { background: var(--primary); color: var(--white); border-color: #5CA8C3; }
+        .mcq-btn.selected { background: var(--primary); color: var(--white); }
+        
+        .drag-game-container { margin-top: 20px; }
+        .drag-question-box { background: #FAFAFA; border: 2px solid #EEEEEE; border-radius: 15px; padding: 15px; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; font-size: 1.2rem; font-weight: 600; }
+        .drop-zone { display: inline-block; min-width: 60px; height: 40px; border: 2px dashed var(--primary); border-radius: 10px; text-align: center; line-height: 36px; background: #EAF6FA; padding: 0 10px; }
+        .drag-options-bank { display: flex; gap: 10px; flex-wrap: wrap; padding: 15px; background: #F0F0F0; border-radius: 15px; margin-top: 20px; justify-content: center; }
+        .draggable-item { background: var(--white); border: 2px solid var(--primary); padding: 5px 15px; border-radius: 10px; font-weight: 700; cursor: grab; }
+        .draggable-item:active { cursor: grabbing; }
+
         .reflection-box { background: #FFF8E1; border: 2px solid #FFECB3; border-radius: 15px; padding: 20px; text-align: center; margin-top: 20px; }
         .reflection-input { width: 80%; padding: 10px; border: 2px solid #FFD54F; border-radius: 10px; font-family: 'Quicksand'; font-size: 1rem; margin-top: 10px; outline: none; }
 
-        /* Assessment Specific Styles */
+        /* Assessment Styles */
         .student-info-bar { display: flex; gap: 20px; margin-bottom: 25px; flex-wrap: wrap; }
         .info-group { flex: 1; min-width: 200px; }
         .info-group label { font-weight: 700; display: block; margin-bottom: 5px; color: var(--primary); }
         .info-input { width: 100%; padding: 10px; border: 2px solid #EEEEEE; border-radius: 10px; font-family: 'Quicksand'; font-size: 1rem; }
         
-        .assessment-group { border: 3px solid var(--primary); border-radius: 20px; padding: 20px; margin-bottom: 25px; background: #FAFAFA; position: relative; }
+        .tab-container { display: flex; gap: 5px; margin-bottom: 15px; flex-wrap: wrap; }
+        .tab-btn { background: #EEEEEE; border: none; padding: 10px 20px; border-radius: 10px 10px 0 0; font-family: 'Quicksand'; font-weight: 700; cursor: pointer; transition: 0.2s; }
+        .tab-btn.active { background: var(--primary); color: white; }
+        
+        .assessment-group { border: 3px solid var(--primary); border-radius: 0 20px 20px 20px; padding: 20px; background: #FAFAFA; display: none; }
+        .assessment-group.active { display: block; }
         .ag-title { background: var(--primary); color: white; padding: 5px 15px; border-radius: 10px; display: inline-block; font-weight: 700; margin-bottom: 15px; }
         
         .as-q-row { margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px dashed #DDDDDD; }
-        .as-q-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
         .as-q-text { font-weight: 600; margin-bottom: 8px; }
-        
         .as-radio-group, .as-checkbox-group { display: flex; flex-wrap: wrap; gap: 15px; }
         .as-radio-label, .as-checkbox-label { display: flex; align-items: center; gap: 8px; cursor: pointer; background: white; padding: 5px 10px; border-radius: 8px; border: 1px solid #EEEEEE; }
-        
         .as-select { padding: 8px; border: 2px solid var(--primary); border-radius: 8px; font-family: 'Quicksand'; font-size: 1rem; background: white; cursor: pointer; min-width: 150px; }
         .as-text-input { padding: 8px; border: 2px solid var(--primary); border-radius: 8px; font-family: 'Quicksand'; font-size: 1rem; width: 100px; text-align: center; }
-        
         .as-feedback { font-size: 0.85rem; font-weight: 600; margin-top: 5px; min-height: 15px; }
         .as-correct { color: #2E7D32; background: #C1E1C1; padding: 2px 8px; border-radius: 5px; display: inline-block; }
         .as-incorrect { color: white; background: #FF6B6B; padding: 2px 8px; border-radius: 5px; display: inline-block; }
+        .score-display { text-align: center; margin-top: 15px; padding: 10px; background: var(--accent); border-radius: 10px; font-weight: 700; font-size: 1.2rem; display: none; }
+        .print-btn { background: #FF8C00; color: white; border: none; padding: 8px 15px; border-radius: 8px; font-weight: 700; cursor: pointer; font-family: 'Quicksand'; margin-top: 10px; }
 
-        .score-display { text-align: center; margin-top: 20px; padding: 20px; background: var(--accent); border-radius: 15px; display: none; }
-        .score-big { font-size: 3rem; font-weight: 700; color: var(--primary); }
-        
-        .print-btn { background: #FF8C00; color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 700; cursor: pointer; font-family: 'Quicksand'; margin-top: 10px; }
-
-        /* Feedback Section Stars */
         .star-rating { display: flex; justify-content: center; gap: 10px; font-size: 2.5rem; color: #FFD700; cursor: pointer; }
-        .star-rating i { transition: transform 0.2s; }
-        .star-rating i:hover { transform: scale(1.2); }
 
         /* Canvas Panel */
         .canvas-panel { position: sticky; top: 20px; background: var(--white); border-radius: var(--border-radius); padding: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 2px solid #EEEEEE; }
         .canvas-panel h3 { text-align: center; margin-bottom: 10px; color: var(--primary); }
         #doodleCanvas { width: 100%; height: 350px; border: 3px solid var(--primary); border-radius: 15px; cursor: crosshair; background-color: #FFFFFF; touch-action: none; }
         .canvas-tools { display: flex; justify-content: center; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
-        .color-btn { width: 30px; height: 30px; border-radius: 50%; border: 2px solid #EEEEEE; cursor: pointer; transition: transform 0.2s; }
-        .color-btn:hover { transform: scale(1.2); }
-        .tool-btn { padding: 6px 12px; border-radius: 10px; border: none; background: #EEEEEE; cursor: pointer; font-family: 'Quicksand', sans-serif; font-weight: 600; display: flex; align-items: center; gap: 5px; }
+        .color-btn { width: 30px; height: 30px; border-radius: 50%; border: 2px solid #EEEEEE; cursor: pointer; }
+        .tool-btn { padding: 6px 12px; border-radius: 10px; border: none; background: #EEEEEE; cursor: pointer; font-family: 'Quicksand'; font-weight: 600; display: flex; align-items: center; gap: 5px; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -118,9 +121,9 @@
     <header class="header">
         <h1><i class="fas fa-graduation-cap"></i> MATH TUTORING</h1>
         <div class="header-info">
-            <span><i class="fas fa-book-open"></i> Topic: Lines & Angles <br><span style="font-size:0.8em; font-weight:400;">(Garis dan Sudut)</span></span>
+            <span><i class="fas fa-book-open"></i> Topic: Lines & Angles</span>
             <span><i class="fas fa-chalkboard-teacher"></i> Tutor: Deni</span>
-            <span><i class="fas fa-clock"></i> Duration: 60 Mins</span>
+            <span><i class="fas fa-clock"></i> 60 Mins</span>
         </div>
     </header>
 
@@ -137,11 +140,10 @@
     <div class="main-container">
         <div class="material-panel" id="materialContainer">
             
-            <!-- SECTION 1-7 Shortened for rendering efficiency, logic intact -->
-            <!-- SECTION 1: Spiral Review -->
+            <!-- SECTION 1 -->
             <div id="section-1" class="section-page active">
                 <div class="section-header"><h2 class="section-title"><i class="fas fa-rocket"></i> Spiral Review Warm-up</h2><span class="timer-badge"><i class="fas fa-stopwatch"></i> 00:00 - 00:10</span></div>
-                <div class="theory-box"><p>Before we start a new mission, let's sharpen our algebra skills! Algebra helps us find unknown values in geometry.</p><span class="id-lang">Sebelum kita mulai misi baru, mari asah kemampuan aljabar kita!</span></div>
+                <div class="theory-box"><p><i class="fas fa-lightbulb" style="color:#F4A460"></i> Before we start, let's sharpen our algebra skills! Algebra helps us find unknown values in geometry.</p><span class="id-lang">Sebelum memulai, mari asah kemampuan aljabar kita!</span></div>
                 <div class="quest-grid">
                     <div class="quest-item"><label class="quest-label">1. Constant value from \(3x - 7\)</label><input type="text" id="q1" class="quest-input" placeholder="Type number..."><div id="q1Feedback" class="feedback-text"></div></div>
                     <div class="quest-item"><label class="quest-label">2. Variable(s) from \(5y + 12z\)</label><input type="text" id="q2" class="quest-input" placeholder="e.g., x, y"><div id="q2Feedback" class="feedback-text"></div></div>
@@ -151,63 +153,127 @@
                 <div class="action-btns"><button class="check-btn" onclick="checkWarmUp()"><i class="fas fa-check-circle"></i> Check</button><button class="reset-btn" onclick="resetWarmUp()"><i class="fas fa-redo"></i> Reset</button></div>
             </div>
 
-            <!-- SECTION 2: Introduction -->
+            <!-- SECTION 2 -->
             <div id="section-2" class="section-page">
                 <div class="section-header"><h2 class="section-title"><i class="fas fa-building"></i> Real-World Connection</h2><span class="timer-badge"><i class="fas fa-stopwatch"></i> 00:10 - 00:15</span></div>
-                <div class="theory-box"><p>Have you ever looked closely at a bridge? Architects must calculate angles perfectly. If one side leans at \(30^\circ\) on a straight line, the other must be \(150^\circ\) to prevent collapse!</p><span class="id-lang">Pernahkah kamu melihat jembatan? Arsitek harus menghitung sudut dengan sempurna agar tidak roboh!</span></div>
-                <p style="font-weight: 700; margin-bottom: 10px;">Today's Mission: Complementary & Supplementary Angles</p>
-                <div class="svg-container"><svg width="250" height="150" viewBox="0 0 250 150"><line x1="20" y1="130" x2="230" y2="130" stroke="#4A4A4A" stroke-width="4"/><path d="M 40 130 Q 125 20 210 130" fill="none" stroke="#7EC8E3" stroke-width="4"/></svg></div>
+                <div class="theory-box"><p><i class="fas fa-hard-hat" style="color:#F4A460"></i> Architects must calculate angles perfectly. If a bridge leans at \(30^\circ\), the other side must be \(150^\circ\) to form a straight line!</p><span class="id-lang">Arsitek harus menghitung sudut dengan sempurna agar jembatan tidak roboh!</span></div>
+                
+                <div style="text-align: center; margin: 20px 0;">
+                    <svg width="300" height="120" viewBox="0 0 300 120" style="background: #EAF6FA; border-radius: 15px; padding: 10px;">
+                        <!-- Bridge SVG -->
+                        <line x1="20" y1="100" x2="280" y2="100" stroke="#333" stroke-width="4" stroke-linecap="round"/>
+                        <path d="M 40 100 Q 150 -20 260 100" fill="none" stroke="#7EC8E3" stroke-width="4"/>
+                        <line x1="150" y1="100" x2="150" y2="30" stroke="#FF6B6B" stroke-width="3" stroke-dasharray="5,5"/>
+                        <path d="M 120 100 A 30 30 0 0 1 150 75" fill="none" stroke="#FFD1DC" stroke-width="3"/>
+                        <text x="105" y="95" fill="#FF6B6B" font-weight="bold" font-family="Quicksand">30°</text>
+                        <path d="M 150 75 A 30 30 0 0 1 180 100" fill="none" stroke="#C1E1C1" stroke-width="3"/>
+                        <text x="155" y="95" fill="#2E7D32" font-weight="bold" font-family="Quicksand">150°</text>
+                    </svg>
+                </div>
+
+                <p style="font-weight: 700;">Quick Quest: Can you guess the missing angle? <span class="id-lang">(Bisakah kamu menebak sudut yang hilang?)</span></p>
+                <div class="quest-item">
+                    <label class="quest-label">If one angle on a straight line is \(120^\circ\), the other is...</label>
+                    <div class="mcq-options" id="mcq-s2">
+                        <button class="mcq-btn" onclick="selectMCQ_S2('30', this)">30°</button>
+                        <button class="mcq-btn" onclick="selectMCQ_S2('60', this)">60°</button>
+                        <button class="mcq-btn" onclick="selectMCQ_S2('90', this)">90°</button>
+                    </div>
+                    <div id="fb-s2" class="feedback-text"></div>
+                </div>
             </div>
 
-            <!-- SECTION 3: Prior Knowledge -->
+            <!-- SECTION 3 -->
             <div id="section-3" class="section-page">
                 <div class="section-header"><h2 class="section-title"><i class="fas fa-brain"></i> Prior Knowledge</h2><span class="timer-badge"><i class="fas fa-stopwatch"></i> 00:15 - 00:20</span></div>
-                <div class="theory-box"><p><strong>Straight Line:</strong> Total angle is always \(180^\circ\).</p><span class="id-lang">Total sudut pada garis lurus selalu \(180^\circ\).</span></div>
-                <div class="theory-box"><p><strong>Right Angle:</strong> Formed by perpendicular lines, totals \(90^\circ\).</p><span class="id-lang">Dibentuk oleh garis tegak lurus, totalnya \(90^\circ\).</span></div>
-                <div class="svg-container">
-                    <div class="svg-card"><svg width="150" height="80" viewBox="0 0 150 80"><line x1="10" y1="40" x2="140" y2="40" stroke="#4A4A4A" stroke-width="3"/><line x1="70" y1="40" x2="110" y2="15" stroke="#FF6B6B" stroke-width="3"/></svg><h4>Straight Line<br>\(180^\circ\)</h4></div>
-                    <div class="svg-card"><svg width="150" height="80" viewBox="0 0 150 80"><line x1="30" y1="70" x2="130" y2="70" stroke="#4A4A4A" stroke-width="3"/><line x1="30" y1="70" x2="30" y2="10" stroke="#4A4A4A" stroke-width="3"/><line x1="30" y1="70" x2="90" y2="20" stroke="#7EC8E3" stroke-width="3"/><rect x="30" y="55" width="15" height="15" fill="none" stroke="#4A4A4A" stroke-width="2"/></svg><h4>Right Angle<br>\(90^\circ\)</h4></div>
+                <div class="theory-box"><p><i class="fas fa-ruler-combined" style="color:#F4A460"></i> <strong>Straight Line (Garis Lurus):</strong> Always \(180^\circ\).</p></div>
+                <div class="theory-box"><p><i class="fas fa-square" style="color:#F4A460"></i> <strong>Right Angle (Sudut Siku-siku):</strong> Marked with a square, totals \(90^\circ\).</p></div>
+                
+                <div class="quest-item">
+                    <label class="quest-label">Quick Quest: Click the correct total angle for a Right Angle.</label>
+                    <div class="mcq-options" id="mcq-s3">
+                        <button class="mcq-btn" onclick="selectMCQ_S3('90', this)">90°</button>
+                        <button class="mcq-btn" onclick="selectMCQ_S3('180', this)">180°</button>
+                    </div>
+                    <div id="fb-s3" class="feedback-text"></div>
                 </div>
             </div>
 
-            <!-- SECTION 4: Problem Introduction -->
+            <!-- SECTION 4 -->
             <div id="section-4" class="section-page">
                 <div class="section-header"><h2 class="section-title"><i class="fas fa-puzzle-piece"></i> Problem Introduction</h2><span class="timer-badge"><i class="fas fa-stopwatch"></i> 00:20 - 00:30</span></div>
-                <div class="theory-box"><p>What if the angle size is algebra? Because they are Supplementary, adding them equals \(180^\circ\).</p><span class="id-lang">Bagaimana jika besar sudutnya aljabar? Karena berpelurus, jika dijumlahkan hasilnya pasti 180.</span></div>
-                <div class="svg-container" style="margin-bottom: 20px;"><svg width="300" height="120" viewBox="0 0 300 120"><line x1="20" y1="100" x2="280" y2="100" stroke="#4A4A4A" stroke-width="4"/><circle cx="120" cy="100" r="4" fill="#4A4A4A"/><line x1="120" y1="100" x2="200" y2="20" stroke="#FF6B6B" stroke-width="3"/><path d="M 120 100 A 40 40 0 0 1 155 70" fill="none" stroke="#FFD1DC" stroke-width="3"/><text x="125" y="75" fill="#FF6B6B" font-size="14" font-weight="bold" font-family="Quicksand">(2x+10)°</text><path d="M 155 70 A 40 40 0 0 0 280 100" fill="none" stroke="#C1E1C1" stroke-width="3"/><text x="190" y="55" fill="#2E7D32" font-size="14" font-weight="bold" font-family="Quicksand">(3x-15)°</text></svg></div>
-                <p style="font-size: 1.2rem; font-weight: 700; text-align: center;">Equation: \( (2x + 10) + (3x - 15) = 180 \)</p>
+                <div class="theory-box"><p>What if angles are algebra? Because they are Supplementary (Berpelurus), adding them equals \(180^\circ\).</p><span class="id-lang">Jika sudut berpelurus, jumlahnya pasti 180°.</span></div>
+                
+                <div style="text-align: center; margin: 20px 0;">
+                    <svg width="400" height="150" viewBox="0 0 400 150" style="background: #FFF8E1; border-radius: 15px; padding: 10px; border: 2px dashed #F4A460;">
+                        <line x1="30" y1="120" x2="370" y2="120" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+                        <line x1="120" y1="120" x2="280" y2="30" stroke="#FF6B6B" stroke-width="3" stroke-linecap="round"/>
+                        <circle cx="120" cy="120" r="4" fill="#333"/>
+                        
+                        <!-- Angle A Marker -->
+                        <path d="M 145 120 A 25 25 0 0 1 138 100" fill="none" stroke="#7EC8E3" stroke-width="3"/>
+                        <text x="150" y="110" fill="#0077B6" font-weight="bold" font-size="16" font-family="Quicksand">(2x + 10)°</text>
+                        
+                        <!-- Angle B Marker -->
+                        <path d="M 138 100 A 25 25 0 0 0 370 120" fill="none" stroke="#FFD1DC" stroke-width="3"/>
+                        <text x="250" y="85" fill="#D63384" font-weight="bold" font-size="16" font-family="Quicksand">(3x - 15)°</text>
+                    </svg>
+                </div>
+
+                <div class="quest-item">
+                    <label class="quest-label">Test your understanding: What equation represents this picture?</label>
+                    <div class="mcq-options" id="mcq-s4">
+                        <button class="mcq-btn" onclick="selectMCQ_S4('wrong1', this)">(2x+10) - (3x-15) = 180</button>
+                        <button class="mcq-btn" onclick="selectMCQ_S4('right', this)">(2x+10) + (3x-15) = 180</button>
+                        <button class="mcq-btn" onclick="selectMCQ_S4('wrong2', this)">(2x+10) + (3x-15) = 90</button>
+                    </div>
+                    <div id="fb-s4" class="feedback-text"></div>
+                </div>
             </div>
 
-            <!-- SECTION 5: Guided Practice Game (Drag & Drop) -->
+            <!-- SECTION 5: Drag & Drop -->
             <div id="section-5" class="section-page">
                 <div class="section-header"><h2 class="section-title"><i class="fas fa-gamepad"></i> Guided Practice Game</h2><span class="timer-badge"><i class="fas fa-stopwatch"></i> 00:30 - 00:45</span></div>
-                <div class="theory-box"><p>Let's practice! Drag the correct number to complete the equation!</p><span class="id-lang">Mari berlatih! Seret angka yang benar untuk melengkapi persamaan!</span></div>
+                <div class="theory-box"><p>Drag the correct number to complete the equation!</p><span class="id-lang">Seret angka yang benar!</span></div>
                 <div class="drag-game-container">
-                    <div class="drag-question-box">1. \( (2x + 10) + (3x - 15) = \) <div class="drop-zone" id="drop1" data-answer="180"></div></div><div id="fb1" class="feedback-text" style="margin:-10px 0 10px 10px"></div>
-                    <div class="drag-question-box">2. \( 5x - 5 = \) <div class="drop-zone" id="drop2" data-answer="180"></div></div><div id="fb2" class="feedback-text" style="margin:-10px 0 10px 10px"></div>
-                    <div class="drag-question-box">3. If \( 5x = 185 \), then \( x = \) <div class="drop-zone" id="drop3" data-answer="37"></div></div><div id="fb3" class="feedback-text" style="margin:-10px 0 10px 10px"></div>
-                    <div class="drag-question-box">4. Complementary: \( 4x + (2x + 30) = \) <div class="drop-zone" id="drop4" data-answer="90"></div></div><div id="fb4" class="feedback-text" style="margin:-10px 0 10px 10px"></div>
-                    <div class="drag-question-box">5. If \( 6x + 30 = 90 \), then \( 6x = \) <div class="drop-zone" id="drop5" data-answer="60"></div></div><div id="fb5" class="feedback-text" style="margin:-10px 0 10px 10px"></div>
-                    <p style="font-weight: 700; margin-top: 10px;"><i class="fas fa-hand-pointer"></i> Drag from here:</p>
-                    <div class="drag-options-bank" id="optionsBank">
-                        <div class="draggable-item" draggable="true" id="opt-37" data-value="37">37</div>
-                        <div class="draggable-item" draggable="true" id="opt-180" data-value="180">180</div>
-                        <div class="draggable-item" draggable="true" id="opt-60" data-value="60">60</div>
-                        <div class="draggable-item" draggable="true" id="opt-90" data-value="90">90</div>
-                        <div class="draggable-item" draggable="true" id="opt-180-dup" data-value="180">180</div>
+                    <div class="drag-question-box">1. \( (2x + 10) + (3x - 15) = \) <div class="drop-zone" id="drop1" ondrop="drop(event)" ondragover="allowDrop(event)"></div> </div>
+                    <div class="drag-question-box">2. Complementary: \( 4x + (2x + 30) = \) <div class="drop-zone" id="drop2" ondrop="drop(event)" ondragover="allowDrop(event)"></div> </div>
+                    <div class="drag-question-box">3. If \( 6x = 180 \), then \( x = \) <div class="drop-zone" id="drop3" ondrop="drop(event)" ondragover="allowDrop(event)"></div> </div>
+                    
+                    <p style="font-weight: 700; margin-top: 20px;"><i class="fas fa-hand-pointer"></i> Drag from here:</p>
+                    <div class="drag-options-bank" id="optionsBank" ondrop="drop(event)" ondragover="allowDrop(event)">
+                        <div class="draggable-item" draggable="true" ondragstart="drag(event)" id="opt-30" data-value="30">30</div>
+                        <div class="draggable-item" draggable="true" ondragstart="drag(event)" id="opt-90" data-value="90">90</div>
+                        <div class="draggable-item" draggable="true" ondragstart="drag(event)" id="opt-180" data-value="180">180</div>
                     </div>
                 </div>
-                <div class="action-btns"><button class="check-btn" onclick="checkDragGame()"><i class="fas fa-check-circle"></i> Check</button><button class="reset-btn" onclick="resetDragGame()"><i class="fas fa-redo"></i> Reset</button></div>
+                <div class="action-btns" style="margin-top:20px;">
+                    <button class="check-btn" onclick="checkDragGame()"><i class="fas fa-check-circle"></i> Check</button>
+                    <button class="reset-btn" onclick="resetDragGame()"><i class="fas fa-redo"></i> Reset</button>
+                </div>
             </div>
 
-            <!-- SECTION 6: Independent Practice -->
+            <!-- SECTION 6: Independent Mission -->
             <div id="section-6" class="section-page">
                 <div class="section-header"><h2 class="section-title"><i class="fas fa-user-astronaut"></i> Independent Mission</h2><span class="timer-badge"><i class="fas fa-stopwatch"></i> 00:45 - 00:55</span></div>
-                <div class="theory-box"><p>Time for a solo mission! Solve these challenges. Choose or type your answer.</p><span class="id-lang">Waktunya misi mandiri! Selesaikan tantangan ini.</span></div>
                 <div class="quest-grid">
-                    <div class="quest-item"><label class="quest-label">1. Find the supplementary angle of \(125^\circ\).</label><div class="mcq-options" id="mcq1"><button class="mcq-btn" onclick="selectMCQ(1, '45', this)">45°</button><button class="mcq-btn" onclick="selectMCQ(1, '55', this)">55°</button><button class="mcq-btn" onclick="selectMCQ(1, '65', this)">65°</button></div><div id="ind-fb1" class="feedback-text"></div></div>
-                    <div class="quest-item"><label class="quest-label">2. Angle A and B are complementary. If \(A = x+5\) and \(B = 2x\), find \(x\).</label><input type="text" id="ind-q2" class="quest-input" placeholder="Value of x"><div id="ind-fb2" class="feedback-text"></div></div>
-                    <div class="quest-item" style="border-color: #F4A460; background: #FFF8E1;"><label class="quest-label"><i class="fas fa-dragon" style="color:#D2691E"></i> 3. BOSS LEVEL: Find \(x\) on a straight line: \(2x, 3x, 50^\circ\).</label><input type="text" id="ind-q3" class="quest-input" placeholder="Value of x"><div id="ind-fb3" class="feedback-text"></div></div>
+                    <div class="quest-item"><label class="quest-label"><i class="fas fa-angle-right" style="color:var(--primary)"></i> 1. Supplementary angle of \(125^\circ\)?</label><input type="text" id="ind-q1" class="quest-input" placeholder="Answer..."><div id="ind-fb1" class="feedback-text"></div></div>
+                    <div class="quest-item"><label class="quest-label"><i class="fas fa-angle-right" style="color:var(--primary)"></i> 2. Complementary: \(A=x+5, B=2x\). Find \(x\).</label><input type="text" id="ind-q2" class="quest-input" placeholder="Value of x"><div id="ind-fb2" class="feedback-text"></div></div>
+                    
+                    <div class="quest-item" style="border-color: #F4A460; background: #FFF8E1;">
+                        <label class="quest-label"><i class="fas fa-dragon" style="color:#D2691E"></i> 3. BOSS LEVEL: Find \(x\).</label>
+                        <svg width="200" height="80" viewBox="0 0 200 80" style="margin: 10px 0;">
+                            <line x1="10" y1="70" x2="190" y2="70" stroke="#333" stroke-width="2"/>
+                            <line x1="70" y1="70" x2="130" y2="10" stroke="#FF6B6B" stroke-width="2"/>
+                            <text x="55" y="60" fill="#0077B6" font-weight="bold" font-family="Quicksand">2x°</text>
+                            <text x="115" y="60" fill="#D63384" font-weight="bold" font-family="Quicksand">3x°</text>
+                            <text x="155" y="60" fill="#333" font-weight="bold" font-family="Quicksand">50°</text>
+                        </svg>
+                        <input type="text" id="ind-q3" class="quest-input" placeholder="Value of x"><div id="ind-fb3" class="feedback-text"></div>
+                    </div>
+
+                    <div class="quest-item"><label class="quest-label"><i class="fas fa-angle-right" style="color:var(--primary)"></i> 4. If angle P and Q are complementary, and \(P=40^\circ\), then Q is...</label><input type="text" id="ind-q4" class="quest-input" placeholder="Answer..."><div id="ind-fb4" class="feedback-text"></div></div>
+                    <div class="quest-item"><label class="quest-label"><i class="fas fa-angle-right" style="color:var(--primary)"></i> 5. The supplementary angle of \(x\) is \(4x\). Find \(x\).</label><input type="text" id="ind-q5" class="quest-input" placeholder="Value of x"><div id="ind-fb5" class="feedback-text"></div></div>
                 </div>
                 <div class="action-btns"><button class="check-btn" onclick="checkIndependent()"><i class="fas fa-check-circle"></i> Check</button><button class="reset-btn" onclick="resetIndependent()"><i class="fas fa-redo"></i> Reset</button></div>
             </div>
@@ -219,113 +285,131 @@
                     <h3 style="color:#D2691E; margin-bottom:10px;"><i class="fas fa-star"></i> Key Takeaways</h3>
                     <p><strong>Complementary (Berpenyiku):</strong> \(90^\circ\)</p><p><strong>Supplementary (Berpelurus):</strong> \(180^\circ\)</p>
                 </div>
-                <div class="reflection-box">
-                    <h3><i class="fas fa-heart" style="color: var(--danger)"></i> Reflection Time</h3>
-                    <p>What was the most challenging part today?</p>
-                    <textarea class="reflection-input" rows="2" placeholder="Type here..."></textarea>
-                </div>
+                <div class="reflection-box"><h3><i class="fas fa-heart" style="color: var(--danger)"></i> Reflection Time</h3><textarea class="reflection-input" rows="2" placeholder="What was challenging today?"></textarea></div>
             </div>
 
-            <!-- SECTION 8: ASSESSMENT -->
+            <!-- SECTION 8: ASSESSMENT (TABS) -->
             <div id="section-8" class="section-page">
-                <div class="section-header">
-                    <h2 class="section-title"><i class="fas fa-file-alt"></i> Assessment</h2>
-                </div>
-
+                <div class="section-header"><h2 class="section-title"><i class="fas fa-file-alt"></i> Final Assessment</h2></div>
                 <div class="student-info-bar">
-                    <div class="info-group"><label><i class="fas fa-user"></i> Student Name</label><input type="text" id="studentName" class="info-input" placeholder="Full Name"></div>
+                    <div class="info-group"><label><i class="fas fa-user"></i> Student Name</label><input type="text" id="studentName" class="info-input"></div>
                     <div class="info-group"><label><i class="fas fa-calendar-alt"></i> Date</label><input type="date" id="assessmentDate" class="info-input"></div>
                 </div>
 
-                <!-- AG1 -->
-                <div class="assessment-group" id="ag1">
-                    <div class="ag-title">Group 1: Basic Angles</div>
-                    <div class="as-q-row"><div class="as-q-text">1. Two angles adding up to \(90^\circ\) are...</div><div class="as-radio-group"><label class="as-radio-label"><input type="radio" name="ag1_q1" value="Supplementary"> Supplementary</label><label class="as-radio-label"><input type="radio" name="ag1_q1" value="Complementary"> Complementary</label></div><div id="ag1_q1_fb" class="as-feedback"></div></div>
-                    <div class="as-q-row"><div class="as-q-text">2. Supplementary angle of \(72^\circ\) is...</div><select id="ag1_q2" class="as-select"><option value="">-- Select --</option><option value="18">18°</option><option value="108">108°</option></select><div id="ag1_q2_fb" class="as-feedback"></div></div>
-                    <div class="as-q-row"><div class="as-q-text">3. Complementary angle of \(35^\circ\) is...</div><div class="as-radio-group"><label class="as-radio-label"><input type="radio" name="ag1_q3" value="55"> 55°</label><label class="as-radio-label"><input type="radio" name="ag1_q3" value="145"> 145°</label></div><div id="ag1_q3_fb" class="as-feedback"></div></div>
-                    <button class="check-btn" onclick="checkAG1()"><i class="fas fa-check"></i> Submit Group 1</button>
+                <div class="tab-container">
+                    <button class="tab-btn active" onclick="openTab(1)">Group 1</button>
+                    <button class="tab-btn" onclick="openTab(2)">Group 2</button>
+                    <button class="tab-btn" onclick="openTab(3)">Group 3</button>
+                    <button class="tab-btn" onclick="openTab(4)">Group 4</button>
+                    <button class="tab-btn" onclick="openTab(5)">Group 5</button>
                 </div>
 
-                <!-- AG2 -->
-                <div class="assessment-group" id="ag2">
-                    <div class="ag-title">Group 2: Algebra in Angles</div>
-                    <div class="as-q-row"><div class="as-q-text">4. Find \(x\) if \((x + 20)^\circ\) and \(110^\circ\) are supplementary.</div><input type="text" id="ag2_q4" class="as-text-input" placeholder="x = "><div id="ag2_q4_fb" class="as-feedback"></div></div>
-                    <div class="as-q-row"><div class="as-q-text">5. Calculate \(y\) if \(3y\) and \(60^\circ\) form a right angle.</div><input type="text" id="ag2_q5" class="as-text-input" placeholder="y = "><div id="ag2_q5_fb" class="as-feedback"></div></div>
-                    <div class="as-q-row"><div class="as-q-text">6. Which pairs are supplementary? (Select ALL)</div><div class="as-checkbox-group"><label class="as-checkbox-label"><input type="checkbox" class="ag2_q6" value="110_70"> \(110^\circ \& 70^\circ\)</label><label class="as-checkbox-label"><input type="checkbox" class="ag2_q6" value="45_45"> \(45^\circ \& 45^\circ\)</label><label class="as-checkbox-label"><input type="checkbox" class="ag2_q6" value="90_90"> \(90^\circ \& 90^\circ\)</label></div><div id="ag2_q6_fb" class="as-feedback"></div></div>
-                    <button class="check-btn" onclick="checkAG2()"><i class="fas fa-check"></i> Submit Group 2</button>
+                <!-- GROUP 1 -->
+                <div id="ag1" class="assessment-group active">
+                    <div class="ag-title">Group 1: Basics (Questions 1-10)</div>
+                    <div class="as-q-row"><div class="as-q-text">1. Complementary angles add up to...</div><select class="as-select" id="g1q1"><option value="">--</option><option value="90">90°</option><option value="180">180°</option></select><div id="g1q1_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">2. Supplementary angles add up to...</div><select class="as-select" id="g1q2"><option value="">--</option><option value="90">90°</option><option value="180">180°</option></select><div id="g1q2_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">3. Right angle is always...</div><select class="as-select" id="g1q3"><option value="">--</option><option value="90">90°</option><option value="180">180°</option></select><div id="g1q3_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">4. Straight line angle is...</div><select class="as-select" id="g1q4"><option value="">--</option><option value="90">90°</option><option value="180">180°</option></select><div id="g1q4_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">5. Angle \(45^\circ\) complementary angle is...</div><input type="text" class="as-text-input" id="g1q5"><div id="g1q5_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">6. Angle \(110^\circ\) supplementary angle is...</div><input type="text" class="as-text-input" id="g1q6"><div id="g1q6_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">7. Two angles adding up to \(90^\circ\) are...</div><div class="as-radio-group"><label class="as-radio-label"><input type="radio" name="g1q7" value="Supplementary"> Supplementary</label><label class="as-radio-label"><input type="radio" name="g1q7" value="Complementary"> Complementary</label></div><div id="g1q7_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">8. Two angles adding up to \(180^\circ\) are...</div><div class="as-radio-group"><label class="as-radio-label"><input type="radio" name="g1q8" value="Supplementary"> Supplementary</label><label class="as-radio-label"><input type="radio" name="g1q8" value="Complementary"> Complementary</label></div><div id="g1q8_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">9. Is \(90^\circ\) a right angle?</div><div class="as-radio-group"><label class="as-radio-label"><input type="radio" name="g1q9" value="Yes"> Yes</label><label class="as-radio-label"><input type="radio" name="g1q9" value="No"> No</label></div><div id="g1q9_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">10. Complementary of \(30^\circ\) is...</div><input type="text" class="as-text-input" id="g1q10"><div id="g1q10_fb" class="as-feedback"></div></div>
+                    
+                    <button class="check-btn" onclick="checkGroup(1)"><i class="fas fa-check"></i> Check Group 1</button>
+                    <div id="score-g1" class="score-display"></div>
+                    <button class="print-btn" onclick="generatePDF(1)"><i class="fas fa-print"></i> Print Group 1 to PDF</button>
                 </div>
 
-                <!-- AG3 -->
-                <div class="assessment-group" id="ag3">
-                    <div class="ag-title">Group 3: Complex Problems</div>
-                    <div class="as-q-row"><div class="as-q-text">7. Two supplementary angles ratio 2:3. Larger angle is...</div><select id="ag3_q7" class="as-select"><option value="">-- Select --</option><option value="72">72°</option><option value="108">108°</option></select><div id="ag3_q7_fb" class="as-feedback"></div></div>
-                    <div class="as-q-row"><div class="as-q-text">8. Angle \(A = (3x - 10)^\circ\) and \(B = (2x + 40)^\circ\). If supplementary, find Angle A.</div><input type="text" id="ag3_q8" class="as-text-input" placeholder="A = "><div id="ag3_q8_fb" class="as-feedback"></div></div>
-                    <div class="as-q-row"><div class="as-q-text">9. Three angles on a line: \(x, 2x, 3x\). Find \(x\).</div><input type="text" id="ag3_q9" class="as-text-input" placeholder="x = "><div id="ag3_q9_fb" class="as-feedback"></div></div>
-                    <button class="check-btn" onclick="checkAG3()"><i class="fas fa-check"></i> Submit Group 3</button>
+                <!-- GROUP 2 -->
+                <div id="ag2" class="assessment-group">
+                    <div class="ag-title">Group 2: Algebra (Questions 11-20)</div>
+                    <div class="as-q-row"><div class="as-q-text">11. Find \(x\) if \((x+20)^\circ\) and \(110^\circ\) are supplementary.</div><input type="text" class="as-text-input" id="g2q1"><div id="g2q1_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">12. Calculate \(y\) if \(3y\) and \(60^\circ\) form a right angle.</div><input type="text" class="as-text-input" id="g2q2"><div id="g2q2_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">13. Complementary: \(A=x, B=2x\). Find \(x\).</div><input type="text" class="as-text-input" id="g2q3"><div id="g2q3_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">14. Supplementary: \(P=3x, Q=x\). Find \(x\).</div><input type="text" class="as-text-input" id="g2q4"><div id="g2q4_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">15. Complementary: \(4x\) and \(2x+30\). Find \(x\).</div><input type="text" class="as-text-input" id="g2q5"><div id="g2q5_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">16. Supplementary: \((5x-10)^\circ\) and \((x+40)^\circ\). Find \(x\).</div><input type="text" class="as-text-input" id="g2q6"><div id="g2q6_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">17. If \(2x + 3x = 90\), then \(x\) is...</div><input type="text" class="as-text-input" id="g2q7"><div id="g2q7_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">18. If \(4x + 2x = 180\), then \(x\) is...</div><input type="text" class="as-text-input" id="g2q8"><div id="g2q8_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">19. Angle \(A=(3x-10)^\circ\) and \(B=(2x+40)^\circ\) are supplementary. Find \(x\).</div><input type="text" class="as-text-input" id="g2q9"><div id="g2q9_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">20. Angle \(P=(5x+5)^\circ\) and \(Q=(2x+15)^\circ\) are complementary. Find \(x\).</div><input type="text" class="as-text-input" id="g2q10"><div id="g2q10_fb" class="as-feedback"></div></div>
+                    
+                    <button class="check-btn" onclick="checkGroup(2)"><i class="fas fa-check"></i> Check Group 2</button>
+                    <div id="score-g2" class="score-display"></div>
+                    <button class="print-btn" onclick="generatePDF(2)"><i class="fas fa-print"></i> Print Group 2 to PDF</button>
                 </div>
 
-                <!-- AG4: Matching/Properties -->
-                <div class="assessment-group" id="ag4">
-                    <div class="ag-title">Group 4: Angle Properties</div>
-                    <div class="as-q-row"><div class="as-q-text">10. Complementary angles sum up to...</div><select id="ag4_q10" class="as-select"><option value="">-- Select --</option><option value="90">90°</option><option value="180">180°</option><option value="360">360°</option></select><div id="ag4_q10_fb" class="as-feedback"></div></div>
-                    <div class="as-q-row"><div class="as-q-text">11. Supplementary angles sum up to...</div><select id="ag4_q11" class="as-select"><option value="">-- Select --</option><option value="90">90°</option><option value="180">180°</option><option value="360">360°</option></select><div id="ag4_q11_fb" class="as-feedback"></div></div>
-                    <div class="as-q-row"><div class="as-q-text">12. A right angle is always equal to...</div><select id="ag4_q12" class="as-select"><option value="">-- Select --</option><option value="45">45°</option><option value="90">90°</option><option value="180">180°</option></select><div id="ag4_q12_fb" class="as-feedback"></div></div>
-                    <div class="as-q-row"><div class="as-q-text">13. Angles on a straight line sum up to...</div><select id="ag4_q13" class="as-select"><option value="">-- Select --</option><option value="90">90°</option><option value="180">180°</option><option value="360">360°</option></select><div id="ag4_q13_fb" class="as-feedback"></div></div>
-                    <button class="check-btn" onclick="checkAG4()"><i class="fas fa-check"></i> Submit Group 4</button>
+                <!-- GROUP 3 -->
+                <div id="ag3" class="assessment-group">
+                    <div class="ag-title">Group 3: Complex (Questions 21-30)</div>
+                    <div class="as-q-row"><div class="as-q-text">21. Two supplementary angles ratio 2:3. Larger angle is...</div><select class="as-select" id="g3q1"><option value="">--</option><option value="72">72°</option><option value="108">108°</option></select><div id="g3q1_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">22. Three angles on a line: \(x, 2x, 3x\). Find \(x\).</div><input type="text" class="as-text-input" id="g3q2"><div id="g3q2_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">23. Supplementary angle of \(x\) is \(4x\). Find \(x\).</div><input type="text" class="as-text-input" id="g3q3"><div id="g3q3_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">24. Complementary angle of \(y\) is \(2y\). Find \(y\).</div><input type="text" class="as-text-input" id="g3q4"><div id="g3q4_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">25. Line with angles \(4x, 90^\circ, (x+10)^\circ\). Find \(x\).</div><input type="text" class="as-text-input" id="g3q5"><div id="g3q5_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">26. Supplementary angle is twice the angle. If angle is \(x\), equation is...</div><input type="text" class="as-text-input" id="g3q6" placeholder="e.g. x+2x=90"><div id="g3q6_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">27. Complementary angle is \(10^\circ\) less than angle. Find angle.</div><input type="text" class="as-text-input" id="g3q7"><div id="g3q7_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">28. Angles \(x, x+10, x+20\) form a straight line. Find \(x\).</div><input type="text" class="as-text-input" id="g3q8"><div id="g3q8_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">29. Two complementary angles are equal. Each is...</div><input type="text" class="as-text-input" id="g3q9"><div id="g3q9_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">30. Two supplementary angles are equal. Each is...</div><input type="text" class="as-text-input" id="g3q10"><div id="g3q10_fb" class="as-feedback"></div></div>
+                    
+                    <button class="check-btn" onclick="checkGroup(3)"><i class="fas fa-check"></i> Check Group 3</button>
+                    <div id="score-g3" class="score-display"></div>
+                    <button class="print-btn" onclick="generatePDF(3)"><i class="fas fa-print"></i> Print Group 3 to PDF</button>
                 </div>
 
-                <!-- AG5: Word Problems -->
-                <div class="assessment-group" id="ag5">
-                    <div class="ag-title">Group 5: Word Problems</div>
-                    <div class="as-q-row"><div class="as-q-text">14. The supplementary angle of \(45^\circ\) is...</div><input type="text" id="ag5_q14" class="as-text-input" placeholder="...°"><div id="ag5_q14_fb" class="as-feedback"></div></div>
-                    <div class="as-q-row"><div class="as-q-text">15. If angle P and Q are complementary, and \(P=40^\circ\), then Q is...</div><input type="text" id="ag5_q15" class="as-text-input" placeholder="...°"><div id="ag5_q15_fb" class="as-feedback"></div></div>
-                    <button class="check-btn" onclick="checkAG5()"><i class="fas fa-check"></i> Submit Group 5</button>
+                <!-- GROUP 4 -->
+                <div id="ag4" class="assessment-group">
+                    <div class="ag-title">Group 4: True/False & Properties (Questions 31-40)</div>
+                    <div class="as-q-row"><div class="as-q-text">31. \(90^\circ\) and \(90^\circ\) are supplementary.</div><div class="as-radio-group"><label class="as-radio-label"><input type="radio" name="g4q1" value="True"> True</label><label class="as-radio-label"><input type="radio" name="g4q1" value="False"> False</label></div><div id="g4q1_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">32. \(45^\circ\) and \(55^\circ\) are complementary.</div><div class="as-radio-group"><label class="as-radio-label"><input type="radio" name="g4q2" value="True"> True</label><label class="as-radio-label"><input type="radio" name="g4q2" value="False"> False</label></div><div id="g4q2_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">33. Two right angles form a straight line.</div><div class="as-radio-group"><label class="as-radio-label"><input type="radio" name="g4q3" value="True"> True</label><label class="as-radio-label"><input type="radio" name="g4q3" value="False"> False</label></div><div id="g4q3_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">34. \(100^\circ\) and \(80^\circ\) are complementary.</div><div class="as-radio-group"><label class="as-radio-label"><input type="radio" name="g4q4" value="True"> True</label><label class="as-radio-label"><input type="radio" name="g4q4" value="False"> False</label></div><div id="g4q4_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">35. An angle greater than \(90^\circ\) can have a complementary angle.</div><div class="as-radio-group"><label class="as-radio-label"><input type="radio" name="g4q5" value="True"> True</label><label class="as-radio-label"><input type="radio" name="g4q5" value="False"> False</label></div><div id="g4q5_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">36. Supplementary angles always form a straight line.</div><div class="as-radio-group"><label class="as-radio-label"><input type="radio" name="g4q6" value="True"> True</label><label class="as-radio-label"><input type="radio" name="g4q6" value="False"> False</label></div><div id="g4q6_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">37. \(0^\circ\) and \(180^\circ\) are supplementary.</div><div class="as-radio-group"><label class="as-radio-label"><input type="radio" name="g4q7" value="True"> True</label><label class="as-radio-label"><input type="radio" name="g4q7" value="False"> False</label></div><div id="g4q7_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">38. Complementary angles are always \(45^\circ\) each.</div><div class="as-radio-group"><label class="as-radio-label"><input type="radio" name="g4q8" value="True"> True</label><label class="as-radio-label"><input type="radio" name="g4q8" value="False"> False</label></div><div id="g4q8_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">39. Two angles on a straight line are supplementary.</div><div class="as-radio-group"><label class="as-radio-label"><input type="radio" name="g4q9" value="True"> True</label><label class="as-radio-label"><input type="radio" name="g4q9" value="False"> False</label></div><div id="g4q9_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">40. If angle A + angle B = \(180^\circ\), they are complementary.</div><div class="as-radio-group"><label class="as-radio-label"><input type="radio" name="g4q10" value="True"> True</label><label class="as-radio-label"><input type="radio" name="g4q10" value="False"> False</label></div><div id="g4q10_fb" class="as-feedback"></div></div>
+                    
+                    <button class="check-btn" onclick="checkGroup(4)"><i class="fas fa-check"></i> Check Group 4</button>
+                    <div id="score-g4" class="score-display"></div>
+                    <button class="print-btn" onclick="generatePDF(4)"><i class="fas fa-print"></i> Print Group 4 to PDF</button>
                 </div>
 
-                <!-- Score & Print -->
-                <div style="text-align: center; margin-top: 20px;">
-                    <button class="check-btn" style="font-size: 1.2rem; padding: 15px 30px;" onclick="calculateTotalScore()"><i class="fas fa-trophy"></i> Calculate Final Score</button>
-                </div>
-
-                <div id="scoreDisplay" class="score-display">
-                    <h3>Your Final Score</h3>
-                    <div class="score-big" id="finalScoreText">0 / 15</div>
-                    <p id="scoreMessage" style="font-weight:700; margin-top:10px;"></p>
-                    <button class="print-btn" onclick="generatePDF()"><i class="fas fa-print"></i> Print to PDF</button>
+                <!-- GROUP 5 -->
+                <div id="ag5" class="assessment-group">
+                    <div class="ag-title">Group 5: Word Problems (Questions 41-50)</div>
+                    <div class="as-q-row"><div class="as-q-text">41. A bridge leans at \(30^\circ\). What is the other angle on the straight line?</div><input type="text" class="as-text-input" id="g5q1"><div id="g5q1_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">42. Roof angle A is \(45^\circ\). Roof angle B must be \(?\) to meet at a straight top.</div><input type="text" class="as-text-input" id="g5q2"><div id="g5q2_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">43. Clock hands at 3:00 form a right angle. What type of angle pair is this if split in half?</div><input type="text" class="as-text-input" id="g5q3"><div id="g5q3_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">44. Angle is \(20^\circ\) more than its complement. Find the angle.</div><input type="text" class="as-text-input" id="g5q4"><div id="g5q4_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">45. Angle is \(30^\circ\) less than its supplement. Find the angle.</div><input type="text" class="as-text-input" id="g5q5"><div id="g5q5_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">46. Two angles \(x\) and \(x-20\) are complementary. Find \(x\).</div><input type="text" class="as-text-input" id="g5q6"><div id="g5q6_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">47. Two angles \(y\) and \(y+40\) are supplementary. Find \(y\).</div><input type="text" class="as-text-input" id="g5q7"><div id="g5q7_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">48. If an angle is half of its supplement, the angle is...</div><input type="text" class="as-text-input" id="g5q8"><div id="g5q8_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">49. If an angle is twice its complement, the angle is...</div><input type="text" class="as-text-input" id="g5q9"><div id="g5q9_fb" class="as-feedback"></div></div>
+                    <div class="as-q-row"><div class="as-q-text">50. Find the angle which is equal to its supplement.</div><input type="text" class="as-text-input" id="g5q10"><div id="g5q10_fb" class="as-feedback"></div></div>
+                    
+                    <button class="check-btn" onclick="checkGroup(5)"><i class="fas fa-check"></i> Check Group 5</button>
+                    <div id="score-g5" class="score-display"></div>
+                    <button class="print-btn" onclick="generatePDF(5)"><i class="fas fa-print"></i> Print Group 5 to PDF</button>
                 </div>
             </div>
 
             <!-- SECTION 9: FEEDBACK -->
             <div id="section-9" class="section-page">
-                <div class="section-header">
-                    <h2 class="section-title"><i class="fas fa-comments"></i> Class Feedback</h2>
-                </div>
-                
-                <div class="theory-box" style="text-align: center;">
-                    <h3>How was your learning experience today?</h3>
-                    <span class="id-lang">Bagaimana pengalaman belajarmu hari ini?</span>
-                </div>
-
+                <div class="section-header"><h2 class="section-title"><i class="fas fa-comments"></i> Class Feedback</h2></div>
+                <div class="theory-box" style="text-align: center;"><h3>How was your experience today?</h3></div>
                 <div class="star-rating" id="starRating">
-                    <i class="far fa-star" data-rating="1"></i>
-                    <i class="far fa-star" data-rating="2"></i>
-                    <i class="far fa-star" data-rating="3"></i>
-                    <i class="far fa-star" data-rating="4"></i>
-                    <i class="far fa-star" data-rating="5"></i>
+                    <i class="far fa-star" data-rating="1"></i><i class="far fa-star" data-rating="2"></i><i class="far fa-star" data-rating="3"></i><i class="far fa-star" data-rating="4"></i><i class="far fa-star" data-rating="5"></i>
                 </div>
-                <p style="text-align: center; margin-top: 10px;" id="ratingText">Click a star to rate!</p>
-
-                <div class="reflection-box" style="margin-top: 30px;">
-                    <h3><i class="fas fa-pencil-alt"></i> Any suggestions for the tutor?</h3>
-                    <span class="id-lang">Ada saran untuk tutormu?</span>
-                    <textarea class="reflection-input" rows="4" placeholder="Write your feedback here..."></textarea>
-                    <button class="check-btn" style="margin-top: 15px;" onclick="alert('Thank you for your feedback! Terima kasih atas feedback-mu!')"><i class="fas fa-paper-plane"></i> Send Feedback</button>
-                </div>
-
-                <div style="text-align: center; margin-top: 30px; padding: 20px; background: var(--success); border-radius: 15px;">
-                    <h2><i class="fas fa-check-circle"></i> Lesson Complete!</h2>
-                    <p style="font-weight: 600;">See you next time! Jangan lupa mengerjakan PR di <a href="https://learn.algonova.id/login" target="_blank" style="color: var(--primary); text-decoration: underline;">learn.algonova.id</a></p>
-                </div>
+                <p style="text-align: center; margin-top: 10px;" id="ratingText">Click a star!</p>
+                <div class="reflection-box"><h3><i class="fas fa-pencil-alt"></i> Suggestions?</h3><textarea class="reflection-input" rows="4" placeholder="Write here..."></textarea><button class="check-btn" style="margin-top: 15px;" onclick="alert('Thank you for your feedback!')"><i class="fas fa-paper-plane"></i> Send</button></div>
+                <div style="text-align: center; margin-top: 30px; padding: 20px; background: var(--success); border-radius: 15px;"><h2><i class="fas fa-check-circle"></i> Lesson Complete!</h2><p style="font-weight: 600;">See you next time at <a href="https://learn.algonova.id/login" target="_blank">learn.algonova.id</a></p></div>
             </div>
 
             <div class="pagination-nav">
@@ -334,9 +418,9 @@
             </div>
         </div>
 
-        <!-- RIGHT: CANVAS PANEL -->
+        <!-- CANVAS PANEL -->
         <div class="canvas-panel">
-            <h3><i class="fas fa-paint-brush"></i> Doodle Pad <br><span style="font-size:0.8em; font-weight:400; color:#888;">(Corat-coret)</span></h3>
+            <h3><i class="fas fa-paint-brush"></i> Doodle Pad</h3>
             <canvas id="doodleCanvas"></canvas>
             <div class="canvas-tools">
                 <button class="color-btn" style="background-color: #FF0000;" onclick="setColor('#FF0000')"></button>
@@ -350,162 +434,139 @@
     </div>
 
     <script>
-        // --- Pagination Logic ---
+        // --- PAGINATION ---
         let currentPage = 1;
         const totalPages = 9; 
+        function showPage(p) { document.querySelectorAll('.section-page').forEach(el => el.classList.remove('active')); document.getElementById('section-' + p).classList.add('active'); document.getElementById('prevBtn').disabled = (p === 1); document.getElementById('nextBtn').disabled = (p === totalPages); }
+        function changePage(d) { currentPage += d; if(currentPage < 1) currentPage = 1; if(currentPage > totalPages) currentPage = totalPages; showPage(currentPage); if(window.MathJax) MathJax.typesetPromise(); }
 
-        function showPage(pageNum) {
-            document.querySelectorAll('.section-page').forEach(el => el.classList.remove('active'));
-            document.getElementById('section-' + pageNum).classList.add('active');
-            document.getElementById('prevBtn').disabled = (pageNum === 1);
-            document.getElementById('nextBtn').disabled = (pageNum === totalPages);
+        // --- SECTION 1 LOGIC ---
+        function checkWarmUp() {
+            const a1 = document.getElementById('q1').value.trim(); document.getElementById('q1Feedback').innerHTML = a1 === '-7' ? '<span class="correct"><i class="fas fa-check-circle"></i> Correct!</span>' : '<span class="incorrect">Hint: No variable.</span>';
+            const a2 = document.getElementById('q2').value.trim().toLowerCase().replace(/\s/g, ''); document.getElementById('q2Feedback').innerHTML = (a2 === 'y,z' || a2 === 'z,y') ? '<span class="correct"><i class="fas fa-check-circle"></i> Correct!</span>' : '<span class="incorrect">Hint: Letters.</span>';
+            const a3 = document.getElementById('q3').value.replace(/\s/g, ''); document.getElementById('q3Feedback').innerHTML = /^(3[a-z]\+5|5\+3[a-z])$/.test(a3) ? '<span class="correct"><i class="fas fa-check-circle"></i> Correct!</span>' : '<span class="incorrect">Hint: 3n + 5.</span>';
+            const a4 = document.getElementById('q4').value.trim(); document.getElementById('q4Feedback').innerHTML = a4 === '8000' ? '<span class="correct"><i class="fas fa-check-circle"></i> Correct!</span>' : '<span class="incorrect">Hint: 4 * 2000.</span>';
         }
-        function changePage(direction) {
-            currentPage += direction;
-            if(currentPage < 1) currentPage = 1;
-            if(currentPage > totalPages) currentPage = totalPages;
-            showPage(currentPage);
-            if(window.MathJax) MathJax.typesetPromise();
-        }
+        function resetWarmUp() { document.querySelectorAll('#section-1 .quest-input').forEach(i => i.value = ''); document.querySelectorAll('#section-1 .feedback-text').forEach(f => f.innerHTML = ''); }
 
-        // --- Assessment Logic ---
-        let assessmentAnswers = {};
-        
-        function getRadioVal(name) { const el = document.querySelector(`input[name="${name}"]:checked`); return el ? el.value : ""; }
-        function setFb(id, isCorrect, correctAns) { 
-            const fb = document.getElementById(id); 
-            if(isCorrect) fb.innerHTML = '<span class="as-correct"><i class="fas fa-check"></i> Correct</span>'; 
-            else fb.innerHTML = `<span class="as-incorrect"><i class="fas fa-times"></i> Incorrect. Answer: ${correctAns}</span>`; 
-        }
+        // --- MINI QUESTS (S2, S3, S4) ---
+        function selectMCQ_S2(val, btn) { document.querySelectorAll('#mcq-s2 .mcq-btn').forEach(b=>b.classList.remove('selected')); btn.classList.add('selected'); document.getElementById('fb-s2').innerHTML = val === '60' ? '<span class="correct">Correct! 180 - 120 = 60</span>' : '<span class="incorrect">Try again!</span>'; }
+        function selectMCQ_S3(val, btn) { document.querySelectorAll('#mcq-s3 .mcq-btn').forEach(b=>b.classList.remove('selected')); btn.classList.add('selected'); document.getElementById('fb-s3').innerHTML = val === '90' ? '<span class="correct">Correct!</span>' : '<span class="incorrect">Try again!</span>'; }
+        function selectMCQ_S4(val, btn) { document.querySelectorAll('#mcq-s4 .mcq-btn').forEach(b=>b.classList.remove('selected')); btn.classList.add('selected'); document.getElementById('fb-s4').innerHTML = val === 'right' ? '<span class="correct">Correct! Supplementary = Addition (180).</span>' : '<span class="incorrect">Check the plus sign and total.</span>'; }
 
-        function checkAG1() {
-            const a1 = getRadioVal("ag1_q1"); assessmentAnswers.q1 = a1; setFb("ag1_q1_fb", a1 === "Complementary", "Complementary");
-            const a2 = document.getElementById("ag1_q2").value; assessmentAnswers.q2 = a2; setFb("ag1_q2_fb", a2 === "108", "108°");
-            const a3 = getRadioVal("ag1_q3"); assessmentAnswers.q3 = a3; setFb("ag1_q3_fb", a3 === "55", "55°");
+        // --- DRAG & DROP (SIMPLIFIED INLINE) ---
+        function allowDrop(e) { e.preventDefault(); }
+        function drag(e) { e.dataTransfer.setData("text", e.target.id); }
+        function drop(e) {
+            e.preventDefault();
+            var data = e.dataTransfer.getData("text");
+            e.target.appendChild(document.getElementById(data));
         }
-        function checkAG2() {
-            const a4 = document.getElementById("ag2_q4").value.trim(); assessmentAnswers.q4 = a4; setFb("ag2_q4_fb", a4 === "50", "50");
-            const a5 = document.getElementById("ag2_q5").value.trim(); assessmentAnswers.q5 = a5; setFb("ag2_q5_fb", a5 === "10", "10");
-            const checks = document.querySelectorAll('.ag2_q6'); let selected = []; checks.forEach(c => { if(c.checked) selected.push(c.value); });
-            assessmentAnswers.q6 = selected.join(", ");
-            const isQ6Correct = selected.includes("110_70") && selected.includes("90_90") && !selected.includes("45_45");
-            setFb("ag2_q6_fb", isQ6Correct, "110° & 70°, 90° & 90°");
+        function checkDragGame() {
+            const d1 = document.getElementById('drop1').querySelector('.draggable-item');
+            const d2 = document.getElementById('drop2').querySelector('.draggable-item');
+            const d3 = document.getElementById('drop3').querySelector('.draggable-item');
+            alert("Q1: " + (d1 ? d1.dataset.value : "Empty") + ", Q2: " + (d2 ? d2.dataset.value : "Empty") + ", Q3: " + (d3 ? d3.dataset.value : "Empty") + "\n\nCorrect Answers: Q1=180, Q2=90, Q3=30");
         }
-        function checkAG3() {
-            const a7 = document.getElementById("ag3_q7").value; assessmentAnswers.q7 = a7; setFb("ag3_q7_fb", a7 === "108", "108°");
-            const a8 = document.getElementById("ag3_q8").value.trim(); assessmentAnswers.q8 = a8; setFb("ag3_q8_fb", a8 === "80", "80°");
-            const a9 = document.getElementById("ag3_q9").value.trim(); assessmentAnswers.q9 = a9; setFb("ag3_q9_fb", a9 === "30", "30°");
-        }
-        function checkAG4() {
-            const a10 = document.getElementById("ag4_q10").value; assessmentAnswers.q10 = a10; setFb("ag4_q10_fb", a10 === "90", "90°");
-            const a11 = document.getElementById("ag4_q11").value; assessmentAnswers.q11 = a11; setFb("ag4_q11_fb", a11 === "180", "180°");
-            const a12 = document.getElementById("ag4_q12").value; assessmentAnswers.q12 = a12; setFb("ag4_q12_fb", a12 === "90", "90°");
-            const a13 = document.getElementById("ag4_q13").value; assessmentAnswers.q13 = a13; setFb("ag4_q13_fb", a13 === "180", "180°");
-        }
-        function checkAG5() {
-            const a14 = document.getElementById("ag5_q14").value.trim(); assessmentAnswers.q14 = a14; setFb("ag5_q14_fb", a14 === "135", "135°");
-            const a15 = document.getElementById("ag5_q15").value.trim(); assessmentAnswers.q15 = a15; setFb("ag5_q15_fb", a15 === "50", "50°");
+        function resetDragGame() {
+            const bank = document.getElementById('optionsBank');
+            document.querySelectorAll('.draggable-item').forEach(item => bank.appendChild(item));
         }
 
-        // --- Score & PDF Logic ---
-        const answerKey = { q1:"Complementary", q2:"108", q3:"55", q4:"50", q5:"10", q6:"110_70, 90_90", q7:"108", q8:"80", q9:"30", q10:"90", q11:"180", q12:"90", q13:"180", q14:"135", q15:"50" };
-        
-        function calculateTotalScore() {
+        // --- SECTION 6 LOGIC ---
+        function checkIndependent() {
+            const a1 = document.getElementById('ind-q1').value.trim(); document.getElementById('ind-fb1').innerHTML = a1 === '55' ? '<span class="correct">Correct!</span>' : '<span class="incorrect">180 - 125 = 55</span>';
+            const a2 = document.getElementById('ind-q2').value.trim(); document.getElementById('ind-fb2').innerHTML = (a2 === '28' || a2 === '28.33') ? '<span class="correct">Correct!</span>' : '<span class="incorrect">x+5+2x=90 -> 3x=85</span>';
+            const a3 = document.getElementById('ind-q3').value.trim(); document.getElementById('ind-fb3').innerHTML = a3 === '26' ? '<span class="correct">Boss Defeated!</span>' : '<span class="incorrect">2x+3x+50=180 -> 5x=130</span>';
+            const a4 = document.getElementById('ind-q4').value.trim(); document.getElementById('ind-fb4').innerHTML = a4 === '50' ? '<span class="correct">Correct!</span>' : '<span class="incorrect">90 - 40 = 50</span>';
+            const a5 = document.getElementById('ind-q5').value.trim(); document.getElementById('ind-fb5').innerHTML = a5 === '36' ? '<span class="correct">Correct!</span>' : '<span class="incorrect">x+4x=180 -> 5x=180</span>';
+        }
+        function resetIndependent() { document.querySelectorAll('#section-6 .quest-input').forEach(i => i.value = ''); document.querySelectorAll('#section-6 .feedback-text').forEach(f => f.innerHTML = ''); }
+
+        // --- ASSESSMENT TABS ---
+        function openTab(g) {
+            document.querySelectorAll('.assessment-group').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById('ag'+g).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        // --- ASSESSMENT KEYS ---
+        const keys = {
+            1: ["90", "180", "90", "180", "45", "70", "Complementary", "Supplementary", "Yes", "60"],
+            2: ["50", "10", "30", "45", "10", "25", "18", "30", "30", "10"],
+            3: ["108", "30", "36", "30", "16", "x+2x=180", "50", "50", "45", "90"],
+            4: ["True", "False", "True", "False", "False", "True", "True", "False", "True", "False"],
+            5: ["150", "135", "Complementary", "55", "75", "55", "70", "60", "60", "90"]
+        };
+
+        function checkGroup(g) {
             let score = 0;
-            // Check all answers against key
-            if(assessmentAnswers.q1 === answerKey.q1) score++;
-            if(assessmentAnswers.q2 === answerKey.q2) score++;
-            if(assessmentAnswers.q3 === answerKey.q3) score++;
-            if(assessmentAnswers.q4 === answerKey.q4) score++;
-            if(assessmentAnswers.q5 === answerKey.q5) score++;
-            if(assessmentAnswers.q6 === answerKey.q6) score++; // Simplified check
-            if(assessmentAnswers.q7 === answerKey.q7) score++;
-            if(assessmentAnswers.q8 === answerKey.q8) score++;
-            if(assessmentAnswers.q9 === answerKey.q9) score++;
-            if(assessmentAnswers.q10 === answerKey.q10) score++;
-            if(assessmentAnswers.q11 === answerKey.q11) score++;
-            if(assessmentAnswers.q12 === answerKey.q12) score++;
-            if(assessmentAnswers.q13 === answerKey.q13) score++;
-            if(assessmentAnswers.q14 === answerKey.q14) score++;
-            if(assessmentAnswers.q15 === answerKey.q15) score++;
+            const key = keys[g];
+            for(let i=1; i<=10; i++) {
+                const fbId = `g${g}q${i}_fb`;
+                let stuAns = "";
+                const inputEl = document.getElementById(`g${g}q${i}`);
+                if(inputEl) { stuAns = inputEl.value.trim(); } 
+                else { const radioEl = document.querySelector(`input[name="g${g}q${i}"]:checked`); if(radioEl) stuAns = radioEl.value; }
 
-            document.getElementById('scoreDisplay').style.display = 'block';
-            document.getElementById('finalScoreText').innerText = score + " / 15";
-            
-            let msg = "";
-            if(score >= 13) msg = "🌟 Outstanding! You're an Angle Master!";
-            else if(score >= 9) msg = "👍 Great Job! Keep practicing!";
-            else msg = "💪 Don't give up! Review the material and try again!";
-            document.getElementById('scoreMessage').innerText = msg;
+                const correctAns = key[i-1];
+                if(stuAns === correctAns) {
+                    document.getElementById(fbId).innerHTML = '<span class="as-correct">Correct</span>';
+                    score++;
+                } else {
+                    document.getElementById(fbId).innerHTML = `<span class="as-incorrect">Incorrect. Ans: ${correctAns}</span>`;
+                }
+            }
+            document.getElementById(`score-g${g}`).style.display = 'block';
+            document.getElementById(`score-g${g}`).innerHTML = `<i class="fas fa-star"></i> Score Group ${g}: ${score} / 10`;
         }
 
-        function generatePDF() {
+        // --- PDF GENERATION PER GROUP ---
+        function generatePDF(g) {
             const name = document.getElementById('studentName').value || "Student";
             const date = document.getElementById('assessmentDate').value || "N/A";
-            const score = document.getElementById('finalScoreText').innerText;
+            const scoreText = document.getElementById(`score-g${g}`).innerText || "Not checked yet";
+            const groupEl = document.getElementById(`ag${g}`);
 
-            // Create a hidden div for PDF formatting
             const pdfContent = document.createElement('div');
-            pdfContent.style.padding = '20px';
-            pdfContent.style.fontFamily = 'Quicksand, sans-serif';
+            pdfContent.style.padding = '20px'; pdfContent.style.fontFamily = 'Quicksand, sans-serif';
             
-            let html = `
-                <h1 style="color: #7EC8E3; text-align: center;">Math Tutoring Assessment Report</h1>
-                <hr>
-                <h3>Student Name: ${name}</h3>
-                <h3>Date: ${date}</h3>
-                <h3>Final Score: <span style="color: #2E7D32;">${score}</span></h3>
-                <hr>
-                <h3>Detailed Answers:</h3>
-                <table style="width:100%; border-collapse: collapse; margin-top:10px;" border="1">
-                    <tr style="background:#7EC8E3; color:white;"><th style="padding:8px;">No</th><th style="padding:8px;">Your Answer</th><th style="padding:8px;">Correct Answer</th></tr>
-            `;
+            let html = `<h1 style="color: #7EC8E3; text-align: center;">Math Assessment - Group ${g}</h1><hr>
+                <h3>Student: ${name}</h3><h3>Date: ${date}</h3><h3>Score: ${scoreText}</h3><hr><h3>Details:</h3>`;
+            
+            const rows = groupEl.querySelectorAll('.as-q-row');
+            const key = keys[g];
+            rows.forEach((row, index) => {
+                const qText = row.querySelector('.as-q-text').innerText;
+                let stuAns = "";
+                const inputEl = row.querySelector('input[type="text"], select');
+                if(inputEl) stuAns = inputEl.value;
+                else { const radioEl = row.querySelector('input[type="radio"]:checked'); if(radioEl) stuAns = radioEl.value; else stuAns = "Unanswered"; }
+                
+                const isCorrect = stuAns.trim() === key[index];
+                html += `<p style="margin-top:10px;"><strong>${index+1}.</strong> ${qText}<br>
+                         Your Answer: <span style="color:${isCorrect ? 'green' : 'red'}; font-weight:bold;">${stuAns}</span> 
+                         ${isCorrect ? '' : `| Correct Answer: <strong>${key[index]}</strong>`}</p>`;
+            });
 
-            for(let i=1; i<=15; i++) {
-                const stuAns = assessmentAnswers['q'+i] || "(Empty)";
-                const corAns = answerKey['q'+i];
-                const isCorrect = stuAns === corAns;
-                html += `
-                    <tr style="background: ${isCorrect ? '#C1E1C1' : '#FFD1DC'};">
-                        <td style="text-align:center; padding:5px;">${i}</td>
-                        <td style="text-align:center; padding:5px;">${stuAns}</td>
-                        <td style="text-align:center; padding:5px; font-weight:bold;">${corAns}</td>
-                    </tr>
-                `;
-            }
-
-            html += `</table>`;
             pdfContent.innerHTML = html;
-
             document.body.appendChild(pdfContent);
 
-            const opt = {
-                margin:       0.5,
-                filename:     'Math_Assessment_' + name + '.pdf',
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2 },
-                jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
-            };
-
-            html2pdf().set(opt).from(pdfContent).save().then(() => {
-                document.body.removeChild(pdfContent); // Clean up
-            });
+            html2pdf().set({ margin: 0.5, filename: `Math_Assessment_Group_${g}.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } })
+            .from(pdfContent).save().then(() => document.body.removeChild(pdfContent));
         }
 
-        // --- Feedback Stars ---
-        const stars = document.querySelectorAll('#starRating i');
-        stars.forEach(star => {
+        // --- STARS ---
+        document.querySelectorAll('#starRating i').forEach(star => {
             star.addEventListener('click', () => {
-                const rating = star.getAttribute('data-rating');
-                stars.forEach(s => {
-                    if(s.getAttribute('data-rating') <= rating) s.className = 'fas fa-star';
-                    else s.className = 'far fa-star';
-                });
-                document.getElementById('ratingText').innerText = `You rated ${rating} out of 5 stars!`;
+                const r = star.getAttribute('data-rating');
+                document.querySelectorAll('#starRating i').forEach(s => { if(s.getAttribute('data-rating') <= r) s.className = 'fas fa-star'; else s.className = 'far fa-star'; });
+                document.getElementById('ratingText').innerText = `You rated ${r} out of 5 stars!`;
             });
         });
 
-        // --- Doodle Canvas Logic ---
+        // --- CANVAS ---
         const canvas = document.getElementById('doodleCanvas'); const ctx = canvas.getContext('2d');
         let painting = false; let currentColor = '#000000'; let isEraser = false;
         function resizeCanvas() { const r = canvas.getBoundingClientRect(); canvas.width = r.width * 2; canvas.height = r.height * 2; ctx.scale(2, 2); ctx.lineCap = 'round'; ctx.lineWidth = 3; }
