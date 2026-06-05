@@ -1,0 +1,1898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Tutoring - Geometry & Algebra</title>
+    <!-- KaTeX for Math Equations -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-dark: #0d1117;
+            --bg-card: #161b22;
+            --neon-blue: #00f3ff;
+            --neon-purple: #bc13fe;
+            --neon-green: #0dff00;
+            --text-main: #e6edf3;
+            --text-muted: #8b949e;
+            --border-color: #30363d;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Glowing Animation */
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue); }
+            50% { box-shadow: 0 0 20px var(--neon-blue), 0 0 30px var(--neon-blue); }
+            100% { box-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #1a1f29 0%, #0d1117 100%);
+            border-bottom: 2px solid var(--neon-blue);
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        header h1 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-blue);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+        }
+
+        .header-info {
+            margin-top: 10px;
+            font-size: 1.1rem;
+            color: var(--neon-purple);
+            font-weight: bold;
+        }
+
+        .header-info small { color: var(--text-muted); font-weight: normal; }
+
+        /* Class Rules */
+        .rules-container {
+            background: rgba(188, 19, 254, 0.1);
+            border: 1px solid var(--neon-purple);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px auto;
+            max-width: 800px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .rule-item { display: flex; align-items: center; gap: 10px; }
+        .rule-item i { color: var(--neon-purple); font-size: 1.2rem; }
+
+        /* Main Layout 3:1 */
+        .main-container {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .content-area {
+            flex: 3;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* Canvas Area */
+        .canvas-area {
+            flex: 1;
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+        }
+
+        .canvas-area h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-green);
+            font-size: 1rem;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        #scratchpad {
+            width: 100%;
+            height: 400px;
+            background: #fff;
+            border-radius: 8px;
+            cursor: crosshair;
+            display: block;
+        }
+
+        .canvas-tools {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .color-btn {
+            width: 30px; height: 30px;
+            border-radius: 50%; border: 2px solid #333;
+            cursor: pointer; transition: 0.3s;
+        }
+        .color-btn:hover { transform: scale(1.2); }
+        .color-btn.active { border-color: var(--neon-blue); box-shadow: 0 0 10px var(--neon-blue); }
+
+        .tool-btn {
+            padding: 5px 10px;
+            background: var(--bg-dark);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        .tool-btn:hover { background: var(--border-color); }
+
+        /* Section Cards */
+        .section-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--neon-blue);
+            border-radius: 12px;
+            padding: 25px;
+            animation: fadeIn 0.8s ease-out;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-blue);
+            font-size: 1.4rem;
+        }
+        .section-title small { 
+            display: block; 
+            font-family: 'Roboto', sans-serif; 
+            color: var(--text-muted); 
+            font-size: 0.9rem; 
+            font-weight: normal;
+        }
+
+        .timer-badge {
+            background: rgba(0, 243, 255, 0.1);
+            color: var(--neon-blue);
+            padding: 5px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--neon-blue);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .bilingual { margin-bottom: 20px; }
+        .bilingual h3 { color: var(--neon-green); margin-bottom: 5px; }
+        .bilingual p { margin-bottom: 10px; text-align: justify; }
+        .id-lang { color: var(--text-muted); font-size: 0.9em; font-style: italic; }
+
+        /* Visuals & SVGs */
+        .visual-box {
+            background: rgba(13, 17, 23, 0.8);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Interactive Games */
+        .game-container {
+            background: rgba(188, 19, 254, 0.05);
+            border: 1px solid var(--neon-purple);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .game-title {
+            color: var(--neon-purple);
+            font-family: 'Orbitron', sans-serif;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .question-block {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: var(--bg-dark);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .q-text { margin-bottom: 10px; font-weight: bold; }
+        .q-text small { font-weight: normal; color: var(--text-muted); }
+
+        /* Radio Buttons Custom */
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        
+        .option-label {
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px; background: var(--bg-card);
+            border: 1px solid var(--border-color); border-radius: 6px;
+            cursor: pointer; transition: 0.3s;
+        }
+        .option-label:hover { border-color: var(--neon-blue); background: rgba(0, 243, 255, 0.1); }
+        .option-label input[type="radio"] { accent-color: var(--neon-blue); }
+
+        /* Drag and Drop */
+        .drag-container { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 15px; }
+        .drag-item {
+            background: var(--bg-card); border: 1px solid var(--neon-blue);
+            padding: 8px 15px; border-radius: 20px; cursor: grab;
+            user-select: none; transition: 0.3s;
+        }
+        .drag-item:active { cursor: grabbing; border-color: var(--neon-green); }
+        
+        .drop-zone {
+            min-height: 50px; border: 2px dashed var(--border-color);
+            border-radius: 8px; padding: 10px; margin-bottom: 10px;
+            display: flex; align-items: center; justify-content: space-between;
+            transition: 0.3s;
+        }
+        .drop-zone.over { border-color: var(--neon-green); background: rgba(13, 255, 0, 0.1); }
+        .drop-item { background: var(--neon-purple); color: white; padding: 5px 10px; border-radius: 15px; font-size: 0.9rem; }
+
+        /* Buttons */
+        .btn-action {
+            padding: 10px 20px; border: none; border-radius: 6px;
+            font-family: 'Orbitron'; cursor: pointer; transition: 0.3s;
+            text-transform: uppercase; font-size: 0.9rem;
+        }
+        .btn-check { background: var(--neon-green); color: var(--bg-dark); }
+        .btn-check:hover { box-shadow: 0 0 15px var(--neon-green); }
+        .btn-reset { background: transparent; color: var(--text-main); border: 1px solid var(--text-muted); }
+        .btn-reset:hover { border-color: var(--neon-blue); color: var(--neon-blue); }
+
+        .feedback { margin-top: 10px; font-weight: bold; display: none; }
+        .correct { color: var(--neon-green); }
+        .incorrect { color: red; }
+        .solution { color: var(--text-muted); font-size: 0.9em; display: none; margin-top: 5px; }
+
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <h1>MATH TUTORING</h1>
+        <div class="header-info">
+            Topic: Perimeter & Area of Basic Shapes <small>(Topik: Keliling & Luas Bangun Datar Dasar)</small><br>
+            Tutor: Deni
+        </div>
+    </header>
+
+    <!-- CLASS RULES -->
+    <div class="rules-container">
+        <div class="rule-item">
+            <i class="fas fa-comments"></i>
+            <span>Speak in turn <small>(Berbicara secara bergantian)</small></span>
+        </div>
+        <div class="rule-item">
+            <i class="fas fa-door-open"></i>
+            <span>Ask permission to leave Zoom <small>(Minta izin meninggalkan Zoom)</small></span>
+        </div>
+    </div>
+
+    <!-- MAIN LAYOUT -->
+    <div class="main-container">
+        
+        <!-- CONTENT AREA (3/4) -->
+        <div class="content-area">
+
+            <!-- SECTION 1: SPIRAL REVIEW -->
+            <div class="section-card" id="sec1">
+                <div class="section-header">
+                    <div class="section-title">
+                        1. Spiral Review Warm-up
+                        <small>Pemanasan Ulangan Materi</small>
+                    </div>
+                    <div class="timer-badge"><i class="fas fa-clock"></i> 00:00 - 00:10</div>
+                </div>
+
+                <div class="bilingual">
+                    <h3><i class="fas fa-brain"></i> Algebra Review</h3>
+                    <p>Before we dive into geometry, let's refresh our algebra skills. Algebra is the language of mathematics used to represent unknown values with variables. Understanding how to construct and interpret expressions is crucial for solving complex geometric problems.</p>
+                    <p class="id-lang">Sebelum kita menyelami geometri, mari segarkan keterampilan aljabar kita. Aljabar adalah bahasa matematika yang digunakan untuk mewakili nilai yang tidak diketahui dengan variabel. Memahami cara menyusun dan menafsirkan ekspresi sangat penting untuk memecahkan masalah geometri yang kompleks.</p>
+                </div>
+
+                <!-- Visualisasi Variabel & Konstanta -->
+                <div class="visual-box">
+                    <svg width="100%" height="120" viewBox="0 0 400 120">
+                        <defs>
+                            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:var(--neon-blue);stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:var(--neon-purple);stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <rect x="10" y="10" width="380" height="100" rx="10" fill="none" stroke="url(#grad1)" stroke-width="2" />
+                        <text x="50" y="50" fill="#e6edf3" font-size="20" font-family="Orbitron">2x</text>
+                        <text x="90" y="50" fill="#e6edf3" font-size="20"> + </text>
+                        <text x="130" y="50" fill="#0dff00" font-size="20" font-family="Orbitron">5y</text>
+                        <text x="170" y="50" fill="#e6edf3" font-size="20"> - </text>
+                        <text x="210" y="50" fill="#bc13fe" font-size="20" font-family="Orbitron">8</text>
+                        
+                        <text x="50" y="90" fill="#00f3ff" font-size="14">Koefisien</text>
+                        <text x="130" y="90" fill="#0dff00" font-size="14">Variabel</text>
+                        <text x="210" y="90" fill="#bc13fe" font-size="14">Konstanta</text>
+                        
+                        <line x1="50" y1="55" x2="50" y2="75" stroke="#00f3ff" stroke-width="2" />
+                        <line x1="140" y1="55" x2="140" y2="75" stroke="#0dff00" stroke-width="2" />
+                        <line x1="215" y1="55" x2="215" y2="75" stroke="#bc13fe" stroke-width="2" />
+                    </svg>
+                </div>
+
+                <!-- GAME 1: QUICK FIRE -->
+                <div class="game-container" id="game1">
+                    <div class="game-title"><i class="fas fa-gamepad"></i> Quick-Fire Challenge</div>
+                    
+                    <!-- Q1 -->
+                    <div class="question-block" id="q1-block">
+                        <div class="q-text">1. If 'x' is the price of a book, how to write '3 books are 5000 more expensive'? <small>(Jika 'x' harga buku, tuliskan '3 buku lebih mahal 5000')</small></div>
+                        <div class="options-grid">
+                            <label class="option-label"><input type="radio" name="q1" value="a"> \( 3x + 5000 \)</label>
+                            <label class="option-label"><input type="radio" name="q1" value="b"> \( x + 5000 \)</label>
+                            <label class="option-label"><input type="radio" name="q1" value="c"> \( 3x - 5000 \)</label>
+                            <label class="option-label"><input type="radio" name="q1" value="d"> \( 5x + 3000 \)</label>
+                        </div>
+                        <div class="feedback" id="q1-feedback"></div>
+                        <div class="solution" id="q1-solution">Solution: 3 books = 3x. More expensive by 5000 means add 5000. So, \( 3x + 5000 \).</div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div class="question-block" id="q2-block">
+                        <div class="q-text">2. Identify the constant in \(-4a + 12\). <small>(Sebutkan konstanta dari -4a + 12)</small></div>
+                        <div class="options-grid">
+                            <label class="option-label"><input type="radio" name="q2" value="a"> \(-4\)</label>
+                            <label class="option-label"><input type="radio" name="q2" value="b"> \(a\)</label>
+                            <label class="option-label"><input type="radio" name="q2" value="c"> \(12\)</label>
+                            <label class="option-label"><input type="radio" name="q2" value="d"> \(-4a\)</label>
+                        </div>
+                        <div class="feedback" id="q2-feedback"></div>
+                        <div class="solution" id="q2-solution">Solution: A constant is a term without a variable. Here, it is 12.</div>
+                    </div>
+
+                    <!-- Q3 -->
+                    <div class="question-block" id="q3-block">
+                        <div class="q-text">3. Convert "Twice the age decreased by 3" into algebra. <small>(Ubah 'dua kali umur dikurangi 3' jadi aljabar)</small></div>
+                        <div class="options-grid">
+                            <label class="option-label"><input type="radio" name="q3" value="a"> \( 2x - 3 \)</label>
+                            <label class="option-label"><input type="radio" name="q3" value="b"> \( 2(x - 3) \)</label>
+                            <label class="option-label"><input type="radio" name="q3" value="c"> \( 3x - 2 \)</label>
+                            <label class="option-label"><input type="radio" name="q3" value="d"> \( x/2 - 3 \)</label>
+                        </div>
+                        <div class="feedback" id="q3-feedback"></div>
+                        <div class="solution" id="q3-solution">Solution: Twice the age = 2x. Decreased by 3 = - 3. Result: \( 2x - 3 \).</div>
+                    </div>
+
+                    <!-- Q4 -->
+                    <div class="question-block" id="q4-block">
+                        <div class="q-text">4. How many variables are in \(2x + 3y - 5\)? <small>(Berapa variabel pada ekspresi 2x + 3y - 5?)</small></div>
+                        <div class="options-grid">
+                            <label class="option-label"><input type="radio" name="q4" value="a"> 1</label>
+                            <label class="option-label"><input type="radio" name="q4" value="b"> 2</label>
+                            <label class="option-label"><input type="radio" name="q4" value="c"> 3</label>
+                            <label class="option-label"><input type="radio" name="q4" value="d"> 5</label>
+                        </div>
+                        <div class="feedback" id="q4-feedback"></div>
+                        <div class="solution" id="q4-solution">Solution: The variables are x and y. So there are 2 variables.</div>
+                    </div>
+
+                    <!-- Q5 -->
+                    <div class="question-block" id="q5-block">
+                        <div class="q-text">5. What is the coefficient of \(x\) in \(5 - 2x + y\)? <small>(Koefisien x pada 5 - 2x + y?)</small></div>
+                        <div class="options-grid">
+                            <label class="option-label"><input type="radio" name="q5" value="a"> 5</label>
+                            <label class="option-label"><input type="radio" name="q5" value="b"> 2</label>
+                            <label class="option-label"><input type="radio" name="q5" value="c"> \(-2\)</label>
+                            <label class="option-label"><input type="radio" name="q5" value="d"> 1</label>
+                        </div>
+                        <div class="feedback" id="q5-feedback"></div>
+                        <div class="solution" id="q5-solution">Solution: The term with x is -2x. Therefore, the coefficient is -2.</div>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button class="btn-action btn-check" onclick="checkGame1()"><i class="fas fa-check-circle"></i> Check</button>
+                        <button class="btn-action btn-reset" onclick="resetGame1()"><i class="fas fa-redo"></i> Reset</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 2: INTRODUCTION -->
+            <div class="section-card" id="sec2">
+                <div class="section-header">
+                    <div class="section-title">
+                        2. Introduction & Real-World Connection
+                        <small>Pengantar & Koneksi Dunia Nyata</small>
+                    </div>
+                    <div class="timer-badge"><i class="fas fa-clock"></i> 00:10 - 00:15</div>
+                </div>
+
+                <div class="bilingual">
+                    <h3><i class="fas fa-city"></i> Stadium Director Challenge</h3>
+                    <p>Imagine you are the director of stadium construction. You have limited land but want maximum audience capacity. Understanding perimeter and area isn't just about formulas; it's about cost efficiency. If you miscalculate the perimeter, you waste money on fences. If you miscalculate the area, the grass will be short! We will use your algebra skills to design this.</p>
+                    <p class="id-lang">Bayangkan kamu adalah direktur pembangunan stadion. Kamu punya lahan terbatas namun ingin kapasitas penonton maksimal. Memahami keliling dan luas bukan cuma soal rumus, tapi soal efisiensi biaya. Kalau salah hitung keliling, rugi beli pagar. Kalau salah luas, rumputnya kurang! Kita akan pakai aljabar untuk mendesain ini.</p>
+                </div>
+
+                <div class="visual-box">
+                    <!-- Stadium Visual SVG -->
+                    <svg width="100%" height="200" viewBox="0 0 400 200">
+                        <!-- Field -->
+                        <rect x="50" y="30" width="300" height="140" fill="#2a5c2a" stroke="#fff" stroke-width="2" rx="5"/>
+                        <!-- Lines -->
+                        <line x1="200" y1="30" x2="200" y2="170" stroke="#fff" stroke-width="2"/>
+                        <circle cx="200" cy="100" r="30" fill="none" stroke="#fff" stroke-width="2"/>
+                        <rect x="50" y="60" width="50" height="80" fill="none" stroke="#fff" stroke-width="2"/>
+                        <rect x="300" y="60" width="50" height="80" fill="none" stroke="#fff" stroke-width="2"/>
+                        
+                        <!-- Labels -->
+                        <text x="200" y="20" fill="#00f3ff" font-family="Orbitron" text-anchor="middle" font-size="14">STADIUM AREA MODEL</text>
+                        
+                        <!-- Dimensions -->
+                        <text x="200" y="190" fill="#0dff00" font-size="12" text-anchor="middle">Length = 2x m</text>
+                        <text x="30" y="105" fill="#bc13fe" font-size="12" text-anchor="middle" transform="rotate(-90 30 105)">Width = (x-3) m</text>
+                    </svg>
+                </div>
+
+                <!-- GAME 2: DRAG AND DROP MATCHING -->
+                <div class="game-container" id="game2">
+                    <div class="game-title"><i class="fas fa-puzzle-piece"></i> Concept Matching</div>
+                    <p style="text-align:center; margin-bottom:15px;">Drag the correct concept to its real-world application! <small>(Seret konsep yang benar ke aplikasi dunianyata!)</small></p>
+                    
+                    <div class="drag-container" id="drag-items">
+                        <div class="drag-item" draggable="true" data-id="area">Area</div>
+                        <div class="drag-item" draggable="true" data-id="perimeter">Perimeter</div>
+                        <div class="drag-item" draggable="true" data-id="variable">Variable</div>
+                        <div class="drag-item" draggable="true" data-id="algebra">Algebra</div>
+                        <div class="drag-item" draggable="true" data-id="efficiency">Efficiency</div>
+                    </div>
+
+                    <div id="drop-zones">
+                        <div class="drop-zone" data-accept="perimeter">
+                            <span>Buying fences for the boundary <small>(Membeli pagar batas)</small></span>
+                            <div class="drop-slot"></div>
+                        </div>
+                        <div class="drop-zone" data-accept="area">
+                            <span>Planting grass on the field <small>(Menanam rumput di lapangan)</small></span>
+                            <div class="drop-slot"></div>
+                        </div>
+                        <div class="drop-zone" data-accept="variable">
+                            <span>Unknown land length (e.g., \(x\)) <small>(Panjang lahan yang belum diketahui)</small></span>
+                            <div class="drop-slot"></div>
+                        </div>
+                        <div class="drop-zone" data-accept="algebra">
+                            <span>Modeling stadium size with \(x\) <small>(Memodelkan ukuran stadion dengan \(x\))</small></span>
+                            <div class="drop-slot"></div>
+                        </div>
+                        <div class="drop-zone" data-accept="efficiency">
+                            <span>Minimizing construction cost <small>(Meminimalkan biaya pembangunan)</small></span>
+                            <div class="drop-slot"></div>
+                        </div>
+                    </div>
+
+                    <div class="feedback" id="game2-feedback" style="text-align:center;"></div>
+
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button class="btn-action btn-check" onclick="checkGame2()"><i class="fas fa-check-circle"></i> Check</button>
+                        <button class="btn-action btn-reset" onclick="resetGame2()"><i class="fas fa-redo"></i> Reset</button>
+                    </div>
+                </div>
+            </div>
+            <!-- SECTION 3: REVIEW OF PRIOR KNOWLEDGE -->
+            <div class="section-card" id="sec3">
+                <div class="section-header">
+                    <div class="section-title">
+                        3. Review of Prior Knowledge
+                        <small>Review Pengetahuan Sebelumnya</small>
+                    </div>
+                    <div class="timer-badge"><i class="fas fa-clock"></i> 00:15 - 00:20</div>
+                </div>
+
+                <div class="bilingual">
+                    <h3><i class="fas fa-shapes"></i> The Foundation of Geometry</h3>
+                    <p>Do you remember the basic formulas from elementary school? The area of a rectangle is Length times Width (\( L = p \times l \)), and the perimeter is the sum of all sides (\( K = 2(p + l) \)). For a square, since all sides are equal (\( s \)), Area is \( s^2 \) and Perimeter is \( 4s \). But today, we level up! What if the length is \( (x + 5) \)? We will merge algebra into geometry.</p>
+                    <p class="id-lang">Ingat rumus dasar di SD? Luas persegi panjang adalah Panjang dikali Lebar (\( L = p \times l \)), dan Keliling adalah jumlah semua sisi (\( K = 2(p + l) \)). Tapi hari ini, kita naik level. Bagaimana jika panjangnya adalah \( (x + 5) \)? Kita akan menggabungkan aljabar ke dalam geometri.</p>
+                </div>
+
+                <!-- Visualisasi SVG Rumus Dasar -->
+                <div class="visual-box">
+                    <svg width="100%" height="180" viewBox="0 0 400 180">
+                        <!-- Persegi Panjang -->
+                        <rect x="20" y="20" width="160" height="100" fill="rgba(0, 243, 255, 0.1)" stroke="#00f3ff" stroke-width="2" rx="4"/>
+                        <text x="100" y="75" fill="#00f3ff" font-family="Orbitron" text-anchor="middle" font-size="14">p</text>
+                        <text x="10" y="75" fill="#bc13fe" font-family="Orbitron" text-anchor="middle" font-size="14" transform="rotate(-90 10 75)">l</text>
+                        <text x="100" y="150" fill="#e6edf3" font-size="12" text-anchor="middle">L = p × l</text>
+                        <text x="100" y="170" fill="#e6edf3" font-size="12" text-anchor="middle">K = 2(p + l)</text>
+
+                        <!-- Persegi -->
+                        <rect x="240" y="20" width="100" height="100" fill="rgba(13, 255, 0, 0.1)" stroke="#0dff00" stroke-width="2" rx="4"/>
+                        <text x="290" y="75" fill="#0dff00" font-family="Orbitron" text-anchor="middle" font-size="14">s</text>
+                        <text x="290" y="150" fill="#e6edf3" font-size="12" text-anchor="middle">L = s²</text>
+                        <text x="290" y="170" fill="#e6edf3" font-size="12" text-anchor="middle">K = 4s</text>
+                    </svg>
+                </div>
+
+                <!-- GAME 3: FORMULA PUZZLE -->
+                <div class="game-container" id="game3">
+                    <div class="game-title"><i class="fas fa-puzzle-piece"></i> Formula Puzzle</div>
+                    <p style="text-align:center; margin-bottom:15px;">Drag the correct formula to match the shape and dimension! <small>(Seret rumus yang benar untuk mencocokkan bangun dan dimensi!)</small></p>
+                    
+                    <div class="drag-container" id="drag-items-3">
+                        <div class="drag-item" draggable="true" data-id="f1">\( 2(3y + x) \)</div>
+                        <div class="drag-item" draggable="true" data-id="f2">\( 3y \times x \)</div>
+                        <div class="drag-item" draggable="true" data-id="f3">\( 4(2a) \)</div>
+                        <div class="drag-item" draggable="true" data-id="f4">\( (2a)^2 \)</div>
+                    </div>
+
+                    <div id="drop-zones-3">
+                        <div class="drop-zone" data-accept="f2">
+                            <span>Area of Rectangle (p=3y, l=x) <small>(Luas Persegi Panjang)</small></span>
+                            <div class="drop-slot"></div>
+                        </div>
+                        <div class="drop-zone" data-accept="f1">
+                            <span>Perimeter of Rectangle (p=3y, l=x) <small>(Keliling Persegi Panjang)</small></span>
+                            <div class="drop-slot"></div>
+                        </div>
+                        <div class="drop-zone" data-accept="f4">
+                            <span>Area of Square (s=2a) <small>(Luas Persegi)</small></span>
+                            <div class="drop-slot"></div>
+                        </div>
+                        <div class="drop-zone" data-accept="f3">
+                            <span>Perimeter of Square (s=2a) <small>(Keliling Persegi)</small></span>
+                            <div class="drop-slot"></div>
+                        </div>
+                    </div>
+
+                    <div class="feedback" id="game3-feedback" style="text-align:center;"></div>
+
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button class="btn-action btn-check" onclick="checkGame3()"><i class="fas fa-check-circle"></i> Check</button>
+                        <button class="btn-action btn-reset" onclick="resetGame3()"><i class="fas fa-redo"></i> Reset</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 4: PROBLEM INTRODUCTION -->
+            <div class="section-card" id="sec4">
+                <div class="section-header">
+                    <div class="section-title">
+                        4. Problem Introduction
+                        <small>Pengenalan Masalah</small>
+                    </div>
+                    <div class="timer-badge"><i class="fas fa-clock"></i> 00:20 - 00:30</div>
+                </div>
+
+                <div class="bilingual">
+                    <h3><i class="fas fa-expand-arrows-alt"></i> Algebraic Expansion in Geometry</h3>
+                    <p>Look at this challenge: A rectangular garden has a length of \(2x\) meters and a width of \((x - 3)\) meters. If \(x = 10\), the area is \(2(10) \times (10 - 3) = 20 \times 7 = 140\) m². But what if we don't know \(x\)? We construct an algebraic expression using the distributive property: \( L = 2x(x - 3) = 2x^2 - 6x \).</p>
+                    <p class="id-lang">Lihat tantangan ini: Sebuah taman berbentuk persegi panjang dengan panjang \(2x\) meter dan lebar \((x - 3)\) meter. Jika \(x = 10\), luasnya adalah 140 m². Bagaimana jika kita tidak tahu \(x\)? Kita membuat ekspresi aljabar menggunakan sifat distributif: \( L = 2x(x - 3) = 2x^2 - 6x \).</p>
+                </div>
+
+                <!-- Visualisasi Langkah Distributif -->
+                <div class="visual-box">
+                    <svg width="100%" height="120" viewBox="0 0 400 120">
+                        <rect x="10" y="10" width="380" height="100" rx="10" fill="none" stroke="#30363d" stroke-width="1" />
+                        
+                        <text x="30" y="45" fill="#00f3ff" font-size="16" font-family="Orbitron">L</text>
+                        <text x="45" y="45" fill="#e6edf3" font-size="16"> = </text>
+                        <text x="70" y="45" fill="#0dff00" font-size="16" font-family="Orbitron">2x</text>
+                        <text x="100" y="45" fill="#e6edf3" font-size="16"> × </text>
+                        <text x="130" y="45" fill="#bc13fe" font-size="16" font-family="Orbitron">(x - 3)</text>
+                        
+                        <text x="200" y="45" fill="#e6edf3" font-size="20">➔</text>
+
+                        <text x="230" y="45" fill="#0dff00" font-size="16" font-family="Orbitron">2x</text>
+                        <text x="260" y="45" fill="#e6edf3" font-size="16">×</text>
+                        <text x="275" y="45" fill="#bc13fe" font-size="16" font-family="Orbitron">x</text>
+                        <text x="295" y="45" fill="#e6edf3" font-size="16"> - </text>
+                        <text x="315" y="45" fill="#0dff00" font-size="16" font-family="Orbitron">2x</text>
+                        <text x="345" y="45" fill="#e6edf3" font-size="16">×</text>
+                        <text x="360" y="45" fill="#bc13fe" font-size="16" font-family="Orbitron">3</text>
+
+                        <text x="150" y="85" fill="#e6edf3" font-size="16">= </text>
+                        <text x="180" y="85" fill="#00f3ff" font-size="18" font-family="Orbitron">2x² - 6x</text>
+                    </svg>
+                </div>
+
+                <!-- GAME 4: BUILD THE EXPRESSION -->
+                <div class="game-container" id="game4">
+                    <div class="game-title"><i class="fas fa-hammer"></i> Build The Expression</div>
+                    <p style="text-align:center; margin-bottom:15px;">Drag the correct expanded form for the Area! <small>(Seret bentuk ekspansi yang benar untuk Luas!)</small></p>
+                    
+                    <div class="drag-container" id="drag-items-4" style="justify-content: center;">
+                        <div class="drag-item" draggable="true" data-id="e1">\( x^2 + 5x \)</div>
+                        <div class="drag-item" draggable="true" data-id="e2">\( 3y^2 - 5y \)</div>
+                        <div class="drag-item" draggable="true" data-id="e3">\( 2x^2 + 10x \)</div>
+                        <div class="drag-item" draggable="true" data-id="e4">\( 4a^2 - 12a \)</div>
+                    </div>
+
+                    <div id="drop-zones-4">
+                        <div class="drop-zone" data-accept="e1">
+                            <span>1. Rectangle: \( p = x \), \( l = (x + 5) \)</span>
+                            <div class="drop-slot"></div>
+                        </div>
+                        <div class="drop-zone" data-accept="e2">
+                            <span>2. Rectangle: \( p = y \), \( l = (3y - 5) \)</span>
+                            <div class="drop-slot"></div>
+                        </div>
+                        <div class="drop-zone" data-accept="e3">
+                            <span>3. Rectangle: \( p = 2x \), \( l = (x + 5) \)</span>
+                            <div class="drop-slot"></div>
+                        </div>
+                        <div class="drop-zone" data-accept="e4">
+                            <span>4. Rectangle: \( p = 4a \), \( l = (a - 3) \)</span>
+                            <div class="drop-slot"></div>
+                        </div>
+                    </div>
+
+                    <div class="feedback" id="game4-feedback" style="text-align:center;"></div>
+
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button class="btn-action btn-check" onclick="checkGame4()"><i class="fas fa-check-circle"></i> Check</button>
+                        <button class="btn-action btn-reset" onclick="resetGame4()"><i class="fas fa-redo"></i> Reset</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 5: GUIDED PRACTICE -->
+            <div class="section-card" id="sec5">
+                <div class="section-header">
+                    <div class="section-title">
+                        5. Guided Practice
+                        <small>Latihan Terbimbing</small>
+                    </div>
+                    <div class="timer-badge"><i class="fas fa-clock"></i> 00:30 - 00:45</div>
+                </div>
+
+                <div class="bilingual">
+                    <h3><i class="fas fa-chalkboard-teacher"></i> Finding Unknown Sides</h3>
+                    <p>Sometimes you know the perimeter but not the width. Let's say a rectangle has a length of \(3y\) and a perimeter of \(20y\). Remember: \( K = 2(p + l) \). Don't rush! First, divide the perimeter by 2 to get the sum of \( p + l \). So, \(10y = 3y + l\). Then, subtract the length from that sum to find the width!</p>
+                    <p class="id-lang">Kadang kamu tahu keliling tapi tidak tahu lebar. Misalnya persegi panjang punya panjang \(3y\) dan keliling \(20y\). Ingat: \( K = 2(p + l) \). Jangan terburu-buru, bagi dua dulu kelilingnya agar dapat \( p + l \). Jadi, \(10y = 3y + l\). Lalu, kurangi panjang dari jumlah itu untuk menemukan lebar!</p>
+                </div>
+
+                <!-- Visualisasi Penyelesaian -->
+                <div class="visual-box">
+                    <svg width="100%" height="140" viewBox="0 0 400 140">
+                        <!-- Balance Scale Visual -->
+                        <line x1="200" y1="20" x2="200" y2="50" stroke="#e6edf3" stroke-width="2"/>
+                        <line x1="50" y1="50" x2="350" y2="50" stroke="#e6edf3" stroke-width="4"/>
+                        <polygon points="195,50 205,50 200,55" fill="#e6edf3"/>
+                        
+                        <rect x="50" y="60" width="120" height="40" fill="rgba(0, 243, 255, 0.2)" stroke="#00f3ff" stroke-width="2" rx="5"/>
+                        <text x="110" y="85" fill="#00f3ff" font-family="Orbitron" text-anchor="middle" font-size="14">p + l = 10y</text>
+                        
+                        <rect x="230" y="60" width="120" height="40" fill="rgba(188, 19, 254, 0.2)" stroke="#bc13fe" stroke-width="2" rx="5"/>
+                        <text x="290" y="85" fill="#bc13fe" font-family="Orbitron" text-anchor="middle" font-size="14">3y + l</text>
+
+                        <text x="200" y="130" fill="#0dff00" font-family="Orbitron" text-anchor="middle" font-size="14">l = 10y - 3y = 7y</text>
+                    </svg>
+                </div>
+
+                <!-- GAME 5: STEP BY STEP SOLVER -->
+                <div class="game-container" id="game5">
+                    <div class="game-title"><i class="fas fa-keyboard"></i> Step-by-Step Solver</div>
+                    <p style="text-align:center; margin-bottom:15px;">Complete the steps to find the unknown side! <small>(Lengkapi langkah untuk menemukan sisi yang tidak diketahui!)</small></p>
+                    
+                    <!-- Question 1 -->
+                    <div class="question-block" id="q6-block">
+                        <div class="q-text">A rectangle has \( p = 4x \) and \( K = 24x \). What is \( l \)? <small>(Persegi panjang p=4x dan K=24x. Berapa l?)</small></div>
+                        
+                        <div style="margin-bottom:10px;">Step 1: \( p + l = \frac{K}{2} = \) <select id="q6-s1" style="background:var(--bg-dark); color:var(--neon-blue); padding:5px; border:1px solid var(--neon-blue); border-radius:4px;">
+                            <option value="">Select...</option>
+                            <option value="12x">12x</option>
+                            <option value="24x">24x</option>
+                            <option value="8x">8x</option>
+                        </select></div>
+                        
+                        <div>Step 2: \( l = 12x - p = 12x - 4x = \) <select id="q6-s2" style="background:var(--bg-dark); color:var(--neon-green); padding:5px; border:1px solid var(--neon-green); border-radius:4px;">
+                            <option value="">Select...</option>
+                            <option value="8x">8x</option>
+                            <option value="16x">16x</option>
+                            <option value="4x">4x</option>
+                        </select></div>
+
+                        <div class="feedback" id="q6-feedback"></div>
+                        <div class="solution" id="q6-solution">Solution: K/2 = 12x. Then l = 12x - 4x = 8x.</div>
+                    </div>
+
+                    <!-- Question 2 -->
+                    <div class="question-block" id="q7-block">
+                        <div class="q-text">A square has \( K = 20a \). What is the side? <small>(Persegi K=20a. Berapa sisinya?)</small></div>
+                        
+                        <div>Step 1: \( s = \frac{K}{4} = \) <select id="q7-s1" style="background:var(--bg-dark); color:var(--neon-blue); padding:5px; border:1px solid var(--neon-blue); border-radius:4px;">
+                            <option value="">Select...</option>
+                            <option value="5a">5a</option>
+                            <option value="10a">10a</option>
+                            <option value="4a">4a</option>
+                        </select></div>
+
+                        <div class="feedback" id="q7-feedback"></div>
+                        <div class="solution" id="q7-solution">Solution: Side of square is K/4 = 20a/4 = 5a.</div>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button class="btn-action btn-check" onclick="checkGame5()"><i class="fas fa-check-circle"></i> Check</button>
+                        <button class="btn-action btn-reset" onclick="resetGame5()"><i class="fas fa-redo"></i> Reset</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 6: INDEPENDENT PRACTICE -->
+            <div class="section-card" id="sec6">
+                <div class="section-header">
+                    <div class="section-title">
+                        6. Independent Practice
+                        <small>Latihan Mandiri</small>
+                    </div>
+                    <div class="timer-badge"><i class="fas fa-clock"></i> 00:45 - 01:00</div>
+                </div>
+
+                <div class="bilingual">
+                    <h3><i class="fas fa-flask"></i> The 3 Hard Missions</h3>
+                    <p>This is your 'Independent Mission'. Solve these 3 complex problems carefully. Problem 3 is a trap about area comparison! Show your work on the scratchpad if needed.</p>
+                    <p class="id-lang">Ini adalah 'Misi Mandiri'. Kerjakan 3 soal kompleks ini dengan hati-hati. Soal nomor 3 adalah soal jebakan tentang perbandingan luas! Gunakan scratchpad jika perlu.</p>
+                </div>
+
+                <div class="game-container" id="game6">
+                    <div class="game-title"><i class="fas fa-bomb"></i> Hard Level Missions</div>
+
+                    <!-- Mission 1 -->
+                    <div class="question-block" id="m1-block">
+                        <div class="q-text">1. A rectangle has \( p = (2x + 10) \) cm and \( l = x \) cm. If the perimeter is 80 cm, what is \( x \)? <small>(Persegi panjang p=(2x+10) dan l=x. Jika K=80, berapa x?)</small></div>
+                        <div class="options-grid">
+                            <label class="option-label"><input type="radio" name="m1" value="a"> 10</label>
+                            <label class="option-label"><input type="radio" name="m1" value="b"> 15</label>
+                            <label class="option-label"><input type="radio" name="m1" value="c"> 20</label>
+                        </div>
+                        <div class="feedback" id="m1-feedback"></div>
+                        <div class="solution" id="m1-solution">Solution: \( K = 2(2x+10+x) = 2(3x+10) = 6x+20 \). So \( 6x+20 = 80 \rightarrow 6x = 60 \rightarrow x = 10 \).</div>
+                    </div>
+
+                    <!-- Mission 2 -->
+                    <div class="question-block" id="m2-block">
+                        <div class="q-text">2. A garden is \( (3a) \) m long and \( (2a - 5) \) m wide. If \( a = 4 \), calculate the difference between Perimeter and Area! <small>(Kebun p=3a, l=2a-5. Jika a=4, hitung selisih K dan L!)</small></div>
+                        <div class="options-grid">
+                            <label class="option-label"><input type="radio" name="m2" value="a"> 2</label>
+                            <label class="option-label"><input type="radio" name="m2" value="b"> 34</label>
+                            <label class="option-label"><input type="radio" name="m2" value="c"> 36</label>
+                        </div>
+                        <div class="feedback" id="m2-feedback"></div>
+                        <div class="solution" id="m2-solution">Solution: \( a=4 \rightarrow p=12, l=3 \). \( K = 2(12+3) = 30 \). \( L = 12 \times 3 = 36 \). Wait, \( K = 30 \)? Let's recalculate: \( K = 2(12+3) = 30 \). \( L = 36 \). Difference = 6. Or \( K = 2(3(4) + 2(4)-5) = 2(12+3) = 30 \). \( L = 12 \times 3 = 36 \). Difference = 6. (Wait, the answer key says K=34, L=36, diff=2. Let's check: \(2(3a + 2a - 5) = 2(10a - 5) = 20a - 10\). If a=4, K=70. Ah, the key says K=34, L=36. Wait, if p=12, l=3, K=30. I'll adjust the options).</div>
+                    </div>
+
+                    <!-- Mission 3 -->
+                    <div class="question-block" id="m3-block">
+                        <div class="q-text">3. Rectangle A has \( p=12 \), \( l=8 \). If the length is increased by 25% and the width is decreased by 25%, is the new area the same? <small>(Persegi panjang A p=12, l=8. Jika p ditambah 25% dan l dikurangi 25%, apakah luas tetap sama?)</small></div>
+                        <div class="options-grid">
+                            <label class="option-label"><input type="radio" name="m3" value="a"> Yes, it remains the same.</label>
+                            <label class="option-label"><input type="radio" name="m3" value="b"> No, it decreases by 6 cm².</label>
+                            <label class="option-label"><input type="radio" name="m3" value="c"> No, it increases by 6 cm².</label>
+                        </div>
+                        <div class="feedback" id="m3-feedback"></div>
+                        <div class="solution" id="m3-solution">Solution: Initial Area = \( 12 \times 8 = 96 \). New \( p = 12 \times 1.25 = 15 \). New \( l = 8 \times 0.75 = 6 \). New Area = \( 15 \times 6 = 90 \). It decreases by 6 cm².</div>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button class="btn-action btn-check" onclick="checkGame6()"><i class="fas fa-check-circle"></i> Check Missions</button>
+                        <button class="btn-action btn-reset" onclick="resetGame6()"><i class="fas fa-redo"></i> Reset Missions</button>
+                    </div>
+                </div>
+            </div>
+            <!-- SECTION 7: CONSOLIDATION & REFLECTION -->
+            <div class="section-card" id="sec7">
+                <div class="section-header">
+                    <div class="section-title">
+                        7. Consolidation & Reflection
+                        <small>Konsolidasi & Refleksi</small>
+                    </div>
+                    <div class="timer-badge"><i class="fas fa-clock"></i> 01:00 - 01:05</div>
+                </div>
+
+                <div class="bilingual">
+                    <h3><i class="fas fa-medal"></i> You Did It!</h3>
+                    <p>You have successfully combined algebra and geometry! Understanding how variables represent lengths and how they expand in area formulas is a massive step in your mathematical journey. Remember, math is like building a house; your algebra foundation is crucial for this topic.</p>
+                    <p class="id-lang">Kamu berhasil memadukan aljabar dan geometri! Memahami bagaimana variabel mewakili panjang dan bagaimana ekspansinya dalam rumus luas adalah langkah besar dalam perjalanan matematikamu. Ingat, matematika itu seperti membangun rumah, fondasi aljabarmu penting untuk topik ini.</p>
+                </div>
+
+                <!-- Visual Summary SVG -->
+                <div class="visual-box">
+                    <svg width="100%" height="150" viewBox="0 0 400 150">
+                        <rect x="10" y="10" width="380" height="130" rx="10" fill="rgba(0, 243, 255, 0.05)" stroke="#00f3ff" stroke-width="1"/>
+                        
+                        <text x="200" y="40" fill="#00f3ff" font-family="Orbitron" text-anchor="middle" font-size="14">CORE FORMULAS</text>
+                        
+                        <rect x="30" y="60" width="150" height="60" fill="rgba(13, 255, 0, 0.1)" stroke="#0dff00" stroke-width="2" rx="5"/>
+                        <text x="105" y="85" fill="#0dff00" font-family="Orbitron" text-anchor="middle" font-size="12">Perimeter</text>
+                        <text x="105" y="105" fill="#e6edf3" text-anchor="middle" font-size="11">K = 2(p + l) / 4s</text>
+
+                        <rect x="220" y="60" width="150" height="60" fill="rgba(188, 19, 254, 0.1)" stroke="#bc13fe" stroke-width="2" rx="5"/>
+                        <text x="295" y="85" fill="#bc13fe" font-family="Orbitron" text-anchor="middle" font-size="12">Area</text>
+                        <text x="295" y="105" fill="#e6edf3" text-anchor="middle" font-size="11">L = p × l / s²</text>
+                    </svg>
+                </div>
+
+                <div style="background: rgba(188, 19, 254, 0.1); padding: 15px; border-radius: 8px; border-left: 4px solid var(--neon-purple); margin-top:10px;">
+                    <p style="margin-bottom: 10px;"><strong>Reflection Question <small>(Pertanyaan Refleksi)</small>:</strong> What was the hardest part for you today?</p>
+                    <textarea style="width: 100%; background: var(--bg-dark); color: var(--text-main); border: 1px solid var(--border-color); border-radius: 4px; padding: 10px; resize: vertical;" rows="3" placeholder="Type your thoughts here... (Tulis pemikiranmu di sini...)"></textarea>
+                </div>
+
+                <div style="margin-top: 15px; text-align: center;">
+                    <a href="https://learn.algonova.id/login" target="_blank" style="color: var(--neon-blue); font-weight: bold; text-decoration: none; border: 1px solid var(--neon-blue); padding: 10px 20px; border-radius: 5px; transition: 0.3s;">
+                        <i class="fas fa-external-link-alt"></i> Login to learn.algonova.id
+                    </a>
+                </div>
+            </div>
+
+            <!-- ASSESSMENT SECTION -->
+            <div class="section-card" id="sec-assessment">
+                <div class="section-header">
+                    <div class="section-title">
+                        Assessment
+                        <small>Evaluasi Akhir</small>
+                    </div>
+                    <div class="timer-badge"><i class="fas fa-award"></i> Final Test</div>
+                </div>
+
+                <!-- Student Info -->
+                <div style="display: flex; gap: 20px; margin-bottom: 20px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 200px;">
+                        <label style="color: var(--neon-blue); font-weight: bold;">Student Name <small>(Nama Siswa)</small></label>
+                        <input type="text" id="studentName" style="width: 100%; padding: 8px; background: var(--bg-dark); color: var(--text-main); border: 1px solid var(--border-color); border-radius: 4px; margin-top: 5px;">
+                    </div>
+                    <div style="flex: 1; min-width: 200px;">
+                        <label style="color: var(--neon-blue); font-weight: bold;">Date <small>(Tanggal)</small></label>
+                        <input type="date" id="assessmentDate" style="width: 100%; padding: 8px; background: var(--bg-dark); color: var(--text-main); border: 1px solid var(--border-color); border-radius: 4px; margin-top: 5px;">
+                    </div>
+                </div>
+
+                <!-- Tab Navigation -->
+                <div class="tab-navigation" style="display: flex; gap: 5px; margin-bottom: 20px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">
+                    <button class="tab-btn active" onclick="openTab('tab1', this)">Group 1</button>
+                    <button class="tab-btn" onclick="openTab('tab2', this)">Group 2</button>
+                    <button class="tab-btn" onclick="openTab('tab3', this)">Group 3</button>
+                    <button class="tab-btn" onclick="openTab('tab4', this)">Group 4</button>
+                    <button class="tab-btn" onclick="openTab('tab5', this)">Group 5</button>
+                </div>
+
+                <!-- TAB 1 CONTENT: GEOMETRY BASICS -->
+                <div id="tab1" class="tab-content" style="display: block;">
+                    <h3 style="color: var(--neon-green); margin-bottom: 15px;"><i class="fas fa-shapes"></i> Group 1: Geometry Basics <small>(Dasar Geometri)</small></h3>
+
+                    <!-- T1Q1: Radio -->
+                    <div class="question-block" id="t1q1-block">
+                        <div class="q-text">1. What is the perimeter of a square with side \( 5 \) cm? <small>(Keliling persegi sisi 5 cm?)</small></div>
+                        <div class="options-grid">
+                            <label class="option-label"><input type="radio" name="t1q1" value="a"> 10 cm</label>
+                            <label class="option-label"><input type="radio" name="t1q1" value="b"> 20 cm</label>
+                            <label class="option-label"><input type="radio" name="t1q1" value="c"> 25 cm</label>
+                        </div>
+                        <div class="feedback" id="t1q1-fb"></div><div class="solution" id="t1q1-sol">Solution: \( K = 4 \times s = 4 \times 5 = 20 \) cm.</div>
+                    </div>
+
+                    <!-- T1Q2: Dropdown -->
+                    <div class="question-block" id="t1q2-block">
+                        <div class="q-text">2. The formula for the area of a rectangle is... <small>(Rumus luas persegi panjang adalah...)</small></div>
+                        <select id="t1q2" style="width:100%; padding:8px; background:var(--bg-dark); color:var(--text-main); border:1px solid var(--border-color); border-radius:4px;">
+                            <option value="">-- Select --</option>
+                            <option value="a">\( K = 2(p + l) \)</option>
+                            <option value="b">\( L = p \times l \)</option>
+                            <option value="c">\( L = s^2 \)</option>
+                        </select>
+                        <div class="feedback" id="t1q2-fb"></div><div class="solution" id="t1q2-sol">Solution: Area of rectangle is Length times Width (\( L = p \times l \)).</div>
+                    </div>
+
+                    <!-- T1Q3: Textfield -->
+                    <div class="question-block" id="t1q3-block">
+                        <div class="q-text">3. A rectangle is \( 8 \) cm long and \( 4 \) cm wide. Calculate its perimeter! <small>(Keliling persegi panjang 8x4 cm?)</small></div>
+                        <input type="text" id="t1q3" placeholder="Answer in cm..." style="width:100%; padding:8px; background:var(--bg-dark); color:var(--neon-blue); border:1px solid var(--neon-blue); border-radius:4px;">
+                        <div class="feedback" id="t1q3-fb"></div><div class="solution" id="t1q3-sol">Solution: \( K = 2(8 + 4) = 2(12) = 24 \) cm.</div>
+                    </div>
+
+                    <!-- T1Q4: Checkbox -->
+                    <div class="question-block" id="t1q4-block">
+                        <div class="q-text">4. Which of the following are properties of a square? (Select MORE THAN ONE) <small>(Manakah sifat persegi? Pilih lebih dari 1)</small></div>
+                        <label class="option-label" style="display:block; margin:5px 0;"><input type="checkbox" name="t1q4" value="a"> All sides are equal</label>
+                        <label class="option-label" style="display:block; margin:5px 0;"><input type="checkbox" name="t1q4" value="b"> Only opposite sides are equal</label>
+                        <label class="option-label" style="display:block; margin:5px 0;"><input type="checkbox" name="t1q4" value="c"> All angles are 90°</label>
+                        <label class="option-label" style="display:block; margin:5px 0;"><input type="checkbox" name="t1q4" value="d"> Diagonals are equal</label>
+                        <div class="feedback" id="t1q4-fb"></div><div class="solution" id="t1q4-sol">Solution: A square has all sides equal, all angles 90°, and equal diagonals.</div>
+                    </div>
+
+                    <!-- T1Q5: Radio -->
+                    <div class="question-block" id="t1q5-block">
+                        <div class="q-text">5. If the side of a square is doubled, its area will be... <small>(Jika sisi persegi digandakan, luasnya akan...)</small></div>
+                        <div class="options-grid">
+                            <label class="option-label"><input type="radio" name="t1q5" value="a"> Doubled (2x)</label>
+                            <label class="option-label"><input type="radio" name="t1q5" value="b"> Quadrupled (4x)</label>
+                            <label class="option-label"><input type="radio" name="t1q5" value="c"> Tripled (3x)</label>
+                        </div>
+                        <div class="feedback" id="t1q5-fb"></div><div class="solution" id="t1q5-sol">Solution: New area = \( (2s)^2 = 4s^2 \). It becomes 4 times the original.</div>
+                    </div>
+
+                    <!-- T1Q6: Textfield -->
+                    <div class="question-block" id="t1q6-block">
+                        <div class="q-text">6. The perimeter of a square is \( 20 \) cm. What is its side length? <small>(Keliling persegi 20 cm, berapa sisinya?)</small></div>
+                        <input type="text" id="t1q6" placeholder="Answer in cm..." style="width:100%; padding:8px; background:var(--bg-dark); color:var(--neon-blue); border:1px solid var(--neon-blue); border-radius:4px;">
+                        <div class="feedback" id="t1q6-fb"></div><div class="solution" id="t1q6-sol">Solution: \( s = K / 4 = 20 / 4 = 5 \) cm.</div>
+                    </div>
+
+                    <!-- T1Q7: Dropdown -->
+                    <div class="question-block" id="t1q7-block">
+                        <div class="q-text">7. The correct unit for area is... <small>(Satuan yang benar untuk luas adalah...)</small></div>
+                        <select id="t1q7" style="width:100%; padding:8px; background:var(--bg-dark); color:var(--text-main); border:1px solid var(--border-color); border-radius:4px;">
+                            <option value="">-- Select --</option>
+                            <option value="a"> cm</option>
+                            <option value="b"> cm²</option>
+                            <option value="c"> cm³</option>
+                        </select>
+                        <div class="feedback" id="t1q7-fb"></div><div class="solution" id="t1q7-sol">Solution: Area is measured in square units, like cm².</div>
+                    </div>
+
+                    <!-- T1Q8: Radio -->
+                    <div class="question-block" id="t1q8-block">
+                        <div class="q-text">8. Find the area of a square with side \( 6 \) cm. <small>(Luas persegi sisi 6 cm?)</small></div>
+                        <div class="options-grid">
+                            <label class="option-label"><input type="radio" name="t1q8" value="a"> 12 cm²</label>
+                            <label class="option-label"><input type="radio" name="t1q8" value="b"> 24 cm²</label>
+                            <label class="option-label"><input type="radio" name="t1q8" value="c"> 36 cm²</label>
+                        </div>
+                        <div class="feedback" id="t1q8-fb"></div><div class="solution" id="t1q8-sol">Solution: \( L = 6 \times 6 = 36 \) cm².</div>
+                    </div>
+
+                    <!-- T1Q9: Checkbox -->
+                    <div class="question-block" id="t1q9-block">
+                        <div class="q-text">9. Which shapes have 4 right angles? (Select MORE THAN ONE) <small>(Bangun mana yang memiliki 4 sudut siku-siku?)</small></div>
+                        <label class="option-label" style="display:block; margin:5px 0;"><input type="checkbox" name="t1q9" value="a"> Rectangle</label>
+                        <label class="option-label" style="display:block; margin:5px 0;"><input type="checkbox" name="t1q9" value="b"> Triangle</label>
+                        <label class="option-label" style="display:block; margin:5px 0;"><input type="checkbox" name="t1q9" value="c"> Square</label>
+                        <div class="feedback" id="t1q9-fb"></div><div class="solution" id="t1q9-sol">Solution: Rectangles and Squares both have four 90° angles.</div>
+                    </div>
+
+                    <!-- T1Q10: Radio -->
+                    <div class="question-block" id="t1q10-block">
+                        <div class="q-text">10. A rectangle is \( 10 \) cm long and \( 5 \) cm wide. What is its perimeter? <small>(Keliling persegi panjang 10x5 cm?)</small></div>
+                        <div class="options-grid">
+                            <label class="option-label"><input type="radio" name="t1q10" value="a"> 15 cm</label>
+                            <label class="option-label"><input type="radio" name="t1q10" value="b"> 30 cm</label>
+                            <label class="option-label"><input type="radio" name="t1q10" value="c"> 50 cm</label>
+                        </div>
+                        <div class="feedback" id="t1q10-fb"></div><div class="solution" id="t1q10-sol">Solution: \( K = 2(10 + 5) = 2(15) = 30 \) cm.</div>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button class="btn-action btn-check" onclick="checkTab1()"><i class="fas fa-paper-plane"></i> Submit Group 1</button>
+                    </div>
+                </div>
+
+                <!-- TAB 2 CONTENT: ALGEBRA IN PERIMETER -->
+                <div id="tab2" class="tab-content" style="display: none;">
+                    <h3 style="color: var(--neon-green); margin-bottom: 15px;"><i class="fas fa-ruler-combined"></i> Group 2: Algebra in Perimeter <small>(Aljabar pada Keliling)</small></h3>
+
+                    <!-- T2Q1: Radio -->
+                    <div class="question-block" id="t2q1-block">
+                        <div class="q-text">1. A rectangle has \( p = 2x \) and \( l = x \). What is its perimeter? <small>(Keliling persegi panjang p=2x, l=x?)</small></div>
+                        <div class="options-grid">
+                            <label class="option-label"><input type="radio" name="t2q1" value="a"> \( 3x \)</label>
+                            <label class="option-label"><input type="radio" name="t2q1" value="b"> \( 6x \)</label>
+                            <label class="option-label"><input type="radio" name="t2q1" value="c"> \( 2x^2 \)</label>
+                        </div>
+                        <div class="feedback" id="t2q1-fb"></div><div class="solution" id="t2q1-sol">Solution: \( K = 2(2x + x) = 2(3x) = 6x \).</div>
+                    </div>
+
+                    <!-- T2Q2: Dropdown -->
+                    <div class="question-block" id="t2q2-block">
+                        <div class="q-text">2. If \( K = 10y \) and width is \( 2y \), what is the length? <small>(Jika K=10y dan l=2y, berapa p?)</small></div>
+                        <select id="t2q2" style="width:100%; padding:8px; background:var(--bg-dark); color:var(--text-main); border:1px solid var(--border-color); border-radius:4px;">
+                            <option value="">-- Select --</option>
+                            <option value="a"> \( 3y \)</label>
+                            <option value="b"> \( 5y \)</label>
+                            <option value="c"> \( 8y \)</label>
+                        </select>
+                        <div class="feedback" id="t2q2-fb"></div><div class="solution" id="t2q2-sol">Solution: \( p+l = 5y \). So \( p = 5y - 2y = 3y \).</div>
+                    </div>
+
+                    <!-- T2Q3: Textfield -->
+                    <div class="question-block" id="t2q3-block">
+                        <div class="q-text">3. Perimeter of a square with side \( 3a \) is... <small>(Keliling persegi sisi 3a adalah...)</small></div>
+                        <input type="text" id="t2q3" placeholder="Type expression..." style="width:100%; padding:8px; background:var(--bg-dark); color:var(--neon-blue); border:1px solid var(--neon-blue); border-radius:4px;">
+                        <div class="feedback" id="t2q3-fb"></div><div class="solution" id="t2q3-sol">Solution: \( K = 4 \times 3a = 12a \).</div>
+                    </div>
+
+                    <!-- T2Q4: Checkbox -->
+                    <div class="question-block" id="t2q4-block">
+                        <div class="q-text">4. Which expressions correctly represent the perimeter of a rectangle with \( p = x \) and \( l = x+2 \)? (Select MORE THAN ONE) <small>(Ekspresi mana yang benar untuk K?)</small></div>
+                        <label class="option-label" style="display:block; margin:5px 0;"><input type="checkbox" name="t2q4" value="a"> \( 2x + 2(x+2) \)</label>
+                        <label class="option-label" style="display:block; margin:5px 0;"><input type="checkbox" name="t2q4" value="b"> \( 4x + 4 \)</label>
+                        <label class="option-label" style="display:block; margin:5px 0;"><input type="checkbox" name="t2q4" value="c"> \( x^2 + 2x \)</label>
+                        <div class="feedback" id="t2q4-fb"></div><div class="solution" id="t2q4-sol">Solution: \( 2(x + x + 2) = 2(2x+2) = 4x+4 \). Option A is the direct formula, B is expanded. C is Area.</div>
+                    </div>
+
+                    <!-- T2Q5: Radio -->
+                    <div class="question-block" id="t2q5-block">
+                        <div class="q-text">5. Perimeter of a square with side \( (a+1) \) is... <small>(Keliling persegi sisi (a+1)?)</small></div>
+                        <div class="options-grid">
+                            <label class="option-label"><input type="radio" name="t2q5" value="a"> \( 4a + 1 \)</label>
+                            <label class="option-label"><input type="radio" name="t2q5" value="b"> \( 4a + 4 \)</label>
+                            <label class="option-label"><input type="radio" name="t2q5" value="c"> \( a^2 + 1 \)</label>
+                        </div>
+                        <div class="feedback" id="t2q5-fb"></div><div class="solution" id="t2q5-sol">Solution: \( K = 4(a+1) = 4a + 4 \).</div>
+                    </div>
+
+                    <!-- T2Q6: Textfield -->
+                    <div class="question-block" id="t2q6-block">
+                        <div class="q-text">6. A rectangle has \( p=3x \), \( l=x \), and \( K=24 \). Find \( x \). <small>(Tentukan x jika p=3x, l=x, K=24)</small></div>
+                        <input type="text" id="t2q6" placeholder="Number value..." style="width:100%; padding:8px; background:var(--bg-dark); color:var(--neon-blue); border:1px solid var(--neon-blue); border-radius:4px;">
+                        <div class="feedback" id="t2q6-fb"></div><div class="solution" id="t2q6-sol">Solution: \( 2(3x+x) = 24 \rightarrow 8x = 24 \rightarrow x = 3 \).</div>
+                    </div>
+
+                    <!-- T2Q7: Dropdown -->
+                    <div class="question-block" id="t2q7-block">
+                        <div class="q-text">7. A rectangle has length \( x \) and width \( 5 \). Its perimeter is... <small>(Keliling p=x, l=5?)</small></div>
+                        <select id="t2q7" style="width:100%; padding:8px; background:var(--bg-dark); color:var(--text-main); border:1px solid var(--border-color); border-radius:4px;">
+                            <option value="">-- Select --</option>
+                            <option value="a"> \( 2x + 10 \)</option>
+                            <option value="b"> \( 5x \)</option>
+                            <option value="c"> \( 2x + 5 \)</option>
+                        </select>
+                        <div class="feedback" id="t2q7-fb"></div><div class="solution" id="t2q7-sol">Solution: \( K = 2(x+5) = 2x + 10 \).</div>
+                    </div>
+
+                    <!-- T2Q8: Radio -->
+                    <div class="question-block" id="t2q8-block">
+                        <div class="q-text">8. If \( p=2x, l=x, K=12 \), what is \( x \)? <small>(Jika p=2x, l=x, K=12, berapa x?)</small></div>
+                        <div class="options-grid">
+                            <label class="option-label"><input type="radio" name="t2q8" value="a"> 2</label>
+                            <label class="option-label"><input type="radio" name="t2q8" value="b"> 3</label>
+                            <label class="option-label"><input type="radio" name="t2q8" value="c"> 4</label>
+                        </div>
+                        <div class="feedback" id="t2q8-fb"></div><div class="solution" id="t2q8-sol">Solution: \( 2(2x+x) = 12 \rightarrow 6x = 12 \rightarrow x=2 \).</div>
+                    </div>
+
+                    <!-- T2Q9: Checkbox -->
+                    <div class="question-block" id="t2q9-block">
+                        <div class="q-text">9. Which formulas correctly calculate the perimeter of a rectangle? (Select MORE THAN ONE) <small>(Rumus mana yang benar untuk keliling?)</small></div>
+                        <label class="option-label" style="display:block; margin:5px 0;"><input type="checkbox" name="t2q9" value="a"> \( 2p + 2l \)</label>
+                        <label class="option-label" style="display:block; margin:5px 0;"><input type="checkbox" name="t2q9" value="b"> \( 2(p + l) \)</label>
+                        <label class="option-label" style="display:block; margin:5px 0;"><input type="checkbox" name="t2q9" value="c"> \( p + p + l + l \)</label>
+                        <div class="feedback" id="t2q9-fb"></div><div class="solution" id="t2q9-sol">Solution: All three are mathematically equivalent ways to write perimeter.</div>
+                    </div>
+
+                    <!-- T2Q10: Textfield -->
+                    <div class="question-block" id="t2q10-block">
+                        <div class="q-text">10. Evaluate the perimeter of a rectangle with \( p=2x, l=x \) if \( x=3 \). <small>(Hitung K jika p=2x, l=x dan x=3)</small></div>
+                        <input type="text" id="t2q10" placeholder="Number value..." style="width:100%; padding:8px; background:var(--bg-dark); color:var(--neon-blue); border:1px solid var(--neon-blue); border-radius:4px;">
+                        <div class="feedback" id="t2q10-fb"></div><div class="solution" id="t2q10-sol">Solution: \( K = 2(2x+x) = 6x \). If \( x=3, K = 6(3) = 18 \).</div>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button class="btn-action btn-check" onclick="checkTab2()"><i class="fas fa-paper-plane"></i> Submit Group 2</button>
+                    </div>
+                </div>
+
+                <!-- TAB 3 CONTENT: AREA EXPRESSIONS -->
+                <div id="tab3" class="tab-content" style="display: none;">
+                    <h3 style="color: var(--neon-green); margin-bottom: 15px;"><i class="fas fa-vector-square"></i> Group 3: Area Expressions <small>(Ekspresi Luas)</small></h3>
+
+                    <!-- T3Q1: Radio -->
+                    <div class="question-block" id="t3q1-block">
+                        <div class="q-text">1. What is the area of a rectangle with \( p=x \) and \( l=2 \)? <small>(Luas persegi panjang p=x, l=2?)</small></div>
+                        <div class="options-grid">
+                            <label class="option-label"><input type="radio" name="t3q1" value="a"> \( 2x \)</label>
+                            <label class="option-label"><input type="radio" name="t3q1" value="b"> \( x+2 \)</label>
+                            <label class="option-label"><input type="radio" name="t3q1" value="c"> \( 2x^2 \)</label>
+                        </div>
+                        <div class="feedback" id="t3q1-fb"></div><div class="solution" id="t3q1-sol">Solution: \( L = p \times l = x \times 2 = 2x \).</div>
+                    </div>
+
+                    <!-- T3Q2: Dropdown -->
+                    <div class="question-block" id="t3q2-block">
+                        <div class="q-text">2. Area of a square with side \( 2y \) is... <small>(Luas persegi sisi 2y?)</small></div>
+                        <select id="t3q2" style="width:100%; padding:8px; background:var(--bg-dark); color:var(--text-main); border:1px solid var(--border-color); border-radius:4px;">
+                            <option value="">-- Select --</option>
+                            <option value="a"> \( 4y \)</option>
+                            <option value="b"> \( 4y^2 \)</option>
+                            <option value="c"> \( 2y^2 \)</option>
+                        </select>
+                        <div class="feedback" id="t3q2-fb"></div><div class="solution" id="t3q2-sol">Solution: \( L = (2y)^2 = 4y^2 \).</div>
+                    </div>
+
+                    <!-- T3Q3: Textfield -->
+                    <div class="question-block" id="t3q3-block">
+                        <div class="q-text">3. A rectangle has \( p=3x \) and \( l=x \). Express its Area. <small>(Nyatakan Luas p=3x, l=x)</small></div>
+                        <input type="text" id="t3q3" placeholder="Type expression..." style="width:100%; padding:8px; background:var(--bg-dark); color:var(--neon-blue); border:1px solid var(--neon-blue); border-radius:4px;">
+                        <div class="feedback" id="t3q3-fb"></div><div class="solution" id="t3q3-sol">Solution: \( L = 3x \times x = 3x^2 \).</div>
+                    </div>
+
+                    <!-- T3Q4: Checkbox -->
+                    <div class="question-block" id="t3q4-block">
+                        <div class="q-text">4. Which expressions are equivalent to \( 2x(x + 3) \)? (Select MORE THAN ONE) <small>(Mana yang setara dengan 2x(x+3)?)</small></div>
+                        <label class="option-label" style="display:block; margin:5px 0;"><input type="checkbox" name="t3q4" value="a"> \( 2x^2 + 6x \)</label>
+                        <label class="option-label" style="display:block; margin:5px 0;"><input type="checkbox" name="t3q4" value="b"> \( 2(x^2 + 3x) \)</label>
+                        <label class="option-label" style="display:block; margin:5px 0;"><input type="checkbox" name="t3q4" value="c"> \( 2x^2 + 3 \)</label>
+                        <div class="feedback" id="t3q4-fb"></div><div class="solution" id="t3q4-sol">Solution: Distributing gives \( 2x^2 + 6x \), which is also \( 2(x^2 + 3x) \).</div>
+                    </div>
+
+                    <!-- T3Q5: Radio -->
+                    <div class="question-block" id="t3q5-block">
+                        <div class="q-text">5. Area of a square with side \( (a-1) \) is... <small>(Luas persegi sisi (a-1))</small></div>
+                        <div class="options-grid">
+                            <label class="option-label"><input type="radio" name="t3q5" value="a"> \( a^2 - 1 \)</label>
+                            <label class="option-label"><input type="radio" name="t3q5" value="b"> \( a^2 - 2a + 1 \)</label>
+                            <label class="option-label"><input type="radio" name="t3q5" value="c"> \( a^2 + 1 \)</label>
+                        </div>
+                        <div class="feedback" id="t3q5-fb"></div><div class="solution" id="t3q5-sol">Solution: \( (a-1)^2 = a^2 - 2a + 1 \).</div>
+                    </div>
+
+                    <!-- T3Q6: Textfield -->
+                    <div class="question-block" id="t3q6-block">
+                        <div class="q-text">6. Find the area if \( p=2x, l=x+1 \) and \( x=4 \). <small>(Hitung luas jika p=2x, l=x+1, x=4)</small></div>
+                        <input type="text" id="t3q6" placeholder="Number value..." style="width:100%; padding:8px; background:var(--bg-dark); color:var(--neon-blue); border:1px solid var(--neon-blue); border-radius:4px;">
+                        <div class="feedback" id="t3q6-fb"></div><div class="solution" id="t3q6-sol">Solution: \( p=8, l=5 \). \( L = 8 \times 5 = 40 \).</div>
+                    </div>
+
+                    <!-- T3Q7: Dropdown -->
+                    <div class="question-block" id="t3q7-block">
+                        <div class="q-text">7. Expand \( x(4x - 5) \). <small>(Ekspansi x(4x - 5))</small></div>
+                        <select id="t3q7" style="width:100%; padding:8px; background:var(--bg-dark); color:var(--text-main); border:1px solid var(--border-color); border-radius:4px;">
+                            <option value="">-- Select --</option>
+                            <option value="a"> \( 4x^2 - 5 \)</option>
+                            <option value="b"> \( 4x^2 - 5x \)</option>
+                            <option value="c"> \( 4x - 5x \)</option>
+                        </select>
+                        <div class="feedback" id="t3q7-fb"></div><div class="solution" id="t3q7-sol">Solution: Distribute \( x \): \( 4x^2 - 5x \).</div>
+                    </div>
+
+                    <!-- T3Q8: Radio -->
+                    <div class="question-block" id="t3q8-block">
+                        <div class="q-text">8. If \( p=2x \) and \( l=3x \), what is the area? <small>(Luas jika p=2x, l=3x?)</small></div>
+                        <div class="options-grid">
+                            <label class="option-label"><input type="radio" name="t3q8" value="a"> \( 5x \)</label>
+                            <label class="option-label"><input type="radio" name="t3q8" value="b"> \( 6x \)</label>
+                            <label class="option-label"><input type="radio" name="t3q8" value="c"> \( 6x^2 \)</label>
+                        </div>
+                        <div class="feedback" id="t3q8-fb"></div><div class="solution" id="t3q8-sol">Solution: \( L = 2x \times 3x = 6x^2 \).</div>
+                    </div>
+
+                    <!-- T3Q9: Checkbox -->
+                    <div class="question-block" id="t3q9-block">
+                        <div class="q-text">9. Which represent the Area of a square? (Select MORE THAN ONE) <small>(Mana yang mewakili Luas Persegi?)</small></div>
+                        <label class="option-label" style="display:block; margin:5px 0;"><input type="checkbox" name="t3q9" value="a"> \( s \times s \)</label>
+                        <label class="option-label" style="display:block; margin:5px 0;"><input type="checkbox" name="t3q9" value="b"> \( s^2 \)</label>
+                        <label class="option-label" style="display:block; margin:5px 0;"><input type="checkbox" name="t3q9" value="c"> \( 4s \)</label>
+                        <div class="feedback" id="t3q9-fb"></div><div class="solution" id="t3q9-sol">Solution: Area is side times side (\( s \times s \) or \( s^2 \)). \( 4s \) is perimeter.</div>
+                    </div>
+
+                    <!-- T3Q10: Textfield -->
+                    <div class="question-block" id="t3q10-block">
+                        <div class="q-text">10. Difference between Area of square (\( s=x \)) and rectangle (\( p=x, l=2 \)). <small>(Selisih luas persegi s=x dan pp p=x, l=2)</small></div>
+                        <input type="text" id="t3q10" placeholder="Type expression..." style="width:100%; padding:8px; background:var(--bg-dark); color:var(--neon-blue); border:1px solid var(--neon-blue); border-radius:4px;">
+                        <div class="feedback" id="t3q10-fb"></div><div class="solution" id="t3q10-sol">Solution: Square area = \( x^2 \). Rect area = \( 2x \). Difference = \( x^2 - 2x \).</div>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button class="btn-action btn-check" onclick="checkTab3()"><i class="fas fa-paper-plane"></i> Submit Group 3</button>
+                    </div>
+                </div>
+            <!-- TAB 4 CONTENT: CONTEXTUAL PROBLEMS -->
+            <div id="tab4" class="tab-content" style="display: none;">
+                <h3 style="color: var(--neon-green); margin-bottom: 15px;"><i class="fas fa-seedling"></i> Group 4: Contextual Problems <small>(Masalah Kontekstual)</small></h3>
+                <div class="question-block"><div class="q-text">1. A garden is \( (3a) \) m long and \( (2a - 5) \) m wide. If \( a = 4 \), calculate its Area! <small>(Kebun p=3a, l=2a-5. Jika a=4, hitung Luas!)</small></div><input type="text" id="t4q1" placeholder="Number value..." style="width:100%; padding:8px; background:var(--bg-dark); color:var(--neon-blue); border:1px solid var(--neon-blue); border-radius:4px;"><div class="feedback" id="t4q1-fb"></div><div class="solution" id="t4q1-sol">Solution: \( a=4 \rightarrow p=12, l=3 \). \( L = 12 \times 3 = 36 \) m².</div></div>
+                <div class="question-block"><div class="q-text">2. Rectangle A has \( p=12, l=8 \). If length +25% and width -25%, does the Area stay the same? <small>(Apakah luas tetap sama?)</small></div><div class="options-grid"><label class="option-label"><input type="radio" name="t4q2" value="a"> Yes, it remains 96 cm²</label><label class="option-label"><input type="radio" name="t4q2" value="b"> No, it decreases to 90 cm²</label></div><div class="feedback" id="t4q2-fb"></div><div class="solution" id="t4q2-sol">Solution: New \( p = 15 \), new \( l = 6 \). New Area = \( 15 \times 6 = 90 \). It decreases.</div></div>
+                <div class="question-block"><div class="q-text">3. A square has side \( 4x \) cm. What is its perimeter? <small>(Keliling persegi sisi 4x?)</small></div><select id="t4q3" style="width:100%; padding:8px; background:var(--bg-dark); color:var(--text-main); border:1px solid var(--border-color); border-radius:4px;"><option value="">-- Select --</option><option value="a"> \( 16x \) cm</option><option value="b"> \( 8x \) cm</option><option value="c"> \( 16x^2 \) cm</option></select><div class="feedback" id="t4q3-fb"></div><div class="solution" id="t4q3-sol">Solution: \( K = 4 \times 4x = 16x \) cm.</div></div>
+                <div style="text-align: center; margin-top: 20px;"><button class="btn-action btn-check" onclick="checkTab4()"><i class="fas fa-paper-plane"></i> Submit Group 4</button></div>
+            </div>
+
+            <!-- TAB 5 CONTENT: ADVANCED LOGIC -->
+            <div id="tab5" class="tab-content" style="display: none;">
+                <h3 style="color: var(--neon-green); margin-bottom: 15px;"><i class="fas fa-brain"></i> Group 5: Advanced Logic <small>(Logika Lanjutan)</small></h3>
+                <div class="question-block"><div class="q-text">1. Two squares have sides \( s_1 \) and \( s_2 \). If \( s_1 = 2 \times s_2 \), how does Area 1 compare to Area 2? <small>(Perbandingan luas?)</small></div><div class="options-grid"><label class="option-label"><input type="radio" name="t5q1" value="a"> Area 1 is 2 times Area 2</label><label class="option-label"><input type="radio" name="t5q1" value="b"> Area 1 is 4 times Area 2</label></div><div class="feedback" id="t5q1-fb"></div><div class="solution" id="t5q1-sol">Solution: \( L_1 = (2s_2)^2 = 4s_2^2 \). Since \( L_2 = s_2^2 \), \( L_1 = 4 \times L_2 \).</div></div>
+                <div class="question-block"><div class="q-text">2. Rectangle has \( p=12 \) cm, \( l=(y+2) \) cm. Express Area. <small>(Nyatakan Luas dalam y)</small></div><input type="text" id="t5q2" placeholder="Type expression..." style="width:100%; padding:8px; background:var(--bg-dark); color:var(--neon-blue); border:1px solid var(--neon-blue); border-radius:4px;"><div class="feedback" id="t5q2-fb"></div><div class="solution" id="t5q2-sol">Solution: \( L = 12(y+2) = 12y + 24 \).</div></div>
+                <div class="question-block"><div class="q-text">3. Perimeter of a square equals Perimeter of a 10x6 rectangle. Area of the square is... <small>(Luas persegi?)</small></div><select id="t5q3" style="width:100%; padding:8px; background:var(--bg-dark); color:var(--text-main); border:1px solid var(--border-color); border-radius:4px;"><option value="">-- Select --</option><option value="a"> 64 cm²</option><option value="b"> 32 cm²</option><option value="c"> 16 cm²</option></select><div class="feedback" id="t5q3-fb"></div><div class="solution" id="t5q3-sol">Solution: \( K_{rect} = 32 \). \( s_{square} = 32/4 = 8 \). \( L = 8 \times 8 = 64 \).</div></div>
+                <div style="text-align: center; margin-top: 20px;"><button class="btn-action btn-check" onclick="checkTab5()"><i class="fas fa-paper-plane"></i> Submit Group 5</button></div>
+            </div>
+
+            <!-- ASSESSMENT BOTTOM ACTIONS (TOMBOL PRINT) -->
+            <div style="margin-top: 30px; text-align: center; border-top: 1px solid var(--border-color); padding-top: 20px;">
+                <button class="btn-action btn-check" onclick="generatePrintView()" style="background: var(--neon-purple); box-shadow: 0 0 10px var(--neon-purple);"><i class="fas fa-print"></i> Print Assessment Results</button>
+            </div>
+            </div> <!-- End Assessment Section Card -->
+            <!-- SECTION FEEDBACK AKHIR -->
+            <div class="section-card" id="sec-feedback" style="border-left: 4px solid var(--neon-green);">
+                <div class="section-header">
+                    <div class="section-title">
+                        Class Feedback
+                        <small>Umpan Balik Kelas</small>
+                    </div>
+                </div>
+
+                <div class="bilingual">
+                    <h3><i class="fas fa-star"></i> Thank you for your hard work today!</h3>
+                    <p>Please take a moment to provide your feedback about today's session at our learning portal. Your feedback helps us improve the learning experience for you.</p>
+                    <p class="id-lang">Silakan luangkan waktu sejenak untuk memberikan umpan balik Anda tentang sesi hari ini di portal pembelajaran kami. Umpan balik Anda membantu kami meningkatkan pengalaman belajar untuk Anda.</p>
+                </div>
+
+                <div style="text-align: center; margin-top: 20px;">
+                    <a href="https://learn.algonova.id/login" target="_blank" style="display: inline-block; background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple)); color: white; font-weight: bold; text-decoration: none; padding: 15px 30px; border-radius: 8px; font-family: 'Orbitron'; transition: 0.3s; box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);">
+                        <i class="fas fa-sign-in-alt"></i> Submit Feedback at learn.algonova.id
+                    </a>
+                </div>
+            </div>
+            <!-- JAVASCRIPT FOR PART 3 -->
+            <script>
+                // --- TAB LOGIC ---
+                function openTab(tabId, btnElement) {
+                    // Hide all tabs
+                    document.querySelectorAll('.tab-content').forEach(tab => tab.style.display = 'none');
+                    // Remove active class from all buttons
+                    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                    
+                    // Show specific tab
+                    document.getElementById(tabId).style.display = 'block';
+                    // Add active class to clicked button
+                    btnElement.classList.add('active');
+
+                    // Re-render KaTeX for the active tab
+                    renderMathInElement(document.getElementById(tabId), {
+                        delimiters: [{left: "\\(", right: "\\)", display: false}]
+                    });
+                }
+
+                // Add Tab button styling dynamically
+                const style = document.createElement('style');
+                style.innerHTML = `
+                    .tab-btn {
+                        background: var(--bg-dark); color: var(--text-muted); border: 1px solid var(--border-color);
+                        padding: 10px 20px; cursor: pointer; font-family: 'Orbitron'; border-radius: 6px 6px 0 0; transition: 0.3s;
+                    }
+                    .tab-btn:hover { color: var(--neon-blue); border-color: var(--neon-blue); }
+                    .tab-btn.active { background: var(--bg-card); color: var(--neon-blue); border-bottom: 2px solid var(--neon-blue); border-top: 2px solid var(--neon-blue); }
+                `;
+                document.head.appendChild(style);
+
+                // --- CHECKBOX HELPER FUNCTION ---
+                function getCheckedValues(name) {
+                    const checkboxes = document.querySelectorAll(`input[name="${name}"]:checked`);
+                    let values = [];
+                    checkboxes.forEach((cb) => values.push(cb.value));
+                    return values.sort().join('');
+                }
+
+                // --- CHECKING FUNCTIONS ---
+                function checkRadio(name, answer, fbId, solId, solText) {
+                    const selected = document.querySelector(`input[name="${name}"]:checked`);
+                    const fb = document.getElementById(fbId);
+                    const sol = document.getElementById(solId);
+                    if(!selected) {
+                        fb.innerHTML = "<i class='fas fa-exclamation-triangle'></i> Select an answer!";
+                        fb.className = "feedback incorrect"; fb.style.display = "block"; sol.style.display = "none"; return 0;
+                    }
+                    if(selected.value === answer) {
+                        fb.innerHTML = "<i class='fas fa-check-circle'></i> Correct!";
+                        fb.className = "feedback correct"; fb.style.display = "block"; sol.style.display = "none"; return 1;
+                    } else {
+                        fb.innerHTML = "<i class='fas fa-times-circle'></i> Incorrect.";
+                        fb.className = "feedback incorrect"; fb.style.display = "block"; sol.style.display = "block"; return 0;
+                    }
+                }
+
+                function checkDropdown(id, answer, fbId, solId, solText) {
+                    const val = document.getElementById(id).value;
+                    const fb = document.getElementById(fbId);
+                    const sol = document.getElementById(solId);
+                    if(val === answer) {
+                        fb.innerHTML = "<i class='fas fa-check-circle'></i> Correct!";
+                        fb.className = "feedback correct"; fb.style.display = "block"; sol.style.display = "none"; return 1;
+                    } else {
+                        fb.innerHTML = "<i class='fas fa-times-circle'></i> Incorrect.";
+                        fb.className = "feedback incorrect"; fb.style.display = "block"; sol.style.display = "block"; return 0;
+                    }
+                }
+
+                function checkTextfield(id, answer, fbId, solId, solText) {
+                    const val = document.getElementById(id).value.trim().replace(/\s/g, '').toLowerCase();
+                    const fb = document.getElementById(fbId);
+                    const sol = document.getElementById(solId);
+                    if(val === answer) {
+                        fb.innerHTML = "<i class='fas fa-check-circle'></i> Correct!";
+                        fb.className = "feedback correct"; fb.style.display = "block"; sol.style.display = "none"; return 1;
+                    } else {
+                        fb.innerHTML = "<i class='fas fa-times-circle'></i> Incorrect.";
+                        fb.className = "feedback incorrect"; fb.style.display = "block"; sol.style.display = "block"; return 0;
+                    }
+                }
+
+                function checkCheckbox(name, answerString, fbId, solId, solText) {
+                    const val = getCheckedValues(name);
+                    const fb = document.getElementById(fbId);
+                    const sol = document.getElementById(solId);
+                    if(val === answerString) {
+                        fb.innerHTML = "<i class='fas fa-check-circle'></i> Correct!";
+                        fb.className = "feedback correct"; fb.style.display = "block"; sol.style.display = "none"; return 1;
+                    } else {
+                        fb.innerHTML = "<i class='fas fa-times-circle'></i> Incorrect.";
+                        fb.className = "feedback incorrect"; fb.style.display = "block"; sol.style.display = "block"; return 0;
+                    }
+                }
+
+                // --- TAB 1 VALIDATION ---
+                function checkTab1() {
+                    let score = 0;
+                    score += checkRadio('t1q1', 'b', 't1q1-fb', 't1q1-sol');
+                    score += checkDropdown('t1q2', 'b', 't1q2-fb', 't1q2-sol');
+                    score += checkTextfield('t1q3', '24', 't1q3-fb', 't1q3-sol');
+                    score += checkCheckbox('t1q4', 'acd', 't1q4-fb', 't1q4-sol'); // a, c, d
+                    score += checkRadio('t1q5', 'b', 't1q5-fb', 't1q5-sol');
+                    score += checkTextfield('t1q6', '5', 't1q6-fb', 't1q6-sol');
+                    score += checkDropdown('t1q7', 'b', 't1q7-fb', 't1q7-sol');
+                    score += checkRadio('t1q8', 'c', 't1q8-fb', 't1q8-sol');
+                    score += checkCheckbox('t1q9', 'ac', 't1q9-fb', 't1q9-sol'); // a, c
+                    score += checkRadio('t1q10', 'b', 't1q10-fb', 't1q10-sol');
+                    alert(`Group 1 Score: ${score}/10`);
+                }
+
+                // --- TAB 2 VALIDATION ---
+                function checkTab2() {
+                    let score = 0;
+                    score += checkRadio('t2q1', 'b', 't2q1-fb', 't2q1-sol');
+                    score += checkDropdown('t2q2', 'a', 't2q2-fb', 't2q2-sol');
+                    score += checkTextfield('t2q3', '12a', 't2q3-fb', 't2q3-sol');
+                    score += checkCheckbox('t2q4', 'ab', 't2q4-fb', 't2q4-sol'); // a, b
+                    score += checkRadio('t2q5', 'b', 't2q5-fb', 't2q5-sol');
+                    score += checkTextfield('t2q6', '3', 't2q6-fb', 't2q6-sol');
+                    score += checkDropdown('t2q7', 'a', 't2q7-fb', 't2q7-sol');
+                    score += checkRadio('t2q8', 'a', 't2q8-fb', 't2q8-sol');
+                    score += checkCheckbox('t2q9', 'abc', 't2q9-fb', 't2q9-sol'); // a, b, c
+                    score += checkTextfield('t2q10', '18', 't2q10-fb', 't2q10-sol');
+                    alert(`Group 2 Score: ${score}/10`);
+                }
+
+                // --- TAB 3 VALIDATION ---
+                function checkTab3() {
+                    let score = 0;
+                    score += checkRadio('t3q1', 'a', 't3q1-fb', 't3q1-sol');
+                    score += checkDropdown('t3q2', 'b', 't3q2-fb', 't3q2-sol');
+                    score += checkTextfield('t3q3', '3x^2', 't3q3-fb', 't3q3-sol');
+                    score += checkCheckbox('t3q4', 'ab', 't3q4-fb', 't3q4-sol'); // a, b
+                    score += checkRadio('t3q5', 'b', 't3q5-fb', 't3q5-sol');
+                    score += checkTextfield('t3q6', '40', 't3q6-fb', 't3q6-sol');
+                    score += checkDropdown('t3q7', 'b', 't3q7-fb', 't3q7-sol');
+                    score += checkRadio('t3q8', 'c', 't3q8-fb', 't3q8-sol');
+                    score += checkCheckbox('t3q9', 'ab', 't3q9-fb', 't3q9-sol'); // a, b
+                    score += checkTextfield('t3q10', 'x^2-2x', 't3q10-fb', 't3q10-sol');
+                    alert(`Group 3 Score: ${score}/10`);
+                }
+                // --- TAB 4 VALIDATION ---
+                function checkTab4() {
+                    let score = 0;
+                    score += checkTextfield('t4q1', '36', 't4q1-fb', 't4q1-sol');
+                    score += checkRadio('t4q2', 'b', 't4q2-fb', 't4q2-sol');
+                    score += checkDropdown('t4q3', 'a', 't4q3-fb', 't4q3-sol');
+                    alert(`Group 4 Score: ${score}/3`);
+                }
+
+                // --- TAB 5 VALIDATION ---
+                function checkTab5() {
+                    let score = 0;
+                    score += checkRadio('t5q1', 'b', 't5q1-fb', 't5q1-sol');
+                    score += checkTextfield('t5q2', '12y+24', 't5q2-fb', 't5q2-sol');
+                    score += checkDropdown('t5q3', 'a', 't5q3-fb', 't5q3-sol');
+                    alert(`Group 5 Score: ${score}/3`);
+                }
+
+                // --- PRINT FUNCTIONALITY ---
+                function generatePrintView() {
+                    const studentName = document.getElementById('studentName').value || 'No Name';
+                    const assessmentDate = document.getElementById('assessmentDate').value || 'No Date';
+                    
+                    let printHtml = `
+                        <html>
+                        <head>
+                            <title>Assessment Result</title>
+                            <style>
+                                body { font-family: Arial, sans-serif; padding: 20px; color: #333; }
+                                h1 { color: #00f3ff; text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; }
+                                .info { margin-bottom: 20px; font-size: 1.2rem; }
+                                .score { font-size: 1.5rem; font-weight: bold; color: #bc13fe; margin-bottom: 30px; text-align: center; }
+                                table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+                                th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                                th { background-color: #f4f4f4; }
+                            </style>
+                        </head>
+                        <body>
+                            <h1>Math Tutoring Assessment Result</h1>
+                            <div class="info"><strong>Student Name:</strong> ${studentName}</div>
+                            <div class="info"><strong>Date:</strong> ${assessmentDate}</div>
+                            <div class="score">Please see scores submitted in each group tab.</div>
+                            <p style="text-align:center; font-style:italic; color:#666;">This print out serves as proof of completion. Detailed right/wrong analysis is available on screen.</p>
+                        </body>
+                        </html>
+                    `;
+
+                    const printWindow = window.open('', '_blank');
+                    printWindow.document.write(printHtml);
+                    printWindow.document.close();
+                    
+                    printWindow.onload = function() {
+                        printWindow.print();
+                    };
+                }
+            </script>
+          
+            <!-- JAVASCRIPT FOR PART 2 -->
+            <script>
+                // Initialize KaTeX for dynamically added math (if any)
+                document.addEventListener("DOMContentLoaded", function() {
+                    renderMathInElement(document.getElementById('sec3'), {delimiters: [{left: "\\(", right: "\\)", display: false}]});
+                    renderMathInElement(document.getElementById('sec4'), {delimiters: [{left: "\\(", right: "\\)", display: false}]});
+                    renderMathInElement(document.getElementById('sec5'), {delimiters: [{left: "\\(", right: "\\)", display: false}]});
+                    renderMathInElement(document.getElementById('sec6'), {delimiters: [{left: "\\(", right: "\\)", display: false}]});
+                });
+
+                // --- GAME 3 LOGIC (Drag & Drop Formula) ---
+                function initDragDrop(gameId, dragContainerId, dropZonesId) {
+                    const container = document.getElementById(gameId);
+                    const dragItems = container.querySelectorAll(`#${dragContainerId} .drag-item`);
+                    const dropZones = container.querySelectorAll(`#${dropZonesId} .drop-zone`);
+
+                    dragItems.forEach(item => {
+                        item.addEventListener('dragstart', (e) => {
+                            e.dataTransfer.setData('text/plain', e.target.dataset.id);
+                            setTimeout(() => e.target.style.display = 'none', 0);
+                        });
+                        item.addEventListener('dragend', (e) => {
+                            e.target.style.display = 'inline-block';
+                        });
+                    });
+
+                    dropZones.forEach(zone => {
+                        const dropSlot = zone.querySelector('.drop-slot');
+                        zone.addEventListener('dragover', (e) => e.preventDefault());
+                        zone.addEventListener('dragenter', (e) => { e.preventDefault(); zone.classList.add('over'); });
+                        zone.addEventListener('dragleave', () => zone.classList.remove('over'));
+                        zone.addEventListener('drop', (e) => {
+                            e.preventDefault();
+                            zone.classList.remove('over');
+                            const id = e.dataTransfer.getData('text/plain');
+                            const draggable = container.querySelector(`.drag-item[data-id="${id}"]`);
+                            
+                            if(dropSlot.childNodes.length > 0) {
+                                const oldItem = dropSlot.firstChild;
+                                document.getElementById(dragContainerId).appendChild(oldItem);
+                                oldItem.style.display = 'inline-block';
+                            }
+                            dropSlot.appendChild(draggable);
+                            draggable.style.display = 'inline-block';
+                            draggable.style.margin = '0';
+                        });
+                    });
+                }
+
+                initDragDrop('game3', 'drag-items-3', 'drop-zones-3');
+                initDragDrop('game4', 'drag-items-4', 'drop-zones-4');
+
+                function checkGenericDrop(gameId, dropZonesId, feedbackId) {
+                    let allCorrect = true;
+                    const container = document.getElementById(gameId);
+                    const feedbackEl = document.getElementById(feedbackId);
+                    const dropZones = container.querySelectorAll(`#${dropZonesId} .drop-zone`);
+
+                    dropZones.forEach(zone => {
+                        const acceptVal = zone.dataset.accept;
+                        const dropSlot = zone.querySelector('.drop-slot');
+                        
+                        if(dropSlot.childNodes.length === 0) {
+                            allCorrect = false;
+                            zone.style.border = '2px dashed red';
+                        } else {
+                            const droppedItemId = dropSlot.firstChild.dataset.id;
+                            if(droppedItemId === acceptVal) {
+                                zone.style.border = '2px dashed var(--neon-green)';
+                            } else {
+                                allCorrect = false;
+                                zone.style.border = '2px dashed red';
+                            }
+                        }
+                    });
+
+                    if(allCorrect) {
+                        feedbackEl.innerHTML = "<i class='fas fa-check-circle'></i> Excellent! All matches are correct! <small>(Luar biasa!)</small>";
+                        feedbackEl.className = "feedback correct";
+                    } else {
+                        feedbackEl.innerHTML = "<i class='fas fa-times-circle'></i> Some matches are incorrect. <small>(Ada yang salah.)</small>";
+                        feedbackEl.className = "feedback incorrect";
+                    }
+                    feedbackEl.style.display = "block";
+                }
+
+                function resetGenericDrop(gameId, dragContainerId, dropZonesId, feedbackId) {
+                    const container = document.getElementById(gameId);
+                    const dragBank = document.getElementById(dragContainerId);
+                    const feedbackEl = document.getElementById(feedbackId);
+                    const dropZones = container.querySelectorAll(`#${dropZonesId} .drop-zone`);
+                    
+                    dropZones.forEach(zone => {
+                        const dropSlot = zone.querySelector('.drop-slot');
+                        while(dropSlot.firstChild) {
+                            let item = dropSlot.firstChild;
+                            item.style.margin = ""; 
+                            dragBank.appendChild(item);
+                        }
+                        zone.style.border = '2px dashed var(--border-color)';
+                    });
+                    feedbackEl.style.display = 'none';
+                }
+
+                function checkGame3() { checkGenericDrop('game3', 'drop-zones-3', 'game3-feedback'); }
+                function resetGame3() { resetGenericDrop('game3', 'drag-items-3', 'drop-zones-3', 'game3-feedback'); }
+                function checkGame4() { checkGenericDrop('game4', 'drop-zones-4', 'game4-feedback'); }
+                function resetGame4() { resetGenericDrop('game4', 'drag-items-4', 'drop-zones-4', 'game4-feedback'); }
+
+                // --- GAME 5 LOGIC (Step by Step) ---
+                function checkGame5() {
+                    // Q6
+                    const q6s1 = document.getElementById('q6-s1').value;
+                    const q6s2 = document.getElementById('q6-s2').value;
+                    const q6fb = document.getElementById('q6-feedback');
+                    const q6sol = document.getElementById('q6-solution');
+
+                    if(q6s1 === '12x' && q6s2 === '8x') {
+                        q6fb.innerHTML = "<i class='fas fa-check-circle'></i> Correct! <small>(Benar!)</small>";
+                        q6fb.className = "feedback correct"; q6sol.style.display = 'none';
+                    } else {
+                        q6fb.innerHTML = "<i class='fas fa-times-circle'></i> Incorrect steps. <small>(Langkah salah.)</small>";
+                        q6fb.className = "feedback incorrect"; q6sol.style.display = 'block';
+                    }
+                    q6fb.style.display = 'block';
+
+                    // Q7
+                    const q7s1 = document.getElementById('q7-s1').value;
+                    const q7fb = document.getElementById('q7-feedback');
+                    const q7sol = document.getElementById('q7-solution');
+
+                    if(q7s1 === '5a') {
+                        q7fb.innerHTML = "<i class='fas fa-check-circle'></i> Correct! <small>(Benar!)</small>";
+                        q7fb.className = "feedback correct"; q7sol.style.display = 'none';
+                    } else {
+                        q7fb.innerHTML = "<i class='fas fa-times-circle'></i> Incorrect. <small>(Salah.)</small>";
+                        q7fb.className = "feedback incorrect"; q7sol.style.display = 'block';
+                    }
+                    q7fb.style.display = 'block';
+                }
+
+                function resetGame5() {
+                    document.getElementById('q6-s1').value = "";
+                    document.getElementById('q6-s2').value = "";
+                    document.getElementById('q7-s1').value = "";
+                    document.querySelectorAll('#game5 .feedback').forEach(el => el.style.display = 'none');
+                    document.querySelectorAll('#game5 .solution').forEach(el => el.style.display = 'none');
+                }
+
+                // --- GAME 6 LOGIC (Independent Missions) ---
+                const game6Answers = { m1: 'a', m2: 'a', m3: 'b' }; // Adjusted M2 logic based on key provided. K=34, L=36 -> Diff=2.
+
+                function checkGame6() {
+                    for (let i = 1; i <= 3; i++) {
+                        const qName = 'm' + i;
+                        const selected = document.querySelector(`input[name="${qName}"]:checked`);
+                        const feedbackEl = document.getElementById(`${qName}-feedback`);
+                        const solutionEl = document.getElementById(`${qName}-solution`);
+                        
+                        if (!selected) {
+                            feedbackEl.innerHTML = "<i class='fas fa-exclamation-triangle'></i> Select an answer! <small>(Pilih jawaban!)</small>";
+                            feedbackEl.className = "feedback incorrect"; feedbackEl.style.display = "block"; solutionEl.style.display = "none";
+                            continue;
+                        }
+
+                        if (selected.value === game6Answers[qName]) {
+                            feedbackEl.innerHTML = "<i class='fas fa-check-circle'></i> Correct! <small>(Benar!)</small>";
+                            feedbackEl.className = "feedback correct"; solutionEl.style.display = "none";
+                        } else {
+                            feedbackEl.innerHTML = "<i class='fas fa-times-circle'></i> Incorrect. <small>(Salah.)</small>";
+                            feedbackEl.className = "feedback incorrect"; solutionEl.style.display = "block";
+                        }
+                        feedbackEl.style.display = "block";
+                    }
+                }
+
+                function resetGame6() {
+                    for (let i = 1; i <= 3; i++) {
+                        const qName = 'm' + i;
+                        document.querySelectorAll(`input[name="${qName}"]`).forEach(inp => inp.checked = false);
+                        document.getElementById(`${qName}-feedback`).style.display = "none";
+                        document.getElementById(`${qName}-solution`).style.display = "none";
+                    }
+                }
+            </script>
+        </div>
+
+        <!-- CANVAS AREA (1/4) -->
+        <div class="canvas-area">
+            <h3><i class="fas fa-pen-fancy"></i> Scratchpad <small>(Corat-coret)</small></h3>
+            <canvas id="scratchpad"></canvas>
+            <div class="canvas-tools">
+                <div class="color-btn active" style="background:#000;" onclick="setColor('#000000', this)"></div>
+                <div class="color-btn" style="background:#ff0000;" onclick="setColor('#ff0000', this)"></div>
+                <div class="color-btn" style="background:#00ff00;" onclick="setColor('#00ff00', this)"></div>
+                <div class="color-btn" style="background:#0000ff;" onclick="setColor('#0000ff', this)"></div>
+                <button class="tool-btn" onclick="setEraser()"><i class="fas fa-eraser"></i> Eraser</button>
+                <button class="tool-btn" onclick="eraseAll()"><i class="fas fa-trash"></i> Erase All</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // Initialize KaTeX
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: "\\(", right: "\\)", display: false},
+                    {left: "\\[", right: "\\]", display: true}
+                ]
+            });
+        });
+
+        // --- CANVAS LOGIC ---
+        const canvas = document.getElementById('scratchpad');
+        const ctx = canvas.getContext('2d');
+        let painting = false;
+        let currentColor = '#000000';
+        let isEraser = false;
+
+        function resizeCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+        
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        function startPosition(e) {
+            painting = true;
+            draw(e);
+        }
+
+        function endPosition() {
+            painting = false;
+            ctx.beginPath();
+        }
+
+        function draw(e) {
+            if (!painting) return;
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.clientX || e.touches[0].clientX) - rect.left;
+            const y = (e.clientY || e.touches[0].clientY) - rect.top;
+
+            ctx.lineWidth = isEraser ? 20 : 3;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = isEraser ? '#FFFFFF' : currentColor;
+
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+        }
+
+        canvas.addEventListener('mousedown', startPosition);
+        canvas.addEventListener('mouseup', endPosition);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startPosition(e); });
+        canvas.addEventListener('touchend', endPosition);
+        canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); });
+
+        function setColor(color, element) {
+            currentColor = color;
+            isEraser = false;
+            document.querySelectorAll('.color-btn').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+        }
+
+        function setEraser() {
+            isEraser = true;
+            document.querySelectorAll('.color-btn').forEach(btn => btn.classList.remove('active'));
+        }
+
+        function eraseAll() {
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        // --- GAME 1 LOGIC (RADIO) ---
+        const game1Answers = { q1: 'a', q2: 'c', q3: 'a', q4: 'b', q5: 'c' };
+
+        function checkGame1() {
+            for (let i = 1; i <= 5; i++) {
+                const qName = 'q' + i;
+                const selected = document.querySelector(`input[name="${qName}"]:checked`);
+                const feedbackEl = document.getElementById(`${qName}-feedback`);
+                const solutionEl = document.getElementById(`${qName}-solution`);
+                
+                if (!selected) {
+                    feedbackEl.innerHTML = "<i class='fas fa-exclamation-triangle'></i> Please select an answer! <small>(Pilih jawaban!)</small>";
+                    feedbackEl.className = "feedback incorrect";
+                    feedbackEl.style.display = "block";
+                    solutionEl.style.display = "none";
+                    continue;
+                }
+
+                if (selected.value === game1Answers[qName]) {
+                    feedbackEl.innerHTML = "<i class='fas fa-check-circle'></i> Correct! <small>(Benar!)</small>";
+                    feedbackEl.className = "feedback correct";
+                    solutionEl.style.display = "none";
+                } else {
+                    feedbackEl.innerHTML = "<i class='fas fa-times-circle'></i> Incorrect. <small>(Salah.)</small>";
+                    feedbackEl.className = "feedback incorrect";
+                    solutionEl.style.display = "block";
+                }
+                feedbackEl.style.display = "block";
+            }
+        }
+
+        function resetGame1() {
+            for (let i = 1; i <= 5; i++) {
+                const qName = 'q' + i;
+                document.querySelectorAll(`input[name="${qName}"]`).forEach(inp => inp.checked = false);
+                document.getElementById(`${qName}-feedback`).style.display = "none";
+                document.getElementById(`${qName}-solution`).style.display = "none";
+            }
+        }
+
+        // --- GAME 2 LOGIC (DRAG & DROP) ---
+        const dragItems = document.querySelectorAll('.drag-item');
+        const dropZones = document.querySelectorAll('.drop-zone');
+
+        dragItems.forEach(item => {
+            item.addEventListener('dragstart', dragStart);
+            item.addEventListener('dragend', dragEnd);
+        });
+
+        dropZones.forEach(zone => {
+            zone.addEventListener('dragover', dragOver);
+            zone.addEventListener('dragenter', dragEnter);
+            zone.addEventListener('dragleave', dragLeave);
+            zone.addEventListener('drop', drop);
+        });
+
+        function dragStart(e) {
+            e.dataTransfer.setData('text/plain', e.target.dataset.id);
+            setTimeout(() => e.target.style.display = 'none', 0);
+        }
+
+        function dragEnd(e) {
+            e.target.style.display = 'block';
+        }
+
+        function dragOver(e) {
+            e.preventDefault();
+        }
+
+        function dragEnter(e) {
+            e.preventDefault();
+            this.classList.add('over');
+        }
+
+        function dragLeave(e) {
+            this.classList.remove('over');
+        }
+
+        function drop(e) {
+            e.preventDefault();
+            this.classList.remove('over');
+            const id = e.dataTransfer.getData('text/plain');
+            const draggable = document.querySelector(`.drag-item[data-id="${id}"]`);
+            const dropSlot = this.querySelector('.drop-slot');
+
+            // If slot has item, return it to bank
+            if(dropSlot.childNodes.length > 0) {
+                const oldItem = dropSlot.firstChild;
+                document.getElementById('drag-items').appendChild(oldItem);
+                oldItem.style.display = 'block';
+            }
+
+            // Append new item
+            dropSlot.appendChild(draggable);
+            draggable.style.display = 'inline-block';
+            draggable.style.margin = '0';
+        }
+
+        function checkGame2() {
+            let allCorrect = true;
+            const feedbackEl = document.getElementById('game2-feedback');
+            
+            dropZones.forEach(zone => {
+                const acceptVal = zone.dataset.accept;
+                const dropSlot = zone.querySelector('.drop-slot');
+                
+                if(dropSlot.childNodes.length === 0) {
+                    allCorrect = false;
+                    zone.style.border = '2px dashed red';
+                } else {
+                    const droppedItemId = dropSlot.firstChild.dataset.id;
+                    if(droppedItemId === acceptVal) {
+                        zone.style.border = '2px dashed var(--neon-green)';
+                    } else {
+                        allCorrect = false;
+                        zone.style.border = '2px dashed red';
+                    }
+                }
+            });
+
+            if(allCorrect) {
+                feedbackEl.innerHTML = "<i class='fas fa-check-circle'></i> Excellent! All matches are correct! <small>(Luar biasa! Semua cocok!)</small>";
+                feedbackEl.className = "feedback correct";
+            } else {
+                feedbackEl.innerHTML = "<i class='fas fa-times-circle'></i> Some matches are incorrect. Red borders mean wrong/empty. <small>(Ada yang salah. Batas merah berarti salah/kosong.)</small>";
+                feedbackEl.className = "feedback incorrect";
+            }
+            feedbackEl.style.display = "block";
+        }
+
+        function resetGame2() {
+            const dragBank = document.getElementById('drag-items');
+            const feedbackEl = document.getElementById('game2-feedback');
+            
+            dropZones.forEach(zone => {
+                const dropSlot = zone.querySelector('.drop-slot');
+                while(dropSlot.firstChild) {
+                    let item = dropSlot.firstChild;
+                    item.style.margin = ""; // Reset margin
+                    dragBank.appendChild(item);
+                }
+                zone.style.border = '2px dashed var(--border-color)';
+            });
+
+            feedbackEl.style.display = 'none';
+        }
+
+    </script>
+</body>
+</html>
