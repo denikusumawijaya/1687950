@@ -591,7 +591,6 @@
         }
         function resetWarmUp() { document.querySelectorAll('#section-1 .quest-input').forEach(i => i.value = ''); document.querySelectorAll('#section-1 .feedback-text').forEach(f => f.innerHTML = ''); }
 
-        // --- MINI QUESTS (S2, S3, S4) ---
         // --- SECTION 2 LOGIC ---
         function selectMCQ_S2Q4(val, btn) { document.querySelectorAll('#mcq-s2q4 .mcq-btn').forEach(b=>b.classList.remove('selected')); btn.classList.add('selected'); }
         function checkS2() {
@@ -602,6 +601,7 @@
             const a5 = document.getElementById('s2q5').value.trim(); document.getElementById('s2q5_fb').innerHTML = a5 === '135' ? '<span class="correct">Correct! 180 - 45 = 135</span>' : '<span class="incorrect">Hint: 180 - 45.</span>';
         }
         function resetS2() { document.querySelectorAll('#section-2 .quest-input').forEach(i => i.value = ''); document.querySelectorAll('#section-2 .feedback-text').forEach(f => f.innerHTML = ''); document.querySelectorAll('#section-2 .mcq-btn').forEach(b => b.classList.remove('selected')); }
+
         // --- SECTION 3 LOGIC ---
         function checkS3() {
             const a1 = document.getElementById('s3q1').value.trim(); document.getElementById('s3q1_fb').innerHTML = a1 === '180' ? '<span class="correct">Correct!</span>' : '<span class="incorrect">Straight line = 180.</span>';
@@ -612,6 +612,7 @@
         function resetS3() { document.querySelectorAll('#section-3 .quest-input').forEach(i => i.value = ''); document.querySelectorAll('#section-3 .feedback-text').forEach(f => f.innerHTML = ''); }
 
         // --- SECTION 4 LOGIC ---
+        function selectMCQ_S4(val, btn) { document.querySelectorAll('#mcq-s4q1 .mcq-btn').forEach(b=>b.classList.remove('selected')); btn.classList.add('selected'); }
         function checkS4() {
             const btnS4 = document.querySelector('#mcq-s4q1 .mcq-btn.selected'); const a1 = btnS4 ? btnS4.value : ""; 
             document.getElementById('s4q1_fb').innerHTML = a1 === 'right' ? '<span class="correct">Correct! Supplementary = Addition (180).</span>' : '<span class="incorrect">Check the plus sign and total.</span>';
@@ -622,20 +623,11 @@
         }
         function resetS4() { document.querySelectorAll('#section-4 .quest-input').forEach(i => i.value = ''); document.querySelectorAll('#section-4 .feedback-text').forEach(f => f.innerHTML = ''); document.querySelectorAll('#section-4 .mcq-btn').forEach(b => b.classList.remove('selected')); }
         
-        // --- DRAG & DROP (SIMPLIFIED INLINE) ---
+        // --- DRAG & DROP ---
         function allowDrop(e) { e.preventDefault(); }
         function drag(e) { e.dataTransfer.setData("text", e.target.id); }
-        function drop(e) {
-            e.preventDefault();
-            var data = e.dataTransfer.getData("text");
-            e.target.appendChild(document.getElementById(data));
-        }
-        
-        function resetDragGame() {
-            const bank = document.getElementById('optionsBank');
-            document.querySelectorAll('.draggable-item').forEach(item => bank.appendChild(item));
-        }
-
+        function drop(e) { e.preventDefault(); var data = e.dataTransfer.getData("text"); e.target.appendChild(document.getElementById(data)); }
+        function resetDragGame() { const bank = document.getElementById('optionsBank'); document.querySelectorAll('.draggable-item').forEach(item => bank.appendChild(item)); }
         function checkDragGame() {
             const d1 = document.getElementById('drop1').querySelector('.draggable-item');
             const d2 = document.getElementById('drop2').querySelector('.draggable-item');
@@ -652,8 +644,6 @@
         }
         
         // --- SECTION 6 LOGIC ---
-        function resetIndependent() { document.querySelectorAll('#section-6 .quest-input').forEach(i => i.value = ''); document.querySelectorAll('#section-6 .feedback-text').forEach(f => f.innerHTML = ''); }
-
         function checkIndependent() {
             const a1 = document.getElementById('ind-q1').value.trim(); document.getElementById('ind-fb1').innerHTML = a1 === '55' ? '<span class="correct">Correct! 180 - 125 = 55</span>' : '<span class="incorrect">180 - 125 = ...</span>';
             const a2 = document.getElementById('ind-q2').value.trim(); document.getElementById('ind-fb2').innerHTML = a2 === '20' ? '<span class="correct">Correct! 2x+x+30=90 -> 3x=60</span>' : '<span class="incorrect">2x + x + 30 = 90</span>';
@@ -661,6 +651,7 @@
             const a4 = document.getElementById('ind-q4').value.trim(); document.getElementById('ind-fb4').innerHTML = a4 === '36' ? '<span class="correct">Correct! x+4x=180</span>' : '<span class="incorrect">x + 4x = 180</span>';
             const a5 = document.getElementById('ind-q5').value.trim(); document.getElementById('ind-fb5').innerHTML = a5 === '90' ? '<span class="correct">Correct! 180 / 2 = 90</span>' : '<span class="incorrect">Half of 180 is...</span>';
         }
+        function resetIndependent() { document.querySelectorAll('#section-6 .quest-input').forEach(i => i.value = ''); document.querySelectorAll('#section-6 .feedback-text').forEach(f => f.innerHTML = ''); }
         
         // --- ASSESSMENT TABS ---
         function openTab(g) {
@@ -670,7 +661,7 @@
             event.currentTarget.classList.add('active');
         }
 
-        // --- ASSESSMENT KEYS (50 SOAL) ---
+        // --- ASSESSMENT KEYS ---
         const keys = {
             1: ["90", "180", "90", "180", "45", "70", "Complementary", "Supplementary", "True", "60"],
             2: ["50", "10", "30", "45", "10", "25", "18", "30", "30", "10"],
@@ -686,13 +677,8 @@
                 const fbId = `g${g}q${i}_fb`;
                 let stuAns = "";
                 const inputEl = document.getElementById(`g${g}q${i}`);
-                // Cek apakah input text/select atau radio
-                if(inputEl) { 
-                    stuAns = inputEl.value.trim(); 
-                } else { 
-                    const radioEl = document.querySelector(`input[name="g${g}q${i}"]:checked`); 
-                    if(radioEl) stuAns = radioEl.value; 
-                }
+                if(inputEl) { stuAns = inputEl.value.trim(); } 
+                else { const radioEl = document.querySelector(`input[name="g${g}q${i}"]:checked`); if(radioEl) stuAns = radioEl.value; }
 
                 const correctAns = key[i-1];
                 if(stuAns === correctAns) {
@@ -706,19 +692,17 @@
             document.getElementById(`score-g${g}`).innerHTML = `<i class="fas fa-star"></i> Score Group ${g}: ${score} / 10`;
         }
 
-        // --- PDF GENERATION PER GROUP ---
-        // --- PDF GENERATION PER GROUP ---
+        // --- PDF GENERATION (ANTI BLANK) ---
         function generatePDF(g) {
             const name = document.getElementById('studentName').value || "Student";
             const date = document.getElementById('assessmentDate').value || "N/A";
             const scoreText = document.getElementById(`score-g${g}`).innerText || "Not checked yet";
             const groupEl = document.getElementById(`ag${g}`);
 
-            const pdfContent = document.createElement('div');
-            // Posisikan di luar layar agar tidak mengganggu, tapi tetap terrender oleh browser
-            pdfContent.style.cssText = 'position: absolute; left: -9999px; top: 0; width: 800px; padding: 30px; font-family: Quicksand, sans-serif; background: white; color: black;';
-            
-            let html = `<h1 style="color: #7EC8E3; text-align: center; border-bottom: 2px solid #7EC8E3; padding-bottom: 10px;">Math Assessment - Group ${g}</h1>
+            // Langsung buat string HTML tanpa append ke DOM
+            let html = `
+            <div style="font-family: Quicksand, Arial, sans-serif; color: black; padding: 20px; width: 100%;">
+                <h1 style="color: #7EC8E3; text-align: center; border-bottom: 2px solid #7EC8E3; padding-bottom: 10px;">Math Assessment - Group ${g}</h1>
                 <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
                     <div><strong>Student:</strong> ${name}</div>
                     <div><strong>Date:</strong> ${date}</div>
@@ -726,11 +710,11 @@
                 <div style="background: #FFFACD; padding: 10px; border-radius: 8px; margin-bottom: 20px; font-weight: bold; text-align: center;">
                     Score: ${scoreText}
                 </div>
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
                     <thead>
                         <tr style="background: #7EC8E3; color: white;">
                             <th style="padding: 8px; border: 1px solid #ddd; text-align: left; width: 5%;">No</th>
-                            <th style="padding: 8px; border: 1px solid #ddd; text-align: left; width: 50%;">Question</th>
+                            <th style="padding: 8px; border: 1px solid #ddd; text-align: left; width: 45%;">Question</th>
                             <th style="padding: 8px; border: 1px solid #ddd; text-align: center; width: 20%;">Your Answer</th>
                             <th style="padding: 8px; border: 1px solid #ddd; text-align: center; width: 20%;">Correct Answer</th>
                         </tr>
@@ -741,6 +725,7 @@
             const key = keys[g];
             
             rows.forEach((row, index) => {
+                // Ambil teks soal (sudah dirender MathJax oleh innerText)
                 const qText = row.querySelector('.as-q-text').innerText;
                 let stuAns = "";
                 const inputEl = row.querySelector('input[type="text"], select');
@@ -749,7 +734,7 @@
                 
                 const correctAns = key[index];
                 const isCorrect = stuAns === correctAns;
-                const bgColor = isCorrect ? '#C1E1C1' : '#FFD1DC'; // Hijau jika benar, pink jika salah
+                const bgColor = isCorrect ? '#C1E1C1' : '#FFD1DC';
                 
                 html += `<tr style="background: ${bgColor};">
                             <td style="padding: 8px; border: 1px solid #ddd;">${index+1}</td>
@@ -759,29 +744,18 @@
                          </tr>`;
             });
 
-            html += `</tbody></table>`;
-            pdfContent.innerHTML = html;
-            document.body.appendChild(pdfContent);
+            html += `</tbody></table></div>`;
 
-            // Beri jeda 500ms agar browser sempat merender teks dan tabel sebelum di-capture
-            setTimeout(() => {
-                html2pdf().set({
-                    margin: 0.5,
-                    filename: `Math_Assessment_Group_${g}.pdf`,
-                    image: { type: 'jpeg', quality: 0.95 },
-                    html2canvas: { scale: 2, useCORS: true },
-                    jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
-                })
-                .from(pdfContent)
-                .save()
-                .then(() => {
-                    document.body.removeChild(pdfContent); // Hapus elemen setelah selesai
-                })
-                .catch((err) => {
-                    console.error("PDF Error:", err);
-                    document.body.removeChild(pdfContent);
-                });
-            }, 500); 
+            // Gunakan fitur .from(string, 'string') agar tidak perlu render DOM
+            const opt = {
+                margin: 0.5,
+                filename: `Math_Assessment_Group_${g}.pdf`,
+                image: { type: 'jpeg', quality: 0.95 },
+                html2canvas: { scale: 2, useCORS: true, logging: false },
+                jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(html, 'string').save();
         }
 
         // --- STARS ---
