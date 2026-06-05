@@ -10,7 +10,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <style>
         :root {
@@ -692,31 +691,46 @@
             document.getElementById(`score-g${g}`).innerHTML = `<i class="fas fa-star"></i> Score Group ${g}: ${score} / 10`;
         }
 
-        // --- PDF GENERATION (ANTI BLANK) ---
+                // --- PDF GENERATION (MENGGUNAKAN PRINT AS PDF) ---
         function generatePDF(g) {
             const name = document.getElementById('studentName').value || "Student";
             const date = document.getElementById('assessmentDate').value || "N/A";
             const scoreText = document.getElementById(`score-g${g}`).innerText || "Not checked yet";
             const groupEl = document.getElementById(`ag${g}`);
 
-            // Langsung buat string HTML tanpa append ke DOM
-            let html = `
-            <div style="font-family: Quicksand, Arial, sans-serif; color: black; padding: 20px; width: 100%;">
-                <h1 style="color: #7EC8E3; text-align: center; border-bottom: 2px solid #7EC8E3; padding-bottom: 10px;">Math Assessment - Group ${g}</h1>
-                <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+            // Susun HTML khusus untuk halaman Print
+            let htmlContent = `
+            <html>
+            <head>
+                <title>Assessment Group ${g}</title>
+                <style>
+                    body { font-family: Arial, sans-serif; color: black; padding: 30px; }
+                    h1 { color: #7EC8E3; text-align: center; border-bottom: 2px solid #7EC8E3; padding-bottom: 10px; font-size: 24px; }
+                    .info { display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 14px; }
+                    .score-box { background: #FFFACD; padding: 10px; border-radius: 8px; margin-bottom: 20px; font-weight: bold; text-align: center; font-size: 16px; border: 1px solid #F4A460; }
+                    table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 10px; }
+                    th { background: #7EC8E3; color: white; padding: 8px; border: 1px solid #ddd; text-align: left; }
+                    td { padding: 8px; border: 1px solid #ddd; }
+                    .correct-bg { background-color: #C1E1C1; }
+                    .incorrect-bg { background-color: #FFD1DC; }
+                </style>
+            </head>
+            <body>
+                <h1>Math Assessment - Group ${g}</h1>
+                <div class="info">
                     <div><strong>Student:</strong> ${name}</div>
                     <div><strong>Date:</strong> ${date}</div>
                 </div>
-                <div style="background: #FFFACD; padding: 10px; border-radius: 8px; margin-bottom: 20px; font-weight: bold; text-align: center;">
+                <div class="score-box">
                     Score: ${scoreText}
                 </div>
-                <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+                <table>
                     <thead>
-                        <tr style="background: #7EC8E3; color: white;">
-                            <th style="padding: 8px; border: 1px solid #ddd; text-align: left; width: 5%;">No</th>
-                            <th style="padding: 8px; border: 1px solid #ddd; text-align: left; width: 45%;">Question</th>
-                            <th style="padding: 8px; border: 1px solid #ddd; text-align: center; width: 20%;">Your Answer</th>
-                            <th style="padding: 8px; border: 1px solid #ddd; text-align: center; width: 20%;">Correct Answer</th>
+                        <tr>
+                            <th style="width: 5%;">No</th>
+                            <th style="width: 50%;">Question</th>
+                            <th style="width: 20%; text-align: center;">Your Answer</th>
+                            <th style="width: 20%; text-align: center;">Correct Answer</th>
                         </tr>
                     </thead>
                     <tbody>`;
@@ -725,8 +739,7 @@
             const key = keys[g];
             
             rows.forEach((row, index) => {
-                // Ambil teks soal (sudah dirender MathJax oleh innerText)
-                const qText = row.querySelector('.as-q-text').innerText;
+                const qText = row.querySelector('.as-q-text').innerText; 
                 let stuAns = "";
                 const inputEl = row.querySelector('input[type="text"], select');
                 if(inputEl) stuAns = inputEl.value.trim();
@@ -734,28 +747,28 @@
                 
                 const correctAns = key[index];
                 const isCorrect = stuAns === correctAns;
-                const bgColor = isCorrect ? '#C1E1C1' : '#FFD1DC';
+                const bgClass = isCorrect ? 'correct-bg' : 'incorrect-bg';
                 
-                html += `<tr style="background: ${bgColor};">
-                            <td style="padding: 8px; border: 1px solid #ddd;">${index+1}</td>
-                            <td style="padding: 8px; border: 1px solid #ddd;">${qText}</td>
-                            <td style="padding: 8px; border: 1px solid #ddd; text-align: center; font-weight: bold;">${stuAns}</td>
-                            <td style="padding: 8px; border: 1px solid #ddd; text-align: center; font-weight: bold;">${isCorrect ? '✓' : correctAns}</td>
+                htmlContent += `<tr class="${bgClass}">
+                            <td>${index+1}</td>
+                            <td>${qText}</td>
+                            <td style="text-align: center; font-weight: bold;">${stuAns}</td>
+                            <td style="text-align: center; font-weight: bold;">${isCorrect ? '✓' : correctAns}</td>
                          </tr>`;
             });
 
-            html += `</tbody></table></div>`;
+            htmlContent += `</tbody></table></body></html>`;
 
-            // Gunakan fitur .from(string, 'string') agar tidak perlu render DOM
-            const opt = {
-                margin: 0.5,
-                filename: `Math_Assessment_Group_${g}.pdf`,
-                image: { type: 'jpeg', quality: 0.95 },
-                html2canvas: { scale: 2, useCORS: true, logging: false },
-                jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+            // Buka jendela/tab baru dan tulis konten HTML ke sana
+            const printWindow = window.open('', '_blank', 'height=600,width=800');
+            printWindow.document.write(htmlContent);
+            printWindow.document.close(); // Penting: tutup proses write agar halaman selesai dimuat
+            
+            // Tunggu sebentar agar CSS dan konten ter-render sempurna di tab baru, lalu panggil Print
+            printWindow.onload = function() {
+                printWindow.print();
+                // printWindow.close(); // Biarkan ini di-comment agar pengguna bisa melihat preview sebelum menekan Save
             };
-
-            html2pdf().set(opt).from(html, 'string').save();
         }
 
         // --- STARS ---
