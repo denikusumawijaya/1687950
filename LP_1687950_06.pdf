@@ -1,0 +1,1252 @@
+%PDF-1.3
+%ºß¬à
+3 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 4 0 R
+>>
+endobj
+4 0 obj
+<<
+/Length 3888
+>>
+stream
+0.5670000000000001 w
+0 G
+BT
+/F2 20 Tf
+23. TL
+0 g
+56.6929133858267775 785.1970866141732586 Td
+(Keliling dan Luas Bangun Datar Dasar - Nicholas) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+56.6929133858267775 742.6774015748030706 Td
+(Created: 05/06/2026) Tj
+ET
+56.6929133858267775 714.3309448818897636 m
+538.5826771653544256 714.3309448818897636 l
+S
+BT
+/F2 14 Tf
+16.0999999999999979 TL
+0 g
+56.6929133858267775 685.9844881889763428 Td
+(Student) Tj
+ET
+BT
+/F1 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 657.6380314960629221 Td
+(Student: Nicholas) Tj
+ET
+BT
+/F1 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 634.9608661417322537 Td
+(Topic: Keliling dan Luas Bangun Datar Dasar) Tj
+ET
+BT
+/F1 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 612.2837007874015853 Td
+(Status: completed) Tj
+ET
+BT
+/F2 16 Tf
+18.3999999999999986 TL
+0 g
+56.6929133858267775 569.7640157480313974 Td
+(Lesson Plan) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 527.2443307086614368 Td
+(Learning Objectives) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 504.5671653543306547 Td
+(• Menghitung keliling dan luas persegi serta persegi panjang yang melibatkan variabel aljabar.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 481.8899999999999295 Td
+(• Menganalisis hubungan antara perubahan panjang sisi terhadap perubahan luas pada bangun) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 464.8821259842518998 Td
+(datar.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 442.2049606299212314 Td
+(• Menyelesaikan masalah kontekstual kompleks yang menggabungkan konsep keliling dan luas) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 425.1970866141731449 Td
+(lahan.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 402.5199212598424765 Td
+(• Mengonstruksi model matematika dalam bentuk ekspresi aljabar untuk merepresentasikan luas) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 385.5120472440944468 Td
+(area yang tidak diketahui.) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 340.1577165354329964 Td
+(Lesson Information) Tj
+ET
+BT
+/F2 14 Tf
+16.0999999999999979 TL
+0 g
+56.6929133858267775 294.8033858267715459 Td
+(Lesson Sections) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 266.4569291338582389 Td
+(1. Spiral Review Warm-up \(10 minutes\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 243.7797637795274568 Td
+(Teacher Script:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 226.7718897637794271 Td
+(Halo Nicholas! Senang bertemu lagi. Sebelum kita masuk ke tantangan baru, kita pemanasan dulu ya) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 212.5986614173227736 Td
+(dengan kuis cepat di chatbox. Kita akan review aljabar kemarin. Siap? Oke, pertanyaan 1: Jika) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 198.4254330708660063 Td
+(variabel 'x' adalah harga buku, bagaimana menuliskan '3 buku lebih mahal 5000'? Pertanyaan 2:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 184.2522047244093528 Td
+(Sebutkan konstanta dari -4a + 12. Pertanyaan 3: Ubah kalimat 'dua kali umur Nicholas dikurangi 3' jadi) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 170.0789763779526993 Td
+(aljabar. Pertanyaan 4: Berapa variabel pada ekspresi 2x + 3y - 5?) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 144.5671653543306547 Td
+(Activities:) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 127.559291338582625 Td
+(• Quick-fire chatbox response) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 110.5514173228345953 Td
+(• Identify variables and constants in mixed expressions) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+56.6929133858267775 34.0159842519684616 Td
+(Generated on: 05/06/2026, 12:33:50) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+523.0626771653543301 34.0159842519684616 Td
+(1 / 4) Tj
+ET
+endstream
+endobj
+5 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 6 0 R
+>>
+endobj
+6 0 obj
+<<
+/Length 4513
+>>
+stream
+0.5670000000000001 w
+0 G
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 785.1970866141732586 Td
+(2. Introduction & Real-World Connection \(5 minutes\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 762.5199212598424765 Td
+(Teacher Script:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 745.5120472440944468 Td
+(Nicholas, bayangkan kamu adalah direktur pembangunan sebuah stadion. Kamu punya lahan terbatas) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 731.3388188976377933 Td
+(namun ingin kapasitas penonton maksimal. Memahami keliling dan luas bukan cuma soal rumus, tapi) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 717.1655905511811397 Td
+(soal efisiensi biaya. Kalau kamu salah hitung keliling, kamu bakal rugi beli pagar. Kalau salah luas,) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 702.9923622047243725 Td
+(rumputnya kurang! Kita akan pakai kemampuan aljabarmu tadi untuk mendesain ini.) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 677.480551181102328 Td
+(Activities:) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 660.4726771653542983 Td
+(• Diskusi singkat visualisasi penggunaan lahan) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 615.1183464566928478 Td
+(3. Review of Prior Knowledge \(5 minutes\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 592.4411811023621794 Td
+(Teacher Script:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 575.4333070866141497 Td
+(Ingat rumus dasar di SD? Luas persegi panjang adalah Panjang dikali Lebar. Keliling adalah jumlah) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 561.2600787401574962 Td
+(semua sisi. Tapi hari ini, kita naik level. Bagaimana jika panjangnya adalah \(x + 5\)? Kita akan) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 547.086850393700729 Td
+(menggabungkan aljabar ke dalam geometri.) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 521.5750393700786844 Td
+(Activities:) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 504.5671653543306547 Td
+(• Menuliskan rumus L = p x l dan K = 2\(p+l\) di whiteboard) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 459.2128346456692611 Td
+(4. Problem Introduction \(10 minutes\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 436.5356692913385359 Td
+(Teacher Script:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 419.5277952755905062 Td
+(Lihat tantangan ini: Sebuah taman berbentuk persegi panjang dengan panjang 2x meter dan lebar \(x -) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 405.3545669291337958 Td
+(3\) meter. Jika x = 10, berapa luasnya? Bagaimana jika kita tidak tahu x, bisakah kita membuat) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 391.1813385826770855 Td
+(rumusnya? Ini yang disebut ekspresi aljabar untuk luas. Mari kita bongkar cara mengerjakannya) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 377.0081102362204319 Td
+(langkah demi langkah.) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 351.4962992125983874 Td
+(Activities:) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 334.4884251968503008 Td
+(• Modeling substitusi variabel ke dalam rumus luas) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 317.480551181102328 Td
+(• Ekspansi aljabar sederhana \(distributif\)) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 272.1262204724408775 Td
+(5. Guided Practice \(15 minutes\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 249.4490551181102092 Td
+(Teacher Script:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 232.4411811023621794 Td
+(Sekarang giliranmu di layar. Ayo kita gambar persegi panjang bersama. Panjangnya 3y dan kelilingnya) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 218.2679527559054122 Td
+(20y. Berapa lebarnya dalam variabel y? Ingat, Keliling = 2\(p+l\). Jangan terburu-buru, bagi dua dulu) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 204.0947244094487587 Td
+(kelilingnya agar kita dapat p + l.) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 178.5829133858267141 Td
+(Activities:) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 161.5750393700786844 Td
+(• Step-by-step solving di whiteboard bersama guru) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 144.5671653543306547 Td
+(• Membedakan hasil akhir jika nilai variabel diberikan) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+56.6929133858267775 34.0159842519684616 Td
+(Generated on: 05/06/2026, 12:33:50) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+523.0626771653543301 34.0159842519684616 Td
+(2 / 4) Tj
+ET
+endstream
+endobj
+7 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 8 0 R
+>>
+endobj
+8 0 obj
+<<
+/Length 5104
+>>
+stream
+0.5670000000000001 w
+0 G
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 785.1970866141732586 Td
+(6. Independent Practice \(15 minutes\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 762.5199212598424765 Td
+(Teacher Script:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 745.5120472440944468 Td
+(Ini adalah 'Misi Mandiri'. Ada 3 soal di layar. Satu soal tentang desain ubin, satu tentang kebun.) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 731.3388188976377933 Td
+(Kerjakan di kertasmu dulu, lalu tunjukkan jalannya ke kamera atau tulis di whiteboard digital ya.) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 717.1655905511811397 Td
+(Hati-hati dengan soal nomor 3, itu soal jebakan tentang perbandingan luas!) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 691.6537795275589815 Td
+(Activities:) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 674.6459055118109518 Td
+(• Solving 3 hard level problems independently) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 657.6380314960629221 Td
+(• Explaining the logic behind the answer) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 612.2837007874015853 Td
+(7. Consolidation & Reflection \(5 minutes\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 589.6065354330708033 Td
+(Teacher Script:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 572.5986614173227736 Td
+(Luar biasa Nicholas! Kamu sudah berhasil memadukan aljabar dan geometri. Apa hal tersulit hari ini?) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 558.42543307086612 Td
+(\(Tunggu jawaban\). Ingat, matematika itu seperti membangun rumah, fondasi aljabarmu penting untuk) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 544.2522047244094665 Td
+(topik ini. Jangan lupa login ke https://learn.algonova.id/login untuk melihat catatan belajarmu hari ini) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 530.0789763779526993 Td
+(ya!) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 504.5671653543306547 Td
+(Activities:) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 487.559291338582625 Td
+(• Refleksi diri) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 470.5514173228345953 Td
+(• Summary rumus utama) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 425.1970866141731449 Td
+(Homework) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 396.850629921259781 Td
+(Medium Questions:) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 379.8427559055117513 Td
+(1. Sebuah persegi memiliki sisi 4x cm. Tentukan kelilingnya dalam x.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 357.1655905511810261 Td
+(2. Luas persegi panjang adalah 48 cm2. Jika lebarnya 6 cm, berapakah kelilingnya?) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 334.4884251968503008 Td
+(3. Tentukan luas persegi jika kelilingnya adalah 32 cm.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 311.8112598425195756 Td
+(4. Sebuah persegi panjang punya panjang 12 cm dan lebar \(y + 2\) cm. Tuliskan ekspresi) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 297.6380314960629221 Td
+(luasnya.) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 257.952992125984224 Td
+(Hard Questions:) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 240.9451181102361943 Td
+(1. Jika panjang persegi panjang adalah \(2x + 10\) cm dan lebarnya x cm, sedangkan) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 226.7718897637794271 Td
+(kelilingnya adalah 80 cm, tentukan nilai x.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 204.0947244094487587 Td
+(2. Dua buah persegi memiliki sisi s1 dan s2. Jika s1 = 2 * s2, buktikan bahwa Luas persegi) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 189.9214960629919915 Td
+(pertama adalah 4 kali luas persegi kedua.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 167.2443307086613231 Td
+(3. Sebuah kebun berbentuk persegi panjang dengan panjang \(3a\) m dan lebar \(2a - 5\) m.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 153.0711023622046696 Td
+(Jika a = 4, hitung selisih antara keliling dan luasnya.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 130.3939370078738875 Td
+(4. Keliling sebuah persegi sama dengan keliling persegi panjang yang berukuran 10 cm x 6) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 116.220708661417234 Td
+(cm. Hitunglah luas persegi tersebut.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 93.5435433070865656 Td
+(5. Sebuah bingkai foto lebar 2 cm dipasang mengitari foto berukuran 10 cm x 15 cm.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 79.3703149606297984 Td
+(Hitunglah luas seluruh bingkai tersebut \(hanya luas bingkainya\).) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+56.6929133858267775 34.0159842519684616 Td
+(Generated on: 05/06/2026, 12:33:50) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+523.0626771653543301 34.0159842519684616 Td
+(3 / 4) Tj
+ET
+endstream
+endobj
+9 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 10 0 R
+>>
+endobj
+10 0 obj
+<<
+/Length 5285
+>>
+stream
+0.5670000000000001 w
+0 G
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 785.1970866141732586 Td
+(6. Persegi panjang A memiliki p=12, l=8. Jika panjangnya ditambah 25% dan lebarnya) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 771.0238582677164914 Td
+(dikurangi 25%, apakah luasnya tetap sama? Buktikan dengan perhitungan.) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 731.3388188976377933 Td
+(Answer Key:) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 714.3309448818897636 Td
+(`K = 16x` \(4 * 4x\)) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 700.15771653543311 Td
+(`P = 8, K = 28 cm` \(48/6 = 8; 2*\(8+6\)\)) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 685.9844881889763428 Td
+(`L = 64 cm2` \(Sisi = 32/4 = 8; 8*8\)) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 671.8112598425196893 Td
+(`L = 12y + 24` \(12 * \(y+2\)\)) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 657.6380314960629221 Td
+(`x = 10` \(2\(2x+10+x\)=80 -> 6x+20=80 -> 6x=60\)) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 643.4648031496062686 Td
+(`L1 = \(2s2\)^2 = 4s2^2; L2 = s2^2. Terbukti L1 = 4*L2`) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 629.291574803149615 Td
+(`K = 34, L = 36, Selisih = 2` \(a=4: p=12, l=3\)) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 615.1183464566928478 Td
+(`L = 64 cm2` \(K_pp=32, S_p=8, L_p=64\)) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 600.9451181102361943 Td
+(`L_total - L_foto = \(14*19\) - \(10*15\) = 266 - 150 = 116 cm2`) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 586.7718897637794271 Td
+(`Tidak. L_awal=96, L_baru=15*6 = 90. Berkurang 6 cm2.`) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 572.5986614173227736 Td
+(REVIEW: Menyusun Ekspresi Aljabar dari Kalimat - Nicholas - 'Dua kali x ditambah 10': `2x +) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 558.42543307086612 Td
+(10`) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 544.2522047244094665 Td
+(REVIEW: Menyusun Ekspresi Aljabar dari Kalimat - Nicholas - 'Harga 3 kg apel jika 1 kg) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 530.0789763779526993 Td
+(adalah \(a - 2000\)': `3a - 6000`) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 515.9057480314959321 Td
+(REVIEW: Menyusun Ekspresi Aljabar dari Kalimat - Nicholas - 'Setengah dari kuadrat b': `1/2) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 501.7325196850393354 Td
+(* b^2`) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 487.559291338582625 Td
+(REVIEW: Menyusun Ekspresi Aljabar dari Kalimat - Nicholas - 'Selisih antara 20 dan tiga kali) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 473.3860629921259147 Td
+(y': `20 - 3y`) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 459.2128346456692611 Td
+(REVIEW: Pengenalan Aljabar: Variabel dan Konstanta - Nicholas - Koefisien x pada 5 - 2x +) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 445.0396062992125508 Td
+(y: `-2`) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 430.8663779527558404 Td
+(REVIEW: Pengenalan Aljabar: Variabel dan Konstanta - Nicholas - Konstanta pada 3x^2 - 7x) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 416.69314960629913 Td
+(- 10: `-10`) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 402.5199212598424765 Td
+(REVIEW: Pengenalan Aljabar: Variabel dan Konstanta - Nicholas - Jumlah suku pada 4a +) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 388.3466929133857661 Td
+(2b - c + 9: `4`) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 374.1734645669290558 Td
+(REVIEW: Pengenalan Aljabar: Variabel dan Konstanta - Nicholas - Sebutkan variabel pada) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 360.0002362204724022 Td
+(10p - 5q: `p dan q`) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 323.1498425196849666 Td
+(Parent Reminder) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 300.4726771653542983 Td
+(Update Belajar Nicholas: Geometri & Aljabar) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 283.4648031496062686 Td
+(Hari ini Nicholas belajar topik menantang: menggabungkan konsep Keliling & Luas dengan) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 269.2915748031495013 Td
+(Aljabar. Ia mulai belajar mendesain area seperti arsitek! Mohon bantuannya untuk) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 255.1183464566928478 Td
+(memastikan Nicholas mengerjakan tugas mandiri agar pemahaman aljabar dan geometrinya) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 240.9451181102361943 Td
+(semakin kuat. Akses materi lengkap di https://learn.algonova.id/login) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+56.6929133858267775 34.0159842519684616 Td
+(Generated on: 05/06/2026, 12:33:50) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+523.0626771653543301 34.0159842519684616 Td
+(4 / 4) Tj
+ET
+endstream
+endobj
+1 0 obj
+<</Type /Pages
+/Kids [3 0 R 5 0 R 7 0 R 9 0 R ]
+/Count 4
+>>
+endobj
+11 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+12 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+13 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-Oblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+14 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-BoldOblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+15 0 obj
+<<
+/Type /Font
+/BaseFont /Courier
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+16 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+17 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-Oblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+18 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-BoldOblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+19 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Roman
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+20 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+21 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Italic
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+22 0 obj
+<<
+/Type /Font
+/BaseFont /Times-BoldItalic
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+23 0 obj
+<<
+/Type /Font
+/BaseFont /ZapfDingbats
+/Subtype /Type1
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+24 0 obj
+<<
+/Type /Font
+/BaseFont /Symbol
+/Subtype /Type1
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+2 0 obj
+<<
+/ProcSet [/PDF /Text /ImageB /ImageC /ImageI]
+/Font <<
+/F1 11 0 R
+/F2 12 0 R
+/F3 13 0 R
+/F4 14 0 R
+/F5 15 0 R
+/F6 16 0 R
+/F7 17 0 R
+/F8 18 0 R
+/F9 19 0 R
+/F10 20 0 R
+/F11 21 0 R
+/F12 22 0 R
+/F13 23 0 R
+/F14 24 0 R
+>>
+/XObject <<
+>>
+>>
+endobj
+25 0 obj
+<<
+/Producer (jsPDF 3.0.2)
+/CreationDate (D:20260605123350+07'00')
+>>
+endobj
+26 0 obj
+<<
+/Type /Catalog
+/Pages 1 0 R
+/OpenAction [3 0 R /FitH null]
+/PageLayout /OneColumn
+>>
+endobj
+xref
+0 27
+0000000000 65535 f 
+0000019563 00000 n 
+0000021403 00000 n 
+0000000015 00000 n 
+0000000152 00000 n 
+0000004092 00000 n 
+0000004229 00000 n 
+0000008794 00000 n 
+0000008931 00000 n 
+0000014087 00000 n 
+0000014225 00000 n 
+0000019638 00000 n 
+0000019764 00000 n 
+0000019895 00000 n 
+0000020029 00000 n 
+0000020167 00000 n 
+0000020291 00000 n 
+0000020420 00000 n 
+0000020552 00000 n 
+0000020688 00000 n 
+0000020816 00000 n 
+0000020943 00000 n 
+0000021072 00000 n 
+0000021205 00000 n 
+0000021307 00000 n 
+0000021656 00000 n 
+0000021742 00000 n 
+trailer
+<<
+/Size 27
+/Root 26 0 R
+/Info 25 0 R
+/ID [ <7983C0E42E0AA8869300730049FF39F3> <7983C0E42E0AA8869300730049FF39F3> ]
+>>
+startxref
+21846
+%%EOF
