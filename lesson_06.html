@@ -544,15 +544,18 @@
                     <svg width="100%" height="180" viewBox="0 0 400 180">
                         <!-- Persegi Panjang -->
                         <rect x="20" y="20" width="160" height="100" fill="rgba(0, 243, 255, 0.1)" stroke="#00f3ff" stroke-width="2" rx="4"/>
-                        <text x="100" y="75" fill="#00f3ff" font-family="Orbitron" text-anchor="middle" font-size="14">p</text>
-                        <text x="10" y="75" fill="#bc13fe" font-family="Orbitron" text-anchor="middle" font-size="14" transform="rotate(-90 10 75)">l</text>
-                        <text x="100" y="150" fill="#e6edf3" font-size="12" text-anchor="middle">L = p × l</text>
+                        <!-- Memindahkan 'p' ke bawah sisi persegi panjang -->
+                        <text x="100" y="135" fill="#00f3ff" font-family="Orbitron" text-anchor="middle" font-size="14">p</text>
+                        <!-- 'l' tetap di samping kiri -->
+                        <text x="12" y="75" fill="#bc13fe" font-family="Orbitron" text-anchor="middle" font-size="14" transform="rotate(-90 12 75)">l</text>
+                        <text x="100" y="155" fill="#e6edf3" font-size="12" text-anchor="middle">L = p × l</text>
                         <text x="100" y="170" fill="#e6edf3" font-size="12" text-anchor="middle">K = 2(p + l)</text>
 
                         <!-- Persegi -->
                         <rect x="240" y="20" width="100" height="100" fill="rgba(13, 255, 0, 0.1)" stroke="#0dff00" stroke-width="2" rx="4"/>
-                        <text x="290" y="75" fill="#0dff00" font-family="Orbitron" text-anchor="middle" font-size="14">s</text>
-                        <text x="290" y="150" fill="#e6edf3" font-size="12" text-anchor="middle">L = s²</text>
+                        <!-- Memindahkan 's' ke bawah sisi persegi -->
+                        <text x="290" y="135" fill="#0dff00" font-family="Orbitron" text-anchor="middle" font-size="14">s</text>
+                        <text x="290" y="155" fill="#e6edf3" font-size="12" text-anchor="middle">L = s²</text>
                         <text x="290" y="170" fill="#e6edf3" font-size="12" text-anchor="middle">K = 4s</text>
                     </svg>
                 </div>
@@ -703,12 +706,18 @@
                         <line x1="50" y1="50" x2="350" y2="50" stroke="#e6edf3" stroke-width="4"/>
                         <polygon points="195,50 205,50 200,55" fill="#e6edf3"/>
                         
+                        <!-- Kotak Kiri: Nilai setengah keliling -->
                         <rect x="50" y="60" width="120" height="40" fill="rgba(0, 243, 255, 0.2)" stroke="#00f3ff" stroke-width="2" rx="5"/>
-                        <text x="110" y="85" fill="#00f3ff" font-family="Orbitron" text-anchor="middle" font-size="14">p + l = 10y</text>
+                        <text x="110" y="85" fill="#00f3ff" font-family="Orbitron" text-anchor="middle" font-size="14">10y</text>
                         
+                        <!-- Tanda Sama Dengan di Tengah -->
+                        <text x="200" y="85" fill="#e6edf3" font-size="24" font-weight="bold" text-anchor="middle">=</text>
+
+                        <!-- Kotak Kanan: Panjang yang diketahui + lebar yang dicari -->
                         <rect x="230" y="60" width="120" height="40" fill="rgba(188, 19, 254, 0.2)" stroke="#bc13fe" stroke-width="2" rx="5"/>
                         <text x="290" y="85" fill="#bc13fe" font-family="Orbitron" text-anchor="middle" font-size="14">3y + l</text>
 
+                        <!-- Hasil -->
                         <text x="200" y="130" fill="#0dff00" font-family="Orbitron" text-anchor="middle" font-size="14">l = 10y - 3y = 7y</text>
                     </svg>
                 </div>
@@ -755,6 +764,51 @@
                         <div class="solution" id="q7-solution">Solution: Side of square is K/4 = 20a/4 = 5a.</div>
                     </div>
 
+                    <!-- Question 3 -->
+                    <div class="question-block" id="q8-block">
+                        <div class="q-text">A rectangle has \( p = 3y \) and \( l = 2y \). What is its perimeter? <small>(Persegi panjang p=3y dan l=2y. Berapa kelilingnya?)</small></div>
+                        
+                        <div>Step 1: \( K = 2(p + l) = 2(3y + 2y) = \) <select id="q8-s1" style="background:var(--bg-dark); color:var(--neon-blue); padding:5px; border:1px solid var(--neon-blue); border-radius:4px;">
+                            <option value="">Select...</option>
+                            <option value="5y">5y</option>
+                            <option value="10y">10y</option>
+                            <option value="6y">6y</option>
+                        </select></div>
+
+                        <div class="feedback" id="q8-feedback"></div>
+                        <div class="solution" id="q8-solution">Solution: \( K = 2(3y + 2y) = 2(5y) = 10y \).</div>
+                    </div>
+
+                    <!-- Question 4 -->
+                    <div class="question-block" id="q9-block">
+                        <div class="q-text">A square has an Area of \( 36a^2 \). What is its side length? <small>(Persegi memiliki Luas 36a². Berapa panjang sisinya?)</small></div>
+                        
+                        <div>Step 1: \( s = \sqrt{Area} = \sqrt{36a^2} = \) <select id="q9-s1" style="background:var(--bg-dark); color:var(--neon-blue); padding:5px; border:1px solid var(--neon-blue); border-radius:4px;">
+                            <option value="">Select...</option>
+                            <option value="6a">6a</option>
+                            <option value="36a">36a</option>
+                            <option value="12a">12a</option>
+                        </select></div>
+
+                        <div class="feedback" id="q9-feedback"></div>
+                        <div class="solution" id="q9-solution">Solution: The side of a square is the square root of its area. \( \sqrt{36a^2} = 6a \).</div>
+                    </div>
+
+                    <!-- Question 5 -->
+                    <div class="question-block" id="q10-block">
+                        <div class="q-text">A rectangle has \( p = (2x - 1) \) cm. If \( x = 5 \), what is the length? <small>(Persegi panjang p=(2x - 1) cm. Jika x=5, berapa panjangnya?)</small></div>
+                        
+                        <div>Step 1: Substitute \( x = 5 \) into \( 2x - 1 = 2(5) - 1 = \) <select id="q10-s1" style="background:var(--bg-dark); color:var(--neon-blue); padding:5px; border:1px solid var(--neon-blue); border-radius:4px;">
+                            <option value="">Select...</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                        </select></div>
+
+                        <div class="feedback" id="q10-feedback"></div>
+                        <div class="solution" id="q10-solution">Solution: Replace \( x \) with 5. \( 2(5) - 1 = 10 - 1 = 9 \) cm.</div>
+                    </div>
+                    
                     <div style="text-align: center; margin-top: 20px;">
                         <button class="btn-action btn-check" onclick="checkGame5()"><i class="fas fa-check-circle"></i> Check</button>
                         <button class="btn-action btn-reset" onclick="resetGame5()"><i class="fas fa-redo"></i> Reset</button>
@@ -816,7 +870,30 @@
                         <div class="feedback" id="m3-feedback"></div>
                         <div class="solution" id="m3-solution">Solution: Initial Area = \( 12 \times 8 = 96 \). New \( p = 12 \times 1.25 = 15 \). New \( l = 8 \times 0.75 = 6 \). New Area = \( 15 \times 6 = 90 \). It decreases by 6 cm².</div>
                     </div>
+                    
+                    <!-- Mission 4 -->
+                    <div class="question-block" id="m4-block">
+                        <div class="q-text">4. A photo frame 2 cm wide is put around a 10 cm x 15 cm photo. Calculate the area of the frame ONLY! <small>(Bingkai foto lebar 2 cm dipasang mengitari foto 10x15 cm. Hitung luas bingkainya saja!)</small></div>
+                        <div class="options-grid">
+                            <label class="option-label"><input type="radio" name="m4" value="a"> 116 cm²</label>
+                            <label class="option-label"><input type="radio" name="m4" value="b"> 150 cm²</label>
+                            <label class="option-label"><input type="radio" name="m4" value="c"> 266 cm²</label>
+                        </div>
+                        <div class="feedback" id="m4-feedback"></div>
+                        <div class="solution" id="m4-solution">Solution: Total length = \( 15 + 2 + 2 = 19 \) cm. Total width = \( 10 + 2 + 2 = 14 \) cm. Total area = \( 19 \times 14 = 266 \) cm². Photo area = \( 10 \times 15 = 150 \) cm². Frame area = \( 266 - 150 = 116 \) cm².</div>
+                    </div>
 
+                    <!-- Mission 5 -->
+                    <div class="question-block" id="m5-block">
+                        <div class="q-text">5. The perimeter of a square is equal to the perimeter of a rectangle with length 10 cm and width 6 cm. What is the area of the square? <small>(Keliling persegi sama dengan keliling persegi panjang berukuran 10 cm x 6 cm. Hitunglah luas persegi tersebut!)</small></div>
+                        <div class="options-grid">
+                            <label class="option-label"><input type="radio" name="m5" value="a"> 64 cm²</label>
+                            <label class="option-label"><input type="radio" name="m5" value="b"> 32 cm²</label>
+                            <label class="option-label"><input type="radio" name="m5" value="c"> 16 cm²</label>
+                        </div>
+                        <div class="feedback" id="m5-feedback"></div>
+                        <div class="solution" id="m5-solution">Solution: Perimeter of rectangle = \( 2(10 + 6) = 32 \) cm. Since square perimeter is 32, its side is \( 32 / 4 = 8 \) cm. Area of square = \( 8 \times 8 = 64 \) cm².</div>
+                    </div>
                     <div style="text-align: center; margin-top: 20px;">
                         <button class="btn-action btn-check" onclick="checkGame6()"><i class="fas fa-check-circle"></i> Check Missions</button>
                         <button class="btn-action btn-reset" onclick="resetGame6()"><i class="fas fa-redo"></i> Reset Missions</button>
@@ -1429,34 +1506,120 @@
                     const studentName = document.getElementById('studentName').value || 'No Name';
                     const assessmentDate = document.getElementById('assessmentDate').value || 'No Date';
                     
+                    // 1. Cari Tab yang sedang aktif
+                    let activeTab = null;
+                    let tabTitle = "";
+                    document.querySelectorAll('.tab-content').forEach(tab => {
+                        if (tab.style.display !== 'none') {
+                            activeTab = tab;
+                            tabTitle = tab.querySelector('h3').textContent.trim();
+                        }
+                    });
+
+                    if (!activeTab) {
+                        alert("Please select a group tab to print.");
+                        return;
+                    }
+
+                    // 2. Hitung Skor berdasarkan feedback yang sudah muncul (Pastikan siswa sudah klik Submit sebelum print)
+                    let totalQuestions = activeTab.querySelectorAll('.question-block').length;
+                    let correctAnswers = activeTab.querySelectorAll('.feedback.correct').length;
+                    let scoreText = `${correctAnswers} / ${totalQuestions}`;
+
+                    // 3. Fungsi Pembantu untuk mengambil teks jawaban siswa
+                    function getStudentAnswer(block) {
+                        let radios = block.querySelectorAll('input[type="radio"]:checked');
+                        if (radios.length > 0) return radios[0].parentElement.textContent.trim();
+                        
+                        let select = block.querySelector('select');
+                        if (select && select.value !== "") return select.options[select.selectedIndex].text.trim();
+                        
+                        let textInput = block.querySelector('input[type="text"]');
+                        if (textInput && textInput.value.trim() !== "") return textInput.value.trim();
+                        
+                        let checkboxes = block.querySelectorAll('input[type="checkbox"]:checked');
+                        if (checkboxes.length > 0) {
+                            let texts = [];
+                            checkboxes.forEach(cb => texts.push(cb.parentElement.textContent.trim()));
+                            return texts.join('; ');
+                        }
+                        return "Unanswered";
+                    }
+
+                    // 4. Fungsi Pembantu untuk mengambil kunci jawaban
+                    function getCorrectAnswer(block) {
+                        let solDiv = block.querySelector('.solution');
+                        if (solDiv) {
+                            let text = solDiv.textContent.trim();
+                            if (text.startsWith("Solution: ")) text = text.substring(10);
+                            return text;
+                        }
+                        return "N/A";
+                    }
+
+                    // 5. Bangun baris tabel untuk setiap soal
+                    let tableRows = "";
+                    let questionBlocks = activeTab.querySelectorAll('.question-block');
+                    questionBlocks.forEach((block, index) => {
+                        let qTextEl = block.querySelector('.q-text');
+                        // Ambil teks soal (hanya node teks utama, tanpa tag small)
+                        let qText = qTextEl ? qTextEl.childNodes[0].textContent.trim() : `Q ${index+1}`;
+                        let studentAns = getStudentAnswer(block);
+                        let correctAns = getCorrectAnswer(block);
+                        
+                        tableRows += `<tr>
+                            <td style="text-align:center; vertical-align:top;">${index + 1}</td>
+                            <td style="vertical-align:top;">${qText}</td>
+                            <td style="vertical-align:top;">${studentAns}</td>
+                            <td style="vertical-align:top; color:green;">${correctAns}</td>
+                        </tr>`;
+                    });
+
+                    // 6. Susun HTML untuk halaman Print
                     let printHtml = `
                         <html>
                         <head>
-                            <title>Assessment Result</title>
+                            <title>Assessment Result - ${tabTitle}</title>
                             <style>
                                 body { font-family: Arial, sans-serif; padding: 20px; color: #333; }
-                                h1 { color: #00f3ff; text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; }
-                                .info { margin-bottom: 20px; font-size: 1.2rem; }
-                                .score { font-size: 1.5rem; font-weight: bold; color: #bc13fe; margin-bottom: 30px; text-align: center; }
-                                table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
-                                th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                                h1 { text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; }
+                                .info { display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 1.1rem; }
+                                .score { font-size: 1.5rem; font-weight: bold; color: #2e7d32; margin-bottom: 20px; text-align: center; background: #e8f5e9; padding: 10px; border-radius: 5px;}
+                                table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.95rem; }
+                                th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
                                 th { background-color: #f4f4f4; }
+                                tr:nth-child(even) { background-color: #f9f9f9; }
                             </style>
                         </head>
                         <body>
                             <h1>Math Tutoring Assessment Result</h1>
-                            <div class="info"><strong>Student Name:</strong> ${studentName}</div>
-                            <div class="info"><strong>Date:</strong> ${assessmentDate}</div>
-                            <div class="score">Please see scores submitted in each group tab.</div>
-                            <p style="text-align:center; font-style:italic; color:#666;">This print out serves as proof of completion. Detailed right/wrong analysis is available on screen.</p>
+                            <div class="info">
+                                <div><strong>Student Name:</strong> ${studentName}</div>
+                                <div><strong>Date:</strong> ${assessmentDate}</div>
+                            </div>
+                            <h2 style="color: #333; border-bottom: 1px solid #ccc; padding-bottom: 5px;">${tabTitle}</h2>
+                            <div class="score">Score: ${scoreText}</div>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th width="5%">No.</th>
+                                        <th width="35%">Question</th>
+                                        <th width="30%">Student Answer</th>
+                                        <th width="30%">Correct Answer / Solution</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${tableRows}
+                                </tbody>
+                            </table>
                         </body>
                         </html>
                     `;
 
+                    // 7. Buka jendela print
                     const printWindow = window.open('', '_blank');
                     printWindow.document.write(printHtml);
                     printWindow.document.close();
-                    
                     printWindow.onload = function() {
                         printWindow.print();
                     };
@@ -1574,49 +1737,63 @@
 
                 // --- GAME 5 LOGIC (Step by Step) ---
                 function checkGame5() {
+                    let score = 0;
+        
                     // Q6
                     const q6s1 = document.getElementById('q6-s1').value;
                     const q6s2 = document.getElementById('q6-s2').value;
                     const q6fb = document.getElementById('q6-feedback');
                     const q6sol = document.getElementById('q6-solution');
-
-                    if(q6s1 === '12x' && q6s2 === '8x') {
-                        q6fb.innerHTML = "<i class='fas fa-check-circle'></i> Correct! <small>(Benar!)</small>";
-                        q6fb.className = "feedback correct"; q6sol.style.display = 'none';
-                    } else {
-                        q6fb.innerHTML = "<i class='fas fa-times-circle'></i> Incorrect steps. <small>(Langkah salah.)</small>";
-                        q6fb.className = "feedback incorrect"; q6sol.style.display = 'block';
-                    }
+                    if(q6s1 === '12x' && q6s2 === '8x') { q6fb.innerHTML = "<i class='fas fa-check-circle'></i> Correct! <small>(Benar!)</small>"; q6fb.className = "feedback correct"; q6sol.style.display = 'none'; score++; } else { q6fb.innerHTML = "<i class='fas fa-times-circle'></i> Incorrect steps. <small>(Langkah salah.)</small>"; q6fb.className = "feedback incorrect"; q6sol.style.display = 'block'; }
                     q6fb.style.display = 'block';
-
+        
                     // Q7
                     const q7s1 = document.getElementById('q7-s1').value;
                     const q7fb = document.getElementById('q7-feedback');
                     const q7sol = document.getElementById('q7-solution');
-
-                    if(q7s1 === '5a') {
-                        q7fb.innerHTML = "<i class='fas fa-check-circle'></i> Correct! <small>(Benar!)</small>";
-                        q7fb.className = "feedback correct"; q7sol.style.display = 'none';
-                    } else {
-                        q7fb.innerHTML = "<i class='fas fa-times-circle'></i> Incorrect. <small>(Salah.)</small>";
-                        q7fb.className = "feedback incorrect"; q7sol.style.display = 'block';
-                    }
+                    if(q7s1 === '5a') { q7fb.innerHTML = "<i class='fas fa-check-circle'></i> Correct! <small>(Benar!)</small>"; q7fb.className = "feedback correct"; q7sol.style.display = 'none'; score++; } else { q7fb.innerHTML = "<i class='fas fa-times-circle'></i> Incorrect. <small>(Salah.)</small>"; q7fb.className = "feedback incorrect"; q7sol.style.display = 'block'; }
                     q7fb.style.display = 'block';
+        
+                    // Q8 (Baru)
+                    const q8s1 = document.getElementById('q8-s1').value;
+                    const q8fb = document.getElementById('q8-feedback');
+                    const q8sol = document.getElementById('q8-solution');
+                    if(q8s1 === '10y') { q8fb.innerHTML = "<i class='fas fa-check-circle'></i> Correct! <small>(Benar!)</small>"; q8fb.className = "feedback correct"; q8sol.style.display = 'none'; score++; } else { q8fb.innerHTML = "<i class='fas fa-times-circle'></i> Incorrect. <small>(Salah.)</small>"; q8fb.className = "feedback incorrect"; q8sol.style.display = 'block'; }
+                    q8fb.style.display = 'block';
+        
+                    // Q9 (Baru)
+                    const q9s1 = document.getElementById('q9-s1').value;
+                    const q9fb = document.getElementById('q9-feedback');
+                    const q9sol = document.getElementById('q9-solution');
+                    if(q9s1 === '6a') { q9fb.innerHTML = "<i class='fas fa-check-circle'></i> Correct! <small>(Benar!)</small>"; q9fb.className = "feedback correct"; q9sol.style.display = 'none'; score++; } else { q9fb.innerHTML = "<i class='fas fa-times-circle'></i> Incorrect. <small>(Salah.)</small>"; q9fb.className = "feedback incorrect"; q9sol.style.display = 'block'; }
+                    q9fb.style.display = 'block';
+        
+                    // Q10 (Baru)
+                    const q10s1 = document.getElementById('q10-s1').value;
+                    const q10fb = document.getElementById('q10-feedback');
+                    const q10sol = document.getElementById('q10-solution');
+                    if(q10s1 === '9') { q10fb.innerHTML = "<i class='fas fa-check-circle'></i> Correct! <small>(Benar!)</small>"; q10fb.className = "feedback correct"; q10sol.style.display = 'none'; score++; } else { q10fb.innerHTML = "<i class='fas fa-times-circle'></i> Incorrect. <small>(Salah.)</small>"; q10fb.className = "feedback incorrect"; q10sol.style.display = 'block'; }
+                    q10fb.style.display = 'block';
+        
+                    alert(`Guided Practice Score: ${score}/5`);
                 }
-
+        
                 function resetGame5() {
                     document.getElementById('q6-s1').value = "";
                     document.getElementById('q6-s2').value = "";
                     document.getElementById('q7-s1').value = "";
+                    document.getElementById('q8-s1').value = "";
+                    document.getElementById('q9-s1').value = "";
+                    document.getElementById('q10-s1').value = "";
                     document.querySelectorAll('#game5 .feedback').forEach(el => el.style.display = 'none');
                     document.querySelectorAll('#game5 .solution').forEach(el => el.style.display = 'none');
                 }
 
                 // --- GAME 6 LOGIC (Independent Missions) ---
-                const game6Answers = { m1: 'a', m2: 'a', m3: 'b' }; // Adjusted M2 logic based on key provided. K=34, L=36 -> Diff=2.
-
+                const game6Answers = { m1: 'a', m2: 'a', m3: 'b', m4: 'a', m5: 'a' }; // Ditambah m4 dan m5
+        
                 function checkGame6() {
-                    for (let i = 1; i <= 3; i++) {
+                    for (let i = 1; i <= 5; i++) { // Diubah dari 3 menjadi 5
                         const qName = 'm' + i;
                         const selected = document.querySelector(`input[name="${qName}"]:checked`);
                         const feedbackEl = document.getElementById(`${qName}-feedback`);
@@ -1627,7 +1804,7 @@
                             feedbackEl.className = "feedback incorrect"; feedbackEl.style.display = "block"; solutionEl.style.display = "none";
                             continue;
                         }
-
+        
                         if (selected.value === game6Answers[qName]) {
                             feedbackEl.innerHTML = "<i class='fas fa-check-circle'></i> Correct! <small>(Benar!)</small>";
                             feedbackEl.className = "feedback correct"; solutionEl.style.display = "none";
@@ -1638,9 +1815,9 @@
                         feedbackEl.style.display = "block";
                     }
                 }
-
+        
                 function resetGame6() {
-                    for (let i = 1; i <= 3; i++) {
+                    for (let i = 1; i <= 5; i++) { // Diubah dari 3 menjadi 5
                         const qName = 'm' + i;
                         document.querySelectorAll(`input[name="${qName}"]`).forEach(inp => inp.checked = false);
                         document.getElementById(`${qName}-feedback`).style.display = "none";
@@ -1847,8 +2024,9 @@
         function checkGame2() {
             let allCorrect = true;
             const feedbackEl = document.getElementById('game2-feedback');
+            const game2DropZones = document.querySelectorAll('#drop-zones .drop-zone'); // Hanya ambil area Game 2
             
-            dropZones.forEach(zone => {
+            game2DropZones.forEach(zone => {
                 const acceptVal = zone.dataset.accept;
                 const dropSlot = zone.querySelector('.drop-slot');
                 
@@ -1879,8 +2057,9 @@
         function resetGame2() {
             const dragBank = document.getElementById('drag-items');
             const feedbackEl = document.getElementById('game2-feedback');
+            const game2DropZones = document.querySelectorAll('#drop-zones .drop-zone'); // Hanya ambil area Game 2
             
-            dropZones.forEach(zone => {
+            game2DropZones.forEach(zone => {
                 const dropSlot = zone.querySelector('.drop-slot');
                 while(dropSlot.firstChild) {
                     let item = dropSlot.firstChild;
