@@ -196,6 +196,15 @@
             gap: 5px;
             min-width: 30px;
         }
+        /* Feedback Inline Game 3 */
+        .g3-inline-fb {
+            font-size: 0.85rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            min-width: 30px;
+        }
         /* Agar teks/ikon di dalam drop zone tidak menghalangi proses drop */
         .drop-zone-stone > * {
             pointer-events: none;
@@ -413,7 +422,7 @@
             <div class="mb-4">
                 <h3 class="text-xl font-title text-moss mb-2">Game: Match the Inverse / Cocokkan Lawannya</h3>
                 <p class="text-sm mb-2">Drag the correct inverse operation to the box. / <i>Seret operasi balikan yang benar ke kotak.</i></p>
-                <div id="game3-container" class="space-y-3"></div>
+                <div id="game3-container" class="grid grid-cols-2 gap-4"></div>
                 <div class="mt-4 flex gap-2 flex-wrap" id="game3-bank"></div>
             </div>
 
@@ -488,7 +497,7 @@
             <div class="mb-4">
                 <h3 class="text-xl font-title text-moss mb-2">Game: Complete the Solution / Lengkapi Penyelesaian</h3>
                 <p class="text-sm mb-2">Type the correct number in the blanks. / <i>Ketik angka yang benar di tempat kosong.</i></p>
-                <div id="game5-container" class="space-y-6"></div>
+                <div id="game5-container" class="grid grid-cols-2 gap-4"></div>
             </div>
 
             <div class="flex gap-4 mt-4 no-print">
@@ -825,48 +834,82 @@
             const b = document.getElementById('game3-bank');
             c.innerHTML = ''; b.innerHTML = '';
             g3Answers.fill(null);
-
+        
             let shuffledBank = [...g3Data].sort(() => Math.random() - 0.5);
-
+        
             g3Data.forEach((item, i) => {
                 c.innerHTML += `
-                    <div class="bg-cave p-2 rounded flex items-center gap-2">
-                        <span class="text-bone flex-1 text-center font-math">\\(${item.op}\\)</span>
-                        <i class="fas fa-exchange-alt text-fire"></i>
-                        <div id="g3-drop-${i}" class="drop-zone flex-1 p-2 text-sm text-center" ondrop="dropG3(event, ${i})" ondragover="allowDrop(event)" ondragleave="leaveDrop(event)"></div>
+                    <div class="bg-cave p-3 rounded-lg border border-clay flex flex-col sm:flex-row items-center gap-3">
+                        <div class="flex items-center gap-2 flex-1 bg-rock p-2 rounded text-bone font-math justify-center">
+                            <i class="fas fa-exchange-alt text-fire"></i>
+                            <span class="text-sm font-bold">\\(${item.op}\\)</span>
+                        </div>
+                        <i class="fas fa-long-arrow-alt-right text-moss hidden sm:block"></i>
+                        <i class="fas fa-long-arrow-alt-down text-moss sm:hidden"></i>
+                        <div class="flex-1 flex items-center gap-2 w-full">
+                            <div id="g3-drop-${i}" class="drop-zone-stone flex-1 text-sm text-center text-flint" ondrop="dropG3(event, ${i})" ondragover="allowDrop(event)" ondragleave="leaveDrop(event)">
+                                Drop here...
+                            </div>
+                            <span id="g3-fb-${i}" class="g3-inline-fb"></span>
+                        </div>
                     </div>`;
             });
-
+        
             shuffledBank.forEach((item, i) => {
                 b.innerHTML += `
-                    <div id="g3-drag-${i}" class="drag-item bg-moss text-white px-3 py-1 rounded text-sm font-math" draggable="true" ondragstart="dragG2(event, '${item.inv}')">
+                    <div id="g3-drag-${i}" class="drag-item-stone text-sm font-math" draggable="true" ondragstart="dragG2(event, '${item.inv}')">
                         \\(${item.inv}\\)
                     </div>`;
             });
-            renderMathInElement(document.getElementById('game3-container'));
-            renderMathInElement(document.getElementById('game3-bank'));
+            renderMathInElement(c);
+            renderMathInElement(b);
         }
+        
         function dropG3(e, i) { 
             e.preventDefault(); 
             
-            // Paksa mencari kotak drop berdasarkan ID agar 100% akurat (tidak salah target ke teks)
             let dropZone = document.getElementById(`g3-drop-${i}`);
             dropZone.classList.remove('drag-over');
             
             let val = e.dataTransfer.getData("text");
             g3Answers[i] = val;
-            dropZone.innerHTML = `\\(${val}\\)`;
+            
+            // Masukkan teks ke dalam kotak dengan animasi pop
+            dropZone.innerHTML = `<span class="drop-anim font-bold text-bone">\\(${val}\\)</span>`;
+            dropZone.classList.add('dropped');
+            
+            // Hapus feedback lama jika ada
+            document.getElementById(`g3-fb-${i}`).innerHTML = '';
             renderMathInElement(dropZone);
         }
+        
         function checkGame3() {
-            let fb = document.getElementById('game3-feedback'); fb.innerHTML = '';
             let score = 0;
             g3Data.forEach((item, i) => {
-                if(g3Answers[i] === item.inv) score++;
-                else fb.innerHTML += `<p class="text-red-400 text-sm">Q${i+1}: Inverse of \\(${item.op}\\) is \\(${item.inv}\\).</p>`;
+                let fbSpan = document.getElementById(`g3-fb-${i}`);
+                let dropZone = document.getElementById(`g3-drop-${i}`);
+                let isCorrect = g3Answers[i] === item.inv;
+                
+                if(isCorrect) {
+                    score++;
+                    fbSpan.innerHTML = '<i class="fas fa-check-circle anim-bounce text-xl"></i>';
+                    fbSpan.className = "g3-inline-fb fb-correct";
+                    dropZone.style.borderColor = "#689F38"; // Moss
+                } else {
+                    let hint = g3Answers[i] === null ? "Unanswered" : `Should be: \\(${item.inv}\\)`;
+                    fbSpan.innerHTML = `<i class="fas fa-times-circle text-xl"></i> <span class="text-xs text-red-400">${hint}</span>`;
+                    fbSpan.className = "g3-inline-fb fb-wrong";
+                    dropZone.style.borderColor = "#D32F2F"; // Red
+                }
             });
-            if(score === 10) fb.innerHTML = '<p class="feedback-correct">Inverse Master! / Master Operasi Balikan!</p>';
-            renderMathInElement(fb);
+            
+            let fb = document.getElementById('game3-feedback');
+            if(score === 10) {
+                fb.innerHTML = '<p class="feedback-correct text-center text-lg mt-4"><i class="fas fa-trophy mr-2"></i> Inverse Master! / Master Operasi Balikan!</p>';
+            } else {
+                fb.innerHTML = `<p class="text-center text-sand mt-4">Score: ${score}/10. Check the red boxes for mistakes.</p>`;
+            }
+            renderMathInElement(fb); // Render math di petunjuk jawaban benar
         }
         function resetGame3() { initGame3(); document.getElementById('game3-feedback').innerHTML = ''; }
 
@@ -902,15 +945,41 @@
         function checkGame4() {
             let fb = document.getElementById('game4-feedback'); fb.innerHTML = '';
             let isCorrect = g4Order.length === 4;
+            let allStepsCorrect = true;
+        
             if(isCorrect) {
                 for(let i=0; i<4; i++) {
-                    if(g4Steps[g4Order[i]].order !== i) isCorrect = false;
+                    if(g4Steps[g4Order[i]].order !== i) allStepsCorrect = false;
                 }
+            } else {
+                allStepsCorrect = false;
             }
-            if(isCorrect) fb.innerHTML = '<p class="feedback-correct">Correct Order! / Urutan Benar!</p>';
-            else fb.innerHTML = '<p class="feedback-wrong">Incorrect Order. Start from the original equation, then add 8 to both sides, then simplify, then divide by 4. / <i>Mulai dari persamaan awal, tambah 8, sederhanakan, lalu bagi 4.</i></p>';
+        
+            // Beri feedback inline pada tombol yang diklik
+            g4Order.forEach((btnIndex, stepIndex) => {
+                let btn = document.getElementById(`g4-btn-${btnIndex}`);
+                if(g4Steps[btnIndex].order === stepIndex) {
+                    btn.innerHTML += ' <i class="fas fa-check-circle text-green-300 ml-2 anim-bounce"></i>';
+                    btn.style.border = "2px solid #8BC34A";
+                } else {
+                    btn.innerHTML += ' <i class="fas fa-times-circle text-red-400 ml-2"></i>';
+                    btn.style.border = "2px solid #D32F2F";
+                    btn.style.backgroundColor = "#5D4037"; // Kembali ke warna rock karena salah
+                    allStepsCorrect = false;
+                }
+            });
+        
+            if(allStepsCorrect) {
+                fb.innerHTML = '<p class="feedback-correct text-center text-lg mt-4"><i class="fas fa-trophy mr-2"></i> Correct Order! / Urutan Benar!</p>';
+            } else {
+                fb.innerHTML = '<p class="feedback-wrong text-center mt-4"><i class="fas fa-exclamation-triangle mr-2"></i> Incorrect Order. Follow the unwrapping steps! / <i>Ikuti langkah membuka bungkus!</i></p>';
+            }
         }
-        function resetGame4() { initGame4(); document.getElementById('game4-feedback').innerHTML = ''; }
+        
+        function resetGame4() { 
+            initGame4(); 
+            document.getElementById('game4-feedback').innerHTML = ''; 
+        }
 
 
         // --- GAME 5: Fill blanks ---
@@ -927,37 +996,87 @@
             {eq: "7x - 5 = 37", steps: ["7x = 42", "x = 6"], ans: [42, 6]}
         ];
 
+        const g5Data = [
+            {eq: "5x + 12 = 32", steps: ["5x = 20", "x = 4"], ans: [20, 4]},
+            {eq: "8y - 15 = 41", steps: ["8y = 56", "y = 7"], ans: [56, 7]},
+            {eq: "4n + 7 = 31", steps: ["4n = 24", "n = 6"], ans: [24, 6]},
+            {eq: "3x - 5 = 85", steps: ["3x = 90", "x = 30"], ans: [90, 30]},
+            {eq: "4(x - 3) = 20", steps: ["4x - 12 = 20", "4x = 32", "x = 8"], ans: [12, 32, 8]},
+            {eq: "6x + 4 = 2x + 20", steps: ["4x + 4 = 20", "4x = 16", "x = 4"], ans: [4, 16, 4]},
+            {eq: "2(3x + 5) - 4 = 18", steps: ["6x + 10 - 4 = 18", "6x + 6 = 18", "6x = 12", "x = 2"], ans: [10, 6, 12, 2]},
+            {eq: "0.5x + 2 = 10", steps: ["0.5x = 8", "x = 16"], ans: [8, 16]},
+            {eq: "5(x - 2) = 3(x + 4)", steps: ["5x - 10 = 3x + 12", "2x - 10 = 12", "2x = 22", "x = 11"], ans: [10, 2, 22, 11]},
+            {eq: "7x - 5 = 37", steps: ["7x = 42", "x = 6"], ans: [42, 6]}
+        ];
+        
         function initGame5() {
             const c = document.getElementById('game5-container');
             c.innerHTML = '';
             g5Data.forEach((item, i) => {
-                let html = `<div class="bg-cave p-3 rounded">
-                    <p class="text-bone font-bold font-math mb-2">\\(${item.eq}\\)</p>
-                    <div class="pl-4 space-y-1 text-bone font-math">`;
+                let html = `<div class="bg-cave p-3 rounded-lg border border-clay hover:border-moss transition-colors">
+                    <div class="flex justify-between items-center mb-2">
+                        <p class="text-bone font-bold font-math text-sm bg-rock px-2 py-1 rounded">\\(${item.eq}\\)</p>
+                        <span id="g5-fb-${i}" class="inline-fb"></span>
+                    </div>
+                    <div class="pl-2 space-y-1 text-bone font-math text-sm">`;
                 item.steps.forEach((step, j) => {
                     let parts = step.split("= ");
                     let prefix = parts[0] + "= ";
-                    html += `<p>${prefix} <input type="text" id="g5-in-${i}-${j}" class="w-16 bg-sand text-cave text-center rounded px-1 py-0.5 mx-1"></p>`;
+                    html += `<div class="flex items-center gap-1">
+                                <span>${prefix}</span> 
+                                <input type="text" id="g5-in-${i}-${j}" class="w-14 bg-sand text-cave text-center rounded px-1 py-0.5 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-moss">
+                             </div>`;
                 });
                 html += `</div></div>`;
                 c.innerHTML += html;
             });
             renderMathInElement(c);
         }
+        
         function checkGame5() {
             let fb = document.getElementById('game5-feedback'); fb.innerHTML = '';
-            let score = 0; let total = 0;
+            let totalScore = 0; let totalQ = 0;
+            
             g5Data.forEach((item, i) => {
+                let itemCorrect = true;
+                let fbSpan = document.getElementById(`g5-fb-${i}`);
+                
                 item.ans.forEach((ans, j) => {
-                    total++;
-                    let val = document.getElementById(`g5-in-${i}-${j}`).value.trim();
-                    if(val == ans) score++;
-                    else fb.innerHTML += `<p class="text-red-400 text-sm">Q${i+1} Step ${j+1}: Incorrect. The answer should be ${ans}.</p>`;
+                    totalQ++;
+                    let inputEl = document.getElementById(`g5-in-${i}-${j}`);
+                    let val = inputEl.value.trim();
+                    if(val == ans) {
+                        totalScore++;
+                        inputEl.style.border = "2px solid #689F38"; // Moss
+                    } else {
+                        itemCorrect = false;
+                        inputEl.style.border = "2px solid #D32F2F"; // Red
+                        inputEl.style.backgroundColor = "#FFEBEE";
+                    }
                 });
+        
+                // Feedback inline per soal
+                if(itemCorrect) {
+                    fbSpan.innerHTML = '<i class="fas fa-check-circle anim-bounce"></i>';
+                    fbSpan.className = "inline-fb fb-correct";
+                } else {
+                    let correctAnswers = item.ans.join(", ");
+                    fbSpan.innerHTML = `<i class="fas fa-times-circle"></i> <span class="text-xs text-red-400">Ans: ${correctAnswers}</span>`;
+                    fbSpan.className = "inline-fb fb-wrong";
+                }
             });
-            if(score === total) fb.innerHTML = '<p class="feedback-correct">Solving Expert! / Ahli Penyelesaian!</p>';
+        
+            if(totalScore === totalQ) {
+                fb.innerHTML = '<p class="feedback-correct text-center text-lg mt-4"><i class="fas fa-trophy mr-2"></i> Solving Expert! / Ahli Penyelesaian!</p>';
+            } else {
+                fb.innerHTML = `<p class="text-center text-sand mt-4">Score: ${totalScore}/${totalQ}. Check the red inputs for mistakes.</p>`;
+            }
         }
-        function resetGame5() { initGame5(); document.getElementById('game5-feedback').innerHTML = ''; }
+        
+        function resetGame5() { 
+            initGame5(); 
+            document.getElementById('game5-feedback').innerHTML = ''; 
+        }
 
 
         function initGames() {
@@ -966,65 +1085,70 @@
 
         // --- ASSESSMENT LOGIC ---
         const assessData = [
+            // Group 1: Radio
             [
-                {q: "Solve for x: x + 5 = 12", opts: ["5", "6", "7", "8"], ans: 2, hint: "Subtract 5 from both sides."},
-                {q: "Solve for y: 3y = 18", opts: ["3", "6", "9", "12"], ans: 1, hint: "Divide both sides by 3."},
-                {q: "Solve for n: n - 4 = 10", opts: ["6", "10", "14", "40"], ans: 2, hint: "Add 4 to both sides."},
-                {q: "Solve for x: x / 2 = 5", opts: ["2.5", "7", "10", "25"], ans: 2, hint: "Multiply both sides by 2."},
-                {q: "Which is the inverse of + 7?", opts: ["- 7", "x 7", "/ 7", "+ 0"], ans: 0, hint: "The opposite of addition is subtraction."},
-                {q: "Solve: 2x + 1 = 9", opts: ["3", "4", "5", "8"], ans: 1, hint: "Subtract 1 (9-1=8), then divide by 2."},
-                {q: "If 5 = 5, what happens if we add 2 to the left side?", opts: ["Nothing", "Equation is false", "Must add 2 to right side", "Must subtract 2 from right"], ans: 2, hint: "Keep it balanced!"},
-                {q: "Solve: 4x - 2 = 14", opts: ["2", "3", "4", "5"], ans: 2, hint: "Add 2 (16), divide by 4."},
-                {q: "Identify the variable in: 3a + 4 = 10", opts: ["3", "a", "4", "10"], ans: 1, hint: "Variables are letters."},
-                {q: "Solve: 10 - x = 6", opts: ["4", "16", "-4", "6"], ans: 0, hint: "x = 10 - 6."}
+                {q: "Solve for \\(x\\): \\(x + 5 = 12\\)", opts: ["5", "6", "7", "8"], ans: 2, hint: "Subtract 5 from both sides."},
+                {q: "Solve for \\(y\\): \\(3y = 18\\)", opts: ["3", "6", "9", "12"], ans: 1, hint: "Divide both sides by 3."},
+                {q: "Solve for \\(n\\): \\(n - 4 = 10\\)", opts: ["6", "10", "14", "40"], ans: 2, hint: "Add 4 to both sides."},
+                {q: "Solve for \\(x\\): \\(\\frac{x}{2} = 5\\)", opts: ["2.5", "7", "10", "25"], ans: 2, hint: "Multiply both sides by 2."},
+                {q: "Which is the inverse of \\(+ 7\\)?", opts: ["- 7", "\\(\\times 7\\)", "\\(\\div 7\\)", "+ 0"], ans: 0, hint: "The opposite of addition is subtraction."},
+                {q: "Solve: \\(2x + 1 = 9\\)", opts: ["3", "4", "5", "8"], ans: 1, hint: "Subtract 1 (9-1=8), then divide by 2."},
+                {q: "If \\(5 = 5\\), what happens if we add 2 to the left side?", opts: ["Nothing", "Equation is false", "Must add 2 to right side", "Must subtract 2 from right"], ans: 2, hint: "Keep it balanced!"},
+                {q: "Solve: \\(4x - 2 = 14\\)", opts: ["2", "3", "4", "5"], ans: 2, hint: "Add 2 (16), divide by 4."},
+                {q: "Identify the variable in: \\(3a + 4 = 10\\)", opts: ["3", "\\(a\\)", "4", "10"], ans: 1, hint: "Variables are letters."},
+                {q: "Solve: \\(10 - x = 6\\)", opts: ["4", "16", "-4", "6"], ans: 0, hint: "\\(x = 10 - 6\\)."}
             ],
+            // Group 2: Dropdown
             [
-                {q: "Solve for x: 2x = 10. x = [drop]", opts: ["2", "5", "8", "12"], ans: 1, hint: "10 / 2 = 5"},
+                {q: "Solve for \\(x\\): \\(2x = 10\\). \\(x =\\) [drop]", opts: ["2", "5", "8", "12"], ans: 1, hint: "\\(10 \\div 2 = 5\\)"},
                 {q: "Inverse operation of Multiplication is [drop]", opts: ["Addition", "Subtraction", "Division", "Exponent"], ans: 2, hint: "To undo times, we divide."},
-                {q: "Solve: y - 3 = 4. y = [drop]", opts: ["1", "7", "12", "-1"], ans: 1, hint: "4 + 3 = 7"},
-                {q: "In 5x + 2 = 12, what do we undo first? [drop]", opts: ["5x", "+ 2", "= 12", "x"], ans: 1, hint: "Unwrap the outer layer (addition) first."},
-                {q: "Solve: x/3 = 9. x = [drop]", opts: ["3", "6", "12", "27"], ans: 3, hint: "9 * 3 = 27"},
-                {q: "Solve: 4x + 4 = 20. x = [drop]", opts: ["4", "5", "6", "16"], ans: 0, hint: "20-4=16, 16/4=4"},
-                {q: "If 3x = 3x, this is an [drop]", opts: ["Identity", "Falsehood", "Contradiction", "Equation"], ans: 0, hint: "Always true."},
-                {q: "Solve: 2(x+1)=6. x = [drop]", opts: ["2", "3", "4", "5"], ans: 0, hint: "6/2=3, 3-1=2"},
-                {q: "Constant term in 4x - 5 = 0 is [drop]", opts: ["4", "x", "-5", "0"], ans: 2, hint: "Constants are numbers without variables."},
-                {q: "Solve: 7 - x = 2. x = [drop]", opts: ["5", "9", "-5", "-9"], ans: 0, hint: "7 - 2 = 5"}
+                {q: "Solve: \\(y - 3 = 4\\). \\(y =\\) [drop]", opts: ["1", "7", "12", "-1"], ans: 1, hint: "\\(4 + 3 = 7\\)"},
+                {q: "In \\(5x + 2 = 12\\), what do we undo first? [drop]", opts: ["\\(5x\\)", "\\(+ 2\\)", "\\(= 12\\)", "\\(x\\)"], ans: 1, hint: "Unwrap the outer layer (addition) first."},
+                {q: "Solve: \\(\\frac{x}{3} = 9\\). \\(x =\\) [drop]", opts: ["3", "6", "12", "27"], ans: 3, hint: "\\(9 \\times 3 = 27\\)"},
+                {q: "Solve: \\(4x + 4 = 20\\). \\(x =\\) [drop]", opts: ["4", "5", "6", "16"], ans: 0, hint: "\\(20-4=16, 16\\div 4=4\\)"},
+                {q: "If \\(3x = 3x\\), this is an [drop]", opts: ["Identity", "Falsehood", "Contradiction", "Equation"], ans: 0, hint: "Always true."},
+                {q: "Solve: \\(2(x+1)=6\\). \\(x =\\) [drop]", opts: ["2", "3", "4", "5"], ans: 0, hint: "\\(6\\div 2=3, 3-1=2\\)"},
+                {q: "Constant term in \\(4x - 5 = 0\\) is [drop]", opts: ["4", "\\(x\\)", "-5", "0"], ans: 2, hint: "Constants are numbers without variables."},
+                {q: "Solve: \\(7 - x = 2\\). \\(x =\\) [drop]", opts: ["5", "9", "-5", "-9"], ans: 0, hint: "\\(7 - 2 = 5\\)"}
             ],
+            // Group 3: Textfield
             [
-                {q: "Solve: x + 8 = 15. x = ", ans: "7", hint: "15 - 8"},
-                {q: "Solve: 4y = 24. y = ", ans: "6", hint: "24 / 4"},
-                {q: "Solve: n - 10 = 5. n = ", ans: "15", hint: "5 + 10"},
-                {q: "Solve: x/5 = 4. x = ", ans: "20", hint: "4 * 5"},
-                {q: "Solve: 3x + 2 = 11. x = ", ans: "3", hint: "11-2=9, 9/3=3"},
-                {q: "Solve: 2x - 5 = 9. x = ", ans: "7", hint: "9+5=14, 14/2=7"},
-                {q: "Solve: 5x = x + 12. x = ", ans: "3", hint: "4x=12"},
-                {q: "Solve: 3(x-2)=9. x = ", ans: "5", hint: "x-2=3"},
-                {q: "Solve: 10 - x = 3. x = ", ans: "7", hint: "10 - 3"},
-                {q: "Solve: 0.5x = 4. x = ", ans: "8", hint: "4 / 0.5"}
+                {q: "Solve: \\(x + 8 = 15\\). \\(x =\\) ", ans: "7", hint: "\\(15 - 8\\)"},
+                {q: "Solve: \\(4y = 24\\). \\(y =\\) ", ans: "6", hint: "\\(24 \\div 4\\)"},
+                {q: "Solve: \\(n - 10 = 5\\). \\(n =\\) ", ans: "15", hint: "\\(5 + 10\\)"},
+                {q: "Solve: \\(\\frac{x}{5} = 4\\). \\(x =\\) ", ans: "20", hint: "\\(4 \\times 5\\)"},
+                {q: "Solve: \\(3x + 2 = 11\\). \\(x =\\) ", ans: "3", hint: "\\(11-2=9, 9\\div 3=3\\)"},
+                {q: "Solve: \\(2x - 5 = 9\\). \\(x =\\) ", ans: "7", hint: "\\(9+5=14, 14\\div 2=7\\)"},
+                {q: "Solve: \\(5x = x + 12\\). \\(x =\\) ", ans: "3", hint: "\\(4x=12\\)"},
+                {q: "Solve: \\(3(x-2)=9\\). \\(x =\\) ", ans: "5", hint: "\\(x-2=3\\)"},
+                {q: "Solve: \\(10 - x = 3\\). \\(x =\\) ", ans: "7", hint: "\\(10 - 3\\)"},
+                {q: "Solve: \\(0.5x = 4\\). \\(x =\\) ", ans: "8", hint: "\\(4 \\div 0.5\\)"}
             ],
+            // Group 4: Checkbox
             [
-                {q: "Which of these are valid steps to solve 2x + 6 = 14? (Select 2)", opts: ["Subtract 6 from both sides", "Divide by 2 first", "Add 6 to both sides", "Divide by 14"], ans: [0, 1], hint: "Undo +6, then undo *2."},
-                {q: "Which equations have x=4 as the solution? (Select 2)", opts: ["x + 1 = 5", "2x = 8", "x - 4 = 0", "3x = 12", "x/2 = 1"], ans: [0, 1, 2, 3], hint: "Substitute 4 into each. (4 are correct!)"},
-                {q: "Identify the variables in the expression: 3a + 2b - 5 (Select all)", opts: ["3", "a", "2", "b", "-5"], ans: [1, 3], hint: "Variables are letters."},
-                {q: "Which operations are used to solve 4x - 2 = 10? (Select 2)", opts: ["Addition", "Subtraction", "Multiplication", "Division"], ans: [0, 3], hint: "Add 2, then divide by 4."},
-                {q: "Which of these represent 'A number minus 5 equals 10'? (Select 2)", opts: ["x - 5 = 10", "5 - x = 10", "n - 5 = 10", "10 - x = 5"], ans: [0, 2], hint: "Variable minus 5."},
+                {q: "Which of these are valid steps to solve \\(2x + 6 = 14\\)? (Select 2)", opts: ["Subtract 6 from both sides", "Divide by 2 first", "Add 6 to both sides", "Divide by 14"], ans: [0, 1], hint: "Undo \\(+6\\), then undo \\(\\times 2\\)."},
+                {q: "Which equations have \\(x=4\\) as the solution? (Select 2)", opts: ["\\(x + 1 = 5\\)", "\\(2x = 8\\)", "\\(x - 4 = 0\\)", "\\(3x = 12\\)", "\\(\\frac{x}{2} = 1\\)"], ans: [0, 1, 2, 3], hint: "Substitute 4 into each. (4 are correct!)"},
+                {q: "Identify the variables in the expression: \\(3a + 2b - 5\\) (Select all)", opts: ["3", "\\(a\\)", "2", "\\(b\\)", "-5"], ans: [1, 3], hint: "Variables are letters."},
+                {q: "Which operations are used to solve \\(4x - 2 = 10\\)? (Select 2)", opts: ["Addition", "Subtraction", "Multiplication", "Division"], ans: [0, 3], hint: "Add 2, then divide by 4."},
+                {q: "Which of these represent 'A number minus 5 equals 10'? (Select 2)", opts: ["\\(x - 5 = 10\\)", "\\(5 - x = 10\\)", "\\(n - 5 = 10\\)", "\\(10 - x = 5\\)"], ans: [0, 2], hint: "Variable minus 5."},
                 {q: "What are the properties of an equation? (Select 2)", opts: ["Has an equals sign", "Has variables", "Must be true", "Is just an expression"], ans: [0, 1], hint: "Equations equate two expressions."},
-                {q: "To solve 3(x+1)=12, which ways work? (Select 2)", opts: ["Divide by 3 first", "Distribute 3 first", "Subtract 1 first", "Multiply by 12"], ans: [0, 1], hint: "Both dividing or distributing first are valid."},
-                {q: "Which values make 2x < 10 true? (Select 2)", opts: ["2", "4", "5", "6"], ans: [0, 1], hint: "2x must be less than 10."},
-                {q: "Which are examples of PLSV? (Select 2)", opts: ["2x + 1 = 5", "x^2 = 4", "y - 3 = 0", "x + y = 5"], ans: [0, 2], hint: "Linear and One Variable."},
-                {q: "To isolate x in (x/2) + 3 = 7, what must we do? (Select 2)", opts: ["Subtract 3", "Multiply by 2", "Add 3", "Divide by 2"], ans: [0, 1], hint: "Subtract 3, then multiply by 2."}
+                {q: "To solve \\(3(x+1)=12\\), which ways work? (Select 2)", opts: ["Divide by 3 first", "Distribute 3 first", "Subtract 1 first", "Multiply by 12"], ans: [0, 1], hint: "Both dividing or distributing first are valid."},
+                {q: "Which values make \\(2x < 10\\) true? (Select 2)", opts: ["2", "4", "5", "6"], ans: [0, 1], hint: "\\(2x\\) must be less than 10."},
+                {q: "Which are examples of PLSV? (Select 2)", opts: ["\\(2x + 1 = 5\\)", "\\(x^2 = 4\\)", "\\(y - 3 = 0\\)", "\\(x + y = 5\\)"], ans: [0, 2], hint: "Linear and One Variable."},
+                {q: "To isolate \\(x\\) in \\(\\frac{x}{2} + 3 = 7\\), what must we do? (Select 2)", opts: ["Subtract 3", "Multiply by 2", "Add 3", "Divide by 2"], ans: [0, 1], hint: "Subtract 3, then multiply by 2."}
             ],
+            // Group 5: Mixed
             [
-                {q: "Match the inverse: x + 5", type: "dd", ans: "x - 5", bank: ["x - 5", "x + 5", "5x", "x/5"]},
-                {q: "Solve: 3x = 18. x =", type: "tf", ans: "6"},
+                {q: "Match the inverse: \\(x + 5\\)", type: "dd", ans: "\\(x - 5\\)", bank: ["\\(x - 5\\)", "\\(x + 5\\)", "\\(5x\\)", "\\(\\frac{x}{5}\\)"]},
+                {q: "Solve: \\(3x = 18\\). \\(x =\\)", type: "tf", ans: "6"},
                 {q: "Inverse of Division is:", type: "dd", ans: "Multiplication", bank: ["Addition", "Subtraction", "Multiplication", "Division"]},
-                {q: "Is x=3 a solution to 2x+1=7? (True/False)", type: "tf", ans: "True"},
-                {q: "Solve: y - 4 = -2. y =", type: "tf", ans: "2"},
-                {q: "Match the inverse: x / 4", type: "dd", ans: "x * 4", bank: ["x / 4", "x - 4", "x * 4", "x + 4"]},
-                {q: "Solve: 2x + 4 = 10. x =", type: "tf", ans: "3"},
-                {q: "Match the step: To solve 4x - 2 = 6, first we...", type: "dd", ans: "Add 2", bank: ["Divide by 4", "Add 2", "Subtract 2", "Multiply by 2"]},
-                {q: "Solve: 5x = x + 12. x =", type: "tf", ans: "3"},
-                {q: "Solve: 4(x-1)=8. x =", type: "tf", ans: "3"}
+                {q: "Is \\(x=3\\) a solution to \\(2x+1=7\\)? (True/False)", type: "tf", ans: "True"},
+                {q: "Solve: \\(y - 4 = -2\\). \\(y =\\)", type: "tf", ans: "2"},
+                {q: "Match the inverse: \\(\\frac{x}{4}\\)", type: "dd", ans: "\\(x \\times 4\\)", bank: ["\\(\\frac{x}{4}\\)", "\\(x - 4\\)", "\\(x \\times 4\\)", "\\(x + 4\\)"]},
+                {q: "Solve: \\(2x + 4 = 10\\). \\(x =\\)", type: "tf", ans: "3"},
+                {q: "Match the step: To solve \\(4x - 2 = 6\\), first we...", type: "dd", ans: "Add 2", bank: ["Divide by 4", "Add 2", "Subtract 2", "Multiply by 2"]},
+                {q: "Solve: \\(5x = x + 12\\). \\(x =\\)", type: "tf", ans: "3"},
+                {q: "Solve: \\(4(x-1)=8\\). \\(x =\\)", type: "tf", ans: "3"}
             ]
         ];
 
@@ -1051,7 +1175,7 @@
 
             data.forEach((item, i) => {
                 html += `<div class="bg-cave p-3 rounded" id="assess-q-${idx}-${i}">
-                    <p class="text-bone mb-2 font-bold">${i+1}. \\(${item.q}\\)</p>`;
+                    <p class="text-bone mb-2 font-bold">${i+1}. (${item.q})</p>`;
                 
                 if (idx === 0) {
                     html += '<div class="pl-4 space-y-1">';
