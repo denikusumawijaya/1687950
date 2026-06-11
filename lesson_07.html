@@ -68,15 +68,46 @@
             border-bottom: 2px solid #5D4037;
         }
 
-        .feedback-correct { background: #689F38; color: white; padding: 4px 8px; border-radius: 4px; animation: pop 0.3s ease; }
-        .feedback-wrong { background: #D32F2F; color: white; padding: 4px 8px; border-radius: 4px; animation: shake 0.4s ease; }
+        /* Game 1 Specific Styles */
+        .g1-btn {
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+        }
+        .g1-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(104, 159, 56, 0.5);
+        }
+        .g1-btn:active {
+            transform: scale(0.95);
+        }
+        .g1-btn.selected {
+            background-color: #689F38;
+            color: white;
+            border-color: #8BC34A;
+        }
+        .inline-fb {
+            font-size: 0.9rem;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            min-width: 120px;
+        }
+        .fb-correct { color: #8BC34A; }
+        .fb-wrong { color: #FF7043; font-size: 0.8rem; }
 
-        @keyframes pop {
-            0% { transform: scale(0.8); } 50% { transform: scale(1.1); } 100% { transform: scale(1); }
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; } 
+            50% { transform: scale(1.2); } 
+            100% { transform: scale(1); opacity: 1; }
         }
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
         }
+        .anim-pop { animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; opacity: 0; }
+        .anim-bounce { animation: bounce 0.5s ease; }
+
         @keyframes slideIn {
             from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); }
         }
@@ -124,50 +155,88 @@
             </div>
         </header>
 
-        <!-- SECTION 1: Spiral Review Warm-up -->
+        <!-- SECTION 1: Spiral Review Warm-up (REVISED) -->
         <section class="section-card p-6 mb-8 animate-slide-in" id="sec1">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-3xl font-title text-fire"><i class="fas fa-pickaxe mr-2"></i> Spiral Review Warm-up</h2>
                 <span class="bg-cave text-bone px-3 py-1 rounded-full font-mono text-sm"><i class="far fa-clock mr-1"></i> 00:00 - 00:10</span>
             </div>
             <p class="mb-2">Before we start, let's review the basics of algebraic expressions. / <i>Sebelum memulai, mari kita review dasar ekspresi aljabar.</i></p>
-            <p class="mb-2">An algebraic expression contains variables (unknown numbers, like \(x\) or \(y\)) and constants (fixed numbers, like \(-7\) or \(4\)). / <i>Ekspresi aljabar mengandung variabel (angka tak diketahui) dan konstanta (angka tetap).</i></p>
+            <p class="mb-2">An algebraic expression contains <strong>variables</strong> (unknown numbers, like \(x\) or \(y\)) and <strong>constants</strong> (fixed numbers, like \(-7\) or \(4\)). / <i>Ekspresi aljabar mengandung variabel (angka tak diketahui) dan konstanta (angka tetap).</i></p>
             <p class="mb-4">We can simplify expressions by combining like terms. For example, \(3y + 4 - y = 2y + 4\). / <i>Kita bisa menyederhanakan ekspresi dengan menggabungkan suku sejenis.</i></p>
 
-            <div class="bg-cave p-4 rounded-lg mb-6 flex flex-col items-center">
-                <h3 class="text-bone font-bold mb-2"><i class="fas fa-cave-painting mr-2"></i> Visualisasi: Ekspresi Aljabar</h3>
-                <svg width="300" height="100" viewBox="0 0 300 100">
-                    <text x="10" y="30" fill="#D7CCC8" font-family="Caveat" font-size="24">5x</text>
-                    <rect x="50" y="10" width="40" height="30" fill="#795548" rx="5"/>
-                    <rect x="95" y="10" width="40" height="30" fill="#795548" rx="5"/>
-                    <rect x="140" y="10" width="40" height="30" fill="#795548" rx="5"/>
-                    <rect x="185" y="10" width="40" height="30" fill="#795548" rx="5"/>
-                    <rect x="230" y="10" width="40" height="30" fill="#795548" rx="5"/>
-                    <text x="10" y="80" fill="#FF7043" font-family="Caveat" font-size="24">- 7</text>
-                    <circle cx="80" cy="70" r="15" fill="#D32F2F"/>
-                    <rect x="110" y="55" width="20" height="30" fill="#D32F2F"/>
-                    <rect x="140" y="55" width="20" height="30" fill="#D32F2F"/>
-                    <rect x="170" y="55" width="20" height="30" fill="#D32F2F"/>
-                    <rect x="200" y="55" width="20" height="30" fill="#D32F2F"/>
-                    <rect x="230" y="55" width="20" height="30" fill="#D32F2F"/>
-                    <rect x="260" y="55" width="20" height="30" fill="#D32F2F"/>
-                    <rect x="290" y="55" width="20" height="30" fill="#D32F2F"/>
+            <!-- Revised Visualization: Algebra Tiles -->
+            <div class="bg-cave p-6 rounded-lg mb-6 flex flex-col items-center border border-clay">
+                <h3 class="text-bone font-bold mb-4 text-lg"><i class="fas fa-shapes mr-2"></i> Visualisasi Aljabar: \(5x - 7\)</h3>
+                <svg width="400" height="120" viewBox="0 0 400 120" class="mb-2">
+                    <!-- 5x group -->
+                    <g class="anim-pop" style="animation-delay: 0.2s">
+                        <rect x="20" y="10" width="30" height="40" fill="#689F38" rx="4" stroke="#8BC34A" stroke-width="2"/>
+                        <text x="35" y="35" fill="white" font-family="Caveat" font-size="20" text-anchor="middle">x</text>
+                    </g>
+                    <g class="anim-pop" style="animation-delay: 0.3s">
+                        <rect x="55" y="10" width="30" height="40" fill="#689F38" rx="4" stroke="#8BC34A" stroke-width="2"/>
+                        <text x="70" y="35" fill="white" font-family="Caveat" font-size="20" text-anchor="middle">x</text>
+                    </g>
+                    <g class="anim-pop" style="animation-delay: 0.4s">
+                        <rect x="90" y="10" width="30" height="40" fill="#689F38" rx="4" stroke="#8BC34A" stroke-width="2"/>
+                        <text x="105" y="35" fill="white" font-family="Caveat" font-size="20" text-anchor="middle">x</text>
+                    </g>
+                    <g class="anim-pop" style="animation-delay: 0.5s">
+                        <rect x="125" y="10" width="30" height="40" fill="#689F38" rx="4" stroke="#8BC34A" stroke-width="2"/>
+                        <text x="140" y="35" fill="white" font-family="Caveat" font-size="20" text-anchor="middle">x</text>
+                    </g>
+                    <g class="anim-pop" style="animation-delay: 0.6s">
+                        <rect x="160" y="10" width="30" height="40" fill="#689F38" rx="4" stroke="#8BC34A" stroke-width="2"/>
+                        <text x="175" y="35" fill="white" font-family="Caveat" font-size="20" text-anchor="middle">x</text>
+                    </g>
+                    <text x="210" y="35" fill="#D7CCC8" font-family="Roboto" font-size="20"> = 5x</text>
+
+                    <!-- -7 group -->
+                    <g class="anim-pop" style="animation-delay: 0.8s">
+                        <rect x="20" y="70" width="20" height="20" fill="#D32F2F" rx="2" stroke="#FF7043" stroke-width="1"/>
+                        <text x="30" y="85" fill="white" font-size="10" text-anchor="middle">-1</text>
+                    </g>
+                    <g class="anim-pop" style="animation-delay: 0.9s">
+                        <rect x="45" y="70" width="20" height="20" fill="#D32F2F" rx="2" stroke="#FF7043" stroke-width="1"/>
+                        <text x="55" y="85" fill="white" font-size="10" text-anchor="middle">-1</text>
+                    </g>
+                    <g class="anim-pop" style="animation-delay: 1.0s">
+                        <rect x="70" y="70" width="20" height="20" fill="#D32F2F" rx="2" stroke="#FF7043" stroke-width="1"/>
+                        <text x="80" y="85" fill="white" font-size="10" text-anchor="middle">-1</text>
+                    </g>
+                    <g class="anim-pop" style="animation-delay: 1.1s">
+                        <rect x="95" y="70" width="20" height="20" fill="#D32F2F" rx="2" stroke="#FF7043" stroke-width="1"/>
+                        <text x="105" y="85" fill="white" font-size="10" text-anchor="middle">-1</text>
+                    </g>
+                    <g class="anim-pop" style="animation-delay: 1.2s">
+                        <rect x="120" y="70" width="20" height="20" fill="#D32F2F" rx="2" stroke="#FF7043" stroke-width="1"/>
+                        <text x="130" y="85" fill="white" font-size="10" text-anchor="middle">-1</text>
+                    </g>
+                    <g class="anim-pop" style="animation-delay: 1.3s">
+                        <rect x="145" y="70" width="20" height="20" fill="#D32F2F" rx="2" stroke="#FF7043" stroke-width="1"/>
+                        <text x="155" y="85" fill="white" font-size="10" text-anchor="middle">-1</text>
+                    </g>
+                    <g class="anim-pop" style="animation-delay: 1.4s">
+                        <rect x="170" y="70" width="20" height="20" fill="#D32F2F" rx="2" stroke="#FF7043" stroke-width="1"/>
+                        <text x="180" y="85" fill="white" font-size="10" text-anchor="middle">-1</text>
+                    </g>
+                    <text x="210" y="85" fill="#D7CCC8" font-family="Roboto" font-size="20"> = -7</text>
                 </svg>
-                <p class="text-sm text-flint mt-2">5 Blocks of 'x' and 7 Blocks of '-1'</p>
+                <p class="text-sm text-flint mt-2 text-center">5 green blocks represent the variable \(x\), and 7 red small blocks represent the constant \(-1\). / <i>5 blok hijau mewakili variabel, 7 blok merah kecil mewakili konstanta.</i></p>
             </div>
 
-            <!-- Game 1: Click the Variable/Constant -->
+            <!-- Game 1: Click Identify (2 Columns + Inline Feedback) -->
             <div class="mb-4">
                 <h3 class="text-xl font-title text-moss mb-2">Game: Identify Components / Identifikasi Komponen</h3>
                 <p class="text-sm mb-2">Click either Variable or Constant for each expression. / <i>Klik Variabel atau Konstanta untuk tiap ekspresi.</i></p>
-                <div id="game1-container" class="space-y-2"></div>
+                <div id="game1-container" class="grid grid-cols-2 gap-4"></div>
             </div>
 
             <div class="flex gap-4 mt-4 no-print">
                 <button onclick="checkGame1()" class="interactive-btn bg-moss text-white px-4 py-2 rounded font-bold"><i class="fas fa-check mr-2"></i>Cek</button>
                 <button onclick="resetGame1()" class="interactive-btn bg-flint text-cave px-4 py-2 rounded font-bold"><i class="fas fa-undo mr-2"></i>Reset</button>
             </div>
-            <div id="game1-feedback" class="mt-4"></div>
         </section>
 
         <!-- SECTION 2: Introduction & Real-World Connection -->
@@ -202,9 +271,7 @@
                 <h3 class="text-xl font-title text-moss mb-2">Game: Keep it Balanced! / Jaga Keseimbangan!</h3>
                 <p class="text-sm mb-2">If you add 5 to the left side, what must you do to the right side? Drag the correct action. / <i>Jika tambah 5 di kiri, apa yang harus dilakukan di kanan? Seret aksi yang benar.</i></p>
                 <div id="game2-container" class="grid grid-cols-2 gap-4"></div>
-                <div class="mt-4 flex gap-2 flex-wrap" id="game2-bank">
-                    <!-- Draggable options injected via JS -->
-                </div>
+                <div class="mt-4 flex gap-2 flex-wrap" id="game2-bank"></div>
             </div>
 
             <div class="flex gap-4 mt-4 no-print">
@@ -441,7 +508,6 @@
             canvas.addEventListener('mouseup', stopPaint);
             canvas.addEventListener('mouseleave', stopPaint);
             
-            // Touch support
             canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startPaint(e.touches[0]); });
             canvas.addEventListener('touchmove', (e) => { e.preventDefault(); paint(e.touches[0]); });
             canvas.addEventListener('touchend', stopPaint);
@@ -485,7 +551,7 @@
         function clearCanvas() { ctx.fillStyle = '#EFEBE9'; ctx.fillRect(0, 0, canvas.width, canvas.height); }
 
 
-        // --- GAME 1: Click Identify ---
+        // --- GAME 1: Click Identify (REVISED) ---
         const g1Data = [
             {q: "8y", vType: "Variable"}, {q: "-4", vType: "Constant"}, {q: "12x", vType: "Variable"},
             {q: "100", vType: "Constant"}, {q: "-z", vType: "Variable"}, {q: "7", vType: "Constant"},
@@ -500,11 +566,14 @@
             g1Answers.fill(null);
             g1Data.forEach((item, i) => {
                 c.innerHTML += `
-                    <div class="flex items-center justify-between bg-cave p-2 rounded">
-                        <span class="text-bone text-lg font-math">\\(${item.q}\\)</span>
+                    <div class="bg-cave p-3 rounded flex flex-col gap-2 border border-clay hover:border-moss transition-colors" id="g1-card-${i}">
+                        <div class="flex items-center justify-between">
+                            <span class="text-bone text-lg font-math bg-rock px-3 py-1 rounded">\\(${item.q}\\)</span>
+                            <span id="g1-fb-${i}" class="inline-fb"></span>
+                        </div>
                         <div class="flex gap-2">
-                            <button id="g1-${i}-var" onclick="selG1(${i}, 'Variable')" class="px-3 py-1 rounded bg-rock text-bone text-sm">Variable</button>
-                            <button id="g1-${i}-con" onclick="selG1(${i}, 'Constant')" class="px-3 py-1 rounded bg-rock text-bone text-sm">Constant</button>
+                            <button id="g1-${i}-var" onclick="selG1(${i}, 'Variable')" class="g1-btn flex-1 px-3 py-1 rounded bg-rock text-bone text-sm font-bold">Variable</button>
+                            <button id="g1-${i}-con" onclick="selG1(${i}, 'Constant')" class="g1-btn flex-1 px-3 py-1 rounded bg-rock text-bone text-sm font-bold">Constant</button>
                         </div>
                     </div>`;
             });
@@ -512,25 +581,31 @@
         }
         function selG1(i, type) {
             g1Answers[i] = type;
-            document.getElementById(`g1-${i}-var`).classList.toggle('bg-moss', type === 'Variable');
-            document.getElementById(`g1-${i}-con`).classList.toggle('bg-moss', type === 'Constant');
-            document.getElementById(`g1-${i}-var`).classList.toggle('bg-rock', type !== 'Variable');
-            document.getElementById(`g1-${i}-con`).classList.toggle('bg-rock', type !== 'Constant');
+            const varBtn = document.getElementById(`g1-${i}-var`);
+            const conBtn = document.getElementById(`g1-${i}-con`);
+            
+            varBtn.classList.toggle('selected', type === 'Variable');
+            conBtn.classList.toggle('selected', type === 'Constant');
+            
+            // Clear feedback if re-selecting
+            document.getElementById(`g1-fb-${i}`).innerHTML = '';
         }
         function checkGame1() {
-            let fb = document.getElementById('game1-feedback'); fb.innerHTML = '';
-            let score = 0;
             g1Data.forEach((item, i) => {
+                let fbSpan = document.getElementById(`g1-fb-${i}`);
                 let isCorrect = g1Answers[i] === item.vType;
-                if(isCorrect) score++;
-                else {
-                    fb.innerHTML += `<p class="text-red-400 text-sm">Q${i+1}: Wrong. \\(${item.q}\\) is a ${item.vType}.</p>`;
+                
+                if(isCorrect) {
+                    fbSpan.innerHTML = '<i class="fas fa-check-circle anim-bounce"></i> Correct';
+                    fbSpan.className = "inline-fb fb-correct";
+                } else {
+                    let hint = g1Answers[i] === null ? "Unanswered" : `It's a ${item.vType}`;
+                    fbSpan.innerHTML = `<i class="fas fa-times-circle"></i> ${hint}`;
+                    fbSpan.className = "inline-fb fb-wrong";
                 }
             });
-            if(score === 10) fb.innerHTML = '<p class="feedback-correct">Perfect Score! / Nilai Sempurna!</p>';
-            renderMathInElement(fb);
         }
-        function resetGame1() { initGame1(); document.getElementById('game1-feedback').innerHTML = ''; }
+        function resetGame1() { initGame1(); }
 
 
         // --- GAME 2: Drag Drop Balance ---
@@ -561,7 +636,7 @@
                     <div class="bg-cave p-2 rounded flex items-center gap-2">
                         <span class="text-bone flex-1">${item.act}</span>
                         <i class="fas fa-arrow-right text-fire"></i>
-                        <div id="g2-drop-${i}" class="drop-zone flex-1 p-2 text-sm text-center" ondrop="dropG2(event, ${i})" ondragover="allowDrop(event)"></div>
+                        <div id="g2-drop-${i}" class="drop-zone flex-1 p-2 text-sm text-center" ondrop="dropG2(event, ${i})" ondragover="allowDrop(event)" ondragleave="leaveDrop(event)"></div>
                     </div>`;
             });
 
@@ -573,6 +648,7 @@
             });
         }
         function allowDrop(e) { e.preventDefault(); e.target.classList.add('drag-over'); }
+        function leaveDrop(e) { e.target.classList.remove('drag-over'); }
         function dragG2(e, val) { e.dataTransfer.setData("text", val); }
         function dropG2(e, i) { 
             e.preventDefault(); 
@@ -615,7 +691,7 @@
                     <div class="bg-cave p-2 rounded flex items-center gap-2">
                         <span class="text-bone flex-1 text-center font-math">\\(${item.op}\\)</span>
                         <i class="fas fa-exchange-alt text-fire"></i>
-                        <div id="g3-drop-${i}" class="drop-zone flex-1 p-2 text-sm text-center" ondrop="dropG3(event, ${i})" ondragover="allowDrop(event)"></div>
+                        <div id="g3-drop-${i}" class="drop-zone flex-1 p-2 text-sm text-center" ondrop="dropG3(event, ${i})" ondragover="allowDrop(event)" ondragleave="leaveDrop(event)"></div>
                     </div>`;
             });
 
@@ -661,19 +737,20 @@
             g4Order = [];
             g4Steps.forEach((step, i) => {
                 c.innerHTML += `
-                    <button id="g4-btn-${i}" onclick="selG4(${i})" class="bg-rock text-bone p-3 rounded text-lg font-math hover:bg-clay transition w-full">
+                    <button id="g4-btn-${i}" onclick="selG4(${i})" class="bg-rock text-bone p-3 rounded text-lg font-math hover:bg-clay transition w-full interactive-btn">
                         \\(${step.txt}\\)
                     </button>`;
             });
             renderMathInElement(c);
         }
         function selG4(i) {
-            if(g4Order.includes(i)) return; // Already selected
+            if(g4Order.includes(i)) return;
             g4Order.push(i);
-            document.getElementById(`g4-btn-${i}`).classList.remove('bg-rock', 'hover:bg-clay');
-            document.getElementById(`g4-btn-${i}`).classList.add('bg-moss', 'text-white');
-            document.getElementById(`g4-btn-${i}`).innerText = `${g4Order.length}. \\(${g4Steps[i].txt}\\)`;
-            renderMathInElement(document.getElementById(`g4-btn-${i}`));
+            const btn = document.getElementById(`g4-btn-${i}`);
+            btn.classList.remove('bg-rock', 'hover:bg-clay');
+            btn.classList.add('bg-moss', 'text-white');
+            btn.innerHTML = `${g4Order.length}. \\(${g4Steps[i].txt}\\) <i class="fas fa-check ml-2"></i>`;
+            renderMathInElement(btn);
         }
         function checkGame4() {
             let fb = document.getElementById('game4-feedback'); fb.innerHTML = '';
@@ -711,8 +788,6 @@
                     <p class="text-bone font-bold font-math mb-2">\\(${item.eq}\\)</p>
                     <div class="pl-4 space-y-1 text-bone font-math">`;
                 item.steps.forEach((step, j) => {
-                    // Find the blank part - usually the number after '=' or in distribution
-                    // For simplicity, we'll create an input for the target answer inline
                     let parts = step.split("= ");
                     let prefix = parts[0] + "= ";
                     html += `<p>${prefix} <input type="text" id="g5-in-${i}-${j}" class="w-16 bg-sand text-cave text-center rounded px-1 py-0.5 mx-1"></p>`;
@@ -744,7 +819,6 @@
 
         // --- ASSESSMENT LOGIC ---
         const assessData = [
-            // Group 1: Radio (Multiple Choice)
             [
                 {q: "Solve for x: x + 5 = 12", opts: ["5", "6", "7", "8"], ans: 2, hint: "Subtract 5 from both sides."},
                 {q: "Solve for y: 3y = 18", opts: ["3", "6", "9", "12"], ans: 1, hint: "Divide both sides by 3."},
@@ -757,7 +831,6 @@
                 {q: "Identify the variable in: 3a + 4 = 10", opts: ["3", "a", "4", "10"], ans: 1, hint: "Variables are letters."},
                 {q: "Solve: 10 - x = 6", opts: ["4", "16", "-4", "6"], ans: 0, hint: "x = 10 - 6."}
             ],
-            // Group 2: Dropdown
             [
                 {q: "Solve for x: 2x = 10. x = [drop]", opts: ["2", "5", "8", "12"], ans: 1, hint: "10 / 2 = 5"},
                 {q: "Inverse operation of Multiplication is [drop]", opts: ["Addition", "Subtraction", "Division", "Exponent"], ans: 2, hint: "To undo times, we divide."},
@@ -770,7 +843,6 @@
                 {q: "Constant term in 4x - 5 = 0 is [drop]", opts: ["4", "x", "-5", "0"], ans: 2, hint: "Constants are numbers without variables."},
                 {q: "Solve: 7 - x = 2. x = [drop]", opts: ["5", "9", "-5", "-9"], ans: 0, hint: "7 - 2 = 5"}
             ],
-            // Group 3: Textfield
             [
                 {q: "Solve: x + 8 = 15. x = ", ans: "7", hint: "15 - 8"},
                 {q: "Solve: 4y = 24. y = ", ans: "6", hint: "24 / 4"},
@@ -783,7 +855,6 @@
                 {q: "Solve: 10 - x = 3. x = ", ans: "7", hint: "10 - 3"},
                 {q: "Solve: 0.5x = 4. x = ", ans: "8", hint: "4 / 0.5"}
             ],
-            // Group 4: Checkbox (Multiple answers possible - though PLSV usually has 1, I'll make some identity/all real numbers or no solution, or just multi-step verification)
             [
                 {q: "Which of these are valid steps to solve 2x + 6 = 14? (Select 2)", opts: ["Subtract 6 from both sides", "Divide by 2 first", "Add 6 to both sides", "Divide by 14"], ans: [0, 1], hint: "Undo +6, then undo *2."},
                 {q: "Which equations have x=4 as the solution? (Select 2)", opts: ["x + 1 = 5", "2x = 8", "x - 4 = 0", "3x = 12", "x/2 = 1"], ans: [0, 1, 2, 3], hint: "Substitute 4 into each. (4 are correct!)"},
@@ -796,7 +867,6 @@
                 {q: "Which are examples of PLSV? (Select 2)", opts: ["2x + 1 = 5", "x^2 = 4", "y - 3 = 0", "x + y = 5"], ans: [0, 2], hint: "Linear and One Variable."},
                 {q: "To isolate x in (x/2) + 3 = 7, what must we do? (Select 2)", opts: ["Subtract 3", "Multiply by 2", "Add 3", "Divide by 2"], ans: [0, 1], hint: "Subtract 3, then multiply by 2."}
             ],
-            // Group 5: Mixed / Drag Drop
             [
                 {q: "Match the inverse: x + 5", type: "dd", ans: "x - 5", bank: ["x - 5", "x + 5", "5x", "x/5"]},
                 {q: "Solve: 3x = 18. x =", type: "tf", ans: "6"},
@@ -836,7 +906,7 @@
                 html += `<div class="bg-cave p-3 rounded" id="assess-q-${idx}-${i}">
                     <p class="text-bone mb-2 font-bold">${i+1}. \\(${item.q}\\)</p>`;
                 
-                if (idx === 0) { // Radio
+                if (idx === 0) {
                     html += '<div class="pl-4 space-y-1">';
                     item.opts.forEach((opt, j) => {
                         html += `<label class="flex items-center text-sand cursor-pointer">
@@ -844,16 +914,16 @@
                         </label>`;
                     });
                     html += '</div>';
-                } else if (idx === 1) { // Dropdown
+                } else if (idx === 1) {
                     html += `<select class="bg-sand text-cave p-1 rounded" id="assess-sel-${idx}-${i}">
                         <option value="-1">-- Pilih --</option>`;
                     item.opts.forEach((opt, j) => {
                         html += `<option value="${j}">${opt}</option>`;
                     });
                     html += '</select>';
-                } else if (idx === 2) { // TextField
+                } else if (idx === 2) {
                     html += `<input type="text" id="assess-tf-${idx}-${i}" class="bg-sand text-cave p-1 rounded w-24">`;
-                } else if (idx === 3) { // Checkbox
+                } else if (idx === 3) {
                     html += '<div class="pl-4 space-y-1">';
                     item.opts.forEach((opt, j) => {
                         html += `<label class="flex items-center text-sand cursor-pointer">
@@ -861,7 +931,7 @@
                         </label>`;
                     });
                     html += '</div>';
-                } else if (idx === 4) { // Mixed (tf or dd)
+                } else if (idx === 4) {
                     if(item.type === 'tf') {
                         html += `<input type="text" id="assess-mix-${idx}-${i}" class="bg-sand text-cave p-1 rounded w-24">`;
                     } else {
