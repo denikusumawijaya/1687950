@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prehistoric Math - PLSV</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- KaTeX for Math Rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cave: '#1a1108',
+                        rock: '#4E342E',
+                        sand: '#D7CCC8',
+                        clay: '#795548',
+                        fire: '#FF7043',
+                        bone: '#F5F5DC',
+                        moss: '#689F38',
+                        flint: '#9E9E9E'
+                    },
+                    fontFamily: {
+                        title: ['Caveat', 'cursive'],
+                        body: ['Roboto', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Roboto:wght@300;400;700&display=swap');
+        
+        body { background-color: #1a1108; color: #D7CCC8; font-family: 'Roboto', sans-serif; }
+        h1, h2, h3, .font-title { font-family: 'Caveat', cursive; }
+        
+        .section-card {
+            background: linear-gradient(135deg, #3E2723 0%, #4E342E 100%);
+            border: 2px solid #795548;
+            border-radius: 16px;
+            box-shadow: 8px 8px 0px #1a1108;
+            transition: transform 0.3s ease;
+        }
+        .section-card:hover { transform: translateY(-2px); }
+        
+        .drag-item { cursor: grab; touch-action: none; user-select: none; }
+        .drag-item:active { cursor: grabbing; }
+        .drop-zone { min-height: 50px; border: 2px dashed #795548; border-radius: 8px; transition: background 0.2s; }
+        .drop-zone.drag-over { background: rgba(255, 112, 67, 0.2); border-color: #FF7043; }
+        
+        .interactive-btn {
+            transition: all 0.2s;
+            border-bottom: 4px solid #5D4037;
+        }
+        .interactive-btn:active {
+            transform: translateY(2px);
+            border-bottom: 2px solid #5D4037;
+        }
+
+        .feedback-correct { background: #689F38; color: white; padding: 4px 8px; border-radius: 4px; animation: pop 0.3s ease; }
+        .feedback-wrong { background: #D32F2F; color: white; padding: 4px 8px; border-radius: 4px; animation: shake 0.4s ease; }
+
+        @keyframes pop {
+            0% { transform: scale(0.8); } 50% { transform: scale(1.1); } 100% { transform: scale(1); }
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); }
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-slide-in { animation: slideIn 0.5s ease forwards; }
+
+        #scratchpad { cursor: crosshair; border: 2px solid #5D4037; border-radius: 8px; background: #EFEBE9; }
+        
+        .tab-btn.active { background-color: #FF7043; color: #1a1108; }
+
+        @media print {
+            body { background: white; color: black; }
+            .no-print { display: none !important; }
+            .section-card { border: 1px solid black; box-shadow: none; background: white; }
+            #canvas-panel { display: none; }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex">
+
+    <!-- Main Content Area (3/4) -->
+    <main class="w-3/4 p-8 overflow-y-auto" id="main-content">
+        
+        <!-- HEADER -->
+        <header class="section-card p-6 mb-8 text-center animate-slide-in">
+            <div class="flex justify-between items-center border-b-2 border-clay pb-4 mb-4">
+                <div class="flex items-center gap-3">
+                    <i class="fas fa-fire text-fire text-3xl"></i>
+                    <h1 class="text-4xl text-bone font-title">MATH TUTORING</h1>
+                </div>
+                <div class="text-right text-sand">
+                    <p class="font-bold">Tutor: Deni</p>
+                    <p class="text-sm">Kurikulum Merdeka</p>
+                </div>
+            </div>
+            <h2 class="text-3xl font-title text-fire mb-2">
+                Linear Equations in One Variable 
+                <br><span class="text-2xl text-sand">Persamaan Linear Satu Variabel (PLSV)</span>
+            </h2>
+            <div class="mt-4 bg-cave p-4 rounded-lg text-left inline-block">
+                <h3 class="text-fire font-bold mb-2"><i class="fas fa-scroll mr-2"></i>Class Rules / Aturan Kelas:</h3>
+                <ul class="text-bone list-disc list-inside">
+                    <li>Speak in turn / Berbicara secara bergantian</li>
+                    <li>Ask permission to leave Zoom / Minta izin ketika ingin meninggalkan zoom (contoh: izin ke toilet/minum)</li>
+                </ul>
+            </div>
+        </header>
+
+        <!-- SECTION 1: Spiral Review Warm-up -->
+        <section class="section-card p-6 mb-8 animate-slide-in" id="sec1">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-3xl font-title text-fire"><i class="fas fa-pickaxe mr-2"></i> Spiral Review Warm-up</h2>
+                <span class="bg-cave text-bone px-3 py-1 rounded-full font-mono text-sm"><i class="far fa-clock mr-1"></i> 00:00 - 00:10</span>
+            </div>
+            <p class="mb-2">Before we start, let's review the basics of algebraic expressions. / <i>Sebelum memulai, mari kita review dasar ekspresi aljabar.</i></p>
+            <p class="mb-2">An algebraic expression contains variables (unknown numbers, like \(x\) or \(y\)) and constants (fixed numbers, like \(-7\) or \(4\)). / <i>Ekspresi aljabar mengandung variabel (angka tak diketahui) dan konstanta (angka tetap).</i></p>
+            <p class="mb-4">We can simplify expressions by combining like terms. For example, \(3y + 4 - y = 2y + 4\). / <i>Kita bisa menyederhanakan ekspresi dengan menggabungkan suku sejenis.</i></p>
+
+            <div class="bg-cave p-4 rounded-lg mb-6 flex flex-col items-center">
+                <h3 class="text-bone font-bold mb-2"><i class="fas fa-cave-painting mr-2"></i> Visualisasi: Ekspresi Aljabar</h3>
+                <svg width="300" height="100" viewBox="0 0 300 100">
+                    <text x="10" y="30" fill="#D7CCC8" font-family="Caveat" font-size="24">5x</text>
+                    <rect x="50" y="10" width="40" height="30" fill="#795548" rx="5"/>
+                    <rect x="95" y="10" width="40" height="30" fill="#795548" rx="5"/>
+                    <rect x="140" y="10" width="40" height="30" fill="#795548" rx="5"/>
+                    <rect x="185" y="10" width="40" height="30" fill="#795548" rx="5"/>
+                    <rect x="230" y="10" width="40" height="30" fill="#795548" rx="5"/>
+                    <text x="10" y="80" fill="#FF7043" font-family="Caveat" font-size="24">- 7</text>
+                    <circle cx="80" cy="70" r="15" fill="#D32F2F"/>
+                    <rect x="110" y="55" width="20" height="30" fill="#D32F2F"/>
+                    <rect x="140" y="55" width="20" height="30" fill="#D32F2F"/>
+                    <rect x="170" y="55" width="20" height="30" fill="#D32F2F"/>
+                    <rect x="200" y="55" width="20" height="30" fill="#D32F2F"/>
+                    <rect x="230" y="55" width="20" height="30" fill="#D32F2F"/>
+                    <rect x="260" y="55" width="20" height="30" fill="#D32F2F"/>
+                    <rect x="290" y="55" width="20" height="30" fill="#D32F2F"/>
+                </svg>
+                <p class="text-sm text-flint mt-2">5 Blocks of 'x' and 7 Blocks of '-1'</p>
+            </div>
+
+            <!-- Game 1: Click the Variable/Constant -->
+            <div class="mb-4">
+                <h3 class="text-xl font-title text-moss mb-2">Game: Identify Components / Identifikasi Komponen</h3>
+                <p class="text-sm mb-2">Click either Variable or Constant for each expression. / <i>Klik Variabel atau Konstanta untuk tiap ekspresi.</i></p>
+                <div id="game1-container" class="space-y-2"></div>
+            </div>
+
+            <div class="flex gap-4 mt-4 no-print">
+                <button onclick="checkGame1()" class="interactive-btn bg-moss text-white px-4 py-2 rounded font-bold"><i class="fas fa-check mr-2"></i>Cek</button>
+                <button onclick="resetGame1()" class="interactive-btn bg-flint text-cave px-4 py-2 rounded font-bold"><i class="fas fa-undo mr-2"></i>Reset</button>
+            </div>
+            <div id="game1-feedback" class="mt-4"></div>
+        </section>
+
+        <!-- SECTION 2: Introduction & Real-World Connection -->
+        <section class="section-card p-6 mb-8 animate-slide-in" id="sec2">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-3xl font-title text-fire"><i class="fas fa-balance-scale mr-2"></i> Concept of Balance</h2>
+                <span class="bg-cave text-bone px-3 py-1 rounded-full font-mono text-sm"><i class="far fa-clock mr-1"></i> 00:10 - 00:15</span>
+            </div>
+            <p class="mb-2">A linear equation is like a prehistoric balance scale. Whatever you put on one side, you must put on the other to keep it balanced. / <i>Persamaan linear seperti timbangan prasejarah. Apa yang ditambah di kiri, harus ditambah di kanan.</i></p>
+            <p class="mb-4">If the scale tips, the equation is no longer equal! / <i>Jika timbangan miring, persamaan tidak seimbang!</i></p>
+
+            <div class="bg-cave p-4 rounded-lg mb-6 flex justify-center">
+                <svg width="400" height="200" viewBox="0 0 400 200">
+                    <!-- Stand -->
+                    <rect x="190" y="40" width="20" height="160" fill="#5D4037"/>
+                    <rect x="140" y="190" width="120" height="10" fill="#5D4037" rx="5"/>
+                    <!-- Beam -->
+                    <polygon points="200,50 50,90 350,90" fill="#795548" stroke="#D7CCC8" stroke-width="2"/>
+                    <!-- Left Pan -->
+                    <line x1="50" y1="90" x2="50" y2="120" stroke="#9E9E9E" stroke-width="2"/>
+                    <path d="M20,120 Q50,150 80,120" fill="#8D6E63" stroke="#D7CCC8" stroke-width="2"/>
+                    <text x="35" y="115" fill="#FF7043" font-family="Caveat" font-size="20">3x + 5</text>
+                    <!-- Right Pan -->
+                    <line x1="350" y1="90" x2="350" y2="120" stroke="#9E9E9E" stroke-width="2"/>
+                    <path d="M320,120 Q350,150 380,120" fill="#8D6E63" stroke="#D7CCC8" stroke-width="2"/>
+                    <text x="335" y="115" fill="#FF7043" font-family="Caveat" font-size="20">20</text>
+                </svg>
+            </div>
+
+            <!-- Game 2: Balance Matching -->
+            <div class="mb-4">
+                <h3 class="text-xl font-title text-moss mb-2">Game: Keep it Balanced! / Jaga Keseimbangan!</h3>
+                <p class="text-sm mb-2">If you add 5 to the left side, what must you do to the right side? Drag the correct action. / <i>Jika tambah 5 di kiri, apa yang harus dilakukan di kanan? Seret aksi yang benar.</i></p>
+                <div id="game2-container" class="grid grid-cols-2 gap-4"></div>
+                <div class="mt-4 flex gap-2 flex-wrap" id="game2-bank">
+                    <!-- Draggable options injected via JS -->
+                </div>
+            </div>
+
+            <div class="flex gap-4 mt-4 no-print">
+                <button onclick="checkGame2()" class="interactive-btn bg-moss text-white px-4 py-2 rounded font-bold"><i class="fas fa-check mr-2"></i>Cek</button>
+                <button onclick="resetGame2()" class="interactive-btn bg-flint text-cave px-4 py-2 rounded font-bold"><i class="fas fa-undo mr-2"></i>Reset</button>
+            </div>
+            <div id="game2-feedback" class="mt-4"></div>
+        </section>
+
+        <!-- SECTION 3: Review of Prior Knowledge -->
+        <section class="section-card p-6 mb-8 animate-slide-in" id="sec3">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-3xl font-title text-fire"><i class="fas fa-exchange-alt mr-2"></i> Inverse Operations</h2>
+                <span class="bg-cave text-bone px-3 py-1 rounded-full font-mono text-sm"><i class="far fa-clock mr-1"></i> 00:15 - 00:20</span>
+            </div>
+            <p class="mb-2">To solve an equation, we use inverse operations (operasi balikan) to isolate the variable. It's like untying a knot! / <i>Untuk menyelesaikan persamaan, gunakan operasi balikan untuk mengisolasi variabel. Seperti membuka simpul!</i></p>
+            <p class="mb-4">The inverse of addition is subtraction, and the inverse of multiplication is division. / <i>Lawan dari penjumlahan adalah pengurangan, lawan dari perkalian adalah pembagian.</i></p>
+
+            <div class="bg-cave p-4 rounded-lg mb-6">
+                <table class="w-full text-center">
+                    <thead>
+                        <tr class="text-fire font-title text-2xl">
+                            <th>Operation</th>
+                            <th></th>
+                            <th>Inverse</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-bone text-xl">
+                        <tr>
+                            <td><i class="fas fa-plus"></i> Addition (+) / Penjumlahan</td>
+                            <td><i class="fas fa-arrows-alt-h text-fire"></i></td>
+                            <td><i class="fas fa-minus"></i> Subtraction (-) / Pengurangan</td>
+                        </tr>
+                        <tr>
+                            <td><i class="fas fa-times"></i> Multiplication (\times) / Perkalian</td>
+                            <td><i class="fas fa-arrows-alt-h text-fire"></i></td>
+                            <td><i class="fas fa-divide"></i> Division (\div) / Pembagian</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Game 3: Inverse Match Drop -->
+            <div class="mb-4">
+                <h3 class="text-xl font-title text-moss mb-2">Game: Match the Inverse / Cocokkan Lawannya</h3>
+                <p class="text-sm mb-2">Drag the correct inverse operation to the box. / <i>Seret operasi balikan yang benar ke kotak.</i></p>
+                <div id="game3-container" class="space-y-3"></div>
+                <div class="mt-4 flex gap-2 flex-wrap" id="game3-bank"></div>
+            </div>
+
+            <div class="flex gap-4 mt-4 no-print">
+                <button onclick="checkGame3()" class="interactive-btn bg-moss text-white px-4 py-2 rounded font-bold"><i class="fas fa-check mr-2"></i>Cek</button>
+                <button onclick="resetGame3()" class="interactive-btn bg-flint text-cave px-4 py-2 rounded font-bold"><i class="fas fa-undo mr-2"></i>Reset</button>
+            </div>
+            <div id="game3-feedback" class="mt-4"></div>
+        </section>
+
+        <!-- SECTION 4: Problem Introduction -->
+        <section class="section-card p-6 mb-8 animate-slide-in" id="sec4">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-3xl font-title text-fire"><i class="fas fa-gift mr-2"></i> Unwrapping the Variable</h2>
+                <span class="bg-cave text-bone px-3 py-1 rounded-full font-mono text-sm"><i class="far fa-clock mr-1"></i> 00:20 - 00:30</span>
+            </div>
+            <p class="mb-2">When solving \(3x + 5 = 20\), think of \(x\) as a present. First, it's wrapped in a box (multiplied by 3), then put in a bag (added 5). / <i>Pikirkan x seperti hadiah. Pertama dibungkus kotak (dikali 3), lalu dimasukkan tas (ditambah 5).</i></p>
+            <p class="mb-2">To get the present, you must open the bag first (subtract 5), then open the box (divide by 3). Always undo the outer layer first! / <i>Untuk mendapat hadiah, buka tas dulu (kurangi 5), lalu buka kotak (bagi 3). Selalu buka lapisan luar duluan!</i></p>
+            <p class="mb-4">This is called performing operations in the reverse order of PEMDAS/BODMAS. / <i>Ini disebut melakukan operasi secara terbalik dari aturan PEMDAS.</i></p>
+
+            <div class="bg-cave p-4 rounded-lg mb-6 flex justify-center">
+                <svg width="300" height="150" viewBox="0 0 300 150">
+                    <!-- Box (x) -->
+                    <rect x="120" y="50" width="60" height="40" fill="#FF7043" stroke="#D7CCC8" stroke-width="2" rx="5"/>
+                    <text x="135" y="75" fill="#1a1108" font-family="Caveat" font-size="24">x</text>
+                    
+                    <!-- Wrapper (3x) -->
+                    <rect x="90" y="30" width="120" height="80" fill="transparent" stroke="#689F38" stroke-width="3" stroke-dasharray="5,5" rx="10"/>
+                    <text x="140" y="25" fill="#689F38" font-family="Caveat" font-size="18">3 times</text>
+
+                    <!-- Bag (+5) -->
+                    <path d="M60,120 Q150,150 240,120 L220,30 L80,30 Z" fill="transparent" stroke="#D7CCC8" stroke-width="3" stroke-dasharray="5,5"/>
+                    <text x="150" y="140" fill="#D7CCC8" font-family="Caveat" font-size="18" text-anchor="middle">+ 5</text>
+                </svg>
+            </div>
+
+            <!-- Game 4: Order Steps -->
+            <div class="mb-4">
+                <h3 class="text-xl font-title text-moss mb-2">Game: Order the Steps / Urutkan Langkah</h3>
+                <p class="text-sm mb-2">Click the steps in the correct order to solve the equation. / <i>Klik langkah dalam urutan yang benar.</i></p>
+                <div class="bg-cave p-4 rounded-lg text-center text-2xl font-title text-bone mb-4" id="game4-equation">Solve: 4x - 8 = 12</div>
+                <div id="game4-container" class="grid grid-cols-2 gap-4"></div>
+            </div>
+
+            <div class="flex gap-4 mt-4 no-print">
+                <button onclick="checkGame4()" class="interactive-btn bg-moss text-white px-4 py-2 rounded font-bold"><i class="fas fa-check mr-2"></i>Cek</button>
+                <button onclick="resetGame4()" class="interactive-btn bg-flint text-cave px-4 py-2 rounded font-bold"><i class="fas fa-undo mr-2"></i>Reset</button>
+            </div>
+            <div id="game4-feedback" class="mt-4"></div>
+        </section>
+
+        <!-- SECTION 5: Guided Practice -->
+        <section class="section-card p-6 mb-8 animate-slide-in" id="sec5">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-3xl font-title text-fire"><i class="fas fa-pencil-alt mr-2"></i> Guided Practice</h2>
+                <span class="bg-cave text-bone px-3 py-1 rounded-full font-mono text-sm"><i class="far fa-clock mr-1"></i> 00:30 - 00:45</span>
+            </div>
+            <p class="mb-2">Let's apply our unwrapping technique! Remember, move the constant first, then the coefficient. / <i>Mari terapkan teknik membuka bungkus! Pindahkan konstanta dulu, lalu koefisien.</i></p>
+            <p class="mb-4">If variables are on both sides (e.g., \(5x + 2 = 2x + 11\)), group them on one side first! / <i>Jika variabel di kedua sisi, kumpulkan dulu di satu sisi!</i></p>
+
+            <div class="bg-cave p-4 rounded-lg mb-6">
+                <h3 class="text-bone font-bold text-center mb-2">Worked Example / Contoh Terbimbing</h3>
+                <div class="flex justify-around text-bone text-xl font-title">
+                    <div>Step 1:<br> \(5x + 2 = 2x + 11\)<br>\(-2x\) from both sides</div>
+                    <div>Step 2:<br> \(3x + 2 = 11\)<br>\(-2\) from both sides</div>
+                    <div>Step 3:<br> \(3x = 9\)<br>\(\div 3\) on both sides</div>
+                    <div>Result:<br> \(x = 3\)<br><i class="fas fa-check-circle text-moss"></i></div>
+                </div>
+            </div>
+
+            <!-- Game 5: Fill in the blanks -->
+            <div class="mb-4">
+                <h3 class="text-xl font-title text-moss mb-2">Game: Complete the Solution / Lengkapi Penyelesaian</h3>
+                <p class="text-sm mb-2">Type the correct number in the blanks. / <i>Ketik angka yang benar di tempat kosong.</i></p>
+                <div id="game5-container" class="space-y-6"></div>
+            </div>
+
+            <div class="flex gap-4 mt-4 no-print">
+                <button onclick="checkGame5()" class="interactive-btn bg-moss text-white px-4 py-2 rounded font-bold"><i class="fas fa-check mr-2"></i>Cek</button>
+                <button onclick="resetGame5()" class="interactive-btn bg-flint text-cave px-4 py-2 rounded font-bold"><i class="fas fa-undo mr-2"></i>Reset</button>
+            </div>
+            <div id="game5-feedback" class="mt-4"></div>
+        </section>
+
+        <!-- SECTION 6: ASSESSMENT (Tabs) -->
+        <section class="section-card p-6 mb-8 animate-slide-in no-print" id="sec6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-3xl font-title text-fire"><i class="fas fa-dragon mr-2"></i> Boss Assessment</h2>
+                <span class="bg-cave text-bone px-3 py-1 rounded-full font-mono text-sm"><i class="far fa-clock mr-1"></i> 00:45 - 00:55</span>
+            </div>
+
+            <div class="flex gap-4 mb-6 bg-cave p-4 rounded-lg">
+                <div class="flex-1">
+                    <label class="block text-bone mb-1">Student Name / Nama Siswa:</label>
+                    <input type="text" id="studentName" class="w-full p-2 rounded bg-sand text-cave font-bold" placeholder="Enter name...">
+                </div>
+                <div class="flex-1">
+                    <label class="block text-bone mb-1">Date / Tanggal:</label>
+                    <input type="date" id="assessDate" class="w-full p-2 rounded bg-sand text-cave font-bold">
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="flex border-b border-clay mb-4 font-title text-xl">
+                <button class="tab-btn p-2 flex-1 rounded-tl-lg active" onclick="switchTab(0)">Group 1</button>
+                <button class="tab-btn p-2 flex-1" onclick="switchTab(1)">Group 2</button>
+                <button class="tab-btn p-2 flex-1" onclick="switchTab(2)">Group 3</button>
+                <button class="tab-btn p-2 flex-1" onclick="switchTab(3)">Group 4</button>
+                <button class="tab-btn p-2 flex-1 rounded-tr-lg" onclick="switchTab(4)">Group 5</button>
+            </div>
+
+            <div id="tab-content">
+                <!-- Injected by JS -->
+            </div>
+        </section>
+
+        <!-- SECTION 7: Consolidation & Reflection -->
+        <section class="section-card p-6 mb-8 animate-slide-in" id="sec7">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-3xl font-title text-fire"><i class="fas fa-brain mr-2"></i> Reflection</h2>
+                <span class="bg-cave text-bone px-3 py-1 rounded-full font-mono text-sm"><i class="far fa-clock mr-1"></i> 00:55 - 01:00</span>
+            </div>
+            <p class="mb-4">Great job today! Remember, math is about balance. Log in to your portal to complete your weekly mission. / <i>Kerja bagus hari ini! Ingat, matematika itu tentang keseimbangan. Login ke portal untuk misi mingguanmu.</i></p>
+            
+            <div class="bg-cave p-6 rounded-lg text-center mb-6">
+                <a href="https://learn.algonova.id/login" target="_blank" class="bg-fire text-cave px-6 py-3 rounded-full text-2xl font-title inline-block hover:bg-bone transition-colors">
+                    <i class="fas fa-login mr-2"></i> Login to learn.algonova.id
+                </a>
+            </div>
+
+            <div class="mb-4">
+                <label class="text-bone text-lg">What was the most challenging part today? / <i>Bagian mana yang paling menantang hari ini?</i></label>
+                <textarea class="w-full mt-2 p-2 rounded bg-sand text-cave h-24" placeholder="Type your reflection here..."></textarea>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Canvas Sidebar (1/4) -->
+    <aside class="w-1/4 h-screen sticky top-0 bg-rock p-4 border-l-4 border-clay flex flex-col no-print" id="canvas-panel">
+        <h2 class="text-2xl font-title text-fire text-center mb-2"><i class="fas fa-paint-brush mr-2"></i> Scratchpad</h2>
+        <p class="text-sm text-bone text-center mb-4">Corat-coret di sini</p>
+        
+        <canvas id="scratchpad" class="w-full flex-1 bg-bone"></canvas>
+        
+        <div class="mt-4 flex flex-col gap-2">
+            <div class="flex justify-around">
+                <button onclick="setColor('#FF0000')" class="w-8 h-8 rounded-full bg-red-500 border-2 border-bone"></button>
+                <button onclick="setColor('#00FF00')" class="w-8 h-8 rounded-full bg-green-500 border-2 border-bone"></button>
+                <button onclick="setColor('#0000FF')" class="w-8 h-8 rounded-full bg-blue-500 border-2 border-bone"></button>
+                <button onclick="setColor('#000000')" class="w-8 h-8 rounded-full bg-black border-2 border-bone"></button>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="setEraser()" class="interactive-btn flex-1 bg-sand text-cave py-1 rounded font-bold text-sm"><i class="fas fa-eraser mr-1"></i>Eraser</button>
+                <button onclick="clearCanvas()" class="interactive-btn flex-1 bg-fire text-cave py-1 rounded font-bold text-sm"><i class="fas fa-trash mr-1"></i>Erase All</button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: '\\(', right: '\\)', display: false},
+                        {left: '\\[', right: '\\]', display: true}
+                    ]
+                });
+            }
+            initCanvas();
+            initGames();
+            initAssessment();
+        });
+
+        // --- CANVAS LOGIC ---
+        let canvas, ctx, painting = false, color = '#000000';
+
+        function initCanvas() {
+            canvas = document.getElementById('scratchpad');
+            ctx = canvas.getContext('2d');
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            
+            canvas.addEventListener('mousedown', startPaint);
+            canvas.addEventListener('mousemove', paint);
+            canvas.addEventListener('mouseup', stopPaint);
+            canvas.addEventListener('mouseleave', stopPaint);
+            
+            // Touch support
+            canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startPaint(e.touches[0]); });
+            canvas.addEventListener('touchmove', (e) => { e.preventDefault(); paint(e.touches[0]); });
+            canvas.addEventListener('touchend', stopPaint);
+        }
+
+        function resizeCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            const tempData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+            ctx.fillStyle = '#EFEBE9';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.putImageData(tempData, 0, 0);
+        }
+
+        function getPos(e) {
+            const rect = canvas.getBoundingClientRect();
+            return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+        }
+
+        function startPaint(e) {
+            painting = true;
+            ctx.beginPath();
+            const pos = getPos(e);
+            ctx.moveTo(pos.x, pos.y);
+        }
+
+        function paint(e) {
+            if (!painting) return;
+            const pos = getPos(e);
+            ctx.lineWidth = 3;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = color;
+            ctx.lineTo(pos.x, pos.y);
+            ctx.stroke();
+        }
+
+        function stopPaint() { painting = false; }
+        function setColor(c) { color = c; canvas.style.cursor = 'crosshair'; }
+        function setEraser() { color = '#EFEBE9'; canvas.style.cursor = 'cell'; }
+        function clearCanvas() { ctx.fillStyle = '#EFEBE9'; ctx.fillRect(0, 0, canvas.width, canvas.height); }
+
+
+        // --- GAME 1: Click Identify ---
+        const g1Data = [
+            {q: "8y", vType: "Variable"}, {q: "-4", vType: "Constant"}, {q: "12x", vType: "Variable"},
+            {q: "100", vType: "Constant"}, {q: "-z", vType: "Variable"}, {q: "7", vType: "Constant"},
+            {q: "3a", vType: "Variable"}, {q: "0.5", vType: "Constant"}, {q: "x^2", vType: "Variable"},
+            {q: "55", vType: "Constant"}
+        ];
+        let g1Answers = new Array(10).fill(null);
+
+        function initGame1() {
+            const c = document.getElementById('game1-container');
+            c.innerHTML = '';
+            g1Answers.fill(null);
+            g1Data.forEach((item, i) => {
+                c.innerHTML += `
+                    <div class="flex items-center justify-between bg-cave p-2 rounded">
+                        <span class="text-bone text-lg font-math">\\(${item.q}\\)</span>
+                        <div class="flex gap-2">
+                            <button id="g1-${i}-var" onclick="selG1(${i}, 'Variable')" class="px-3 py-1 rounded bg-rock text-bone text-sm">Variable</button>
+                            <button id="g1-${i}-con" onclick="selG1(${i}, 'Constant')" class="px-3 py-1 rounded bg-rock text-bone text-sm">Constant</button>
+                        </div>
+                    </div>`;
+            });
+            renderMathInElement(c);
+        }
+        function selG1(i, type) {
+            g1Answers[i] = type;
+            document.getElementById(`g1-${i}-var`).classList.toggle('bg-moss', type === 'Variable');
+            document.getElementById(`g1-${i}-con`).classList.toggle('bg-moss', type === 'Constant');
+            document.getElementById(`g1-${i}-var`).classList.toggle('bg-rock', type !== 'Variable');
+            document.getElementById(`g1-${i}-con`).classList.toggle('bg-rock', type !== 'Constant');
+        }
+        function checkGame1() {
+            let fb = document.getElementById('game1-feedback'); fb.innerHTML = '';
+            let score = 0;
+            g1Data.forEach((item, i) => {
+                let isCorrect = g1Answers[i] === item.vType;
+                if(isCorrect) score++;
+                else {
+                    fb.innerHTML += `<p class="text-red-400 text-sm">Q${i+1}: Wrong. \\(${item.q}\\) is a ${item.vType}.</p>`;
+                }
+            });
+            if(score === 10) fb.innerHTML = '<p class="feedback-correct">Perfect Score! / Nilai Sempurna!</p>';
+            renderMathInElement(fb);
+        }
+        function resetGame1() { initGame1(); document.getElementById('game1-feedback').innerHTML = ''; }
+
+
+        // --- GAME 2: Drag Drop Balance ---
+        const g2Data = [
+            {act: "Add 5 to Left", match: "Add 5 to Right"},
+            {act: "Subtract 3 from Left", match: "Subtract 3 from Right"},
+            {act: "Multiply Left by 2", match: "Multiply Right by 2"},
+            {act: "Divide Left by 4", match: "Divide Right by 4"},
+            {act: "Add x to Left", match: "Add x to Right"},
+            {act: "Subtract 10 from Right", match: "Subtract 10 from Left"},
+            {act: "Multiply Right by 3", match: "Multiply Left by 3"},
+            {act: "Divide Right by 5", match: "Divide Left by 5"},
+            {act: "Add 0 to Left", match: "Add 0 to Right"},
+            {act: "Subtract y from Right", match: "Subtract y from Left"}
+        ];
+        let g2Answers = new Array(10).fill(null);
+
+        function initGame2() {
+            const c = document.getElementById('game2-container');
+            const b = document.getElementById('game2-bank');
+            c.innerHTML = ''; b.innerHTML = '';
+            g2Answers.fill(null);
+            
+            let shuffledBank = [...g2Data].sort(() => Math.random() - 0.5);
+
+            g2Data.forEach((item, i) => {
+                c.innerHTML += `
+                    <div class="bg-cave p-2 rounded flex items-center gap-2">
+                        <span class="text-bone flex-1">${item.act}</span>
+                        <i class="fas fa-arrow-right text-fire"></i>
+                        <div id="g2-drop-${i}" class="drop-zone flex-1 p-2 text-sm text-center" ondrop="dropG2(event, ${i})" ondragover="allowDrop(event)"></div>
+                    </div>`;
+            });
+
+            shuffledBank.forEach((item, i) => {
+                b.innerHTML += `
+                    <div id="g2-drag-${i}" class="drag-item bg-moss text-white px-3 py-1 rounded text-sm" draggable="true" ondragstart="dragG2(event, '${item.match}')">
+                        ${item.match}
+                    </div>`;
+            });
+        }
+        function allowDrop(e) { e.preventDefault(); e.target.classList.add('drag-over'); }
+        function dragG2(e, val) { e.dataTransfer.setData("text", val); }
+        function dropG2(e, i) { 
+            e.preventDefault(); 
+            e.target.classList.remove('drag-over');
+            let val = e.dataTransfer.getData("text");
+            g2Answers[i] = val;
+            e.target.innerHTML = val;
+        }
+        function checkGame2() {
+            let fb = document.getElementById('game2-feedback'); fb.innerHTML = '';
+            let score = 0;
+            g2Data.forEach((item, i) => {
+                if(g2Answers[i] === item.match) score++;
+                else fb.innerHTML += `<p class="text-red-400 text-sm">Row ${i+1}: Incorrect. Action for '${item.act}' should be '${item.match}'.</p>`;
+            });
+            if(score === 10) fb.innerHTML = '<p class="feedback-correct">Excellent Balance! / Keseimbangan Sempurna!</p>';
+        }
+        function resetGame2() { initGame2(); document.getElementById('game2-feedback').innerHTML = ''; }
+
+
+        // --- GAME 3: Inverse Match ---
+        const g3Data = [
+            {op: "x + 5", inv: "x - 5"}, {op: "x - 8", inv: "x + 8"}, {op: "3x", inv: "x / 3"},
+            {op: "x / 2", inv: "2x"}, {op: "-4x", inv: "x / -4"}, {op: "10 + x", inv: "x - 10"},
+            {op: "2x + 3", inv: "(x - 3)/2"}, {op: "x - (-2)", inv: "x - 2"}, {op: "0.5x", inv: "x / 0.5"},
+            {op: "x * 1", inv: "x / 1"}
+        ];
+        let g3Answers = new Array(10).fill(null);
+
+        function initGame3() {
+            const c = document.getElementById('game3-container');
+            const b = document.getElementById('game3-bank');
+            c.innerHTML = ''; b.innerHTML = '';
+            g3Answers.fill(null);
+
+            let shuffledBank = [...g3Data].sort(() => Math.random() - 0.5);
+
+            g3Data.forEach((item, i) => {
+                c.innerHTML += `
+                    <div class="bg-cave p-2 rounded flex items-center gap-2">
+                        <span class="text-bone flex-1 text-center font-math">\\(${item.op}\\)</span>
+                        <i class="fas fa-exchange-alt text-fire"></i>
+                        <div id="g3-drop-${i}" class="drop-zone flex-1 p-2 text-sm text-center" ondrop="dropG3(event, ${i})" ondragover="allowDrop(event)"></div>
+                    </div>`;
+            });
+
+            shuffledBank.forEach((item, i) => {
+                b.innerHTML += `
+                    <div id="g3-drag-${i}" class="drag-item bg-moss text-white px-3 py-1 rounded text-sm font-math" draggable="true" ondragstart="dragG2(event, '${item.inv}')">
+                        \\(${item.inv}\\)
+                    </div>`;
+            });
+            renderMathInElement(document.getElementById('game3-container'));
+            renderMathInElement(document.getElementById('game3-bank'));
+        }
+        function dropG3(e, i) { 
+            e.preventDefault(); e.target.classList.remove('drag-over');
+            let val = e.dataTransfer.getData("text");
+            g3Answers[i] = val;
+            e.target.innerHTML = `\\(${val}\\)`;
+            renderMathInElement(e.target);
+        }
+        function checkGame3() {
+            let fb = document.getElementById('game3-feedback'); fb.innerHTML = '';
+            let score = 0;
+            g3Data.forEach((item, i) => {
+                if(g3Answers[i] === item.inv) score++;
+                else fb.innerHTML += `<p class="text-red-400 text-sm">Q${i+1}: Inverse of \\(${item.op}\\) is \\(${item.inv}\\).</p>`;
+            });
+            if(score === 10) fb.innerHTML = '<p class="feedback-correct">Inverse Master! / Master Operasi Balikan!</p>';
+            renderMathInElement(fb);
+        }
+        function resetGame3() { initGame3(); document.getElementById('game3-feedback').innerHTML = ''; }
+
+
+        // --- GAME 4: Order Steps ---
+        const g4Steps = [
+            {txt: "4x = 20", order: 2}, {txt: "x = 5", order: 3}, 
+            {txt: "4x - 8 = 12", order: 0}, {txt: "4x - 8 + 8 = 12 + 8", order: 1}
+        ];
+        let g4Order = [];
+
+        function initGame4() {
+            const c = document.getElementById('game4-container');
+            c.innerHTML = '';
+            g4Order = [];
+            g4Steps.forEach((step, i) => {
+                c.innerHTML += `
+                    <button id="g4-btn-${i}" onclick="selG4(${i})" class="bg-rock text-bone p-3 rounded text-lg font-math hover:bg-clay transition w-full">
+                        \\(${step.txt}\\)
+                    </button>`;
+            });
+            renderMathInElement(c);
+        }
+        function selG4(i) {
+            if(g4Order.includes(i)) return; // Already selected
+            g4Order.push(i);
+            document.getElementById(`g4-btn-${i}`).classList.remove('bg-rock', 'hover:bg-clay');
+            document.getElementById(`g4-btn-${i}`).classList.add('bg-moss', 'text-white');
+            document.getElementById(`g4-btn-${i}`).innerText = `${g4Order.length}. \\(${g4Steps[i].txt}\\)`;
+            renderMathInElement(document.getElementById(`g4-btn-${i}`));
+        }
+        function checkGame4() {
+            let fb = document.getElementById('game4-feedback'); fb.innerHTML = '';
+            let isCorrect = g4Order.length === 4;
+            if(isCorrect) {
+                for(let i=0; i<4; i++) {
+                    if(g4Steps[g4Order[i]].order !== i) isCorrect = false;
+                }
+            }
+            if(isCorrect) fb.innerHTML = '<p class="feedback-correct">Correct Order! / Urutan Benar!</p>';
+            else fb.innerHTML = '<p class="feedback-wrong">Incorrect Order. Start from the original equation, then add 8 to both sides, then simplify, then divide by 4. / <i>Mulai dari persamaan awal, tambah 8, sederhanakan, lalu bagi 4.</i></p>';
+        }
+        function resetGame4() { initGame4(); document.getElementById('game4-feedback').innerHTML = ''; }
+
+
+        // --- GAME 5: Fill blanks ---
+        const g5Data = [
+            {eq: "5x + 12 = 32", steps: ["5x = 20", "x = 4"], ans: [20, 4]},
+            {eq: "8y - 15 = 41", steps: ["8y = 56", "y = 7"], ans: [56, 7]},
+            {eq: "4n + 7 = 31", steps: ["4n = 24", "n = 6"], ans: [24, 6]},
+            {eq: "3x - 5 = 85", steps: ["3x = 90", "x = 30"], ans: [90, 30]},
+            {eq: "4(x - 3) = 20", steps: ["4x - 12 = 20", "4x = 32", "x = 8"], ans: [12, 32, 8]},
+            {eq: "6x + 4 = 2x + 20", steps: ["4x + 4 = 20", "4x = 16", "x = 4"], ans: [4, 16, 4]},
+            {eq: "2(3x + 5) - 4 = 18", steps: ["6x + 10 - 4 = 18", "6x + 6 = 18", "6x = 12", "x = 2"], ans: [10, 6, 12, 2]},
+            {eq: "0.5x + 2 = 10", steps: ["0.5x = 8", "x = 16"], ans: [8, 16]},
+            {eq: "5(x - 2) = 3(x + 4)", steps: ["5x - 10 = 3x + 12", "2x - 10 = 12", "2x = 22", "x = 11"], ans: [10, 2, 22, 11]},
+            {eq: "7x - 5 = 37", steps: ["7x = 42", "x = 6"], ans: [42, 6]}
+        ];
+
+        function initGame5() {
+            const c = document.getElementById('game5-container');
+            c.innerHTML = '';
+            g5Data.forEach((item, i) => {
+                let html = `<div class="bg-cave p-3 rounded">
+                    <p class="text-bone font-bold font-math mb-2">\\(${item.eq}\\)</p>
+                    <div class="pl-4 space-y-1 text-bone font-math">`;
+                item.steps.forEach((step, j) => {
+                    // Find the blank part - usually the number after '=' or in distribution
+                    // For simplicity, we'll create an input for the target answer inline
+                    let parts = step.split("= ");
+                    let prefix = parts[0] + "= ";
+                    html += `<p>${prefix} <input type="text" id="g5-in-${i}-${j}" class="w-16 bg-sand text-cave text-center rounded px-1 py-0.5 mx-1"></p>`;
+                });
+                html += `</div></div>`;
+                c.innerHTML += html;
+            });
+            renderMathInElement(c);
+        }
+        function checkGame5() {
+            let fb = document.getElementById('game5-feedback'); fb.innerHTML = '';
+            let score = 0; let total = 0;
+            g5Data.forEach((item, i) => {
+                item.ans.forEach((ans, j) => {
+                    total++;
+                    let val = document.getElementById(`g5-in-${i}-${j}`).value.trim();
+                    if(val == ans) score++;
+                    else fb.innerHTML += `<p class="text-red-400 text-sm">Q${i+1} Step ${j+1}: Incorrect. The answer should be ${ans}.</p>`;
+                });
+            });
+            if(score === total) fb.innerHTML = '<p class="feedback-correct">Solving Expert! / Ahli Penyelesaian!</p>';
+        }
+        function resetGame5() { initGame5(); document.getElementById('game5-feedback').innerHTML = ''; }
+
+
+        function initGames() {
+            initGame1(); initGame2(); initGame3(); initGame4(); initGame5();
+        }
+
+        // --- ASSESSMENT LOGIC ---
+        const assessData = [
+            // Group 1: Radio (Multiple Choice)
+            [
+                {q: "Solve for x: x + 5 = 12", opts: ["5", "6", "7", "8"], ans: 2, hint: "Subtract 5 from both sides."},
+                {q: "Solve for y: 3y = 18", opts: ["3", "6", "9", "12"], ans: 1, hint: "Divide both sides by 3."},
+                {q: "Solve for n: n - 4 = 10", opts: ["6", "10", "14", "40"], ans: 2, hint: "Add 4 to both sides."},
+                {q: "Solve for x: x / 2 = 5", opts: ["2.5", "7", "10", "25"], ans: 2, hint: "Multiply both sides by 2."},
+                {q: "Which is the inverse of + 7?", opts: ["- 7", "x 7", "/ 7", "+ 0"], ans: 0, hint: "The opposite of addition is subtraction."},
+                {q: "Solve: 2x + 1 = 9", opts: ["3", "4", "5", "8"], ans: 1, hint: "Subtract 1 (9-1=8), then divide by 2."},
+                {q: "If 5 = 5, what happens if we add 2 to the left side?", opts: ["Nothing", "Equation is false", "Must add 2 to right side", "Must subtract 2 from right"], ans: 2, hint: "Keep it balanced!"},
+                {q: "Solve: 4x - 2 = 14", opts: ["2", "3", "4", "5"], ans: 2, hint: "Add 2 (16), divide by 4."},
+                {q: "Identify the variable in: 3a + 4 = 10", opts: ["3", "a", "4", "10"], ans: 1, hint: "Variables are letters."},
+                {q: "Solve: 10 - x = 6", opts: ["4", "16", "-4", "6"], ans: 0, hint: "x = 10 - 6."}
+            ],
+            // Group 2: Dropdown
+            [
+                {q: "Solve for x: 2x = 10. x = [drop]", opts: ["2", "5", "8", "12"], ans: 1, hint: "10 / 2 = 5"},
+                {q: "Inverse operation of Multiplication is [drop]", opts: ["Addition", "Subtraction", "Division", "Exponent"], ans: 2, hint: "To undo times, we divide."},
+                {q: "Solve: y - 3 = 4. y = [drop]", opts: ["1", "7", "12", "-1"], ans: 1, hint: "4 + 3 = 7"},
+                {q: "In 5x + 2 = 12, what do we undo first? [drop]", opts: ["5x", "+ 2", "= 12", "x"], ans: 1, hint: "Unwrap the outer layer (addition) first."},
+                {q: "Solve: x/3 = 9. x = [drop]", opts: ["3", "6", "12", "27"], ans: 3, hint: "9 * 3 = 27"},
+                {q: "Solve: 4x + 4 = 20. x = [drop]", opts: ["4", "5", "6", "16"], ans: 0, hint: "20-4=16, 16/4=4"},
+                {q: "If 3x = 3x, this is an [drop]", opts: ["Identity", "Falsehood", "Contradiction", "Equation"], ans: 0, hint: "Always true."},
+                {q: "Solve: 2(x+1)=6. x = [drop]", opts: ["2", "3", "4", "5"], ans: 0, hint: "6/2=3, 3-1=2"},
+                {q: "Constant term in 4x - 5 = 0 is [drop]", opts: ["4", "x", "-5", "0"], ans: 2, hint: "Constants are numbers without variables."},
+                {q: "Solve: 7 - x = 2. x = [drop]", opts: ["5", "9", "-5", "-9"], ans: 0, hint: "7 - 2 = 5"}
+            ],
+            // Group 3: Textfield
+            [
+                {q: "Solve: x + 8 = 15. x = ", ans: "7", hint: "15 - 8"},
+                {q: "Solve: 4y = 24. y = ", ans: "6", hint: "24 / 4"},
+                {q: "Solve: n - 10 = 5. n = ", ans: "15", hint: "5 + 10"},
+                {q: "Solve: x/5 = 4. x = ", ans: "20", hint: "4 * 5"},
+                {q: "Solve: 3x + 2 = 11. x = ", ans: "3", hint: "11-2=9, 9/3=3"},
+                {q: "Solve: 2x - 5 = 9. x = ", ans: "7", hint: "9+5=14, 14/2=7"},
+                {q: "Solve: 5x = x + 12. x = ", ans: "3", hint: "4x=12"},
+                {q: "Solve: 3(x-2)=9. x = ", ans: "5", hint: "x-2=3"},
+                {q: "Solve: 10 - x = 3. x = ", ans: "7", hint: "10 - 3"},
+                {q: "Solve: 0.5x = 4. x = ", ans: "8", hint: "4 / 0.5"}
+            ],
+            // Group 4: Checkbox (Multiple answers possible - though PLSV usually has 1, I'll make some identity/all real numbers or no solution, or just multi-step verification)
+            [
+                {q: "Which of these are valid steps to solve 2x + 6 = 14? (Select 2)", opts: ["Subtract 6 from both sides", "Divide by 2 first", "Add 6 to both sides", "Divide by 14"], ans: [0, 1], hint: "Undo +6, then undo *2."},
+                {q: "Which equations have x=4 as the solution? (Select 2)", opts: ["x + 1 = 5", "2x = 8", "x - 4 = 0", "3x = 12", "x/2 = 1"], ans: [0, 1, 2, 3], hint: "Substitute 4 into each. (4 are correct!)"},
+                {q: "Identify the variables in the expression: 3a + 2b - 5 (Select all)", opts: ["3", "a", "2", "b", "-5"], ans: [1, 3], hint: "Variables are letters."},
+                {q: "Which operations are used to solve 4x - 2 = 10? (Select 2)", opts: ["Addition", "Subtraction", "Multiplication", "Division"], ans: [0, 3], hint: "Add 2, then divide by 4."},
+                {q: "Which of these represent 'A number minus 5 equals 10'? (Select 2)", opts: ["x - 5 = 10", "5 - x = 10", "n - 5 = 10", "10 - x = 5"], ans: [0, 2], hint: "Variable minus 5."},
+                {q: "What are the properties of an equation? (Select 2)", opts: ["Has an equals sign", "Has variables", "Must be true", "Is just an expression"], ans: [0, 1], hint: "Equations equate two expressions."},
+                {q: "To solve 3(x+1)=12, which ways work? (Select 2)", opts: ["Divide by 3 first", "Distribute 3 first", "Subtract 1 first", "Multiply by 12"], ans: [0, 1], hint: "Both dividing or distributing first are valid."},
+                {q: "Which values make 2x < 10 true? (Select 2)", opts: ["2", "4", "5", "6"], ans: [0, 1], hint: "2x must be less than 10."},
+                {q: "Which are examples of PLSV? (Select 2)", opts: ["2x + 1 = 5", "x^2 = 4", "y - 3 = 0", "x + y = 5"], ans: [0, 2], hint: "Linear and One Variable."},
+                {q: "To isolate x in (x/2) + 3 = 7, what must we do? (Select 2)", opts: ["Subtract 3", "Multiply by 2", "Add 3", "Divide by 2"], ans: [0, 1], hint: "Subtract 3, then multiply by 2."}
+            ],
+            // Group 5: Mixed / Drag Drop
+            [
+                {q: "Match the inverse: x + 5", type: "dd", ans: "x - 5", bank: ["x - 5", "x + 5", "5x", "x/5"]},
+                {q: "Solve: 3x = 18. x =", type: "tf", ans: "6"},
+                {q: "Inverse of Division is:", type: "dd", ans: "Multiplication", bank: ["Addition", "Subtraction", "Multiplication", "Division"]},
+                {q: "Is x=3 a solution to 2x+1=7? (True/False)", type: "tf", ans: "True"},
+                {q: "Solve: y - 4 = -2. y =", type: "tf", ans: "2"},
+                {q: "Match the inverse: x / 4", type: "dd", ans: "x * 4", bank: ["x / 4", "x - 4", "x * 4", "x + 4"]},
+                {q: "Solve: 2x + 4 = 10. x =", type: "tf", ans: "3"},
+                {q: "Match the step: To solve 4x - 2 = 6, first we...", type: "dd", ans: "Add 2", bank: ["Divide by 4", "Add 2", "Subtract 2", "Multiply by 2"]},
+                {q: "Solve: 5x = x + 12. x =", type: "tf", ans: "3"},
+                {q: "Solve: 4(x-1)=8. x =", type: "tf", ans: "3"}
+            ]
+        ];
+
+        let currentTab = 0;
+
+        function initAssessment() {
+            const dateInput = document.getElementById('assessDate');
+            dateInput.valueAsDate = new Date();
+            switchTab(0);
+        }
+
+        function switchTab(idx) {
+            currentTab = idx;
+            document.querySelectorAll('.tab-btn').forEach((btn, i) => {
+                btn.classList.toggle('active', i === idx);
+            });
+            renderAssessment(idx);
+        }
+
+        function renderAssessment(idx) {
+            const container = document.getElementById('tab-content');
+            let html = '<div class="space-y-4">';
+            const data = assessData[idx];
+
+            data.forEach((item, i) => {
+                html += `<div class="bg-cave p-3 rounded" id="assess-q-${idx}-${i}">
+                    <p class="text-bone mb-2 font-bold">${i+1}. \\(${item.q}\\)</p>`;
+                
+                if (idx === 0) { // Radio
+                    html += '<div class="pl-4 space-y-1">';
+                    item.opts.forEach((opt, j) => {
+                        html += `<label class="flex items-center text-sand cursor-pointer">
+                            <input type="radio" name="assess-${idx}-${i}" value="${j}" class="mr-2 accent-fire"> ${opt}
+                        </label>`;
+                    });
+                    html += '</div>';
+                } else if (idx === 1) { // Dropdown
+                    html += `<select class="bg-sand text-cave p-1 rounded" id="assess-sel-${idx}-${i}">
+                        <option value="-1">-- Pilih --</option>`;
+                    item.opts.forEach((opt, j) => {
+                        html += `<option value="${j}">${opt}</option>`;
+                    });
+                    html += '</select>';
+                } else if (idx === 2) { // TextField
+                    html += `<input type="text" id="assess-tf-${idx}-${i}" class="bg-sand text-cave p-1 rounded w-24">`;
+                } else if (idx === 3) { // Checkbox
+                    html += '<div class="pl-4 space-y-1">';
+                    item.opts.forEach((opt, j) => {
+                        html += `<label class="flex items-center text-sand cursor-pointer">
+                            <input type="checkbox" name="assess-chk-${idx}-${i}" value="${j}" class="mr-2 accent-fire"> ${opt}
+                        </label>`;
+                    });
+                    html += '</div>';
+                } else if (idx === 4) { // Mixed (tf or dd)
+                    if(item.type === 'tf') {
+                        html += `<input type="text" id="assess-mix-${idx}-${i}" class="bg-sand text-cave p-1 rounded w-24">`;
+                    } else {
+                        html += `<select class="bg-sand text-cave p-1 rounded" id="assess-mix-${idx}-${i}">
+                            <option value="-1">-- Pilih --</option>`;
+                        item.bank.forEach((opt, j) => {
+                            html += `<option value="${opt}">${opt}</option>`;
+                        });
+                        html += '</select>';
+                    }
+                }
+                html += `<div class="assess-fb text-sm mt-2 hidden" id="assess-fb-${idx}-${i}"></div></div>`;
+            });
+
+            html += `<div class="flex gap-4 mt-6">
+                <button onclick="submitAssess(${idx})" class="interactive-btn bg-moss text-white px-6 py-2 rounded font-bold flex-1"><i class="fas fa-paper-plane mr-2"></i>Submit Group ${idx+1}</button>
+                <button onclick="printAssess(${idx})" class="interactive-btn bg-flint text-cave px-6 py-2 rounded font-bold flex-1 no-print"><i class="fas fa-print mr-2"></i>Print Result</button>
+            </div></div>`;
+            
+            container.innerHTML = html;
+            renderMathInElement(container);
+        }
+
+        function submitAssess(idx) {
+            let score = 0;
+            const data = assessData[idx];
+            let results = [];
+
+            data.forEach((item, i) => {
+                let isCorrect = false;
+                let userAns = "No Answer";
+                const fbDiv = document.getElementById(`assess-fb-${idx}-${i}`);
+                fbDiv.classList.remove('hidden');
+
+                if (idx === 0) {
+                    let radios = document.getElementsByName(`assess-${idx}-${i}`);
+                    radios.forEach(r => { if(r.checked) userAns = parseInt(r.value); });
+                    isCorrect = userAns === item.ans;
+                } else if (idx === 1) {
+                    userAns = document.getElementById(`assess-sel-${idx}-${i}`).value;
+                    isCorrect = parseInt(userAns) === item.ans;
+                } else if (idx === 2) {
+                    userAns = document.getElementById(`assess-tf-${idx}-${i}`).value.trim();
+                    isCorrect = userAns === item.ans;
+                } else if (idx === 3) {
+                    let checked = [];
+                    document.getElementsByName(`assess-chk-${idx}-${i}`).forEach(chk => {
+                        if(chk.checked) checked.push(parseInt(chk.value));
+                    });
+                    userAns = checked.join(",");
+                    isCorrect = checked.length === item.ans.length && item.ans.every(a => checked.includes(a));
+                } else if (idx === 4) {
+                    let el = document.getElementById(`assess-mix-${idx}-${i}`);
+                    userAns = el.value;
+                    isCorrect = userAns === item.ans;
+                }
+
+                if(isCorrect) {
+                    score++;
+                    fbDiv.innerHTML = `<p class="text-moss"><i class="fas fa-check-circle"></i> Correct / Benar</p>`;
+                } else {
+                    let correctAnsStr = "";
+                    if(idx===0) correctAnsStr = item.opts[item.ans];
+                    else if(idx===1) correctAnsStr = item.opts[item.ans];
+                    else if(idx===2) correctAnsStr = item.ans;
+                    else if(idx===3) correctAnsStr = item.ans.map(a=>item.opts[a]).join(", ");
+                    else if(idx===4) correctAnsStr = item.ans;
+
+                    fbDiv.innerHTML = `<p class="text-red-400"><i class="fas fa-times-circle"></i> Incorrect. Hint: ${item.hint} <br> Correct Answer: ${correctAnsStr}</p>`;
+                }
+            });
+
+            alert(`Group ${idx+1} Score: ${score}/10`);
+        }
+
+        function printAssess(idx) {
+            let name = document.getElementById('studentName').value || "Unknown Student";
+            let date = document.getElementById('assessDate').value || "No Date";
+            let score = 0;
+            const data = assessData[idx];
+            let printContent = `<html><head><title>Assessment Group ${idx+1}</title><style>body{font-family:Arial;} table{width:100%;border-collapse:collapse;} th,td{border:1px solid black;padding:5px;}</style></head><body>`;
+            printContent += `<h2>Assessment Group ${idx+1}</h2>`;
+            printContent += `<p><strong>Student Name:</strong> ${name}</p>`;
+            printContent += `<p><strong>Date:</strong> ${date}</p><hr>`;
+
+            data.forEach((item, i) => {
+                let userAns = "No Answer";
+                let isCorrect = false;
+                let correctAnsStr = "";
+
+                if (idx === 0) {
+                    let radios = document.getElementsByName(`assess-${idx}-${i}`);
+                    radios.forEach(r => { if(r.checked) userAns = item.opts[parseInt(r.value)]; });
+                    correctAnsStr = item.opts[item.ans];
+                    isCorrect = userAns === correctAnsStr;
+                } else if (idx === 1) {
+                    let val = document.getElementById(`assess-sel-${idx}-${i}`).value;
+                    userAns = val === "-1" ? "Unanswered" : item.opts[parseInt(val)];
+                    correctAnsStr = item.opts[item.ans];
+                    isCorrect = userAns === correctAnsStr;
+                } else if (idx === 2) {
+                    userAns = document.getElementById(`assess-tf-${idx}-${i}`).value.trim() || "Unanswered";
+                    correctAnsStr = item.ans;
+                    isCorrect = userAns === correctAnsStr;
+                } else if (idx === 3) {
+                    let checked = [];
+                    document.getElementsByName(`assess-chk-${idx}-${i}`).forEach(chk => {
+                        if(chk.checked) checked.push(item.opts[parseInt(chk.value)]);
+                    });
+                    userAns = checked.join(", ") || "Unanswered";
+                    correctAnsStr = item.ans.map(a=>item.opts[a]).join(", ");
+                    isCorrect = userAns === correctAnsStr;
+                } else if (idx === 4) {
+                    userAns = document.getElementById(`assess-mix-${idx}-${i}`).value || "Unanswered";
+                    correctAnsStr = item.ans;
+                    isCorrect = userAns === correctAnsStr;
+                }
+
+                if(isCorrect) score++;
+                printContent += `<p><strong>${i+1}. ${item.q}</strong><br> Your Answer: ${userAns} ${isCorrect ? '<span style="color:green;">(Correct)</span>' : '<span style="color:red;">(Wrong)</span>'} <br> Correct Answer: ${correctAnsStr}</p>`;
+            });
+
+            printContent += `<hr><h3>Final Score: ${score}/10</h3></body></html>`;
+
+            let printWindow = window.open('', '_blank');
+            printWindow.document.write(printContent);
+            printWindow.document.close();
+            printWindow.print();
+        }
+    </script>
+</body>
+</html>
