@@ -123,6 +123,79 @@
             .section-card { border: 1px solid black; box-shadow: none; background: white; }
             #canvas-panel { display: none; }
         }
+        /* Animasi timbangan mengayun */
+        @keyframes sway {
+            0%, 100% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
+        }
+        .balance-beam { 
+            transform-origin: 200px 50px; /* Titik tumpuan */
+            animation: sway 3s ease-in-out infinite; 
+        }
+        
+        /* Style untuk Item Drag (Batu Prasejarah) */
+        .drag-item-stone {
+            cursor: grab;
+            touch-action: none;
+            user-select: none;
+            background: linear-gradient(145deg, #6d4c41, #4e342e);
+            border: 2px solid #8d6e63;
+            border-radius: 8px;
+            padding: 8px 16px;
+            color: #F5F5DC;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 0 #3e2723, 0 6px 10px rgba(0,0,0,0.3);
+        }
+        .drag-item-stone:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 0 #3e2723, 0 9px 15px rgba(0,0,0,0.4);
+        }
+        .drag-item-stone:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #3e2723, 0 3px 5px rgba(0,0,0,0.2);
+            cursor: grabbing;
+        }
+        
+        /* Style untuk Drop Zone (Celah Batu) */
+        .drop-zone-stone {
+            min-height: 45px;
+            border: 3px dashed #795548;
+            border-radius: 8px;
+            background: rgba(26, 17, 8, 0.6);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .drop-zone-stone.drag-over {
+            background: rgba(255, 112, 67, 0.2);
+            border-color: #FF7043;
+            transform: scale(1.05);
+        }
+        .drop-zone-stone.dropped {
+            border-style: solid;
+            border-color: #689F38;
+            background: rgba(104, 159, 56, 0.1);
+        }
+        
+        /* Animasi untuk item yang baru di-drop */
+        @keyframes dropPop {
+            0% { transform: scale(0.8); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        .drop-anim { animation: dropPop 0.3s ease forwards; }
+        
+        /* Feedback Inline Game 2 */
+        .g2-inline-fb {
+            font-size: 0.85rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            min-width: 30px;
+        }
     </style>
 </head>
 <body class="min-h-screen flex">
@@ -249,29 +322,47 @@
             <p class="mb-4">If the scale tips, the equation is no longer equal! / <i>Jika timbangan miring, persamaan tidak seimbang!</i></p>
 
             <div class="bg-cave p-4 rounded-lg mb-6 flex justify-center">
-                <svg width="400" height="200" viewBox="0 0 400 200">
-                    <!-- Stand -->
-                    <rect x="190" y="40" width="20" height="160" fill="#5D4037"/>
-                    <rect x="140" y="190" width="120" height="10" fill="#5D4037" rx="5"/>
-                    <!-- Beam -->
-                    <polygon points="200,50 50,90 350,90" fill="#795548" stroke="#D7CCC8" stroke-width="2"/>
-                    <!-- Left Pan -->
-                    <line x1="50" y1="90" x2="50" y2="120" stroke="#9E9E9E" stroke-width="2"/>
-                    <path d="M20,120 Q50,150 80,120" fill="#8D6E63" stroke="#D7CCC8" stroke-width="2"/>
-                    <text x="35" y="115" fill="#FF7043" font-family="Caveat" font-size="20">3x + 5</text>
-                    <!-- Right Pan -->
-                    <line x1="350" y1="90" x2="350" y2="120" stroke="#9E9E9E" stroke-width="2"/>
-                    <path d="M320,120 Q350,150 380,120" fill="#8D6E63" stroke="#D7CCC8" stroke-width="2"/>
-                    <text x="335" y="115" fill="#FF7043" font-family="Caveat" font-size="20">20</text>
+                <svg width="400" height="220" viewBox="0 0 400 220" class="my-4">
+                    <!-- Background Gunung -->
+                    <path d="M0,220 L100,100 L200,180 L300,80 L400,220 Z" fill="#3E2723" opacity="0.5"/>
+                    
+                    <!-- Stand & Fulcrum -->
+                    <path d="M170,220 L200,180 L230,220 Z" fill="#5D4037"/> <!-- Batu bata bawah -->
+                    <rect x="190" y="40" width="20" height="140" fill="#5D4037"/>
+                    <circle cx="200" cy="40" r="10" fill="#8D6E63" stroke="#D7CCC8" stroke-width="2"/> <!-- Puntir atas -->
+                
+                    <!-- Beam (Balok Timbangan) dengan Animasi -->
+                    <g class="balance-beam">
+                        <polygon points="200,40 20,90 380,90" fill="#795548" stroke="#D7CCC8" stroke-width="3"/>
+                        
+                        <!-- Left Pan (Wadah Kiri) -->
+                        <line x1="20" y1="90" x2="20" y2="120" stroke="#9E9E9E" stroke-width="2"/>
+                        <path d="M-10,120 Q20,150 50,120" fill="#8D6E63" stroke="#D7CCC8" stroke-width="2"/>
+                        <text x="5" y="115" fill="#FF7043" font-family="Caveat" font-size="22">3x + 5</text>
+                        <text x="10" y="145" fill="#D7CCC8" font-family="Caveat" font-size="16">🦴 Dino</text>
+                
+                        <!-- Right Pan (Wadah Kanan) -->
+                        <line x1="380" y1="90" x2="380" y2="120" stroke="#9E9E9E" stroke-width="2"/>
+                        <path d="M350,120 Q380,150 410,120" fill="#8D6E63" stroke="#D7CCC8" stroke-width="2"/>
+                        <text x="365" y="115" fill="#FF7043" font-family="Caveat" font-size="22">20</text>
+                        <text x="365" y="145" fill="#D7CCC8" font-family="Caveat" font-size="16">🪨 Batu</text>
+                    </g>
                 </svg>
             </div>
 
             <!-- Game 2: Balance Matching -->
             <div class="mb-4">
-                <h3 class="text-xl font-title text-moss mb-2">Game: Keep it Balanced! / Jaga Keseimbangan!</h3>
-                <p class="text-sm mb-2">If you add 5 to the left side, what must you do to the right side? Drag the correct action. / <i>Jika tambah 5 di kiri, apa yang harus dilakukan di kanan? Seret aksi yang benar.</i></p>
-                <div id="game2-container" class="grid grid-cols-2 gap-4"></div>
-                <div class="mt-4 flex gap-2 flex-wrap" id="game2-bank"></div>
+                <h3 class="text-xl font-title text-moss mb-2"><i class="fas fa-balance-scale-right mr-2"></i> Game: Keep it Balanced! / Jaga Keseimbangan!</h3>
+                <p class="text-sm mb-3">Drag the correct action into the empty slot. / <i>Seret aksi yang benar ke slot kosong.</i></p>
+                
+                <div id="game2-container" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <!-- Akan diisi oleh JavaScript -->
+                </div>
+                
+                <h4 class="text-bone font-bold mb-2 text-center"><i class="fas fa-hand-pointer mr-2"></i> Drag from here / Seret dari sini:</h4>
+                <div class="mt-2 flex gap-3 flex-wrap justify-center p-4 bg-cave rounded-lg border border-clay" id="game2-bank">
+                    <!-- Akan diisi oleh JavaScript -->
+                </div>
             </div>
 
             <div class="flex gap-4 mt-4 no-print">
@@ -610,19 +701,19 @@
 
         // --- GAME 2: Drag Drop Balance ---
         const g2Data = [
-            {act: "Add 5 to Left", match: "Add 5 to Right"},
-            {act: "Subtract 3 from Left", match: "Subtract 3 from Right"},
-            {act: "Multiply Left by 2", match: "Multiply Right by 2"},
-            {act: "Divide Left by 4", match: "Divide Right by 4"},
-            {act: "Add x to Left", match: "Add x to Right"},
-            {act: "Subtract 10 from Right", match: "Subtract 10 from Left"},
-            {act: "Multiply Right by 3", match: "Multiply Left by 3"},
-            {act: "Divide Right by 5", match: "Divide Left by 5"},
-            {act: "Add 0 to Left", match: "Add 0 to Right"},
-            {act: "Subtract y from Right", match: "Subtract y from Left"}
+            {act: "Add 5 to Left", actIcon: "fa-plus", match: "Add 5 to Right", matchIcon: "fa-plus"},
+            {act: "Subtract 3 from Left", actIcon: "fa-minus", match: "Subtract 3 from Right", matchIcon: "fa-minus"},
+            {act: "Multiply Left by 2", actIcon: "fa-times", match: "Multiply Right by 2", matchIcon: "fa-times"},
+            {act: "Divide Left by 4", actIcon: "fa-divide", match: "Divide Right by 4", matchIcon: "fa-divide"},
+            {act: "Add x to Left", actIcon: "fa-plus", match: "Add x to Right", matchIcon: "fa-plus"},
+            {act: "Subtract 10 from Right", actIcon: "fa-minus", match: "Subtract 10 from Left", matchIcon: "fa-minus"},
+            {act: "Multiply Right by 3", actIcon: "fa-times", match: "Multiply Left by 3", matchIcon: "fa-times"},
+            {act: "Divide Right by 5", actIcon: "fa-divide", match: "Divide Left by 5", matchIcon: "fa-divide"},
+            {act: "Add 0 to Left", actIcon: "fa-plus", match: "Add 0 to Right", matchIcon: "fa-plus"},
+            {act: "Subtract y from Right", actIcon: "fa-minus", match: "Subtract y from Left", matchIcon: "fa-minus"}
         ];
         let g2Answers = new Array(10).fill(null);
-
+        
         function initGame2() {
             const c = document.getElementById('game2-container');
             const b = document.getElementById('game2-bank');
@@ -630,44 +721,82 @@
             g2Answers.fill(null);
             
             let shuffledBank = [...g2Data].sort(() => Math.random() - 0.5);
-
+        
             g2Data.forEach((item, i) => {
                 c.innerHTML += `
-                    <div class="bg-cave p-2 rounded flex items-center gap-2">
-                        <span class="text-bone flex-1">${item.act}</span>
-                        <i class="fas fa-arrow-right text-fire"></i>
-                        <div id="g2-drop-${i}" class="drop-zone flex-1 p-2 text-sm text-center" ondrop="dropG2(event, ${i})" ondragover="allowDrop(event)" ondragleave="leaveDrop(event)"></div>
+                    <div class="bg-cave p-3 rounded-lg border border-clay flex flex-col sm:flex-row items-center gap-3">
+                        <div class="flex items-center gap-2 flex-1 bg-rock p-2 rounded text-bone">
+                            <i class="fas ${item.actIcon} text-fire"></i>
+                            <span class="text-sm font-bold">${item.act}</span>
+                        </div>
+                        <i class="fas fa-arrow-right text-moss hidden sm:block"></i>
+                        <i class="fas fa-arrow-down text-moss sm:hidden"></i>
+                        <div class="flex-1 flex items-center gap-2 w-full">
+                            <div id="g2-drop-${i}" class="drop-zone-stone flex-1 text-sm text-center text-flint" ondrop="dropG2(event, ${i})" ondragover="allowDrop(event)" ondragleave="leaveDrop(event)">
+                                Drop here...
+                            </div>
+                            <span id="g2-fb-${i}" class="g2-inline-fb"></span>
+                        </div>
                     </div>`;
             });
-
+        
             shuffledBank.forEach((item, i) => {
                 b.innerHTML += `
-                    <div id="g2-drag-${i}" class="drag-item bg-moss text-white px-3 py-1 rounded text-sm" draggable="true" ondragstart="dragG2(event, '${item.match}')">
-                        ${item.match}
+                    <div id="g2-drag-${i}" class="drag-item-stone text-sm" draggable="true" ondragstart="dragG2(event, '${item.match}')">
+                        <i class="fas ${item.matchIcon} mr-1"></i> ${item.match}
                     </div>`;
             });
         }
-        function allowDrop(e) { e.preventDefault(); e.target.classList.add('drag-over'); }
-        function leaveDrop(e) { e.target.classList.remove('drag-over'); }
+        
         function dragG2(e, val) { e.dataTransfer.setData("text", val); }
+        
         function dropG2(e, i) { 
             e.preventDefault(); 
-            e.target.classList.remove('drag-over');
+            const dropZone = document.getElementById(`g2-drop-${i}`);
+            dropZone.classList.remove('drag-over');
+            
             let val = e.dataTransfer.getData("text");
             g2Answers[i] = val;
-            e.target.innerHTML = val;
+            
+            // Tambahkan elemen ke drop zone dengan animasi
+            dropZone.innerHTML = `<span class="drop-anim font-bold text-bone"><i class="fas fa-check-circle text-moss mr-1"></i> ${val}</span>`;
+            dropZone.classList.add('dropped');
+            
+            // Reset feedback jika ada
+            document.getElementById(`g2-fb-${i}`).innerHTML = '';
         }
+        
         function checkGame2() {
-            let fb = document.getElementById('game2-feedback'); fb.innerHTML = '';
             let score = 0;
             g2Data.forEach((item, i) => {
-                if(g2Answers[i] === item.match) score++;
-                else fb.innerHTML += `<p class="text-red-400 text-sm">Row ${i+1}: Incorrect. Action for '${item.act}' should be '${item.match}'.</p>`;
+                let fbSpan = document.getElementById(`g2-fb-${i}`);
+                let dropZone = document.getElementById(`g2-drop-${i}`);
+                let isCorrect = g2Answers[i] === item.match;
+                
+                if(isCorrect) {
+                    score++;
+                    fbSpan.innerHTML = '<i class="fas fa-check-circle anim-bounce text-xl"></i>';
+                    fbSpan.className = "g2-inline-fb fb-correct";
+                    dropZone.style.borderColor = "#689F38"; // Moss
+                } else {
+                    let hint = g2Answers[i] === null ? "Unanswered" : `Should be: ${item.match}`;
+                    fbSpan.innerHTML = `<i class="fas fa-times-circle text-xl"></i> <span class="text-xs text-red-400">${hint}</span>`;
+                    fbSpan.className = "g2-inline-fb fb-wrong";
+                    dropZone.style.borderColor = "#D32F2F"; // Red
+                }
             });
-            if(score === 10) fb.innerHTML = '<p class="feedback-correct">Excellent Balance! / Keseimbangan Sempurna!</p>';
+            
+            if(score === 10) {
+                document.getElementById('game2-feedback').innerHTML = '<p class="feedback-correct text-center text-lg mt-4"><i class="fas fa-trophy mr-2"></i> Excellent Balance! / Keseimbangan Sempurna!</p>';
+            } else {
+                document.getElementById('game2-feedback').innerHTML = `<p class="text-center text-sand mt-4">Score: ${score}/10. Check the red boxes for mistakes.</p>`;
+            }
         }
-        function resetGame2() { initGame2(); document.getElementById('game2-feedback').innerHTML = ''; }
-
+        
+        function resetGame2() { 
+            initGame2(); 
+            document.getElementById('game2-feedback').innerHTML = ''; 
+        }
 
         // --- GAME 3: Inverse Match ---
         const g3Data = [
