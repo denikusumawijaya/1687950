@@ -196,6 +196,10 @@
             gap: 5px;
             min-width: 30px;
         }
+        /* Agar teks/ikon di dalam drop zone tidak menghalangi proses drop */
+        .drop-zone-stone > * {
+            pointer-events: none;
+        }
     </style>
 </head>
 <body class="min-h-screen flex">
@@ -697,7 +701,16 @@
             });
         }
         function resetGame1() { initGame1(); }
-
+        function allowDrop(e) { 
+            e.preventDefault(); // Ini yang paling penting, agar browser mengizinkan drop
+            let zone = e.target.closest('.drop-zone, .drop-zone-stone');
+            if(zone) zone.classList.add('drag-over'); 
+        }
+        
+        function leaveDrop(e) { 
+            let zone = e.target.closest('.drop-zone, .drop-zone-stone');
+            if(zone) zone.classList.remove('drag-over'); 
+        }
 
         // --- GAME 2: Drag Drop Balance ---
         const g2Data = [
@@ -834,11 +847,16 @@
             renderMathInElement(document.getElementById('game3-bank'));
         }
         function dropG3(e, i) { 
-            e.preventDefault(); e.target.classList.remove('drag-over');
+            e.preventDefault(); 
+            
+            // Paksa mencari kotak drop berdasarkan ID agar 100% akurat (tidak salah target ke teks)
+            let dropZone = document.getElementById(`g3-drop-${i}`);
+            dropZone.classList.remove('drag-over');
+            
             let val = e.dataTransfer.getData("text");
             g3Answers[i] = val;
-            e.target.innerHTML = `\\(${val}\\)`;
-            renderMathInElement(e.target);
+            dropZone.innerHTML = `\\(${val}\\)`;
+            renderMathInElement(dropZone);
         }
         function checkGame3() {
             let fb = document.getElementById('game3-feedback'); fb.innerHTML = '';
