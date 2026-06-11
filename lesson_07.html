@@ -909,7 +909,7 @@
             } else {
                 fb.innerHTML = `<p class="text-center text-sand mt-4">Score: ${score}/10. Check the red boxes for mistakes.</p>`;
             }
-            renderMathInElement(fb); // Render math di petunjuk jawaban benar
+            renderMathInElement(fb);
         }
         function resetGame3() { initGame3(); document.getElementById('game3-feedback').innerHTML = ''; }
 
@@ -946,7 +946,7 @@
             let fb = document.getElementById('game4-feedback'); fb.innerHTML = '';
             let isCorrect = g4Order.length === 4;
             let allStepsCorrect = true;
-        
+
             if(isCorrect) {
                 for(let i=0; i<4; i++) {
                     if(g4Steps[g4Order[i]].order !== i) allStepsCorrect = false;
@@ -954,8 +954,7 @@
             } else {
                 allStepsCorrect = false;
             }
-        
-            // Beri feedback inline pada tombol yang diklik
+
             g4Order.forEach((btnIndex, stepIndex) => {
                 let btn = document.getElementById(`g4-btn-${btnIndex}`);
                 if(g4Steps[btnIndex].order === stepIndex) {
@@ -964,25 +963,21 @@
                 } else {
                     btn.innerHTML += ' <i class="fas fa-times-circle text-red-400 ml-2"></i>';
                     btn.style.border = "2px solid #D32F2F";
-                    btn.style.backgroundColor = "#5D4037"; // Kembali ke warna rock karena salah
+                    btn.style.backgroundColor = "#5D4037";
                     allStepsCorrect = false;
                 }
             });
-        
+
             if(allStepsCorrect) {
                 fb.innerHTML = '<p class="feedback-correct text-center text-lg mt-4"><i class="fas fa-trophy mr-2"></i> Correct Order! / Urutan Benar!</p>';
             } else {
                 fb.innerHTML = '<p class="feedback-wrong text-center mt-4"><i class="fas fa-exclamation-triangle mr-2"></i> Incorrect Order. Follow the unwrapping steps! / <i>Ikuti langkah membuka bungkus!</i></p>';
             }
         }
-        
-        function resetGame4() { 
-            initGame4(); 
-            document.getElementById('game4-feedback').innerHTML = ''; 
-        }
+        function resetGame4() { initGame4(); document.getElementById('game4-feedback').innerHTML = ''; }
 
 
-        // --- GAME 5: Fill blanks ---
+        // --- GAME 5: Fill in the blanks ---
         const g5Data = [
             {eq: "5x + 12 = 32", steps: ["5x = 20", "x = 4"], ans: [20, 4]},
             {eq: "8y - 15 = 41", steps: ["8y = 56", "y = 7"], ans: [56, 7]},
@@ -996,19 +991,6 @@
             {eq: "7x - 5 = 37", steps: ["7x = 42", "x = 6"], ans: [42, 6]}
         ];
 
-        const g5Data = [
-            {eq: "5x + 12 = 32", steps: ["5x = 20", "x = 4"], ans: [20, 4]},
-            {eq: "8y - 15 = 41", steps: ["8y = 56", "y = 7"], ans: [56, 7]},
-            {eq: "4n + 7 = 31", steps: ["4n = 24", "n = 6"], ans: [24, 6]},
-            {eq: "3x - 5 = 85", steps: ["3x = 90", "x = 30"], ans: [90, 30]},
-            {eq: "4(x - 3) = 20", steps: ["4x - 12 = 20", "4x = 32", "x = 8"], ans: [12, 32, 8]},
-            {eq: "6x + 4 = 2x + 20", steps: ["4x + 4 = 20", "4x = 16", "x = 4"], ans: [4, 16, 4]},
-            {eq: "2(3x + 5) - 4 = 18", steps: ["6x + 10 - 4 = 18", "6x + 6 = 18", "6x = 12", "x = 2"], ans: [10, 6, 12, 2]},
-            {eq: "0.5x + 2 = 10", steps: ["0.5x = 8", "x = 16"], ans: [8, 16]},
-            {eq: "5(x - 2) = 3(x + 4)", steps: ["5x - 10 = 3x + 12", "2x - 10 = 12", "2x = 22", "x = 11"], ans: [10, 2, 22, 11]},
-            {eq: "7x - 5 = 37", steps: ["7x = 42", "x = 6"], ans: [42, 6]}
-        ];
-        
         function initGame5() {
             const c = document.getElementById('game5-container');
             c.innerHTML = '';
@@ -1032,7 +1014,6 @@
             });
             renderMathInElement(c);
         }
-        
         function checkGame5() {
             let fb = document.getElementById('game5-feedback'); fb.innerHTML = '';
             let totalScore = 0; let totalQ = 0;
@@ -1047,15 +1028,14 @@
                     let val = inputEl.value.trim();
                     if(val == ans) {
                         totalScore++;
-                        inputEl.style.border = "2px solid #689F38"; // Moss
+                        inputEl.style.border = "2px solid #689F38";
                     } else {
                         itemCorrect = false;
-                        inputEl.style.border = "2px solid #D32F2F"; // Red
+                        inputEl.style.border = "2px solid #D32F2F";
                         inputEl.style.backgroundColor = "#FFEBEE";
                     }
                 });
-        
-                // Feedback inline per soal
+
                 if(itemCorrect) {
                     fbSpan.innerHTML = '<i class="fas fa-check-circle anim-bounce"></i>';
                     fbSpan.className = "inline-fb fb-correct";
@@ -1065,18 +1045,14 @@
                     fbSpan.className = "inline-fb fb-wrong";
                 }
             });
-        
+
             if(totalScore === totalQ) {
                 fb.innerHTML = '<p class="feedback-correct text-center text-lg mt-4"><i class="fas fa-trophy mr-2"></i> Solving Expert! / Ahli Penyelesaian!</p>';
             } else {
                 fb.innerHTML = `<p class="text-center text-sand mt-4">Score: ${totalScore}/${totalQ}. Check the red inputs for mistakes.</p>`;
             }
         }
-        
-        function resetGame5() { 
-            initGame5(); 
-            document.getElementById('game5-feedback').innerHTML = ''; 
-        }
+        function resetGame5() { initGame5(); document.getElementById('game5-feedback').innerHTML = ''; }
 
 
         function initGames() {
@@ -1085,7 +1061,6 @@
 
         // --- ASSESSMENT LOGIC ---
         const assessData = [
-            // Group 1: Radio
             [
                 {q: "Solve for \\(x\\): \\(x + 5 = 12\\)", opts: ["5", "6", "7", "8"], ans: 2, hint: "Subtract 5 from both sides."},
                 {q: "Solve for \\(y\\): \\(3y = 18\\)", opts: ["3", "6", "9", "12"], ans: 1, hint: "Divide both sides by 3."},
@@ -1098,7 +1073,6 @@
                 {q: "Identify the variable in: \\(3a + 4 = 10\\)", opts: ["3", "\\(a\\)", "4", "10"], ans: 1, hint: "Variables are letters."},
                 {q: "Solve: \\(10 - x = 6\\)", opts: ["4", "16", "-4", "6"], ans: 0, hint: "\\(x = 10 - 6\\)."}
             ],
-            // Group 2: Dropdown
             [
                 {q: "Solve for \\(x\\): \\(2x = 10\\). \\(x =\\) [drop]", opts: ["2", "5", "8", "12"], ans: 1, hint: "\\(10 \\div 2 = 5\\)"},
                 {q: "Inverse operation of Multiplication is [drop]", opts: ["Addition", "Subtraction", "Division", "Exponent"], ans: 2, hint: "To undo times, we divide."},
@@ -1111,7 +1085,6 @@
                 {q: "Constant term in \\(4x - 5 = 0\\) is [drop]", opts: ["4", "\\(x\\)", "-5", "0"], ans: 2, hint: "Constants are numbers without variables."},
                 {q: "Solve: \\(7 - x = 2\\). \\(x =\\) [drop]", opts: ["5", "9", "-5", "-9"], ans: 0, hint: "\\(7 - 2 = 5\\)"}
             ],
-            // Group 3: Textfield
             [
                 {q: "Solve: \\(x + 8 = 15\\). \\(x =\\) ", ans: "7", hint: "\\(15 - 8\\)"},
                 {q: "Solve: \\(4y = 24\\). \\(y =\\) ", ans: "6", hint: "\\(24 \\div 4\\)"},
@@ -1124,7 +1097,6 @@
                 {q: "Solve: \\(10 - x = 3\\). \\(x =\\) ", ans: "7", hint: "\\(10 - 3\\)"},
                 {q: "Solve: \\(0.5x = 4\\). \\(x =\\) ", ans: "8", hint: "\\(4 \\div 0.5\\)"}
             ],
-            // Group 4: Checkbox
             [
                 {q: "Which of these are valid steps to solve \\(2x + 6 = 14\\)? (Select 2)", opts: ["Subtract 6 from both sides", "Divide by 2 first", "Add 6 to both sides", "Divide by 14"], ans: [0, 1], hint: "Undo \\(+6\\), then undo \\(\\times 2\\)."},
                 {q: "Which equations have \\(x=4\\) as the solution? (Select 2)", opts: ["\\(x + 1 = 5\\)", "\\(2x = 8\\)", "\\(x - 4 = 0\\)", "\\(3x = 12\\)", "\\(\\frac{x}{2} = 1\\)"], ans: [0, 1, 2, 3], hint: "Substitute 4 into each. (4 are correct!)"},
@@ -1137,7 +1109,6 @@
                 {q: "Which are examples of PLSV? (Select 2)", opts: ["\\(2x + 1 = 5\\)", "\\(x^2 = 4\\)", "\\(y - 3 = 0\\)", "\\(x + y = 5\\)"], ans: [0, 2], hint: "Linear and One Variable."},
                 {q: "To isolate \\(x\\) in \\(\\frac{x}{2} + 3 = 7\\), what must we do? (Select 2)", opts: ["Subtract 3", "Multiply by 2", "Add 3", "Divide by 2"], ans: [0, 1], hint: "Subtract 3, then multiply by 2."}
             ],
-            // Group 5: Mixed
             [
                 {q: "Match the inverse: \\(x + 5\\)", type: "dd", ans: "\\(x - 5\\)", bank: ["\\(x - 5\\)", "\\(x + 5\\)", "\\(5x\\)", "\\(\\frac{x}{5}\\)"]},
                 {q: "Solve: \\(3x = 18\\). \\(x =\\)", type: "tf", ans: "6"},
@@ -1175,7 +1146,7 @@
 
             data.forEach((item, i) => {
                 html += `<div class="bg-cave p-3 rounded" id="assess-q-${idx}-${i}">
-                    <p class="text-bone mb-2 font-bold">${i+1}. (${item.q})</p>`;
+                    <p class="text-bone mb-2 font-bold">${i+1}. ${item.q}</p>`;
                 
                 if (idx === 0) {
                     html += '<div class="pl-4 space-y-1">';
@@ -1229,7 +1200,6 @@
         function submitAssess(idx) {
             let score = 0;
             const data = assessData[idx];
-            let results = [];
 
             data.forEach((item, i) => {
                 let isCorrect = false;
