@@ -235,6 +235,98 @@
             0% { background-position: 0 0; }
             100% { background-position: 40px 0; }
         }
+        /* ==========================================
+           QC GATES (UNLOCK 1 BY 1) - SECTION 2
+           ========================================== */
+        .qc-gates-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .qc-gate {
+            background: #fff;
+            border: 2px solid var(--concrete);
+            border-radius: 8px;
+            padding: 20px;
+            position: relative;
+            transition: all 0.5s ease;
+            overflow: hidden;
+        }
+        .qc-gate.locked {
+            background: #e0e0e0;
+            opacity: 0.6;
+            pointer-events: none; /* Tidak bisa diklik */
+            filter: grayscale(100%);
+        }
+        .qc-gate.active {
+            border-color: var(--safety-yellow);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+            animation: pulseGate 2s infinite;
+        }
+        .qc-gate.passed {
+            border-color: var(--success);
+            background: #f0fff0;
+        }
+        .qc-gate.failed {
+            border-color: var(--danger);
+            animation: shakeGate 0.5s;
+        }
+
+        .gate-header {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .gate-header .status-icon {
+            margin-left: auto;
+            font-size: 1.2rem;
+        }
+
+        .gate-options {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .gate-btn {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid var(--steel-dark);
+            background: transparent;
+            cursor: pointer;
+            border-radius: 4px;
+            font-weight: bold;
+            font-family: Roboto;
+            transition: all 0.2s;
+        }
+        .gate-btn:hover { background: var(--steel-dark); color: var(--safety-yellow); }
+        .gate-btn.selected { background: var(--safety-yellow); color: var(--steel-dark); border-color: var(--steel-dark); transform: scale(1.02); }
+        .gate-btn:disabled { cursor: not-allowed; opacity: 0.7; }
+
+        .gate-feedback {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            display: none;
+            padding: 8px;
+            border-radius: 4px;
+        }
+        .gate-feedback.show { display: block; }
+        .gate-feedback.correct { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .gate-feedback.incorrect { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+
+        @keyframes pulseGate {
+            0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 215, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
+        }
+        @keyframes shakeGate {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
     </style>
 </head>
 <body>
@@ -349,6 +441,7 @@
             <span class="translate">Bayangkan mesin scanner barcode di pabrik. Saat scan barcode (input), mesin HANYA BOLEH mengeluarkan satu harga (output). Jika satu barcode keluar dua harga, sistem kacau!</span>
             <p style="margin-top:15px">In mathematics, the rule of 'one input produces exactly one output' is called a FUNCTION. A relation that breaks this rule is NOT a function.</p>
             <span class="translate">Dalam matematika, aturan 'satu input menghasilkan tepat satu output' disebut FUNGSI. Relasi yang melanggar aturan ini BUKAN fungsi.</span>
+            
             <div class="visual-container">
                 <svg width="300" height="120" viewBox="0 0 300 120">
                     <rect x="10" y="30" width="80" height="60" fill="#2d2d30" rx="5"/>
@@ -361,12 +454,19 @@
                 </svg>
                 <p><em>Fungsi: 1 Input → 1 Output yang tepat</em></p>
             </div>
-            <div class="game-container" id="game2">
-                <h3><i class="fa-solid fa-gamepad"></i> Scanner Test: Function or Not? (10 Items)</h3>
-                <div id="game2-questions"></div>
+
+            <!-- SISTEM QC GATES (UNLOCK 1 BY 1) -->
+            <div class="game-container" id="game2-qc">
+                <h3><i class="fa-solid fa-door-open"></i> Quality Control Gates / Gerbang Kontrol Kualitas</h3>
+                <p style="margin-bottom:15px; font-size:0.9em;">Unlock each station by answering correctly. A faulty machine cannot proceed! / Buka kunci stasiun dengan menjawab benar. Mesin rusak tidak bisa lanjut!</p>
+                
+                <div class="qc-gates-container" id="qc-gates-list">
+                    <!-- Stasiun 1 akan di-generate oleh JavaScript -->
+                </div>
+
                 <div class="action-buttons">
-                    <button class="btn-check" onclick="checkGame('game2')"><i class="fa-solid fa-check"></i> Cek Jawaban</button>
-                    <button class="btn-reset" onclick="resetGame('game2')"><i class="fa-solid fa-arrows-rotate"></i> Reset</button>
+                    <button class="btn-check" id="qc-check-btn" onclick="verifyGate()"><i class="fa-solid fa-shield-halved"></i> Verify Station</button>
+                    <button class="btn-reset" onclick="resetQC()"><i class="fa-solid fa-arrows-rotate"></i> Reset Line</button>
                 </div>
             </div>
         </div>
@@ -667,18 +767,6 @@
             { q: "Expression for 'Double the value of p'", options: ["2p", "p + 2", "p / 2", "p^2"], answer: "2p", hint: "Double means multiply by 2." },
             { q: "Expression for '7 subtracted from y'", options: ["y - 7", "7 - y", "7y", "y / 7"], answer: "y - 7", hint: "'Subtracted from' means the first thing comes after the minus sign." }
         ],
-        game2: [
-            { q: "1 student has 1 Student ID Number", options: ["Function", "Not a Function"], answer: "Function", hint: "1 input gives exactly 1 output." },
-            { q: "1 barcode shows 2 different prices", options: ["Function", "Not a Function"], answer: "Not a Function", hint: "1 input gives 2 outputs! System error." },
-            { q: "A car has 1 license plate number", options: ["Function", "Not a Function"], answer: "Function", hint: "1 input (car) -> 1 output (plate)." },
-            { q: "One person has 2 phone numbers", options: ["Function", "Not a Function"], answer: "Not a Function", hint: "1 person maps to 2 numbers." },
-            { q: "Input 2 gives Output 4. Input 2 again gives Output 4.", options: ["Function", "Not a Function"], answer: "Function", hint: "Consistent single output." },
-            { q: "Input 3 gives Output 6. Input 3 again gives Output 9.", options: ["Function", "Not a Function"], answer: "Not a Function", hint: "Same input gives different outputs." },
-            { q: "Every worker in the factory operates exactly 1 machine", options: ["Function", "Not a Function"], answer: "Function", hint: "1 worker -> 1 machine." },
-            { q: "One machine is operated by 3 different workers", options: ["Function", "Not a Function"], answer: "Not a Function", hint: "Look at the machine as the input." },
-            { q: "f(x) = x + 2. Does this represent a function?", options: ["Yes, Function", "No, Not a Function"], answer: "Yes, Function", hint: "Every x will give exactly one result." },
-            { q: "Diagram: Arrow from 1 goes to A and B.", options: ["Function", "Not a Function"], answer: "Not a Function", hint: "One input splits into two outputs." }
-        ],
         game3: [
             { q: "In an arrow diagram, the starting set (input set) is called...", options: ["Domain", "Codomain", "Range", "Function"], answer: "Domain", hint: "It is the area of origin / Daerah asal." },
             { q: "The target set that might be reached by arrows is called...", options: ["Domain", "Codomain", "Range", "Variable"], answer: "Codomain", hint: "It is the companion area / Daerah kawan." },
@@ -973,12 +1061,128 @@
             }
         });
     }
+    // ==========================================
+    // QC GATES LOGIC (SECTION 2)
+    // ==========================================
+    const qcData = [
+        { q: "1 student has 1 Student ID Number", options: ["Function ✅", "Not a Function ❌"], answer: "Function ✅", hint: "1 input gives exactly 1 output." },
+        { q: "1 barcode shows 2 different prices", options: ["Function ✅", "Not a Function ❌"], answer: "Not a Function ❌", hint: "1 input gives 2 outputs! System error." },
+        { q: "A car has 1 license plate number", options: ["Function ✅", "Not a Function ❌"], answer: "Function ✅", hint: "1 input (car) -> 1 output (plate)." },
+        { q: "One person has 2 phone numbers", options: ["Function ✅", "Not a Function ❌"], answer: "Not a Function ❌", hint: "1 person maps to 2 numbers." },
+        { q: "Input 2 gives Output 4. Input 2 again gives Output 4.", options: ["Function ✅", "Not a Function ❌"], answer: "Function ✅", hint: "Consistent single output." },
+        { q: "Input 3 gives Output 6. Input 3 again gives Output 9.", options: ["Function ✅", "Not a Function ❌"], answer: "Not a Function ❌", hint: "Same input gives different outputs." },
+        { q: "Every worker in the factory operates exactly 1 machine", options: ["Function ✅", "Not a Function ❌"], answer: "Function ✅", hint: "1 worker -> 1 machine." },
+        { q: "One machine is operated by 3 different workers", options: ["Function ✅", "Not a Function ❌"], answer: "Not a Function ❌", hint: "1 machine maps to 3 workers." },
+        { q: "f(x) = x + 2. Does this represent a function?", options: ["Yes, Function ✅", "No, Not a Function ❌"], answer: "Yes, Function ✅", hint: "Every x will give exactly one result." },
+        { q: "Diagram: Arrow from 1 goes to A and B.", options: ["Function ✅", "Not a Function ❌"], answer: "Not a Function ❌", hint: "One input splits into two outputs." }
+    ];
 
+    let currentGate = 0;
+    let selectedQCAnswer = null;
+
+    function initQC() {
+        const container = document.getElementById('qc-gates-list');
+        let html = '';
+        qcData.forEach((item, index) => {
+            const statusClass = index === 0 ? 'active' : 'locked';
+            const icon = index === 0 ? '<i class="fa-solid fa-unlock"></i>' : '<i class="fa-solid fa-lock"></i>';
+            
+            html += `
+                <div class="qc-gate ${statusClass}" id="gate-${index}">
+                    <div class="gate-header">
+                        <i class="fa-solid fa-server"></i> Station ${index + 1}
+                        <span class="status-icon">${icon}</span>
+                    </div>
+                    <p class="gate-question">${item.q}</p>
+                    <div class="gate-options">
+                        ${item.options.map(opt => `
+                            <button class="gate-btn" onclick="selectQCOpt(${index}, '${opt}')">${opt}</button>
+                        `).join('')}
+                    </div>
+                    <div class="gate-feedback" id="gate-fb-${index}"></div>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    }
+
+    function selectQCOpt(gateIdx, value) {
+        if (gateIdx !== currentGate) return; // Hanya bisa klik stasiun aktif
+        selectedQCAnswer = value;
+        
+        const gate = document.getElementById(`gate-${gateIdx}`);
+        const buttons = gate.querySelectorAll('.gate-btn');
+        buttons.forEach(btn => {
+            btn.classList.remove('selected');
+            if (btn.innerText === value) btn.classList.add('selected');
+        });
+    }
+
+    function verifyGate() {
+        if (selectedQCAnswer === null) {
+            alert("Please select an option first! / Silakan pilih jawaban terlebih dahulu!");
+            return;
+        }
+
+        const gateIdx = currentGate;
+        const gate = document.getElementById(`gate-${gateIdx}`);
+        const fbEl = document.getElementById(`gate-fb-${gateIdx}`);
+        const item = qcData[gateIdx];
+
+        if (selectedQCAnswer === item.answer) {
+            // BENAR - Buka kunci stasiun berikutnya
+            gate.classList.remove('active', 'failed');
+            gate.classList.add('passed');
+            fbEl.innerHTML = `<i class="fa-solid fa-check-circle"></i> Access Granted! / Akses Diberikan!`;
+            fbEl.className = "gate-feedback show correct";
+            
+            // Disable buttons
+            gate.querySelectorAll('.gate-btn').forEach(btn => btn.disabled = true);
+            gate.querySelector('.status-icon').innerHTML = '<i class="fa-solid fa-circle-check" style="color: var(--success)"></i>';
+
+            currentGate++;
+            selectedQCAnswer = null;
+
+            // Buka stasiun berikutnya jika ada
+            if (currentGate < qcData.length) {
+                const nextGate = document.getElementById(`gate-${currentGate}`);
+                nextGate.classList.remove('locked');
+                nextGate.classList.add('active');
+                nextGate.querySelector('.status-icon').innerHTML = '<i class="fa-solid fa-unlock"></i>';
+                
+                // Scroll otomatis ke stasiun yang baru terbuka
+                nextGate.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } else {
+                // Semua stasiun selesai
+                document.getElementById('qc-check-btn').disabled = true;
+                document.getElementById('qc-check-btn').innerText = "All Stations Passed!";
+                document.getElementById('qc-check-btn').style.backgroundColor = "var(--success)";
+            }
+
+        } else {
+            // SALAH - Gagal, getarkan mesin
+            gate.classList.add('failed');
+            fbEl.innerHTML = `<i class="fa-solid fa-exclamation-triangle"></i> System Error! Hint: ${item.hint} <br><span style="font-size:0.8em">Sistem Error! Petunjuk: ${item.hint}</span>`;
+            fbEl.className = "gate-feedback show incorrect";
+            
+            setTimeout(() => { gate.classList.remove('failed'); }, 500);
+        }
+    }
+
+    function resetQC() {
+        currentGate = 0;
+        selectedQCAnswer = null;
+        document.getElementById('qc-check-btn').disabled = false;
+        document.getElementById('qc-check-btn').innerHTML = '<i class="fa-solid fa-shield-halved"></i> Verify Station';
+        document.getElementById('qc-check-btn').style.backgroundColor = "";
+        initQC();
+    }
     // ==========================================
     // 5. INITIALIZATION
     // ==========================================
     window.onload = function() {
         initGames();
+        initQC();
         renderAssessment();
         document.getElementById('assessmentDate').valueAsDate = new Date();
         
