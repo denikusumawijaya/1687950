@@ -239,10 +239,16 @@
            QC GATES (UNLOCK 1 BY 1) - SECTION 2
            ========================================== */
         .qc-gates-container {
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Membuat 2 kolom */
             gap: 15px;
             margin-top: 20px;
+        }
+        /* Agar kembali 1 kolom jika layar HP/terlalu kecil */
+        @media (max-width: 800px) {
+            .qc-gates-container {
+                grid-template-columns: 1fr; 
+            }
         }
         .qc-gate {
             background: #fff;
