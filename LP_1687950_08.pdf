@@ -1,0 +1,1301 @@
+%PDF-1.3
+%ºß¬à
+3 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 4 0 R
+>>
+endobj
+4 0 obj
+<<
+/Length 4201
+>>
+stream
+0.5670000000000001 w
+0 G
+BT
+/F2 20 Tf
+23. TL
+0 g
+56.6929133858267775 785.1970866141732586 Td
+(Relasi dan Fungsi / Relations and Functions - Nicholas) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+56.6929133858267775 742.6774015748030706 Td
+(Created: 12/06/2026) Tj
+ET
+56.6929133858267775 714.3309448818897636 m
+538.5826771653544256 714.3309448818897636 l
+S
+BT
+/F2 14 Tf
+16.0999999999999979 TL
+0 g
+56.6929133858267775 685.9844881889763428 Td
+(Student) Tj
+ET
+BT
+/F1 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 657.6380314960629221 Td
+(Student: Nicholas) Tj
+ET
+BT
+/F1 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 634.9608661417322537 Td
+(Topic: Relasi dan Fungsi / Relations and Functions) Tj
+ET
+BT
+/F1 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 612.2837007874015853 Td
+(Status: completed) Tj
+ET
+BT
+/F2 16 Tf
+18.3999999999999986 TL
+0 g
+56.6929133858267775 569.7640157480313974 Td
+(Lesson Plan) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 527.2443307086614368 Td
+(Learning Objectives) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 504.5671653543306547 Td
+(• Membedakan antara relasi dan fungsi menggunakan diagram panah dan himpunan pasangan) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 487.559291338582625 Td
+(berurutan secara akurat.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 464.8821259842518998 Td
+(• Menentukan domain, kodomain, dan range dari sebuah fungsi yang diberikan dalam bentuk) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 447.8742519685038701 Td
+(pemetaan.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 425.1970866141731449 Td
+(• Menghitung nilai fungsi f\(x\) untuk nilai input tertentu dengan menerapkan substitusi aljabar.) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 379.8427559055117513 Td
+(Lesson Information) Tj
+ET
+BT
+/F2 14 Tf
+16.0999999999999979 TL
+0 g
+56.6929133858267775 334.4884251968503008 Td
+(Lesson Sections) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 306.1419685039369369 Td
+(1. Spiral Review Warm-up \(10 minutes\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 283.4648031496062686 Td
+(Teacher Script:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 266.4569291338582389 Td
+(Halo Nicholas! Senang bertemu lagi. Sebelum kita masuk ke misi baru, kita perlu 'kalibrasi' otak dulu) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 252.2837007874014716 Td
+(dengan 4 tantangan cepat dari markas pusat. Siap? Silakan tulis jawabannya di chatbox ya!) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 223.9372440944881646 Td
+(1. REVIEW: Pengenalan Aljabar - Jika x adalah jumlah gadget yang kamu miliki, dan variabel k) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 209.7640157480313974 Td
+(mewakili konstanta nilai 5, tuliskan ekspresi untuk '3 kali gadget ditambah 5'.) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 195.5907874015747439 Td
+(2. REVIEW: Pengenalan Aljabar - Identifikasi variabel dan konstanta dari: 7y - 12.) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 181.4175590551179766 Td
+(3. REVIEW: Menyusun Ekspresi Aljabar - Terjemahkan kalimat ini: 'Harga total \(H\) adalah 2000 rupiah) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 167.2443307086613231 Td
+(dikalikan jumlah buku \(b\) dikurangi diskon 500'.) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 153.0711023622046696 Td
+(4. REVIEW: Menyusun Ekspresi Aljabar - Nicholas punya kelereng 10 lebih banyak dari jumlah) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 138.8978740157479024 Td
+(kelereng \(k\) milik adiknya. Tuliskan persamaannya!) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 113.3860629921258578 Td
+(Activities:) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 96.3781889763778281 Td
+(• Menyelesaikan 4 soal cepat di chatbox) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 79.3703149606297984 Td
+(• Diskusi singkat hasil jawaban) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+56.6929133858267775 34.0159842519684616 Td
+(Generated on: 12/06/2026, 16:15:26) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+523.0626771653543301 34.0159842519684616 Td
+(1 / 4) Tj
+ET
+endstream
+endobj
+5 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 6 0 R
+>>
+endobj
+6 0 obj
+<<
+/Length 5158
+>>
+stream
+0.5670000000000001 w
+0 G
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 785.1970866141732586 Td
+(2. Introduction & Real-World Connection \(5 minutes\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 762.5199212598424765 Td
+(Teacher Script:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 745.5120472440944468 Td
+(Nicholas, bayangkan kamu punya mesin scanner canggih. Jika kamu memasukkan barcode sebuah) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 731.3388188976377933 Td
+(barang \(input\), mesin itu HANYA BOLEH mengeluarkan satu harga \(output\). Kalau satu barcode keluar) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 717.1655905511811397 Td
+(dua harga berbeda, tokonya bakal kacau, kan? Nah, dalam matematika, aturan 'satu input hanya) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 702.9923622047243725 Td
+(punya satu output' inilah yang kita sebut FUNGSI. Hari ini kita akan belajar cara membedakan mana) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 688.819133858267719 Td
+(hubungan yang 'setia' \(fungsi\) dan mana yang 'bercabang' \(bukan fungsi\).) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 663.3073228346456744 Td
+(Activities:) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 646.2994488188976447 Td
+(• Analogi mesin scanner barcode) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 629.291574803149615 Td
+(• Penjelasan konsep input-output) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 583.9372440944881646 Td
+(3. Review of Prior Knowledge \(5 minutes\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 561.2600787401574962 Td
+(Teacher Script:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 544.2522047244094665 Td
+(Ingat saat kita belajar variabel seminggu lalu? Fungsi itu seperti variabel yang bergantung pada satu) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 530.0789763779526993 Td
+(sama lain. Kita akan menggunakan diagram panah untuk menghubungkan Himpunan A \(daerah asal\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 515.9057480314959321 Td
+(ke Himpunan B \(daerah kawan\). Yuk, kita gambar satu contoh di whiteboard!) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 490.3939370078739444 Td
+(Activities:) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 473.3860629921259147 Td
+(• Menggambar diagram panah sederhana) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 456.378188976377885 Td
+(• Mengingat kembali istilah Himpunan) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 411.0238582677164914 Td
+(4. Problem Introduction \(10 minutes\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 388.3466929133857661 Td
+(Teacher Script:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 371.3388188976377364 Td
+(Sekarang perhatikan layar. Di sini ada 3 diagram panah. Aturannya: Fungsi adalah relasi di mana) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 357.1655905511810261 Td
+(SETIAP anggota daerah asal \(Domain\) dipasangkan dengan TEPAT SATU anggota daerah kawan) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 342.9923622047243725 Td
+(\(Kodomain\). Lihat Diagram A: satu orang punya dua nomor HP. Apakah ini fungsi? Tidak! Itu hanya) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 328.8191338582676053 Td
+(relasi biasa. Lihat Diagram B: setiap orang punya satu nomor induk kependudukan. Inilah FUNGSI.) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 314.6459055118109518 Td
+(Mari kita definisikan Domain \(daerah asal\), Kodomain \(daerah kawan\), dan Range \(hasil yang terkena) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 300.4726771653542983 Td
+(panah\).) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 274.9608661417322537 Td
+(Activities:) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 257.952992125984224 Td
+(• Klasifikasi gambar \(Fungsi vs Bukan Fungsi\)) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 240.9451181102361943 Td
+(• Pelabelan Domain, Kodomain, dan Range) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 195.5907874015747439 Td
+(5. Guided Practice \(15 minutes\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 172.9136220472439618 Td
+(Teacher Script:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 155.9057480314959321 Td
+(Mari kita masuk ke level Hard. Kita gunakan notasi f\(x\). Jika f\(x\) = 2x + 3, ini artinya 'Kalikan input) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 141.7325196850392786 Td
+(dengan 2, lalu tambah 3'. Nicholas, jika inputnya \(x\) adalah 5, berapa hasilnya? Mari kita hitung) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 127.559291338582625 Td
+(bersama: f\(5\) = 2\(5\) + 3. Coba kamu kerjakan yang ini di whiteboard: f\(x\) = x^2 - 4, hitung untuk f\(3\)!) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 102.0474803149605805 Td
+(Activities:) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 85.0396062992125508 Td
+(• Substitusi nilai ke dalam f\(x\)) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+56.6929133858267775 34.0159842519684616 Td
+(Generated on: 12/06/2026, 16:15:26) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+523.0626771653543301 34.0159842519684616 Td
+(2 / 4) Tj
+ET
+endstream
+endobj
+7 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 8 0 R
+>>
+endobj
+8 0 obj
+<<
+/Length 4730
+>>
+stream
+0.5670000000000001 w
+0 G
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 785.1970866141732586 Td
+(• Latihan menentukan Range dari sebuah fungsi aljabar) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 739.8427559055118081 Td
+(6. Independent Practice \(15 minutes\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 717.1655905511811397 Td
+(Teacher Script:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 700.15771653543311 Td
+(Oke Nicholas, ini adalah 'Solo Mission'. Di layar ada 3 tantangan: 1\) Tentukan apakah himpunan) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 685.9844881889763428 Td
+(pasangan berurutan {\(1,a\), \(2,a\), \(3,b\)} adalah fungsi. 2\) Dari diagram yang saya gambar, sebutkan) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 671.8112598425196893 Td
+(elemen Rangenya. 3\) Jika g\(x\) = 5x - 7, tentukan nilai x jika g\(x\) = 13. Hati-hati, nomor 3 ini tantangan) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 657.6380314960629221 Td
+(terbalik!) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 632.1262204724408775 Td
+(Activities:) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 615.1183464566928478 Td
+(• Penyelesaian soal secara mandiri) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 598.1104724409448181 Td
+(• Analisis soal 'inverse' sederhana) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 552.7561417322833677 Td
+(7. Consolidation & Reflection \(5 minutes\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 530.0789763779526993 Td
+(Teacher Script:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 513.0711023622046696 Td
+(Luar biasa Nicholas! Kamu sudah menguasai perbedaan relasi dan fungsi serta cara menghitung f\(x\).) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 498.8978740157479592 Td
+(Ingat, fungsi itu 'setia', satu input satu output. Sebelum kita tutup, jangan lupa login ke) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 484.7246456692913057 Td
+(https://learn.algonova.id/login untuk mengecek rangkuman materi hari ini. Apa satu hal yang paling) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 470.5514173228345953 Td
+(seru dari fungsi hari ini?) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 445.0396062992125508 Td
+(Activities:) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 428.0317322834645211 Td
+(• Ringkasan poin utama) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 411.0238582677164914 Td
+(• Refleksi diri) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 365.6695275590550409 Td
+(Homework) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 337.323070866141677 Td
+(Medium Questions:) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 320.3151968503935905 Td
+(1. Tentukan apakah relasi {\(1,2\), \(2,3\), \(3,4\), \(1,5\)} merupakan fungsi atau bukan. Jelaskan) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 306.1419685039369369 Td
+(alasannya.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 283.4648031496062686 Td
+(2. Diketahui f\(x\) = 4x - 5. Hitunglah nilai dari f\(3\).) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 260.7876377952754865 Td
+(3. Jika A = {1, 2} dan B = {a, b}, tuliskan semua himpunan pasangan berurutan yang mungkin) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 246.614409448818833 Td
+(merupakan fungsi dari A ke B.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 223.9372440944881646 Td
+(4. Dari fungsi f\(x\) = 2x + 1 dengan domain {0, 1, 2}, tentukan Range-nya.) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 184.2522047244093528 Td
+(Hard Questions:) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 167.2443307086613231 Td
+(1. Diketahui f\(x\) = ax + 7. Jika f\(2\) = 11, tentukan nilai konstanta a.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 144.5671653543306547 Td
+(2. Suatu fungsi h\(x\) = x^2 - 2x. Hitunglah nilai h\(5\) - h\(2\).) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 121.8899999999998727 Td
+(3. Diberikan himpunan pasangan berurutan {\(1, 4\), \(2, 8\), \(3, 12\), \(n, 16\)}. Tentukan nilai n) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 107.7167716535432191 Td
+(jika fungsi tersebut mengikuti pola f\(x\) = 4x.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 85.0396062992125508 Td
+(4. Jika f\(x\) = 3x - 2 dan f\(k\) = 19, berapakah nilai k?) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+56.6929133858267775 34.0159842519684616 Td
+(Generated on: 12/06/2026, 16:15:26) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+523.0626771653543301 34.0159842519684616 Td
+(3 / 4) Tj
+ET
+endstream
+endobj
+9 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 10 0 R
+>>
+endobj
+10 0 obj
+<<
+/Length 5863
+>>
+stream
+0.5670000000000001 w
+0 G
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 785.1970866141732586 Td
+(5. Domain fungsi f\(x\) = 5 - 2x adalah {x | -1 < x < 3, x bilangan bulat}. Sebutkan semua) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 771.0238582677164914 Td
+(anggota Rangenya.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 748.346692913385823 Td
+(6. Analisis: Apakah setiap fungsi adalah relasi? Dan apakah setiap relasi adalah fungsi?) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 734.1734645669291695 Td
+(Berikan argumenmu.) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 694.4884251968503577 Td
+(Answer Key:) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 677.480551181102328 Td
+(1. Bukan fungsi karena input 1 memiliki dua output \(2 dan 5\).) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 663.3073228346456744 Td
+(2. f\(3\) = 4\(3\) - 5 = 12 - 5 = 7.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 649.1340944881889072 Td
+(3. {\(1,a\), \(2,a\)}, {\(1,a\), \(2,b\)}, {\(1,b\), \(2,a\)}, {\(1,b\), \(2,b\)}.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 634.9608661417322537 Td
+(4. Range = {1, 3, 5}.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 620.7876377952754865 Td
+(5. 11 = a\(2\) + 7 -> 4 = 2a -> a = 2.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 606.614409448818833 Td
+(6. h\(5\)=15, h\(2\)=0. Selisih = 15.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 592.4411811023621794 Td
+(7. 16 = 4n -> n = 4.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 578.2679527559055259 Td
+(8. 19 = 3k - 2 -> 21 = 3k -> k = 7.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 564.0947244094487587 Td
+(9. x = {0, 1, 2}. Range = {5, 3, 1}.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 549.9214960629921052 Td
+(10. Ya, setiap fungsi adalah relasi, tapi tidak semua relasi adalah fungsi karena fungsi punya) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 535.748267716535338 Td
+(syarat khusus tepat satu pasangan.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 521.5750393700786844 Td
+(REVIEW: Pengenalan Aljabar - Variabel dan Konstanta - Medium: 3x + 4. Variabel = x,) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 507.4018110236219741 Td
+(Konstanta = 4.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 493.2285826771653205 Td
+(REVIEW: Pengenalan Aljabar - Variabel dan Konstanta - Medium: Identifikasi koefisien y) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 479.0553543307086102 Td
+(pada 5y - 2. Jawaban: 5.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 464.8821259842518998 Td
+(REVIEW: Pengenalan Aljabar - Variabel dan Konstanta - Hard: Jika 2x + y = 10, sebutkan) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 450.7088976377952463 Td
+(variabelnya. Jawaban: x dan y.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 436.5356692913385359 Td
+(REVIEW: Pengenalan Aljabar - Variabel dan Konstanta - Hard: Buat ekspresi dengan 2) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 422.3624409448818255 Td
+(variabel dan 1 konstanta negatif. Contoh: 2a + 3b - 5.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 408.1892125984251152 Td
+(REVIEW: Menyusun Ekspresi Aljabar dari Kalimat - Medium: 'Dua kali x ditambah tujuh'.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 394.0159842519684616 Td
+(Jawaban: 2x + 7.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 379.8427559055117513 Td
+(REVIEW: Menyusun Ekspresi Aljabar dari Kalimat - Medium: 'Selisih harga p dan q'.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 365.6695275590550409 Td
+(Jawaban: p - q atau q - p.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 351.4962992125983874 Td
+(REVIEW: Menyusun Ekspresi Aljabar dari Kalimat - Hard: 'Luas adalah panjang \(p\) kali lebar) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 337.323070866141677 Td
+(yang 3 cm lebih pendek dari p'. Jawaban: p\(p-3\).) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 323.1498425196849666 Td
+(REVIEW: Menyusun Ekspresi Aljabar dari Kalimat - Hard: 'Gaji total \(G\) adalah 50.000 per) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 308.9766141732283131 Td
+(jam \(h\) ditambah bonus 100.000'. Jawaban: G = 50.000h + 100.000.) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 272.1262204724408775 Td
+(Parent Reminder) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 249.4490551181102092 Td
+(Update Belajar Nicholas: Misi Fungsi Dimulai!) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 232.4411811023621794 Td
+(Hari ini Nicholas belajar topik penting: Relasi dan Fungsi. Dia berhasil membedakan mana) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 218.2679527559054122 Td
+(hubungan yang disebut fungsi melalui diagram panah dan mulai menghitung nilai fungsi) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 204.0947244094487587 Td
+(menggunakan notasi f\(x\). Kami juga mengulang materi aljabar dasar untuk memastikan) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 189.9214960629919915 Td
+(fondasinya kuat. Silakan dorong Nicholas untuk mencoba tantangan 'Solo Mission' di rumah!) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+56.6929133858267775 34.0159842519684616 Td
+(Generated on: 12/06/2026, 16:15:26) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+523.0626771653543301 34.0159842519684616 Td
+(4 / 4) Tj
+ET
+endstream
+endobj
+1 0 obj
+<</Type /Pages
+/Kids [3 0 R 5 0 R 7 0 R 9 0 R ]
+/Count 4
+>>
+endobj
+11 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+12 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+13 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-Oblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+14 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-BoldOblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+15 0 obj
+<<
+/Type /Font
+/BaseFont /Courier
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+16 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+17 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-Oblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+18 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-BoldOblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+19 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Roman
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+20 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+21 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Italic
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+22 0 obj
+<<
+/Type /Font
+/BaseFont /Times-BoldItalic
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+23 0 obj
+<<
+/Type /Font
+/BaseFont /ZapfDingbats
+/Subtype /Type1
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+24 0 obj
+<<
+/Type /Font
+/BaseFont /Symbol
+/Subtype /Type1
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+2 0 obj
+<<
+/ProcSet [/PDF /Text /ImageB /ImageC /ImageI]
+/Font <<
+/F1 11 0 R
+/F2 12 0 R
+/F3 13 0 R
+/F4 14 0 R
+/F5 15 0 R
+/F6 16 0 R
+/F7 17 0 R
+/F8 18 0 R
+/F9 19 0 R
+/F10 20 0 R
+/F11 21 0 R
+/F12 22 0 R
+/F13 23 0 R
+/F14 24 0 R
+>>
+/XObject <<
+>>
+>>
+endobj
+25 0 obj
+<<
+/Producer (jsPDF 3.0.2)
+/CreationDate (D:20260612161526+07'00')
+>>
+endobj
+26 0 obj
+<<
+/Type /Catalog
+/Pages 1 0 R
+/OpenAction [3 0 R /FitH null]
+/PageLayout /OneColumn
+>>
+endobj
+xref
+0 27
+0000000000 65535 f 
+0000020725 00000 n 
+0000022565 00000 n 
+0000000015 00000 n 
+0000000152 00000 n 
+0000004405 00000 n 
+0000004542 00000 n 
+0000009752 00000 n 
+0000009889 00000 n 
+0000014671 00000 n 
+0000014809 00000 n 
+0000020800 00000 n 
+0000020926 00000 n 
+0000021057 00000 n 
+0000021191 00000 n 
+0000021329 00000 n 
+0000021453 00000 n 
+0000021582 00000 n 
+0000021714 00000 n 
+0000021850 00000 n 
+0000021978 00000 n 
+0000022105 00000 n 
+0000022234 00000 n 
+0000022367 00000 n 
+0000022469 00000 n 
+0000022818 00000 n 
+0000022904 00000 n 
+trailer
+<<
+/Size 27
+/Root 26 0 R
+/Info 25 0 R
+/ID [ <AEBE3CF1962F56C40496410E575C6B25> <AEBE3CF1962F56C40496410E575C6B25> ]
+>>
+startxref
+23008
+%%EOF
