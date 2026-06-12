@@ -14,6 +14,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 
     <style>
+        .section:last-child {
+            margin-bottom: 10px; /* Cukup 10px agar bayangan kotak tidak terpotong */
+        }
         :root {
             --steel-dark: #1a1a1d;
             --steel-mid: #2d2d30;
@@ -47,7 +50,7 @@
         }
 
         .content-area {
-            padding: 30px;
+            padding: 30px 30px 5px 30px; /* Ubah bagian bawah jadi 5px saja */
             overflow-y: auto;
             background-color: #f4f4f4;
             border-right: 4px solid var(--safety-yellow);
@@ -59,7 +62,7 @@
             padding: 15px;
             position: sticky;
             top: 0;
-            height: 100vh;
+            height: 100%; /* Ganti dari 100vh ke 100% */
             display: flex;
             flex-direction: column;
         }
