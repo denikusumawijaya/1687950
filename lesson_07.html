@@ -410,9 +410,9 @@
                             <td><i class="fas fa-minus"></i> Subtraction (-) / Pengurangan</td>
                         </tr>
                         <tr>
-                            <td><i class="fas fa-times"></i> Multiplication (\times) / Perkalian</td>
+                            <td><i class="fas fa-times"></i> Multiplication \(\times\) / Perkalian</td>
                             <td><i class="fas fa-arrows-alt-h text-fire"></i></td>
-                            <td><i class="fas fa-divide"></i> Division (\div) / Pembagian</td>
+                            <td><i class="fas fa-divide"></i> Division \(\div\) / Pembagian</td>
                         </tr>
                     </tbody>
                 </table>
@@ -822,10 +822,16 @@
 
         // --- GAME 3: Inverse Match ---
         const g3Data = [
-            {op: "x + 5", inv: "x - 5"}, {op: "x - 8", inv: "x + 8"}, {op: "3x", inv: "x / 3"},
-            {op: "x / 2", inv: "2x"}, {op: "-4x", inv: "x / -4"}, {op: "10 + x", inv: "x - 10"},
-            {op: "2x + 3", inv: "(x - 3)/2"}, {op: "x - (-2)", inv: "x - 2"}, {op: "0.5x", inv: "x / 0.5"},
-            {op: "x * 1", inv: "x / 1"}
+            {op: "x + 5", inv: "x - 5"}, 
+            {op: "x - 8", inv: "x + 8"}, 
+            {op: "3x", inv: "x \\div 3"},
+            {op: "x \\div 2", inv: "2x"}, 
+            {op: "-4x", inv: "x \\div (-4)"}, 
+            {op: "10 + x", inv: "x - 10"},
+            {op: "2x + 3", inv: "(x - 3) \\div 2"}, 
+            {op: "x - (-2)", inv: "x - 2"}, 
+            {op: "0.5x", inv: "x \\div 0.5"},
+            {op: "x \\times 1", inv: "x \\div 1"}
         ];
         let g3Answers = new Array(10).fill(null);
 
@@ -900,6 +906,7 @@
                     fbSpan.innerHTML = `<i class="fas fa-times-circle text-xl"></i> <span class="text-xs text-red-400">${hint}</span>`;
                     fbSpan.className = "g3-inline-fb fb-wrong";
                     dropZone.style.borderColor = "#D32F2F"; // Red
+                    renderMathInElement(fbSpan);
                 }
             });
             
@@ -979,16 +986,16 @@
 
         // --- GAME 5: Fill in the blanks ---
         const g5Data = [
-            {eq: "5x + 12 = 32", steps: ["5x = 20", "x = 4"], ans: [20, 4]},
-            {eq: "8y - 15 = 41", steps: ["8y = 56", "y = 7"], ans: [56, 7]},
-            {eq: "4n + 7 = 31", steps: ["4n = 24", "n = 6"], ans: [24, 6]},
-            {eq: "3x - 5 = 85", steps: ["3x = 90", "x = 30"], ans: [90, 30]},
-            {eq: "4(x - 3) = 20", steps: ["4x - 12 = 20", "4x = 32", "x = 8"], ans: [12, 32, 8]},
-            {eq: "6x + 4 = 2x + 20", steps: ["4x + 4 = 20", "4x = 16", "x = 4"], ans: [4, 16, 4]},
-            {eq: "2(3x + 5) - 4 = 18", steps: ["6x + 10 - 4 = 18", "6x + 6 = 18", "6x = 12", "x = 2"], ans: [10, 6, 12, 2]},
-            {eq: "0.5x + 2 = 10", steps: ["0.5x = 8", "x = 16"], ans: [8, 16]},
-            {eq: "5(x - 2) = 3(x + 4)", steps: ["5x - 10 = 3x + 12", "2x - 10 = 12", "2x = 22", "x = 11"], ans: [10, 2, 22, 11]},
-            {eq: "7x - 5 = 37", steps: ["7x = 42", "x = 6"], ans: [42, 6]}
+            {eq: "5x + 12 = 32", steps: ["5x = ", "x = "], ans: ["20", "4"]},
+            {eq: "8y - 15 = 41", steps: ["8y = ", "y = "], ans: ["56", "7"]},
+            {eq: "4n + 7 = 31", steps: ["4n = ", "n = "], ans: ["24", "6"]},
+            {eq: "3x - 5 = 85", steps: ["3x = ", "x = "], ans: ["90", "30"]},
+            {eq: "4(x - 3) = 20", steps: ["4x - 12 = ", "4x = ", "x = "], ans: ["20", "32", "8"]},
+            {eq: "6x + 4 = 2x + 20", steps: ["4x + 4 = ", "4x = ", "x = "], ans: ["20", "16", "4"]},
+            {eq: "2(3x + 5) - 4 = 18", steps: ["6x + 6 = ", "6x = ", "x = "], ans: ["18", "12", "2"]},
+            {eq: "0.5x + 2 = 10", steps: ["0.5x = ", "x = "], ans: ["8", "16"]},
+            {eq: "5(x - 2) = 3(x + 4)", steps: ["5x - 10 = ", "2x - 10 = ", "2x = ", "x = "], ans: ["3x+12", "12", "22", "11"]},
+            {eq: "7x - 5 = 37", steps: ["7x = ", "x = "], ans: ["42", "6"]}
         ];
 
         function initGame5() {
@@ -1002,10 +1009,8 @@
                     </div>
                     <div class="pl-2 space-y-1 text-bone font-math text-sm">`;
                 item.steps.forEach((step, j) => {
-                    let parts = step.split("= ");
-                    let prefix = parts[0] + "= ";
                     html += `<div class="flex items-center gap-1">
-                                <span>${prefix}</span> 
+                                <span>${step}</span> 
                                 <input type="text" id="g5-in-${i}-${j}" class="w-14 bg-sand text-cave text-center rounded px-1 py-0.5 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-moss">
                              </div>`;
                 });
@@ -1025,13 +1030,16 @@
                 item.ans.forEach((ans, j) => {
                     totalQ++;
                     let inputEl = document.getElementById(`g5-in-${i}-${j}`);
-                    let val = inputEl.value.trim();
-                    if(val == ans) {
+                    let val = inputEl.value.replace(/\s+/g, ''); 
+                    let correctAns = String(ans).replace(/\s+/g, ''); 
+                    
+                    if(val === correctAns) {
                         totalScore++;
-                        inputEl.style.border = "2px solid #689F38";
+                        inputEl.style.border = "2px solid #689F38"; // Moss
+                        inputEl.style.backgroundColor = "#EFEBE9";
                     } else {
                         itemCorrect = false;
-                        inputEl.style.border = "2px solid #D32F2F";
+                        inputEl.style.border = "2px solid #D32F2F"; // Red
                         inputEl.style.backgroundColor = "#FFEBEE";
                     }
                 });
