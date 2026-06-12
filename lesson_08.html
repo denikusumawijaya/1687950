@@ -180,6 +180,61 @@
             .tabs, .btn-submit-assess, .btn-print-assess, .feedback-assess { display: none !important; }
             .tab-btn { display: none !important; }
         }
+        /* ==========================================
+           ENRICHMENT: 2 COLUMNS & ANIMATIONS
+           ========================================== */
+        #game1-questions {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Membuat 2 kolom */
+            gap: 15px;
+        }
+        /* Agar kembali 1 kolom jika layar terlalu kecil */
+        @media (max-width: 800px) {
+            #game1-questions {
+                grid-template-columns: 1fr; 
+            }
+        }
+        #game1-questions .game-item {
+            margin-bottom: 0; /* Hapus margin bawah karena sudah pakai gap */
+        }
+
+        /* Animasi Hover untuk Kotak Soal */
+        .game-item {
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+        .game-item:hover {
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+            border-color: var(--safety-yellow);
+        }
+
+        /* Animasi Hover untuk Tombol Pilihan */
+        .game-btn {
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Efek mental/memantul */
+        }
+        .game-btn:hover {
+            transform: scale(1.08);
+        }
+        .game-btn.selected {
+            transform: scale(1.05);
+        }
+
+        /* Animasi Conveyor Belt di Game Container */
+        .game-container {
+            position: relative;
+            overflow: hidden;
+        }
+        .game-container::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 5px;
+            background: repeating-linear-gradient(90deg, var(--steel-dark), var(--steel-dark) 20px, var(--safety-yellow) 20px, var(--safety-yellow) 40px);
+            animation: conveyorBelt 2s linear infinite;
+        }
+        @keyframes conveyorBelt {
+            0% { background-position: 0 0; }
+            100% { background-position: 40px 0; }
+        }
     </style>
 </head>
 <body>
@@ -217,15 +272,63 @@
             </div>
             <p>Before we start the manufacturing line, we need to calibrate our machines by reviewing basic algebra! Variables are like raw materials, and constants are the fixed machine settings.</p>
             <span class="translate">Sebelum memulai lini produksi, kita perlu kalibrasi mesin dengan mengulang aljabar dasar! Variabel seperti bahan baku, dan konstanta adalah pengaturan mesin yang tetap.</span>
-            <div class="visual-container">
-                <svg width="100" height="100" viewBox="0 0 100 100">
-                    <path fill="#1a1a1d" d="M50 10l5 10 10-5-5 10 10 5-10 5 5 10-10-5-5 10-5-10-10 5 5-10-10-5 10-5-5-10 10 5z">
-                        <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="5s" repeatCount="indefinite"/>
-                    </path>
-                    <circle cx="50" cy="50" r="15" fill="#ffd700"/>
+            
+            <!-- Visualisasi Pabrik yang diperkaya -->
+            <div class="visual-container" style="position: relative; overflow: hidden; background: var(--steel-dark); color: white; border: 2px solid var(--safety-yellow);">
+                <svg width="100%" height="110" viewBox="0 0 400 110" style="display: block;">
+                    <!-- Latar Belakang Konveyor -->
+                    <rect x="0" y="75" width="400" height="25" fill="#333" />
+                    <g>
+                        <rect x="0" y="80" width="20" height="10" fill="#ffd700">
+                            <animateTransform attributeName="transform" type="translate" from="0 0" to="40 0" dur="1s" repeatCount="indefinite" />
+                        </rect>
+                        <rect x="40" y="80" width="20" height="10" fill="#ffd700">
+                            <animateTransform attributeName="transform" type="translate" from="0 0" to="40 0" dur="1s" repeatCount="indefinite" />
+                        </rect>
+                        <rect x="80" y="80" width="20" height="10" fill="#ffd700">
+                            <animateTransform attributeName="transform" type="translate" from="0 0" to="40 0" dur="1s" repeatCount="indefinite" />
+                        </rect>
+                        <rect x="120" y="80" width="20" height="10" fill="#ffd700">
+                            <animateTransform attributeName="transform" type="translate" from="0 0" to="40 0" dur="1s" repeatCount="indefinite" />
+                        </rect>
+                    </g>
+                    
+                    <!-- Kotak Variabel di Konveyor (Berjalan) -->
+                    <rect x="50" y="55" width="20" height="20" fill="#e0e0e0" stroke="#fff" stroke-width="1" rx="2">
+                        <animateTransform attributeName="transform" type="translate" from="-100 0" to="500 0" dur="8s" repeatCount="indefinite" />
+                    </rect>
+                    <text x="54" y="69" font-family="Roboto" font-size="12" fill="#1a1a1d" font-weight="bold">
+                        x<animateTransform attributeName="transform" type="translate" from="-100 0" to="500 0" dur="8s" repeatCount="indefinite" />
+                    </text>
+                    
+                    <rect x="150" y="55" width="20" height="20" fill="#e0e0e0" stroke="#fff" stroke-width="1" rx="2">
+                        <animateTransform attributeName="transform" type="translate" from="-100 0" to="500 0" dur="8s" repeatCount="indefinite" />
+                    </rect>
+                    <text x="153" y="69" font-family="Roboto" font-size="12" fill="#1a1a1d" font-weight="bold">
+                        y<animateTransform attributeName="transform" type="translate" from="-100 0" to="500 0" dur="8s" repeatCount="indefinite" />
+                    </text>
+                    
+                    <!-- Roda Gigi Putar Kanan -->
+                    <g transform="translate(320, 25)">
+                        <path fill="#ffd700" d="M20 0l2.5 5 5-2.5-2.5 5 5 2.5-5 2.5 2.5 5-5-2.5-2.5 5-2.5-5-5 2.5 2.5-5-5-2.5 5-2.5-2.5-5 5 2.5z">
+                            <animateTransform attributeName="transform" type="rotate" from="0 20 20" to="360 20 20" dur="4s" repeatCount="indefinite"/>
+                        </path>
+                    </g>
+                    
+                    <!-- Roda Gigi Putar Kiri (Berlawanan Arah) -->
+                    <g transform="translate(345, 50)">
+                         <path fill="#e0e0e0" d="M15 0l2 4 4-2-2 4 4 2-4 2 2 4-4-2-2 4-2-4-4 2 2-4-4-2 4-2-2-4 4 2z">
+                            <animateTransform attributeName="transform" type="rotate" from="360 15 15" to="0 15 15" dur="5s" repeatCount="indefinite"/>
+                        </path>
+                    </g>
+                    
+                    <!-- Teks Label -->
+                    <text x="20" y="35" fill="#ffd700" font-family="Oswald" font-size="22" letter-spacing="2">ALGEBRA FACTORY</text>
+                    <text x="20" y="55" fill="#fff" font-family="Roboto" font-size="12">Calibrating raw materials...</text>
                 </svg>
-                <p><em>Mesin Aljabar / Algebra Machine</em></p>
+                <p style="color: var(--safety-yellow); font-family: Oswald; margin-top: 10px; letter-spacing:1px;"><i class="fa-solid fa-triangle-exclamation"></i> CAUTION: Calibration in Progress <i class="fa-solid fa-triangle-exclamation"></i></p>
             </div>
+
             <div class="game-container" id="game1">
                 <h3><i class="fa-solid fa-gamepad"></i> Calibration Quiz (10 Items)</h3>
                 <div id="game1-questions"></div>
