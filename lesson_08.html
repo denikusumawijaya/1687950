@@ -176,7 +176,13 @@
             body * { visibility: hidden; }
             #sec-assessment, #sec-assessment * { visibility: visible; }
             #sec-assessment { position: absolute; left: 0; top: 0; width: 100%; }
-            .tab-content { display: block !important; page-break-after: always; border: none; }
+            
+            /* Semua tab disembunyikan saat print */
+            .tab-content { display: none !important; } 
+            
+            /* HANYA tab yang punya class 'active-print' yang akan ditampilkan */
+            .tab-content.active-print { display: block !important; border: none; } 
+
             .tabs, .btn-submit-assess, .btn-print-assess, .feedback-assess { display: none !important; }
             .tab-btn { display: none !important; }
         }
@@ -347,6 +353,38 @@
             }
         }
         #game3-questions .game-item {
+            margin-bottom: 0; /* Hapus margin bawah karena sudah pakai gap */
+        }
+        /* ==========================================
+           LAYOUT 2 KOLOM SECTION 6
+           ========================================== */
+        #game6-questions {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Membuat 2 kolom */
+            gap: 15px;
+        }
+        @media (max-width: 800px) {
+            #game6-questions {
+                grid-template-columns: 1fr; 
+            }
+        }
+        #game6-questions .game-item {
+            margin-bottom: 0; /* Hapus margin bawah karena sudah pakai gap */
+        }
+        /* ==========================================
+           LAYOUT 2 KOLOM SECTION 4 & 5
+           ========================================== */
+        #game4-questions, #game5-questions {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Membuat 2 kolom */
+            gap: 15px;
+        }
+        @media (max-width: 800px) {
+            #game4-questions, #game5-questions {
+                grid-template-columns: 1fr; 
+            }
+        }
+        #game4-questions .game-item, #game5-questions .game-item {
             margin-bottom: 0; /* Hapus margin bawah karena sudah pakai gap */
         }
     </style>
@@ -1057,14 +1095,28 @@
     function printAssessment(group) {
         const name = document.getElementById('studentName').value || "Student";
         const date = document.getElementById('assessmentDate').value || "N/A";
+        
+        // 1. Tambahkan class 'active-print' HANYA ke grup yang ingin diprint
+        const targetDiv = document.getElementById(group);
+        targetDiv.classList.add('active-print');
+
+        // 2. Sisipkan Header Sementara untuk Print
         const printHeader = document.createElement('div');
         printHeader.id = "print-header-temp";
         printHeader.style.cssText = "border-bottom: 2px solid black; margin-bottom: 20px; padding-bottom: 10px; font-family: sans-serif;";
         printHeader.innerHTML = `<h2>Assessment Result - ${group}</h2><p><b>Name:</b> ${name} | <b>Date:</b> ${date}</p>`;
-        const targetDiv = document.getElementById(group);
         targetDiv.insertBefore(printHeader, targetDiv.firstChild);
+
+        // 3. Trigger Print Dialog
         window.print();
-        setTimeout(() => { if(document.getElementById('print-header-temp')) document.getElementById('print-header-temp').remove(); }, 500);
+
+        // 4. Bersihkan (Hapus header & hapus class active-print) setelah dialog print ditutup
+        setTimeout(() => {
+            if(document.getElementById('print-header-temp')) {
+                document.getElementById('print-header-temp').remove();
+            }
+            targetDiv.classList.remove('active-print'); // Kembalikan tab ke keadaan semula
+        }, 500);
     }
 
     // ==========================================
