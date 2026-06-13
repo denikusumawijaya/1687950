@@ -333,6 +333,22 @@
             20%, 60% { transform: translateX(-5px); }
             40%, 80% { transform: translateX(5px); }
         }
+        /* ==========================================
+           LAYOUT 2 KOLOM SECTION 3
+           ========================================== */
+        #game3-questions {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Membuat 2 kolom */
+            gap: 15px;
+        }
+        @media (max-width: 800px) {
+            #game3-questions {
+                grid-template-columns: 1fr; 
+            }
+        }
+        #game3-questions .game-item {
+            margin-bottom: 0; /* Hapus margin bawah karena sudah pakai gap */
+        }
     </style>
 </head>
 <body>
@@ -774,16 +790,16 @@
             { q: "Expression for '7 subtracted from y'", options: ["y - 7", "7 - y", "7y", "y / 7"], answer: "y - 7", hint: "'Subtracted from' means the first thing comes after the minus sign." }
         ],
         game3: [
-            { q: "In an arrow diagram, the starting set (input set) is called...", options: ["Domain", "Codomain", "Range", "Function"], answer: "Domain", hint: "It is the area of origin / Daerah asal." },
-            { q: "The target set that might be reached by arrows is called...", options: ["Domain", "Codomain", "Range", "Variable"], answer: "Codomain", hint: "It is the companion area / Daerah kawan." },
-            { q: "The set of actual outputs hit by arrows is called...", options: ["Domain", "Codomain", "Range", "Constant"], answer: "Range", hint: "It is the result area / Daerah hasil." },
-            { q: "If A = {1,2,3} maps to B = {a,b}, which one is the Domain?", options: ["{1,2,3}", "{a,b}", "{1,a}", "{2,b}"], answer: "{1,2,3}", hint: "Domain is the first set / Himpunan pertama." },
-            { q: "From the previous question, what is the Codomain?", options: ["{1,2,3}", "{a,b}", "{1,a}", "{2,b}"], answer: "{a,b}", hint: "Codomain is the second set / Himpunan kedua." },
-            { q: "If only 'a' and 'b' are hit by arrows, what is the Range?", options: ["{1,2,3}", "{a,b}", "{1,a}", "Empty"], answer: "{a,b}", hint: "All elements in codomain that received an arrow." },
-            { q: "Can an element in the Domain have no arrow pointing out in a function?", options: ["No, it must have exactly one arrow", "Yes, it's allowed", "Only if it's a function", "Yes, if it has two arrows"], answer: "No, it must have exactly one arrow", hint: "In a function, every domain element must map to something." },
-            { q: "Can two different elements in Domain point to the same element in Codomain?", options: ["Yes", "No"], answer: "Yes", hint: "E.g., Student A and Student B can both use the same brand of pencil." },
-            { q: "If A={Red, Blue} and B={Car}, and both Red and Blue point to Car. Is this a function?", options: ["Yes", "No"], answer: "Yes", hint: "Each input still has exactly ONE output." },
-            { q: "In {(1,a), (2,b)}, what is the Range?", options: ["{1,2}", "{a,b}", "{1,a}", "{2,a}"], answer: "{a,b}", hint: "Range is the set of second elements in ordered pairs." }
+            { q: "Manakah istilah yang tepat untuk 'himpunan awal' pada sebuah pemetaan?", options: ["Kodomain", "Domain", "Range", "Fungsi"], answer: "Domain", hint: "Domain adalah daerah asal / input." },
+            { q: "Jika A = {1,2,3} dan B = {a,b}, manakah yang merupakan Domain?", options: ["{a,b}", "Himpunan A", "{1,2,3}", "Himpunan B"], answer: "{1,2,3}", hint: "Domain adalah himpunan pertama (angka)." },
+            { q: "Daerah kawan pada relasi disebut juga sebagai...", options: ["Range", "Output", "Kodomain", "Domain"], answer: "Kodomain", hint: "Kodomain adalah himpunan tujuan / daerah kawan." },
+            { q: "Himpunan B = {Merah, Kuning, Hijau} adalah daerah kawan. Jika hanya Merah yang terkena panah, apa Rangenya?", options: ["{Merah, Kuning, Hijau}", "{Hijau, Kuning}", "{Merah}", "B"], answer: "{Merah}", hint: "Range hanya objek yang terkena panah, bukan semuanya." },
+            { q: "Dari pasangan berurutan {(1, a), (2, b)}, Range-nya adalah...", options: ["{1, 2}", "{1, a}", "a dan b", "{a, b}"], answer: "{a, b}", hint: "Range adalah komponen kedua dalam pasangan berurutan." },
+            { q: "Bolehkah satu anggota Domain memiliki DUA panah keluar menuju Kodomain dalam sebuah Fungsi?", options: ["Boleh, selama ke Kodomain berbeda", "Tidak boleh sama sekali", "Boleh, jika inputnya angka genap", "Hanya boleh 1 kali"], answer: "Tidak boleh sama sekali", hint: "Aturan emas fungsi: 1 input hanya punya 1 output." },
+            { q: "Apakah boleh DUA anggota Domain berbeda mengarah ke SATU anggota Kodomain yang sama?", options: ["Tidak boleh sama sekali", "Hanya boleh jika relasi", "Boleh sekali", "Hanya boleh jika Domain-nya huruf"], answer: "Boleh sekali", hint: "Banyak input bisa sharing 1 output (misal: 2 orang punya merek laptop sama)." },
+            { q: "Perhatikan pemetaan: Ayah -> Mobil, Ibu -> Mobil, Anak -> Motor. Manakah yang merupakan Range?", options: ["{Ayah, Ibu, Anak}", "{Mobil, Motor}", "{Mobil}", "{Ayah, Mobil}"], answer: "{Mobil, Motor}", hint: "Range adalah semua output yang dituju (Mobil dan Motor)." },
+            { q: "Jika Range dan Kodomain suatu relasi sama persis, maka relasi tersebut bersifat...", options: ["Into", "Surjektif (Onto)", "Injektif (One-to-One)", "Fungsi Konstan"], answer: "Surjektif (Onto)", hint: "Surjektif artinya semua daerah kawan terkena panah." },
+            { q: "Manakah pernyataan yang BENAR tentang Domain pada fungsi?", options: ["Domain adalah hasil akhir pemetaan", "Setiap anggota Domain harus punya tepat satu pasangan di Range", "Domain boleh kosong", "Domain selalu berupa himpunan bilangan"], answer: "Setiap anggota Domain harus punya tepat satu pasangan di Range", hint: "Ini adalah syarat mutlak sebuah fungsi." }
         ],
         game4: [
             { q: "Is {(1,a), (2,a), (3,b)} a function?", options: ["Yes", "No"], answer: "Yes", hint: "No input has more than one output." },
