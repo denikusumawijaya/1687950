@@ -172,24 +172,44 @@
         .btn-submit-assess { background-color: var(--hazard-orange); color: white; padding: 10px 20px; border: none; font-weight: bold; font-size: 1rem; cursor: pointer; border-radius: 4px; margin-top: 10px; }
         .btn-print-assess { background-color: var(--steel-dark); color: var(--safety-yellow); padding: 10px 20px; border: none; font-weight: bold; font-size: 1rem; cursor: pointer; border-radius: 4px; margin-top: 10px; margin-left: 10px; }
 
+        /* CSS untuk Score Banner (di layar) */
+        .score-banner {
+            display: none; /* Awalnya tersembunyi */
+            padding: 15px;
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.5rem;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            color: white;
+            letter-spacing: 1px;
+        }
+
         @media print {
             body { background: white !important; }
             .content-area { overflow: visible !important; height: auto !important; }
             
-            /* Hilangkan elemen lain agar tidak memakan halaman kosong (display: none) */
             .header, .rules-box, .section, .canvas-area, .industrial-stripe { display: none !important; }
-            
-            /* Tampilkan HANYA section Assessment */
             #sec-assessment { display: block !important; position: absolute; left: 0; top: 0; width: 100%; box-shadow: none; border: none; }
-            
-            /* Hilangkan semua tab terlebih dahulu */
             .tab-content { display: none !important; } 
-            
-            /* TAMPILKAN hanya tab yang punya class 'active-print' */
             .tab-content.active-print { display: block !important; border: none; } 
 
-            /* Sembunyikan tombol dan navigasi tab */
-            .tabs, .tab-btn, .btn-submit-assess, .btn-print-assess, .feedback-assess { display: none !important; }
+            .tabs, .tab-btn, .btn-submit-assess, .btn-print-assess { display: none !important; }
+            
+            /* TAMPILKAN Feedback saat print */
+            .feedback-assess { display: block !important; } 
+            
+            /* TAMPILKAN Score Banner saat print */
+            .score-banner { display: block !important; border: 2px solid #000; }
+
+            /* Paksa warna background agar tetap muncul saat print (Chrome/Edge) */
+            .assessment-item, .feedback-assess, .score-banner {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            
+            /* Agar soal tidak terpotong di tengah halaman */
+            .assessment-item { page-break-inside: avoid; }
         }
         /* ==========================================
            ENRICHMENT: 2 COLUMNS & ANIMATIONS
@@ -1098,6 +1118,11 @@
     function submitAssessment(group) {
         let score = 0;
         const data = assessmentData[group];
+        
+        // Hapus banner skor lama jika ada
+        const existingBanner = document.getElementById(`score-banner-${group}`);
+        if(existingBanner) existingBanner.remove();
+
         data.forEach((item, index) => {
             let userAnswer = "";
             const fbEl = document.getElementById(`${group}-fb-${index}`);
@@ -1122,41 +1147,56 @@
 
             if (isCorrect) {
                 score++;
-                qEl.style.backgroundColor = "#e6ffe6";
-                fbEl.innerHTML = `<span style="color: var(--success)"><i class="fa-solid fa-check-circle"></i> Correct!</span>`;
+                qEl.style.backgroundColor = "#e6ffe6"; // Hijau
+                fbEl.innerHTML = `<span style="color: var(--success)"><i class="fa-solid fa-check-circle"></i> Correct! / Benar!</span>`;
             } else {
-                qEl.style.backgroundColor = "#ffe6e6";
+                qEl.style.backgroundColor = "#ffe6e6"; // Merah
                 fbEl.innerHTML = `<span style="color: var(--danger)"><i class="fa-solid fa-times-circle"></i> Incorrect. Hint: ${item.hint} <br><span style="font-size:0.8em; color:#333"><b>Correct Answer:</b> ${Array.isArray(item.answer) ? item.answer.join(', ') : item.answer}</span></span>`;
             }
             fbEl.classList.add('show');
         });
-        alert(`Group Score: ${score} / ${data.length}`);
+
+        // Buat dan tampilkan Banner Skor
+        const banner = document.createElement('div');
+        banner.id = `score-banner-${group}`;
+        banner.className = 'score-banner';
+        
+        const percentage = Math.round((score / data.length) * 100);
+        if(percentage >= 70) {
+            banner.style.backgroundColor = 'var(--success)'; // Hijau
+        } else if(percentage >= 40) {
+            banner.style.backgroundColor = 'var(--hazard-orange)'; // Oranye
+        } else {
+            banner.style.backgroundColor = 'var(--danger)'; // Merah
+        }
+        
+        banner.innerHTML = `<i class="fa-solid fa-trophy"></i> SCORE / NILAI: ${score} / ${data.length} (${percentage}%)`;
+        
+        const container = document.getElementById(group);
+        container.insertBefore(banner, container.firstChild);
     }
 
     function printAssessment(group) {
         const name = document.getElementById('studentName').value || "Student";
         const date = document.getElementById('assessmentDate').value || "N/A";
         
-        // 1. Tambahkan class 'active-print' HANYA ke grup yang ingin diprint
         const targetDiv = document.getElementById(group);
         targetDiv.classList.add('active-print');
 
-        // 2. Sisipkan Header Sementara untuk Print
         const printHeader = document.createElement('div');
         printHeader.id = "print-header-temp";
         printHeader.style.cssText = "border-bottom: 2px solid black; margin-bottom: 20px; padding-bottom: 10px; font-family: sans-serif;";
         printHeader.innerHTML = `<h2>Assessment Result - ${group}</h2><p><b>Name:</b> ${name} | <b>Date:</b> ${date}</p>`;
+        
         targetDiv.insertBefore(printHeader, targetDiv.firstChild);
 
-        // 3. Trigger Print Dialog
         window.print();
 
-        // 4. Bersihkan setelah dialog print ditutup
         setTimeout(() => {
             if(document.getElementById('print-header-temp')) {
                 document.getElementById('print-header-temp').remove();
             }
-            targetDiv.classList.remove('active-print'); // Kembalikan tab ke keadaan semula
+            targetDiv.classList.remove('active-print');
         }, 500);
     }
 
