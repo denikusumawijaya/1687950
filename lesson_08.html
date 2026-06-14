@@ -173,18 +173,23 @@
         .btn-print-assess { background-color: var(--steel-dark); color: var(--safety-yellow); padding: 10px 20px; border: none; font-weight: bold; font-size: 1rem; cursor: pointer; border-radius: 4px; margin-top: 10px; margin-left: 10px; }
 
         @media print {
-            body * { visibility: hidden; }
-            #sec-assessment, #sec-assessment * { visibility: visible; }
-            #sec-assessment { position: absolute; left: 0; top: 0; width: 100%; }
+            body { background: white !important; }
+            .content-area { overflow: visible !important; height: auto !important; }
             
-            /* Semua tab disembunyikan saat print */
+            /* Hilangkan elemen lain agar tidak memakan halaman kosong (display: none) */
+            .header, .rules-box, .section, .canvas-area, .industrial-stripe { display: none !important; }
+            
+            /* Tampilkan HANYA section Assessment */
+            #sec-assessment { display: block !important; position: absolute; left: 0; top: 0; width: 100%; box-shadow: none; border: none; }
+            
+            /* Hilangkan semua tab terlebih dahulu */
             .tab-content { display: none !important; } 
             
-            /* HANYA tab yang punya class 'active-print' yang akan ditampilkan */
+            /* TAMPILKAN hanya tab yang punya class 'active-print' */
             .tab-content.active-print { display: block !important; border: none; } 
 
-            .tabs, .btn-submit-assess, .btn-print-assess, .feedback-assess { display: none !important; }
-            .tab-btn { display: none !important; }
+            /* Sembunyikan tombol dan navigasi tab */
+            .tabs, .tab-btn, .btn-submit-assess, .btn-print-assess, .feedback-assess { display: none !important; }
         }
         /* ==========================================
            ENRICHMENT: 2 COLUMNS & ANIMATIONS
@@ -1146,7 +1151,7 @@
         // 3. Trigger Print Dialog
         window.print();
 
-        // 4. Bersihkan (Hapus header & hapus class active-print) setelah dialog print ditutup
+        // 4. Bersihkan setelah dialog print ditutup
         setTimeout(() => {
             if(document.getElementById('print-header-temp')) {
                 document.getElementById('print-header-temp').remove();
