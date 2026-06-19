@@ -264,6 +264,13 @@ let isChecked = false;
 let completedSections = new Set();
 let selectedAssessGroup = 'A';
 
+// Fungsi untuk membersihkan simbol math khusus dropdown
+function cleanMathText(text) {
+    return text.replace(/\\\(/g, '').replace(/\\\)/g, '')
+               .replace(/\\le/g, '≤').replace(/\\ge/g, '≥')
+               .replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g, '$1/$2');
+}
+    
 function initApp() {
     const path = document.getElementById('levelPath');
     sections.forEach((sec, idx) => {
@@ -417,7 +424,10 @@ function generateInputHTML(q, prefix) {
     if (q.type === 'text') return `<input type="text" placeholder="Type answer here...">`;
     if (q.type === 'dropdown') {
         let h = `<select><option value="">Select / Pilih</option>`;
-        q.options.forEach(opt => h += `<option value="${opt}">${opt}</option>`);
+        q.options.forEach(opt => {
+            let cleanOpt = cleanMathText(opt); // Gunakan fungsi pembersih
+            h += `<option value="${opt}">${cleanOpt}</option>`;
+        });
         return h + '</select>';
     }
     if (q.type === 'checkbox') {
@@ -534,7 +544,10 @@ function generateAssessInputHTML(q, idx) {
     if (q.type === 'text') return `<input type="text" name="assess-text-${idx}" placeholder="Type...">`;
     if (q.type === 'dropdown') {
         let h = `<select name="assess-sel-${idx}"><option value="">Select...</option>`;
-        q.options.forEach(opt => h += `<option value="${opt}">${opt}</option>`);
+        q.options.forEach(opt => {
+            let cleanOpt = cleanMathText(opt); // Gunakan fungsi pembersih
+            h += `<option value="${opt}">${cleanOpt}</option>`;
+        });
         return h + '</select>';
     }
     if (q.type === 'checkbox') {
