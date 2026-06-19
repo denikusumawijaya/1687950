@@ -647,9 +647,9 @@ function printAssessment() {
         
         if(isCorrect) score++;
         
-        let cleanQ = q.q.replace(/\\\(/g, '').replace(/\\\)/g, '');
-        let cleanUserAns = userAns.replace(/\\\(/g, '').replace(/\\\)/g, '');
-        let cleanCorrectAns = q.answer.toString().replace(/\\\(/g, '').replace(/\\\)/g, '');
+        let cleanQ = cleanMathText(q.q);
+        let cleanUserAns = cleanMathText(userAns);
+        let cleanCorrectAns = cleanMathText(q.answer.toString());
         
         tableRows += `<tr><td style="text-align:center">${idx+1}</td><td>${cleanQ}</td><td>${cleanUserAns}</td><td>${cleanCorrectAns}</td></tr>`;
     });
