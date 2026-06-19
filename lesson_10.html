@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PtLSV: Linear Inequalities</title>
+    <!-- KaTeX for Math Equations -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --duo-green: #58CC02; --duo-green-dark: #46A302; --duo-blue: #1CB0F6; --duo-red: #FF4B4B;
+            --duo-yellow: #FFC800; --duo-gray: #E5E5E5; --duo-dark: #4B4B4B; --duo-white: #FFFFFF;
+            --duo-bg: #F0F0F0; --duo-card: #FFFFFF;
+        }
+        * { box-sizing: border-box; font-family: 'Nunito', sans-serif; margin: 0; padding: 0; }
+        body { background-color: var(--duo-bg); color: var(--duo-dark); }
+        
+        .main-container { max-width: 800px; margin: 0 auto; min-height: 100vh; position: relative; padding-bottom: 50px; }
+        
+        .header { background: var(--duo-white); padding: 15px; text-align: center; border-bottom: 4px solid var(--duo-gray); position: sticky; top: 0; z-index: 100; }        
+        .header h1 { color: var(--duo-green); font-size: 1.3rem; text-transform: uppercase; letter-spacing: 1px; }
+        .header p { color: var(--duo-blue); font-size: 0.9rem; margin-top: 5px; }
+        .rules-box { background: var(--duo-yellow); color: var(--duo-dark); margin: 15px; padding: 15px; border-radius: 15px; border-bottom: 4px solid #E6B400; }
+        .rules-box h3 { margin-bottom: 10px; display: flex; align-items: center; gap: 10px; font-size: 1rem; }
+        .rules-box ul { margin-left: 20px; font-weight: bold; font-size: 0.9rem; }
+        .bilingual { font-size: 0.8rem; color: #777; margin-top: 4px; font-weight: normal; }
+
+        .path-container { padding: 40px 20px; }
+        .progress-global { background: var(--duo-gray); height: 8px; border-radius: 4px; margin-bottom: 30px; overflow: hidden; }
+        .progress-global-fill { height: 100%; background: var(--duo-green); width: 0%; transition: width 0.5s; }
+        .level-path { display: flex; flex-direction: column; align-items: center; gap: 15px; }
+        .level-node { width: 55px; height: 55px; border-radius: 50%; background: var(--duo-gray); border-bottom: 5px solid #CCC; display: flex; justify-content: center; align-items: center; font-size: 1.3rem; color: var(--duo-dark); cursor: pointer; transition: transform 0.2s; position: relative; }
+        .level-node:hover { transform: scale(1.1); }
+        .level-node.active { background: var(--duo-green); border-bottom-color: var(--duo-green-dark); color: white; animation: bounce 2s infinite; }
+        .level-node.completed { background: var(--duo-yellow); border-bottom-color: #E6B400; color: var(--duo-dark); }
+        .level-connector { width: 5px; height: 30px; background: var(--duo-gray); }
+        .timer-badge { position: absolute; top: -22px; font-size: 0.65rem; background: var(--duo-dark); color: white; padding: 2px 6px; border-radius: 8px; white-space: nowrap; }
+
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        .section-view { display: none; animation: slideIn 0.3s ease-out; }
+        .section-view.visible { display: block; }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .back-btn { background: var(--duo-white); border: 2px solid var(--duo-gray); color: var(--duo-dark); padding: 6px 12px; border-radius: 12px; cursor: pointer; font-weight: bold; font-size: 0.8rem; box-shadow: 0 2px 0px var(--duo-gray); }
+        .progress-section { background: var(--duo-gray); height: 10px; border-radius: 5px; overflow: hidden; flex-grow: 1; margin: 0 15px; }
+        .progress-section-fill { height: 100%; background: var(--duo-blue); width: 0%; transition: width 0.4s; }
+
+        .card { background: var(--duo-white); color: var(--duo-dark); border-radius: 15px; padding: 20px; margin-bottom: 20px; border-bottom: 4px solid #DDD; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .card h2 { color: var(--duo-blue); margin-bottom: 10px; font-size: 1.1rem; }
+        .card h3 { color: var(--duo-dark); margin-bottom: 5px; font-size: 1rem; }
+        
+        input[type="text"], input[type="date"], select { width: 100%; padding: 12px; border: 2px solid #E5E5E5; border-radius: 10px; font-size: 1rem; border-bottom: 4px solid #CCC; outline: none; transition: border-color 0.2s; background: white; }
+        input[type="text"]:focus, select:focus { border-color: var(--duo-blue); border-bottom-color: var(--duo-blue); }
+        
+        .radio-group, .checkbox-group { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+        .radio-label, .checkbox-label { background: var(--duo-white); border: 2px solid #E5E5E5; border-bottom: 4px solid #CCC; padding: 10px 15px; border-radius: 12px; cursor: pointer; font-weight: bold; transition: all 0.2s; display: block; }
+        .radio-label:hover, .checkbox-label:hover { background: #F7F7F7; }
+        .radio-label.selected { background: #DDFAFF; border-color: var(--duo-blue); color: var(--duo-blue); }
+        .checkbox-label.selected { background: #DDFFD9; border-color: var(--duo-green); color: var(--duo-green); }
+        input[type="radio"], input[type="checkbox"] { display: none; }
+
+        .btn-duo { background: var(--duo-green); color: white; font-weight: bold; padding: 14px 20px; border: none; border-bottom: 4px solid var(--duo-green-dark); border-radius: 12px; font-size: 1rem; cursor: pointer; width: 100%; transition: all 0.1s; margin-top: 10px; }
+        .btn-duo:active { border-bottom-width: 0; margin-top: 14px; }
+        .btn-duo:disabled { background: #3C3C3C; border-bottom-color: #2F2F2F; color: #666; cursor: not-allowed; }
+        .btn-blue { background: var(--duo-blue); border-bottom-color: #1A8FD6; }
+
+        .drag-zone { min-height: 45px; border: 2px dashed #CCC; border-radius: 10px; padding: 8px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+        .drag-item { background: var(--duo-yellow); color: var(--duo-dark); padding: 6px 12px; border-radius: 8px; cursor: grab; font-weight: bold; border-bottom: 3px solid #E6B400; font-size: 0.9rem; }
+        .drag-item:active { cursor: grabbing; }
+        .drop-target { min-height: 45px; border: 2px solid var(--duo-blue); border-radius: 10px; display: flex; align-items: center; padding: 8px; gap: 8px; background: #eefcff; margin-top: 10px; }
+
+        .feedback { margin-top: 15px; padding: 12px; border-radius: 10px; display: none; font-weight: bold; font-size: 0.9rem; animation: slideIn 0.3s; }
+        .feedback.correct { display: block; background: #DDFFD9; color: var(--duo-green-dark); border-left: 5px solid var(--duo-green); }
+        .feedback.wrong { display: block; background: #FFDEDE; color: var(--duo-red); border-left: 5px solid var(--duo-red); }
+
+        .assess-form { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        .group-selector { display: flex; justify-content: center; gap: 8px; margin-bottom: 15px; flex-wrap: wrap; }
+        .group-btn { padding: 8px 16px; border-radius: 8px; border: 2px solid var(--duo-gray); background: white; cursor: pointer; font-weight: bold; font-size: 0.9rem; }
+        .group-btn.active { background: var(--duo-blue); color: white; border-color: var(--duo-blue); }
+        .two-col-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; align-items: start; }
+        @media (max-width: 600px) { .two-col-grid { grid-template-columns: 1fr; } }
+        .q-num { font-size: 0.8rem; color: var(--duo-blue); font-weight: bold; margin-bottom: 5px; }
+
+        .consolidation-link { display: inline-block; background: var(--duo-green); color: white; padding: 15px 30px; border-radius: 15px; text-decoration: none; font-weight: bold; font-size: 1.1rem; margin-top: 20px; border-bottom: 4px solid var(--duo-green-dark); }
+        
+        .table-illus { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 0.9rem; }
+        .table-illus th, .table-illus td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+        .table-illus th { background: var(--duo-gray); }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+    <div class="header">
+        <h1><i class="fas fa-infinity"></i> Topik: PtLSV / Linear Inequalities</h1>
+        <p>Tutor: Deni | Kurikulum Merdeka | 1 Hour</p>
+    </div>
+
+    <div class="rules-box">
+        <h3><i class="fas fa-gavel"></i> Class Rules / Aturan Kelas</h3>
+        <ul>
+            <li>Speak in turns and raise your hand. <div class="bilingual">Berbicara secara bergantian dan angkat tangan.</div></li>
+            <li>Ask permission if you need to leave Zoom (e.g., toilet/drink). <div class="bilingual">Minta izin ketika ingin meninggalkan zoom (misal: izin ke toilet atau minum).</div></li>
+        </ul>
+    </div>
+
+    <div class="path-container" id="pathMap">
+        <div class="progress-global"><div class="progress-global-fill" id="globalProgress"></div></div>
+        <div class="level-path" id="levelPath"></div>
+    </div>
+
+    <div id="appContent" style="padding: 0 15px;"></div>
+</div>
+<script>
+// --- DATA STRUKTUR MATERI & SOAL ---
+const sections = [
+    {
+        id: 1, title: "Spiral Review", icon: "fa-brain", timer: "00:00 - 00:10",
+        steps: [
+            { stepType: 'material', en: "Welcome! Let's review basics. In algebra, we have variables (letters like x, y) and constants (numbers). In the expression \\(4x + 7\\), 4 is the coefficient, \\(x\\) is the variable, and 7 is the constant.", id: "Selamat datang! Mari kita ulas dasar-dasarnya. Dalam aljabar, kita memiliki variabel (huruf seperti x, y) dan konstanta (angka). Pada ekspresi \\(4x + 7\\), 4 adalah koefisien, \\(x\\) adalah variabel, dan 7 adalah konstanta." },
+            { stepType: 'question', q: "What is the constant in \\(3y - 5\\)?", id: "Berapa konstanta pada \\(3y - 5\\)?", type: "radio", options: ["3", "-5", "y"], answer: "-5", explanation: "Constants are numbers without variables. Here, -5 is the constant." },
+            { stepType: 'question', q: "Identify the variable in \\(-3y - 5\\).", id: "Identifikasi variabel pada \\(-3y - 5\\).", type: "text", answer: "y", explanation: "Variables are letters representing unknown numbers." },
+            { stepType: 'material', en: "Translating words to algebra: 'A number multiplied by 5 then subtracted by 2' becomes \\(5x - 2\\). 'Half of savings (s) added to 10 thousand' becomes \\(\\frac{s}{2} + 10000\\).", id: "Menerjemahkan kata-kata ke aljabar: 'Suatu angka dikalikan 5 lalu dikurangi 2' menjadi \\(5x - 2\\). 'Setengah dari tabungan (s) ditambah 10 ribu' menjadi \\(\\frac{s}{2} + 10000\\)." },
+            { stepType: 'question', q: "Translate: 'Three times weight (w) minus 5kg'", id: "Terjemahkan: 'Tiga kali berat badan (w) dikurangi 5kg'", type: "text", answer: "3w-5", explanation: "Three times w is 3w, minus 5 is 3w - 5." },
+            { stepType: 'question', q: "Translate: 'Total price of x books, if one book is 5k and shipping is 10k'", id: "Terjemahkan: 'Total harga x buku, jika satu buku 5rb dan ongkir 10rb'", type: "radio", options: ["\\(5000x + 10000\\)", "\\(x + 5000 + 10000\\)", "\\(10000x + 5000\\)"], answer: "\\(5000x + 10000\\)", explanation: "Price of books is 5000 times x. Plus 10000 shipping." },
+            { stepType: 'question', q: "What is the coefficient of \\(x\\) in \\(12 - 8x\\)?", id: "Berapa koefisien dari \\(x\\) pada \\(12 - 8x\\)?", type: "radio", options: ["12", "8", "-8"], answer: "-8", explanation: "The coefficient is the number multiplying the variable, which is -8 here." },
+            { stepType: 'question', q: "Identify the variable in \\(4x + 7\\).", id: "Identifikasi variabel pada \\(4x + 7\\).", type: "dropdown", options: ["4", "x", "7"], answer: "x", explanation: "The letter x is the variable." },
+            { stepType: 'question', q: "Select all constants in: \\(2x^2 - 3x + 9\\)", id: "Pilih semua konstanta pada: \\(2x^2 - 3x + 9\\)", type: "checkbox", options: ["2", "3", "9", "-3"], answer: ["9"], explanation: "Only 9 stands alone without a variable." },
+            { stepType: 'question', q: "Translate: 'Twice a number p plus 8'", id: "Terjemahkan: 'Dua kali angka p ditambah 8'", type: "text", answer: "2p+8", explanation: "Twice p is 2p, plus 8 gives 2p + 8." },
+            { stepType: 'question', q: "What is the constant in \\(-9p + 2\\)?", id: "Berapa konstanta pada \\(-9p + 2\\)?", type: "text", answer: "2", explanation: "The number 2 is the constant." }
+        ]
+    },
+    {
+        id: 2, title: "Intro & Real-World", icon: "fa-gamepad", timer: "00:10 - 00:20",
+        steps: [
+            { stepType: 'material', en: "Imagine a video game. To level up, your score (s) must be more than 500. We write this as \\(s > 500\\). If your health (h) cannot be less than 1, we write \\(h \\ge 1\\). These are inequalities!", id: "Bayangkan video game. Untuk naik level, skor kamu (s) harus lebih dari 500. Kita tulis ini sebagai \\(s > 500\\). Jika nyawa kamu (h) tidak boleh kurang dari 1, kita tulis \\(h \\ge 1\\). Ini adalah pertidaksamaan!" },
+            { stepType: 'question', q: "If score must be more than 500, which symbol is used?", id: "Jika skor harus lebih dari 500, simbol mana yang digunakan?", type: "radio", options: ["<", ">", "\\(\\le\\)"], answer: ">", explanation: "'>' means greater than." },
+            { stepType: 'question', q: "If health cannot be less than 1, we write \\(h \\_\\_\\_\\_ 1\\).", id: "Jika nyawa tidak boleh kurang dari 1, kita tulis \\(h \\_\\_\\_\\_ 1\\).", type: "radio", options: ["<", "\\(\\le\\)", "\\(\\ge\\)"], answer: "\\(\\ge\\)", explanation: "'Cannot be less than' means greater than or equal to (≥)." },
+            { stepType: 'material', en: "Inequality symbols: < (less than), > (greater than), \\(\\le\\) (less than or equal to), \\(\\ge\\) (greater than or equal to).", id: "Simbol pertidaksamaan: < (kurang dari), > (lebih dari), \\(\\le\\) (kurang dari atau sama dengan), \\(\\ge\\) (lebih dari atau sama dengan)." },
+            { stepType: 'question', q: "Translate: 'x is at most 10'", id: "Terjemahkan: 'x paling banyak 10'", type: "dropdown", options: ["\\(x < 10\\)", "\\(x > 10\\)", "\\(x \\le 10\\)"], answer: "\\(x \\le 10\\)", explanation: "'At most' means ≤." },
+            { stepType: 'question', q: "Translate: 'y is less than 5'", id: "Terjemahkan: 'y kurang dari 5'", type: "text", answer: "y<5", explanation: "Less than is <." },
+            { stepType: 'question', q: "Translate: 'm is greater than or equal to 8'", id: "Terjemahkan: 'm lebih dari atau sama dengan 8'", type: "radio", options: ["\\(m > 8\\)", "\\(m \\ge 8\\)", "\\(m < 8\\)"], answer: "\\(m \\ge 8\\)", explanation: "Greater than or equal to is ≥." },
+            { stepType: 'question', q: "Which of these are inequality symbols?", id: "Mana saja yang merupakan simbol pertidaksamaan?", type: "checkbox", options: ["<", ">", "=", "\\(\\le\\)", "\\(\\ge\\)"], answer: ["<", ">", "\\(\\le\\)", "\\(\\ge\\)"], explanation: "= is equality, the rest are inequalities." },
+            { stepType: 'question', q: "Score must reach at least 200. Write the inequality.", id: "Skor harus mencapai minimal 200. Tulis pertidaksamaannya.", type: "text", answer: "s>=200", explanation: "At least means ≥. So s ≥ 200." },
+            { stepType: 'question', q: "Lives must be more than 0.", id: "Nyawa harus lebih dari 0.", type: "radio", options: ["\\(h < 0\\)", "\\(h > 0\\)", "\\(h \\le 0\\)"], answer: "\\(h > 0\\)", explanation: "More than is >." },
+            { stepType: 'question', q: "Maximum weight is 50kg. Write the inequality.", id: "Berat maksimal 50kg. Tulis pertidaksamaannya.", type: "dropdown", options: ["\\(w < 50\\)", "\\(w > 50\\)", "\\(w \\le 50\\)"], answer: "\\(w \\le 50\\)", explanation: "Maximum means ≤." },
+            { stepType: 'question', q: "Order these numbers from largest to smallest: 500, 1000, 250", id: "Urutkan angka ini dari terbesar ke terkecil: 500, 1000, 250", type: "drag", options: ["500", "1000", "250"], answer: "1000,500,250", explanation: "1000 > 500 > 250." }
+        ]
+    },
+    {
+        id: 3, title: "Problem Intro & Rule", icon: "fa-sort", timer: "00:20 - 00:30",
+        steps: [
+            { stepType: 'material', en: "Solving inequalities is like solving equations. \\(2x = 10 \\Rightarrow x = 5\\). \\(2x < 10 \\Rightarrow x < 5\\). BUT, there is a secret rule! If you multiply or divide by a NEGATIVE number, the sign FLIPS like a Uno reverse card!", id: "Menyelesaikan pertidaksamaan seperti menyelesaikan persamaan. \\(2x = 10 \\Rightarrow x = 5\\). \\(2x < 10 \\Rightarrow x < 5\\). TAPI, ada aturan rahasia! Jika kamu mengalikan atau membagi dengan bilangan NEGATIF, tandanya BERBALIK seperti kartu Uno reverse!" },
+            { stepType: 'question', q: "Solve \\(2x = 10\\). What is \\(x\\)?", id: "Selesaikan \\(2x = 10\\). Berapa \\(x\\)?", type: "text", answer: "5", explanation: "10 divided by 2 is 5." },
+            { stepType: 'question', q: "Solve \\(x - 4 = 2\\). What is \\(x\\)?", id: "Selesaikan \\(x - 4 = 2\\). Berapa \\(x\\)?", type: "text", answer: "6", explanation: "Add 4 to both sides: 2 + 4 = 6." },
+            { stepType: 'question', q: "If \\(-2x > 10\\), what happens to the sign when solving for \\(x\\)?", id: "Jika \\(-2x > 10\\), apa yang terjadi pada tanda saat mencari \\(x\\)?", type: "radio", options: ["Stays the same", "Flips direction", "Becomes equals"], answer: "Flips direction", explanation: "Dividing by -2 flips the sign." },
+            { stepType: 'question', q: "Solve \\(-2x > 10\\). What is the relation for \\(x\\)?", id: "Selesaikan \\(-2x > 10\\). Bagaimana hubungannya untuk \\(x\\)?", type: "radio", options: ["\\(x > -5\\)", "\\(x < -5\\)", "\\(x > 5\\)"], answer: "\\(x < -5\\)", explanation: "10 / -2 = -5. Sign flips from > to <." },
+            { stepType: 'question', q: "If \\(-3x > 9\\), then \\(x\\) ___ -3.", id: "Jika \\(-3x > 9\\), maka \\(x\\) ___ -3.", type: "dropdown", options: [">", "<", "="], answer: "<", explanation: "9 / -3 = -3. Sign flips to <." },
+            { stepType: 'question', q: "Does the sign flip when adding -2 to both sides?", id: "Apakah tanda berbalik saat menambahkan -2 ke kedua sisi?", type: "radio", options: ["Yes", "No"], answer: "No", explanation: "Sign flips ONLY for multiplication/division by negatives." },
+            { stepType: 'question', q: "Which operations cause the inequality sign to flip?", id: "Operasi mana yang menyebabkan tanda pertidaksamaan berbalik?", type: "checkbox", options: ["Add -5", "Multiply by -2", "Divide by -1", "Subtract 3"], answer: ["Multiply by -2", "Divide by -1"], explanation: "Only mult/div by negatives cause a flip." },
+            { stepType: 'question', q: "Solve \\(-4x < 8\\). What is the relation for \\(x\\)?", id: "Selesaikan \\(-4x < 8\\). Bagaimana hubungannya untuk \\(x\\)?", type: "text", answer: "x>-2", explanation: "8 / -4 = -2. Sign flips from < to >. So x > -2." },
+            { stepType: 'question', q: "If \\(-5y \\ge 10\\), then \\(y\\) ___ -2.", id: "Jika \\(-5y \\ge 10\\), maka \\(y\\) ___ -2.", type: "dropdown", options: ["\\(\\ge\\)", "\\(\\le\\)", ">"], answer: "\\(\\le\\)", explanation: "10 / -5 = -2. Sign flips from ≥ to ≤." },
+            { stepType: 'question', q: "Solve \\(10 > -2x\\). What is the relation for \\(x\\)?", id: "Selesaikan \\(10 > -2x\\). Bagaimana hubungannya untuk \\(x\\)?", type: "radio", options: ["\\(x > -5\\)", "\\(x < -5\\)", "\\(x > 5\\)"], answer: "\\(x > -5\\)", explanation: "Divide by -2, sign flips: -5 < x, which means x > -5." }
+        ]
+    },
+    {
+        id: 4, title: "Practice & Graphing", icon: "fa-pencil", timer: "00:30 - 00:45",
+        steps: [
+            { stepType: 'material', en: "We graph inequalities on a number line. For \\(x > 3\\), use an open circle (○) at 3 and arrow right. For \\(x \\le 5\\), use a closed circle (●) at 5 and arrow left.", id: "Kita menggambar pertidaksamaan pada garis bilangan. Untuk \\(x > 3\\), gunakan bulatan kosong (○) di 3 dan panah kanan. Untuk \\(x \\le 5\\), gunakan bulatan penuh (●) di 5 dan panah kiri." },
+            { stepType: 'question', q: "For \\(x > 3\\), what type of circle is used at 3?", id: "Untuk \\(x > 3\\), jenis bulatan apa yang digunakan di 3?", type: "radio", options: ["Open (○)", "Closed (●)"], answer: "Open (○)", explanation: "> means not equal to 3, so open circle." },
+            { stepType: 'question', q: "For \\(x \\le 5\\), what type of circle is used at 5?", id: "Untuk \\(x \\le 5\\), jenis bulatan apa yang digunakan di 5?", type: "radio", options: ["Open (○)", "Closed (●)"], answer: "Closed (●)", explanation: "≤ means 5 is included, so closed circle." },
+            { stepType: 'material', en: "Let's solve a game problem! You have 100 points. You get 5 points per quest (x). You need at least 350 to win. Inequality: \\(100 + 5x \\ge 350\\). Subtract 100: \\(5x \\ge 250\\). Divide by 5: \\(x \\ge 50\\). You need 50 quests!", id: "Mari selesaikan masalah game! Kamu punya 100 poin. Kamu dapat 5 poin per misi (x). Kamu butuh minimal 350 untuk menang. Pertidaksamaan: \\(100 + 5x \\ge 350\\). Kurangi 100: \\(5x \\ge 250\\). Bagi 5: \\(x \\ge 50\\). Kamu butuh 50 misi!" },
+            { stepType: 'question', q: "Solve \\(3x + 5 < 20\\). What is \\(x\\)?", id: "Selesaikan \\(3x + 5 < 20\\). Berapa \\(x\\)?", type: "text", answer: "x<5", explanation: "Subtract 5: 3x < 15. Divide 3: x < 5." },
+            { stepType: 'question', q: "Solve \\(100 + 5x \\ge 350\\). What is \\(x\\)?", id: "Selesaikan \\(100 + 5x \\ge 350\\). Berapa \\(x\\)?", type: "text", answer: "x>=50", explanation: "Subtract 100: 5x ≥ 250. Divide 5: x ≥ 50." },
+            { stepType: 'question', q: "Drag the steps to solve \\(2x - 4 > 6\\) in order.", id: "Tarik langkah untuk menyelesaikan \\(2x - 4 > 6\\) secara berurutan.", type: "drag", options: ["\\(2x > 10\\)", "\\(x > 5\\)"], answer: "\\(2x > 10\\),\\(x > 5\\)", explanation: "Add 4 to 6 gives 10. Then divide by 2 gives 5." },
+            { stepType: 'question', q: "Which values satisfy \\(x < 5\\)?", id: "Nilai mana yang memenuhi \\(x < 5\\)?", type: "checkbox", options: ["3", "4", "5", "-2", "6"], answer: ["3", "4", "-2"], explanation: "Numbers less than 5 are correct." },
+            { stepType: 'question', q: "Graph of \\(x \\ge -2\\) has arrow pointing...", id: "Grafik dari \\(x \\ge -2\\) memiliki panah menunjuk ke...", type: "radio", options: ["Left", "Right"], answer: "Right", explanation: "≥ means greater than, so points right." },
+            { stepType: 'question', q: "Solve \\(4x - 7 < 13\\). What is the relation for \\(x\\)?", id: "Selesaikan \\(4x - 7 < 13\\). Bagaimana hubungannya untuk \\(x\\)?", type: "dropdown", options: ["< 5", "> 5", "\\(\\le 5\\)"], answer: "< 5", explanation: "Add 7: 4x < 20. Div 4: x < 5." },
+            { stepType: 'question', q: "Solve \\(-3x + 4 \\le 19\\). What is \\(x\\)?", id: "Selesaikan \\(-3x + 4 \\le 19\\). Berapa \\(x\\)?", type: "text", answer: "x>=-5", explanation: "Sub 4: -3x ≤ 15. Div -3 (FLIP): x ≥ -5." },
+            { stepType: 'question', q: "Boss Level: Solve \\(-4(x - 3) \\le 2x + 18\\). What is \\(x\\)?", id: "Boss Level: Selesaikan \\(-4(x - 3) \\le 2x + 18\\). Berapa \\(x\\)?", type: "text", answer: "x>=-1", explanation: "-4x+12 ≤ 2x+18 => -6x ≤ 6 => x ≥ -1." }
+        ]
+    },
+    {
+        id: 5, title: "Assessment", icon: "fa-file-pen", timer: "00:45 - 00:55", isAssessment: true, steps: []
+    },
+    {
+        id: 6, title: "Consolidation", icon: "fa-flag-checkered", timer: "00:55 - 01:00", isConsolidation: true, steps: []
+    }
+];
+  <script>
+// --- ASSESSMENT BANK (5 GROUPS, 10 Q EACH) ---
+const assessmentBank = {
+    A: [
+        { q: "Solve \\(2x - 8 > 4\\). What is \\(x\\)?", id: "Selesaikan \\(2x - 8 > 4\\). Berapa \\(x\\)?", type: "text", answer: "x>6", explanation: "Add 8: 2x > 12. Div 2: x > 6." },
+        { q: "Solve \\(3(x + 2) \\le 15\\). What is \\(x\\)?", id: "Selesaikan \\(3(x + 2) \\le 15\\). Berapa \\(x\\)?", type: "dropdown", options: ["\\(x < 3\\)", "\\(x \\le 3\\)", "\\(x \\ge 3\\)"], answer: "\\(x \\le 3\\)", explanation: "Div 3: x+2 ≤ 5. Sub 2: x ≤ 3." },
+        { q: "Which symbols mean 'less than or equal to'?", id: "Simbol mana yang berarti 'kurang dari atau sama dengan'?", type: "checkbox", options: ["<", "\\(\\le\\)", ">", "\\(\\ge\\)"], answer: ["\\(\\le\\)"], explanation: "≤ is the only correct symbol." },
+        { q: "Graph \\(x + 5 < 2\\). What is \\(x\\)?", id: "Gambarkan \\(x + 5 < 2\\). Berapa \\(x\\)?", type: "text", answer: "x<-3", explanation: "Sub 5: x < -3." },
+        { q: "If Budi's score (x) times 4 plus 10 is not more than 30. Write the inequality.", id: "Jika skor Budi (x) dikali 4 ditambah 10 tidak lebih dari 30. Tulis pertidaksamaannya.", type: "text", answer: "4x+10<=30", explanation: "4x + 10 ≤ 30." },
+        { q: "Solve \\(-2x + 10 < 4\\). What is \\(x\\)?", id: "Selesaikan \\(-2x + 10 < 4\\). Berapa \\(x\\)?", type: "text", answer: "x>3", explanation: "Sub 10: -2x < -6. Div -2 (FLIP): x > 3." },
+        { q: "Solve \\(5 - 3x \\ge 20\\). What is \\(x\\)?", id: "Selesaikan \\(5 - 3x \\ge 20\\). Berapa \\(x\\)?", type: "radio", options: ["\\(x \\ge -5\\)", "\\(x \\le -5\\)", "\\(x > 5\\)"], answer: "\\(x \\le -5\\)", explanation: "Sub 5: -3x ≥ 15. Div -3 (FLIP): x ≤ -5." },
+        { q: "Solve \\(2(3x - 1) < 4x + 10\\). What is \\(x\\)?", id: "Selesaikan \\(2(3x - 1) < 4x + 10\\). Berapa \\(x\\)?", type: "text", answer: "x<6", explanation: "6x-2 < 4x+10 => 2x < 12 => x < 6." },
+        { q: "Lift max 500kg. 3 ppl weigh 210kg. Max weight for luggage (x)?", id: "Lift maks 500kg. 3 orang berat 210kg. Berat maksimal koper (x)?", type: "text", answer: "x<=290", explanation: "210 + x ≤ 500 => x ≤ 290." },
+        { q: "Solve \\(\\frac{x}{2} - 4 > -1\\). What is \\(x\\)?", id: "Selesaikan \\(\\frac{x}{2} - 4 > -1\\). Berapa \\(x\\)?", type: "text", answer: "x>6", explanation: "Add 4: x/2 > 3. Mult 2: x > 6." }
+    ],
+    B: [
+        { q: "Symbol for 'greater than'?", id: "Simbol untuk 'lebih dari'?", type: "radio", options: ["<", ">", "\\(\\le\\)"], answer: ">", explanation: "> is greater than." },
+        { q: "Solve \\(4x + 10 \\le 30\\). What is \\(x\\)?", id: "Selesaikan \\(4x + 10 \\le 30\\). Berapa \\(x\\)?", type: "text", answer: "x<=5", explanation: "Sub 10: 4x ≤ 20. Div 4: x ≤ 5." },
+        { q: "Solve \\(5 - 3x \\ge 20\\). What is \\(x\\)?", id: "Selesaikan \\(5 - 3x \\ge 20\\). Berapa \\(x\\)?", type: "text", answer: "x<=-5", explanation: "Sub 5: -3x ≥ 15. Div -3 (FLIP): x ≤ -5." },
+        { q: "Solve \\(2(3x - 1) < 4x + 10\\). What is \\(x\\)?", id: "Selesaikan \\(2(3x - 1) < 4x + 10\\). Berapa \\(x\\)?", type: "dropdown", options: ["\\(x < 6\\)", "\\(x > 6\\)", "\\(x \\le 6\\)"], answer: "\\(x < 6\\)", explanation: "6x-2 < 4x+10 => 2x < 12 => x < 6." },
+        { q: "Open circle is used for?", id: "Bulatan kosong digunakan untuk?", type: "checkbox", options: ["<", ">", "\\(\\le\\)", "\\(\\ge\\)"], answer: ["<", ">"], explanation: "Strict inequalities use open circles." },
+        { q: "Solve \\(-4x < 8\\). What is \\(x\\)?", id: "Selesaikan \\(-4x < 8\\). Berapa \\(x\\)?", type: "text", answer: "x>-2", explanation: "Div -4 (FLIP): x > -2." },
+        { q: "Drag to order solving \\(2x - 4 > 6\\)", id: "Tarik untuk urutan penyelesaian \\(2x - 4 > 6\\)", type: "drag", options: ["\\(2x > 10\\)", "\\(x > 5\\)"], answer: "\\(2x > 10\\),\\(x > 5\\)", explanation: "Add 4, then div 2." },
+        { q: "If \\(y - 4 < 0\\), then \\(y\\) ___ 4.", id: "Jika \\(y - 4 < 0\\), maka \\(y\\) ___ 4.", type: "dropdown", options: ["<", ">", "\\(\\le\\)"], answer: "<", explanation: "Add 4 to 0: y < 4." },
+        { q: "Solve Boss Level \\(-4(x - 3) \\le 2x + 18\\). What is \\(x\\)?", id: "Selesaikan Boss Level \\(-4(x - 3) \\le 2x + 18\\). Berapa \\(x\\)?", type: "text", answer: "x>=-1", explanation: "-4x+12 ≤ 2x+18 => -6x ≤ 6 => x ≥ -1." },
+        { q: "Max weight 50kg. Write inequality.", id: "Berat maks 50kg. Tulis pertidaksamaan.", type: "text", answer: "w<=50", explanation: "w ≤ 50." }
+    ],
+    C: [
+        { q: "Solve \\(x + 5 < 2\\). What is \\(x\\)?", id: "Selesaikan \\(x + 5 < 2\\). Berapa \\(x\\)?", type: "text", answer: "x<-3", explanation: "Sub 5: x < -3." },
+        { q: "Solve \\(2x > 10\\). What is \\(x\\)?", id: "Selesaikan \\(2x > 10\\). Berapa \\(x\\)?", type: "radio", options: ["\\(x > 5\\)", "\\(x < 5\\)", "\\(x \\ge 5\\)"], answer: "\\(x > 5\\)", explanation: "Div 2: x > 5." },
+        { q: "Which are inequality symbols?", id: "Mana yang merupakan simbol pertidaksamaan?", type: "checkbox", options: ["<", ">", "=", "\\(\\le\\)"], answer: ["<", ">", "\\(\\le\\)"], explanation: "= is equality." },
+        { q: "For \\(x \\le 7\\), circle is?", id: "Untuk \\(x \\le 7\\), bulatannya?", type: "dropdown", options: ["Open", "Closed"], answer: "Closed", explanation: "≤ includes 7, so closed." },
+        { q: "Solve \\(4x - 7 < 13\\). What is \\(x\\)?", id: "Selesaikan \\(4x - 7 < 13\\). Berapa \\(x\\)?", type: "text", answer: "x<5", explanation: "Add 7: 4x < 20. Div 4: x < 5." },
+        { q: "Solve \\(-3x + 4 \\le 19\\). What is \\(x\\)?", id: "Selesaikan \\(-3x + 4 \\le 19\\). Berapa \\(x\\)?", type: "radio", options: ["\\(x \\ge -5\\)", "\\(x \\le -5\\)", "\\(x > 5\\)"], answer: "\\(x \\ge -5\\)", explanation: "Sub 4: -3x ≤ 15. Div -3 (FLIP): x ≥ -5." },
+        { q: "Order numbers 5, 10, 15 least to greatest.", id: "Urutkan 5, 10, 15 terkecil ke terbesar.", type: "drag", options: ["10", "5", "15"], answer: "5,10,15", explanation: "5 < 10 < 15." },
+        { q: "Solve \\(3x + 2 \\ge 14\\). What is \\(x\\)?", id: "Selesaikan \\(3x + 2 \\ge 14\\). Berapa \\(x\\)?", type: "text", answer: "x>=4", explanation: "Sub 2: 3x ≥ 12. Div 3: x ≥ 4." },
+        { q: "Valid \\(x\\) for \\(2x < 12\\)?", id: "\\(x\\) valid untuk \\(2x < 12\\)?", type: "checkbox", options: ["2", "5", "1", "6"], answer: ["2", "5", "1"], explanation: "x < 6 means 1, 2, 5 are valid." },
+        { q: "If \\(-4x < 8\\), then \\(x\\) ___ -2.", id: "Jika \\(-4x < 8\\), maka \\(x\\) ___ -2.", type: "dropdown", options: [">", "<", "\\(\\le\\)"], answer: ">", explanation: "Div -4 (FLIP): x > -2." }
+    ],
+    D: [
+        { q: "'Minimum score' symbol is?", id: "Simbol 'skor minimal' adalah?", type: "radio", options: ["\\(\\le\\)", "\\(\\ge\\)", "<"], answer: "\\(\\ge\\)", explanation: "Minimum means ≥." },
+        { q: "Solve \\(5x - 15 \\le 0\\). What is \\(x\\)?", id: "Selesaikan \\(5x - 15 \\le 0\\). Berapa \\(x\\)?", type: "text", answer: "x<=3", explanation: "Add 15: 5x ≤ 15. Div 5: x ≤ 3." },
+        { q: "If \\(2x + 1 > 7\\), then \\(x\\) ___ 3.", id: "Jika \\(2x + 1 > 7\\), maka \\(x\\) ___ 3.", type: "dropdown", options: [">", "<", "\\(\\le\\)"], answer: ">", explanation: "Sub 1: 2x > 6. Div 2: x > 3." },
+        { q: "Valid \\(x\\) for \\(x \\ge -1\\)?", id: "\\(x\\) valid untuk \\(x \\ge -1\\)?", type: "checkbox", options: ["0", "1", "2", "-2"], answer: ["0", "1", "2"], explanation: "Numbers ≥ -1." },
+        { q: "Solve \\(-2(x - 4) < 10\\). What is \\(x\\)?", id: "Selesaikan \\(-2(x - 4) < 10\\). Berapa \\(x\\)?", type: "text", answer: "x>-1", explanation: "-2x+8 < 10 => -2x < 2 => x > -1." },
+        { q: "Sign flips when multiplied by?", id: "Tanda berbalik saat dikalikan dengan?", type: "radio", options: ["Positive", "Negative", "Zero"], answer: "Negative", explanation: "Negative mult/div causes flip." },
+        { q: "Steps for \\(3x-1=8\\)", id: "Langkah untuk \\(3x-1=8\\)", type: "drag", options: ["\\(3x=9\\)", "\\(x=3\\)"], answer: "\\(3x=9\\),\\(x=3\\)", explanation: "Add 1, then div 3." },
+        { q: "Solve \\(\\frac{x}{3} + 1 \\ge 4\\). What is \\(x\\)?", id: "Selesaikan \\(\\frac{x}{3} + 1 \\ge 4\\). Berapa \\(x\\)?", type: "text", answer: "x>=9", explanation: "Sub 1: x/3 ≥ 3. Mult 3: x ≥ 9." },
+        { q: "Valid \\(y\\) for \\(y < 4\\)?", id: "\\(y\\) valid untuk \\(y < 4\\)?", type: "checkbox", options: ["1", "3", "0", "4"], answer: ["1", "3", "0"], explanation: "Numbers < 4." },
+        { q: "Max weight 50kg means \\(w\\) ___ 50.", id: "Berat maks 50kg berarti \\(w\\) ___ 50.", type: "dropdown", options: ["\\(\\le\\)", "\\(\\ge\\)", ">"], answer: "\\(\\le\\)", explanation: "Max means ≤." }
+    ],
+    E: [
+        { q: "Solve \\(7 - x > 2\\). What is \\(x\\)?", id: "Selesaikan \\(7 - x > 2\\). Berapa \\(x\\)?", type: "text", answer: "x<5", explanation: "Sub 7: -x > -5. Mult -1 (FLIP): x < 5." },
+        { q: "If \\(-x \\le 4\\), then \\(x\\) ___ -4.", id: "Jika \\(-x \\le 4\\), maka \\(x\\) ___ -4.", type: "radio", options: ["\\(\\ge\\)", "\\(\\le\\)", ">"], answer: "\\(\\ge\\)", explanation: "Mult by -1 flips sign: x ≥ -4." },
+        { q: "Valid \\(x\\) for \\(x > -2\\)?", id: "\\(x\\) valid untuk \\(x > -2\\)?", type: "checkbox", options: ["-1", "0", "5", "-3"], answer: ["-1", "0", "5"], explanation: "Numbers > -2." },
+        { q: "If \\(5x \\ge 25\\), then \\(x\\) ___ 5.", id: "Jika \\(5x \\ge 25\\), maka \\(x\\) ___ 5.", type: "dropdown", options: ["\\(\\ge\\)", "\\(\\le\\)", ">"], answer: "\\(\\ge\\)", explanation: "Div 5: x ≥ 5." },
+        { q: "Solve \\(2(x+3) < 10\\). What is \\(x\\)?", id: "Selesaikan \\(2(x+3) < 10\\). Berapa \\(x\\)?", type: "text", answer: "x<2", explanation: "Div 2: x+3 < 5. Sub 3: x < 2." },
+        { q: "Graph \\(x < 0\\) arrow direction?", id: "Grafik \\(x < 0\\) arah panah?", type: "radio", options: ["Left", "Right"], answer: "Left", explanation: "< means points left." },
+        { q: "Order steps: \\(2x > 10\\) to \\(x > 5\\)", id: "Urutkan langkah: \\(2x > 10\\) ke \\(x > 5\\)", type: "drag", options: ["\\(2x > 10\\)", "\\(x > 5\\)"], answer: "\\(2x > 10\\),\\(x > 5\\)", explanation: "Div by 2." },
+        { q: "Solve \\(10 - 2x \\ge 4\\). What is \\(x\\)?", id: "Selesaikan \\(10 - 2x \\ge 4\\). Berapa \\(x\\)?", type: "text", answer: "x<=3", explanation: "Sub 10: -2x ≥ -6. Div -2 (FLIP): x ≤ 3." },
+        { q: "Flip sign operations?", id: "Operasi balik tanda?", type: "checkbox", options: ["Div -3", "Mult -1", "Add 2", "Sub 1"], answer: ["Div -3", "Mult -1"], explanation: "Mult/Div by negatives." },
+        { q: "Solve \\(3x - 5 < x + 7\\). What is \\(x\\)?", id: "Selesaikan \\(3x - 5 < x + 7\\). Berapa \\(x\\)?", type: "text", answer: "x<6", explanation: "Sub x: 2x-5 < 7. Add 5: 2x < 12. Div 2: x < 6." }
+    ]
+};
+
+// --- GLOBAL STATE & ENGINE ---
+let currentSecIdx = -1;
+let currentStepIdx = 0;
+let isChecked = false;
+let completedSections = new Set();
+let selectedAssessGroup = 'A';
+
+function initApp() {
+    const path = document.getElementById('levelPath');
+    sections.forEach((sec, idx) => {
+        if (idx > 0) { let c = document.createElement('div'); c.className = 'level-connector'; path.appendChild(c); }
+        let node = document.createElement('div');
+        node.className = 'level-node' + (idx === 0 ? ' active' : '');
+        node.dataset.idx = idx;
+        node.innerHTML = `<i class="fas ${sec.icon}"></i><div class="timer-badge">${sec.timer}</div>`;
+        node.onclick = () => openSection(idx);
+        path.appendChild(node);
+    });
+}
+
+function openSection(idx) {
+    currentSecIdx = idx;
+    currentStepIdx = 0;
+    isChecked = false;
+    document.getElementById('pathMap').style.display = 'none';
+    document.getElementById('appContent').style.display = 'block';
+    
+    if (sections[idx].isAssessment) return renderAssessment();
+    if (sections[idx].isConsolidation) return renderConsolidation();
+    renderStep();
+}
+
+function backToMap() {
+    document.getElementById('pathMap').style.display = 'block';
+    document.getElementById('appContent').style.display = 'none';
+    document.getElementById('appContent').innerHTML = '';
+    window.scrollTo(0,0);
+}
+
+function renderStep() {
+    const sec = sections[currentSecIdx];
+    const totalQ = sec.steps.filter(s => s.stepType === 'question').length; 
+    let passedQ = 0;
+    for(let i=0; i<currentStepIdx; i++) { if(sec.steps[i].stepType === 'question') passedQ++; }
+
+    let progressPct = totalQ > 0 ? (passedQ / totalQ) * 100 : 0;
+    
+    let html = `
+        <div class="top-bar">
+            <button class="back-btn" onclick="backToMap()"><i class="fas fa-arrow-left"></i></button>
+            <div class="progress-section"><div class="progress-section-fill" style="width:${progressPct}%"></div></div>
+            <button class="back-btn" style="visibility:hidden;"><i class="fas fa-arrow-left"></i></button>
+        </div>
+    `;
+
+    if (currentStepIdx < sec.steps.length) {
+        let step = sec.steps[currentStepIdx];
+        
+        if (step.stepType === 'material') {
+            html += `
+                <div class="card" style="animation: slideIn 0.4s ease-out;">
+                    <h2><i class="fas fa-lightbulb" style="color:var(--duo-yellow)"></i> Material</h2>
+                    <p>${step.en}</p>
+                    <p class="bilingual">${step.id}</p>
+                </div>
+                <button class="btn-duo btn-blue" onclick="nextStep()"><i class="fas fa-arrow-right"></i> Continue / Lanjut</button>
+            `;
+        } else if (step.stepType === 'question') {
+            html += `
+                <div class="card" style="animation: slideIn 0.4s ease-out;">
+                    <div class="q-num">Question ${passedQ + 1} of ${totalQ}</div>
+                    <h3>${step.q}</h3>
+                    <p class="bilingual">${step.id}</p>
+                    <div style="margin-top:15px;" id="q-input-area">${generateInputHTML(step, 'step')}</div>
+                    <div class="feedback" id="step-fb"></div>
+                </div>
+                <button class="btn-duo" id="step-check-btn" onclick="checkStep()"><i class="fas fa-check"></i> Check / Periksa</button>
+            `;
+        }
+    } else {
+        completedSections.add(currentSecIdx);
+        updateGlobalProgress();
+        html += `
+            <div class="card" style="text-align:center; border-left: 5px solid var(--duo-green); animation: slideIn 0.4s ease-out;">
+                <h2 style="color:var(--duo-green);">Section Complete! / Bagian Selesai!</h2>
+                <p>Great job! You've finished this level.</p>
+            </div>
+            <button class="btn-duo" onclick="backToMap()"><i class="fas fa-home"></i> Back to Map / Kembali</button>
+        `;
+    }
+
+    document.getElementById('appContent').innerHTML = html;
+    renderMathInElement(document.getElementById('appContent'), {delimiters: [{left: "\\(", right: "\\)", display: false}]});
+}
+
+function nextStep() {
+    currentStepIdx++;
+    isChecked = false;
+    renderStep();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function checkStep() {
+    if(isChecked) { return nextStep(); }
+    let step = sections[currentSecIdx].steps[currentStepIdx];
+    let isCorrect = false;
+    let userAns = '';
+    let fb = document.getElementById('step-fb');
+
+    if (step.type === 'radio') {
+        let sel = document.querySelector(`input[name="step-radio"]:checked`);
+        userAns = sel ? sel.value : '';
+        isCorrect = userAns === step.answer;
+    } else if (step.type === 'text') {
+        userAns = document.querySelector(`#q-input-area input[type="text"]`).value.replace(/\s/g, '').replace(/,/g, ''); 
+        isCorrect = userAns === step.answer.replace(/\s/g, '');
+    } else if (step.type === 'dropdown') {
+        userAns = document.querySelector(`#q-input-area select`).value;
+        isCorrect = userAns === step.answer;
+    } else if (step.type === 'checkbox') {
+        let labels = document.querySelectorAll(`#q-input-area .checkbox-label.selected`);
+        userAns = Array.from(labels).map(l => l.textContent.trim()).sort().join(',');
+        let correctAns = step.answer.sort().join(',');
+        isCorrect = userAns === correctAns;
+    } else if (step.type === 'drag') {
+        let target = document.getElementById(`step-drag-target`);
+        let items = target.querySelectorAll('.drag-item');
+        userAns = Array.from(items).map(i => i.getAttribute('data-value')).join(',');
+        isCorrect = userAns === step.answer;
+    }
+
+    if(isCorrect) {
+        fb.className = 'feedback correct'; fb.innerHTML = '<i class="fas fa-check-circle"></i> Correct! / Benar!';
+    } else {
+        fb.className = 'feedback wrong'; 
+        fb.innerHTML = `<i class="fas fa-times-circle"></i> Incorrect / Salah.<br><b>Correct Answer:</b> ${step.answer}<br><b>Explanation:</b> ${step.explanation}`;
+    }
+
+    isChecked = true;
+    let btn = document.getElementById('step-check-btn');
+    btn.innerHTML = '<i class="fas fa-arrow-right"></i> Continue / Lanjut';
+    btn.style.background = "var(--duo-blue)";
+    btn.style.borderBottom = "4px solid #1A8FD6";
+    renderMathInElement(fb, {delimiters: [{left: "\\(", right: "\\)", display: false}]});
+}
+
+function generateInputHTML(q, prefix) {
+    if (q.type === 'radio') {
+        let h = '<div class="radio-group">';
+        q.options.forEach((opt, i) => {
+            let radioId = `${prefix}-radio-${i}`;
+            let radioName = `${prefix}-radio`;
+            h += `<input type="radio" name="${radioName}" value="${opt}" id="${radioId}" style="display:none;">`;
+            h += `<label class="radio-label" for="${radioId}" onclick="selectRadio(this)">${opt}</label>`;
+        });
+        return h + '</div>';
+    }
+    if (q.type === 'text') return `<input type="text" placeholder="Type answer here...">`;
+    if (q.type === 'dropdown') {
+        let h = `<select><option value="">Select / Pilih</option>`;
+        q.options.forEach(opt => h += `<option value="${opt}">${opt}</option>`);
+        return h + '</select>';
+    }
+    if (q.type === 'checkbox') {
+        let h = '<div class="checkbox-group">';
+        q.options.forEach((opt, i) => {
+            h += `<label class="checkbox-label" onclick="toggleCheckbox(this)">${opt}</label>`;
+        });
+        return h + '</div>';
+    }
+    if (q.type === 'drag') {
+        let h = `<div class="drag-zone" id="step-drag-src" ondragover="event.preventDefault()" ondrop="dragDrop(event, 'step-drag-src', 'step-drag-target')">`;
+        q.options.forEach((opt, i) => {
+            h += `<div class="drag-item" draggable="true" id="drag-${prefix}-${i}" data-value="${opt}" ondragstart="event.dataTransfer.setData('text/plain', event.target.id)">${opt}</div>`;
+        });
+        h += `</div><p style="margin:8px 0; text-align:center; font-size:0.8rem; color:#666;">Drag & drop to order ⬇️</p>`;
+        h += `<div class="drag-zone drop-target" id="step-drag-target" ondragover="event.preventDefault()" ondrop="dragDrop(event, 'step-drag-src', 'step-drag-target')"></div>`;
+        return h;
+    }
+    return '';
+}
+
+function selectRadio(el) {
+    let parent = el.parentElement;
+    parent.querySelectorAll('.radio-label').forEach(l => l.classList.remove('selected'));
+    el.classList.add('selected');
+}
+function toggleCheckbox(el) { el.classList.toggle('selected'); }
+function dragDrop(e, srcId, targetId) {
+    e.preventDefault();
+    let data = e.dataTransfer.getData("text/plain");
+    let el = document.getElementById(data);
+    if(e.target.id === targetId || e.target.closest('#'+targetId)) {
+        document.getElementById(targetId).appendChild(el);
+    }
+}
+function updateGlobalProgress() {
+    let pct = (completedSections.size / sections.length) * 100;
+    document.getElementById('globalProgress').style.width = pct + '%';
+    document.querySelectorAll('.level-node').forEach((n, i) => {
+        if(completedSections.has(i)) { n.classList.add('completed'); n.classList.remove('active'); }
+    });
+}
+
+// --- ASSESSMENT ENGINE ---
+function renderAssessment() {
+    let html = `
+        <div class="top-bar">
+            <button class="back-btn" onclick="backToMap()"><i class="fas fa-arrow-left"></i></button>
+            <div class="progress-section"><div class="progress-section-fill" style="width:100%; background:var(--duo-yellow);"></div></div>
+            <button class="back-btn" style="visibility:hidden;"><i class="fas fa-arrow-left"></i></button>
+        </div>
+        <div class="card" style="border-left: 5px solid var(--duo-blue);">
+            <h2><i class="fas fa-file-pen"></i> Final Assessment</h2>
+            <div class="assess-form">
+                <div><label>Name / Nama:</label><input type="text" id="assess-name"></div>
+                <div><label>Date / Tanggal:</label><input type="date" id="assess-date"></div>
+            </div>
+            <div class="group-selector" id="groupSelector">
+                <button class="group-btn active" onclick="selectGroup('A', this)">Grp A</button>
+                <button class="group-btn" onclick="selectGroup('B', this)">Grp B</button>
+                <button class="group-btn" onclick="selectGroup('C', this)">Grp C</button>
+                <button class="group-btn" onclick="selectGroup('D', this)">Grp D</button>
+                <button class="group-btn" onclick="selectGroup('E', this)">Grp E</button>
+            </div>
+            <div id="assessQuestionsGrid" class="two-col-grid"></div>
+            <button class="btn-duo" onclick="submitAssessment()" style="margin-top:20px;"><i class="fas fa-paper-plane"></i> Submit Assessment</button>
+            <button class="btn-duo btn-blue" onclick="printAssessment()"><i class="fas fa-print"></i> Print Result</button>
+        </div>
+    `;
+    document.getElementById('appContent').innerHTML = html;
+    renderAssessQuestions();
+}
+
+function selectGroup(grp, btn) {
+    selectedAssessGroup = grp;
+    document.querySelectorAll('.group-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderAssessQuestions();
+}
+
+function renderAssessQuestions() {
+    let grid = document.getElementById('assessQuestionsGrid');
+    grid.innerHTML = '';
+    let qs = assessmentBank[selectedAssessGroup];
+    
+    qs.forEach((q, idx) => {
+        let div = document.createElement('div');
+        div.className = 'card quest-card';
+        div.id = `assess-q-${idx}`;
+        div.style.padding = '15px';
+        div.innerHTML = `
+            <div class="q-num">${idx+1}</div>
+            <p style="font-size:0.9rem; font-weight:bold;">${q.q}</p>
+            <p class="bilingual">${q.id}</p>
+            <div style="margin-top:10px;" id="assess-input-${idx}">${generateAssessInputHTML(q, idx)}</div>
+            <div class="feedback" id="assess-fb-${idx}"></div>
+        `;
+        grid.appendChild(div);
+    });
+    renderMathInElement(grid, {delimiters: [{left: "\\(", right: "\\)", display: false}]});
+}
+
+function generateAssessInputHTML(q, idx) {
+    if (q.type === 'radio') {
+        let h = '<div class="radio-group">';
+        q.options.forEach((opt, i) => {
+            let radioId = `assess-radio-${idx}-${i}`;
+            let radioName = `assess-radio-${idx}`;
+            h += `<input type="radio" name="${radioName}" value="${opt}" id="${radioId}" style="display:none;">`;
+            h += `<label class="radio-label" for="${radioId}" onclick="selectRadio(this)">${opt}</label>`;
+        });
+        return h + '</div>';
+    }
+    if (q.type === 'text') return `<input type="text" name="assess-text-${idx}" placeholder="Type...">`;
+    if (q.type === 'dropdown') {
+        let h = `<select name="assess-sel-${idx}"><option value="">Select...</option>`;
+        q.options.forEach(opt => h += `<option value="${opt}">${opt}</option>`);
+        return h + '</select>';
+    }
+    if (q.type === 'checkbox') {
+        let h = '<div class="checkbox-group">';
+        q.options.forEach((opt, i) => {
+            h += `<label class="checkbox-label" onclick="toggleCheckbox(this)">${opt}</label>`;
+        });
+        return h + '</div>';
+    }
+    if (q.type === 'drag') {
+        let h = `<div class="drag-zone" id="assess-drag-src-${idx}" ondragover="event.preventDefault()" ondrop="dragDrop(event, 'assess-drag-src-${idx}', 'assess-drag-target-${idx}')">`;
+        q.options.forEach((opt, i) => {
+            h += `<div class="drag-item" draggable="true" id="adrag-${idx}-${i}" data-value="${opt}" ondragstart="event.dataTransfer.setData('text/plain', event.target.id)">${opt}</div>`;
+        });
+        h += `</div><div class="drag-zone drop-target" id="assess-drag-target-${idx}" ondragover="event.preventDefault()" ondrop="dragDrop(event, 'assess-drag-src-${idx}', 'assess-drag-target-${idx}')"></div>`;
+        return h;
+    }
+    return '';
+}
+
+function submitAssessment() {
+    let qs = assessmentBank[selectedAssessGroup];
+    let score = 0;
+
+    qs.forEach((q, idx) => {
+        let fb = document.getElementById(`assess-fb-${idx}`);
+        let isCorrect = false;
+        let userAns = '';
+
+        if (q.type === 'radio') {
+            let sel = document.querySelector(`input[name="assess-radio-${idx}"]:checked`);
+            userAns = sel ? sel.value : '';
+            isCorrect = userAns === q.answer;
+        } else if (q.type === 'text') {
+            userAns = document.querySelector(`input[name="assess-text-${idx}"]`).value.replace(/\s/g, '').replace(/,/g, '');
+            isCorrect = userAns === q.answer.replace(/\s/g, '');
+        } else if (q.type === 'dropdown') {
+            userAns = document.querySelector(`select[name="assess-sel-${idx}"]`).value;
+            isCorrect = userAns === q.answer;
+        } else if (q.type === 'checkbox') {
+            let labels = document.querySelectorAll(`#assess-q-${idx} .checkbox-label.selected`);
+            userAns = Array.from(labels).map(l => l.textContent.trim()).sort().join(',');
+            let correctAns = q.answer.sort().join(',');
+            isCorrect = userAns === correctAns;
+        } else if (q.type === 'drag') {
+            let target = document.getElementById(`assess-drag-target-${idx}`);
+            let items = target.querySelectorAll('.drag-item');
+            userAns = Array.from(items).map(i => i.getAttribute('data-value')).join(',');
+            isCorrect = userAns === q.answer;
+        }
+
+        if(isCorrect) {
+            fb.className = 'feedback correct'; fb.innerHTML = '<i class="fas fa-check-circle"></i> Correct!';
+            score++;
+        } else {
+            fb.className = 'feedback wrong'; 
+            fb.innerHTML = `<i class="fas fa-times-circle"></i> Incorrect.<br><b>Correct:</b> ${q.answer}<br><b>Steps:</b> ${q.explanation}`;
+        }
+        renderMathInElement(fb, {delimiters: [{left: "\\(", right: "\\)", display: false}]});
+    });
+    alert(`Assessment Submitted! Score: ${score}/10`);
+}
+
+function printAssessment() {
+    let name = document.getElementById('assess-name').value || 'No Name';
+    let date = document.getElementById('assess-date').value || 'No Date';
+    let score = 0;
+    let qs = assessmentBank[selectedAssessGroup];
+    let tableRows = '';
+    
+    qs.forEach((q, idx) => {
+        let userAns = '';
+        let isCorrect = false;
+        
+        if (q.type === 'radio') {
+            let sel = document.querySelector(`input[name="assess-radio-${idx}"]:checked`);
+            userAns = sel ? sel.value : 'No Answer';
+            isCorrect = userAns === q.answer;
+        } else if (q.type === 'text') {
+            userAns = document.querySelector(`input[name="assess-text-${idx}"]`).value.replace(/\s/g, '').replace(/,/g, '') || 'No Answer';
+            isCorrect = userAns === q.answer.replace(/\s/g, '');
+        } else if (q.type === 'dropdown') {
+            let sel = document.querySelector(`select[name="assess-sel-${idx}"]`);
+            userAns = sel.value || 'No Answer';
+            isCorrect = userAns === q.answer;
+        } else if (q.type === 'checkbox') {
+            let labels = document.querySelectorAll(`#assess-q-${idx} .checkbox-label.selected`);
+            userAns = Array.from(labels).map(l => l.textContent.trim()).sort().join(', ') || 'No Answer';
+            let correctAns = q.answer.sort().join(', ');
+            isCorrect = userAns === correctAns;
+        } else if (q.type === 'drag') {
+            let target = document.getElementById(`assess-drag-target-${idx}`);
+            let items = target.querySelectorAll('.drag-item');
+            userAns = Array.from(items).map(i => i.getAttribute('data-value')).join(', ') || 'No Answer';
+            isCorrect = userAns.replace(/\s/g, '') === q.answer;
+        }
+        
+        if(isCorrect) score++;
+        
+        let cleanQ = q.q.replace(/\\\(/g, '').replace(/\\\)/g, '');
+        let cleanUserAns = userAns.replace(/\\\(/g, '').replace(/\\\)/g, '');
+        let cleanCorrectAns = q.answer.toString().replace(/\\\(/g, '').replace(/\\\)/g, '');
+        
+        tableRows += `<tr><td style="text-align:center">${idx+1}</td><td>${cleanQ}</td><td>${cleanUserAns}</td><td>${cleanCorrectAns}</td></tr>`;
+    });
+
+    let printWin = window.open('', '_blank');
+    printWin.document.write(`
+        <html><head><title>Assessment Result</title>
+        <style>
+            body { font-family: sans-serif; padding: 20px; }
+            h1, h2 { color: #333; }
+            table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+            th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+            th { background-color: #f2f2f2; }
+            .score-box { font-size: 1.5rem; font-weight: bold; color: #58CC02; margin: 20px 0; }
+        </style>
+        </head><body>
+            <h2>Topik: Pertidaksamaan Linear Satu Variabel (PtLSV)</h2>
+            <p><b>Nama:</b> ${name} | <b>Tanggal:</b> ${date} | <b>Assessment Group:</b> ${selectedAssessGroup}</p>
+            <div class="score-box">Skor: ${score} / 10</div>
+            <table>
+                <tr><th>No</th><th>Soal</th><th>Jawaban Siswa</th><th>Jawaban Benar</th></tr>
+                ${tableRows}
+            </table>
+        </body></html>
+    `);
+    printWin.document.close();
+    setTimeout(() => printWin.print(), 500);
+}
+
+// --- CONSOLIDATION ---
+function renderConsolidation() {
+    let html = `
+        <div class="top-bar">
+            <button class="back-btn" onclick="backToMap()"><i class="fas fa-arrow-left"></i></button>
+            <div class="progress-section"><div class="progress-section-fill" style="width:100%; background:var(--duo-green);"></div></div>
+            <button class="back-btn" style="visibility:hidden;"><i class="fas fa-arrow-left"></i></button>
+        </div>
+        <div class="card" style="text-align: center; border-left: 5px solid var(--duo-green);">
+            <h2 style="color:var(--duo-green);"><i class="fas fa-flag-checkered"></i> Consolidation & Reflection</h2>
+            <p>Great job today! You've mastered Linear Inequalities!</p>
+            <p class="bilingual">Kerja bagus hari ini! Kamu telah menguasai Pertidaksamaan Linear!</p>
+            <p style="margin-top:15px;">Remember: Multiply/Divide by negative = FLIP SIGN!</p>
+            <p class="bilingual">Ingat: Kali/Bagi dengan negatif = BALIK TANDA!</p>
+            <a href="https://learn.algonova.id/login" target="_blank" class="consolidation-link"><i class="fas fa-rocket"></i> Go to Algonova Mission</a>
+        </div>
+    `;
+    document.getElementById('appContent').innerHTML = html;
+}
+
+// Init App
+initApp();
+</script>
+</html>
