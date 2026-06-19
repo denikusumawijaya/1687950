@@ -192,7 +192,7 @@ const sections = [
         id: 6, title: "Consolidation", icon: "fa-flag-checkered", timer: "00:55 - 01:00", isConsolidation: true, steps: []
     }
 ];
-  <script>
+    
 // --- ASSESSMENT BANK (5 GROUPS, 10 Q EACH) ---
 const assessmentBank = {
     A: [
@@ -568,32 +568,32 @@ function submitAssessment() {
             let sel = document.querySelector(`input[name="assess-radio-${idx}"]:checked`);
             userAns = sel ? sel.value : '';
             isCorrect = userAns === q.answer;
-        } else if (q.type === 'text') {
-            userAns = document.querySelector(`input[name="assess-text-${idx}"]`).value.replace(/\s/g, '').replace(/,/g, '');
-            isCorrect = userAns === q.answer.replace(/\s/g, '');
-        } else if (q.type === 'dropdown') {
-            userAns = document.querySelector(`select[name="assess-sel-${idx}"]`).value;
-            isCorrect = userAns === q.answer;
-        } else if (q.type === 'checkbox') {
-            let labels = document.querySelectorAll(`#assess-q-${idx} .checkbox-label.selected`);
-            userAns = Array.from(labels).map(l => l.textContent.trim()).sort().join(',');
-            let correctAns = q.answer.sort().join(',');
-            isCorrect = userAns === correctAns;
-        } else if (q.type === 'drag') {
-            let target = document.getElementById(`assess-drag-target-${idx}`);
-            let items = target.querySelectorAll('.drag-item');
-            userAns = Array.from(items).map(i => i.getAttribute('data-value')).join(',');
-            isCorrect = userAns === q.answer;
-        }
+    } else if (q.type === 'text') {
+        userAns = document.querySelector(`input[name="assess-text-${idx}"]`).value.replace(/\s/g, '').replace(/,/g, '');
+        isCorrect = userAns === q.answer.replace(/\s/g, '');
+    } else if (q.type === 'dropdown') {
+        userAns = document.querySelector(`select[name="assess-sel-${idx}"]`).value;
+        isCorrect = userAns === q.answer;
+    } else if (q.type === 'checkbox') {
+        let labels = document.querySelectorAll(`#assess-q-${idx} .checkbox-label.selected`);
+        userAns = Array.from(labels).map(l => l.textContent.trim()).sort().join(',');
+        let correctAns = q.answer.sort().join(',');
+        isCorrect = userAns === correctAns;
+    } else if (q.type === 'drag') {
+        let target = document.getElementById(`assess-drag-target-${idx}`);
+        let items = target.querySelectorAll('.drag-item');
+        userAns = Array.from(items).map(i => i.getAttribute('data-value')).join(',');
+        isCorrect = userAns === q.answer;
+    }
 
-        if(isCorrect) {
-            fb.className = 'feedback correct'; fb.innerHTML = '<i class="fas fa-check-circle"></i> Correct!';
-            score++;
-        } else {
-            fb.className = 'feedback wrong'; 
-            fb.innerHTML = `<i class="fas fa-times-circle"></i> Incorrect.<br><b>Correct:</b> ${q.answer}<br><b>Steps:</b> ${q.explanation}`;
-        }
-        renderMathInElement(fb, {delimiters: [{left: "\\(", right: "\\)", display: false}]});
+    if(isCorrect) {
+        fb.className = 'feedback correct'; fb.innerHTML = '<i class="fas fa-check-circle"></i> Correct!';
+        score++;
+    } else {
+        fb.className = 'feedback wrong'; 
+        fb.innerHTML = `<i class="fas fa-times-circle"></i> Incorrect.<br><b>Correct:</b> ${q.answer}<br><b>Steps:</b> ${q.explanation}`;
+    }
+    renderMathInElement(fb, {delimiters: [{left: "\\(", right: "\\)", display: false}]});
     });
     alert(`Assessment Submitted! Score: ${score}/10`);
 }
