@@ -1,0 +1,1182 @@
+%PDF-1.3
+%ºß¬à
+3 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 4 0 R
+>>
+endobj
+4 0 obj
+<<
+/Length 4112
+>>
+stream
+0.5670000000000001 w
+0 G
+BT
+/F2 20 Tf
+23. TL
+0 g
+56.6929133858267775 785.1970866141732586 Td
+(Fungsi Linear dan Grafiknya / Linear Functions and Graphs - Nicholas) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+56.6929133858267775 742.6774015748030706 Td
+(Created: 6/20/2026) Tj
+ET
+56.6929133858267775 714.3309448818897636 m
+538.5826771653544256 714.3309448818897636 l
+S
+BT
+/F2 14 Tf
+16.0999999999999979 TL
+0 g
+56.6929133858267775 685.9844881889763428 Td
+(Student) Tj
+ET
+BT
+/F1 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 657.6380314960629221 Td
+(Student: Nicholas) Tj
+ET
+BT
+/F1 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 634.9608661417322537 Td
+(Topic: Fungsi Linear dan Grafiknya / Linear Functions and Graphs) Tj
+ET
+BT
+/F1 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 612.2837007874015853 Td
+(Status: completed) Tj
+ET
+BT
+/F2 16 Tf
+18.3999999999999986 TL
+0 g
+56.6929133858267775 569.7640157480313974 Td
+(Lesson Plan) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 527.2443307086614368 Td
+(Learning Objectives) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 504.5671653543306547 Td
+(• Menganalisis hubungan antara gradien \(m\) dan titik potong sumbu-Y \(c\) dalam persamaan y = mx) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 487.559291338582625 Td
+(+ c.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 464.8821259842518998 Td
+(• Mengonstruksi grafik fungsi linear secara akurat pada bidang Kartesius berdasarkan persamaan) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 447.8742519685038701 Td
+(yang diberikan.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 425.1970866141731449 Td
+(• Menginterpretasikan makna kemiringan dan titik awal dalam konteks masalah dunia nyata seperti) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 408.1892125984251152 Td
+(kecepatan atau biaya pertumbuhan.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 385.5120472440944468 Td
+(• Memformulasikan persamaan linear dari representasi grafis atau deskripsi naratif.) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 340.1577165354329964 Td
+(Lesson Information) Tj
+ET
+BT
+/F2 14 Tf
+16.0999999999999979 TL
+0 g
+56.6929133858267775 294.8033858267715459 Td
+(Lesson Sections) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 266.4569291338582389 Td
+(1. Spiral Review Warm-up \(10 minutes\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 243.7797637795274568 Td
+(Teacher Script:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 226.7718897637794271 Td
+(Halo Nicholas! Senang sekali bertemu lagi. Sebelum kita membangun 'kota' hari ini, mari kita asah) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 212.5986614173227736 Td
+(dulu insting matematika kita dengan teka-teki kilat. Tuliskan jawabanmu di Chatbox ya!) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 184.2522047244093528 Td
+(1. [Review Aljabar] Jika 'biaya langganan' adalah 20 dan 'biaya per jam' adalah 5, tuliskan ekspresinya) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 170.0789763779526993 Td
+(untuk x jam.) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 155.9057480314959321 Td
+(2. [Review Aljabar] Ubah kalimat ini: 'Tiga kali jumlah pohon \(p\) dikurangi 7' menjadi ekspresi aljabar.) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 141.7325196850392786 Td
+(3. [Variabel] Pada ekspresi 4x - 12, mana yang merupakan konstanta?) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 127.559291338582625 Td
+(4. [Variabel] Identifikasi variabel dan koefisien dari ekspresi -5y + 10.) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 102.0474803149605805 Td
+(Activities:) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 85.0396062992125508 Td
+(• Menjawab 4 soal cepat di chatbox terkait ekspresi dan variabel aljabar.) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+56.6929133858267775 34.0159842519684616 Td
+(Generated on: 6/20/2026, 2:18:57 PM) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+523.0626771653543301 34.0159842519684616 Td
+(1 / 4) Tj
+ET
+endstream
+endobj
+5 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 6 0 R
+>>
+endobj
+6 0 obj
+<<
+/Length 5029
+>>
+stream
+0.5670000000000001 w
+0 G
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 785.1970866141732586 Td
+(2. Introduction & Real-World Connection \(5 minutes\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 762.5199212598424765 Td
+(Teacher Script:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 745.5120472440944468 Td
+(Bayangkan kamu adalah seorang perencana kota di game SimCity. Kamu ingin membangun menara) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 731.3388188976377933 Td
+(gedung. Tinggi awal tanah adalah 5 meter \(titik awal\), dan setiap lantai yang dibangun menambah) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 717.1655905511811397 Td
+(tinggi 3 meter \(laju pertumbuhan\). Dalam matematika, ini disebut Fungsi Linear! Hari ini, kita akan) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 702.9923622047243725 Td
+(belajar cara menggambar 'rencana pembangunan' ini ke dalam grafik agar kotamu simetris dan) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 688.819133858267719 Td
+(sempurna.) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 663.3073228346456744 Td
+(Activities:) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 646.2994488188976447 Td
+(• Diskusi singkat tentang bagaimana pertumbuhan gedung bisa diprediksi menggunakan rumus.) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 600.9451181102361943 Td
+(3. Review of Prior Knowledge \(5 minutes\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 578.2679527559055259 Td
+(Teacher Script:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 561.2600787401574962 Td
+(Ingat koordinat Kartesius? Kita butuh \(x, y\). Di aljabar, x biasanya adalah input \(seperti jumlah lantai\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 547.086850393700729 Td
+(dan y adalah output \(tinggi total\). Jika y = 2x + 1, kalau x adalah 0, berapa y? Betul, y = 1. Titik ini \(0,1\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 532.9136220472440755 Td
+(sangat spesial, kita akan menyebutnya Intersep-Y.) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 507.4018110236219741 Td
+(Activities:) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 490.3939370078739444 Td
+(• Substitusi nilai x sederhana ke persamaan y = mx + c untuk mendapatkan titik koordinat.) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 445.0396062992125508 Td
+(4. Problem Introduction \(10 minutes\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 422.3624409448818255 Td
+(Teacher Script:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 405.3545669291337958 Td
+(Perhatikan rumus ajaib ini: y = mx + c. ) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 391.1813385826770855 Td
+('m' adalah Gradien \(kemiringan\). Semakin besar m, semakin curam tanjakan grafiknya.) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 377.0081102362204319 Td
+('c' adalah Intersep-Y \(titik potong\). Di sinilah grafik menabrak garis vertikal Y.) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 348.6616535433070112 Td
+(Mari kita bedah y = 2x + 3. Artinya: mulai di angka 3 pada sumbu Y, lalu setiap geser 1 ke kanan, kita) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 334.4884251968503008 Td
+(naik 2 ke atas. Coba Nicholas tebak, kalau m-nya negatif, grafiknya naik atau turun?) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 308.9766141732283131 Td
+(Activities:) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 291.9687401574802834 Td
+(• Visualisasi perubahan nilai m dan c menggunakan tools interaktif.) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 246.614409448818833 Td
+(5. Guided Practice \(15 minutes\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 223.9372440944881646 Td
+(Teacher Script:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 206.9293700787401349 Td
+(Ayo kita gambar bersama di whiteboard! Persamaan kita adalah y = -1x + 4. ) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 192.7561417322833677 Td
+(Langkah 1: Tandai titik c. Di mana itu?) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 178.5829133858267141 Td
+(Langkah 2: Gunakan m = -1. Artinya setiap ke kanan 1, kita TURUN 1. Tandai titik kedua.) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 164.4096850393699469 Td
+(Langkah 3: Tarik garis lurus.) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 150.2364566929132934 Td
+(Sekarang, coba kamu buat garis untuk y = 3x - 2. Jangan lupa, c adalah -2, jadi mulai di bawah angka) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 136.0632283464566399 Td
+(nol ya!) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 110.5514173228345953 Td
+(Activities:) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 93.5435433070865656 Td
+(• Interactive Drawing: Siswa menggambar garis pada koordinat kartesius di layar bersama tutor.) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+56.6929133858267775 34.0159842519684616 Td
+(Generated on: 6/20/2026, 2:18:57 PM) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+523.0626771653543301 34.0159842519684616 Td
+(2 / 4) Tj
+ET
+endstream
+endobj
+7 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 8 0 R
+>>
+endobj
+8 0 obj
+<<
+/Length 5330
+>>
+stream
+0.5670000000000001 w
+0 G
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 785.1970866141732586 Td
+(6. Independent Practice \(15 minutes\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 762.5199212598424765 Td
+(Teacher Script:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 745.5120472440944468 Td
+(Ini adalah 'Ujian Lisensi Arsitek'-mu, Nicholas. Ada 2 tantangan:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 731.3388188976377933 Td
+(1. Gambar grafik y = 1/2x + 2. \(Petunjuk: Jika m pecahan, geser kanan dulu sebanyak penyebut, lalu) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 717.1655905511811397 Td
+(naik sebanyak pembilang\).) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 702.9923622047243725 Td
+(2. Sebuah mobil tangki air bocor. Air awal 10 liter, berkurang 2 liter setiap menit. Tuliskan) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 688.819133858267719 Td
+(persamaannya dan gambar grafiknya!) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 663.3073228346456744 Td
+(Activities:) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 646.2994488188976447 Td
+(• Latihan mandiri menggambar dan memodelkan fungsi dari cerita.) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 600.9451181102361943 Td
+(7. Consolidation & Reflection \(5 minutes\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 578.2679527559055259 Td
+(Teacher Script:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 561.2600787401574962 Td
+(Luar biasa! Kamu sudah bisa membaca 'peta' fungsi linear. Ingat: m itu 'kemiringan' dan c itu 'awal'.) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 547.086850393700729 Td
+(Sebelum kita tutup, login ke https://learn.algonova.id/login ya untuk melihat rangkuman dan tugasmu.) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 532.9136220472440755 Td
+(Apa bagian yang paling menantang hari ini, Nicholas?) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 507.4018110236219741 Td
+(Activities:) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 490.3939370078739444 Td
+(• Self-reflection dan login ke portal belajar.) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 445.0396062992125508 Td
+(Homework) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 416.69314960629913 Td
+(Medium Questions:) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 399.6852755905511003 Td
+(1. Tentukan gradien dan intersep-Y dari persamaan y = 5x - 8.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 377.0081102362204319 Td
+(2. Gambarlah grafik fungsi linear y = x + 3 pada bidang Kartesius.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 354.3309448818897067 Td
+(3. Manakah dari fungsi berikut yang lebih curam: y = 4x + 1 atau y = 2x + 10? Jelaskan) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 340.1577165354329964 Td
+(alasannya.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 317.480551181102328 Td
+(4. Tentukan titik potong-Y dari garis yang melalui titik \(0, -5\) dengan gradien 3.) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 277.7955118110235162 Td
+(Hard Questions:) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 260.7876377952754865 Td
+(1. Sebuah roket berada di ketinggian 100m dan naik dengan kecepatan 50m/detik. Tuliskan) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 246.614409448818833 Td
+(persamaan y = mx + c dan tentukan ketinggiannya pada detik ke-10.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 223.9372440944881646 Td
+(2. Sebuah garis memotong sumbu-Y di \(0, 7\) dan melalui titik \(2, 3\). Hitunglah gradiennya) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 209.7640157480313974 Td
+(dan tuliskan persamaannya.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 187.086850393700729 Td
+(3. Grafik y = ax + 5 sejajar dengan grafik y = 3x - 2. Tentukan nilai a dan gambar kedua) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 172.9136220472439618 Td
+(grafiknya.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 150.2364566929132934 Td
+(4. Jika sebuah fungsi linear memiliki gradien -2/3 dan melewati titik \(0, 4\), tentukan nilai y) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 136.0632283464566399 Td
+(saat x = 6.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 113.3860629921258578 Td
+(5. Interpretasikan grafik: Jika grafik biaya parkir adalah y = 2000x + 5000, apa arti dari angka) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 99.2128346456692043 Td
+(5000 dalam konteks nyata?) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 76.5356692913385359 Td
+(6. Gambarlah grafik y = -3x + 1 dan tentukan di titik mana garis tersebut memotong sumbu-X) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 62.3624409448817687 Td
+(\(y=0\).) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 22.6774015748030706 Td
+(Answer Key:) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+56.6929133858267775 34.0159842519684616 Td
+(Generated on: 6/20/2026, 2:18:57 PM) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+523.0626771653543301 34.0159842519684616 Td
+(3 / 4) Tj
+ET
+endstream
+endobj
+9 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 10 0 R
+>>
+endobj
+10 0 obj
+<<
+/Length 2959
+>>
+stream
+0.5670000000000001 w
+0 G
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 785.1970866141732586 Td
+(1. m=5, c=-8) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 771.0238582677164914 Td
+(2. Garis lurus melalui \(0,3\) dan \(1,4\)) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 756.8506299212598378 Td
+(3. y=4x+1 karena gradien \(4\) > gradien \(2\)) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 742.6774015748030706 Td
+(4. c = -5) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 728.5041732283464171 Td
+(5. y = 50x + 100; y\(10\) = 600m) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 714.3309448818897636 Td
+(6. m = \(3-7\)/\(2-0\) = -2; Persamaan: y = -2x + 7) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 700.15771653543311 Td
+(7. a = 3 \(garis sejajar punya gradien sama\)) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 685.9844881889763428 Td
+(8. y = \(-2/3\)\(6\) + 4 = -4 + 4 = 0) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 671.8112598425196893 Td
+(9. 5000 adalah biaya awal/admin sebelum hitungan per jam dimulai) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 657.6380314960629221 Td
+(10. Titik potong X: 0 = -3x + 1 -> 3x = 1 -> x = 1/3. Titik: \(1/3, 0\)) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 643.4648031496062686 Td
+(REVIEW: Menyusun Ekspresi Aljabar - '2x + 10') Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 629.291574803149615 Td
+(REVIEW: Menyusun Ekspresi Aljabar - 'x/2 - 5') Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 615.1183464566928478 Td
+(REVIEW: Pengenalan Aljabar - Koefisien adalah 7, Konstanta adalah -3) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 600.9451181102361943 Td
+(REVIEW: Pengenalan Aljabar - Variabel: a dan b; Konstanta: tidak ada \(0\)) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 564.0947244094487587 Td
+(Parent Reminder) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 541.4175590551180903 Td
+(Update Belajar Matematika Nicholas: Fungsi Linear) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 524.4096850393700606 Td
+(Hari ini Nicholas belajar menjadi 'arsitek' dengan memahami Fungsi Linear \(y = mx + c\). Ia) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 510.2364566929133503 Td
+(belajar cara memprediksi pertumbuhan dan menggambar grafik kemiringan. Nicholas) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 496.0632283464566399 Td
+(menunjukkan kemajuan bagus dalam mengubah cerita menjadi rumus matematika!) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+56.6929133858267775 34.0159842519684616 Td
+(Generated on: 6/20/2026, 2:18:57 PM) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+523.0626771653543301 34.0159842519684616 Td
+(4 / 4) Tj
+ET
+endstream
+endobj
+1 0 obj
+<</Type /Pages
+/Kids [3 0 R 5 0 R 7 0 R 9 0 R ]
+/Count 4
+>>
+endobj
+11 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+12 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+13 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-Oblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+14 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-BoldOblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+15 0 obj
+<<
+/Type /Font
+/BaseFont /Courier
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+16 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+17 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-Oblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+18 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-BoldOblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+19 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Roman
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+20 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+21 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Italic
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+22 0 obj
+<<
+/Type /Font
+/BaseFont /Times-BoldItalic
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+23 0 obj
+<<
+/Type /Font
+/BaseFont /ZapfDingbats
+/Subtype /Type1
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+24 0 obj
+<<
+/Type /Font
+/BaseFont /Symbol
+/Subtype /Type1
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+2 0 obj
+<<
+/ProcSet [/PDF /Text /ImageB /ImageC /ImageI]
+/Font <<
+/F1 11 0 R
+/F2 12 0 R
+/F3 13 0 R
+/F4 14 0 R
+/F5 15 0 R
+/F6 16 0 R
+/F7 17 0 R
+/F8 18 0 R
+/F9 19 0 R
+/F10 20 0 R
+/F11 21 0 R
+/F12 22 0 R
+/F13 23 0 R
+/F14 24 0 R
+>>
+/XObject <<
+>>
+>>
+endobj
+25 0 obj
+<<
+/Producer (jsPDF 3.0.2)
+/CreationDate (D:20260620141857+07'00')
+>>
+endobj
+26 0 obj
+<<
+/Type /Catalog
+/Pages 1 0 R
+/OpenAction [3 0 R /FitH null]
+/PageLayout /OneColumn
+>>
+endobj
+xref
+0 27
+0000000000 65535 f 
+0000018203 00000 n 
+0000020043 00000 n 
+0000000015 00000 n 
+0000000152 00000 n 
+0000004316 00000 n 
+0000004453 00000 n 
+0000009534 00000 n 
+0000009671 00000 n 
+0000015053 00000 n 
+0000015191 00000 n 
+0000018278 00000 n 
+0000018404 00000 n 
+0000018535 00000 n 
+0000018669 00000 n 
+0000018807 00000 n 
+0000018931 00000 n 
+0000019060 00000 n 
+0000019192 00000 n 
+0000019328 00000 n 
+0000019456 00000 n 
+0000019583 00000 n 
+0000019712 00000 n 
+0000019845 00000 n 
+0000019947 00000 n 
+0000020296 00000 n 
+0000020382 00000 n 
+trailer
+<<
+/Size 27
+/Root 26 0 R
+/Info 25 0 R
+/ID [ <D81456B2731E10D0B3645EB3A2E88CC7> <D81456B2731E10D0B3645EB3A2E88CC7> ]
+>>
+startxref
+20486
+%%EOF
