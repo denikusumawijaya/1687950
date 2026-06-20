@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LinguaMath — Math & Logic Tutoring</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+
+<style>
+/* ============== DESIGN TOKENS ============== */
+:root{
+  --green:#58cc02; --green-dark:#58a700; --green-light:#d7ffb8;
+  --blue:#1cb0f6; --blue-light:#ddf4ff; --blue-dark:#0a87d6;
+  --red:#ff4b4b; --red-light:#ffdfe0;
+  --yellow:#ffc800; --yellow-dark:#e6a700;
+  --purple:#ce82ff; --orange:#ff9600;
+  --bg:#fff; --text:#3c3c3c; --text-light:#777;
+  --border:#e5e5e5; --border-hover:#bfbfbf;
+  --bg-gray:#f7f7f7; --shadow:0 4px 0 rgba(0,0,0,.08);
+}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Nunito',sans-serif}
+body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+
+.app{max-width:820px;margin:0 auto;min-height:100vh;position:relative;background:#fff;
+     box-shadow:0 0 30px rgba(0,0,0,.05)}
+
+/* ============== TOPBAR (MAP) ============== */
+.topbar{display:flex;align-items:center;padding:14px 20px;background:#fff;
+        border-bottom:2px solid var(--border);position:sticky;top:0;z-index:10}
+.rules-btn{margin-left:auto;margin-right:20px;background:var(--blue-light);color:var(--blue-dark);
+           border:2px solid var(--blue);padding:8px 14px;border-radius:12px;font-weight:800;
+           font-size:13px;cursor:pointer;font-family:inherit;transition:all .15s;white-space:nowrap}
+.rules-btn:hover{background:#a4dcff}
+.rules-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;
+               display:none;align-items:center;justify-content:center;padding:20px}
+.rules-overlay.show{display:flex;animation:fadeUp .3s}
+.rules-modal{background:#fff;border-radius:20px;padding:30px 24px;max-width:380px;width:100%;
+             position:relative;box-shadow:0 10px 30px rgba(0,0,0,.2);text-align:center}
+.rules-close{position:absolute;top:12px;right:16px;background:none;border:none;font-size:20px;
+             color:var(--text-light);cursor:pointer}
+.rules-title{font-size:24px;font-weight:900;color:var(--text);margin-bottom:6px}
+.rules-sub{font-size:14px;color:var(--text-light);margin-bottom:24px}
+.rule-item{display:flex;align-items:flex-start;gap:14px;text-align:left;
+           background:var(--bg-gray);padding:16px;border-radius:14px;margin-bottom:12px}
+.rule-icon{font-size:28px;background:#fff;width:50px;height:50px;border-radius:50%;
+           display:flex;align-items:center;justify-content:center;flex-shrink:0;
+           border:2px solid var(--border)}
+.rule-text b{font-size:16px;color:var(--text);display:block;margin-bottom:4px}
+.rule-text p{font-size:14px;color:var(--text-light);line-height:1.4}
+.topbar .logo{display:flex;flex-direction:column;line-height:1.1;cursor:pointer}
+.topbar .logo .logo-main{font-weight:900;font-size:18px;color:var(--green);letter-spacing:-.5px}
+.topbar .logo .logo-sub{font-weight:700;font-size:11px;color:var(--blue);letter-spacing:1.5px;margin-top:2px}
+.topbar .stats{display:flex;gap:18px;margin-left:auto;align-items:center}
+.stat{display:flex;align-items:center;gap:6px;font-weight:800;font-size:15px}
+.stat .ic{font-size:18px}
+
+/* ============== MAP VIEW ============== */
+.map-view{padding:24px 20px 120px}
+.map-header{text-align:center;margin-bottom:28px}
+.map-header h1{font-size:26px;font-weight:900;margin-bottom:6px}
+.map-header p{color:var(--text-light);font-size:14px}
+.map-container{position:relative;padding:30px 10px;min-height:920px}
+.map-svg{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1}
+.map-node{position:absolute;width:72px;height:72px;border-radius:50%;
+          display:flex;align-items:center;justify-content:center;
+          font-size:28px;font-weight:900;cursor:pointer;z-index:2;
+          transition:transform .2s;user-select:none;
+          transform:translate(-50%,-50%)}
+.map-node.locked{background:#e5e5e5;color:#afafaf;cursor:not-allowed;box-shadow:0 4px 0 #cfcfcf}
+.map-node.available{background:var(--green);color:#fff;box-shadow:0 6px 0 var(--green-dark);
+                     animation:bounce 2s infinite}
+.map-node.completed{background:var(--yellow);color:#fff;box-shadow:0 6px 0 var(--yellow-dark)}
+.map-node.current{background:var(--blue);color:#fff;box-shadow:0 6px 0 var(--blue-dark)}
+.map-node.available:hover,.map-node.completed:hover,.map-node.current:hover{transform:translate(-50%,calc(-50% - 3px))}
+@keyframes bounce{0%,100%{transform:translate(-50%,-50%)}50%{transform:translate(-50%,calc(-50% - 5px))}}
+.node-label{position:absolute;top:100%;left:50%;transform:translateX(-50%);margin-top:8px;
+            font-size:11px;font-weight:800;color:var(--text);white-space:nowrap;
+            background:#fff;padding:3px 10px;border-radius:8px;border:2px solid var(--border)}
+.node-progress{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);margin-bottom:6px;
+               width:48px;height:6px;background:var(--border);border-radius:999px;overflow:hidden}
+.node-progress span{display:block;height:100%;background:var(--green);transition:width .4s}
+.node-tooltip{position:absolute;top:-46px;left:50%;transform:translateX(-50%);
+              background:#333;color:#fff;padding:6px 12px;border-radius:8px;
+              font-size:12px;font-weight:700;white-space:nowrap;opacity:0;pointer-events:none;
+              transition:opacity .2s;z-index:5}
+.node-tooltip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);
+                     border:5px solid transparent;border-top-color:#333}
+.map-node:hover .node-tooltip{opacity:1}
+
+/* ============== LESSON VIEW ============== */
+.lesson-view{display:none;position:fixed;inset:0;background:#fff;z-index:100;
+             flex-direction:column;max-width:820px;margin:0 auto}
+.lesson-view.active{display:flex}
+.lesson-topbar{display:flex;align-items:center;padding:14px 20px;gap:16px;
+               border-bottom:1px solid var(--border)}
+.lesson-close{background:none;border:none;font-size:24px;cursor:pointer;
+              color:var(--text-light);padding:4px;line-height:1}
+.lesson-progress{flex:1;height:14px;background:var(--border);border-radius:999px;overflow:hidden}
+.lesson-progress-bar{height:100%;background:var(--green);border-radius:999px;
+                     transition:width .4s ease;width:0%;position:relative}
+.lesson-progress-bar::after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;
+                            background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);
+                            animation:shimmer 2s infinite}
+@keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.lesson-hearts{display:flex;align-items:center;gap:4px;font-weight:900;color:var(--red);font-size:18px}
+.lesson-time{font-size:13px;font-weight:800;color:var(--blue-dark);background:var(--blue-light);padding:5px 10px;border-radius:8px;border:1px solid var(--blue);white-space:nowrap}
+.node-time-label{font-size:10px;color:var(--text-light);font-weight:700;display:block;text-align:center;margin-top:2px}
+.lesson-content{flex:1;padding:24px 20px;overflow-y:auto}
+
+/* ============== THEORY CARD ============== */
+.theory-card{background:linear-gradient(135deg,#fffce8,#fff);
+             border:2px solid var(--yellow);border-radius:18px;padding:24px;
+             box-shadow:0 4px 0 var(--yellow-dark)}
+.theory-badge{display:inline-block;background:var(--yellow);color:#fff;
+              padding:4px 12px;border-radius:999px;font-size:12px;font-weight:800;
+              margin-bottom:12px;letter-spacing:.5px}
+.theory-card h2{font-size:24px;margin-bottom:14px;color:var(--text);font-weight:900}
+.theory-card .theory-body{font-size:16px;line-height:1.7;color:var(--text)}
+.theory-card .theory-body p{margin-bottom:12px}
+.formula-box{background:#fff;border-left:5px solid var(--green);padding:14px 18px;
+             margin:14px 0;font-family:'Courier New',monospace;font-size:20px;
+             font-weight:700;border-radius:6px;color:var(--green-dark)}
+.example-box{background:#fff;padding:14px 18px;margin:14px 0;border-radius:10px;
+             border:2px solid var(--border);font-size:15px}
+.example-box b{color:var(--blue-dark)}
+.tip-box{background:var(--blue-light);border:2px solid var(--blue);padding:12px 16px;
+         border-radius:10px;margin-top:14px;font-size:14px;color:var(--blue-dark)}
+.tip-box b{color:var(--blue-dark)}
+
+/* ============== QUESTION ============== */
+.q-prompt{font-size:22px;font-weight:900;margin-bottom:8px;line-height:1.3}
+.q-sub{font-size:14px;color:var(--text-light);margin-bottom:18px}
+.q-image{font-size:64px;text-align:center;margin:12px 0}
+.q-hint{font-size:13px;color:var(--text-light);font-style:italic;margin-top:8px}
+
+/* Bilingual Translation Class */
+.translation { font-size: 13px; color: var(--text-light); font-style: italic; display: block; margin-top: 4px; line-height: 1.4; }
+.option .translation, .checkbox-option .translation, .pair-item .translation { display: block; font-size: 12px; margin-top: 2px; }
+
+/* Multiple choice */
+.options{display:grid;gap:10px}
+.option{padding:14px 16px;border:2px solid var(--border);border-radius:14px;
+        cursor:pointer;font-size:16px;font-weight:700;transition:all .15s;
+        background:#fff;user-select:none;text-align:left;display:flex;
+        align-items:center;gap:12px}
+.option:hover{border-color:var(--border-hover)}
+.option .o-key{width:30px;height:30px;border-radius:8px;border:2px solid var(--border);
+               display:flex;align-items:center;justify-content:center;font-size:13px;
+               flex-shrink:0;font-weight:900;color:var(--text-light)}
+.option.selected{border-color:var(--blue);background:var(--blue-light);color:var(--blue-dark)}
+.option.selected .o-key{border-color:var(--blue);background:var(--blue);color:#fff}
+.option.correct{border-color:var(--green);background:var(--green-light);color:var(--green-dark)}
+.option.correct .o-key{border-color:var(--green);background:var(--green);color:#fff}
+.option.wrong{border-color:var(--red);background:var(--red-light);color:var(--red)}
+.option.wrong .o-key{border-color:var(--red);background:var(--red);color:#fff}
+.option.disabled{cursor:default;pointer-events:none}
+
+/* Typing */
+.typing-input{width:100%;padding:14px 16px;border:2px solid var(--border);
+              border-radius:14px;font-size:18px;font-weight:700;outline:none;
+              font-family:inherit;background:#fff;transition:all .15s}
+.typing-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-light)}
+.typing-input.correct{border-color:var(--green);background:var(--green-light)}
+.typing-input.wrong{border-color:var(--red);background:var(--red-light)}
+
+/* Dropdown */
+.sentence{font-size:20px;line-height:2.4;font-weight:700}
+.dropdown-select{display:inline-block;padding:6px 14px;border:2px solid var(--border);
+                 border-radius:12px;background:#fff;font-size:16px;font-weight:800;
+                 cursor:pointer;font-family:inherit;margin:0 4px;outline:none;
+                 color:var(--blue-dark);transition:all .15s}
+.dropdown-select:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-light)}
+.dropdown-select.correct{border-color:var(--green);background:var(--green-light);color:var(--green-dark)}
+.dropdown-select.wrong{border-color:var(--red);background:var(--red-light);color:var(--red)}
+
+/* Drag and drop */
+.drag-bank{display:flex;flex-wrap:wrap;gap:8px;min-height:54px;padding:14px;
+           background:var(--bg-gray);border-radius:14px;border:2px dashed var(--border);margin-bottom:16px}
+.drag-item{padding:8px 16px;background:#fff;border:2px solid var(--border);
+           border-radius:12px;cursor:grab;font-weight:800;font-size:15px;
+           user-select:none;transition:all .15s;box-shadow:var(--shadow)}
+.drag-item:hover{transform:translateY(-2px);border-color:var(--border-hover)}
+.drag-item.dragging{opacity:.4;cursor:grabbing}
+.drag-item.placed{background:var(--blue);color:#fff;border-color:var(--blue);
+                  box-shadow:0 4px 0 var(--blue-dark)}
+.drop-zone{display:inline-flex;align-items:center;justify-content:center;
+           min-width:80px;min-height:40px;padding:4px 10px;
+           border:2px dashed var(--blue);border-radius:10px;vertical-align:middle;
+           margin:0 4px;background:var(--blue-light);transition:all .15s}
+.drop-zone.over{background:#a4dcff;border-style:solid}
+.drop-zone.filled{border-style:solid;background:#fff}
+.drop-zone.filled .drag-item{margin:0}
+
+/* Pairing */
+.pair-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.pair-col{display:grid;gap:10px}
+.pair-item{padding:14px;border:2px solid var(--border);border-radius:12px;
+           background:#fff;cursor:pointer;font-weight:800;text-align:center;
+           transition:all .15s;font-size:15px}
+.pair-item:hover{border-color:var(--border-hover)}
+.pair-item.selected{border-color:var(--blue);background:var(--blue-light);color:var(--blue-dark)}
+.pair-item.matched{background:var(--green-light);border-color:var(--green);
+                   color:var(--green-dark);opacity:.5;pointer-events:none}
+.pair-item.wrong{border-color:var(--red);background:var(--red-light);
+                 animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+
+/* Checkbox */
+.checkbox-option{display:flex;align-items:center;gap:14px;padding:14px 16px;
+                 border:2px solid var(--border);border-radius:12px;cursor:pointer;
+                 user-select:none;transition:all .15s;background:#fff}
+.checkbox-option:hover{border-color:var(--border-hover)}
+.checkbox-option.checked{border-color:var(--blue);background:var(--blue-light)}
+.checkbox-box{width:26px;height:26px;border:2px solid var(--border);border-radius:8px;
+              display:flex;align-items:center;justify-content:center;flex-shrink:0;
+              font-weight:900;color:#fff;transition:all .15s}
+.checkbox-option.checked .checkbox-box{background:var(--blue);border-color:var(--blue)}
+.checkbox-option.correct{border-color:var(--green);background:var(--green-light)}
+.checkbox-option.correct .checkbox-box{background:var(--green);border-color:var(--green)}
+.checkbox-option.wrong{border-color:var(--red);background:var(--red-light)}
+.checkbox-option.wrong .checkbox-box{background:var(--red);border-color:var(--red)}
+
+/* Range */
+.range-wrap{padding:20px 0}
+.range-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.range-value{font-size:36px;font-weight:900;color:var(--green)}
+.range-unit{font-size:16px;color:var(--text-light);font-weight:700}
+.range-slider{width:100%;-webkit-appearance:none;height:14px;background:var(--border);
+              border-radius:999px;outline:none;margin:8px 0}
+.range-slider::-webkit-slider-thumb{-webkit-appearance:none;width:32px;height:32px;
+              background:var(--green);border-radius:50%;cursor:pointer;border:5px solid #fff;
+              box-shadow:0 0 0 2px var(--green),0 2px 8px rgba(0,0,0,.2)}
+.range-slider::-moz-range-thumb{width:32px;height:32px;background:var(--green);
+              border-radius:50%;cursor:pointer;border:5px solid #fff;
+              box-shadow:0 0 0 2px var(--green),0 2px 8px rgba(0,0,0,.2)}
+.range-ticks{display:flex;justify-content:space-between;margin-top:8px;font-size:12px;
+             color:var(--text-light);font-weight:700}
+
+/* ============== FOOTER ============== */
+.lesson-footer{padding:16px 20px;border-top:2px solid var(--border);background:#fff}
+.feedback{padding:16px;border-radius:14px;margin-bottom:12px;display:none}
+.feedback.show{display:block;animation:fadeUp .3s}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.feedback.correct{background:var(--green-light)}
+.feedback.wrong{background:var(--red-light)}
+.feedback-title{font-weight:900;font-size:17px;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.feedback.correct .feedback-title{color:var(--green-dark)}
+.feedback.wrong .feedback-title{color:var(--red)}
+.feedback-text{font-size:14px;color:var(--text)}
+.action-btn{width:100%;padding:16px;border:none;border-radius:14px;font-size:16px;
+            font-weight:900;cursor:pointer;font-family:inherit;
+            background:var(--border);color:var(--text-light);transition:all .15s}
+.action-btn.active{background:var(--green);color:#fff;box-shadow:0 4px 0 var(--green-dark)}
+.action-btn.active:hover{filter:brightness(1.05)}
+.action-btn.active:active{transform:translateY(2px);box-shadow:0 2px 0 var(--green-dark)}
+.action-btn.skip{background:transparent;color:var(--text-light);box-shadow:none;
+                 border:2px solid var(--border);margin-top:8px}
+.action-btn.skip:hover{border-color:var(--border-hover)}
+
+/* ============== COMPLETE ============== */
+.complete-screen{display:none;text-align:center;padding:40px 20px;flex-direction:column;
+                 align-items:center;justify-content:center;flex:1}
+.complete-screen.show{display:flex}
+.complete-icon{font-size:90px;margin-bottom:16px;animation:pop .5s}
+@keyframes pop{0%{transform:scale(0)}70%{transform:scale(1.2)}100%{transform:scale(1)}}
+.complete-screen h1{font-size:34px;color:var(--yellow);margin-bottom:8px;font-weight:900;
+                    text-shadow:2px 2px 0 var(--yellow-dark)}
+.complete-screen .cs-sub{font-size:16px;color:var(--text-light);margin-bottom:24px}
+.complete-stats{display:flex;gap:14px;margin-bottom:28px;flex-wrap:wrap;justify-content:center}
+.complete-stat{background:#fff;padding:18px 28px;border-radius:16px;
+               border:2px solid var(--border);box-shadow:var(--shadow);min-width:110px}
+.complete-stat .stat-v{font-size:26px;font-weight:900;color:var(--green)}
+.complete-stat .stat-l{font-size:12px;color:var(--text-light);font-weight:700;
+                        text-transform:uppercase;letter-spacing:.5px}
+
+/* ============== RESPONSIVE ============== */
+@media (max-width:600px){
+  .pair-grid{grid-template-columns:1fr}
+  .map-node{width:60px;height:60px;font-size:22px}
+  .q-prompt{font-size:20px}
+  .topbar .stats{gap:12px;font-size:13px}
+  .lesson-content{padding:18px 16px}
+}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="logo">
+      <span class="logo-main">🧮 Math Tutoring</span>
+      <span class="logo-sub">with Deni</span>
+    </div>
+    <button class="rules-btn" id="openRulesBtn" title="Class Rules">📋 Class Rules</button>
+    <div class="stats">
+      <div class="stat"><span class="ic">🔥</span><span id="streak">0</span></div>
+      <div class="stat"><span class="ic">💎</span><span id="gems">0</span></div>
+      <div class="stat"><span class="ic">❤️</span><span id="hearts">5</span></div>
+    </div>
+  </header>
+
+  <main class="map-view" id="mapView">
+    <div class="map-header">
+      <h1>Linear Functions & Graphs</h1>
+      <p>Fungsi Linear dan Grafiknya - y = mx + c</p>
+    </div>
+    <div class="map-container" id="mapContainer">
+      <svg class="map-svg" id="mapSvg" viewBox="0 0 800 920" preserveAspectRatio="none"></svg>
+    </div>
+  </main>
+
+  <div class="lesson-view" id="lessonView">
+    <header class="lesson-topbar">
+      <button class="lesson-close" id="lessonClose" title="Exit">✕</button>
+      <div class="lesson-progress"><div class="lesson-progress-bar" id="progressBar"></div></div>
+      <div class="lesson-time" id="lessonTime">00:00</div>
+      <div class="lesson-hearts">❤️ <span id="lessonHearts">5</span></div>
+    </header>
+    <div class="lesson-content" id="lessonContent"></div>
+    <footer class="lesson-footer">
+      <div class="feedback" id="feedback"></div>
+      <button class="action-btn" id="actionBtn">Check</button>
+      <button class="action-btn skip hidden" id="resetBtn">🔄 Reset Answer</button>
+    </footer>
+  </div>
+
+  <div class="lesson-view" id="completeView" style="background:linear-gradient(135deg,#fffce8,#d7ffb8)">
+    <div class="complete-screen show" id="completeScreen">
+      <div class="complete-icon">🏆</div>
+      <h1 id="completeTitle">Excellent!</h1>
+      <p class="cs-sub" id="completeSub">Lesson completed</p>
+      <div class="complete-stats">
+        <div class="complete-stat"><div class="stat-v" id="finalXp">+10 XP</div><div class="stat-l">XP Earned</div></div>
+        <div class="complete-stat"><div class="stat-v" id="finalAccuracy">100%</div><div class="stat-l">Accuracy</div></div>
+        <div class="complete-stat"><div class="stat-v" id="finalCorrect">0/0</div><div class="stat-l">Correct</div></div>
+      </div>
+      <button class="action-btn active" id="continueBtn" style="max-width:320px">Continue</button>
+    </div>
+  </div>
+
+  <div class="rules-overlay" id="rulesOverlay">
+    <div class="rules-modal">
+      <button class="rules-close" id="closeRulesBtn">✕</button>
+      <h2 class="rules-title">📋 Class Rules</h2>
+      <p class="rules-sub">Let's create a comfortable and conducive learning environment!</p>
+      <div class="rule-item">
+        <div class="rule-icon">🗣️</div>
+        <div class="rule-text">
+          <b>Take Turns Speaking</b>
+          <p>Respect the person speaking and wait for our turn.</p>
+        </div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-icon">🚪</div>
+        <div class="rule-text">
+          <b>Ask for Permission</b>
+          <p>Always ask the teacher for permission if you need to leave the class.</p>
+        </div>
+      </div>
+      <button class="action-btn active" id="understandBtn" style="margin-top:20px">I Understand!</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+<script>
+const App = {
+  state: {
+    hearts: 5, gems: 0, streak: 0,
+    completedLessons: [], currentLessonId: null,
+    currentStepIndex: 0, stepAnswered: false,
+    correctCount: 0, totalAnswered: 0,
+    selectedPair: null, dragSrc: null,
+  },
+  nodePositions: [
+    { x: 400, y: 60 }, { x: 580, y: 150 }, { x: 220, y: 250 },  
+    { x: 580, y: 350 }, { x: 220, y: 450 }, { x: 400, y: 560 },  
+    { x: 100, y: 680 }, { x: 250, y: 700 }, { x: 400, y: 710 },  
+    { x: 550, y: 700 }, { x: 700, y: 680 }, { x: 400, y: 870 }   
+  ],
+  lessonMeta: [
+    { id: 0, icon: "1", title: "Spiral Review", desc: "Aljabar & Variabel", time: "00:00-00:10" },
+    { id: 1, icon: "2", title: "Real-World", desc: "SimCity & Pertumbuhan", time: "00:10-00:15" },
+    { id: 2, icon: "3", title: "Problem Intro", desc: "Koordinat & Gradien", time: "00:15-00:25" },
+    { id: 3, icon: "4", title: "Guided Practice", desc: "Menggambar Grafik", time: "00:25-00:40" },
+    { id: 4, icon: "5", title: "Independent", desc: "Model & Pecahan", time: "00:40-00:55" },
+    { id: 5, icon: "6", title: "Consolidation", desc: "Garis Sejajar & Rangkuman", time: "00:55-01:00" },
+    { id: 6, icon: "7.1", title: "Assessment A", desc: "Optional - Fast Learner", time: "No Timer" },
+    { id: 7, icon: "7.2", title: "Assessment B", desc: "Optional - Fast Learner", time: "No Timer" },
+    { id: 8, icon: "7.3", title: "Assessment C", desc: "Optional - Fast Learner", time: "No Timer" },
+    { id: 9, icon: "7.4", title: "Assessment D", desc: "Optional - Fast Learner", time: "No Timer" },
+    { id: 10, icon: "7.5", title: "Assessment E", desc: "Optional - Fast Learner", time: "No Timer" },
+    { id: 11, icon: "8", title: "Feedback Portal", desc: "Learn.algonova.id", time: "01:00-01:05" }
+  ],
+};
+const $ = (sel) => document.querySelector(sel);
+const $$ = (sel) => document.querySelectorAll(sel);
+const el = (tag, cls, html) => {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (html != null) e.innerHTML = html;
+  return e;
+};
+const LESSONS = [
+  // ===== SECTION 1: SPIRAL REVIEW WARM-UP =====
+  {
+    id: 0,
+    steps: [
+      { type: "theory", title: "The Foundation: Variables & Constants", body: `<p>Before we build the city of Linear Functions, we must gather our construction tools! In algebra, we use letters to represent unknown numbers. These are called <b>Variables</b> (usually \\( x \\) and \\( y \\)).</p><p>Numbers that stand alone and don't change are called <b>Constants</b>. The number multiplying a variable is the <b>Coefficient</b>. For example, in \\( 4x - 12 \\), \\( x \\) is the variable, \\( 4 \\) is the coefficient, and \\( -12 \\) is the constant.</p><p class="translation">Sebelum membangun kota Fungsi Linear, kita harus kumpulkan alat konstruksi kita! Dalam aljabar, kita pakai huruf untuk wakili angka tak diketahui, disebut Variabel. Angka yang berdiri sendiri tak berubah disebut Konstanta. Angka yang mengalikan variabel adalah Koefisien.</p>` },
+      { type: "multiple_choice", prompt: "In the expression \\( 4x - 12 \\), which part is the constant? <span class='translation'>(Pada ekspresi 4x - 12, mana yang merupakan konstanta?)</span>", options: ["4", "x", "-12", "12"], answer: 2, explanation: "Constants are fixed numbers without variables. Here, -12 is the constant. <span class='translation'>Konstanta adalah angka tetap tanpa variabel. Di sini, -12 adalah konstantanya.</span>" },
+      { type: "typing", prompt: "Identify the coefficient in the expression: \\( -5y + 10 \\) <span class='translation'>(Identifikasi koefisien pada ekspresi tersebut)</span>", answer: "-5", hint: "It's the number attached to the variable y. <span class='translation'>(Angka yang menempel pada variabel y)</span>", explanation: "The coefficient of \\( y \\) is -5. <span class='translation'>Koefisien dari y adalah -5.</span>" },
+      { type: "checkbox", prompt: "Select ALL the variables in this expression: \\( 3a - 7b + 2c - 10 \\) <span class='translation'>(Pilih SEMUA variabel pada ekspresi ini)</span>", options: ["3", "a", "7", "b", "c"], answers: [1, 3, 4], explanation: "Variables are the letters representing unknown values: a, b, and c. <span class='translation'>Variabel adalah huruf yang mewakili nilai tak diketahui: a, b, dan c.</span>" },
+      { type: "theory", title: "Translating Words into Algebra", body: `<p>Math is a language! If a subscription fee is 20 and the hourly rate is 5, the total cost for \\( x \\) hours is written as \\( 5x + 20 \\).</p><p>Notice the order? We usually write the variable term first, then the constant. Let's practice translating English/Indonesian sentences into mathematical expressions.</p><p class="translation">Matematika adalah bahasa! Jika biaya langganan 20 dan biaya per jam 5, total biaya untuk x jam ditulis 5x + 20. Mari kita latih menerjemahkan kalimat menjadi ekspresi matematika.</p>` },
+      { type: "typing", prompt: "Translate: 'Three times the number of trees (p) minus 7' <span class='translation'>(Ubah: 'Tiga kali jumlah pohon (p) dikurangi 7' menjadi ekspresi aljabar)</span>", answer: "3p - 7", explanation: "Three times p is 3p. Minus 7 gives 3p - 7. <span class='translation'>Tiga kali p adalah 3p. Dikurangi 7 menjadi 3p - 7.</span>" },
+      { type: "dropdown", prompt: "Translate the sentence into an expression. <span class='translation'>(Ubah kalimat menjadi ekspresi)</span>", sentence: "A base fee of 20 plus 5 for every hour (x) is [drop] <span class='translation'>(Biaya dasar 20 ditambah 5 untuk setiap jam (x) adalah)</span>", options: ["20x + 5", "5x - 20", "5x + 20", "25x"], answer: "5x + 20", explanation: "5 per hour is 5x. Add the base fee of 20 to get 5x + 20. <span class='translation'>5 per jam adalah 5x. Tambah biaya dasar 20 menjadi 5x + 20.</span>" },
+      { type: "pairing", prompt: "Match the sentences with their correct algebraic expressions! <span class='translation'>(Cocokkan kalimat dengan ekspresi aljabarnya)</span>", pairs: [{ left: "Twice x plus 4", right: "2x + 4" }, { left: "Ten minus three y", right: "\\( \\dfrac{a}{2} - 2 \\)" }, { left: "Half of a, minus 2", right: "\\dfrac{a}{2} - 2" }] },
+      { type: "theory", title: "Evaluating Expressions (Substitution)", body: `<p>If we know the value of \\( x \\), we can evaluate the expression. For example, if \\( y = 2x + 1 \\) and \\( x = 0 \\), then \\( y = 2(0) + 1 = 1 \\).</p><p>This means the point \\( (0, 1) \\) lies on our graph. Substituting values is the key to finding points to draw!</p><p class="translation">Jika kita tahu nilai x, kita bisa menghitung ekspresi. Misal, jika y = 2x + 1 dan x = 0, maka y = 2(0) + 1 = 1. Ini berarti titik (0, 1) ada di grafik kita. Substitusi nilai adalah kunci untuk mencari titik!</p>` },
+      { type: "typing", prompt: "If \\( y = 3x - 7 \\), what is \\( y \\) when \\( x = 2 \\)? <span class='translation'>(Jika y = 3x - 7, berapa y saat x = 2?)</span>", answer: "-1", explanation: "Substitute x=2: y = 3(2) - 7 = 6 - 7 = -1. <span class='translation'>Substitusi x=2: y = 3(2) - 7 = 6 - 7 = -1.</span>" },
+      { type: "range", prompt: "If \\( y = 2x + 1 \\) and \\( x = 4 \\), \\( y \\) is between which range? <span class='translation'>(Jika y = 2x + 1 dan x = 4, y berada di rentang mana?)</span>", min: 5, max: 15, answer: 9, explanation: "y = 2(4) + 1 = 8 + 1 = 9. <span class='translation'>y = 2(4) + 1 = 8 + 1 = 9.</span>" },
+      { type: "multiple_choice", prompt: "Given \\( y = -x + 4 \\). If \\( x = -2 \\), what is \\( y \\)? <span class='translation'>(Diketahui y = -x + 4. Jika x = -2, berapa y?)</span>", options: ["2", "6", "-6", "4"], answer: 1, explanation: "y = -(-2) + 4 = 2 + 4 = 6. <span class='translation'>y = -(-2) + 4 = 2 + 4 = 6.</span>" },
+      { type: "drag_drop", prompt: "Arrange the steps to evaluate \\( y = 5x - 8 \\) for \\( x = 3 \\)! <span class='translation'>(Susun langkah menghitung y = 5x - 8 untuk x = 3)</span>", sentence: "[drop] -> [drop] -> [drop]", bank: ["Substitute x=3 into y = 5x - 8 <span class='translation'>(Substitusi x=3 ke y = 5x - 8)</span>", "Multiply 5 by 3 to get 15 <span class='translation'>(Kali 5 dengan 3 dapat 15)</span>", "Subtract 8 from 15 to get 7 <span class='translation'>(Kurang 8 dari 15 dapat 7)</span>"], answer: "0,1,2", explanation: "First substitute, then multiply, finally subtract. <span class='translation'>Pertama substitusi, lalu kali, terakhir kurangi.</span>" }
+    ]
+  },
+  // ===== SECTION 2: INTRODUCTION & REAL-WORLD CONNECTION =====
+  {
+    id: 1,
+    steps: [
+      { type: "theory", title: "SimCity Builder: The Linear Concept", body: `<p>Imagine you are a city planner in SimCity. You are building a tower. The ground starts at a height of 5 meters (we'll call this the <b>starting point</b>). Every floor you add makes the building 3 meters taller (the <b>growth rate</b>).</p><p>If \\( x \\) is the number of floors, the total height \\( y \\) is \\( y = 3x + 5 \\). This relationship, where growth is constant, is called a <b>Linear Function</b>!</p><p class="translation">Bayangkan kamu perencana kota di SimCity. Tanah awal tingginya 5 meter (titik awal). Setiap lantai menambah 3 meter (laju pertumbuhan). Jika x adalah lantai, tinggi total y adalah y = 3x + 5. Hubungan dengan pertumbuhan konstan ini disebut Fungsi Linear!</p>` },
+      { type: "typing", prompt: "Using the SimCity formula \\( y = 3x + 5 \\), what is the height if you build 2 floors? <span class='translation'>(Pakai rumus y = 3x + 5, berapa tinggi jika dibangun 2 lantai?)</span>", answer: "11", explanation: "y = 3(2) + 5 = 6 + 5 = 11 meters. <span class='translation'>y = 3(2) + 5 = 6 + 5 = 11 meter.</span>" },
+      { type: "multiple_choice", prompt: "A taxi charges Rp5,000 base fare and Rp2,000 per km. If \\( x \\) is distance, what is the total fare \\( y \\)? <span class='translation'>(Taksi tarif dasar Rp5.000 dan Rp2.000/km. Jika x jarak, berapa total y?)</span>", options: ["\\( y = 2000x - 5000 \\)", "\\( y = 5000x + 2000 \\)", "\\( y = 2000x + 5000 \\)", "\\( y = 7000x \\)"], answer: 2, explanation: "The per-km rate (2000) multiplies x. The base fare (5000) is the constant. So y = 2000x + 5000. <span class='translation'>Tarif per km (2000) mengali x. Tarif dasar (5000) konstanta. Jadi y = 2000x + 5000.</span>" },
+      { type: "dropdown", prompt: "Identify the starting point in this scenario. <span class='translation'>(Identifikasi titik awal skenario ini)</span>", sentence: "A plant is 10cm tall and grows 2cm per day. '10' is the [drop] <span class='translation'>(10 adalah)</span>", options: ["Growth rate <span class='translation'>(Laju pertumbuhan)</span>", "Starting point <span class='translation'>(Titik awal)</span>", "Variable <span class='translation'>(Variabel)</span>"], answer: "Starting point <span class='translation'>(Titik awal)</span>", explanation: "The initial height before any growth happens is the starting point. <span class='translation'>Tinggi awal sebelum tumbuh adalah titik awal.</span>" },
+      { type: "theory", title: "Reading the Magic Formula: y = mx + c", body: `<p>Every linear function boils down to the magic formula: \\( y = mx + c \\).</p><p>Here, <b>\\( m \\)</b> is the <b>gradient (slope)</b> — how fast things grow. <b>\\( c \\)</b> is the <b>Y-intercept</b> — the starting point when \\( x = 0 \\). Once you master this formula, you can predict the future of any growing city, plant, or bank account!</p><p class="translation">Setiap fungsi linear memiliki rumus ajaib: y = mx + c. m adalah gradien (kemiringan) - seberapa cepat tumbuh. c adalah intersep-Y - titik awal saat x = 0.</p>` },
+      { type: "checkbox", prompt: "Which of these represent linear functions? <span class='translation'>(Manakah yang merepresentasikan fungsi linear?)</span>", options: ["\\( y = 2x + 1 \\)", "\\( y = -3x \\)", "\\( y = x^2 + 4 \\)", "\\( y = 5x - 8 \\)"], answers: [0, 1, 3], explanation: "Linear functions have variables with a maximum power of 1 (no \\( x^2 \\)). <span class='translation'>Fungsi linear variabelnya pangkat maksimal 1 (tidak ada x kuadrat).</span>" },
+      { type: "pairing", prompt: "Match the real-world scenario to its correct linear equation! <span class='translation'>(Cocokkan skenario dengan persamaan linearnya)</span>", pairs: [{ left: "Base 10, grows by 4", right: "y = 4x + 10" }, { left: "Base 0, grows by 5", right: "y = 5x" }, { left: "Base 7, decreases by 2", right: "y = -2x + 7" }] },
+      { type: "typing", prompt: "In \\( y = 5x - 8 \\), what is the value of \\( c \\) (Y-intercept)? <span class='translation'>(Pada y = 5x - 8, berapa nilai c?)</span>", answer: "-8", explanation: "The constant term represents c, the Y-intercept. <span class='translation'>Konstanta mewakili c, intersep-Y.</span>" },
+      { type: "range", prompt: "If \\( y = 3x + 5 \\), and we set \\( x = 0 \\), what is the value of \\( y \\)? <span class='translation'>(Jika y = 3x + 5, dan x = 0, berapa y?)</span>", min: 0, max: 10, answer: 5, explanation: "y = 3(0) + 5 = 5. This is the Y-intercept. <span class='translation'>y = 3(0) + 5 = 5. Ini adalah intersep-Y.</span>" },
+      { type: "drag_drop", prompt: "Arrange the steps to formulate a linear equation from: 'A fee of 50 plus 10 per hour (x).' <span class='translation'>(Susun langkah menyusun persamaan dari: Biaya 50 plus 10 per jam (x))</span>", sentence: "[drop] -> [drop] -> [drop]", bank: ["Identify growth rate (10 per hour) as 'm' <span class='translation'>(Identifikasi laju 10 sebagai m)</span>", "Identify starting point (50) as 'c' <span class='translation'>(Identifikasi titik awal 50 sebagai c)</span>", "Combine into y = 10x + 50 <span class='translation'>(Gabung jadi y = 10x + 50)</span>"], answer: "0,1,2", explanation: "Growth rate is m, starting point is c. Insert into y = mx + c. <span class='translation'>Laju m, awal c. Masukkan ke y = mx + c.</span>" },
+      { type: "multiple_choice", prompt: "A water tank starts with 100L and leaks 5L per minute. What is the equation? <span class='translation'>(Tangki berisi 100L bocor 5L per menit. Persamaannya?)</span>", options: ["\\( y = 5x + 100 \\)", "\\( y = -5x + 100 \\)", "\\( y = 100x - 5 \\)", "\\( y = -100x + 5 \\)"], answer: 1, explanation: "Starts at 100 (c=100). Leaks/decreases 5 per min (m=-5). So y = -5x + 100. <span class='translation'>Mulai 100 (c=100). Bocor 5 per menit (m=-5). Jadi y = -5x + 100.</span>" }
+    ]
+  },
+    // ===== SECTION 3: PROBLEM INTRODUCTION =====
+  {
+    id: 2,
+    steps: [
+      { type: "theory", title: "The Cartesian Map: X and Y Coordinates", body: `<p>To draw our city plans, we need a map! In math, this map is the <b>Cartesian Coordinate System</b>. It has two axes: the horizontal line is the X-axis (input, like number of floors), and the vertical line is the Y-axis (output, like total height).</p><p>Every point on this map is written as an ordered pair \\( (x, y) \\). If \\( y = 2x + 1 \\) and \\( x = 0 \\), then \\( y = 1 \\). This gives us the special point \\( (0, 1) \\). This specific point is where the line crosses the Y-axis!</p><p class="translation">Untuk menggambar rencana kota, kita butuh peta! Di matematika, peta ini adalah Sistem Koordinat Kartesius. Garis horizontal sumbu-X (input), garis vertikal sumbu-Y (output). Setiap titik ditulis (x, y). Jika y = 2x + 1 dan x = 0, maka y = 1. Titik (0, 1) ini adalah titik potong sumbu-Y!</p>` },
+      { type: "multiple_choice", prompt: "What is the Y-intercept of the equation \\( y = 2x + 3 \\)? <span class='translation'>(Manakah titik potong sumbu-Y dari y = 2x + 3?)</span>", options: ["\\( (0, 2) \\)", "\\( (2, 0) \\)", "\\( (0, 3) \\)", "\\( (3, 0) \\)"], answer: 2, explanation: "The Y-intercept happens when x = 0. y = 2(0) + 3 = 3. So the point is (0, 3). <span class='translation'>Titik potong Y terjadi saat x = 0. y = 2(0) + 3 = 3. Jadi titiknya (0, 3).</span>" },
+      { type: "typing", prompt: "In the equation \\( y = -5x + 4 \\), what is the value of \\( y \\) when \\( x = 0 \\)? <span class='translation'>(Pada y = -5x + 4, berapa y saat x = 0?)</span>", answer: "4", explanation: "When x = 0, y = -5(0) + 4 = 4. <span class='translation'>Saat x = 0, y = -5(0) + 4 = 4.</span>" },
+      { type: "dropdown", prompt: "Complete the statement about the Y-intercept. <span class='translation'>(Lengkapi pernyataan tentang intersep-Y)</span>", sentence: "The Y-intercept occurs exactly when [drop] <span class='translation'>(Intersep-Y terjadi tepat saat)</span>", options: ["\\( x = 0 \\)", "\\( y = 0 \\)", "\\( x = y \\)", "\\( y = 1 \\)"], answer: "x = 0", explanation: "The Y-axis is the line where x is always 0. <span class='translation'>Sumbu-Y adalah garis tempat x selalu bernilai 0.</span>" },
+      { type: "checkbox", prompt: "Select ALL points that lie exactly on the Y-axis. <span class='translation'>(Pilih SEMUA titik yang berada tepat di sumbu-Y)</span>", options: ["\\( (0, -2) \\)", "\\( (0, 5) \\)", "\\( (3, 0) \\)", "\\( (0, 0) \\)"], answers: [0, 1, 3], explanation: "Any point on the Y-axis must have an x-coordinate of 0. <span class='translation'>Titik di sumbu-Y harus memiliki koordinat x bernilai 0.</span>" },
+      { type: "theory", title: "The Gradient (m): How Steep is the Hill?", body: `<p>Now meet <b>\\( m \\)</b>, the gradient or slope. The gradient tells us how steep our line is. If \\( m \\) is positive, the line goes UP from left to right (like climbing a hill). If \\( m \\) is negative, the line goes DOWN (like a ski slope).</p><p>The bigger the absolute value of \\( m \\), the steeper the line. A gradient of \\( m = 2 \\) means for every 1 step right, we go 2 steps up!</p><p class="translation">Sekarang kenalan dengan m, gradien atau kemiringan. Gradien memberitahu seberapa curam garis kita. Jika m positif, garis NAIK. Jika m negatif, garis TURUN. Semakin besar nilai m, semakin curam. Gradien m = 2 berarti setiap 1 langkah ke kanan, kita naik 2 langkah!</p>` },
+      { type: "pairing", prompt: "Match the gradient value to its correct visual description! <span class='translation'>(Cocokkan nilai gradien dengan deskripsi visualnya)</span>", pairs: [{ left: "\\( m = 2 \\)", right: "Goes up moderately" }, { left: "\\( m = -1 \\)", right: "Goes down steadily" }, { left: "\\( m = 0 \\)", right: "Perfectly flat (horizontal)" }] },
+      { type: "multiple_choice", prompt: "Which line is steeper: \\( y = 4x + 1 \\) or \\( y = 2x + 10 \\)? <span class='translation'>(Garis mana yang lebih curam?)</span>", options: ["\\( y = 4x + 1 \\)", "\\( y = 2x + 10 \\)", "They have the same steepness", "Cannot be determined"], answer: 0, explanation: "Steepness depends only on the absolute value of the gradient. |4| > |2|, so y = 4x + 1 is steeper. <span class='translation'>Kemiringan hanya tergantung nilai mutlak gradien. |4| > |2|, jadi y = 4x + 1 lebih curam.</span>" },
+      { type: "typing", prompt: "In \\( y = -x + 4 \\), if \\( x \\) increases by 1, what happens to \\( y \\)? (Type 'up 1' or 'down 1') <span class='translation'>(Jika x naik 1, apa yang terjadi pada y? Ketik 'up 1' atau 'down 1')</span>", answer: "down 1", explanation: "The gradient is -1, meaning for every 1 step right, y goes down by 1. <span class='translation'>Gradiennya -1, artinya setiap 1 langkah kanan, y turun 1.</span>" },
+      { type: "theory", title: "Fractional Gradients: Small Steps", body: `<p>What if the gradient is a fraction, like \\( m = \\dfrac{1}{2} \\)? This just means we take smaller steps. The denominator (bottom) tells us how far to go right, and the numerator (top) tells us how far to go up.</p><p>So \\( m = \\dfrac{1}{2} \\) means: go right 2, go up 1. It’s a much gentler slope!</p><p class="translation">Bagaimana jika gradiennya pecahan, seperti m = \\( \\dfrac{1}{2} \\)? Ini berarti langkahnya lebih kecil. Penyebut (bawah) menyuruh kita ke kanan, pembilang (atas) menyuruh kita naik. m = \\( \\dfrac{1}{2} \\) berarti: ke kanan 2, naik 1. Kemiringannya lebih landai!</p>` },
+      { type: "drag_drop", prompt: "Arrange the steps to plot the first few points of \\( y = \\dfrac{1}{2}x + 2 \\)! <span class='translation'>(Susun langkah menentukan titik dari y = \\dfrac{1}{2}x + 2)</span>", sentence: "[drop] -> [drop] -> [drop]", bank: ["Start at the Y-intercept (0, 2) <span class='translation'>(Mulai di intersep-Y (0, 2))</span>", "Move right 2, up 1 to reach (2, 3) <span class='translation'>(Kanan 2, naik 1 ke (2, 3))</span>", "Move right 2, up 1 again to reach (4, 4) <span class='translation'>(Kanan 2, naik 1 lagi ke (4, 4))</span>"], answer: "0,1,2", explanation: "Always start at c, then apply the fractional gradient rule. <span class='translation'>Selalu mulai dari c, lalu terapkan aturan gradien pecahan.</span>" },
+      { type: "dropdown", prompt: "Interpret the gradient. <span class='translation'>(Interpretasikan gradien)</span>", sentence: "A gradient of \\( m = -\\dfrac{3}{4} \\) means go right 4, and [drop] <span class='translation'>(m = -\\dfrac{3}{4} berarti ke kanan 4, dan)</span>", options: ["up 3", "down 3", "up 4", "down 4"], answer: "down 3", explanation: "The negative sign means down. The numerator (3) is the vertical move. <span class='translation'>Tanda negatif berarti turun. Pembilang (3) adalah pergerakan vertikal.</span>" },
+      { type: "checkbox", prompt: "Which of these equations represent a line that goes DOWNWARDS? <span class='translation'>(Persamaan mana yang garisnya TURUN?)</span>", options: ["\\( y = -2x + 5 \\)", "\\( y = \\dfrac{1}{2}x - 1 \\)", "\\( y = -\\dfrac{3}{4}x \\)", "\\( y = 5x \\)"], answers: [0, 2], explanation: "Lines go downwards when the gradient (m) is negative. <span class='translation'>Garis turun saat gradiennya (m) negatif.</span>" }
+    ]
+  },
+  // ===== SECTION 4: GUIDED PRACTICE =====
+  {
+    id: 3,
+    steps: [
+      { type: "theory", title: "Drawing Our First Line on the Whiteboard", body: `<p>Let's draw together! Equation: \\( y = -1x + 4 \\).</p><p>Step 1: Find the Y-intercept \\( c \\). Here, \\( c = 4 \\). Plot the first point at \\( (0, 4) \\).</p><p>Step 2: Use the gradient \\( m = -1 \\). From \\( (0, 4) \\), go right 1, down 1. Plot the second point at \\( (1, 3) \\).</p><p>Step 3: Draw a straight line connecting them. You just drew a linear graph!</p><p class="translation">Mari kita gambar bersama! Persamaan: y = -1x + 4. Langkah 1: Cari c = 4, plot titik (0, 4). Langkah 2: Pakai m = -1. Dari (0, 4), ke kanan 1, turun 1. Plot (1, 3). Langkah 3: Tarik garis lurus.</p>` },
+      { type: "multiple_choice", prompt: "For \\( y = 3x - 2 \\), what is the very first point you should plot? <span class='translation'>(Untuk y = 3x - 2, titik pertama yang harus diplot adalah?)</span>", options: ["\\( (0, 3) \\)", "\\( (0, -2) \\)", "\\( (-2, 0) \\)", "\\( (3, 0) \\)"], answer: 1, explanation: "Always start with the Y-intercept (c). Here c = -2, so plot (0, -2). <span class='translation'>Selalu mulai dengan intersep-Y. Di sini c = -2, jadi plot (0, -2).</span>" },
+      { type: "typing", prompt: "Using \\( y = 3x - 2 \\) and starting from \\( (0, -2) \\), apply the gradient \\( m = 3 \\). What is the y-coordinate of the next point if \\( x = 1 \\)? <span class='translation'>(Dari (0, -2), pakai m = 3. Berapa y jika x = 1?)</span>", answer: "1", explanation: "Right 1, up 3. -2 + 3 = 1. The point is (1, 1). <span class='translation'>Kanan 1, naik 3. -2 + 3 = 1. Titiknya (1, 1).</span>" },
+      { type: "dropdown", prompt: "Complete the plotting step. <span class='translation'>(Lengkapi langkah plot)</span>", sentence: "For \\( y = -2x + 5 \\), after plotting (0, 5), you must go right 1 and [drop] <span class='translation'>(untuk y = -2x + 5, setelah plot (0, 5), kamu harus ke kanan 1 dan)</span>", options: ["up 2", "down 2", "up 5", "down 5"], answer: "down 2", explanation: "The gradient is -2, meaning right 1, down 2. <span class='translation'>Gradiennya -2, artinya kanan 1, turun 2.</span>" },
+      { type: "theory", title: "Finding the X-intercept", body: `<p>Lines don't just cross the Y-axis; they also cross the X-axis! This is called the <b>X-intercept</b>. At this specific point, the height \\( y \\) is exactly 0.</p><p>To find it, simply set \\( y = 0 \\) in your equation and solve for \\( x \\). For example, in \\( y = 2x - 4 \\), if \\( y = 0 \\), then \\( 0 = 2x - 4 \\), which means \\( x = 2 \\). The X-intercept is \\( (2, 0) \\).</p><p class="translation">Garis juga memotong sumbu-X, disebut intersep-X. Di titik ini, y = 0. Cara mencarinya, set y = 0 lalu cari x. Misal di y = 2x - 4, jika y = 0, maka 0 = 2x - 4, artinya x = 2. Intersep-X nya adalah (2, 0).</p>` },
+      { type: "typing", prompt: "Find the X-intercept of \\( y = 3x - 6 \\). (Type the x-value only) <span class='translation'>(Cari intersep-X dari y = 3x - 6. Ketik nilai x saja)</span>", answer: "2", explanation: "Set y=0: 0 = 3x - 6. 3x = 6. x = 2. <span class='translation'>Set y=0: 0 = 3x - 6. 3x = 6. x = 2.</span>" },
+      { type: "range", prompt: "What is the X-intercept of \\( y = -3x + 9 \\)? <span class='translation'>(Berapa intersep-X dari y = -3x + 9?)</span>", min: 0, max: 10, answer: 3, explanation: "0 = -3x + 9. 3x = 9. x = 3. <span class='translation'>0 = -3x + 9. 3x = 9. x = 3.</span>" },
+      { type: "checkbox", prompt: "Which of these points are X-intercepts? (Remember: y must be 0) <span class='translation'>(Manakah titik intersep-X?)</span>", options: ["\\( (4, 0) \\)", "\\( (0, 4) \\)", "\\( (-2, 0) \\)", "\\( (0, 0) \\)"], answers: [0, 2, 3], explanation: "Any point on the X-axis has y = 0. <span class='translation'>Titik di sumbu-X memiliki y = 0.</span>" },
+      { type: "theory", title: "Gradient from Two Points", body: `<p>What if we don't have the equation, but we have two points on a graph? We can calculate the gradient \\( m \\)! The formula is the "Rise over Run": \\( m = (y_2 - y_1) / (x_2 - x_1) \\).</p><p>"Rise" is the vertical change (up/down), and "Run" is the horizontal change (left/right). Let's say we have \\( (1, 2) \\) and \\( (2, 5) \\). The rise is \\( 5 - 2 = 3 \\). The run is \\( 2 - 1 = 1 \\). So \\( m = 3/1 = 3 \\).</p><p class="translation">Jika kita tidak punya persamaan tapi punya 2 titik, kita bisa cari gradien m! Rumusnya "Rise over Run": m = (y2 - y1) / (x2 - y1). Rise adalah perubahan vertikal, Run perubahan horizontal.</p>` },
+      { type: "drag_drop", prompt: "Arrange the steps to find the gradient from points \\( (1, 3) \\) and \\( (2, 5) \\). <span class='translation'>(Susun langkah mencari gradien dari titik (1, 3) dan (2, 5))</span>", sentence: "[drop] -> [drop] -> [drop]", bank: ["Calculate Rise: 5 - 3 = 2 <span class='translation'>(Hitung Rise: 5 - 3 = 2)</span>", "Calculate Run: 2 - 1 = 1 <span class='translation'>(Hitung Run: 2 - 1 = 1)</span>", "Divide Rise by Run: 2 / 1 = 2 <span class='translation'>(Bagi Rise dengan Run: 2 / 1 = 2)</span>"], answer: "0,1,2", explanation: "Rise is the difference in y, Run is the difference in x. <span class='translation'>Rise adalah selisih y, Run selisih x.</span>" },
+      { type: "pairing", prompt: "Match the equation with its X-intercept! <span class='translation'>(Cocokkan persamaan dengan intersep-X nya)</span>", pairs: [{ left: "\\( y = 2x - 4 \\)", right: "\\( (2, 0) \\)" }, { left: "\\( y = x + 3 \\)", right: "\\( (-3, 0) \\)" }, { left: "\\( y = -x + 5 \\)", right: "\\( (5, 0) \\)" }] },
+      { type: "multiple_choice", prompt: "Find the gradient of a line passing through \\( (2, 3) \\) and \\( (4, 7) \\). <span class='translation'>(Cari gradien garis melalui (2, 3) dan (4, 7))</span>", options: ["1", "2", "4", "\\( \\dfrac{1}{2} \\)"], answer: 1, explanation: "m = (7 - 3) / (4 - 2) = 4 / 2 = 2. <span class='translation'>m = (7 - 3) / (4 - 2) = 4 / 2 = 2.</span>" },
+      { type: "typing", prompt: "What is the gradient of a perfectly horizontal line like \\( y = 5 \\)? <span class='translation'>(Berapa gradien garis horizontal sempurna seperti y = 5?)</span>", answer: "0", explanation: "A flat line has no rise, so m = 0. <span class='translation'>Garis datar tidak ada kenaikan, jadi m = 0.</span>" }
+    ]
+  },
+  // ===== SECTION 5: INDEPENDENT PRACTICE =====
+  {
+    id: 4,
+    steps: [
+      { type: "theory", title: "Architect's Challenge: Fractional Slopes", body: `<p>It's time for your Independent Practice! Let's tackle drawing a line with a fractional slope: \\( y = \\dfrac{1}{2}x + 2 \\).</p><p>We start at the Y-intercept \\( (0, 2) \\). Because \\( m = \\dfrac{1}{2} \\), our denominator (run) is 2, and our numerator (rise) is 1. So from \\( (0, 2) \\), we go right 2, and up 1. This brings us to \\( (2, 3) \\). Connect them to draw your gentle slope!</p><p class="translation">Saatnya latihan mandiri! Mari gambar garis dengan kemiringan pecahan: y = \\dfrac{1}{2}x + 2. Mulai di (0, 2). Karena m = \\dfrac{1}{2}, run = 2, rise = 1. Dari (0, 2), ke kanan 2, naik 1. Sampai di (2, 3). Hubungkan!</p>` },
+      { type: "multiple_choice", prompt: "Starting from \\( (0, 2) \\), what is the next point using gradient \\( m = \\dfrac{1}{2} \\)? <span class='translation'>(Dari (0, 2), apa titik berikutnya menggunakan m = \\dfrac{1}{2}?)</span>", options: ["\\( (1, 3) \\)", "\\( (2, 2) \\)", "\\( (2, 3) \\)", "\\( (1, \\dfrac{1}{2}) \\)"], answer: 2, explanation: "Run by 2 (x becomes 2), Rise by 1 (y becomes 3). The point is (2, 3). <span class='translation'>Run 2 (x jadi 2), Rise 1 (y jadi 3). Titiknya (2, 3).</span>" },
+      { type: "typing", prompt: "After plotting \\( (2, 3) \\) for \\( y = \\dfrac{1}{2}x + 2 \\), apply the gradient again to find the y-coordinate when \\( x = 4 \\). <span class='translation'>(Setelah (2, 3), pakai gradien lagi untuk cari y saat x = 4)</span>", answer: "4", explanation: "Right 2, up 1 from (2, 3). x becomes 4, y becomes 4. Point is (4, 4). <span class='translation'>Kanan 2, naik 1 dari (2, 3). x jadi 4, y jadi 4. Titik (4, 4).</span>" },
+      { type: "dropdown", prompt: "Interpret the plotting step. <span class='translation'>(Interpretasikan langkah plot)</span>", sentence: "For \\( m = -\\dfrac{3}{4} \\), starting from (0, 0), you go right 4 and [drop] <span class='translation'>(Untuk m = -\\dfrac{3}{4}, dari (0, 0), kamu ke kanan 4 dan)</span>", options: ["up 3", "down 3", "up 4", "down 4"], answer: "down 3", explanation: "Negative means down, numerator 3 means go down 3. <span class='translation'>Negatif berarti turun, pembilang 3 berarti turun 3.</span>" },
+      { type: "theory", title: "Real-World Modeling: The Leaking Tank", body: `<p>A water tank starts with 10 liters of water. It leaks 2 liters every minute. Let's model this!</p><p>Initial amount (c) = 10. Leak rate (m) = -2 (because it's decreasing). Let \\( x \\) be minutes and \\( y \\) be water left. The equation is \\( y = -2x + 10 \\).</p><p class="translation">Tangki air berisi 10 liter. Bocor 2 liter per menit. Jumlah awal (c) = 10. Laju bocor (m) = -2. Misal x menit dan y sisa air. Persamaannya y = -2x + 10.</p>` },
+      { type: "typing", prompt: "Using \\( y = -2x + 10 \\), how much water is left after 3 minutes? <span class='translation'>(Pakai y = -2x + 10, berapa sisa air setelah 3 menit?)</span>", answer: "4", explanation: "y = -2(3) + 10 = -6 + 10 = 4 liters. <span class='translation'>y = -2(3) + 10 = -6 + 10 = 4 liter.</span>" },
+      { type: "range", prompt: "Using the same tank equation \\( y = -2x + 10 \\), how much water is left after 2 minutes? <span class='translation'>(Berapa sisa air setelah 2 menit?)</span>", min: 0, max: 10, answer: 6, explanation: "y = -2(2) + 10 = -4 + 10 = 6 liters. <span class='translation'>y = -2(2) + 10 = -4 + 10 = 6 liter.</span>" },
+      { type: "checkbox", prompt: "Which of these equations correctly model a DECREASING real-world scenario? <span class='translation'>(Persamaan mana yang memodelkan skenario PENURUNAN?)</span>", options: ["\\( y = -2x + 10 \\)", "\\( y = 5x - 3 \\)", "\\( y = -\\dfrac{1}{2}x + 4 \\)", "\\( y = 4x \\)"], answers: [0, 2], explanation: "A decreasing scenario must have a negative gradient (m < 0). <span class='translation'>Skenario penurunan harus memiliki gradien negatif (m < 0).</span>" },
+      { type: "theory", title: "Formulating from a Graph", body: `<p>Suppose you see a line on a graph. It crosses the Y-axis at \\( -3 \\), and goes up by \\( 2 \\) for every \\( 1 \\) step right. Can you write the equation?</p><p>Y-intercept \\( c = -3 \\). Gradient \\( m = 2 \\). Put them together into \\( y = mx + c \\), and you get \\( y = 2x - 3 \\). You just translated a picture into math!</p><p class="translation">Misal garis di grafik memotong sumbu-Y di -3, dan naik 2 setiap 1 langkah kanan. c = -3, m = 2. Masukkan ke y = mx + c, dapat y = 2x - 3. Kamu baru saja menerjemahkan gambar ke matematika!</p>` },
+      { type: "pairing", prompt: "Match the graph description with its correct equation! <span class='translation'>(Cocokkan deskripsi grafik dengan persamaannya)</span>", pairs: [{ left: "Crosses Y at -3, rises 2", right: "\\( y = 2x - 3 \\)" }, { left: "Crosses Y at 0, drops 4", right: "\\( y = -4x \\)" }, { left: "Crosses Y at 5, flat line", right: "\\( y = 5 \\)" }] },
+      { type: "multiple_choice", prompt: "A line crosses the Y-axis at \\( (0, -5) \\) and has a gradient of \\( 3 \\). What is its equation? <span class='translation'>(Garis memotong Y di (0, -5) dan gradien 3. Persamaannya?)</span>", options: ["\\( y = 3x + 5 \\)", "\\( y = -5x + 3 \\)", "\\( y = 3x - 5 \\)", "\\( y = 5x - 3 \\)"], answer: 2, explanation: "c = -5, m = 3. y = mx + c -> y = 3x - 5. <span class='translation'>c = -5, m = 3. y = mx + c -> y = 3x - 5.</span>" },
+      { type: "drag_drop", prompt: "Arrange the steps to write an equation from: 'Starts at 20, decreases by 4 each step.' <span class='translation'>(Susun langkah menulis persamaan dari skenario tersebut)</span>", sentence: "[drop] -> [drop] -> [drop]", bank: ["Identify c = 20 <span class='translation'>(Identifikasi c = 20)</span>", "Identify m = -4 <span class='translation'>(Identifikasi m = -4)</span>", "Combine into y = -4x + 20 <span class='translation'>(Gabung jadi y = -4x + 20)</span>"], answer: "0,1,2", explanation: "Find the starting point (c) and rate of change (m). <span class='translation'>Cari titik awal (c) dan laju perubahan (m).</span>" },
+      { type: "typing", prompt: "Write the equation for a scenario that starts at 0 and increases by 5. (Use format y=mx) <span class='translation'>(Tulis persamaan skenario yang mulai dari 0 dan naik 5. Pakai format y=mx)</span>", answer: "y=5x", explanation: "c = 0, m = 5. y = 5x + 0, which is just y = 5x. <span class='translation'>c = 0, m = 5. y = 5x + 0, yang artinya y = 5x.</span>" }
+    ]
+  },
+  // ===== SECTION 6: CONSOLIDATION & REFLECTION =====
+  {
+    id: 5,
+    steps: [
+      { type: "theory", title: "Parallel Lines: Twins in Math", body: `<p>Let's consolidate! What makes two lines parallel? Parallel lines never intersect, like train tracks. This happens when they have the <b>EXACT SAME gradient</b>!</p><p>For example, \\( y = 3x - 2 \\) and \\( y = 3x + 5 \\) are parallel. Both have \\( m = 3 \\). Their Y-intercepts are different, but their slopes are identical.</p><p class="translation">Mari kita rangkum! Apa yang membuat dua garis sejajar? Garis sejajar tidak pernah berpotongan, seperti rel kereta. Ini terjadi saat keduanya punya GRADIEN SAMA PERSIS! Misal y = 3x - 2 dan y = 3x + 5 sejajar. Keduanya punya m = 3.</p>` },
+      { type: "multiple_choice", prompt: "Which line is parallel to \\( y = 3x - 2 \\)? <span class='translation'>(Garis mana yang sejajar dengan y = 3x - 2?)</span>", options: ["\\( y = 2x - 3 \\)", "\\( y = 3x + 5 \\)", "\\( y = -3x + 2 \\)", "\\( y = 5x - 2 \\)"], answer: 1, explanation: "Parallel lines must have the same gradient. The gradient here is 3. <span class='translation'>Garis sejajar harus punya gradien sama. Gradiennya 3.</span>" },
+      { type: "typing", prompt: "Find the value of \\( a \\) if \\( y = ax + 5 \\) is parallel to \\( y = -2x + 1 \\). <span class='translation'>(Cari nilai a jika y = ax + 5 sejajar dengan y = -2x + 1)</span>", answer: "-2", explanation: "Parallel lines have the same gradient. So a must equal -2. <span class='translation'>Garis sejajar punya gradien sama. Jadi a harus -2.</span>" },
+      { type: "dropdown", prompt: "Complete the rule. <span class='translation'>(Lengkapi aturan)</span>", sentence: "Parallel lines always have the [drop] gradient. <span class='translation'>(Garis sejajar selalu punya gradien yang)</span>", options: ["same", "opposite", "inverse", "different"], answer: "same", explanation: "Yes, identical gradients mean parallel lines. <span class='translation'>Ya, gradien identik berarti garis sejajar.</span>" },
+      { type: "theory", title: "Recap: The Magic Formula y = mx + c", body: `<p>Let's recap what we learned. The magic formula is \\( y = mx + c \\).</p><p>\\( m \\) is the gradient (slope/rate of change). Positive \\( m \\) goes up, negative \\( m \\) goes down. Bigger \\( m \\) is steeper. \\( c \\) is the Y-intercept (initial value when \\( x = 0 \\)).</p><p class="translation">Rangkuman apa yang kita pelajari. Rumus ajaibnya y = mx + c. m adalah gradien (kemiringan/laju perubahan). m positif naik, m negatif turun. m besar lebih curam. c adalah intersep-Y (nilai awal saat x = 0).</p>` },
+      { type: "checkbox", prompt: "Select ALL true statements about the equation \\( y = mx + c \\). <span class='translation'>(Pilih SEMUA pernyataan benar tentang y = mx + c)</span>", options: ["\\( m \\) determines the steepness <span class='translation'>(m menentukan kemiringan)</span>", "\\( c \\) is the Y-intercept <span class='translation'>(c adalah intersep-Y)</span>", "\\( x \\) is the output <span class='translation'>(x adalah output)</span>", "The graph is always a straight line <span class='translation'>(Grafiknya selalu garis lurus)</span>"], answers: [0, 1, 3], explanation: "x is the input, y is the output. The rest are true. <span class='translation'>x adalah input, y output. Sisanya benar.</span>" },
+      { type: "pairing", prompt: "Match the components of the equation to their meanings! <span class='translation'>(Cocokkan komponen persamaan dengan artinya)</span>", pairs: [{ left: "Gradient (m)", right: "Rate of change" }, { left: "Y-intercept (c)", right: "Starting point" }, { left: "Variable (x)", right: "Input value" }] },
+      { type: "range", prompt: "If \\( y = 4x + 1 \\) and \\( x = 2 \\), what is \\( y \\)? <span class='translation'>(Jika y = 4x + 1 dan x = 2, berapa y?)</span>", min: 5, max: 15, answer: 9, explanation: "y = 4(2) + 1 = 8 + 1 = 9. <span class='translation'>y = 4(2) + 1 = 8 + 1 = 9.</span>" },
+      { type: "theory", title: "Interpreting Real-World Meaning", body: `<p>Finally, let's interpret a real-world equation. Imagine parking fees: \\( y = 2000x + 5000 \\).</p><p>Here, \\( x \\) is hours parked, and \\( y \\) is total cost. The \\( m = 2000 \\) means you pay Rp2,000 per hour. The \\( c = 5000 \\) means there is a base fee of Rp5,000 to pay before you even park for an hour!</p><p class="translation">Terakhir, mari interpretasi persamaan dunia nyata. Bayangkan biaya parkir: y = 2000x + 5000. x adalah jam parkir, y total biaya. m = 2000 berarti bayar Rp2.000 per jam. c = 5000 berarti ada biaya dasar Rp5.000 sebelum parkir!</p>` },
+      { type: "multiple_choice", prompt: "In the parking equation \\( y = 2000x + 5000 \\), what does the 5000 represent? <span class='translation'>(Pada y = 2000x + 5000, apa arti angka 5000?)</span>", options: ["The hourly rate", "The base/admin fee", "The total maximum cost", "The number of hours"], answer: 1, explanation: "The constant c is the initial value paid when x = 0. <span class='translation'>Konstanta c adalah nilai awal yang dibayar saat x = 0.</span>" },
+      { type: "typing", prompt: "Which is steeper: \\( y = 4x + 1 \\) or \\( y = 2x + 10 \\)? Type the coefficient of the steeper line. <span class='translation'>(Mana yang lebih curam? Ketik koefisien garis yang lebih curam)</span>", answer: "4", explanation: "The line with m = 4 is steeper than the line with m = 2. <span class='translation'>Garis dengan m = 4 lebih curam dari m = 2.</span>" },
+      { type: "drag_drop", prompt: "Arrange the steps to solve: A rocket starts at 100m and rises 50m/s. Find height at 10s. <span class='translation'>(Susun langkah menyelesaikan: Roket mulai 100m naik 50m/det. Cari tinggi di detik 10)</span>", sentence: "[drop] -> [drop] -> [drop]", bank: ["Write equation: y = 50x + 100 <span class='translation'>(Tulis persamaan: y = 50x + 100)</span>", "Substitute x = 10 <span class='translation'>(Substitusi x = 10)</span>", "Calculate y = 50(10) + 100 = 600 <span class='translation'>(Hitung y = 50(10) + 100 = 600)</span>"], answer: "0,1,2", explanation: "Model the equation first, then substitute the input. <span class='translation'>Buat persamaan dulu, lalu substitusi inputnya.</span>" },
+      { type: "dropdown", prompt: "Calculate the missing value. <span class='translation'>(Hitung nilai yang hilang)</span>", sentence: "If \\( y = -\\dfrac{2}{3}x + 4 \\) and \\( x = 6 \\), then \\( y \\) is [drop] <span class='translation'>(Jika y = -\\dfrac{2}{3}x + 4 dan x = 6, maka y adalah)</span>", options: ["0", "8", "4", "-4"], answer: "0", explanation: "y = (-\\dfrac{2}{3})*6 + 4 = -4 + 4 = 0. <span class='translation'>y = (-\\dfrac{2}{3})*6 + 4 = -4 + 4 = 0.</span>" }
+    ]
+  },
+    // ===== SECTION 7.1: ASSESSMENT A =====
+  {
+    id: 6,
+    steps: [
+      { type: "multiple_choice", prompt: "What is the gradient (m) of the equation \\( y = 5x - 8 \\)? <span class='translation'>(Berapa gradien dari y = 5x - 8?)</span>", options: ["-8", "5", "8", "-5"], answer: 1, explanation: "In y = mx + c, the number multiplying x is the gradient. Here, m = 5. <span class='translation'>Di y = mx + c, angka pengali x adalah gradien. Di sini m = 5.</span>" },
+      { type: "typing", prompt: "What is the Y-intercept (c) of \\( y = -2x + 7 \\)? <span class='translation'>(Berapa intersep-Y dari y = -2x + 7?)</span>", answer: "7", explanation: "The constant term is c. Here, c = 7. <span class='translation'>Konstanta adalah c. Di sini c = 7.</span>" },
+      { type: "dropdown", prompt: "Identify the Y-intercept. <span class='translation'>(Identifikasi intersep-Y)</span>", sentence: "For \\( y = x - 12 \\), the Y-intercept is [drop] <span class='translation'>(intersep-Y nya adalah)</span>", options: ["1", "-12", "12", "0"], answer: "-12", explanation: "y = 1x - 12. The constant is -12. <span class='translation'>y = 1x - 12. Konstantanya -12.</span>" },
+      { type: "checkbox", prompt: "Select ALL equations that have a NEGATIVE gradient. <span class='translation'>(Pilih SEMUA persamaan dengan gradien NEGATIF)</span>", options: ["\\( y = -4x + 2 \\)", "\\( y = 3x - 5 \\)", "\\( y = -\\dfrac{1}{2}x \\)", "\\( y = 10 - x \\)"], answers: [0, 2, 3], explanation: "The gradient is the coefficient of x. \\( y = -4x + 2 \\) is -4, \\( y = -\\dfrac{1}{2}x \\) is -1/2, and \\( y = 10 - x \\) (which is \\( y = -x + 10 \\)) is -1. \\( y = 3x - 5 \\) has a positive gradient of 3. <span class='translation'>Gradien adalah koefisien dari x. y = 10 - x sama dengan y = -x + 10, jadi gradiennya negatif (-1). Sedangkan y = 3x - 5 gradiennya positif (3).</span>" },
+      { type: "pairing", prompt: "Match the equation to its gradient value! <span class='translation'>(Cocokkan persamaan dengan nilai gradiennya)</span>", pairs: [{ left: "\\( y = 4x + 1 \\)", right: "4" }, { left: "\\( y = -3x \\)", right: "-3" }, { left: "\\( y = -x + 5 \\)", right: "-1" }] },
+      { type: "range", prompt: "If \\( y = 4x + 1 \\) and \\( x = 2 \\), what is \\( y \\)? <span class='translation'>(Jika y = 4x + 1 dan x = 2, berapa y?)</span>", min: 5, max: 15, answer: 9, explanation: "y = 4(2) + 1 = 8 + 1 = 9. <span class='translation'>y = 4(2) + 1 = 8 + 1 = 9.</span>" },
+      { type: "multiple_choice", prompt: "Which line is steeper: \\( y = 4x + 1 \\) or \\( y = 2x + 10 \\)? <span class='translation'>(Garis mana yang lebih curam?)</span>", options: ["\\( y = 4x + 1 \\)", "\\( y = 2x + 10 \\)", "They are equally steep", "Cannot be determined"], answer: 0, explanation: "Steepness depends on the absolute value of m. |4| > |2|, so y = 4x + 1 is steeper. <span class='translation'>Kemiringan tergantung nilai mutlak m. |4| > |2|, jadi y = 4x + 1 lebih curam.</span>" },
+      { type: "typing", prompt: "Find the X-intercept of \\( y = 2x - 4 \\). (Type the x-value only) <span class='translation'>(Cari intersep-X dari y = 2x - 4. Ketik nilai x saja)</span>", answer: "2", explanation: "Set y=0: 0 = 2x - 4. 2x = 4. x = 2. <span class='translation'>Set y=0: 0 = 2x - 4. 2x = 4. x = 2.</span>" },
+      { type: "drag_drop", prompt: "Arrange the steps to find the X-intercept of \\( y = 3x - 6 \\). <span class='translation'>(Susun langkah mencari intersep-X dari y = 3x - 6)</span>", sentence: "[drop] -> [drop] -> [drop]", bank: ["Set y = 0 <span class='translation'>(Set y = 0)</span>", "Write 0 = 3x - 6 <span class='translation'>(Tulis 0 = 3x - 6)</span>", "Solve for x to get x = 2 <span class='translation'>(Selesaikan untuk x dapat x = 2)</span>"], answer: "0,1,2", explanation: "To find X-intercept, always set y = 0 and solve for x. <span class='translation'>Untuk cari intersep-X, selalu set y = 0 lalu cari x.</span>" },
+      { type: "multiple_choice", prompt: "A line has the equation \\( y = -x + 4 \\). What happens to \\( y \\) when \\( x \\) increases by 1? <span class='translation'>(Garis y = -x + 4. Apa yang terjadi pada y saat x naik 1?)</span>", options: ["y increases by 1", "y decreases by 1", "y increases by 4", "y decreases by 4"], answer: 1, explanation: "The gradient is -1, meaning y goes down by 1 for every 1 step right in x. <span class='translation'>Gradiennya -1, artinya y turun 1 untuk setiap 1 langkah x.</span>" }
+    ]
+  },
+  // ===== SECTION 7.2: ASSESSMENT B =====
+  {
+    id: 7,
+    steps: [
+      { type: "multiple_choice", prompt: "What is the very first point you should plot for \\( y = 3x + 1 \\)? <span class='translation'>(Titik pertama yang harus diplot untuk y = 3x + 1 adalah?)</span>", options: ["\\( (0, 1) \\)", "\\( (1, 0) \\)", "\\( (3, 1) \\)", "\\( (1, 3) \\)"], answer: 0, explanation: "Always start at the Y-intercept. c = 1, so plot (0, 1). <span class='translation'>Selalu mulai di intersep-Y. c = 1, jadi plot (0, 1).</span>" },
+      { type: "typing", prompt: "From \\( (0, 2) \\), apply gradient \\( m = 3 \\). What is the y-coordinate of the next point when \\( x = 1 \\)? <span class='translation'>(Dari (0, 2), pakai m = 3. Berapa y saat x = 1?)</span>", answer: "5", explanation: "Right 1, up 3. 2 + 3 = 5. The point is (1, 5). <span class='translation'>Kanan 1, naik 3. 2 + 3 = 5. Titiknya (1, 5).</span>" },
+      { type: "dropdown", prompt: "Interpret the gradient. <span class='translation'>(Interpretasikan gradien)</span>", sentence: "A gradient of \\( m = \\dfrac{2}{3} \\) means go right 3, and [drop] <span class='translation'>(m = \\dfrac{2}{3} berarti ke kanan 3, dan)</span>", options: ["down 2", "up 2", "up 3", "down 3"], answer: "up 2", explanation: "The numerator is the vertical movement (up). Denominator is horizontal (right). <span class='translation'>Pembilang adalah gerak vertikal (naik). Penyebut horizontal (kanan).</span>" },
+      { type: "checkbox", prompt: "Which of these points lie on the Y-axis? <span class='translation'>(Titik mana yang ada di sumbu-Y?)</span>", options: ["\\( (0, -4) \\)", "\\( (4, 0) \\)", "\\( (0, 10) \\)", "\\( (-2, 0) \\)"], answers: [0, 2], explanation: "Points on the Y-axis must have an x-coordinate of 0. <span class='translation'>Titik di sumbu-Y harus memiliki koordinat x bernilai 0.</span>" },
+      { type: "pairing", prompt: "Match the point to its location on the Cartesian plane! <span class='translation'>(Cocokkan titik dengan lokasinya)</span>", pairs: [{ left: "\\( (0, 5) \\)", right: "On the Y-axis" }, { left: "\\( (5, 0) \\)", right: "On the X-axis" }, { left: "\\( (0, 0) \\)", right: "The Origin" }] },
+      { type: "range", prompt: "If \\( y = -5x + 8 \\), what is \\( y \\) when \\( x = 0 \\)? <span class='translation'>(Jika y = -5x + 8, berapa y saat x = 0?)</span>", min: 0, max: 15, answer: 8, explanation: "When x = 0, y = -5(0) + 8 = 8. <span class='translation'>Saat x = 0, y = -5(0) + 8 = 8.</span>" },
+      { type: "drag_drop", prompt: "Arrange the steps to plot \\( y = -2x + 4 \\). <span class='translation'>(Susun langkah plot y = -2x + 4)</span>", sentence: "[drop] -> [drop] -> [drop]", bank: ["Plot the Y-intercept at (0, 4) <span class='translation'>(Plot intersep-Y di (0, 4))</span>", "From (0, 4), go right 1 and down 2 <span class='translation'>(Dari (0, 4), kanan 1 turun 2)</span>", "Plot the second point at (1, 2) and draw the line <span class='translation'>(Plot titik kedua di (1, 2) lalu tarik garis)</span>"], answer: "0,1,2", explanation: "Start at c, then apply the gradient rule. <span class='translation'>Mulai dari c, lalu terapkan aturan gradien.</span>" },
+      { type: "multiple_choice", prompt: "Which point satisfies the equation \\( y = -x + 4 \\)? <span class='translation'>(Titik mana yang memenuhi y = -x + 4?)</span>", options: ["\\( (1, 3) \\)", "\\( (2, 2) \\)", "\\( (4, 0) \\)", "All of the above"], answer: 3, explanation: "Check each: 3 = -1+4, 2 = -2+4, 0 = -4+4. All are correct! <span class='translation'>Cek tiap titik. Semuanya benar!</span>" },
+      { type: "typing", prompt: "What is the gradient of a line passing through \\( (0, 0) \\) and \\( (2, 4) \\)? <span class='translation'>(Berapa gradien garis melalui (0, 0) dan (2, 4)?)</span>", answer: "2", explanation: "m = (4 - 0) / (2 - 0) = 4 / 2 = 2. <span class='translation'>m = (4 - 0) / (2 - 0) = 4 / 2 = 2.</span>" },
+      { type: "multiple_choice", prompt: "What is the X-intercept of \\( y = x + 3 \\)? <span class='translation'>(Berapa intersep-X dari y = x + 3?)</span>", options: ["\\( (3, 0) \\)", "\\( (0, 3) \\)", "\\( (-3, 0) \\)", "\\( (0, -3) \\)"], answer: 2, explanation: "Set y=0: 0 = x + 3. x = -3. The point is (-3, 0). <span class='translation'>Set y=0: 0 = x + 3. x = -3. Titiknya (-3, 0).</span>" }
+    ]
+  },
+  // ===== SECTION 7.3: ASSESSMENT C =====
+  {
+    id: 8,
+    steps: [
+      { type: "multiple_choice", prompt: "A scenario 'Starts at 50, grows by 10 each step' is modeled by which equation? <span class='translation'>(Skenario ini dimodelkan persamaan mana?)</span>", options: ["\\( y = 10x + 50 \\)", "\\( y = 50x + 10 \\)", "\\( y = 10x - 50 \\)", "\\( y = 60x \\)"], answer: 0, explanation: "Growth rate (10) is m. Starting point (50) is c. y = 10x + 50. <span class='translation'>Laju (10) adalah m. Awal (50) adalah c. y = 10x + 50.</span>" },
+      { type: "typing", prompt: "Write the equation for 'Starts at 0, drops by 5'. (Format y=mx) <span class='translation'>(Tulis persamaannya. Format y=mx)</span>", answer: "y=-5x", explanation: "c=0, m=-5. y = -5x + 0 -> y = -5x. <span class='translation'>c=0, m=-5. y = -5x + 0 -> y = -5x.</span>" },
+      { type: "dropdown", prompt: "Interpret the real-world meaning. <span class='translation'>(Interpretasikan maknanya)</span>", sentence: "In \\( y = 2000x + 5000 \\), the 2000 represents the [drop] <span class='translation'>(2000 mewakili)</span>", options: ["Base fee", "Hourly rate", "Total cost", "Time in hours"], answer: "Hourly rate", explanation: "The gradient (m) is the rate of change per unit of x. <span class='translation'>Gradien (m) adalah laju perubahan per unit x.</span>" },
+      { type: "checkbox", prompt: "Select ALL equations that model a DECREASING scenario. <span class='translation'>(Pilih SEMUA persamaan skenario PENURUNAN)</span>", options: ["\\( y = -2x + 10 \\)", "\\( y = 5x - 3 \\)", "\\( y = -\\dfrac{1}{2}x + 4 \\)", "\\( y = 4x \\)"], answers: [0, 2], explanation: "Decreasing scenarios must have a negative gradient. <span class='translation'>Skenario penurunan harus punya gradien negatif.</span>" },
+      { type: "pairing", prompt: "Match the real-world scenario to its equation! <span class='translation'>(Cocokkan skenario dengan persamaannya)</span>", pairs: [{ left: "Base 20, fee 2/hr", right: "\\( y = 2x + 20 \\)" }, { left: "Base 0, speed 60km/h", right: "\\( y = 60x \\)" }, { left: "Base 100, leaks 5/min", right: "\\( y = -5x + 100 \\)" }] },
+      { type: "range", prompt: "Using \\( y = 2000x + 5000 \\), what is the total cost for 3 hours? <span class='translation'>(Berapa total biaya untuk 3 jam?)</span>", min: 5000, max: 15000, answer: 11000, explanation: "y = 2000(3) + 5000 = 6000 + 5000 = 11000. <span class='translation'>y = 2000(3) + 5000 = 6000 + 5000 = 11000.</span>" },
+      { type: "drag_drop", prompt: "Arrange the steps to model: 'A rocket starts at 100m, rises 50m/s.' <span class='translation'>(Susun langkah memodelkan roket)</span>", sentence: "[drop] -> [drop] -> [drop]", bank: ["Identify starting point c = 100 <span class='translation'>(Identifikasi titik awal c = 100)</span>", "Identify rate m = 50 <span class='translation'>(Identifikasi laju m = 50)</span>", "Combine into y = 50x + 100 <span class='translation'>(Gabung jadi y = 50x + 100)</span>"], answer: "0,1,2", explanation: "Find c and m, then substitute into y = mx + c. <span class='translation'>Cari c dan m, lalu substitusi ke y = mx + c.</span>" },
+      { type: "multiple_choice", prompt: "A water tank starts with 20L and leaks 2L/min. What is the equation? <span class='translation'>(Tangki berisi 20L bocor 2L/menit. Persamaannya?)</span>", options: ["\\( y = 2x + 20 \\)", "\\( y = -2x + 20 \\)", "\\( y = 20x - 2 \\)", "\\( y = -20x + 2 \\)"], answer: 1, explanation: "Starts at 20 (c=20). Leaks 2 per min (m=-2). y = -2x + 20. <span class='translation'>Mulai 20 (c=20). Bocor 2 per menit (m=-2). y = -2x + 20.</span>" },
+      { type: "typing", prompt: "Using the tank equation \\( y = -2x + 20 \\), how much water is left after 5 minutes? <span class='translation'>(Pakai persamaan tangki, berapa sisa air setelah 5 menit?)</span>", answer: "10", explanation: "y = -2(5) + 20 = -10 + 20 = 10 liters. <span class='translation'>y = -2(5) + 20 = -10 + 20 = 10 liter.</span>" },
+      { type: "multiple_choice", prompt: "In a real-world graph of Distance vs Time, what does a negative gradient mean? <span class='translation'>(Pada grafik Jarak vs Waktu, apa arti gradien negatif?)</span>", options: ["Moving faster", "Moving backwards/returning", "Stopped", "Moving forward slowly"], answer: 1, explanation: "A negative gradient means the distance from the start is decreasing. <span class='translation'>Gradien negatif berarti jarak dari titik awal berkurang (kembali).</span>" }
+    ]
+  },
+  // ===== SECTION 7.4: ASSESSMENT D =====
+  {
+    id: 9,
+    steps: [
+      { type: "multiple_choice", prompt: "A line crosses the Y-axis at \\( (0, -5) \\) and has a gradient of 3. What is its equation? <span class='translation'>(Garis memotong Y di (0, -5) dan gradien 3. Persamaannya?)</span>", options: ["\\( y = 3x + 5 \\)", "\\( y = -5x + 3 \\)", "\\( y = 3x - 5 \\)", "\\( y = 5x - 3 \\)"], answer: 2, explanation: "c = -5, m = 3. y = mx + c -> y = 3x - 5. <span class='translation'>c = -5, m = 3. y = mx + c -> y = 3x - 5.</span>" },
+      { type: "typing", prompt: "Write the equation for a line with Y-intercept 2 and gradient -4. (Format y=mx+c) <span class='translation'>(Tulis persamaan garis dengan intersep-Y 2 dan gradien -4)</span>", answer: "y=-4x+2", explanation: "m = -4, c = 2. y = -4x + 2. <span class='translation'>m = -4, c = 2. y = -4x + 2.</span>" },
+      { type: "dropdown", prompt: "Find the parallel line. <span class='translation'>(Cari garis yang sejajar)</span>", sentence: "If \\( y = ax + 1 \\) is parallel to \\( y = 2x - 3 \\), then \\( a \\) is [drop] <span class='translation'>(Jika sejajar, maka a adalah)</span>", options: ["1", "2", "-3", "3"], answer: "2", explanation: "Parallel lines have the exact same gradient. So a must be 2. <span class='translation'>Garis sejajar punya gradien sama persis. Jadi a harus 2.</span>" },
+      { type: "checkbox", prompt: "Which of these equations are parallel to \\( y = \\dfrac{1}{2}x + 5 \\)? <span class='translation'>(Persamaan mana yang sejajar dengan y = \\dfrac{1}{2}x + 5?)</span>", options: ["\\( y = \\dfrac{1}{2}x - 2 \\)", "\\( y = 2x + 5 \\)", "\\( y = 0.5x + 10 \\)", "\\( y = -\\dfrac{1}{2}x \\)"], answers: [0, 2], explanation: "Parallel lines must have m = \\dfrac{1}{2} (which is the same as 0.5). <span class='translation'>Garis sejajar harus punya m = \\dfrac{1}{2} (sama dengan 0.5).</span>" },
+      { type: "pairing", prompt: "Match the graph description to its equation! <span class='translation'>(Cocokkan deskripsi grafik dengan persamaannya)</span>", pairs: [{ left: "Crosses Y at 0, slope 5", right: "\\( y = 5x \\)" }, { left: "Crosses Y at -3, slope 1", right: "\\( y = x - 3 \\)" }, { left: "Flat line at 4", right: "\\( y = 4 \\)" }] },
+      { type: "range", prompt: "A line passes through \\( (0, 7) \\). What is its Y-intercept (c)? <span class='translation'>(Garis melalui (0, 7). Berapa intersep-Y nya?)</span>", min: 0, max: 10, answer: 7, explanation: "The y-coordinate when x = 0 is the Y-intercept. So c = 7. <span class='translation'>Koordinat y saat x = 0 adalah intersep-Y. Jadi c = 7.</span>" },
+      { type: "drag_drop", prompt: "Arrange the steps to find the equation from points \\( (0, 1) \\) and \\( (2, 5) \\). <span class='translation'>(Susun langkah mencari persamaan dari titik tersebut)</span>", sentence: "[drop] -> [drop] -> [drop]", bank: ["Identify c = 1 from point (0, 1) <span class='translation'>(Identifikasi c = 1 dari (0, 1))</span>", "Calculate m = (5-1)/(2-0) = 2 <span class='translation'>(Hitung m = (5-1)/(2-0) = 2)</span>", "Write equation y = 2x + 1 <span class='translation'>(Tulis persamaan y = 2x + 1)</span>"], answer: "0,1,2", explanation: "Find c from the Y-intercept, then calculate m using Rise/Run. <span class='translation'>Cari c dari intersep-Y, lalu hitung m pakai Rise/Run.</span>" },
+      { type: "multiple_choice", prompt: "What is the equation of a perfectly horizontal line passing through \\( (0, 4) \\)? <span class='translation'>(Persamaan garis horizontal melalui (0, 4)?)</span>", options: ["\\( y = 4 \\)", "\\( x = 4 \\)", "\\( y = 4x \\)", "\\( y = 0 \\)"], answer: 0, explanation: "A horizontal line has m = 0. So y = 0x + 4, which is just y = 4. <span class='translation'>Garis horizontal m = 0. Jadi y = 0x + 4, yang artinya y = 4.</span>" },
+      { type: "typing", prompt: "Find the gradient (m) of a line passing through \\( (1, 3) \\) and \\( (2, 7) \\). <span class='translation'>(Cari gradien garis melalui (1, 3) dan (2, 7))</span>", answer: "4", explanation: "m = (7 - 3) / (2 - 1) = 4 / 1 = 4. <span class='translation'>m = (7 - 3) / (2 - 1) = 4 / 1 = 4.</span>" },
+      { type: "multiple_choice", prompt: "Which equation represents a line with NO Y-intercept (passes through origin)? <span class='translation'>(Persamaan garis tanpa intersep-Y / melalui titik origin?)</span>", options: ["\\( y = 5x + 1 \\)", "\\( y = 5x \\)", "\\( y = 5 \\)", "\\( x = 5 \\)"], answer: 1, explanation: "If it passes through the origin (0,0), c = 0. So the equation is y = mx, like y = 5x. <span class='translation'>Jika melalui origin (0,0), c = 0. Jadi persamaannya y = mx, seperti y = 5x.</span>" }
+    ]
+  },
+  // ===== SECTION 7.5: ASSESSMENT E =====
+  {
+    id: 10,
+    steps: [
+      { type: "multiple_choice", prompt: "A rocket starts at 100m and rises 50m/s. Which equation models this? <span class='translation'>(Roket mulai 100m naik 50m/det. Persamaannya?)</span>", options: ["\\( y = 100x + 50 \\)", "\\( y = 50x + 100 \\)", "\\( y = 50x - 100 \\)", "\\( y = 150x \\)"], answer: 1, explanation: "Starts at 100 (c=100). Rises 50/s (m=50). y = 50x + 100. <span class='translation'>Mulai 100 (c=100). Naik 50/det (m=50). y = 50x + 100.</span>" },
+      { type: "typing", prompt: "Using the rocket equation \\( y = 50x + 100 \\), what is the height at 10 seconds? <span class='translation'>(Pakai persamaan roket, berapa tinggi di detik 10?)</span>", answer: "600", explanation: "y = 50(10) + 100 = 500 + 100 = 600m. <span class='translation'>y = 50(10) + 100 = 500 + 100 = 600m.</span>" },
+      { type: "dropdown", prompt: "Calculate the gradient. <span class='translation'>(Hitung gradien)</span>", sentence: "A line crosses Y at \\( (0, 7) \\) and passes through \\( (2, 3) \\). The gradient is [drop] <span class='translation'>(Garis memotong Y di (0, 7) dan melalui (2, 3). Gradiennya adalah)</span>", options: ["-2", "2", "4", "-4"], answer: "-2", explanation: "m = (3 - 7) / (2 - 0) = -4 / 2 = -2. <span class='translation'>m = (3 - 7) / (2 - 0) = -4 / 2 = -2.</span>" },
+      { type: "checkbox", prompt: "Select ALL true statements about parallel lines. <span class='translation'>(Pilih SEMUA pernyataan benar tentang garis sejajar)</span>", options: ["They have the same gradient <span class='translation'>(Punya gradien sama)</span>", "They never intersect <span class='translation'>(Tidak pernah berpotongan)</span>", "They have the same Y-intercept <span class='translation'>(Punya intersep-Y sama)</span>", "If one goes up, the other goes down <span class='translation'>(Jika satu naik, yang lain turun)</span>"], answers: [0, 1], explanation: "Parallel lines have identical gradients but different Y-intercepts. <span class='translation'>Garis sejajar punya gradien identik tapi intersep-Y berbeda.</span>" },
+      { type: "pairing", prompt: "Match the equation to its X-intercept! <span class='translation'>(Cocokkan persamaan dengan intersep-X nya)</span>", pairs: [{ left: "\\( y = 2x - 4 \\)", right: "\\( (2, 0) \\)" }, { left: "\\( y = -x + 5 \\)", right: "\\( (5, 0) \\)" }, { left: "\\( y = 3x \\)", right: "\\( (0, 0) \\)" }] },
+      { type: "range", prompt: "If a line has gradient \\( -\\dfrac{2}{3} \\) and passes through \\( (0, 4) \\), what is \\( y \\) when \\( x = 6 \\)? <span class='translation'>(Jika gradien -\\dfrac{2}{3} melalui (0, 4), berapa y saat x = 6?)</span>", min: -5, max: 5, answer: 0, explanation: "Equation is y = -\\dfrac{2}{3}x + 4. y = (-\\dfrac{2}{3})*6 + 4 = -4 + 4 = 0. <span class='translation'>Persamaan y = -\\dfrac{2}{3}x + 4. y = (-\\dfrac{2}{3})*6 + 4 = -4 + 4 = 0.</span>" },
+      { type: "drag_drop", prompt: "Arrange the steps to find the X-intercept of \\( y = -3x + 1 \\). <span class='translation'>(Susun langkah mencari intersep-X dari y = -3x + 1)</span>", sentence: "[drop] -> [drop] -> [drop]", bank: ["Set y = 0 <span class='translation'>(Set y = 0)</span>", "Write 0 = -3x + 1 <span class='translation'>(Tulis 0 = -3x + 1)</span>", "Solve for x to get x = \\dfrac{1}{3} <span class='translation'>(Selesaikan untuk x dapat x = \\dfrac{1}{3})</span>"], answer: "0,1,2", explanation: "Set y=0, substitute, then solve the algebraic equation. <span class='translation'>Set y=0, substitusi, lalu selesaikan persamaan aljabarnya.</span>" },
+      { type: "multiple_choice", prompt: "In the parking equation \\( y = 2000x + 5000 \\), what does the 5000 represent? <span class='translation'>(Pada y = 2000x + 5000, apa arti 5000?)</span>", options: ["The total cost", "The base/admin fee", "The hourly rate", "The time parked"], answer: 1, explanation: "The constant c is the initial value paid when x = 0. <span class='translation'>Konstanta c adalah nilai awal yang dibayar saat x = 0.</span>" },
+      { type: "typing", prompt: "What is the X-intercept of \\( y = -3x + 1 \\)? (Type the x-value as a fraction, e.g., \\dfrac{1}{2}) <span class='translation'>(Berapa intersep-X dari y = -3x + 1? Ketik nilai x sebagai pecahan)</span>", answer: "\\dfrac{1}{3}", explanation: "0 = -3x + 1. 3x = 1. x = \\dfrac{1}{3}. <span class='translation'>0 = -3x + 1. 3x = 1. x = \\dfrac{1}{3}.</span>" },
+      { type: "multiple_choice", prompt: "Which of these lines is the STEEPEST? <span class='translation'>(Garis mana yang PALING CURAM?)</span>", options: ["\\( y = 5x + 1 \\)", "\\( y = 2x - 10 \\)", "\\( y = -x + 4 \\)", "\\( y = \\dfrac{1}{4}x \\)"], answer: 0, explanation: "Steepness is the absolute value of m. |5| is the largest number. <span class='translation'>Kemiringan adalah nilai mutlak m. |5| adalah angka terbesar.</span>" }
+    ]
+  },
+  // ===== SECTION 7: FEEDBACK PORTAL =====
+  {
+    id: 11,
+    steps: [
+      { type: "theory", title: "Mission Debrief: Linear City Architect!", body: `<p>Luar biasa! Kamu telah berhasil merancang struktur kota menggunakan Fungsi Linear. Kamu belajar bahwa setiap garis lurus menyimpan rahasia: seberapa curam ia (gradien \\( m \\)) dan di mana ia memulai pembangunannya (intersep-Y \\( c \\)).</p><p>Sebelum kita menutup sesi ini, login ke <a href="https://learn.algonova.id/login" target="_blank">https://learn.algonova.id/login</a> ya untuk melihat rangkuman lengkap dan tugasmu!</p><p class="translation">Excellent! You have successfully designed city structures using Linear Functions. You learned that every straight line holds a secret: how steep it is (gradient m) and where it starts building (Y-intercept c). Login to the portal to see your summary!</p>` },
+      { type: "theory", title: "Reflecting on the Blueprints", body: `<p>Mari kita refleksikan sebentar. Apa bagian yang paling menantang hari ini? Apakah saat menggambar gradien pecahan, atau menerjemahkan cerita ke dalam rumus matematika?</p><p>Ingat, setiap arsitek hebat pasti pernah menghadapi tantangan. Semakin sering berlatih, semakin mahir kamu membaca "peta" fungsi linear ini!</p><p class="translation">Let's reflect for a moment. What was the most challenging part today? Drawing fractional gradients, or translating stories into math formulas? Remember, every great architect faces challenges. Practice makes perfect!</p>` },
+      { type: "theory", title: "Final Quick Check", body: `<p>Sebelum kamu pergi, mari kita pastikan lisensi arsitekmu aktif dengan menjawab 7 pertanyaan kilat ini. Jika lulus, kamu siap menghadapi proyek kota yang lebih besar!</p><p class="translation">Before you go, let's make sure your architect license is active by answering 7 quick questions. If you pass, you are ready for bigger city projects!</p>` },
+      { type: "typing", prompt: "What is the magic formula for a linear function? (Use format y=mx+c) <span class='translation'>(Apa rumus ajaib fungsi linear?)</span>", answer: "y=mx+c", explanation: "Yes! y = mx + c is the foundation of all linear functions. <span class='translation'>Ya! y = mx + c adalah fondasi semua fungsi linear.</span>" },
+      { type: "multiple_choice", prompt: "In \\( y = mx + c \\), what does 'm' represent? <span class='translation'>(Apa arti 'm'?)</span>", options: ["Y-intercept", "Gradient/Slope", "Variable", "Constant"], answer: 1, explanation: "m is the gradient, determining the steepness and direction. <span class='translation'>m adalah gradien, penentu kemiringan dan arah.</span>" },
+      { type: "dropdown", prompt: "Identify the starting point. <span class='translation'>(Identifikasi titik awal)</span>", sentence: "If a graph goes DOWN from left to right, the gradient (m) must be [drop] <span class='translation'>(Jika grafik TURUN, gradiennya pasti)</span>", options: ["Positive", "Negative", "Zero", "Fraction"], answer: "Negative", explanation: "Negative gradients go downwards. <span class='translation'>Gradien negatif garisnya turun.</span>" },
+      { type: "checkbox", prompt: "What TWO pieces of information do you absolutely need to draw a straight line? <span class='translation'>(DUA informasi apa yang mutlak dibutuhkan untuk menggambar garis lurus?)</span>", options: ["The gradient (m)", "The Y-intercept (c)", "The X-intercept", "The area of the graph"], answers: [0, 1], explanation: "With m and c, you can draw any straight line perfectly! <span class='translation'>Dengan m dan c, kamu bisa menggambar garis lurus dengan sempurna!</span>" },
+      { type: "pairing", prompt: "Final review! Match the concept to its meaning. <span class='translation'>(Review terakhir! Cocokkan konsep dengan artinya)</span>", pairs: [{ left: "Gradient", right: "Rate of change" }, { left: "Y-intercept", right: "Starting point" }, { left: "Parallel lines", right: "Same gradient" }] },
+      { type: "range", prompt: "If \\( y = 2x + 1 \\) and \\( x = 3 \\), what is \\( y \\)? <span class='translation'>(Jika y = 2x + 1 dan x = 3, berapa y?)</span>", min: 0, max: 10, answer: 7, explanation: "y = 2(3) + 1 = 6 + 1 = 7. <span class='translation'>y = 2(3) + 1 = 6 + 1 = 7.</span>" },
+      { type: "drag_drop", prompt: "Arrange the universal steps to solve any linear word problem! <span class='translation'>(Susun langkah universal menyelesaikan soal cerita linear)</span>", sentence: "[drop] -> [drop] -> [drop]", bank: ["Identify the starting point (c) and rate (m) <span class='translation'>(Identifikasi titik awal c dan laju m)</span>", "Write the equation y = mx + c <span class='translation'>(Tulis persamaan y = mx + c)</span>", "Substitute the given x value to find y <span class='translation'>(Substitusi nilai x untuk cari y)</span>"], answer: "0,1,2", explanation: "Model it first, then calculate. You've mastered the flow! <span class='translation'>Buat modelnya dulu, lalu hitung. Kamu sudah kuasainya!</span>" }
+    ]
+  }
+];
+
+// --- MAP RENDERING ---
+function renderMap() {
+  const container = $('#mapContainer');
+  const svg = $('#mapSvg');
+  container.querySelectorAll('.map-node').forEach(n => n.remove());
+  svg.innerHTML = '';
+
+  const connections = [
+    [0,1],[1,2],[2,3],[3,4],[4,5], 
+    [5,6],[5,7],[5,8],[5,9],[5,10], 
+    [6,11],[7,11],[8,11],[9,11],[10,11] 
+  ];
+
+  connections.forEach(([a, b]) => {
+    const p1 = App.nodePositions[a];
+    const p2 = App.nodePositions[b];
+    const midY = (p1.y + p2.y) / 2;
+    const pathD = `M ${p1.x} ${p1.y} C ${p1.x} ${midY} ${p2.x} ${midY} ${p2.x} ${p2.y}`;
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', pathD);
+    path.setAttribute('stroke', '#e5e5e5');
+    path.setAttribute('stroke-width', '6');
+    path.setAttribute('stroke-dasharray', '8 8');
+    path.setAttribute('fill', 'none');
+    path.setAttribute('stroke-linecap', 'round');
+    svg.appendChild(path);
+  });
+
+  App.lessonMeta.forEach((meta, i) => {
+    const pos = App.nodePositions[i];
+    const isCompleted = App.state.completedLessons.includes(i);
+    let isAvailable = true; 
+    
+    let stateClass = 'locked';
+    if (isCompleted) stateClass = 'completed';
+    else if (isAvailable) stateClass = 'available';
+
+    const node = el('div', `map-node ${stateClass}`, meta.icon);
+    node.style.left = `${(pos.x / 800) * 100}%`;
+    node.style.top = `${(pos.y / 920) * 100}%`; 
+    
+    const tooltip = el('div', 'node-tooltip', meta.title);
+    node.appendChild(tooltip);
+    
+    const label = el('div', 'node-label', meta.title);
+    if (meta.time) {
+      const timeLabel = el('div', 'node-time-label', meta.time);
+      label.appendChild(timeLabel);
+    }
+    node.appendChild(label);
+    
+    if (isAvailable || isCompleted) {
+      node.addEventListener('click', () => startLesson(i));
+    }
+    container.appendChild(node);
+  });
+}
+
+// --- LESSON LOGIC ---
+function startLesson(lessonId) {
+  App.state.currentLessonId = lessonId;
+  App.state.currentStepIndex = 0;
+  App.state.correctCount = 0;
+  App.state.totalAnswered = 0;
+  App.state.stepAnswered = false;
+  App.state.hearts = 5; 
+  App.state.lessonHistory = []; // TAMBAHKAN INI UNTUK CATATAN JAWABAN
+  $('#hearts').textContent = App.state.hearts;
+
+  $('#mapView').style.display = 'none';
+  $('#lessonView').classList.add('active');
+  $('#lessonHearts').textContent = App.state.hearts;
+  $('#lessonTime').textContent = App.lessonMeta[lessonId].time;
+  
+  renderStep();
+}
+
+function renderStep() {
+  const lesson = LESSONS[App.state.currentLessonId];
+  const step = lesson.steps[App.state.currentStepIndex];
+  
+  App.state.stepAnswered = false;
+  App.state.selectedOption = null;
+  App.state.draggedValue = null;
+  App.state.selectedPair = null;
+  App.state.matchedPairs = 0;
+  App.state.canCheck = false;
+  
+  const progress = (App.state.currentStepIndex / lesson.steps.length) * 100;
+  $('#progressBar').style.width = `${progress}%`;
+  
+  $('#feedback').className = 'feedback';
+  $('#feedback').innerHTML = '';
+  
+  const content = $('#lessonContent');
+  content.innerHTML = '';
+  
+  switch(step.type) {
+    case 'theory': renderTheory(content, step); break;
+    case 'multiple_choice': renderMultipleChoice(content, step); break;
+    case 'typing': renderTyping(content, step); break;
+    case 'dropdown': renderDropdown(content, step); break;
+    case 'drag_drop': renderDragDrop(content, step); break;
+    case 'pairing': renderPairing(content, step); break;
+    case 'checkbox': renderCheckbox(content, step); break;
+    case 'range': renderRange(content, step); break;
+    case 'print_form': renderPrintForm(content, step); break; // TAMBAHKAN INI
+  }
+  
+  try {
+    if (window.renderMathInElement) {
+      renderMathInElement(content, {
+        delimiters: [
+          {left: "\\(", right: "\\)", display: false},
+          {left: "$$", right: "$$", display: true}
+        ],
+        throwOnError: false
+      });
+    }
+  } catch(e) {
+    console.error("KaTeX Render Error:", e);
+  }
+  
+  updateActionBtn();
+}
+
+function updateActionBtn() {
+  const btn = $('#actionBtn');
+  const resetBtn = $('#resetBtn');
+  btn.classList.remove('active', 'hidden');
+  resetBtn.classList.add('hidden');
+  
+  const step = LESSONS[App.state.currentLessonId].steps[App.state.currentStepIndex];
+  
+  // Jika step saat ini adalah form cetak, tampilkan tombol Finish & Continue
+  if (step.type === 'print_form') {
+    btn.textContent = 'Finish & Continue';
+    btn.classList.add('active');
+    App.state.stepAnswered = true; // Izinkan tombol untuk di-klik langsung
+  } else if (App.state.stepAnswered) {
+    btn.textContent = 'Continue';
+    btn.classList.add('active');
+  } else {
+    btn.textContent = 'Check';
+    if (App.state.canCheck) {
+      btn.classList.add('active');
+      if (step.type !== 'theory') {
+        resetBtn.classList.remove('hidden');
+      }
+    }
+  }
+}
+
+// --- STEP RENDERERS ---
+function renderTheory(container, step) {
+  container.innerHTML = `
+    <div class="theory-card">
+      <span class="theory-badge">THEORY</span>
+      <h2>${step.title}</h2>
+      <div class="theory-body">${step.body}</div>
+    </div>
+  `;
+  App.state.stepAnswered = true;
+  updateActionBtn();
+}
+
+function renderMultipleChoice(container, step) {
+  container.innerHTML = `
+    <div class="q-prompt">${step.prompt}</div>
+    ${step.sub ? `<div class="q-sub">${step.sub}</div>` : ''}
+    ${step.image ? `<div class="q-image">${step.image}</div>` : ''}
+    <div class="options" id="optionsList"></div>
+  `;
+  const list = $('#optionsList');
+  step.options.forEach((opt, i) => {
+    const o = el('div', 'option', `<span class="o-key">${i+1}</span> <span>${opt}</span>`);
+    o.addEventListener('click', () => {
+      if (App.state.stepAnswered) return;
+      list.querySelectorAll('.option').forEach(x => x.classList.remove('selected'));
+      o.classList.add('selected');
+      App.state.selectedOption = i;
+      App.state.canCheck = true;
+      updateActionBtn();
+    });
+    list.appendChild(o);
+  });
+}
+
+function renderTyping(container, step) {
+  container.innerHTML = `
+    <div class="q-prompt">${step.prompt}</div>
+    ${step.sub ? `<div class="q-sub">${step.sub}</div>` : ''}
+    <input type="text" class="typing-input" id="typingInput" placeholder="Type your answer..." autocomplete="off">
+    ${step.hint ? `<div class="q-hint">💡 ${step.hint}</div>` : ''}
+  `;
+  const input = $('#typingInput');
+  input.focus();
+  input.addEventListener('input', () => {
+    if (App.state.stepAnswered) return;
+    App.state.canCheck = input.value.trim() !== '';
+    updateActionBtn();
+  });
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && App.state.canCheck) checkAnswer();
+  });
+}
+
+function renderDropdown(container, step) {
+  let sentenceHtml = step.sentence.replace('[drop]', 
+    `<select class="dropdown-select" id="ddSelect">
+      <option value="">?</option>
+      ${step.options.map(o => `<option value="${o}">${o}</option>`).join('')}
+    </select>`);
+    
+  container.innerHTML = `
+    <div class="q-prompt">${step.prompt}</div>
+    <div class="q-sub">Choose the correct answer <span class="translation">(Pilih jawaban yang tepat)</span></div>
+    <div class="sentence">${sentenceHtml}</div>
+  `;
+  $('#ddSelect').addEventListener('change', (e) => {
+    App.state.canCheck = e.target.value !== '';
+    updateActionBtn();
+  });
+}
+
+function renderDragDrop(container, step) {
+  let sentenceHtml = step.sentence;
+  sentenceHtml = sentenceHtml.replace(/\[drop\]/g, `<div class="drop-zone"></div>`);
+    
+  container.innerHTML = `
+    <div class="q-prompt">${step.prompt}</div>
+    <div class="q-sub">Drag the answer to the correct box (in order) <span class="translation">(Seret jawaban ke kotak yang benar secara berurutan)</span></div>
+    <div class="sentence" style="text-align:center; margin: 30px 0; line-height: 2.4;">${sentenceHtml}</div>
+    <div class="drag-bank" id="dragBank">
+      ${step.bank.map((b, i) => `<div class="drag-item" id="drag-${i}" data-id="${i}" draggable="true">${b}</div>`).join('')}
+    </div>
+  `;
+  
+  document.querySelectorAll('.drag-item').forEach(item => {
+    item.addEventListener('dragstart', (e) => {
+      e.dataTransfer.setData("text", e.target.id);
+      item.classList.add('dragging');
+    });
+    item.addEventListener('dragend', () => item.classList.remove('dragging'));
+  });
+  
+  document.querySelectorAll('.drop-zone').forEach(zone => {
+    zone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      zone.classList.add('over');
+    });
+    zone.addEventListener('dragleave', () => zone.classList.remove('over'));
+    zone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      zone.classList.remove('over');
+      const id = e.dataTransfer.getData("text");
+      const dragged = document.getElementById(id);
+      if (dragged) {
+        const oldItem = zone.querySelector('.drag-item');
+        if (oldItem) {
+          const oldId = oldItem.id;
+          const oldDragged = document.getElementById(oldId);
+          if (oldDragged) oldDragged.style.visibility = 'visible';
+        }
+        zone.innerHTML = '';
+        zone.appendChild(dragged.cloneNode(true));
+        zone.dataset.filledId = dragged.dataset.id; // SIMPAN ID DI DROPZONE
+        zone.classList.add('filled');
+        dragged.style.visibility = 'hidden';
+        App.state.canCheck = true;
+        updateActionBtn();
+      }
+    });
+  });
+}
+
+function renderPairing(container, step) {
+  container.innerHTML = `
+    <div class="q-prompt">${step.prompt}</div>
+    <div class="q-sub">Click the matching pairs (left to right) <span class="translation">(Klik pasangan yang cocok dari kiri ke kanan)</span></div>
+    <div class="pair-grid">
+      <div class="pair-col" id="leftCol"></div>
+      <div class="pair-col" id="rightCol"></div>
+    </div>
+  `;
+  const leftCol = $('#leftCol');
+  const rightCol = $('#rightCol');
+  const rightItems = [...step.pairs].sort(() => Math.random() - 0.5);
+  
+  step.pairs.forEach(p => {
+    const li = el('div', 'pair-item', p.left);
+    li.dataset.val = p.right;
+    li.dataset.side = 'left';
+    li.addEventListener('click', () => handlePairClick(li));
+    leftCol.appendChild(li);
+  });
+  rightItems.forEach(p => {
+    const ri = el('div', 'pair-item', p.right);
+    ri.dataset.val = p.right;
+    ri.dataset.side = 'right';
+    ri.addEventListener('click', () => handlePairClick(ri));
+    rightCol.appendChild(ri);
+  });
+}
+
+function renderCheckbox(container, step) {
+  container.innerHTML = `
+    <div class="q-prompt">${step.prompt}</div>
+    ${step.sub ? `<div class="q-sub">${step.sub}</div>` : ''}
+    <div class="options" id="cbList"></div>
+  `;
+  const list = $('#cbList');
+  step.options.forEach((opt, i) => {
+    const o = el('div', 'checkbox-option', `<div class="checkbox-box"></div> <span>${opt}</span>`);
+    o.dataset.idx = i;
+    o.addEventListener('click', () => {
+      if (App.state.stepAnswered) return;
+      o.classList.toggle('checked');
+      App.state.canCheck = list.querySelectorAll('.checked').length > 0;
+      updateActionBtn();
+    });
+    list.appendChild(o);
+  });
+}
+
+function renderRange(container, step) {
+  container.innerHTML = `
+    <div class="q-prompt">${step.prompt}</div>
+    ${step.sub ? `<div class="q-sub">${step.sub}</div>` : ''}
+    <div class="range-wrap">
+      <div class="range-row">
+        <span class="range-unit">Min <span class="translation" style="display:inline; margin:0; font-size:12px;">(Min)</span>: ${step.min}</span>
+        <span class="range-value" id="rangeVal">${step.min}</span>
+        <span class="range-unit">Max <span class="translation" style="display:inline; margin:0; font-size:12px;">(Maks)</span>: ${step.max}</span>
+      </div>
+      <input type="range" class="range-slider" id="rangeSlider" min="${step.min}" max="${step.max}" value="${step.min}">
+    </div>
+  `;
+  const slider = $('#rangeSlider');
+  slider.addEventListener('input', () => {
+    $('#rangeVal').textContent = slider.value;
+    App.state.canCheck = true;
+    updateActionBtn();
+  });
+}
+
+// --- INTERACTION HELPERS ---
+function handlePairClick(item) {
+  if (App.state.stepAnswered || item.classList.contains('matched')) return;
+  if (!App.state.selectedPair) {
+    App.state.selectedPair = item;
+    item.classList.add('selected');
+  } else {
+    if (App.state.selectedPair === item) {
+      item.classList.remove('selected');
+      App.state.selectedPair = null;
+    } else if (App.state.selectedPair.dataset.side === item.dataset.side) {
+      App.state.selectedPair.classList.remove('selected');
+      App.state.selectedPair = item;
+      item.classList.add('selected');
+    } else {
+      if (App.state.selectedPair.dataset.val === item.dataset.val) {
+        App.state.selectedPair.classList.remove('selected');
+        App.state.selectedPair.classList.add('matched');
+        item.classList.add('matched');
+        App.state.matchedPairs++;
+        if (App.state.matchedPairs === LESSONS[App.state.currentLessonId].steps[App.state.currentStepIndex].pairs.length) {
+          App.state.canCheck = true;
+          updateActionBtn();
+        }
+      } else {
+        const w1 = App.state.selectedPair;
+        const w2 = item;
+        w1.classList.add('wrong');
+        w2.classList.add('wrong');
+        setTimeout(() => {
+          w1.classList.remove('wrong', 'selected');
+          w2.classList.remove('wrong');
+        }, 500);
+      }
+      App.state.selectedPair = null;
+    }
+  }
+}
+
+// --- FUNGSI FORM CETAK ASSESSMENT ---
+function renderPrintForm(container, step) {
+  const today = new Date().toISOString().split('T')[0];
+  container.innerHTML = `
+    <div class="theory-card">
+      <span class="theory-badge">ASSESSMENT COMPLETED</span>
+      <h2>Generate Report <span class="translation">(Buat Laporan)</span></h2>
+      <div class="theory-body">
+        <p>You have finished the assessment. Fill in your details to print the result. <span class='translation'>(Kamu telah menyelesaikan asesmen. Isi data diri untuk mencetak hasil.)</span></p>
+        <div style="margin: 20px 0; display:grid; gap:12px;">
+          <input type="text" id="studentName" class="typing-input" placeholder="Enter your name... / Nama..." style="font-size:16px;">
+          <input type="date" id="studentDate" class="typing-input" value="${today}" style="font-size:16px;">
+        </div>
+        <button class="action-btn active" id="printReportBtn" style="margin-top:10px;">🖨️ Print Result <span class="translation" style="display:inline; color:#fff; margin-left:4px;">(Cetak Hasil)</span></button>
+      </div>
+    </div>
+  `;
+  
+  const printBtn = container.querySelector('#printReportBtn');
+  if(printBtn) {
+    printBtn.addEventListener('click', function() {
+      const name = container.querySelector('#studentName').value || 'Anonymous';
+      const date = container.querySelector('#studentDate').value || today;
+      generateAssessmentReport(name, date, step.group);
+    });
+  }
+}
+
+function generateAssessmentReport(name, date, group) {
+  // Buka tab baru DI PALING AWAL agar tidak diblokir browser
+  const win = window.open('', '_blank');
+  if (!win) {
+    alert("Please allow pop-ups to generate the report. / Mohon izinkan pop-up untuk mencetak laporan.");
+    return;
+  }
+
+  const accuracy = Math.round((App.state.correctCount / App.state.totalAnswered) * 100) || 0;
+  let tableRows = '';
+  
+  // Fungsi pengaman agar tidak crash jika data jawaban kosong/undefined
+  const safeString = (str) => (str || "").toString();
+  
+  App.state.lessonHistory.forEach((item, index) => {
+    const cleanPrompt = safeString(item.prompt).replace(/<span class='translation'>.*?<\/span>/g, '').trim();
+    const cleanStudentAns = safeString(item.studentAnswer).replace(/<span class='translation'>.*?<\/span>/g, '').trim();
+    const cleanCorrectAns = safeString(item.correctAnswer).replace(/<span class='translation'>.*?<\/span>/g, '').trim();
+    
+    tableRows += `
+      <tr>
+        <td style="text-align:center;">${index + 1}</td>
+        <td>${cleanPrompt}</td>
+        <td style="color:${item.isCorrect ? 'green' : 'red'};">${cleanStudentAns}</td>
+        <td>${cleanCorrectAns}</td>
+        <td style="text-align:center; font-weight:bold; color:${item.isCorrect ? 'green' : 'red'};">${item.isCorrect ? '✔' : '✖'}</td>
+      </tr>
+    `;
+  });
+  
+  const html = `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <title>Assessment Result - ${name}</title>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+      <style>
+        body { font-family: Arial, sans-serif; padding: 40px; color: #333; }
+        h1 { color: #58cc02; border-bottom: 2px solid #58cc02; padding-bottom: 10px; }
+        .info-box { background: #f7f7f7; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        .info-box p { margin: 5px 0; font-size: 16px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 14px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: top; }
+        th { background-color: #58cc02; color: white; }
+        .katex { font-size: 1em !important; }
+        @media print { button { display: none; } }
+      </style>
+    </head>
+    <body>
+      <h1>ASSESSMENT RESULT</h1>
+      <div class="info-box">
+        <p><b>Name:</b> ${name}</p>
+        <p><b>Date:</b> ${date}</p>
+        <p><b>Topic:</b> Number Patterns & Quick Tricks (Pola Bilangan & Trik Cepat)</p>
+        <p><b>Assessment Group:</b> ${group}</p>
+        <p><b>Score:</b> ${App.state.correctCount}/${App.state.totalAnswered} (${accuracy}%)</p>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th style="width:5%;">No.</th>
+            <th style="width:40%;">Question</th>
+            <th style="width:20%;">Student Answer</th>
+            <th style="width:20%;">Correct Answer</th>
+            <th style="width:15%;">Note</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${tableRows}
+        </tbody>
+      </table>
+      <button onclick="window.print()" style="margin-top:20px; padding:10px 20px; background:#1cb0f6; color:#fff; border:none; border-radius:8px; cursor:pointer; font-size:16px;">Print Page</button>
+      
+      <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"><\/script>
+      <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"><\/script>
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          if (window.renderMathInElement) {
+            renderMathInElement(document.body, {
+              delimiters: [
+                {left: "\\\\(", right: "\\\\)", display: false},
+                {left: "$$", right: "$$", display: true}
+              ],
+              throwOnError: false
+            });
+          }
+        });
+      <\/script>
+    </body>
+    </html>
+  `;
+  
+  win.document.open();
+  win.document.write(html);
+  win.document.close();
+}
+
+// --- CHECK LOGIC ---
+function getCorrectAnswerText(step) {
+  switch(step.type) {
+    case 'multiple_choice': return step.options[step.answer];
+    case 'typing': return step.answer;
+    case 'dropdown': return step.answer;
+    case 'drag_drop': return step.answer.split(',').join(' ➔ ');
+    case 'checkbox': return step.answers.map(i => step.options[i]).join(', ');
+    case 'range': return step.answer;
+    case 'pairing': return "All pairs matched correctly. <span class='translation'>(Semua pasangan sudah dicocokkan dengan benar.)</span>";
+    default: return "";
+  }
+}
+
+function checkAnswer() {
+  if (!App.state.stepAnswered && App.state.canCheck) {
+    const lesson = LESSONS[App.state.currentLessonId];
+    const step = lesson.steps[App.state.currentStepIndex];
+    let isCorrect = false;
+    let studentAnswerText = "";
+    
+    switch(step.type) {
+      case 'multiple_choice':
+        isCorrect = App.state.selectedOption === step.answer;
+        studentAnswerText = step.options[App.state.selectedOption];
+        break;
+      case 'typing':
+        // Ubah di sini: hapus semua spasi menggunakan .replace(/\s+/g, '') sebelum dibandingkan
+        let userAns = $('#typingInput').value.toLowerCase().trim().replace(/\s+/g, '');
+        let correctAns = String(step.answer).toLowerCase().trim().replace(/\s+/g, '');
+        isCorrect = userAns === correctAns;
+        studentAnswerText = $('#typingInput').value;
+        break;
+      case 'dropdown':
+        isCorrect = $('#ddSelect').value === step.answer;
+        studentAnswerText = $('#ddSelect').value;
+        break;
+      case 'drag_drop':
+        const zones = document.querySelectorAll('.drop-zone');
+        const placedIds = Array.from(zones).map(z => z.dataset.filledId);
+        const correctIds = step.answer.split(',');
+        isCorrect = placedIds.length === correctIds.length && placedIds.every((v, i) => v === correctIds[i].trim());
+        studentAnswerText = placedIds.map(id => step.bank[parseInt(id)]).join(' ➔ ');
+        break;
+      case 'pairing':
+        isCorrect = App.state.matchedPairs === step.pairs.length;
+        studentAnswerText = "Matched all pairs correctly";
+        break;
+      case 'checkbox':
+        const checked = Array.from(document.querySelectorAll('.checkbox-option.checked')).map(el => parseInt(el.dataset.idx));
+        isCorrect = checked.length === step.answers.length && checked.every(v => step.answers.includes(v));
+        studentAnswerText = checked.map(i => step.options[i]).join(', ');
+        break;
+      case 'range':
+        isCorrect = parseInt($('#rangeSlider').value) === step.answer;
+        studentAnswerText = $('#rangeSlider').value;
+        break;
+    }
+    
+    App.state.stepAnswered = true;
+    App.state.totalAnswered++;
+    if (isCorrect) App.state.correctCount++;
+    
+    // CATAT JAWABAN UNTUK LAPORAN
+    App.state.lessonHistory.push({
+      prompt: step.prompt,
+      studentAnswer: studentAnswerText,
+      correctAnswer: getCorrectAnswerText(step),
+      isCorrect: isCorrect
+    });
+    
+    showFeedback(isCorrect, step);
+    updateActionBtn();
+  } else if (App.state.stepAnswered) {
+    nextStep();
+  }
+}
+
+function showFeedback(isCorrect, step) {
+  const feedback = $('#feedback');
+  feedback.className = `feedback show ${isCorrect ? 'correct' : 'wrong'}`;
+  
+  let html = `<div class="feedback-title">${isCorrect ? '✅ Correct! <span class="translation">Benar!</span>' : '❌ Incorrect <span class="translation">Kurang Tepat</span>'}</div>`;
+  
+  if (isCorrect) {
+    html += `<div class="feedback-text">Great job, keep going! <span class="translation">Kerja bagus, lanjutkan!</span></div>`;
+    if (step.explanation) {
+      html += `<div class="feedback-text" style="margin-top:8px; font-size:13px; color:var(--blue-dark);">💡 ${step.explanation}</div>`;
+    }
+  } else {
+    const correctAns = getCorrectAnswerText(step);
+    html += `<div class="feedback-text">Correct answer: <b>${correctAns}</b> <span class="translation">(Jawaban yang benar)</span></div>`;
+    if (step.explanation) {
+      html += `<div class="feedback-text" style="margin-top:8px; font-size:13px; color:var(--blue-dark);">💡 <b>How to solve:</b> ${step.explanation}</div>`;
+    } else {
+      html += `<div class="feedback-text" style="margin-top:8px; font-size:13px; color:var(--text-light);">💡 Please check your math pattern or calculation again. <span class="translation">Periksa kembali pola atau hitungan matematisamu ya.</span></div>`;
+    }
+  }
+
+  feedback.innerHTML = html;
+  
+  if (!isCorrect) {
+    App.state.hearts--;
+    $('#hearts').textContent = App.state.hearts;
+    $('#lessonHearts').textContent = App.state.hearts;
+    if (App.state.hearts <= 0) {
+      // Optional: Handle game over logic here
+    }
+  }
+}
+
+function nextStep() {
+  const lesson = LESSONS[App.state.currentLessonId];
+  if (App.state.currentStepIndex < lesson.steps.length - 1) {
+    App.state.currentStepIndex++;
+    renderStep();
+  } else {
+    completeLesson();
+  }
+}
+
+function completeLesson() {
+  App.state.completedLessons.push(App.state.currentLessonId);
+  $('#lessonView').classList.remove('active');
+  $('#completeView').style.display = 'flex';
+  
+  const accuracy = Math.round((App.state.correctCount / App.state.totalAnswered) * 100) || 0;
+  $('#finalXp').textContent = `+${App.state.correctCount * 10} XP`;
+  $('#finalAccuracy').textContent = `${accuracy}%`;
+  $('#finalCorrect').textContent = `${App.state.correctCount}/${App.state.totalAnswered}`;
+  
+  renderMap();
+}
+
+// --- EVENT LISTENERS ---
+document.addEventListener('DOMContentLoaded', () => {
+  $('#actionBtn').addEventListener('click', checkAnswer);
+  
+  // Fungsi tombol reset: render ulang step saat ini dari awal
+  $('#resetBtn').addEventListener('click', () => {
+    renderStep();
+  });
+  
+  $('#lessonClose').addEventListener('click', () => {
+    $('#lessonView').classList.remove('active');
+    $('#mapView').style.display = 'block';
+  });
+  
+  $('#continueBtn').addEventListener('click', () => {
+    $('#completeView').style.display = 'none';
+    $('#mapView').style.display = 'block';
+  });
+  
+  $('#openRulesBtn').addEventListener('click', () => $('#rulesOverlay').classList.add('show'));
+  $('#closeRulesBtn').addEventListener('click', () => $('#rulesOverlay').classList.remove('show'));
+  $('#understandBtn').addEventListener('click', () => $('#rulesOverlay').classList.remove('show'));
+
+  renderMap();
+});
+</script>
+</body>
+</html>
