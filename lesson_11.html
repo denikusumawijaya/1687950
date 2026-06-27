@@ -1,0 +1,1764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Math Tutoring — Algebra Mid-Phase Review & Assessment</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+
+<style>
+/* ============== DESIGN TOKENS ============== */
+:root{
+  --green:#58cc02; --green-dark:#58a700; --green-light:#d7ffb8;
+  --blue:#1cb0f6; --blue-light:#ddf4ff; --blue-dark:#0a87d6;
+  --red:#ff4b4b; --red-light:#ffdfe0;
+  --yellow:#ffc800; --yellow-dark:#e6a700;
+  --purple:#ce82ff; --orange:#ff9600;
+  --bg:#fff; --text:#3c3c3c; --text-light:#777;
+  --border:#e5e5e5; --border-hover:#bfbfbf;
+  --bg-gray:#f7f7f7; --shadow:0 4px 0 rgba(0,0,0,.08);
+}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Nunito',sans-serif}
+body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+
+.app{max-width:820px;margin:0 auto;min-height:100vh;position:relative;background:#fff;
+     box-shadow:0 0 30px rgba(0,0,0,.05)}
+
+/* ============== TOPBAR (MAP) ============== */
+.topbar{display:flex;align-items:center;padding:14px 20px;background:#fff;
+        border-bottom:2px solid var(--border);position:sticky;top:0;z-index:10}
+.rules-btn{margin-left:auto;margin-right:20px;background:var(--blue-light);color:var(--blue-dark);
+           border:2px solid var(--blue);padding:8px 14px;border-radius:12px;font-weight:800;
+           font-size:13px;cursor:pointer;font-family:inherit;transition:all .15s;white-space:nowrap}
+.rules-btn:hover{background:#a4dcff}
+.rules-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;
+               display:none;align-items:center;justify-content:center;padding:20px}
+.rules-overlay.show{display:flex;animation:fadeUp .3s}
+.rules-modal{background:#fff;border-radius:20px;padding:30px 24px;max-width:380px;width:100%;
+             position:relative;box-shadow:0 10px 30px rgba(0,0,0,.2);text-align:center}
+.rules-close{position:absolute;top:12px;right:16px;background:none;border:none;font-size:20px;
+             color:var(--text-light);cursor:pointer}
+.rules-title{font-size:24px;font-weight:900;color:var(--text);margin-bottom:6px}
+.rules-sub{font-size:14px;color:var(--text-light);margin-bottom:24px}
+.rule-item{display:flex;align-items:flex-start;gap:14px;text-align:left;
+           background:var(--bg-gray);padding:16px;border-radius:14px;margin-bottom:12px}
+.rule-icon{font-size:28px;background:#fff;width:50px;height:50px;border-radius:50%;
+           display:flex;align-items:center;justify-content:center;flex-shrink:0;
+           border:2px solid var(--border)}
+.rule-text b{font-size:16px;color:var(--text);display:block;margin-bottom:4px}
+.rule-text p{font-size:14px;color:var(--text-light);line-height:1.4}
+.topbar .logo{display:flex;flex-direction:column;line-height:1.1;cursor:pointer}
+.topbar .logo .logo-main{font-weight:900;font-size:18px;color:var(--green);letter-spacing:-.5px}
+.topbar .logo .logo-sub{font-weight:700;font-size:11px;color:var(--blue);letter-spacing:1.5px;margin-top:2px}
+.topbar .stats{display:flex;gap:18px;margin-left:auto;align-items:center}
+.stat{display:flex;align-items:center;gap:6px;font-weight:800;font-size:15px}
+.stat .ic{font-size:18px}
+
+/* ============== MAP VIEW ============== */
+.map-view{padding:24px 20px 120px}
+.map-header{text-align:center;margin-bottom:28px}
+.map-header h1{font-size:26px;font-weight:900;margin-bottom:6px}
+.map-header p{color:var(--text-light);font-size:14px}
+.map-container{position:relative;padding:30px 10px;min-height:1080px}
+.map-svg{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1}
+.map-node{position:absolute;width:72px;height:72px;border-radius:50%;
+          display:flex;align-items:center;justify-content:center;
+          font-size:28px;font-weight:900;cursor:pointer;z-index:2;
+          transition:transform .2s;user-select:none;
+          transform:translate(-50%,-50%)}
+.map-node.locked{background:#e5e5e5;color:#afafaf;cursor:not-allowed;box-shadow:0 4px 0 #cfcfcf}
+.map-node.available{background:var(--green);color:#fff;box-shadow:0 6px 0 var(--green-dark);
+                     animation:bounce 2s infinite}
+.map-node.completed{background:var(--yellow);color:#fff;box-shadow:0 6px 0 var(--yellow-dark)}
+.map-node.current{background:var(--blue);color:#fff;box-shadow:0 6px 0 var(--blue-dark)}
+.map-node.available:hover,.map-node.completed:hover,.map-node.current:hover{transform:translate(-50%,calc(-50% - 3px))}
+@keyframes bounce{0%,100%{transform:translate(-50%,-50%)}50%{transform:translate(-50%,calc(-50% - 5px))}}
+.node-label{position:absolute;top:100%;left:50%;transform:translateX(-50%);margin-top:8px;
+            font-size:11px;font-weight:800;color:var(--text);white-space:nowrap;
+            background:#fff;padding:3px 10px;border-radius:8px;border:2px solid var(--border)}
+.node-progress{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);margin-bottom:6px;
+               width:48px;height:6px;background:var(--border);border-radius:999px;overflow:hidden}
+.node-progress span{display:block;height:100%;background:var(--green);transition:width .4s}
+.node-tooltip{position:absolute;top:-46px;left:50%;transform:translateX(-50%);
+              background:#333;color:#fff;padding:6px 12px;border-radius:8px;
+              font-size:12px;font-weight:700;white-space:nowrap;opacity:0;pointer-events:none;
+              transition:opacity .2s;z-index:5}
+.node-tooltip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);
+                     border:5px solid transparent;border-top-color:#333}
+.map-node:hover .node-tooltip{opacity:1}
+
+/* ============== LESSON VIEW ============== */
+.lesson-view{display:none;position:fixed;inset:0;background:#fff;z-index:100;
+             flex-direction:column;max-width:820px;margin:0 auto}
+.lesson-view.active{display:flex}
+.lesson-topbar{display:flex;align-items:center;padding:14px 20px;gap:16px;
+               border-bottom:1px solid var(--border)}
+.lesson-close{background:none;border:none;font-size:24px;cursor:pointer;
+              color:var(--text-light);padding:4px;line-height:1}
+.lesson-progress{flex:1;height:14px;background:var(--border);border-radius:999px;overflow:hidden}
+.lesson-progress-bar{height:100%;background:var(--green);border-radius:999px;
+                     transition:width .4s ease;width:0%;position:relative}
+.lesson-progress-bar::after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;
+                            background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);
+                            animation:shimmer 2s infinite}
+@keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.lesson-hearts{display:flex;align-items:center;gap:4px;font-weight:900;color:var(--red);font-size:18px}
+.lesson-time{font-size:13px;font-weight:800;color:var(--blue-dark);background:var(--blue-light);padding:5px 10px;border-radius:8px;border:1px solid var(--blue);white-space:nowrap}
+.node-time-label{font-size:10px;color:var(--text-light);font-weight:700;display:block;text-align:center;margin-top:2px}
+.lesson-content{flex:1;padding:24px 20px;overflow-y:auto}
+
+/* ============== THEORY CARD ============== */
+.theory-card{background:linear-gradient(135deg,#fffce8,#fff);
+             border:2px solid var(--yellow);border-radius:18px;padding:24px;
+             box-shadow:0 4px 0 var(--yellow-dark)}
+.theory-badge{display:inline-block;background:var(--yellow);color:#fff;
+              padding:4px 12px;border-radius:999px;font-size:12px;font-weight:800;
+              margin-bottom:12px;letter-spacing:.5px}
+.theory-card h2{font-size:24px;margin-bottom:14px;color:var(--text);font-weight:900}
+.theory-card .theory-body{font-size:16px;line-height:1.7;color:var(--text)}
+.theory-card .theory-body p{margin-bottom:12px}
+.formula-box{background:#fff;border-left:5px solid var(--green);padding:14px 18px;
+             margin:14px 0;font-family:'Courier New',monospace;font-size:20px;
+             font-weight:700;border-radius:6px;color:var(--green-dark)}
+.example-box{background:#fff;padding:14px 18px;margin:14px 0;border-radius:10px;
+             border:2px solid var(--border);font-size:15px}
+.example-box b{color:var(--blue-dark)}
+.tip-box{background:var(--blue-light);border:2px solid var(--blue);padding:12px 16px;
+         border-radius:10px;margin-top:14px;font-size:14px;color:var(--blue-dark)}
+.tip-box b{color:var(--blue-dark)}
+
+/* ============== QUESTION ============== */
+.q-prompt{font-size:22px;font-weight:900;margin-bottom:8px;line-height:1.3}
+.q-sub{font-size:14px;color:var(--text-light);margin-bottom:18px}
+.q-image{font-size:64px;text-align:center;margin:12px 0}
+.q-hint{font-size:13px;color:var(--text-light);font-style:italic;margin-top:8px}
+
+/* Bilingual Translation Class */
+.translation { font-size: 13px; color: var(--text-light); font-style: italic; display: block; margin-top: 4px; line-height: 1.4; }
+.option .translation, .checkbox-option .translation, .pair-item .translation { display: block; font-size: 12px; margin-top: 2px; }
+
+/* Multiple choice */
+.options{display:grid;gap:10px}
+.option{padding:14px 16px;border:2px solid var(--border);border-radius:14px;
+        cursor:pointer;font-size:16px;font-weight:700;transition:all .15s;
+        background:#fff;user-select:none;text-align:left;display:flex;
+        align-items:center;gap:12px}
+.option:hover{border-color:var(--border-hover)}
+.option .o-key{width:30px;height:30px;border-radius:8px;border:2px solid var(--border);
+               display:flex;align-items:center;justify-content:center;font-size:13px;
+               flex-shrink:0;font-weight:900;color:var(--text-light)}
+.option.selected{border-color:var(--blue);background:var(--blue-light);color:var(--blue-dark)}
+.option.selected .o-key{border-color:var(--blue);background:var(--blue);color:#fff}
+.option.correct{border-color:var(--green);background:var(--green-light);color:var(--green-dark)}
+.option.correct .o-key{border-color:var(--green);background:var(--green);color:#fff}
+.option.wrong{border-color:var(--red);background:var(--red-light);color:var(--red)}
+.option.wrong .o-key{border-color:var(--red);background:var(--red);color:#fff}
+.option.disabled{cursor:default;pointer-events:none}
+
+/* Typing */
+.typing-input{width:100%;padding:14px 16px;border:2px solid var(--border);
+              border-radius:14px;font-size:18px;font-weight:700;outline:none;
+              font-family:inherit;background:#fff;transition:all .15s}
+.typing-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-light)}
+.typing-input.correct{border-color:var(--green);background:var(--green-light)}
+.typing-input.wrong{border-color:var(--red);background:var(--red-light)}
+
+/* Dropdown */
+.sentence{font-size:20px;line-height:2.4;font-weight:700}
+.dropdown-select{display:inline-block;padding:6px 14px;border:2px solid var(--border);
+                 border-radius:12px;background:#fff;font-size:16px;font-weight:800;
+                 cursor:pointer;font-family:inherit;margin:0 4px;outline:none;
+                 color:var(--blue-dark);transition:all .15s}
+.dropdown-select:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-light)}
+.dropdown-select.correct{border-color:var(--green);background:var(--green-light);color:var(--green-dark)}
+.dropdown-select.wrong{border-color:var(--red);background:var(--red-light);color:var(--red)}
+
+/* Drag and drop */
+.drag-bank{display:flex;flex-wrap:wrap;gap:8px;min-height:54px;padding:14px;
+           background:var(--bg-gray);border-radius:14px;border:2px dashed var(--border);margin-bottom:16px}
+.drag-item{padding:8px 16px;background:#fff;border:2px solid var(--border);
+           border-radius:12px;cursor:grab;font-weight:800;font-size:15px;
+           user-select:none;transition:all .15s;box-shadow:var(--shadow)}
+.drag-item:hover{transform:translateY(-2px);border-color:var(--border-hover)}
+.drag-item.dragging{opacity:.4;cursor:grabbing}
+.drag-item.placed{background:var(--blue);color:#fff;border-color:var(--blue);
+                  box-shadow:0 4px 0 var(--blue-dark)}
+.drop-zone{display:inline-flex;align-items:center;justify-content:center;
+           min-width:80px;min-height:40px;padding:4px 10px;
+           border:2px dashed var(--blue);border-radius:10px;vertical-align:middle;
+           margin:0 4px;background:var(--blue-light);transition:all .15s}
+.drop-zone.over{background:#a4dcff;border-style:solid}
+.drop-zone.filled{border-style:solid;background:#fff}
+.drop-zone.filled .drag-item{margin:0}
+
+/* Pairing */
+.pair-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.pair-col{display:grid;gap:10px}
+.pair-item{padding:14px;border:2px solid var(--border);border-radius:12px;
+           background:#fff;cursor:pointer;font-weight:800;text-align:center;
+           transition:all .15s;font-size:15px}
+.pair-item:hover{border-color:var(--border-hover)}
+.pair-item.selected{border-color:var(--blue);background:var(--blue-light);color:var(--blue-dark)}
+.pair-item.matched{background:var(--green-light);border-color:var(--green);
+                   color:var(--green-dark);opacity:.5;pointer-events:none}
+.pair-item.wrong{border-color:var(--red);background:var(--red-light);
+                 animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+
+/* Checkbox */
+.checkbox-option{display:flex;align-items:center;gap:14px;padding:14px 16px;
+                 border:2px solid var(--border);border-radius:12px;cursor:pointer;
+                 user-select:none;transition:all .15s;background:#fff}
+.checkbox-option:hover{border-color:var(--border-hover)}
+.checkbox-option.checked{border-color:var(--blue);background:var(--blue-light)}
+.checkbox-box{width:26px;height:26px;border:2px solid var(--border);border-radius:8px;
+              display:flex;align-items:center;justify-content:center;flex-shrink:0;
+              font-weight:900;color:#fff;transition:all .15s}
+.checkbox-option.checked .checkbox-box{background:var(--blue);border-color:var(--blue)}
+.checkbox-option.correct{border-color:var(--green);background:var(--green-light)}
+.checkbox-option.correct .checkbox-box{background:var(--green);border-color:var(--green)}
+.checkbox-option.wrong{border-color:var(--red);background:var(--red-light)}
+.checkbox-option.wrong .checkbox-box{background:var(--red);border-color:var(--red)}
+
+/* Range */
+.range-wrap{padding:20px 0}
+.range-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.range-value{font-size:36px;font-weight:900;color:var(--green)}
+.range-unit{font-size:16px;color:var(--text-light);font-weight:700}
+.range-slider{width:100%;-webkit-appearance:none;height:14px;background:var(--border);
+              border-radius:999px;outline:none;margin:8px 0}
+.range-slider::-webkit-slider-thumb{-webkit-appearance:none;width:32px;height:32px;
+              background:var(--green);border-radius:50%;cursor:pointer;border:5px solid #fff;
+              box-shadow:0 0 0 2px var(--green),0 2px 8px rgba(0,0,0,.2)}
+.range-slider::-moz-range-thumb{width:32px;height:32px;background:var(--green);
+              border-radius:50%;cursor:pointer;border:5px solid #fff;
+              box-shadow:0 0 0 2px var(--green),0 2px 8px rgba(0,0,0,.2)}
+.range-ticks{display:flex;justify-content:space-between;margin-top:8px;font-size:12px;
+             color:var(--text-light);font-weight:700}
+
+/* ============== FOOTER ============== */
+.lesson-footer{padding:16px 20px;border-top:2px solid var(--border);background:#fff}
+.feedback{padding:16px;border-radius:14px;margin-bottom:12px;display:none}
+.feedback.show{display:block;animation:fadeUp .3s}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.feedback.correct{background:var(--green-light)}
+.feedback.wrong{background:var(--red-light)}
+.feedback-title{font-weight:900;font-size:17px;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.feedback.correct .feedback-title{color:var(--green-dark)}
+.feedback.wrong .feedback-title{color:var(--red)}
+.feedback-text{font-size:14px;color:var(--text)}
+.action-btn{width:100%;padding:16px;border:none;border-radius:14px;font-size:16px;
+            font-weight:900;cursor:pointer;font-family:inherit;
+            background:var(--border);color:var(--text-light);transition:all .15s}
+.action-btn.active{background:var(--green);color:#fff;box-shadow:0 4px 0 var(--green-dark)}
+.action-btn.active:hover{filter:brightness(1.05)}
+.action-btn.active:active{transform:translateY(2px);box-shadow:0 2px 0 var(--green-dark)}
+.action-btn.skip{background:transparent;color:var(--text-light);box-shadow:none;
+                 border:2px solid var(--border);margin-top:8px}
+.action-btn.skip:hover{border-color:var(--border-hover)}
+
+/* ============== COMPLETE ============== */
+.complete-screen{display:none;text-align:center;padding:40px 20px;flex-direction:column;
+                 align-items:center;justify-content:center;flex:1}
+.complete-screen.show{display:flex}
+.complete-icon{font-size:90px;margin-bottom:16px;animation:pop .5s}
+@keyframes pop{0%{transform:scale(0)}70%{transform:scale(1.2)}100%{transform:scale(1)}}
+.complete-screen h1{font-size:34px;color:var(--yellow);margin-bottom:8px;font-weight:900;
+                    text-shadow:2px 2px 0 var(--yellow-dark)}
+.complete-screen .cs-sub{font-size:16px;color:var(--text-light);margin-bottom:24px}
+.complete-stats{display:flex;gap:14px;margin-bottom:28px;flex-wrap:wrap;justify-content:center}
+.complete-stat{background:#fff;padding:18px 28px;border-radius:16px;
+               border:2px solid var(--border);box-shadow:var(--shadow);min-width:110px}
+.complete-stat .stat-v{font-size:26px;font-weight:900;color:var(--green)}
+.complete-stat .stat-l{font-size:12px;color:var(--text-light);font-weight:700;
+                        text-transform:uppercase;letter-spacing:.5px}
+
+/* ============== RESPONSIVE ============== */
+@media (max-width:600px){
+  .pair-grid{grid-template-columns:1fr}
+  .map-node{width:60px;height:60px;font-size:22px}
+  .q-prompt{font-size:20px}
+  .topbar .stats{gap:12px;font-size:13px}
+  .lesson-content{padding:18px 16px}
+}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="logo">
+      <span class="logo-main">🧮 Math Tutoring</span>
+      <span class="logo-sub">by Deni</span>
+    </div>
+    <button class="rules-btn" id="openRulesBtn" title="Class Rules">📋 Class Rules</button>
+    <div class="stats">
+      <div class="stat"><span class="ic">🔥</span><span id="streak">0</span></div>
+      <div class="stat"><span class="ic">💎</span><span id="gems">0</span></div>
+      <div class="stat"><span class="ic">❤️</span><span id="hearts">5</span></div>
+    </div>
+  </header>
+
+  <main class="map-view" id="mapView">
+    <div class="map-header">
+      <h1>Algebra Mid-Phase Review & Assessment</h1>
+      <p>Review dan Asesmen Tengah Fase - Aljabar</p>
+    </div>
+    <div class="map-container" id="mapContainer">
+      <svg class="map-svg" id="mapSvg" viewBox="0 0 800 1080" preserveAspectRatio="none"></svg>
+    </div>
+  </main>
+
+  <div class="lesson-view" id="lessonView">
+    <header class="lesson-topbar">
+      <button class="lesson-close" id="lessonClose" title="Exit">✕</button>
+      <div class="lesson-progress"><div class="lesson-progress-bar" id="progressBar"></div></div>
+      <div class="lesson-time" id="lessonTime">No Timer</div>
+      <div class="lesson-hearts">❤️ <span id="lessonHearts">5</span></div>
+    </header>
+    <div class="lesson-content" id="lessonContent"></div>
+    <footer class="lesson-footer">
+      <div class="feedback" id="feedback"></div>
+      <button class="action-btn" id="actionBtn">Check</button>
+      <button class="action-btn skip hidden" id="resetBtn">🔄 Reset Answer</button>
+    </footer>
+  </div>
+
+  <div class="lesson-view" id="completeView" style="background:linear-gradient(135deg,#fffce8,#d7ffb8)">
+    <div class="complete-screen show" id="completeScreen">
+      <div class="complete-icon">🏆</div>
+      <h1 id="completeTitle">Excellent!</h1>
+      <p class="cs-sub" id="completeSub">Lesson completed</p>
+      <div class="complete-stats">
+        <div class="complete-stat"><div class="stat-v" id="finalXp">+10 XP</div><div class="stat-l">XP Earned</div></div>
+        <div class="complete-stat"><div class="stat-v" id="finalAccuracy">100%</div><div class="stat-l">Accuracy</div></div>
+        <div class="complete-stat"><div class="stat-v" id="finalCorrect">0/0</div><div class="stat-l">Correct</div></div>
+      </div>
+      <button class="action-btn active" id="continueBtn" style="max-width:320px">Continue</button>
+      <button class="action-btn" id="printResultBtn" style="max-width:320px; margin-top:10px; display:none; background:var(--blue); color:#fff; box-shadow:0 4px 0 var(--blue-dark);">🖨️ Print Result</button>
+    </div>
+  </div>
+
+  <div class="rules-overlay" id="rulesOverlay">
+    <div class="rules-modal">
+      <button class="rules-close" id="closeRulesBtn">✕</button>
+      <h2 class="rules-title">📋 Class Rules</h2>
+      <p class="rules-sub">Let's create a comfortable and conducive learning environment!</p>
+      <div class="rule-item">
+        <div class="rule-icon">🗣️</div>
+        <div class="rule-text">
+          <b>Take Turns Speaking</b>
+          <p>Respect the person speaking and wait for our turn.</p>
+        </div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-icon">🚪</div>
+        <div class="rule-text">
+          <b>Ask for Permission</b>
+          <p>Always ask the teacher for permission if you need to leave the class.</p>
+        </div>
+      </div>
+      <button class="action-btn active" id="understandBtn" style="margin-top:20px">I Understand!</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+<script>
+const App = {
+  state: {
+    hearts: 5, gems: 0, streak: 0,
+    completedLessons: [], currentLessonId: null,
+    currentStepIndex: 0, stepAnswered: false,
+    correctCount: 0, totalAnswered: 0,
+    selectedPair: null, dragSrc: null,
+    answeredHistory: [] 
+  },
+  nodePositions: [
+    { x: 400, y: 60 },   // 1. Spiral Review
+    { x: 560, y: 160 },  // 2. Intro
+    { x: 240, y: 260 },  // 3. Problem Intro
+    { x: 560, y: 360 },  // 4. Guided Practice
+    { x: 240, y: 460 },  // 5. Independent
+    { x: 400, y: 560 },  // 6. Consolidation
+    { x: 100, y: 720 },  // 7.1 Assessment A
+    { x: 250, y: 760 },  // 7.2 Assessment B
+    { x: 400, y: 780 },  // 7.3 Assessment C
+    { x: 550, y: 760 },  // 7.4 Assessment D
+    { x: 700, y: 720 },  // 7.5 Assessment E
+    { x: 400, y: 1000 }  // 8. Feedback Portal
+  ],
+  lessonMeta: [
+    { id: 0, icon: "1", title: "Algebraic Basics", desc: "Variables & Translation", time: "00:00-00:10" },
+    { id: 1, icon: "2", title: "Real-World", desc: "Coding & Subscriptions", time: "00:10-00:15" },
+    { id: 2, icon: "3", title: "Golden Rules", desc: "Balance & Negatives", time: "00:15-00:25" },
+    { id: 3, icon: "4", title: "Debugging", desc: "Functions & Inequalities", time: "00:25-00:40" },
+    { id: 4, icon: "5", title: "Graphing", desc: "Lines & Shading", time: "00:40-00:55" },
+    { id: 5, icon: "6", title: "Boss Level", desc: "Combined Mastery", time: "00:55-01:00" },
+    { id: 6, icon: "7.1", title: "Assessment A", desc: "Basics & Translation", time: "No Timer" },
+    { id: 7, icon: "7.2", title: "Assessment B", desc: "Equations (PLSV)", time: "No Timer" },
+    { id: 8, icon: "7.3", title: "Assessment C", desc: "Inequalities (PtLSV)", time: "No Timer" },
+    { id: 9, icon: "7.4", title: "Assessment D", desc: "Functions & Graphs", time: "No Timer" },
+    { id: 10, icon: "7.5", title: "Assessment E", desc: "Debug & Real World", time: "No Timer" },
+    { id: 11, icon: "8", title: "Feedback Portal", desc: "Learn.algonova.id", time: "01:00-01:05" }
+  ],
+};
+const $ = (sel) => document.querySelector(sel);
+const $$ = (sel) => document.querySelectorAll(sel);
+const el = (tag, cls, html) => {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (html != null) e.innerHTML = html;
+  return e;
+};
+
+const LESSONS = [
+    // ===== SECTION 1: ALGEBRAIC BASICS & TRANSLATION =====
+  {
+    id: 0,
+    steps: [
+      { 
+        type: "theory", 
+        title: "🧮 The Anatomy of Algebra", 
+        body: `<p>Welcome, Math Detective! Before we code, we must understand the syntax. In algebra, we use letters to represent unknown numbers.</p>
+               <p><b>Variable (Variabel):</b> A symbol for an unknown number (e.g., \\(x\\), \\(y\\), \\(p\\)).</p>
+               <p><b>Coefficient (Koefisien):</b> The number multiplying the variable (e.g., in \\(3x\\), 3 is the coefficient).</p>
+               <p><b>Constant (Konstanta):</b> A fixed number (e.g., in \\(3x - 7\\), -7 is the constant).</p>
+               <p class="translation">Selamat datang, Detektif Matematika! Sebelum membuat kode, kita harus memahami sintaksnya. Variabel: simbol angka tak diketahui. Koefisien: angka pengali variabel. Konstanta: angka tetap.</p>` 
+      },
+      { 
+        type: "multiple_choice", 
+        prompt: "What is the constant in the expression \\(3x - 7\\)? <span class='translation'>(Apa konstanta dari ekspresi \\(3x - 7\\)?)</span>", 
+        options: ["3", "x", "-7", "7"], 
+        answer: 2, 
+        explanation: "The fixed number not attached to a variable is -7. <span class='translation'>Angka tetap yang tidak terikat variabel adalah -7.</span>" 
+      },
+      { 
+        type: "typing", 
+        prompt: "State the coefficient of \\(y\\) in the expression \\(-y + 5\\). <span class='translation'>(Sebutkan koefisien dari \\(y\\) pada \\(-y + 5\\).)</span>", 
+        answer: "-1", 
+        explanation: "\\(-y\\) is the same as \\(-1y\\). The coefficient is -1. <span class='translation'>\\(-y\\) sama dengan \\(-1y\\). Koefisiennya -1.</span>" 
+      },
+      { 
+        type: "dropdown", 
+        prompt: "Translate: 'The total price of 5 tickets if one ticket costs \\(p\\) rupiah.' <span class='translation'>(Terjemahkan: 'Harga total 5 tiket jika satu tiket harganya \\(p\\) rupiah.')</span>", 
+        sentence: "Total price is [drop]", 
+        options: ["5p", "5+p", "p-5", "5/p"], 
+        answer: "5p", 
+        explanation: "5 times \\(p\\) is written as \\(5p\\). <span class='translation'>5 dikali \\(p\\) ditulis \\(5p\\).</span>" 
+      },
+      { 
+        type: "drag_drop", 
+        prompt: "You have savings \\(s\\) and withdraw 50 thousand. Arrange the expression for the remaining savings! <span class='translation'>(Kamu punya tabungan \\(s\\) dan mengambil 50 ribu. Susun ekspresi sisa tabunganmu!)</span>", 
+        sentence: "[drop] [drop] [drop]", 
+        bank: ["s", "-", "50000"], 
+        answer: "0,1,2", 
+        explanation: "Savings \\(s\\) minus 50000 is \\(s - 50000\\). <span class='translation'>Tabungan \\(s\\) dikurangi 50000 adalah \\(s - 50000\\).</span>" 
+      },
+      { 
+        type: "theory", 
+        title: "🌐 Translating the Real World", 
+        body: `<p>Algebra is a bridge between human language and mathematics. "Twice a number minus four" becomes \\(2x - 4\\).</p>
+               <p>When you see words like "is" or "equals", that's your bridge! It translates to the \\(=\\) sign. When you see "more than" or "less than", think \\(>\\) or \\(<\\).</p>
+               <p class="translation">Aljabar adalah jembatan antara bahasa manusia dan matematika. "Dua kali sebuah angka dikurang empat" menjadi \\(2x - 4\\). Kata "adalah" menjadi \\(=\\). "Lebih dari" menjadi \\(>\\).</p>` 
+      },
+      { 
+        type: "pairing", 
+        prompt: "Match the verbal phrase to the algebraic expression! <span class='translation'>(Cocokkan kalimat verbal dengan ekspresi aljabarnya!)</span>", 
+        pairs: [
+          { left: "Sum of a number and 4", right: "x + 4" }, 
+          { left: "Double a number", right: "2x" }, 
+          { left: "A number minus 10", right: "x - 10" }
+        ] 
+      },
+      { 
+        type: "checkbox", 
+        prompt: "Which of the following represent 'A number multiplied by 3, then reduced by 2'? <span class='translation'>(Manakah yang mewakili 'Sebuah angka dikali 3, lalu dikurangi 2'?)</span>", 
+        options: ["3x - 2", "3(x - 2)", "-2 + 3x", "x + 3 - 2"], 
+        answers: [0, 2], 
+        explanation: "Both \\(3x - 2\\) and \\(-2 + 3x\\) mean 3 times \\(x\\) minus 2. <span class='translation'>Baik \\(3x - 2\\) maupun \\(-2 + 3x\\) berarti 3 kali \\(x\\) dikurang 2.</span>" 
+      },
+      { 
+        type: "theory", 
+        title: "🧱 Combining Like Terms", 
+        body: `<p>You can only add or subtract terms that are "like" (same variable and power). \\(3x\\) and \\(5x\\) are friends. \\(3x\\) and \\(5\\) are strangers!</p>
+               <p>\\(3x + 5x - 2 + 4 = 8x + 2\\)</p>
+               <p class="translation">Kamu hanya bisa menjumlah atau mengurangkan suku yang "sejenis". \\(3x\\) dan \\(5x\\) adalah teman. \\(3x\\) dan \\(5\\) adalah orang asing! \\(3x + 5x - 2 + 4 = 8x + 2\\).</p>` 
+      },
+      { 
+        type: "range", 
+        prompt: "Solve for the exact value of \\(x\\): \\(x + 7 = 12\\). Slide the bar to the correct number! <span class='translation'>(Selesaikan nilai \\(x\\): \\(x + 7 = 12\\). Geser baris ke angka yang benar!)</span>", 
+        min: 0, max: 20, answer: 5, 
+        explanation: "12 - 7 = 5. <span class='translation'>12 - 7 = 5.</span>" 
+      },
+      { 
+        type: "multiple_choice", 
+        prompt: "Simplify: \\(4y + 2 - 2y + 5\\). <span class='translation'>(Sederhanakan: \\(4y + 2 - 2y + 5\\).)</span>", 
+        options: ["2y + 7", "6y + 7", "2y - 3", "4y + 7"], 
+        answer: 0, 
+        explanation: "Combine \\(y\\)'s (\\(4y - 2y = 2y\\)) and numbers (\\(2 + 5 = 7\\)). Result: \\(2y + 7\\). <span class='translation'>Gabungkan \\(y\\) dan angka. Hasilnya: \\(2y + 7\\).</span>" 
+      },
+      { 
+        type: "typing", 
+        prompt: "I have \\(10a\\). I give away \\(4a\\). Type the simplified expression. <span class='translation'>(Saya punya \\(10a\\). Saya berikan \\(4a\\). Ketik ekspresi yang disederhanakan.)</span>", 
+        answer: "6a", 
+        explanation: "\\(10a - 4a = 6a\\). <span class='translation'>\\(10a - 4a = 6a\\).</span>" 
+      },
+       { 
+         type: "dropdown", 
+         prompt: "Translate: '5 less than twice \\(m\\)'. <span class='translation'>(Terjemahkan: '5 kurang dari dua kali \\(m\\)'.)</span>", 
+         sentence: "5 less than twice m is [drop]", 
+         options: ["2m - 5", "5 - 2m", "m - 5", "2m + 5"], 
+         answer: "2m - 5", 
+         explanation: "Twice \\(m\\) is \\(2m\\). 5 less than that is \\(2m - 5\\). <span class='translation'>Dua kali \\(m\\) adalah \\(2m\\). 5 kurang dari itu adalah \\(2m - 5\\).</span>" 
+       }
+    ]
+  },
+
+  // ===== SECTION 2: ALGEBRA IN CODING & REAL-WORLD LIMITS =====
+  {
+    id: 1,
+    steps: [
+      { 
+        type: "theory", 
+        title: "💻 Algebra is Code", 
+        body: `<p>Imagine you are a game developer. You need an equation to calculate subscription prices (a function) and an inequality to ensure your server doesn't crash!</p>
+               <p>A <b>Function</b> is a machine: input goes in, output comes out. \\(f(x) = 2x + 10\\).</p>
+               <p class="translation">Bayangkan kamu pengembang game. Kamu butuh persamaan untuk harga langganan (fungsi) dan pertidaksamaan agar server tidak crash! Fungsi adalah mesin: input masuk, output keluar. \\(f(x) = 2x + 10\\).</p>` 
+      },
+      { 
+        type: "typing", 
+        prompt: "A game server holds 100 players. If \\(x\\) more players join, and currently there are 40 players, write an expression for the total players. <span class='translation'>(Server game menampung 100 pemain. Jika \\(x\\) pemain lagi bergabung, dan saat ini ada 40 pemain, tulis ekspresi total pemain.)</span>", 
+        answer: "40 + x", 
+        explanation: "Current players plus new players: \\(40 + x\\). <span class='translation'>Pemain saat ini ditambah pemain baru: \\(40 + x\\).</span>" 
+      },
+      { 
+        type: "multiple_choice", 
+        prompt: "A server can hold a maximum of 500 users. Which represents this limit? <span class='translation'>(Server dapat menampung maksimal 500 pengguna. Manakah yang mewakili batas ini?)</span>", 
+        options: ["x = 500", "x < 500", "x ≤ 500", "x ≥ 500"], 
+        answer: 2, 
+        explanation: "Maximum means it can hold 500 or less. So, \\(x \\le 500\\). <span class='translation'>Maksimal berarti 500 atau kurang. Jadi, \\(x \\le 500\\).</span>" 
+      },
+      { 
+        type: "checkbox", 
+        prompt: "Which of these scenarios require an inequality rather than an equation? <span class='translation'>(Skenario mana yang membutuhkan pertidaksamaan, bukan persamaan?)</span>", 
+        options: ["Maximum budget is $50", "Exact change for a $5 coffee", "At least 10 participants needed", "Height must be over 120cm"], 
+        answers: [0, 2, 3], 
+        explanation: "Inequalities deal with ranges and limits (max, at least, over). Exact change is an equation. <span class='translation'>Pertidaksamaan berhubungan dengan batas (maksimal, minimal, lebih dari). Uang pas adalah persamaan.</span>" 
+      },
+      { 
+        type: "theory", 
+        title: "🎫 Modeling Subscriptions", 
+        body: `<p>Let's model a subscription: Base fee is $5, plus $2 per month.</p>
+               <p>Function: \\(f(m) = 2m + 5\\).</p>
+               <p>If you pay $15, how many months did you subscribe? We set \\(f(m) = 15\\).</p>
+               <p>\\(2m + 5 = 15 \\rightarrow 2m = 10 \\rightarrow m = 5\\) months!</p>
+               <p class="translation">Mari modelkan langganan: Biaya awal $5, ditambah $2 per bulan. Fungsi: \\(f(m) = 2m + 5\\). Jika kamu bayar $15, berapa bulan? Kita buat \\(f(m) = 15\\). \\(2m + 5 = 15 \\rightarrow m = 5\\) bulan!</p>` 
+      },
+      { 
+        type: "typing", 
+        prompt: "Write the function for total cost \\(C\\) if there is a $10 base fee and $3 per hour \\(h\\). <span class='translation'>(Tulis fungsi total biaya \\(C\\) jika ada biaya awal $10 dan $3 per jam \\(h\\).)</span>", 
+        answer: "C = 3h + 10", 
+        explanation: "Variable cost \\(3h\\) plus base fee 10. <span class='translation'>Biaya variabel \\(3h\\) ditambah biaya awal 10.</span>" 
+      },
+      { 
+        type: "dropdown", 
+        prompt: "If \\(f(x) = 4x - 5\\), what is \\(f(3)\\)? <span class='translation'>(Jika \\(f(x) = 4x - 5\\), berapakah \\(f(3)\\)?)</span>", 
+        sentence: "f(3) = 4(3) - 5 = [drop]", 
+        options: ["7", "12", "9", "-2"], 
+        answer: "7", 
+        explanation: "\\(4(3) - 5 = 12 - 5 = 7\\). <span class='translation'>\\(4(3) - 5 = 12 - 5 = 7\\).</span>" 
+      },
+      { 
+        type: "pairing", 
+        prompt: "Match the scenario to its mathematical model. <span class='translation'>(Cocokkan skenario dengan model matematikanya.)</span>", 
+        pairs: [
+          { left: "Fixed cost of $20", right: "y = 20" }, 
+          { left: "$5 per item", right: "5x" }, 
+          { left: "Total under $100", right: "f(x) < 100" }
+        ] 
+      },
+      { 
+        type: "theory", 
+        title: "📊 The Resource Limit", 
+        body: `<p>Inequalities show limits. Your server crashes if \\(x > 100\\). To keep it safe, \\(x \le 100\\).</p>
+               <p>We graph these using shaded areas. If \\(y \le 100\\), we shade everything below the line \\(y = 100\\).</p>
+               <p class="translation">Pertidaksamaan menunjukkan batas. Servermu crash jika \\(x > 100\\). Agar aman, \\(x \le 100\\). Kita gambarkan ini dengan area arsiran. Jika \\(y \le 100\\), kita arsir semua di bawah garis \\(y = 100\\).</p>` 
+      },
+      { 
+        type: "range", 
+        prompt: "If the limit is \\(x \le 7\\), and \\(x\\) must be a whole number, what is the maximum value for \\(x\\)? Slide to it! <span class='translation'>(Jika batasnya \\(x \le 7\\), dan \\(x\\) bilangan bulat, berapa nilai maksimal \\(x\\)? Geser!)</span>", 
+        min: 0, max: 10, answer: 7, 
+        explanation: "The largest whole number less than or equal to 7 is 7. <span class='translation'>Bilangan bulat terbesar yang kurang dari atau sama dengan 7 adalah 7.</span>" 
+      },
+      { 
+        type: "multiple_choice", 
+        prompt: "Which inequality matches 'Server capacity is at most 50'? <span class='translation'>(Pertidaksamaan mana yang cocok dengan 'Kapasitas server paling banyak 50'?)</span>", 
+        options: ["x > 50", "x < 50", "x ≥ 50", "x ≤ 50"], 
+        answer: 3, 
+        explanation: "'At most' means less than or equal to. <span class='translation'>'Paling banyak' berarti kurang dari atau sama dengan (\\(\le\\)).</span>" 
+      },
+      { 
+        type: "checkbox", 
+        prompt: "Identify the valid inputs for \\(f(x) = 5x\\) if the output must be less than 20. <span class='translation'>(Identifikasi input yang valid untuk \\(f(x) = 5x\\) jika output harus kurang dari 20.)</span>", 
+        options: ["x = 2", "x = 5", "x = 3", "x = 1"], 
+        answers: [0, 2, 3], 
+        explanation: "\\(5(2)=10, 5(3)=15, 5(1)=5\\). All are < 20. \\(5(5)=25\\) (Wrong). <span class='translation'>\\(10, 15, 5\\) semua < 20. \\(25\\) (Salah).</span>" 
+      },
+      { 
+        type: "drag_drop", 
+        prompt: "Build the inequality: 'The cost \\(c\\) must be over 50 but no more than 100.' <span class='translation'>(Bangun pertidaksamaan: 'Biaya \\(c\\) harus di atas 50 tapi tidak lebih dari 100.')</span>", 
+        sentence: "[drop] [drop] [drop] [drop] [drop]", 
+        bank: ["50", "<", "c", "≤", "100"], 
+        answer: "0,1,2,3,4", 
+        explanation: "Over 50 is \\(50 < c\\). No more than 100 is \\(c \\le 100\\). Combined: \\(50 < c \\le 100\\). <span class='translation'>Di atas 50 \\(50 < c\\). Tidak lebih dari 100 \\(c \\le 100\\). Gabungan: \\(50 < c \\le 100\\).</span>" 
+      }
+    ]
+  },
+
+  // ===== SECTION 3: THE GOLDEN RULES OF BALANCE =====
+  {
+    id: 2,
+    steps: [
+      { 
+        type: "theory", 
+        title: "⚖️ The Golden Rule of Balance", 
+        body: `<p>An equation is a perfectly balanced scale. Whatever you do to one side, you MUST do to the other.</p>
+               <p>If \\(x + 5 = 10\\), subtract 5 from both sides to isolate \\(x\\).</p>
+               <p>\\(x + 5 - 5 = 10 - 5 \\rightarrow x = 5\\).</p>
+               <p class="translation">Persamaan adalah timbangan yang seimbang sempurna. Apa pun yang kamu lakukan di satu sisi, HARUS dilakukan di sisi lainnya. Jika \\(x + 5 = 10\\), kurangi 5 dari kedua sisi. \\(x + 5 - 5 = 10 - 5 \\rightarrow x = 5\\).</p>` 
+      },
+      { 
+        type: "typing", 
+        prompt: "Solve for \\(x\\): \\(x - 8 = 12\\). <span class='translation'>(Selesaikan untuk \\(x\\): \\(x - 8 = 12\\).)</span>", 
+        answer: "20", 
+        explanation: "Add 8 to both sides: \\(12 + 8 = 20\\). <span class='translation'>Tambah 8 ke kedua sisi: \\(12 + 8 = 20\\).</span>" 
+      },
+      { 
+        type: "multiple_choice", 
+        prompt: "What is the first step to solve \\(3x + 4 = 19\\)? <span class='translation'>(Apa langkah pertama untuk menyelesaikan \\(3x + 4 = 19\\)?)</span>", 
+        options: ["Multiply by 3", "Subtract 4 from both sides", "Divide by 3", "Add 4 to both sides"], 
+        answer: 1, 
+        explanation: "First, move the constant away by subtracting 4. <span class='translation'>Pertama, pindahkan konstanta dengan mengurangi 4.</span>" 
+      },
+      { 
+        type: "dropdown", 
+        prompt: "Complete the balancing step: <span class='translation'>(Lengkapi langkah keseimbangan:)</span>", 
+        sentence: "If 2x + 6 = 14, then 2x = 14 - [drop]", 
+        options: ["2", "6", "14", "x"], 
+        answer: "6", 
+        explanation: "Subtract 6 from both sides to cancel the +6. <span class='translation'>Kurangi 6 di kedua sisi untuk menghilangkan +6.</span>" 
+      },
+      { 
+        type: "drag_drop", 
+        prompt: "Order the steps to solve \\(2x - 5 = 11\\). <span class='translation'>(Urutkan langkah menyelesaikan \\(2x - 5 = 11\\).)</span>", 
+        sentence: "[drop] -> [drop] -> [drop] -> [drop] -> [drop]", 
+        bank: ["2x - 5 = 11", "Add 5 to both sides", "2x = 16", "Divide by 2", "x = 8"], 
+        answer: "0,1,2,3,4", 
+        explanation: "Original equation -> Add 5 -> Result 2x=16 -> Divide by 2 -> Result x=8. <span class='translation'>Persamaan asli -> Tambah 5 -> Hasil 2x=16 -> Bagi 2 -> Hasil x=8.</span>" 
+      },
+      { 
+        type: "theory", 
+        title: "🚨 The Negative Number Trap", 
+        body: `<p>Here is the ultimate trick in algebra! When you multiply or divide BOTH sides of an inequality by a NEGATIVE number, the inequality sign FLIPS!</p>
+               <p>\\(-2x > 10 \\rightarrow \\frac{-2x}{-2} < \\frac{10}{-2} \\rightarrow x < -5\\).</p>
+               <p class="translation">Ini trik utama dalam aljabar! Saat kamu mengalikan atau membagi KEDUA sisi pertidaksamaan dengan bilangan NEGATIF, tanda pertidaksamaannya BERBALIK! \\(-2x > 10 \\rightarrow x < -5\\).</p>` 
+      },
+      { 
+        type: "typing", 
+        prompt: "Solve: \\(-3x \\le 12\\). (Type your answer using <, >, <=, or >=). <span class='translation'>(Selesaikan: \\(-3x \\le 12\\).)</span>", 
+        answer: "x >= -4", 
+        explanation: "Divide by -3 and FLIP the sign: \\(x \\ge -4\\). <span class='translation'>Bagi -3 dan BALIKKAN tanda: \\(x \\ge -4\\).</span>" 
+      },
+      { 
+        type: "multiple_choice", 
+        prompt: "What happens when you divide \\(-4x < 8\\) by \\(-4\\)? <span class='translation'>(Apa yang terjadi saat kamu membagi \\(-4x < 8\\) dengan \\(-4\\)?)</span>", 
+        options: ["x < 2", "x > -2", "x < -2", "x > 2"], 
+        answer: 1, 
+        explanation: "\\(8 \\div (-4) = -2\\). Since we divide by a negative, < becomes >. So \\(x > -2\\). <span class='translation'>\\(8 \\div (-4) = -2\\). Karena dibagi negatif, < menjadi >. Jadi \\(x > -2\\).</span>" 
+      },
+      { 
+        type: "pairing", 
+        prompt: "Match the inequality to its solved form. <span class='translation'>(Cocokkan pertidaksamaan dengan bentuk penyelesaiannya.)</span>", 
+        pairs: [
+          { left: "-x > 5", right: "x < -5" }, 
+          { left: "2x < 10", right: "x < 5" }, 
+          { left: "-3x ≥ -9", right: "x ≤ 3" }
+        ] 
+      },
+      { 
+        type: "theory", 
+        title: "🪜 Multi-Step Inequalities", 
+        body: `<p>Just like equations, isolate the variable step-by-step. Distribute first, combine like terms, then balance!</p>
+               <p>\\(3(x - 2) + 2 < 11 \\rightarrow 3x - 6 + 2 < 11 \\rightarrow 3x - 4 < 11 \\rightarrow 3x < 15 \\rightarrow x < 5\\).</p>
+               <p class="translation">Sama seperti persamaan, isolasi variabel langkah demi langkah. Distribusi dulu, gabungkan suku sejenis, lalu seimbangkan! \\(3(x - 2) + 2 < 11 \\rightarrow x < 5\\).</p>` 
+      },
+      { 
+        type: "range", 
+        prompt: "Solve \\(2x + 1 < 7\\). If \\(x\\) must be an integer, what is the maximum value for \\(x\\)? <span class='translation'>(Selesaikan \\(2x + 1 < 7\\). Jika \\(x\\) bilangan bulat, berapa nilai maksimal \\(x\\)?)</span>", 
+        min: 0, max: 10, answer: 2, 
+        explanation: "\\(2x < 6 \\rightarrow x < 3\\). The max integer is 2. <span class='translation'>\\(2x < 6 \\rightarrow x < 3\\). Bilangan bulat maksimal adalah 2.</span>" 
+      },
+      { 
+        type: "checkbox", 
+        prompt: "Which values satisfy \\(-2x + 1 \\ge 5\\)? <span class='translation'>(Nilai mana yang memenuhi \\(-2x + 1 \\ge 5\\)?)</span>", 
+        options: ["x = 0", "x = -1", "x = -2", "x = 2"], 
+        answers: [0, 1, 2], 
+        explanation: "\\(-2x \\ge 4 \\rightarrow x \\le -2\\). Valid integers are -2, -1, 0. <span class='translation'>\\(-2x \\ge 4 \\rightarrow x \\le -2\\). Bilangan bulat valid adalah -2, -1, 0.</span>" 
+      },
+      { 
+        type: "typing", 
+        prompt: "Solve for \\(x\\): \\(5 - x \\le 10\\). <span class='translation'>(Selesaikan untuk \\(x\\): \\(5 - x \\le 10\\).)</span>", 
+        answer: "x >= -5", 
+        explanation: "\\(-x \\le 5\\). Divide by -1 and flip: \\(x \\ge -5\\). <span class='translation'>\\(-x \\le 5\\). Bagi -1 dan balik: \\(x \\ge -5\\).</span>" 
+      }
+    ]
+  },
+  // ===== SECTION 4: DEBUGGING & FUNCTION NOTATION =====
+  {
+    id: 3,
+    steps: [
+      { 
+        type: "theory", 
+        title: "🐛 Debugging Algebra", 
+        body: `<p>Coders fix "bugs" (errors) in code. Math detectives fix bugs in algebra!</p>
+               <p><b>Common Bug:</b> Forgetting to distribute to ALL terms inside parentheses.</p>
+               <p>Buggy Code: \\(2(x + 5) = 2x + 5\\) ❌</p>
+               <p>Fixed Code: \\(2(x + 5) = 2x + 10\\) ✅ (The 2 multiplies both \\(x\\) and 5)</p>
+               <p class="translation">Programmer memperbaiki "bug" dalam kode. Detektif matematika memperbaiki bug dalam aljabar! Bug umum: Lupa mendistribusikan ke SEMUA suku di dalam kurung. Kode salah: \\(2(x + 5) = 2x + 5\\). Kode benar: \\(2(x + 5) = 2x + 10\\).</p>` 
+      },
+      { 
+        type: "multiple_choice", 
+        prompt: "Find the bug: A student expanded \\(3(x + 4)\\) as \\(3x + 4\\). What is the correct expansion? <span class='translation'>(Temukan bug: Seorang siswa menguraikan \\(3(x + 4)\\) menjadi \\(3x + 4\\). Apa yang benar?)</span>", 
+        options: ["3x + 4", "3x + 7", "3x + 12", "x + 12"], 
+        answer: 2, 
+        explanation: "The 3 must multiply both \\(x\\) and 4. \\(3 \\cdot x = 3x\\), \\(3 \\cdot 4 = 12\\). <span class='translation'>Angka 3 harus dikalikan dengan \\(x\\) dan 4. \\(3 \\cdot x = 3x\\), \\(3 \\cdot 4 = 12\\).</span>" 
+      },
+      { 
+        type: "typing", 
+        prompt: "Debug and expand correctly: \\(5(2y - 3)\\). <span class='translation'>(Debug dan uraikan dengan benar: \\(5(2y - 3)\\).)</span>", 
+        answer: "10y - 15", 
+        explanation: "\\(5 \\cdot 2y = 10y\\). \\(5 \\cdot -3 = -15\\). Result: \\(10y - 15\\). <span class='translation'>\\(5 \\cdot 2y = 10y\\). \\(5 \\cdot -3 = -15\\). Hasilnya: \\(10y - 15\\).</span>" 
+      },
+      { 
+        type: "drag_drop", 
+        prompt: "Arrange the steps to correctly expand and simplify: \\(3(x - 4) + 2\\). <span class='translation'>(Susun langkah untuk menguraikan dan menyederhanakan: \\(3(x - 4) + 2\\).)</span>", 
+        sentence: "[drop] -> [drop] -> [drop]", 
+        bank: ["3x - 12 + 2", "3(x - 4) + 2", "3x - 10"], 
+        answer: "1,0,2", 
+        explanation: "First distribute 3 to get \\(3x - 12 + 2\\), then combine constants (-12 + 2 = -10) to get \\(3x - 10\\). <span class='translation'>Pertama distribusikan 3 dapat \\(3x - 12 + 2\\), lalu gabungkan konstanta dapat \\(3x - 10\\).</span>" 
+      },
+      { 
+        type: "checkbox", 
+        prompt: "Which of these expansions are BUG-FREE (correct)? <span class='translation'>(Manakah dari penguraian ini yang BEBAS BUG (benar)?)</span>", 
+        options: ["2(x + 5) = 2x + 10", "3(x - 4) = 3x - 4", "- (x + 2) = -x - 2", "4(2x + 1) = 8x + 4"], 
+        answers: [0, 2, 3], 
+        explanation: "3 must multiply -4 to get -12. The others are correct. <span class='translation'>3 harus dikali -4 menjadi -12. Sisanya benar.</span>" 
+      },
+      { 
+        type: "theory", 
+        title: "🔗 Functions Meet Inequalities", 
+        body: `<p>Functions output values. Sometimes, we need that output to be within a safe limit (inequality).</p>
+               <p>If \\(f(x) = 2x + 10\\), and we need \\(f(x) < 30\\):</p>
+               <p>Substitute \\(f(x)\\): \\(2x + 10 < 30\\).</p>
+               <p>Solve: \\(2x < 20 \\rightarrow x < 10\\).</p>
+               <p class="translation">Fungsi menghasilkan nilai. Kadang, kita butuh output itu berada dalam batas aman (pertidaksamaan). Jika \\(f(x) = 2x + 10\\), dan kita butuh \\(f(x) < 30\\): Substitusi: \\(2x + 10 < 30\\). Selesaikan: \\(2x < 20 \\rightarrow x < 10\\).</p>` 
+      },
+      { 
+        type: "typing", 
+        prompt: "If \\(f(x) = 3x - 2\\) and \\(f(x) = 13\\), find \\(x\\). <span class='translation'>(Jika \\(f(x) = 3x - 2\\) dan \\(f(x) = 13\\), carilah \\(x\\).)</span>", 
+        answer: "5", 
+        explanation: "\\(3x - 2 = 13 \\rightarrow 3x = 15 \\rightarrow x = 5\\). <span class='translation'>\\(3x - 2 = 13 \\rightarrow 3x = 15 \\rightarrow x = 5\\).</span>" 
+      },
+      { 
+        type: "dropdown", 
+        prompt: "If \\(f(x) = x + 4\\), for what value of \\(x\\) is \\(f(x) > 10\\)? <span class='translation'>(Jika \\(f(x) = x + 4\\), untuk nilai \\(x\\) berapa \\(f(x) > 10\\)?)</span>", 
+        sentence: "x + 4 > 10  =>  x > [drop]", 
+        options: ["4", "6", "10", "14"], 
+        answer: "6", 
+        explanation: "Subtract 4 from 10: \\(x > 6\\). <span class='translation'>Kurangi 4 dari 10: \\(x > 6\\).</span>" 
+      },
+      { 
+        type: "pairing", 
+        prompt: "Match the function evaluation to the result. <span class='translation'>(Cocokkan evaluasi fungsi dengan hasilnya.)</span>", 
+        pairs: [
+          { left: "f(x)=2x, find f(3)", right: "6" }, 
+          { left: "f(x)=x+5, find f(2)", right: "7" }, 
+          { left: "f(x)=4x, find f(2)", right: "8" }
+        ] 
+      },
+      { 
+        type: "theory", 
+        title: "🎯 Solving \\(f(x) = k\\)", 
+        body: `<p>When a function equals a specific number, replace the entire \\(f(x)\\) with that number, then solve the linear equation.</p>
+               <p>Example: \\(f(x) = 5x - 2\\). If \\(f(x) = 18\\):</p>
+               <p>\\(5x - 2 = 18 \\rightarrow 5x = 20 \\rightarrow x = 4\\).</p>
+               <p class="translation">Ketika fungsi sama dengan angka tertentu, ganti seluruh \\(f(x)\\) dengan angka itu, lalu selesaikan persamaan linearnya. Contoh: \\(f(x) = 5x - 2\\). Jika \\(f(x) = 18\\): \\(5x - 2 = 18 \\rightarrow x = 4\\).</p>` 
+      },
+      { 
+        type: "range", 
+        prompt: "Solve \\(f(x) = 3x - 2\\) given \\(f(x) = 10\\). Slide to \\(x\\). <span class='translation'>(Selesaikan \\(f(x) = 3x - 2\\) jika \\(f(x) = 10\\). Geser ke \\(x\\).)</span>", 
+        min: 0, max: 10, answer: 4, 
+        explanation: "\\(3x - 2 = 10 \\rightarrow 3x = 12 \\rightarrow x = 4\\). <span class='translation'>\\(3x - 2 = 10 \\rightarrow 3x = 12 \\rightarrow x = 4\\).</span>" 
+      },
+      { 
+        type: "multiple_choice", 
+        prompt: "Solve \\(2(x + 5) = 20\\). <span class='translation'>(Selesaikan \\(2(x + 5) = 20\\).)</span>", 
+        options: ["x = 5", "x = 10", "x = 15", "x = 20"], 
+        answer: 0, 
+        explanation: "\\(2x + 10 = 20 \\rightarrow 2x = 10 \\rightarrow x = 5\\). <span class='translation'>\\(2x + 10 = 20 \\rightarrow 2x = 10 \\rightarrow x = 5\\).</span>" 
+      },
+      { 
+        type: "checkbox", 
+        prompt: "If \\(f(x) = x + 1\\), which statements are true? <span class='translation'>(Jika \\(f(x) = x + 1\\), pernyataan mana yang benar?)</span>", 
+        options: ["f(2) = 3", "f(0) = 1", "f(-1) = 0", "f(5) = 4"], 
+        answers: [0, 1, 2], 
+        explanation: "f(5) should be 6, not 4. The rest are correct. <span class='translation'>f(5) seharusnya 6, bukan 4. Sisanya benar.</span>" 
+      }
+    ]
+  },
+
+  // ===== SECTION 5: GRAPHING FUNCTIONS & SHADING INEQUALITIES =====
+  {
+    id: 4,
+    steps: [
+      { 
+        type: "theory", 
+        title: "🗺️ The Coordinate Plane", 
+        body: `<p>A graph turns equations into pictures! We use an X-axis (horizontal) and Y-axis (vertical).</p>
+               <p>A point is written as \\((x, y)\\). To plot \\((2, 3)\\), go right 2, up 3.</p>
+               <p class="translation">Grafik mengubah persamaan menjadi gambar! Kita menggunakan sumbu-X (mendatar) dan sumbu-Y (tegak). Sebuah titik ditulis sebagai \\((x, y)\\). Untuk memplot \\((2, 3)\\), geser kanan 2, naik 3.</p>` 
+      },
+      { 
+        type: "multiple_choice", 
+        prompt: "If \\(f(x) = x + 2\\), what is the coordinate when \\(x = 1\\)? <span class='translation'>(Jika \\(f(x) = x + 2\\), berapakah koordinatnya saat \\(x = 1\\)?)</span>", 
+        options: ["(1, 2)", "(1, 3)", "(2, 1)", "(3, 1)"], 
+        answer: 1, 
+        explanation: "\\(f(1) = 1 + 2 = 3\\). The coordinate is \\((x, y) = (1, 3)\\). <span class='translation'>\\(f(1) = 1 + 2 = 3\\). Koordinatnya \\((1, 3)\\).</span>" 
+      },
+      { 
+        type: "typing", 
+        prompt: "Find \\(y\\) for \\(f(x) = 2x\\) when \\(x = 3\\). Type the coordinate \\((x, y)\\). <span class='translation'>(Cari \\(y\\) untuk \\(f(x) = 2x\\) saat \\(x = 3\\). Ketik koordinat \\((x, y)\\).)</span>", 
+        answer: "(3, 6)", 
+        explanation: "\\(y = 2(3) = 6\\). Coordinate is \\((3, 6)\\). <span class='translation'>\\(y = 2(3) = 6\\). Koordinatnya \\((3, 6)\\).</span>" 
+      },
+      { 
+        type: "drag_drop", 
+        prompt: "Place the coordinates in the correct quadrant/axis. (Arrange them: Y-Axis, Q1, Q2) <span class='translation'>(Tempatkan koordinat di kuadran/sumbu yang benar. Urutkan: Sumbu-Y, Q1, Q2)</span>", 
+        sentence: "[drop] -> [drop] -> [drop]", 
+        bank: ["(0, 5)", "(2, 2)", "(-3, 4)"], 
+        answer: "0,1,2", 
+        explanation: "(0,5) is on Y-axis. (2,2) is Q1. (-3,4) is Q2. <span class='translation'>(0,5) di sumbu Y. (2,2) di Q1. (-3,4) di Q2.</span>" 
+      },
+      { 
+        type: "checkbox", 
+        prompt: "Which of these points lie on the line \\(y = x - 2\\)? <span class='translation'>(Titik mana yang berada pada garis \\(y = x - 2\\)?)</span>", 
+        options: ["(0, -2)", "(2, 0)", "(3, 1)", "(5, 2)"], 
+        answers: [0, 1, 2], 
+		explanation: "For (5,2): 5 - 2 = 3 ≠ 2. The rest match. <span class='translation'>Untuk (5,2): 5 - 2 = 3 ≠ 2. Sisanya cocok.</span>" 
+      },
+      { 
+        type: "theory", 
+        title: "✏️ Drawing the Line", 
+        body: `<p>To graph a linear function, find 2-3 points, plot them, and draw a straight line through them!</p>
+               <p>Line for \\(f(x) = 3x - 2\\):</p>
+               <p>\\(x=0 \\rightarrow y=-2\\) (Point: \\((0, -2)\\))</p>
+               <p>\\(x=1 \\rightarrow y=1\\) (Point: \\((1, 1)\\))</p>
+               <p>\\(x=2 \\rightarrow y=4\\) (Point: \\((2, 4)\\))</p>
+               <p class="translation">Untuk menggambar fungsi linear, cari 2-3 titik, plot, dan tarik garis lurus melaluinya! Garis untuk \\(f(x) = 3x - 2\\): titik \\((0, -2)\\), \\((1, 1)\\), \\((2, 4)\\).</p>` 
+      },
+      { 
+        type: "typing", 
+        prompt: "What is the y-intercept of \\(f(x) = 3x - 1\\)? <span class='translation'>(Apa titik potong sumbu-y dari \\(f(x) = 3x - 1\\))?</span>", 
+        answer: "-1", 
+        explanation: "The y-intercept is the constant term when \\(x=0\\). Here it is -1. <span class='translation'>Titik potong sumbu-y adalah konstanta saat \\(x=0\\). Di sini -1.</span>" 
+      },
+      { 
+        type: "dropdown", 
+        prompt: "If \\(f(x) = 2x - 2\\), find the point where \\(x = 3\\). <span class='translation'>(Jika \\(f(x) = 2x - 2\\), cari titik saat \\(x = 3\\).)</span>", 
+        sentence: "(3, [drop])", 
+        options: ["4", "6", "8", "-4"], 
+        answer: "4", 
+        explanation: "\\(f(3) = 2(3) - 2 = 6 - 2 = 4\\). Point is \\((3, 4)\\). <span class='translation'>\\(f(3) = 2(3) - 2 = 4\\). Titiknya \\((3, 4)\\).</span>" 
+      },
+      { 
+        type: "pairing", 
+        prompt: "Match \\(x\\) to \\(f(x)\\) for the function \\(f(x) = 5x\\). <span class='translation'>(Cocokkan \\(x\\) dengan \\(f(x)\\) untuk fungsi \\(f(x) = 5x\\).)</span>", 
+        pairs: [
+          { left: "x = 0", right: "f(x) = 0" }, 
+          { left: "x = 1", right: "f(x) = 5" }, 
+          { left: "x = 2", right: "f(x) = 10" }
+        ] 
+      },
+      { 
+        type: "theory", 
+        title: "🛡️ Shading the Safe Zone", 
+        body: `<p>Graphing inequalities is like drawing a boundary. If \\(y > 10\\), draw a dashed line at \\(y=10\\) and shade ABOVE it.</p>
+               <p>If \\(y \le 10\\), draw a SOLID line and shade BELOW it.</p>
+               <p class="translation">Menggambar pertidaksamaan seperti membuat batas. Jika \\(y > 10\\), gambar garis putus-putus di \\(y=10\\) dan arsir AREA DI ATASNYA. Jika \\(y \le 10\\), gambar garis TEGAS dan arsir DI BAWAHNYA.</p>` 
+      },
+      { 
+        type: "range", 
+        prompt: "Find exact \\(x\\) where \\(f(x) = 2x - 2\\) equals 4. Slide to \\(x\\). <span class='translation'>(Cari \\(x\\) tepat di mana \\(f(x) = 2x - 2\\) sama dengan 4. Geser ke \\(x\\).)</span>", 
+        min: 0, max: 10, answer: 3, 
+        explanation: "\\(2x - 2 = 4 \\rightarrow 2x = 6 \\rightarrow x = 3\\). <span class='translation'>\\(2x - 2 = 4 \\rightarrow 2x = 6 \\rightarrow x = 3\\).</span>" 
+      },
+      { 
+        type: "multiple_choice", 
+        prompt: "Which area represents \\(y > 2\\)? <span class='translation'>(Area mana yang mewakili \\(y > 2\\)?)</span>", 
+        options: ["Below the line y=2", "On the line y=2", "Above the line y=2", "Left of the line x=2"], 
+        answer: 2, 
+        explanation: "\\(y > 2\\) means all values greater than 2, which is above the line. <span class='translation'>\\(y > 2\\) berarti semua nilai lebih dari 2, yaitu di atas garis.</span>" 
+      },
+      { 
+        type: "checkbox", 
+        prompt: "Which points satisfy the inequality \\(y \\le x\\)? <span class='translation'>(Titik mana yang memenuhi pertidaksamaan \\(y \\le x\\)?)</span>", 
+        options: ["(1, 1)", "(2, 0)", "(3, 5)", "(4, 4)"], 
+        answers: [0, 1, 3], 
+        explanation: "y must be smaller or equal to x. For (3,5), 5 > 3 (Wrong). <span class='translation'>y harus lebih kecil atau sama dengan x. Untuk (3,5), 5 > 3 (Salah).</span>" 
+      }
+    ]
+  },
+
+  // ===== SECTION 6: BOSS LEVEL - COMBINED MASTERY =====
+  {
+    id: 5,
+    steps: [
+      { 
+        type: "theory", 
+        title: "⚔️ Boss Fight Strategy!", 
+        body: `<p>It's time to combine all skills! The Boss Level requires:</p>
+               <p>1. <b>Distribute & Combine:</b> Expand brackets carefully.</p>
+               <p>2. <b>Balance:</b> Move variables to one side, constants to the other.</p>
+               <p>3. <b>Verify:</b> Substitute your answer back to prove it's true.</p>
+               <p class="translation">Saatnya menggabungkan semua skill! Boss Level membutuhkan: 1. Distribusi & Gabungkan: Buka kurung dengan hati-hati. 2. Seimbangkan: Pindahkan variabel ke satu sisi. 3. Verifikasi: Substitusi jawabanmu untuk membuktikan kebenarannya.</p>` 
+      },
+      { 
+        type: "multiple_choice", 
+        prompt: "Solve: \\(4(2x - 3) = 2(x + 9)\\). <span class='translation'>(Selesaikan: \\(4(2x - 3) = 2(x + 9)\\).)</span>", 
+        options: ["x = 3", "x = 5", "x = 6", "x = 15"], 
+        answer: 1, 
+        explanation: "Distribute first: \\(8x - 12 = 2x + 18\\). Move variables to one side: \\(8x - 2x = 18 + 12\\), so \\(6x = 30\\). Divide by 6: \\(x = 5\\). <span class='translation'>Distribusi dulu: \\(8x - 12 = 2x + 18\\). Pindahkan variabel: \\(8x - 2x = 18 + 12\\), jadi \\(6x = 30\\). Bagi 6: \\(x = 5\\).</span>" 
+      },
+      { 
+        type: "typing", 
+        prompt: "Solve the PLSV: \\(5(x - 2) = 20\\). <span class='translation'>(Selesaikan PLSV: \\(5(x - 2) = 20\\).)</span>", 
+        answer: "6", 
+        explanation: "\\(5x - 10 = 20 \\rightarrow 5x = 30 \\rightarrow x = 6\\). <span class='translation'>\\(5x - 10 = 20 \\rightarrow 5x = 30 \\rightarrow x = 6\\).</span>" 
+      },
+      { 
+        type: "drag_drop", 
+        prompt: "Order the steps to solve \\(2(3x - 1) = 4x + 10\\). <span class='translation'>(Urutkan langkah menyelesaikan \\(2(3x - 1) = 4x + 10\\).)</span>", 
+        sentence: "[drop] -> [drop] -> [drop] -> [drop] -> [drop]", 
+        bank: ["2(3x - 1) = 4x + 10", "6x - 2 = 4x + 10", "Subtract 4x, add 2", "2x = 12", "x = 6"], 
+        answer: "0,1,2,3,4", 
+        explanation: "Distribute first, then move variables and constants, finally isolate \\(x\\). <span class='translation'>Distribusi dulu, lalu pindahkan variabel dan konstanta, akhirnya isolasi \\(x\\).</span>" 
+      },
+      { 
+        type: "checkbox", 
+        prompt: "Which values of \\(x\\) solve \\(3x + 7 > 22\\)? <span class='translation'>(Nilai \\(x\\) mana yang menyelesaikan \\(3x + 7 > 22\\)?)</span>", 
+        options: ["x = 4", "x = 5", "x = 6", "x = 10"], 
+        answers: [2, 3], 
+        explanation: "\\(3x > 15 \\rightarrow x > 5\\). The value must be strictly greater than 5, so 5 is not included. Valid options are 6 and 10. <span class='translation'>\\(3x > 15 \\rightarrow x > 5\\). Nilai harus benar-benar lebih besar dari 5, jadi 5 tidak termasuk. Jawaban valid adalah 6 dan 10.</span>" 
+      },
+      { 
+        type: "theory", 
+        title: "✅ The Substitution Proof", 
+        body: `<p>A true detective verifies their work. If \\(x = 6\\), does it satisfy \\(2x + 5 > 15\\)?</p>
+               <p>Substitute \\(x = 6\\): \\(2(6) + 5 = 12 + 5 = 17\\).</p>
+               <p>Is \\(17 > 15\\)? YES! Proof successful. ✅</p>
+               <p class="translation">Detektif sejati memverifikasi hasilnya. Jika \\(x = 6\\), apakah memenuhi \\(2x + 5 > 15\\)? Substitusi: \\(2(6) + 5 = 17\\). Apakah \\(17 > 15\\)? YA! Pembuktian berhasil.</p>` 
+      },
+      { 
+        type: "typing", 
+        prompt: "If \\(x = 6\\), does it satisfy \\(2x + 5 > 15\\)? Type Yes or No. <span class='translation'>(Jika \\(x = 6\\), apakah memenuhi \\(2x + 5 > 15\\)? Ketik Yes atau No.)</span>", 
+        answer: "Yes", 
+        explanation: "\\(2(6) + 5 = 17\\). Since \\(17 > 15\\), the answer is Yes. <span class='translation'>\\(2(6) + 5 = 17\\). Karena \\(17 > 15\\), jawabannya Yes.</span>" 
+      },
+       { 
+         type: "dropdown", 
+         prompt: "Verify if \\(x = 2\\) solves \\(3x - 1 < 10\\). <span class='translation'>(Verifikasi apakah \\(x = 2\\) menyelesaikan \\(3x - 1 < 10\\).)</span>", 
+         sentence: "3(2) - 1 = 5. Is 5 < 10? [drop]", 
+         options: ["True", "False"], 
+         answer: "True", 
+         explanation: "\\(3(2) - 1 = 5\\). Since \\(5 < 10\\), it is True. <span class='translation'>\\(3(2) - 1 = 5\\). Karena \\(5 < 10\\), itu True.</span>" 
+       },
+      { 
+        type: "pairing", 
+        prompt: "Match the \\(x\\) value to whether it solves \\(x + 4 \\ge 6\\). <span class='translation'>(Cocokkan nilai \\(x\\) dengan apakah itu menyelesaikan \\(x + 4 \\ge 6\\).)</span>", 
+        pairs: [
+          { left: "x = 0", right: "False" }, 
+          { left: "x = 2", right: "True" }, 
+          { left: "x = 5", right: "True" }
+        ] 
+      },
+      { 
+        type: "theory", 
+        title: "📷 The Real-World Boss", 
+        body: `<p>A camera rental costs 50k base fee + 10k per hour. You have 120k.</p>
+               <p>Function: \\(f(h) = 10h + 50\\).</p>
+               <p>Inequality: \\(10h + 50 \le 120 \\rightarrow 10h \le 70 \\rightarrow h \le 7\\).</p>
+               <p>You can rent for 7 hours maximum!</p>
+               <p class="translation">Sewa kamera biaya tetap 50 ribu + 10 ribu per jam. Uangmu 120 ribu. Fungsi: \\(f(h) = 10h + 50\\). Pertidaksamaan: \\(10h + 50 \le 120 \\rightarrow h \le 7\\). Kamu bisa menyewa maksimal 7 jam!</p>` 
+      },
+      { 
+        type: "range", 
+        prompt: "Max hours if 50k base + 10k/h and budget 120k. Slide to max whole hour! <span class='translation'>(Jam maksimal jika biaya tetap 50k + 10k/jam dan uang 120k. Geser ke jam bulat maksimal!)</span>", 
+        min: 0, max: 10, answer: 7, 
+		explanation: "\\(10h + 50 \\le 120 \\rightarrow 10h \\le 70 \\rightarrow h \\le 7\\). Max whole number is 7. <span class='translation'>\\(10h + 50 \\le 120 \\rightarrow h \\le 7\\). Bilangan bulat maksimal adalah 7.</span>" 
+      },
+      { 
+        type: "multiple_choice", 
+        prompt: "Write the function for total cost \\(C\\) of the camera. <span class='translation'>(Tulis fungsi total biaya \\(C\\) untuk kamera tersebut.)</span>", 
+        options: ["C = 10 + 50h", "C = 10h + 50", "C = 60h", "C = 50h + 10"], 
+        answer: 1, 
+        explanation: "10 per hour \\(h\\) plus 50 base fee. \\(C = 10h + 50\\). <span class='translation'>10 per jam \\(h\\) ditambah biaya awal 50. \\(C = 10h + 50\\).</span>" 
+      },
+      { 
+        type: "checkbox", 
+        prompt: "Which conditions satisfy the camera rental limit (\\(10h + 50 \\le 120\\))? <span class='translation'>(Kondisi mana yang memenuhi batas sewa kamera?)</span>", 
+        options: ["5 hours", "7 hours", "8 hours", "10 hours"], 
+        answers: [0, 1], 
+        explanation: "For 8h: \\(10(8)+50 = 130 > 120\\) (Over budget). 5h and 7h are valid. <span class='translation'>Untuk 8 jam: \\(10(8)+50 = 130 > 120\\) (Lebih budget). 5 jam dan 7 jam valid.</span>" 
+      }
+    ]
+  },
+  // ===== SECTION 7.1: ASSESSMENT A (Basics & Translation) =====
+  {
+    id: 6,
+    steps: [
+      { type: "multiple_choice", prompt: "What is the constant in the expression \\(4x - 9\\)? <span class='translation'>(Apa konstanta dari ekspresi \\(4x - 9\\)?)</span>", options: ["4", "x", "-9", "9"], answer: 2, explanation: "The fixed number is -9. <span class='translation'>Angka tetapnya -9.</span>" },
+      { type: "typing", prompt: "State the coefficient of \\(z\\) in the expression \\(-3z + 2\\). <span class='translation'>(Sebutkan koefisien dari \\(z\\) pada \\(-3z + 2\\).)</span>", answer: "-3", explanation: "The number multiplying \\(z\\) is -3. <span class='translation'>Angka yang mengalikan \\(z\\) adalah -3.</span>" },
+      { type: "dropdown", prompt: "Translate: '4 less than \\(x\\)'. <span class='translation'>(Terjemahkan: '4 kurang dari \\(x\\)'.)</span>", sentence: "4 less than x is [drop]", options: ["x - 4", "4 - x", "x + 4", "4x"], answer: "x - 4", explanation: "Start with \\(x\\), subtract 4. <span class='translation'>Mulai dari \\(x\\), kurangi 4.</span>" },
+      { type: "drag_drop", prompt: "Build '3 times a number plus 2'. <span class='translation'>(Susun '3 kali sebuah angka ditambah 2'.)</span>", sentence: "[drop] [drop] [drop]", bank: ["3x", "+", "2"], answer: "0,1,2", explanation: "\\(3x + 2\\). <span class='translation'>\\(3x + 2\\).</span>" },
+      { type: "checkbox", prompt: "Which of these are variables? <span class='translation'>(Manakah yang merupakan variabel?)</span>", options: ["a", "5", "y", "-2"], answers: [0, 2], explanation: "Letters representing unknowns are variables. <span class='translation'>Huruf yang mewakili angka tak diketahui adalah variabel.</span>" },
+      { type: "pairing", prompt: "Match phrases to symbols! <span class='translation'>(Cocokkan kata dengan simbol!)</span>", pairs: [{ left: "Sum", right: "+" }, { left: "Difference", right: "-" }, { left: "Product", right: "×" }] },
+      { type: "typing", prompt: "Simplify \\(2a + 3a\\). <span class='translation'>(Sederhanakan \\(2a + 3a\\).)</span>", answer: "5a", explanation: "Combine like terms: \\(5a\\). <span class='translation'>Gabungkan suku sejenis: \\(5a\\).</span>" },
+      { type: "range", prompt: "Solve \\(x + 5 = 15\\). Slide to \\(x\\). <span class='translation'>(Selesaikan \\(x + 5 = 15\\). Geser ke \\(x\\).)</span>", min: 5, max: 15, answer: 10, explanation: "15 - 5 = 10. <span class='translation'>15 - 5 = 10.</span>" },
+      { type: "multiple_choice", prompt: "'At most 10' mathematically is? <span class='translation'>('Paling banyak 10' secara matematis adalah?)</span>", options: ["x > 10", "x < 10", "x ≤ 10", "x ≥ 10"], answer: 2, explanation: "'At most' means less than or equal to. <span class='translation'>'Paling banyak' berarti kurang dari atau sama dengan.</span>" },
+      { type: "typing", prompt: "Translate: 'Twice \\(m\\) is 8'. <span class='translation'>(Terjemahkan: 'Dua kali \\(m\\) adalah 8'.)</span>", answer: "2m = 8", explanation: "Twice \\(m\\) is \\(2m\\). Is means \\(=\\). <span class='translation'>Dua kali \\(m\\) adalah \\(2m\\). Adalah berarti \\(=\\).</span>" }
+    ]
+  },
+  // ===== SECTION 7.2: ASSESSMENT B (PLSV/Equations) =====
+  {
+    id: 7,
+    steps: [
+      { type: "multiple_choice", prompt: "Solve \\(x - 4 = 10\\). <span class='translation'>(Selesaikan \\(x - 4 = 10\\).)</span>", options: ["6", "14", "-6", "-14"], answer: 1, explanation: "10 + 4 = 14. <span class='translation'>10 + 4 = 14.</span>" },
+      { type: "typing", prompt: "Solve \\(2x = 16\\). <span class='translation'>(Selesaikan \\(2x = 16\\).)</span>", answer: "8", explanation: "16 / 2 = 8. <span class='translation'>16 / 2 = 8.</span>" },
+      { type: "dropdown", prompt: "Complete the step: <span class='translation'>(Lengkapi langkahnya:)</span>", sentence: "If 3x + 2 = 11, then 3x = [drop]", options: ["9", "13", "11", "2"], answer: "9", explanation: "Subtract 2 from 11. <span class='translation'>Kurangi 2 dari 11.</span>" },
+      { type: "drag_drop", prompt: "Order steps for \\(5x - 3 = 12\\). <span class='translation'>(Urutkan langkah \\(5x - 3 = 12\\).)</span>", sentence: "[drop] -> [drop] -> [drop]", bank: ["5x - 3 = 12", "5x = 15", "x = 3"], answer: "0,1,2", explanation: "Add 3 to 12, then divide by 5. <span class='translation'>Tambah 3 ke 12, lalu bagi 5.</span>" },
+      { type: "checkbox", prompt: "Which solve \\(x + 2 = 5\\)? <span class='translation'>(Mana yang menyelesaikan \\(x + 2 = 5\\)?)</span>", options: ["x = 1", "x = 2", "x = 3", "x = 4"], answers: [2], explanation: "3 + 2 = 5. <span class='translation'>3 + 2 = 5.</span>" },
+      { type: "pairing", prompt: "Match equation to solution! <span class='translation'>(Cocokkan persamaan dengan solusinya!)</span>", pairs: [{ left: "x + 5 = 10", right: "5" }, { left: "2x = 8", right: "4" }, { left: "x/2 = 3", right: "6" }] },
+      { type: "typing", prompt: "Solve \\(4(x - 1) = 8\\). <span class='translation'>(Selesaikan \\(4(x - 1) = 8\\).)</span>", answer: "3", explanation: "\\(4x - 4 = 8 \\rightarrow 4x = 12 \\rightarrow x = 3\\). <span class='translation'>\\(4x - 4 = 8 \\rightarrow 4x = 12 \\rightarrow x = 3\\).</span>" },
+      { type: "range", prompt: "Solve \\(7x = 49\\). Slide to \\(x\\). <span class='translation'>(Selesaikan \\(7x = 49\\). Geser ke \\(x\\).)</span>", min: 5, max: 10, answer: 7, explanation: "49 / 7 = 7. <span class='translation'>49 / 7 = 7.</span>" },
+      { type: "multiple_choice", prompt: "Solve \\(3x + 4 = 19\\). <span class='translation'>(Selesaikan \\(3x + 4 = 19\\).)</span>", options: ["3", "4", "5", "6"], answer: 2, explanation: "\\(3x = 15 \\rightarrow x = 5\\). <span class='translation'>\\(3x = 15 \\rightarrow x = 5\\).</span>" },
+      { type: "typing", prompt: "If \\(f(x)=2x\\) and \\(f(x)=10\\), \\(x=\\)? <span class='translation'>(Jika \\(f(x)=2x\\) dan \\(f(x)=10\\), \\(x=\\)?)</span>", answer: "5", explanation: "\\(2x = 10 \\rightarrow x = 5\\). <span class='translation'>\\(2x = 10 \\rightarrow x = 5\\).</span>" }
+    ]
+  },
+  // ===== SECTION 7.3: ASSESSMENT C (PtLSV/Inequalities) =====
+  {
+    id: 8,
+    steps: [
+      { type: "multiple_choice", prompt: "Solve \\(x + 3 > 7\\). <span class='translation'>(Selesaikan \\(x + 3 > 7\\).)</span>", options: ["x > 4", "x < 4", "x > 10", "x = 4"], answer: 0, explanation: "7 - 3 = 4. So \\(x > 4\\). <span class='translation'>7 - 3 = 4. Jadi \\(x > 4\\).</span>" },
+      { type: "typing", prompt: "Solve \\(2x \\le 10\\). (Use <= for ≤) <span class='translation'>(Selesaikan \\(2x \\le 10\\).)</span>", answer: "x <= 5", explanation: "10 / 2 = 5. So \\(x \\le 5\\). <span class='translation'>10 / 2 = 5. Jadi \\(x \\le 5\\).</span>" },
+      { type: "dropdown", prompt: "Solve \\(-x < 4\\). <span class='translation'>(Selesaikan \\(-x < 4\\).)</span>", sentence: "Divide by -1, flip sign: x [drop] -4", options: [">", "<", "≥", "≤"], answer: ">", explanation: "Dividing by negative flips < to >. <span class='translation'>Membagi dengan negatif membalik < menjadi >.</span>" },
+      { type: "drag_drop", prompt: "Build solution for \\(-2x \\ge 6\\). <span class='translation'>(Susun solusi untuk \\(-2x \\ge 6\\).)</span>", sentence: "[drop] [drop] [drop]", bank: ["x", "≤", "-3"], answer: "0,1,2", explanation: "Divide by -2, flip sign. <span class='translation'>Bagi -2, balik tanda.</span>" },
+      { type: "checkbox", prompt: "Which satisfy \\(x - 1 \\ge 0\\)? <span class='translation'>(Mana yang memenuhi \\(x - 1 \\ge 0\\)?)</span>", options: ["x = 0", "x = 1", "x = 2", "x = -1"], answers: [1, 2], explanation: "\\(x \\ge 1\\). So 1 and 2 are valid. <span class='translation'>\\(x \\ge 1\\). Jadi 1 dan 2 valid.</span>" },
+      { type: "pairing", prompt: "Match inequality to solved form! <span class='translation'>(Cocokkan pertidaksamaan dengan hasilnya!)</span>", pairs: [{ left: "-x > 2", right: "x < -2" }, { left: "2x < 6", right: "x < 3" }, { left: "x + 1 > 1", right: "x > 0" }] },
+      { type: "typing", prompt: "Solve \\(3x - 5 > 4\\). (Use >) <span class='translation'>(Selesaikan \\(3x - 5 > 4\\).)</span>", answer: "x > 3", explanation: "\\(3x > 9 \\rightarrow x > 3\\). <span class='translation'>\\(3x > 9 \\rightarrow x > 3\\).</span>" },
+      { type: "range", prompt: "Max whole \\(x\\) for \\(2x + 1 \\le 9\\). Slide to it. <span class='translation'>(Bilangan bulat \\(x\\) maksimal untuk \\(2x + 1 \\le 9\\).)</span>", min: 0, max: 5, answer: 4, explanation: "\\(2x \\le 8 \\rightarrow x \\le 4\\). Max is 4. <span class='translation'>\\(2x \\le 8 \\rightarrow x \\le 4\\). Maks 4.</span>" },
+      { type: "multiple_choice", prompt: "What flips an inequality sign? <span class='translation'>(Apa yang membalik tanda pertidaksamaan?)</span>", options: ["Adding a negative", "Subtracting a negative", "Dividing by a negative", "Multiplying by a positive"], answer: 2, explanation: "Multiplying or dividing by a negative flips the sign. <span class='translation'>Mengalikan atau membagi dengan negatif membalik tanda.</span>" },
+      { type: "typing", prompt: "Solve \\(-3x + 2 \\le 11\\). (Use >=) <span class='translation'>(Selesaikan \\(-3x + 2 \\le 11\\).)</span>", answer: "x >= -3", explanation: "\\(-3x \\le 9 \\rightarrow x \\ge -3\\). <span class='translation'>\\(-3x \\le 9 \\rightarrow x \\ge -3\\).</span>" }
+    ]
+  },
+  // ===== SECTION 7.4: ASSESSMENT D (Functions & Graphs) =====
+  {
+    id: 9,
+    steps: [
+      { type: "multiple_choice", prompt: "Point for \\(f(x)=x+2\\) at \\(x=1\\)? <span class='translation'>(Titik untuk \\(f(x)=x+2\\) saat \\(x=1\\)?)</span>", options: ["(1, 2)", "(1, 3)", "(2, 1)", "(3, 1)"], answer: 1, explanation: "\\(1+2=3\\). Point is (1,3). <span class='translation'>\\(1+2=3\\). Titiknya (1,3).</span>" },
+      { type: "typing", prompt: "\\(f(x)=3x-1\\), find \\(f(2)\\). <span class='translation'>(\\(f(x)=3x-1\\), cari \\(f(2)\\).)</span>", answer: "5", explanation: "\\(3(2)-1 = 5\\). <span class='translation'>\\(3(2)-1 = 5\\).</span>" },
+      { type: "dropdown", prompt: "Y-intercept of \\(f(x)=4x+5\\) is? <span class='translation'>(Titik potong sumbu-y dari \\(f(x)=4x+5\\) adalah?)</span>", sentence: "The y-intercept is [drop]", options: ["4", "5", "x", "0"], answer: "5", explanation: "The constant term is the y-intercept. <span class='translation'>Konstanta adalah titik potong sumbu-y.</span>" },
+      { type: "drag_drop", prompt: "Plot (0, -2): Arrange the steps. <span class='translation'>(Plot (0, -2): Susun langkahnya.)</span>", sentence: "[drop] then [drop]", bank: ["0 right", "2 down"], answer: "0,1", explanation: "x=0 means no horizontal movement. y=-2 means go down 2. <span class='translation'>x=0 tidak bergerak mendatar. y=-2 turun 2.</span>" },
+      { type: "checkbox", prompt: "Points on \\(y=2x\\)? <span class='translation'>(Titik pada \\(y=2x\\)?)</span>", options: ["(0, 0)", "(1, 1)", "(1, 2)", "(2, 4)"], answers: [0, 2, 3], explanation: "For (1,1), \\(2(1)=2 \\ne 1\\). The rest match. <span class='translation'>Untuk (1,1), \\(2(1)=2 \\ne 1\\). Sisanya cocok.</span>" },
+      { type: "pairing", prompt: "Match \\(x\\) to \\(f(x)=5x\\)! <span class='translation'>(Cocokkan \\(x\\) dengan \\(f(x)=5x\\)!)</span>", pairs: [{ left: "x = 1", right: "5" }, { left: "x = 2", right: "10" }, { left: "x = 0", right: "0" }] },
+      { type: "typing", prompt: "If \\(f(x)=5\\) and \\(f(x)=x+4\\), \\(x=\\)? <span class='translation'>(Jika \\(f(x)=5\\) dan \\(f(x)=x+4\\), \\(x=\\)?)</span>", answer: "1", explanation: "\\(x+4=5 \\rightarrow x=1\\). <span class='translation'>\\(x+4=5 \\rightarrow x=1\\).</span>" },
+      { type: "range", prompt: "\\(f(x)=4x-2\\). When does \\(f(x)=10\\)? Slide to \\(x\\). <span class='translation'>(\\(f(x)=4x-2\\). Kapan \\(f(x)=10\\)? Geser ke \\(x\\).)</span>", min: 0, max: 5, answer: 3, explanation: "\\(4x-2=10 \\rightarrow 4x=12 \\rightarrow x=3\\). <span class='translation'>\\(4x-2=10 \\rightarrow 4x=12 \\rightarrow x=3\\).</span>" },
+      { type: "multiple_choice", prompt: "Area for \\(y \\ge 5\\) is? <span class='translation'>(Area untuk \\(y \\ge 5\\) adalah?)</span>", options: ["Below line y=5", "On line y=5", "Above line y=5", "Left of x=5"], answer: 2, explanation: "\\(\\ge\\) means greater than (above) or equal to (on). Best described as above. <span class='translation'>\\(\\ge\\) berarti di atas atau pada garis.</span>" },
+      { type: "checkbox", prompt: "Which satisfy \\(y < x + 1\\)? <span class='translation'>(Mana yang memenuhi \\(y < x + 1\\)?)</span>", options: ["(0, 0)", "(1, 1)", "(1, 2)", "(2, 2)"], answers: [0, 1], explanation: "For (1,2): \\(2 < 1+1\\) is False. For (2,2): \\(2 < 3\\) is True. <span class='translation'>Untuk (1,2): Salah. Untuk (2,2): Benar.</span>" }
+    ]
+  },
+  // ===== SECTION 7.5: ASSESSMENT E (Debug & Real World) =====
+  {
+    id: 10,
+    steps: [
+      { type: "multiple_choice", prompt: "Bug in \\(2(x+3)=2x+3\\). Correct is? <span class='translation'>(Bug pada \\(2(x+3)=2x+3\\). Yang benar?)</span>", options: ["2x + 3", "2x + 6", "x + 6", "2x + 5"], answer: 1, explanation: "2 must multiply 3: \\(2(3)=6\\). <span class='translation'>2 harus dikali 3: \\(2(3)=6\\).</span>" },
+      { type: "typing", prompt: "Expand \\(-3(x - 4)\\). <span class='translation'>(Uraikan \\(-3(x - 4)\\).)</span>", answer: "-3x + 12", explanation: "\\(-3(x) + -3(-4) = -3x + 12\\). <span class='translation'>\\(-3(x) + -3(-4) = -3x + 12\\).</span>" },
+      { type: "dropdown", prompt: "Sub fee 10k + 5k/month. Function \\(f(m)=\\)? <span class='translation'>(Biaya langganan 10k + 5k/bln. Fungsi \\(f(m)=\\)?)</span>", sentence: "f(m) = [drop]", options: ["10m + 5", "5m + 10", "15m", "5 + 10m"], answer: "5m + 10", explanation: "Variable is 5m, constant is 10. <span class='translation'>Variabel 5m, konstanta 10.</span>" },
+      { type: "drag_drop", prompt: "Order: Solve \\(3(x+1)=15\\). <span class='translation'>(Urutkan: Selesaikan \\(3(x+1)=15\\).)</span>", sentence: "[drop] -> [drop] -> [drop] -> [drop]", bank: ["3(x+1)=15", "3x+3=15", "3x=12", "x=4"], answer: "0,1,2,3", explanation: "Distribute, subtract 3, divide by 3. <span class='translation'>Distribusi, kurangi 3, bagi 3.</span>" },
+      { type: "checkbox", prompt: "Which expansions are correct? <span class='translation'>(Mana yang benar uraiannya?)</span>", options: ["2(x-1)=2x-2", "2(x-1)=2x-1", "-(x+4)=-x-4", "-(x+4)=-x+4"], answers: [0, 2], explanation: "Must multiply all terms inside. <span class='translation'>Harus dikali semua suku di dalam.</span>" },
+      { type: "pairing", prompt: "Match scenario to model! <span class='translation'>(Cocokkan skenario dengan model!)</span>", pairs: [{ left: "Base 20", right: "y = 20 + c" }, { left: "Per item 5", right: "y = 5x" }, { left: "Limit 100", right: "y ≤ 100" }] },
+      { type: "typing", prompt: "Budget 100k, cost 20k base + 10k/h. Max hours? <span class='translation'>(Budget 100k, biaya 20k + 10k/jam. Maks jam?)</span>", answer: "8", explanation: "\\(20 + 10h \\le 100 \\rightarrow 10h \\le 80 \\rightarrow h \\le 8\\). <span class='translation'>\\(20 + 10h \\le 100 \\rightarrow h \\le 8\\).</span>" },
+      { type: "range", prompt: "Verify \\(x=4\\) in \\(2x-1\\). Slide to result. <span class='translation'>(Verifikasi \\(x=4\\) di \\(2x-1\\). Geser ke hasil.)</span>", min: 5, max: 10, answer: 7, explanation: "\\(2(4)-1 = 7\\). <span class='translation'>\\(2(4)-1 = 7\\).</span>" },
+      { type: "multiple_choice", prompt: "Does \\(x=5\\) solve \\(3x>12\\)? <span class='translation'>(Apakah \\(x=5\\) menyelesaikan \\(3x>12\\)?)</span>", options: ["Yes", "No"], answer: 0, explanation: "\\(3(5)=15\\). \\(15>12\\) is True. <span class='translation'>\\(3(5)=15\\). \\(15>12\\) benar.</span>" },
+      { type: "typing", prompt: "Debug: \\(4(2x - 3) = 8x - 3\\). What should the constant be? <span class='translation'>(Debug: \\(4(2x - 3) = 8x - 3\\). Harusnya konstantanya berapa?)</span>", answer: "-12", explanation: "\\(4(-3) = -12\\). <span class='translation'>\\(4(-3) = -12\\).</span>" }
+    ]
+  },
+  // ===== SECTION 8: FEEDBACK PORTAL =====
+  {
+    id: 11,
+    steps: [
+      { 
+        type: "theory", 
+        title: "🚪 Feedback Portal", 
+        body: `<p>Amazing job, Detective! You have solved all the mysteries of algebra today. Remember to log in to our portal to see your rewards and do your detective homework.</p>
+               <p style="text-align:center; margin-top:20px;"><a href="https://learn.algonova.id/login" target="_blank" style="background:#58cc02; color:#fff; padding:14px 24px; border-radius:12px; text-decoration:none; font-weight:800; display:inline-block; box-shadow:0 4px 0 #58a700;">🌐 Go to Portal</a></p>
+               <p class="translation">Kerja yang luar biasa, Detektif! Kamu telah memecahkan semua misteri aljabar hari ini. Ingat untuk masuk ke portal kita untuk melihat hadiahmu dan mengerjakan PR detektifmu.</p>` 
+      }
+    ]
+  }
+];
+
+// ============== APP LOGIC ==============
+function initApp() {
+  const mapContainer = $('#mapContainer');
+  const svg = $('#mapSvg');
+  let pathD = '';
+
+  // 1. Garis lurus dari node 1 sampai 6 (index 0 to 5)
+  for (let i = 1; i <= 5; i++) {
+    const prev = App.nodePositions[i-1];
+    const pos = App.nodePositions[i];
+    pathD += `M ${prev.x} ${prev.y} Q ${(prev.x+pos.x)/2} ${Math.min(prev.y, pos.y) + 50}, ${pos.x} ${pos.y} `;
+  }
+
+  // 2. Garis cabang dari node 6 (index 5) ke node 7.1 - 7.5 (index 6 to 10)
+  const branchStart = App.nodePositions[5];
+  for (let i = 6; i <= 10; i++) {
+    const pos = App.nodePositions[i];
+    pathD += `M ${branchStart.x} ${branchStart.y} C ${branchStart.x} ${branchStart.y + 60}, ${pos.x} ${pos.y - 60}, ${pos.x} ${pos.y} `;
+  }
+
+  // 3. Garis menyatu dari node 7.1 - 7.5 (index 6 to 10) ke node 8 (index 11)
+  const branchEnd = App.nodePositions[11];
+  for (let i = 6; i <= 10; i++) {
+    const pos = App.nodePositions[i];
+    pathD += `M ${pos.x} ${pos.y} C ${pos.x} ${branchEnd.y - 60}, ${branchEnd.x} ${branchEnd.y - 60}, ${branchEnd.x} ${branchEnd.y} `;
+  }
+
+  // Render garis path SVG
+  const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  path.setAttribute('d', pathD);
+  path.setAttribute('stroke', '#e5e5e5');
+  path.setAttribute('stroke-width', '6');
+  path.setAttribute('stroke-dasharray', '10,10');
+  path.setAttribute('fill', 'none');
+  svg.appendChild(path);
+
+  // Render setiap node
+  App.nodePositions.forEach((pos, i) => {
+    const node = el('div', 'map-node available', App.lessonMeta[i].icon);
+    node.style.left = `${(pos.x / 800) * 100}%`;
+    node.style.top = `${(pos.y / 1080) * 100}%`; 
+    node.dataset.id = i;
+    
+    const tooltip = el('div', 'node-tooltip', App.lessonMeta[i].title);
+    node.appendChild(tooltip);
+    
+    const labelContent = `
+      <span>${App.lessonMeta[i].title}</span>
+      <span class="node-time-label">${App.lessonMeta[i].time}</span>
+    `;
+    const label = el('div', 'node-label', labelContent);
+    node.appendChild(label);
+    
+    node.onclick = () => startLesson(i);
+    mapContainer.appendChild(node);
+  });
+
+  // Event Listeners
+  $('#openRulesBtn').onclick = () => $('#rulesOverlay').classList.add('show');
+  $('#closeRulesBtn').onclick = () => $('#rulesOverlay').classList.remove('show');
+  $('#understandBtn').onclick = () => $('#rulesOverlay').classList.remove('show');
+  
+  $('#lessonClose').onclick = () => {
+    $('#lessonView').classList.remove('active');
+    $('#mapView').style.display = 'block';
+    updateMapNodes();
+  };
+  $('#continueBtn').onclick = () => {
+    $('#completeView').classList.remove('active');
+    $('#mapView').style.display = 'block';
+    updateMapNodes();
+  };
+  $('#printResultBtn').onclick = printResult;
+  $('#actionBtn').onclick = handleAction;
+  $('#resetBtn').onclick = renderStep;
+  
+  updateMapNodes();
+
+  // Event listener untuk tombol Enter
+  document.addEventListener('keydown', (e) => {
+    if (!$('#lessonView').classList.contains('active')) return;
+    if (e.key === 'Enter') {
+      const actionBtn = $('#actionBtn');
+      if (actionBtn.classList.contains('active')) {
+        e.preventDefault();
+        handleAction();
+      }
+    }
+  });
+}
+
+function updateMapNodes() {
+  const nodes = $$('.map-node');
+  nodes.forEach((node, i) => {
+    if (App.state.completedLessons.includes(i)) {
+      node.classList.remove('available');
+      node.classList.add('completed');
+    }
+  });
+}
+
+function startLesson(id) {
+  App.currentLessonId = id;
+  App.currentStepIndex = 0;
+  App.correctCount = 0;
+  App.totalAnswered = 0;
+  App.state.hearts = 5;
+  App.state.stepAnswered = false;
+  App.state.answeredHistory = []; 
+  $('#lessonHearts').innerText = App.state.hearts;
+  $('#lessonTime').innerText = App.lessonMeta[id].time; 
+  $('#mapView').style.display = 'none';
+  $('#lessonView').classList.add('active');
+  renderStep();
+}
+
+function renderStep() {
+  const lesson = LESSONS[App.currentLessonId];
+  const step = lesson.steps[App.currentStepIndex];
+  const content = $('#lessonContent');
+  content.innerHTML = '';
+  App.state.stepAnswered = false;
+  $('#feedback').classList.remove('show');
+  $('#actionBtn').innerText = 'Check';
+  $('#actionBtn').classList.remove('active');
+  $('#resetBtn').classList.add('hidden'); 
+
+  const progress = ((App.currentStepIndex) / lesson.steps.length) * 100;
+  $('#progressBar').style.width = `${progress}%`;
+
+  if (step.type === 'theory') {
+    const card = el('div', 'theory-card');
+    card.innerHTML = `<span class="theory-badge">MATERIAL</span><h2>${step.title}</h2><div class="theory-body">${step.body}</div>`;
+    content.appendChild(card);
+    $('#actionBtn').innerText = 'Continue';
+    $('#actionBtn').classList.add('active');
+    App.state.stepAnswered = true;
+  } else {
+    const prompt = el('div', 'q-prompt', step.prompt);
+    content.appendChild(prompt);
+    
+    if (step.type === 'multiple_choice') renderMultipleChoice(step, content);
+    else if (step.type === 'typing') renderTyping(step, content);
+    else if (step.type === 'dropdown') renderDropdown(step, content);
+    else if (step.type === 'checkbox') renderCheckbox(step, content);
+    else if (step.type === 'drag_drop') renderDragDrop(step, content);
+    else if (step.type === 'pairing') renderPairing(step, content);
+    else if (step.type === 'range') renderRange(step, content);
+    
+    if (step.hint) {
+      content.appendChild(el('div', 'q-hint', step.hint));
+    }
+    
+    $('#resetBtn').classList.remove('hidden');
+  }
+  
+  if (window.renderMathInElement) {
+    renderMathInElement(content, {
+      delimiters: [{left: "\\(", right: "\\)", display: false}, {left: "\\[", right: "\\]", display: true}]
+    });
+  }
+  content.scrollTop = 0;
+}
+
+function renderMultipleChoice(step, content) {
+  const opts = el('div', 'options');
+  step.options.forEach((opt, i) => {
+    const o = el('div', 'option', `<div class="o-key">${String.fromCharCode(65+i)}</div><div>${opt}</div>`);
+    o.dataset.index = i;
+    o.onclick = () => {
+      if(App.state.stepAnswered) return;
+      $$('.option').forEach(x => x.classList.remove('selected'));
+      o.classList.add('selected');
+      $('#actionBtn').classList.add('active');
+    };
+    opts.appendChild(o);
+  });
+  content.appendChild(opts);
+}
+
+function renderTyping(step, content) {
+  const input = el('input', 'typing-input');
+  input.type = 'text';
+  input.placeholder = 'Type your answer here...';
+  input.oninput = () => {
+    if(input.value.trim() !== '') $('#actionBtn').classList.add('active');
+    else $('#actionBtn').classList.remove('active');
+  };
+  content.appendChild(input);
+  input.focus();
+}
+
+function renderDropdown(step, content) {
+  const sentence = el('div', 'sentence');
+  const select = el('select', 'dropdown-select');
+  select.innerHTML = `<option value="">?</option>`;
+  step.options.forEach(opt => {
+    select.innerHTML += `<option value="${opt}">${opt}</option>`;
+  });
+  select.onchange = () => {
+    if(select.value !== '') $('#actionBtn').classList.add('active');
+    else $('#actionBtn').classList.remove('active');
+  };
+  
+  const parts = step.sentence.split('[drop]');
+  sentence.innerHTML = parts[0]; 
+  sentence.appendChild(select);
+  
+  const restSpan = el('span', '', parts.slice(1).join(''));
+  sentence.appendChild(restSpan);
+  
+  content.appendChild(sentence);
+}
+
+function renderCheckbox(step, content) {
+  step.options.forEach((opt, i) => {
+    const c = el('div', 'checkbox-option', `<div class="checkbox-box"></div><div>${opt}</div>`);
+    c.dataset.index = i;
+    c.onclick = () => {
+      if(App.state.stepAnswered) return;
+      c.classList.toggle('checked');
+      $('#actionBtn').classList.add('active');
+    };
+    content.appendChild(c);
+  });
+}
+
+function renderDragDrop(step, content) {
+  const bank = el('div', 'drag-bank');
+  
+  let bankIndexes = step.bank.map((_, i) => i);
+  for (let i = bankIndexes.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [bankIndexes[i], bankIndexes[j]] = [bankIndexes[j], bankIndexes[i]];
+  }
+  
+  bankIndexes.forEach(i => {
+    const item = step.bank[i];
+    const d = el('div', 'drag-item', item);
+    d.draggable = true;
+    d.dataset.id = i;
+    d.ondragstart = (e) => {
+      App.state.dragSrc = d;
+      d.classList.add('dragging');
+    };
+    d.ondragend = () => d.classList.remove('dragging');
+    bank.appendChild(d);
+  });
+  content.appendChild(bank);
+
+  const sentence = el('div', 'sentence');
+  const parts = step.sentence.split('[drop]');
+  parts.forEach((p, i) => {
+    const textSpan = el('span', '', p);
+    sentence.appendChild(textSpan);
+    if(i < parts.length - 1) {
+      const zone = el('span', 'drop-zone');
+      zone.ondragover = (e) => { e.preventDefault(); zone.classList.add('over'); };
+      zone.ondragleave = () => zone.classList.remove('over');
+      zone.ondrop = (e) => {
+        e.preventDefault();
+        zone.classList.remove('over');
+        if(App.state.dragSrc) {
+          if(zone.dataset.placed) {
+            bank.appendChild(document.querySelector(`.drag-item[data-id="${zone.dataset.placed}"]`));
+          }
+          zone.appendChild(App.state.dragSrc);
+          zone.classList.add('filled');
+          zone.dataset.placed = App.state.dragSrc.dataset.id;
+          $('#actionBtn').classList.add('active');
+        }
+      };
+      sentence.appendChild(zone);
+    }
+  });
+  content.appendChild(sentence);
+}
+
+function renderPairing(step, content) {
+  const grid = el('div', 'pair-grid');
+  const col1 = el('div', 'pair-col');
+  const col2 = el('div', 'pair-col');
+  
+  let leftIndexes = step.pairs.map((_, i) => i);
+  let rightIndexes = [...leftIndexes];
+  
+  for (let i = leftIndexes.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [leftIndexes[i], leftIndexes[j]] = [leftIndexes[j], leftIndexes[i]];
+    
+    const k = Math.floor(Math.random() * (i + 1));
+    [rightIndexes[i], rightIndexes[k]] = [rightIndexes[k], rightIndexes[i]];
+  }
+  
+  leftIndexes.forEach(idx => {
+    const p = step.pairs[idx];
+    const left = el('div', 'pair-item', p.left);
+    left.dataset.side = 'left';
+    left.dataset.id = idx;
+    left.onclick = () => handlePairClick(left);
+    col1.appendChild(left);
+  });
+
+  rightIndexes.forEach(idx => {
+    const p = step.pairs[idx];
+    const right = el('div', 'pair-item', p.right);
+    right.dataset.side = 'right';
+    right.dataset.id = idx;
+    right.onclick = () => handlePairClick(right);
+    col2.appendChild(right);
+  });
+  
+  grid.appendChild(col1);
+  grid.appendChild(col2);
+  content.appendChild(grid);
+}
+
+function handlePairClick(item) {
+  if(App.state.stepAnswered) return;
+  if(item.classList.contains('matched')) return;
+  
+  if(!App.state.selectedPair) {
+    App.state.selectedPair = item;
+    item.classList.add('selected');
+  } else {
+    if(App.state.selectedPair.dataset.side === item.dataset.side) {
+      App.state.selectedPair.classList.remove('selected');
+      App.state.selectedPair = item;
+      item.classList.add('selected');
+      return;
+    }
+    
+    if(App.state.selectedPair.dataset.id === item.dataset.id) {
+      App.state.selectedPair.classList.add('matched');
+      item.classList.add('matched');
+      App.state.selectedPair.classList.remove('selected');
+      App.state.selectedPair = null;
+      
+      if($$('.pair-item.matched').length === stepPairsLength()) {
+        $('#actionBtn').classList.add('active');
+      }
+    } else {
+      const wrong = [App.state.selectedPair, item];
+      wrong.forEach(w => w.classList.add('wrong'));
+      setTimeout(() => {
+        wrong.forEach(w => {
+          w.classList.remove('wrong');
+          w.classList.remove('selected');
+        });
+      }, 500);
+      App.state.selectedPair = null;
+    }
+  }
+}
+
+function stepPairsLength() {
+  const step = LESSONS[App.currentLessonId].steps[App.currentStepIndex];
+  return step.pairs.length * 2;
+}
+
+function renderRange(step, content) {
+  const wrap = el('div', 'range-wrap');
+  wrap.innerHTML = `
+    <div class="range-row" style="position:relative; align-items:center; min-height:50px;">
+      <div class="range-value" style="font-size:20px; color:var(--text-light);">${step.min}</div>
+      <div class="range-value" id="rangeCurr" style="font-size:36px; flex:1; text-align:center;">${step.min}</div>
+      <div class="range-value" style="font-size:20px; color:var(--text-light);">${step.max}</div>
+    </div>
+    <input type="range" class="range-slider" min="${step.min}" max="${step.max}" value="${step.min}">
+    <div class="range-ticks">
+      <span>Min</span>
+      <span>Max</span>
+    </div>
+  `;
+  const slider = wrap.querySelector('.range-slider');
+  const curr = wrap.querySelector('#rangeCurr');
+  slider.oninput = () => {
+    curr.innerText = slider.value;
+    $('#actionBtn').classList.add('active');
+  };
+  content.appendChild(wrap);
+}
+
+function handleAction() {
+  if(!App.state.stepAnswered) {
+    checkAnswer();
+  } else {
+    nextStep();
+  }
+}
+
+function checkAnswer() {
+  const step = LESSONS[App.currentLessonId].steps[App.currentStepIndex];
+  let isCorrect = false;
+  let studentAnsText = "";
+  let correctAnsText = "";
+
+  if (step.type === 'multiple_choice') {
+    const selected = $('.option.selected');
+    if (!selected) return;
+    const idx = parseInt(selected.dataset.index);
+    isCorrect = idx === step.answer;
+    studentAnsText = step.options[idx];
+    correctAnsText = step.options[step.answer];
+    $$('.option').forEach(o => o.classList.add('disabled'));
+    selected.classList.add(isCorrect ? 'correct' : 'wrong');
+    if(!isCorrect) {
+      const correct = $(`.option[data-index="${step.answer}"]`);
+      correct.classList.remove('wrong');
+      correct.classList.add('correct');
+    }
+  } else if (step.type === 'typing') {
+    const input = $('.typing-input');
+    if (!input.value.trim()) return;
+    // Menghapus SEMUA spasi dan menyeragamkan huruf kecil
+    // Contoh: "x > 3" menjadi "x>3", "2m = 8" menjadi "2m=8"
+    const cleanInput = input.value.replace(/\s+/g, '').toLowerCase();
+    const cleanAnswer = step.answer.replace(/\s+/g, '').toLowerCase();
+    
+    // Menambahkan toleransi untuk simbol >= dan <=
+    isCorrect = cleanInput === cleanAnswer || 
+                cleanInput === cleanAnswer.replace('>=', '≥') || 
+                cleanInput === cleanAnswer.replace('<=', '≤');
+                
+    studentAnsText = input.value.trim();
+    correctAnsText = step.answer;
+    input.classList.add(isCorrect ? 'correct' : 'wrong');
+    input.disabled = true;
+  } else if (step.type === 'dropdown') {
+    const select = $('.dropdown-select');
+    if (!select.value) return;
+    isCorrect = select.value === step.answer;
+    studentAnsText = select.value;
+    correctAnsText = step.answer;
+    select.classList.add(isCorrect ? 'correct' : 'wrong');
+    select.disabled = true;
+  } else if (step.type === 'checkbox') {
+    const opts = $$('.checkbox-option.checked');
+    const selectedIdx = Array.from(opts).map(o => parseInt(o.dataset.index));
+    const correctIdx = step.answers;
+    isCorrect = correctIdx.every(i => selectedIdx.includes(i)) && selectedIdx.length === correctIdx.length;
+    studentAnsText = selectedIdx.map(i => step.options[i]).join(', ');
+    correctAnsText = correctIdx.map(i => step.options[i]).join(', ');
+    opts.forEach(o => o.classList.add(isCorrect ? 'correct' : 'wrong'));
+    if(!isCorrect) {
+      correctIdx.forEach(i => {
+        const c = $(`.checkbox-option[data-index="${i}"]`);
+        c.classList.remove('wrong');
+        c.classList.add('correct');
+      });
+    }
+    $$('.checkbox-option').forEach(o => o.style.pointerEvents = 'none');
+  } else if (step.type === 'range') {
+    const slider = $('.range-slider');
+    isCorrect = parseInt(slider.value) === step.answer;
+    studentAnsText = slider.value;
+    correctAnsText = step.answer;
+    slider.disabled = true;
+    slider.style.opacity = 0.7;
+  } else if (step.type === 'drag_drop') {
+    const zones = $$('.drop-zone');
+    const currentArr = Array.from(zones).map(z => z.dataset.placed || "");
+    isCorrect = currentArr.join(',') === step.answer;
+    studentAnsText = currentArr.map(id => id ? step.bank[id] : "?").join(' -> ');
+    const correctArr = step.answer.split(',');
+    correctAnsText = correctArr.map(id => step.bank[id]).join(' -> ');
+    zones.forEach(z => z.style.borderColor = isCorrect ? 'var(--green)' : 'var(--red)');
+  } else if (step.type === 'pairing') {
+    isCorrect = $$('.pair-item.matched').length === stepPairsLength();
+    studentAnsText = isCorrect ? "All Matched Correctly" : "Incomplete/Some Wrong";
+    correctAnsText = "All Matched Correctly";
+  }
+
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = step.prompt;
+  const translations = tempDiv.querySelectorAll('.translation');
+  translations.forEach(t => t.remove());
+  const cleanPrompt = tempDiv.textContent.trim();
+
+  App.state.answeredHistory.push({
+    question: cleanPrompt,
+    studentAnswer: studentAnsText,
+    correctAnswer: correctAnsText,
+    isCorrect: isCorrect
+  });
+
+  App.totalAnswered++;
+  if (isCorrect) {
+    App.correctCount++;
+    App.state.streak++;
+    App.state.gems += 10;
+    showFeedback(true, step.explanation);
+  } else {
+    App.state.streak = 0;
+    App.state.hearts--;
+    $('#lessonHearts').innerText = App.state.hearts;
+    showFeedback(false, step.explanation);
+  }
+
+  updateStats();
+  App.state.stepAnswered = true;
+  $('#actionBtn').innerText = 'Continue';
+  $('#actionBtn').classList.add('active');
+  $('#resetBtn').classList.add('hidden');
+}
+
+function showFeedback(correct, explanation) {
+  const fb = $('#feedback');
+  fb.className = `feedback show ${correct ? 'correct' : 'wrong'}`;
+  fb.innerHTML = `
+    <div class="feedback-title">
+      ${correct ? '✅ Correct!' : '❌ Not quite!'}
+    </div>
+    <div class="feedback-text">${explanation || 'Keep practicing!'}</div>
+  `;
+  
+  // TAMBAHAN INI agar simbol matematika di Feedback terbaca dengan baik
+  if (window.renderMathInElement) {
+    renderMathInElement(fb, {
+      delimiters: [
+        {left: "\\(", right: "\\)", display: false},
+        {left: "\\[", right: "\\]", display: true}
+      ]
+    });
+  }
+}
+
+function nextStep() {
+  const lesson = LESSONS[App.currentLessonId];
+  App.currentStepIndex++;
+  if (App.currentStepIndex >= lesson.steps.length) {
+    completeLesson();
+  } else {
+    renderStep();
+  }
+}
+
+function completeLesson() {
+  $('#lessonView').classList.remove('active');
+  $('#completeView').classList.add('active');
+  
+  const accuracy = App.totalAnswered > 0 ? Math.round((App.correctCount / App.totalAnswered) * 100) : 0;
+  $('#finalXp').innerText = `+${App.correctCount * 10} XP`;
+  $('#finalAccuracy').innerText = `${accuracy}%`;
+  $('#finalCorrect').innerText = `${App.correctCount}/${App.totalAnswered}`;
+  
+  App.state.completedLessons.push(App.currentLessonId);
+  updateStats();
+
+  if (App.currentLessonId >= 6 && App.currentLessonId <= 10) {
+    $('#printResultBtn').style.display = 'block';
+  } else {
+    $('#printResultBtn').style.display = 'none';
+  }
+}
+
+function printResult() {
+  const lessonTitle = App.lessonMeta[App.currentLessonId].title;
+  const accuracy = App.totalAnswered > 0 ? Math.round((App.correctCount / App.totalAnswered) * 100) : 0;
+  const today = new Date();
+  const dateStr = today.toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' });
+  const topic = "Review dan Asesmen Tengah Fase - Aljabar";
+
+  let tableRows = "";
+  App.state.answeredHistory.forEach((item, index) => {
+    tableRows += `
+      <tr>
+        <td style="text-align:center;">${index + 1}</td>
+        <td>${item.question}</td>
+        <td>${item.studentAnswer}</td>
+        <td>${item.correctAnswer}</td>
+        <td style="text-align:center; font-weight:bold; color:${item.isCorrect ? '#58cc02' : '#ff4b4b'};">${item.isCorrect ? '✓' : '✗'}</td>
+      </tr>
+    `;
+  });
+
+  const printWindow = window.open('', '', 'width=800,height=600');
+  printWindow.document.write(`
+    <html>
+    <head>
+      <title>Print Result - ${lessonTitle}</title>
+      <style>
+        body { font-family: Arial, sans-serif; padding: 40px; color: #333; }
+        h1 { color: #58cc02; text-align: center; margin-bottom: 20px; }
+        .header-info { margin-bottom: 30px; border: 2px solid #e5e5e5; padding: 15px; border-radius: 10px; }
+        .header-info p { margin: 5px 0; font-size: 14px; }
+        .header-info b { color: #777; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 13px; }
+        th, td { border: 1px solid #ccc; padding: 10px; text-align: left; vertical-align: top; }
+        th { background-color: #f7f7f7; font-weight: bold; }
+        .footer { margin-top: 40px; text-align: center; font-size: 12px; color: #aaa; }
+      </style>
+    </head>
+    <body>
+      <h1>Math Assessment Result</h1>
+      <div class="header-info">
+        <p><b>Name:</b> ___________________________</p>
+        <p><b>Date:</b> ${dateStr}</p>
+        <p><b>Topic:</b> ${topic}</p>
+        <p><b>Assessment Group:</b> ${lessonTitle}</p>
+        <p><b>Score:</b> ${App.correctCount} / ${App.totalAnswered} (${accuracy}%)</p>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th style="width:5%; text-align:center;">No.</th>
+            <th style="width:45%;">Question</th>
+            <th style="width:20%;">Student Answer</th>
+            <th style="width:20%;">Correct Answer</th>
+            <th style="width:10%; text-align:center;">Result</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${tableRows}
+        </tbody>
+      </table>
+      <div class="footer">
+        <p>Review dan Asesmen Tengah Fase - Aljabar - Math Tutoring Portal</p>
+      </div>
+    </body>
+    </html>
+  `);
+  printWindow.document.close();
+  printWindow.focus();
+  
+  setTimeout(() => {
+    printWindow.print();
+    printWindow.close();
+  }, 300);
+}
+
+function updateStats() {
+  $('#streak').innerText = App.state.streak;
+  $('#gems').innerText = App.state.gems;
+  $('#hearts').innerText = App.state.hearts;
+}
+
+initApp();
+</script>
+</body>
+</html>
