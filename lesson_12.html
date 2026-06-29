@@ -1,0 +1,2353 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Math Tutoring — by Deni</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+:root {
+  --bg: #0b1121; --bg2: #111827; --card: rgba(17,24,39,0.85);
+  --fg: #e2e8f0; --muted: #64748b; --accent: #10b981;
+  --accent2: #f59e0b; --danger: #ef4444; --border: rgba(100,116,139,0.2);
+  --glass: rgba(16,185,129,0.08);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: var(--fg); min-height: 100vh; overflow-x: hidden; }
+.font-mono { font-family: 'JetBrains Mono', monospace; }
+
+/* Latar belakang animasi */
+.bg-grid {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    radial-gradient(circle at 20% 50%, rgba(16,185,129,0.06) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(245,158,11,0.04) 0%, transparent 50%),
+    radial-gradient(circle at 50% 80%, rgba(16,185,129,0.03) 0%, transparent 50%);
+}
+.bg-grid::after {
+  content: ''; position: absolute; inset: 0;
+  background-image: linear-gradient(rgba(16,185,129,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(16,185,129,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* Transisi halaman */
+.view { display: none; position: relative; z-index: 1; }
+.view.active { display: block; animation: fadeSlideIn 0.4s ease; }
+@keyframes fadeSlideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Peta node */
+.map-node {
+  width: 72px; height: 72px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 1.2rem; cursor: pointer; transition: all 0.3s ease;
+  position: relative; border: 3px solid var(--border);
+  background: var(--bg2);
+}
+.map-node.unlocked { border-color: var(--accent); box-shadow: 0 0 20px rgba(16,185,129,0.2); }
+.map-node.unlocked:hover { transform: scale(1.12); box-shadow: 0 0 30px rgba(16,185,129,0.4); }
+.map-node.completed { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+.map-node.completed:hover { transform: scale(1.08); }
+.map-node.locked { opacity: 0.35; cursor: not-allowed; }
+.map-node.current { animation: pulseGlow 2s ease-in-out infinite; }
+@keyframes pulseGlow {
+  0%,100% { box-shadow: 0 0 15px rgba(16,185,129,0.3); }
+  50% { box-shadow: 0 0 35px rgba(16,185,129,0.6); }
+}
+
+/* Koneksi garis peta */
+.map-line { width: 3px; height: 40px; margin: 0 auto; background: var(--border); transition: background 0.5s; }
+.map-line.done { background: var(--accent); }
+.map-branch-line { height: 3px; width: 60px; background: var(--border); transition: background 0.5s; }
+.map-branch-line.done { background: var(--accent); }
+
+/* Lesson node di peta detail */
+.lesson-node {
+  width: 56px; height: 56px; border-radius: 16px; display: flex; align-items: center; justify-content: center;
+  font-size: 0.85rem; cursor: pointer; transition: all 0.3s; border: 2px solid var(--border); background: var(--bg2);
+}
+.lesson-node.theory { border-radius: 50%; }
+.lesson-node.exercise { border-radius: 16px; }
+.lesson-node.unlocked { border-color: var(--accent); }
+.lesson-node.unlocked:hover { transform: scale(1.15); box-shadow: 0 0 20px rgba(16,185,129,0.3); }
+.lesson-node.completed { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+.lesson-node.locked { opacity: 0.3; cursor: not-allowed; }
+.lesson-connector { width: 2px; height: 24px; margin: 0 auto; background: var(--border); }
+.lesson-connector.done { background: var(--accent); }
+
+/* Tombol */
+.btn-primary {
+  background: var(--accent); color: var(--bg); font-weight: 600; padding: 14px 32px; border-radius: 14px;
+  border: none; cursor: pointer; font-size: 1rem; font-family: inherit; transition: all 0.2s;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-primary:hover { filter: brightness(1.15); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(16,185,129,0.3); }
+.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; filter: none; }
+.btn-secondary {
+  background: transparent; color: var(--accent); font-weight: 600; padding: 12px 24px; border-radius: 14px;
+  border: 2px solid var(--accent); cursor: pointer; font-size: 0.9rem; font-family: inherit; transition: all 0.2s;
+}
+.btn-secondary:hover { background: rgba(16,185,129,0.1); }
+
+/* Opsi exercise */
+.opt-card {
+  padding: 16px 20px; border: 2px solid var(--border); border-radius: 14px; cursor: pointer;
+  transition: all 0.2s; background: var(--card); min-height: 52px; display: flex; align-items: center; gap: 12px;
+}
+.opt-card:hover { border-color: rgba(16,185,129,0.4); background: var(--glass); }
+.opt-card.selected { border-color: var(--accent); background: rgba(16,185,129,0.12); }
+.opt-card.correct { border-color: #10b981; background: rgba(16,185,129,0.15); }
+.opt-card.wrong { border-color: #ef4444; background: rgba(239,68,68,0.1); }
+.opt-card.disabled { pointer-events: none; opacity: 0.7; }
+
+/* Input exercise */
+.ex-input {
+  background: var(--bg2); border: 2px solid var(--border); border-radius: 12px; padding: 14px 18px;
+  color: var(--fg); font-size: 1rem; font-family: inherit; width: 100%; outline: none; transition: border-color 0.2s;
+}
+.ex-input:focus { border-color: var(--accent); }
+.ex-input.correct { border-color: #10b981; }
+.ex-input.wrong { border-color: #ef4444; }
+
+/* Code block */
+.code-block {
+  background: #0d1117; border: 1px solid rgba(100,116,139,0.2); border-radius: 12px;
+  padding: 20px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;
+  line-height: 1.7; overflow-x: auto; white-space: pre;
+}
+
+/* Progress bar */
+.prog-bar { height: 6px; border-radius: 3px; background: rgba(100,116,139,0.2); overflow: hidden; }
+.prog-fill { height: 100%; border-radius: 3px; background: var(--accent); transition: width 0.5s ease; }
+
+/* Toast */
+.toast {
+  position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
+  padding: 14px 28px; border-radius: 14px; font-weight: 600; z-index: 999;
+  transition: transform 0.4s ease; pointer-events: none;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast.success { background: #10b981; color: #0b1121; }
+.toast.error { background: #ef4444; color: white; }
+.toast.info { background: #f59e0b; color: #0b1121; }
+
+/* XP popup */
+.xp-popup {
+  position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%) scale(0);
+  background: var(--bg2); border: 2px solid var(--accent2); border-radius: 24px;
+  padding: 40px 60px; z-index: 100; text-align: center;
+  transition: transform 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
+}
+.xp-popup.show { transform: translate(-50%,-50%) scale(1); }
+
+/* Celebration particles */
+.confetti { position: fixed; top: -10px; z-index: 99; pointer-events: none; animation: confettiFall 2s ease-out forwards; }
+@keyframes confettiFall {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+/* Match exercise */
+.match-item {
+  padding: 12px 18px; border: 2px solid var(--border); border-radius: 12px; cursor: pointer;
+  transition: all 0.2s; background: var(--card); text-align: center; user-select: none;
+}
+.match-item:hover { border-color: rgba(16,185,129,0.4); }
+.match-item.active { border-color: var(--accent); background: rgba(16,185,129,0.12); box-shadow: 0 0 15px rgba(16,185,129,0.2); }
+.match-item.matched { border-color: #10b981; background: rgba(16,185,129,0.15); opacity: 0.6; pointer-events: none; }
+.match-item.wrong-match { border-color: #ef4444; background: rgba(239,68,68,0.1); }
+
+/* Order exercise */
+.order-item {
+  padding: 14px 20px; border: 2px solid var(--border); border-radius: 12px; cursor: pointer;
+  transition: all 0.2s; background: var(--card); user-select: none;
+}
+.order-item:hover { border-color: rgba(16,185,129,0.4); }
+.order-item.ordered { border-color: var(--accent2); background: rgba(245,158,11,0.1); opacity: 0.5; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(100,116,139,0.3); border-radius: 3px; }
+
+/* Responsif */
+@media (max-width: 640px) {
+  .map-node { width: 56px; height: 56px; font-size: 1rem; }
+  .lesson-node { width: 48px; height: 48px; font-size: 0.75rem; }
+}
+
+/* Animasi masuk */
+.stagger-in > * { opacity: 0; transform: translateY(15px); animation: staggerFade 0.4s ease forwards; }
+.stagger-in > *:nth-child(1) { animation-delay: 0.05s; }
+.stagger-in > *:nth-child(2) { animation-delay: 0.1s; }
+.stagger-in > *:nth-child(3) { animation-delay: 0.15s; }
+.stagger-in > *:nth-child(4) { animation-delay: 0.2s; }
+.stagger-in > *:nth-child(5) { animation-delay: 0.25s; }
+.stagger-in > *:nth-child(6) { animation-delay: 0.3s; }
+.stagger-in > *:nth-child(7) { animation-delay: 0.35s; }
+.stagger-in > *:nth-child(8) { animation-delay: 0.4s; }
+.stagger-in > *:nth-child(9) { animation-delay: 0.45s; }
+.stagger-in > *:nth-child(10) { animation-delay: 0.5s; }
+@keyframes staggerFade { to { opacity: 1; transform: translateY(0); } }
+
+/* Feedback benar/salah */
+.feedback-bar {
+  padding: 18px 24px; border-radius: 14px; font-weight: 600; display: flex; align-items: center; gap: 12px;
+  animation: fadeSlideIn 0.3s ease;
+}
+.feedback-bar.correct-fb { background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.3); color: #10b981; }
+.feedback-bar.wrong-fb { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #ef4444; }
+
+/* Terjemahan bahasa Indonesia di bawah teks utama */
+.id-lang { display: block; font-size: 0.75rem; color: #94a3b8; margin-top: 2px; line-height: 1.4; }
+
+/* Khusus label di node peta/lesson: tidak wrap, indo di bawah inggris */
+.node-title { text-align: center; white-space: nowrap; }
+.node-title .id-lang { display: block; white-space: nowrap; margin-top: 2px; }
+
+/* Modal Rules */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 200;
+  display: none; align-items: center; justify-content: center;
+}
+.modal-overlay.active { display: flex; animation: fadeIn 0.3s ease; }
+.modal-box {
+  background: var(--bg2); border: 1px solid var(--border); border-radius: 20px;
+  padding: 30px; max-width: 450px; width: 90%; position: relative;
+  animation: scaleIn 0.3s ease;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes scaleIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<!-- Rules Modal -->
+<div id="rulesModal" class="modal-overlay">
+  <div class="modal-box">
+    <button onclick="closeRules()" class="absolute top-4 right-4 text-slate-500 hover:text-slate-300 transition">
+      <i class="fa-solid fa-xmark text-lg"></i>
+    </button>
+    <h3 class="text-xl font-bold mb-5 text-amber-400">
+      <i class="fa-solid fa-gavel mr-2"></i>Class Rules <span class="id-lang" style="display:inline; color:#f59e0b;">Aturan Kelas</span>
+    </h3>
+    <ul class="space-y-4 text-slate-300">
+      <li class="flex items-start gap-3">
+        <span class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center flex-shrink-0 mt-0.5"><i class="fa-solid fa-comments text-emerald-400"></i></span>
+        <div>
+          <strong>Take turns speaking</strong>
+          <span class="id-lang">Berbicara secara bergantian</span>
+        </div>
+      </li>
+      <li class="flex items-start gap-3">
+        <span class="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center flex-shrink-0 mt-0.5"><i class="fa-solid fa-video text-amber-400"></i></span>
+        <div>
+          <strong>Turn on camera & microphone when required</strong>
+          <span class="id-lang">Menyalakan kamera & microphone jika diperlukan</span>
+        </div>
+      </li>
+      <li class="flex items-start gap-3">
+        <span class="w-8 h-8 rounded-lg bg-violet-500/10 flex items-center justify-center flex-shrink-0 mt-0.5"><i class="fa-solid fa-hand text-violet-400"></i></span>
+        <div>
+          <strong>Ask for permission to leave the class</strong>
+          <span class="id-lang">Meminta izin jika ingin meninggalkan kelas</span>
+        </div>
+      </li>
+    </ul>
+    <div class="mt-6 text-right">
+      <button onclick="closeRules()" class="btn-primary">Got it! <span class="id-lang" style="color:rgba(11,17,33,0.7); display:inline;">Mengerti!</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="toast"></div>
+
+<!-- XP Popup -->
+<div id="xpPopup" class="xp-popup">
+  <div class="text-5xl font-bold text-amber-400 mb-2">+<span id="xpAmount">10</span> XP</div>
+  <div class="text-lg text-slate-400">Correct answer! <span class="id-lang">Jawaban benar!</span></div>
+</div>
+
+<!-- ========== MAP VIEW ========== -->
+<div id="mapView" class="view active">
+  <header class="sticky top-0 z-10 backdrop-blur-xl bg-[#0b1121]/80 border-b border-white/5">
+    <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center">
+          <i class="fa-solid fa-square-root-variable text-emerald-400"></i>
+        </div>
+        <div>
+          <div class="font-bold text-lg leading-tight">Math Tutoring</div>
+          <div class="text-xs text-slate-500">by Deni</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-5">
+        <button onclick="openRules()" class="text-xs text-slate-500 hover:text-amber-400 transition flex items-center gap-1 border border-transparent hover:border-amber-400/30 rounded-lg px-2 py-1" title="Class Rules">
+          <i class="fa-solid fa-gavel"></i> Rules
+        </button>
+        <button onclick="resetProgress()" class="text-xs text-slate-500 hover:text-red-400 transition flex items-center gap-1 border border-transparent hover:border-red-400/30 rounded-lg px-2 py-1" title="Reset Semua Progress">
+          <i class="fa-solid fa-rotate-left"></i> Reset
+        </button>
+        <div class="flex items-center gap-2 text-amber-400 font-semibold">
+          <i class="fa-solid fa-bolt"></i><span id="headerXP">0</span> XP
+        </div>
+        <div class="flex items-center gap-2 text-orange-400 font-semibold">
+          <i class="fa-solid fa-fire"></i><span id="headerStreak">0</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 pt-8 pb-20">
+    <div class="text-center mb-10">
+		<h1 class="text-3xl md:text-4xl font-extrabold mb-3 bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">
+		  Learning Path <span class="id-lang" style="display:inline; color:#94a3b8;">Peta Perjalanan</span>
+		</h1>
+            <div class="text-slate-400 mx-auto text-center" style="max-width: 90%;">
+        <div style="white-space: nowrap;">Complete each map to unlock the next. Collect XP and build your learning streak!</div>
+        <div class="id-lang" style="white-space: nowrap;">Selesaikan setiap peta untuk membuka peta berikutnya. Kumpulkan XP dan bangun streak belajarmu!</div>
+      </div>
+    </div>
+
+    <!-- Progress keseluruhan -->
+    <div class="max-w-md mx-auto mb-10">
+      <div class="flex justify-between text-sm mb-2">
+        <span class="text-slate-400">Overall Progress <span class="id-lang" style="display:inline; color:#64748b;">Progress Keseluruhan</span></span>
+        <span class="text-emerald-400 font-semibold" id="totalProgress">0%</span>
+      </div>
+      <div class="prog-bar">
+        <div class="prog-fill" id="totalProgFill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <!-- Peta nodes akan dirender oleh JS -->
+    <div id="mapContainer" class="flex flex-col items-center gap-0"></div>
+  </main>
+</div>
+
+<!-- ========== PETA VIEW (detail lesson) ========== -->
+<div id="petaView" class="view">
+  <header class="sticky top-0 z-10 backdrop-blur-xl bg-[#0b1121]/80 border-b border-white/5">
+    <div class="max-w-2xl mx-auto px-4 py-4 flex items-center gap-4">
+      <button onclick="showMap()" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center hover:bg-white/10 transition">
+        <i class="fa-solid fa-arrow-left text-slate-400"></i>
+      </button>
+      <div>
+        <div class="font-bold text-lg" id="petaTitle"></div>
+        <div class="text-xs text-slate-500" id="petaSubtitle"></div>
+      </div>
+    </div>
+  </header>
+  <main class="max-w-2xl mx-auto px-4 pt-8 pb-20">
+    <div id="lessonContainer" class="flex flex-col items-center"></div>
+  </main>
+</div>
+
+<!-- ========== LESSON VIEW ========== -->
+<div id="lessonView" class="view">
+  <header class="sticky top-0 z-10 backdrop-blur-xl bg-[#0b1121]/80 border-b border-white/5">
+    <div class="max-w-2xl mx-auto px-4 py-4 flex items-center gap-4">
+      <button onclick="closeLesson()" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center hover:bg-white/10 transition">
+        <i class="fa-solid fa-xmark text-slate-400"></i>
+      </button>
+      <div class="flex-1">
+        <div class="prog-bar">
+          <div class="prog-fill" id="lessonProgFill" style="width:0%"></div>
+        </div>
+      </div>
+      <div class="text-sm text-slate-400 font-mono" id="lessonCounter">1/10</div>
+    </div>
+  </header>
+  <main class="max-w-2xl mx-auto px-4 pt-6 pb-20" id="lessonContent"></main>
+</div>
+
+<script>
+// ============================================================
+// DATA KURSUS — Seluruh konten pembelajaran
+// ============================================================
+const COURSE = {
+  title: "Intro to Systems of Linear Equations",
+  maps: [
+    // ==================== PETA 1 ====================
+    {
+      id:1, title:"Spiral Review Warm-up <span class='id-lang'>Spiral Review Pemanasan</span>", icon:"fa-rotate", color:"#10b981", branch:false,
+      lessons:[
+        // T1
+        {type:"T",title:"What is Algebra? <span class='id-lang'>Apa Itu Aljabar?</span>",
+         body:`<p><strong>Algebra</strong> is a branch of mathematics that uses <strong>letters (variables)</strong> to represent unknown values. Instead of working only with numbers, algebra lets us write general rules and solve problems where some values are not yet known. <span class='id-lang'><strong>Aljabar</strong> adalah cabang matematika yang menggunakan <strong>huruf (variabel)</strong> untuk mewakili nilai yang belum diketahui. Alih-alih bekerja hanya dengan angka, aljabar memungkinkan kita menulis aturan umum dan menyelesaikan masalah di mana beberapa nilai belum diketahui.</span></p>
+         <div class="mt-4 space-y-3">
+           <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+             <div class="text-emerald-400 font-semibold mb-2"><i class="fa-solid fa-box mr-2"></i>Variable <span class='id-lang'>Variabel</span></div>
+             <p class="text-sm text-slate-300">A symbol (like \\(x\\), \\(y\\), \\(k\\)) that represents an unknown value that can <strong>change</strong>. <span class='id-lang'>Simbol (seperti \\(x\\), \\(y\\), \\(k\\)) yang mewakili nilai yang belum diketahui dan bisa <strong>berubah</strong>.</span></p>
+             <p class="text-xs text-slate-400 mt-1">Example: In \\(3x + 12\\), the variable is \\(x\\). <span class='id-lang'>Contoh: Pada \\(3x + 12\\), variabelnya adalah \\(x\\).</span></p>
+           </div>
+           <div class="p-4 rounded-xl bg-cyan-500/10 border border-cyan-500/20">
+             <div class="text-cyan-400 font-semibold mb-2"><i class="fa-solid fa-lock mr-2"></i>Constant <span class='id-lang'>Konstanta</span></div>
+             <p class="text-sm text-slate-300">A fixed number that does <strong>not change</strong>. <span class='id-lang'>Angka tetap yang <strong>tidak berubah</strong>.</span></p>
+             <p class="text-xs text-slate-400 mt-1">Example: In \\(3x + 12\\), the constant is \\(12\\). <span class='id-lang'>Contoh: Pada \\(3x + 12\\), konstantanya adalah \\(12\\).</span></p>
+           </div>
+         </div>
+         <p class="mt-4">In gaming terms: if \\(k\\) is the price of one skin, then the total cost of 5 skins plus a 10-coin admin fee can be written as <strong>\\(5k + 10\\)</strong>. This is an <em>algebraic expression</em>! <span class='id-lang'>Dalam istilah game: jika \\(k\\) adalah harga satu skin, maka total biaya 5 skin ditambah biaya admin 10 koin dapat ditulis sebagai <strong>\\(5k + 10\\)</strong>. Ini adalah <em>ekspresi aljabar</em>!</span></p>`},
+        // E1 mc
+        {type:"E",etype:"mc",
+         q:"In the expression \\(3y + 12\\), which part is the variable? <span class='id-lang'>Pada ekspresi \\(3y + 12\\), bagian mana yang merupakan variabel?</span>",
+         o:["3 <span class='id-lang'>3</span>","y <span class='id-lang'>y</span>","12 <span class='id-lang'>12</span>","3y <span class='id-lang'>3y</span>"],
+         a:1,
+         h:"A variable is a letter representing an unknown value. <span class='id-lang'>Variabel adalah huruf yang mewakili nilai yang belum diketahui.</span>"},
+        // E2 tf
+        {type:"E",etype:"tf",
+         q:"A constant can change its value within an expression. <span class='id-lang'>Konstanta dapat berubah nilainya dalam suatu ekspresi.</span>",
+         a:false,
+         h:"Constants are fixed numbers — they never change! <span class='id-lang'>Konstanta adalah angka tetap — mereka tidak pernah berubah!</span>"},
+        // E3 fb
+        {type:"E",etype:"fb",
+         q:"In the expression \\(5k + 10\\), the constant is ____. <span class='id-lang'>Pada ekspresi \\(5k + 10\\), konstantanya adalah ____.</span>",
+         a:"10",
+         h:"The constant is the number without a variable attached. <span class='id-lang'>Konstanta adalah angka tanpa variabel yang menempel.</span>"},
+        // T2
+        {type:"T",title:"Building Algebraic Expressions <span class='id-lang'>Menyusun Ekspresi Aljabar</span>",
+         body:`<p>We can translate <strong>word problems</strong> into algebraic expressions. This skill is essential for setting up equations later. <span class='id-lang'>Kita bisa menerjemahkan <strong>soal cerita</strong> menjadi ekspresi aljabar. Keterampilan ini penting untuk menyusun persamaan nanti.</span></p>
+         <div class="mt-4 space-y-3">
+           <div class="p-4 rounded-xl bg-teal-500/10 border border-teal-500/20">
+             <div class="text-teal-400 font-semibold mb-1">Example 1: Game Skins</div>
+             <p class="text-sm text-slate-300">"5 skins at \\(k\\) coins each plus 10-coin admin fee" <span class='id-lang'>"5 skin seharga \\(k\\) koin ditambah biaya admin 10 koin"</span></p>
+             <p class="text-sm text-emerald-400 mt-1">→ \\(5k + 10\\)</p>
+           </div>
+           <div class="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20">
+             <div class="text-amber-400 font-semibold mb-1">Example 2: Age Problem</div>
+             <p class="text-sm text-slate-300">"Twice a student's age minus 5" <span class='id-lang'>"Dua kali umur seorang siswa dikurangi 5"</span></p>
+             <p class="text-sm text-emerald-400 mt-1">→ \\(2n - 5\\)</p>
+           </div>
+           <div class="p-4 rounded-xl bg-violet-500/10 border border-violet-500/20">
+             <div class="text-violet-400 font-semibold mb-1">Example 3: Shopping</div>
+             <p class="text-sm text-slate-300">"3 burgers (\\(b\\)) and 2 drinks (\\(d\\)) cost 50,000" <span class='id-lang'>"3 burger (\\(b\\)) dan 2 minuman (\\(d\\)) harganya 50.000"</span></p>
+             <p class="text-sm text-emerald-400 mt-1">→ \\(3b + 2d = 50{,}000\\)</p>
+           </div>
+         </div>
+         <div class="mt-4 p-4 rounded-xl bg-amber-500/10 border border-amber-500/20">
+           <div class="text-amber-400 font-semibold mb-1"><i class="fa-solid fa-lightbulb mr-2"></i>Key Insight <span class='id-lang'>Wawasan Kunci</span></div>
+           <p class="text-sm text-slate-300">When you see "total cost" or "equals", it becomes an <strong>equation</strong> (with \\(=\\)). Otherwise, it's just an <strong>expression</strong> (no \\(=\\)). <span class='id-lang'>Ketika kamu melihat "total harga" atau "sama dengan", itu menjadi <strong>persamaan</strong> (dengan \\(=\\)). Jika tidak, itu hanya <strong>ekspresi</strong> (tanpa \\(=\\)).</span></p>
+         </div>`},
+        // E4 mc
+        {type:"E",etype:"mc",
+         q:"If \\(k\\) is the price of one skin, what is the expression for '5 skins plus 10-coin admin fee'? <span class='id-lang'>Jika \\(k\\) harga satu skin, apa ekspresi untuk '5 skin ditambah biaya admin 10 koin'?</span>",
+         o:["\\(k + 5 + 10\\)","\\(5k + 10\\)","\\(5(k + 10)\\)","\\(10k + 5\\)"],
+         a:1,
+         h:"5 skins at k each = 5k, plus admin fee of 10. <span class='id-lang'>5 skin seharga k = 5k, ditambah admin 10.</span>"},
+        // E5 sa
+        {type:"E",etype:"sa",
+         q:"Select all that are valid algebraic expressions: <span class='id-lang'>Pilih semua yang merupakan ekspresi aljabar yang valid:</span>",
+         o:["\\(3x + 7\\)","\\(+ - 5 =\\)","\\(2a - 4b\\)","\\(== 10\\)","\\(5m + 2n = 100\\)"],
+         a:[0,2,4],
+         h:"An algebraic expression/equation uses variables, numbers, and operations meaningfully. <span class='id-lang'>Ekspresi/persamaan aljabar menggunakan variabel, angka, dan operasi secara bermakna.</span>"},
+        // E6 fb
+		{type:"E",etype:"fb",
+         q:"'Two times a student's age minus 5' translates to ____ (use \\(n\\) for age). <span class='id-lang'>'Dua kali umur seorang siswa dikurangi 5' diterjemahkan menjadi ____ (gunakan \\(n\\) untuk umur).</span>",
+         a:"2n - 5",
+         h:"Two times = multiply by 2, minus = subtract. <span class='id-lang'>Dua kali = dikali 2, dikurangi = kurangi.</span>"},
+        // T3
+        {type:"T",title:"Evaluating Expressions <span class='id-lang'>Mengevaluasi Ekspresi</span>",
+         body:`<p><strong>Evaluating</strong> an expression means substituting a number for each variable and calculating the result. <span class='id-lang'><strong>Mengevaluasi</strong> ekspresi berarti mengganti variabel dengan angka lalu menghitung hasilnya.</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+           <div class="text-emerald-400 font-semibold mb-2">Example <span class='id-lang'>Contoh</span></div>
+           <p class="text-sm text-slate-300">Evaluate \\(2x + 1\\) when \\(x = 3\\): <span class='id-lang'>Evaluasi \\(2x + 1\\) saat \\(x = 3\\):</span></p>
+           <p class="text-sm text-emerald-400 mt-1">\\(2(3) + 1 = 6 + 1 = 7\\)</p>
+         </div>
+         <p class="mt-4">Why does this matter? Later, when we find a solution like \\((6, 4)\\) to a system of equations, we will <strong>verify</strong> it by substituting back — exactly like evaluating! <span class='id-lang'>Mengapa ini penting? Nanti, ketika kita menemukan solusi seperti \\((6, 4)\\) untuk suatu sistem persamaan, kita akan <strong>memverifikasi</strong>-nya dengan substitusi balik — persis seperti mengevaluasi!</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-rose-500/10 border border-rose-500/20">
+           <div class="text-rose-400 font-semibold mb-2">Verification Preview <span class='id-lang'>Pratinjau Verifikasi</span></div>
+           <p class="text-sm text-slate-300">Is \\((3, 2)\\) a solution to \\(x + y = 5\\)? <span class='id-lang'>Apakah \\((3, 2)\\) solusi dari \\(x + y = 5\\)?</span></p>
+           <p class="text-sm text-slate-300 mt-1">Substitute: \\(3 + 2 = 5\\) ✓ <span class='id-lang'>Substitusi: \\(3 + 2 = 5\\) ✓</span></p>
+           <p class="text-sm text-emerald-400">Yes! It's a solution. <span class='id-lang'>Ya! Ini solusi.</span></p>
+         </div>`},
+        // E7 mc
+        {type:"E",etype:"mc",
+         q:"If \\(x = 4\\), what is the value of \\(3x - 2\\)? <span class='id-lang'>Jika \\(x = 4\\), berapa nilai \\(3x - 2\\)?</span>",
+         o:["7","10","14","5"],
+         a:1,
+         h:"Substitute x=4: 3(4) - 2 = 12 - 2 = ? <span class='id-lang'>Substitusi x=4: 3(4) - 2 = 12 - 2 = ?</span>"},
+        // E8 fb
+        {type:"E",etype:"fb",
+         q:"If \\(y = 2\\) and \\(x = 3\\), then \\(x + y =\\) ____. <span class='id-lang'>Jika \\(y = 2\\) dan \\(x = 3\\), maka \\(x + y =\\) ____.</span>",
+         a:"5",
+         h:"Substitute both values: 3 + 2 = ? <span class='id-lang'>Substitusi kedua nilai: 3 + 2 = ?</span>"},
+        // E9 tf
+        {type:"E",etype:"tf",
+         q:"To verify a solution to an equation, we substitute the values back into the equation. <span class='id-lang'>Untuk memverifikasi solusi suatu persamaan, kita substitusikan nilai kembali ke persamaan.</span>",
+         a:true,
+         h:"This is exactly what verification means! <span class='id-lang'>Inilah yang dimaksud dengan verifikasi!</span>"},
+        // E10 match
+        {type:"E",etype:"match",
+         q:"Match each expression with its value when \\(x = 2\\): <span class='id-lang'>Cocokkan setiap ekspresi dengan nilainya saat \\(x = 2\\):</span>",
+         left:["\\(3x\\)","\\(x + 5\\)","\\(2x - 1\\)","\\(10 - x\\)"],
+         right:["6","7","3","8"],
+         a:[0,1,2,3],
+         h:"Substitute x=2 into each expression. <span class='id-lang'>Substitusi x=2 ke setiap ekspresi.</span>"},
+      ]
+    },
+    // ==================== PETA 2 ====================
+    {
+      id:2, title:"Intro & Real-World <span class='id-lang'>Pengantar & Dunia Nyata</span>", icon:"fa-lightbulb", color:"#06b6d4", branch:false,
+      lessons:[
+        // T1
+        {type:"T",title:"What is a System of Linear Equations? <span class='id-lang'>Apa Itu SPLDV?</span>",
+         body:`<p>A <strong>System of Linear Equations</strong> (SPLDV) is a set of <strong>two or more linear equations</strong> with the <strong>same variables</strong>. <span class='id-lang'><strong>Sistem Persamaan Linear Dua Variabel</strong> (SPLDV) adalah himpunan <strong>dua atau lebih persamaan linear</strong> dengan <strong>variabel yang sama</strong>.</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-cyan-500/10 border border-cyan-500/20">
+           <div class="text-cyan-400 font-semibold mb-2">Example <span class='id-lang'>Contoh</span></div>
+           <p class="text-sm text-slate-300">Equation 1: \\(x + y = 10\\) <span class='id-lang'>Persamaan 1: \\(x + y = 10\\)</span></p>
+           <p class="text-sm text-slate-300">Equation 2: \\(x - y = 2\\) <span class='id-lang'>Persamaan 2: \\(x - y = 2\\)</span></p>
+           <p class="text-sm text-emerald-400 mt-2">Both equations involve the same variables \\(x\\) and \\(y\\). <span class='id-lang'>Kedua persamaan melibatkan variabel yang sama \\(x\\) dan \\(y\\).</span></p>
+         </div>
+         <p class="mt-4">Why "system"? Because the equations <strong>work together</strong> — we're looking for values of \\(x\\) and \\(y\\) that satisfy <em>both</em> equations at the same time. <span class='id-lang'>Mengapa "sistem"? Karena persamaan-persamaan tersebut <strong>bekerja bersama</strong> — kita mencari nilai \\(x\\) dan \\(y\\) yang memenuhi <em>kedua</em> persamaan secara bersamaan.</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-amber-500/10 border border-amber-500/20">
+           <div class="text-amber-400 font-semibold mb-2"><i class="fa-solid fa-lightbulb mr-2"></i>Think of it this way <span class='id-lang'>Pikirkan seperti ini</span></div>
+           <p class="text-sm text-slate-300">Each equation is a clue. One clue alone isn't enough — but together, they reveal the answer! <span class='id-lang'>Setiap persamaan adalah petunjuk. Satu petunjuk saja tidak cukup — tapi bersama-sama, mereka mengungkap jawabannya!</span></p>
+         </div>`},
+        // E1 mc
+        {type:"E",etype:"mc",
+         q:"Which of the following is a system of linear equations with two variables? <span class='id-lang'>Manakah yang merupakan sistem persamaan linear dua variabel?</span>",
+         o:["\\(x + y = 10\\) only <span class='id-lang'>\\(x + y = 10\\) saja</span>","\\(x + y = 10\\) and \\(x - y = 2\\) <span class='id-lang'>\\(x + y = 10\\) dan \\(x - y = 2\\)</span>","\\(x^2 + y = 5\\) <span class='id-lang'>\\(x^2 + y = 5\\)</span>","\\(x + 3 = 7\\) <span class='id-lang'>\\(x + 3 = 7\\)</span>"],
+         a:1,
+         h:"A system needs at least TWO linear equations with the SAME variables. <span class='id-lang'>Sistem butuh minimal DUA persamaan linear dengan variabel YANG SAMA.</span>"},
+        // E2 tf
+        {type:"E",etype:"tf",
+         q:"A system of linear equations must have at least two equations. <span class='id-lang'>Sistem persamaan linear harus memiliki setidaknya dua persamaan.</span>",
+         a:true,
+         h:"One equation alone is not a 'system'. <span class='id-lang'>Satu persamaan saja bukan 'sistem'.</span>"},
+        // E3 fb
+        {type:"E",etype:"fb",
+         q:"SPLDV stands for Sistem Persamaan Linear ____ Variabel. <span class='id-lang'>SPLDV adalah singkatan dari Sistem Persamaan Linear ____ Variabel.</span>",
+         a:"Dua",
+         h:"SPLDV involves TWO variables. <span class='id-lang'>SPLDV melibatkan DUA variabel.</span>"},
+        // T2
+        {type:"T",title:"Real-World Modeling <span class='id-lang'>Pemodelan Dunia Nyata</span>",
+         body:`<p>Let's model a real scenario as a system of equations! <span class='id-lang'>Mari kita modelkan skenario nyata sebagai sistem persamaan!</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-cyan-500/10 border border-cyan-500/20">
+           <div class="text-cyan-400 font-bold mb-2"><i class="fa-solid fa-gamepad mr-2"></i>The Game Server Scenario <span class='id-lang'>Skenario Server Game</span></div>
+           <p class="text-sm text-slate-300 mt-2">Imagine you're choosing between two game server subscriptions: <span class='id-lang'>Bayangkan kamu memilih antara dua langganan server game:</span></p>
+           <div class="mt-3 grid grid-cols-1 md:grid-cols-2 gap-3">
+             <div class="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
+               <div class="text-emerald-400 font-semibold">Server A</div>
+               <p class="text-sm text-slate-300">Registration fee: 10 coins <span class='id-lang'>Biaya daftar: 10 koin</span></p>
+               <p class="text-sm text-slate-300">Per hour: 2 coins <span class='id-lang'>Per jam: 2 koin</span></p>
+               <p class="text-sm text-emerald-400 mt-1">Total: \\(y = 2x + 10\\)</p>
+             </div>
+             <div class="p-3 rounded-lg bg-orange-500/10 border border-orange-500/20">
+               <div class="text-orange-400 font-semibold">Server B</div>
+               <p class="text-sm text-slate-300">No registration fee <span class='id-lang'>Tanpa biaya daftar</span></p>
+               <p class="text-sm text-slate-300">Per hour: 4 coins <span class='id-lang'>Per jam: 4 koin</span></p>
+               <p class="text-sm text-emerald-400 mt-1">Total: \\(y = 4x\\)</p>
+             </div>
+           </div>
+           <p class="text-sm text-slate-300 mt-3">When are the costs exactly the same? That's the <strong>"meeting point"</strong>! <span class='id-lang'>Kapan biayanya sama persis? Itulah <strong>"titik temu"</strong>!</span></p>
+         </div>`},
+        // E4 mc
+        {type:"E",etype:"mc",
+         q:"What equation represents Server A's total cost? <span class='id-lang'>Persamaan apa yang mewakili total biaya Server A?</span>",
+         o:["\\(y = 10x + 2\\)","\\(y = 2x + 10\\)","\\(y = 4x\\)","\\(y = 2x\\)"],
+         a:1,
+         h:"10 coins registration + 2 coins per hour. <span class='id-lang'>10 koin daftar + 2 koin per jam.</span>"},
+        // E5 mc
+        {type:"E",etype:"mc",
+         q:"What equation represents Server B's total cost? <span class='id-lang'>Persamaan apa yang mewakili total biaya Server B?</span>",
+         o:["\\(y = 10x\\)","\\(y = 2x + 10\\)","\\(y = 4x\\)","\\(y = 4x + 10\\)"],
+         a:2,
+         h:"No registration fee, just 4 coins per hour. <span class='id-lang'>Tanpa biaya daftar, hanya 4 koin per jam.</span>"},
+        // E6 fb
+        {type:"E",etype:"fb",
+         q:"To find when Server A and B cost the same, we set \\(2x + 10 =\\) ____. <span class='id-lang'>Untuk mencari kapan Server A dan B sama biayanya, kita pasang \\(2x + 10 =\\) ____.</span>",
+         a:"4x",
+         h:"Set the two cost expressions equal to each other. <span class='id-lang'>Samakan kedua ekspresi biaya.</span>"},
+        // T3
+        {type:"T",title:"Understanding the Solution <span class='id-lang'>Memahami Solusi</span>",
+         body:`<p>A <strong>solution</strong> to a system of equations is an <strong>ordered pair</strong> \\((x, y)\\) that satisfies <strong>ALL</strong> equations in the system simultaneously. <span class='id-lang'><strong>Solusi</strong> dari sistem persamaan adalah <strong>pasangan berurutan</strong> \\((x, y)\\) yang memenuhi <strong>SEMUA</strong> persamaan dalam sistem secara bersamaan.</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-violet-500/10 border border-violet-500/20">
+           <div class="text-violet-400 font-semibold mb-2">Example <span class='id-lang'>Contoh</span></div>
+           <p class="text-sm text-slate-300">Is \\((6, 4)\\) a solution to the system \\(x + y = 10\\) and \\(x - y = 2\\)? <span class='id-lang'>Apakah \\((6, 4)\\) solusi dari sistem \\(x + y = 10\\) dan \\(x - y = 2\\)?</span></p>
+           <p class="text-sm text-emerald-400 mt-2">Check Eq 1: \\(6 + 4 = 10\\) ✓ <span class='id-lang'>Cek Ps 1: \\(6 + 4 = 10\\) ✓</span></p>
+           <p class="text-sm text-emerald-400">Check Eq 2: \\(6 - 4 = 2\\) ✓ <span class='id-lang'>Cek Ps 2: \\(6 - 4 = 2\\) ✓</span></p>
+           <p class="text-sm text-emerald-400 mt-1 font-bold">Yes! \\((6, 4)\\) is the solution. <span class='id-lang'>Ya! \\((6, 4)\\) adalah solusinya.</span></p>
+         </div>
+         <div class="mt-4 p-4 rounded-xl bg-red-500/10 border border-red-500/20">
+           <div class="text-red-400 font-semibold mb-2">Not a Solution <span class='id-lang'>Bukan Solusi</span></div>
+           <p class="text-sm text-slate-300">Is \\((5, 5)\\) a solution? <span class='id-lang'>Apakah \\((5, 5)\\) solusi?</span></p>
+           <p class="text-sm text-emerald-400">Eq 1: \\(5 + 5 = 10\\) ✓ <span class='id-lang'>Ps 1: \\(5 + 5 = 10\\) ✓</span></p>
+           <p class="text-sm text-red-400">Eq 2: \\(5 - 5 = 0 \\neq 2\\) ✗ <span class='id-lang'>Ps 2: \\(5 - 5 = 0 \\neq 2\\) ✗</span></p>
+           <p class="text-sm text-red-400 mt-1 font-bold">No! It fails the second equation. <span class='id-lang'>Tidak! Gagal di persamaan kedua.</span></p>
+         </div>`},
+        // E7 mc
+        {type:"E",etype:"mc",
+         q:"What is a solution to a system of two equations? <span class='id-lang'>Apa yang dimaksud solusi dari sistem dua persamaan?</span>",
+         o:["A value that satisfies one equation <span class='id-lang'>Nilai yang memenuhi satu persamaan</span>","An ordered pair (x, y) that satisfies BOTH equations <span class='id-lang'>Pasangan berurutan (x, y) yang memenuhi KEDUA persamaan</span>","Any pair of numbers <span class='id-lang'>Sepasang angka apa saja</span>","The largest value of x <span class='id-lang'>Nilai x terbesar</span>"],
+         a:1,
+         h:"The solution must make ALL equations true. <span class='id-lang'>Solusi harus membuat SEMUA persamaan bernilai benar.</span>"},
+        // E8 tf
+        {type:"E",etype:"tf",
+         q:"A solution to a system only needs to satisfy one of the equations. <span class='id-lang'>Solusi dari sistem hanya perlu memenuhi salah satu persamaan.</span>",
+         a:false,
+         h:"It must satisfy ALL equations in the system. <span class='id-lang'>Harus memenuhi SEMUA persamaan dalam sistem.</span>"},
+        // E9 fb
+        {type:"E",etype:"fb",
+         q:"A solution to a system is written as an ordered ____. <span class='id-lang'>Solusi dari sistem ditulis sebagai pasangan ____.</span>",
+         a:"pair",
+         h:"(x, y) is an ordered ____. <span class='id-lang'>(x, y) adalah pasangan ____.</span>"},
+        // E10 match
+        {type:"E",etype:"match",
+         q:"Match each point with whether it is a solution to \\(x + y = 10\\) AND \\(x - y = 2\\): <span class='id-lang'>Cocokkan setiap titik dengan apakah solusi dari \\(x + y = 10\\) DAN \\(x - y = 2\\):</span>",
+         left:["\\((6, 4)\\)","\\((5, 5)\\)","\\((7, 3)\\)","\\((4, 6)\\)"],
+         right:["Solution ✓","Not a solution ✗","Solution ✓","Not a solution ✗"],
+         a:[0,1,2,3],
+         h:"Check both equations for each point. <span class='id-lang'>Periksa kedua persamaan untuk setiap titik.</span>"},
+      ]
+    },
+    // ==================== PETA 3 ====================
+    {
+      id:3, title:"Review Prior Knowledge <span class='id-lang'>Review Pengetahuan</span>", icon:"fa-brain", color:"#8b5cf6", branch:false,
+      lessons:[
+        // T1
+        {type:"T",title:"The Cartesian Coordinate System <span class='id-lang'>Sistem Koordinat Kartesius</span>",
+         body:`<p>Before we can graph systems of equations, let's review the <strong>Cartesian coordinate system</strong>. <span class='id-lang'>Sebelum kita menggambar grafik sistem persamaan, mari review <strong>sistem koordinat Kartesius</strong>.</span></p>
+         <div class="mt-4 space-y-3">
+           <div class="p-4 rounded-xl bg-violet-500/10 border border-violet-500/20">
+             <div class="text-violet-400 font-semibold mb-2">Key Components <span class='id-lang'>Komponen Utama</span></div>
+             <ul class="text-sm text-slate-300 space-y-1 list-disc list-inside">
+               <li><strong>x-axis</strong> — horizontal axis <span class='id-lang'>Sumbu horizontal</span></li>
+               <li><strong>y-axis</strong> — vertical axis <span class='id-lang'>Sumbu vertikal</span></li>
+               <li><strong>Origin</strong> — the point \\((0, 0)\\) where axes meet <span class='id-lang'>Titik \\((0, 0)\\) tempat pertemuan sumbu</span></li>
+             </ul>
+           </div>
+           <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+             <div class="text-emerald-400 font-semibold mb-2">Plotting Points <span class='id-lang'>Memplot Titik</span></div>
+             <p class="text-sm text-slate-300">A point \\((x, y)\\) means: go \\(x\\) units horizontally, then \\(y\\) units vertically from the origin. <span class='id-lang'>Titik \\((x, y)\\) berarti: pergi \\(x\\) satuan secara horizontal, lalu \\(y\\) satuan secara vertikal dari titik asal.</span></p>
+             <p class="text-xs text-slate-400 mt-1">Example: \\((3, 2)\\) → right 3, up 2. <span class='id-lang'>Contoh: \\((3, 2)\\) → kanan 3, naik 2.</span></p>
+           </div>
+         </div>
+         <p class="mt-4">Remember: the first number is always \\(x\\) (horizontal), the second is always \\(y\\) (vertical)! <span class='id-lang'>Ingat: angka pertama selalu \\(x\\) (horizontal), angka kedua selalu \\(y\\) (vertikal)!</span></p>`},
+        // E1 mc
+        {type:"E",etype:"mc",
+         q:"Where is the point \\((0, 5)\\) located? <span class='id-lang'>Di mana letak titik \\((0, 5)\\)?</span>",
+         o:["On the x-axis <span class='id-lang'>Pada sumbu-x</span>","On the y-axis <span class='id-lang'>Pada sumbu-y</span>","At the origin <span class='id-lang'>Di titik asal</span>","In Quadrant III <span class='id-lang'>Di Kuadran III</span>"],
+         a:1,
+         h:"When x=0, the point lies on the vertical axis. <span class='id-lang'>Ketika x=0, titik terletak pada sumbu vertikal.</span>"},
+        // E2 tf
+        {type:"E",etype:"tf",
+         q:"The point \\((3, 0)\\) lies on the x-axis. <span class='id-lang'>Titik \\((3, 0)\\) terletak pada sumbu-x.</span>",
+         a:true,
+         h:"When y=0 and x≠0, the point is on the x-axis. <span class='id-lang'>Ketika y=0 dan x≠0, titik berada pada sumbu-x.</span>"},
+        // E3 fb
+        {type:"E",etype:"fb",
+         q:"In the coordinate \\((4, 7)\\), 4 is the ____-coordinate. <span class='id-lang'>Pada koordinat \\((4, 7)\\), 4 adalah koordinat ____.</span>",
+         a:"x",
+         h:"The first number is always x. <span class='id-lang'>Angka pertama selalu x.</span>"},
+        // T2
+        {type:"T",title:"Graphing a Linear Equation <span class='id-lang'>Menggambar Grafik Persamaan Linear</span>",
+         body:`<p>A <strong>linear equation</strong> in two variables produces a <strong>straight line</strong> when graphed. <span class='id-lang'><strong>Persamaan linear</strong> dua variabel menghasilkan <strong>garis lurus</strong> saat digambar.</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-teal-500/10 border border-teal-500/20">
+           <div class="text-teal-400 font-semibold mb-2">Slope-Intercept Form <span class='id-lang'>Bentuk Kemiringan-Titik Potong</span></div>
+           <p class="text-lg text-emerald-400 font-mono text-center my-3">\\(y = mx + c\\)</p>
+           <ul class="text-sm text-slate-300 space-y-1 list-disc list-inside">
+             <li><strong>\\(m\\)</strong> = slope (kemiringan) — how steep the line is <span class='id-lang'>kemiringan garis</span></li>
+             <li><strong>\\(c\\)</strong> = y-intercept — where the line crosses the y-axis <span class='id-lang'>titik potong garis dengan sumbu-y</span></li>
+           </ul>
+         </div>
+         <div class="mt-4 p-4 rounded-xl bg-amber-500/10 border border-amber-500/20">
+           <div class="text-amber-400 font-semibold mb-2">How to Graph <span class='id-lang'>Cara Menggambar</span></div>
+           <ol class="text-sm text-slate-300 space-y-1 list-decimal list-inside">
+             <li>Pick 3 values of \\(x\\) (e.g., \\(x = 0, 2, 4\\)) <span class='id-lang'>Pilih 3 nilai x (misalnya x = 0, 2, 4)</span></li>
+             <li>Calculate \\(y\\) for each <span class='id-lang'>Hitung y untuk setiap x</span></li>
+             <li>Plot the points <span class='id-lang'>Plot titik-titiknya</span></li>
+             <li>Draw a straight line through them <span class='id-lang'>Tarik garis lurus melaluinya</span></li>
+           </ol>
+           <p class="text-xs text-slate-400 mt-2">Example: \\(y = x + 2\\) → points: \\((0,2)\\), \\((2,4)\\), \\((4,6)\\) <span class='id-lang'>Contoh: \\(y = x + 2\\) → titik: \\((0,2)\\), \\((2,4)\\), \\((4,6)\\)</span></p>
+         </div>`},
+        // E4 mc
+        {type:"E",etype:"mc",
+         q:"What is the y-intercept of \\(y = 2x + 3\\)? <span class='id-lang'>Berapa titik potong sumbu-y dari \\(y = 2x + 3\\)?</span>",
+         o:["\\(2\\)","\\(3\\)","\\(5\\)","\\(-3\\)"],
+         a:1,
+         h:"In y = mx + c, the y-intercept is c. <span class='id-lang'>Pada y = mx + c, titik potong sumbu-y adalah c.</span>"},
+        // E5 fb
+        {type:"E",etype:"fb",
+         q:"If \\(y = 5 - x\\) and \\(x = 0\\), then \\(y =\\) ____. <span class='id-lang'>Jika \\(y = 5 - x\\) dan \\(x = 0\\), maka \\(y =\\) ____.</span>",
+         a:"5",
+         h:"Substitute x=0: y = 5 - 0 = ? <span class='id-lang'>Substitusi x=0: y = 5 - 0 = ?</span>"},
+        // E6 ord
+        {type:"E",etype:"ord",
+         q:"Order the steps to graph a linear equation: <span class='id-lang'>Urutkan langkah menggambar grafik persamaan linear:</span>",
+         o:["Calculate y for each x value <span class='id-lang'>Hitung y untuk setiap nilai x</span>","Draw a straight line through the points <span class='id-lang'>Tarik garis lurus melalui titik-titik</span>","Choose x values <span class='id-lang'>Pilih nilai-nilai x</span>","Plot the points on the Cartesian plane <span class='id-lang'>Plot titik pada bidang Kartesius</span>"],
+         a:[2,0,3,1],
+         h:"First choose x, then calculate y, then plot, then draw. <span class='id-lang'>Pertama pilih x, lalu hitung y, lalu plot, lalu gambar.</span>"},
+        // T3
+        {type:"T",title:"Slope and Line Properties <span class='id-lang'>Kemiringan dan Sifat Garis</span>",
+         body:`<p>The <strong>slope</strong> \\(m\\) tells us how a line tilts: <span class='id-lang'><strong>Kemiringan</strong> \\(m\\) memberitahu kita bagaimana garis miring:</span></p>
+         <div class="mt-4 space-y-3">
+           <div class="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+             <p class="text-sm"><strong class="text-emerald-400">\\(m > 0\\)</strong> — Line goes UP from left to right ↗ <span class='id-lang'>Garis NAIK dari kiri ke kanan</span></p>
+           </div>
+           <div class="p-3 rounded-xl bg-red-500/10 border border-red-500/20">
+             <p class="text-sm"><strong class="text-red-400">\\(m < 0\\)</strong> — Line goes DOWN from left to right ↘ <span class='id-lang'>Garis TURUN dari kiri ke kanan</span></p>
+           </div>
+           <div class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20">
+             <p class="text-sm"><strong class="text-amber-400">\\(m = 0\\)</strong> — Horizontal line → <span class='id-lang'>Garis horizontal</span></p>
+           </div>
+         </div>
+         <p class="mt-4"><strong>Parallel lines</strong> have the <strong>same slope</strong> but different y-intercepts. They never meet! <span class='id-lang'><strong>Garis sejajar</strong> memiliki <strong>kemiringan yang sama</strong> tapi titik potong sumbu-y berbeda. Mereka tidak pernah bertemu!</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-rose-500/10 border border-rose-500/20">
+           <div class="text-rose-400 font-semibold mb-2">Important for SPLDV <span class='id-lang'>Penting untuk SPLDV</span></div>
+           <p class="text-sm text-slate-300">Parallel lines → <strong>no intersection</strong> → <strong>no solution</strong>! <span class='id-lang'>Garis sejajar → <strong>tidak ada titik potong</strong> → <strong>tidak ada solusi</strong>!</span></p>
+         </div>`},
+        // E7 mc
+        {type:"E",etype:"mc",
+         q:"What is the slope of \\(y = -3x + 5\\)? <span class='id-lang'>Berapa kemiringan \\(y = -3x + 5\\)?</span>",
+         o:["\\(5\\)","\\(-3\\)","\\(3\\)","\\(-5\\)"],
+         a:1,
+         h:"In y = mx + c, the slope is m. <span class='id-lang'>Pada y = mx + c, kemiringan adalah m.</span>"},
+        // E8 tf
+        {type:"E",etype:"tf",
+         q:"The line \\(y = 4\\) is a horizontal line with zero slope. <span class='id-lang'>Garis \\(y = 4\\) adalah garis horizontal dengan kemiringan nol.</span>",
+         a:true,
+         h:"y = 4 can be written as y = 0x + 4, so m = 0. <span class='id-lang'>y = 4 bisa ditulis y = 0x + 4, jadi m = 0.</span>"},
+        // E9 fb
+        {type:"E",etype:"fb",
+         q:"The slope of the line \\(y = x + 2\\) is ____. <span class='id-lang'>Kemiringan garis \\(y = x + 2\\) adalah ____.</span>",
+         a:"1",
+         h:"y = x + 2 is the same as y = 1x + 2. <span class='id-lang'>y = x + 2 sama dengan y = 1x + 2.</span>"},
+        // E10 match
+        {type:"E",etype:"match",
+         q:"Match each equation with its slope and y-intercept: <span class='id-lang'>Cocokkan setiap persamaan dengan kemiringan dan titik potong-y-nya:</span>",
+         left:["\\(y = 2x + 1\\)","\\(y = -x + 5\\)","\\(y = 3\\)","\\(y = -2x\\)"],
+         right:["\\(m=2, c=1\\)","\\(m=-1, c=5\\)","\\(m=0, c=3\\)","\\(m=-2, c=0\\)"],
+         a:[0,1,2,3],
+         h:"Identify m and c in y = mx + c. <span class='id-lang'>Identifikasi m dan c pada y = mx + c.</span>"},
+      ]
+    },
+	    // ==================== PETA 4 ====================
+    {
+      id:4, title:"Problem Introduction <span class='id-lang'>Pengenalan Masalah</span>", icon:"fa-circle-question", color:"#f59e0b", branch:false,
+      lessons:[
+        // T1
+        {type:"T",title:"Translating Word Problems <span class='id-lang'>Menerjemahkan Soal Cerita</span>",
+         body:`<p>The first step in solving any real-world problem with math is to <strong>translate</strong> it into equations. <span class='id-lang'>Langkah pertama menyelesaikan masalah nyata dengan matematika adalah <strong>menerjemahkannya</strong> menjadi persamaan.</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-amber-500/10 border border-amber-500/20">
+           <div class="text-amber-400 font-semibold mb-2">Example <span class='id-lang'>Contoh</span></div>
+           <p class="text-sm text-slate-300">"Two numbers add up to 10, and their difference is 2." <span class='id-lang'>"Dua angka jika dijumlahkan hasilnya 10, dan jika dikurangkan hasilnya 2."</span></p>
+           <p class="text-sm text-emerald-400 mt-2">Step 1: Name them → let the numbers be \\(x\\) and \\(y\\)</p>
+           <p class="text-sm text-emerald-400">Step 2: "Add up to 10" → \\(x + y = 10\\)</p>
+           <p class="text-sm text-emerald-400">Step 3: "Difference is 2" → \\(x - y = 2\\)</p>
+         </div>
+         <div class="mt-4 p-4 rounded-xl bg-cyan-500/10 border border-cyan-500/20">
+           <div class="text-cyan-400 font-semibold mb-2"><i class="fa-solid fa-lightbulb mr-2"></i>Translation Tips <span class='id-lang'>Tips Penerjemahan</span></div>
+           <ul class="text-sm text-slate-300 space-y-1 list-disc list-inside">
+             <li><strong>"sum"</strong> / "add up" → \\(x + y\\) <span class='id-lang'>"jumlah" → \\(x + y\\)</span></li>
+             <li><strong>"difference"</strong> / "subtract" → \\(x - y\\) <span class='id-lang'>"selisih" → \\(x - y\\)</span></li>
+             <li><strong>"total"</strong> / "is" → \\(=\\) <span class='id-lang'>"total" / "adalah" → \\(=\\)</span></li>
+             <li><strong>"twice"</strong> / "two times" → \\(2x\\) <span class='id-lang'>"dua kali" → \\(2x\\)</span></li>
+           </ul>
+         </div>`},
+        // E1 mc
+        {type:"E",etype:"mc",
+         q:'"The sum of two numbers is 10" translates to: <span class=\'id-lang\'>"Jumlah dua angka adalah 10" diterjemahkan menjadi:</span>',
+         o:["\\(x - y = 10\\)","\\(x + y = 10\\)","\\(xy = 10\\)","\\(x = 10y\\)"],
+         a:1,
+         h:"'Sum' means addition. <span class='id-lang'>'Jumlah' berarti penjumlahan.</span>"},
+        // E2 fb
+        {type:"E",etype:"fb",
+         q:'"Their difference is 2" translates to \\(x\\) ____ \\(y = 2\\). <span class=\'id-lang\'>"Selisih mereka adalah 2" diterjemahkan menjadi \\(x\\) ____ \\(y = 2\\).</span>',
+         a:"-",
+         h:"'Difference' means subtraction. <span class='id-lang'>'Selisih' berarti pengurangan.</span>"},
+        // E3 tf
+        {type:"E",etype:"tf",
+         q:"We need at least two equations to solve for two unknowns. <span class='id-lang'>Kita butuh setidaknya dua persamaan untuk menyelesaikan dua variabel yang tidak diketahui.</span>",
+         a:true,
+         h:"One equation with two unknowns has infinitely many solutions. <span class='id-lang'>Satu persamaan dengan dua variabel memiliki tak hingga solusi.</span>"},
+        // T2
+        {type:"T",title:"Converting to Slope-Intercept Form <span class='id-lang'>Mengubah ke Bentuk y = mx + c</span>",
+         body:`<p>To graph an equation, we need it in the form <strong>\\(y = mx + c\\)</strong>. Let's learn how to convert! <span class='id-lang'>Untuk menggambar grafik, kita perlu bentuk <strong>\\(y = mx + c\\)</strong>. Mari belajar mengonversi!</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+           <div class="text-emerald-400 font-semibold mb-2">Example 1 <span class='id-lang'>Contoh 1</span></div>
+           <p class="text-sm text-slate-300">Convert \\(x + y = 10\\) to slope-intercept form: <span class='id-lang'>Ubah \\(x + y = 10\\) ke bentuk kemiringan-titik potong:</span></p>
+           <p class="text-sm text-emerald-400 mt-1">\\(x + y = 10\\)</p>
+           <p class="text-sm text-emerald-400">\\(y = 10 - x\\)</p>
+           <p class="text-sm text-emerald-400">\\(y = -x + 10\\)</p>
+           <p class="text-xs text-slate-400 mt-1">So: \\(m = -1\\), \\(c = 10\\) <span class='id-lang'>Jadi: \\(m = -1\\), \\(c = 10\\)</span></p>
+         </div>
+         <div class="mt-4 p-4 rounded-xl bg-cyan-500/10 border border-cyan-500/20">
+           <div class="text-cyan-400 font-semibold mb-2">Example 2 <span class='id-lang'>Contoh 2</span></div>
+           <p class="text-sm text-slate-300">Convert \\(x - y = 2\\): <span class='id-lang'>Ubah \\(x - y = 2\\):</span></p>
+           <p class="text-sm text-emerald-400 mt-1">\\(x - y = 2\\)</p>
+           <p class="text-sm text-emerald-400">\\(-y = 2 - x\\)</p>
+           <p class="text-sm text-emerald-400">\\(y = x - 2\\)</p>
+           <p class="text-xs text-slate-400 mt-1">So: \\(m = 1\\), \\(c = -2\\) <span class='id-lang'>Jadi: \\(m = 1\\), \\(c = -2\\)</span></p>
+         </div>`},
+        // E4 mc
+        {type:"E",etype:"mc",
+         q:"\\(x + y = 10\\) in slope-intercept form is: <span class='id-lang'>\\(x + y = 10\\) dalam bentuk \\(y = mx + c\\) adalah:</span>",
+         o:["\\(y = x + 10\\)","\\(y = 10 - x\\)","\\(y = x - 10\\)","\\(y = 10x\\)"],
+         a:1,
+         h:"Move x to the right side: y = 10 - x. <span class='id-lang'>Pindahkan x ke ruas kanan: y = 10 - x.</span>"},
+        // E5 fb
+        {type:"E",etype:"fb",
+         q:"\\(x - y = 2\\) rearranged to \\(y = \\)____. <span class='id-lang'>\\(x - y = 2\\) diubah ke \\(y = \\)____.</span>",
+         a:"x - 2",
+         h:"Move -y to the right and 2 to the left, then flip. <span class='id-lang'>Pindahkan -y ke kanan dan 2 ke kiri, lalu balik.</span>"},
+        // E6 ord
+        {type:"E",etype:"ord",
+         q:"Order the steps to convert \\(2x + y = 8\\) to \\(y = mx + c\\): <span class='id-lang'>Urutkan langkah mengubah \\(2x + y = 8\\) ke \\(y = mx + c\\):</span>",
+         o:["\\(y = -2x + 8\\) <span class='id-lang'>\\(y = -2x + 8\\)</span>","Subtract 2x from both sides <span class='id-lang'>Kurangi kedua ruas dengan 2x</span>","Start: \\(2x + y = 8\\) <span class='id-lang'>Mulai: \\(2x + y = 8\\)</span>","\\(y = 8 - 2x\\) <span class='id-lang'>\\(y = 8 - 2x\\)</span>"],
+         a:[2,1,3,0],
+         h:"Start with original → subtract → simplify → final form. <span class='id-lang'>Mulai dari asli → kurangi → sederhanakan → bentuk akhir.</span>"},
+        // T3
+        {type:"T",title:"Setting Up Systems from Scenarios <span class='id-lang'>Menyusun Sistem dari Skenario</span>",
+         body:`<p>Let's practice setting up complete systems from real-world scenarios. <span class='id-lang'>Mari berlatih menyusun sistem lengkap dari skenario dunia nyata.</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-pink-500/10 border border-pink-500/20">
+           <div class="text-pink-400 font-bold mb-2"><i class="fa-solid fa-car mr-2"></i>The Parking Lot Problem <span class='id-lang'>Masalah Parkiran</span></div>
+           <p class="text-sm text-slate-300">"In a parking lot, there are 8 vehicles consisting of cars and motorcycles. The total number of wheels is 22." <span class='id-lang'>"Di sebuah parkiran, ada 8 kendaraan yang terdiri dari mobil dan motor. Total roda mereka adalah 22."</span></p>
+           <div class="mt-3 text-sm space-y-1">
+             <p class="text-slate-300">Let \\(x\\) = number of cars, \\(y\\) = number of motorcycles <span class='id-lang'>Misalkan \\(x\\) = jumlah mobil, \\(y\\) = jumlah motor</span></p>
+             <p class="text-emerald-400">Eq 1 (total vehicles): \\(x + y = 8\\) <span class='id-lang'>Ps 1 (total kendaraan): \\(x + y = 8\\)</span></p>
+             <p class="text-emerald-400">Eq 2 (total wheels): \\(4x + 2y = 22\\) <span class='id-lang'>Ps 2 (total roda): \\(4x + 2y = 22\\)</span></p>
+           </div>
+           <p class="text-xs text-slate-400 mt-2">Cars have 4 wheels, motorcycles have 2 wheels. <span class='id-lang'>Mobil punya 4 roda, motor punya 2 roda.</span></p>
+         </div>`},
+        // E7 mc
+        {type:"E",etype:"mc",
+         q:"In the parking lot problem, what does \\(x + y = 8\\) represent? <span class='id-lang'>Pada masalah parkiran, apa yang diwakili \\(x + y = 8\\)?</span>",
+         o:["Total wheels <span class='id-lang'>Total roda</span>","Total vehicles <span class='id-lang'>Total kendaraan</span>","Total cars <span class='id-lang'>Total mobil</span>","Difference of vehicles <span class='id-lang'>Selisih kendaraan</span>"],
+         a:1,
+         h:"x = cars, y = motorcycles. x + y = total vehicles. <span class='id-lang'>x = mobil, y = motor. x + y = total kendaraan.</span>"},
+        // E8 tf
+        {type:"E",etype:"tf",
+         q:'"Total wheels is 22" with cars (4 wheels) and motorcycles (2 wheels) gives \\(4x + 2y = 22\\). <span class=\'id-lang\'>"Total roda 22" dengan mobil (4 roda) dan motor (2 roda) menghasilkan \\(4x + 2y = 22\\).</span>',
+         a:true,
+         h:"Each car contributes 4 wheels, each motorcycle contributes 2. <span class='id-lang'>Setiap mobil menyumbang 4 roda, setiap motor 2 roda.</span>"},
+        // E9 fb
+        {type:"E",etype:"fb",
+         q:"If \\(x\\) = number of cars and \\(y\\) = number of motorcycles, the wheel equation is ____ = 22. <span class='id-lang'>Jika \\(x\\) = jumlah mobil dan \\(y\\) = jumlah motor, persamaan rodanya adalah ____ = 22.</span>",
+         a:"4x + 2y",
+         h:"Cars have 4 wheels (4x), motorcycles have 2 wheels (2y). <span class='id-lang'>Mobil punya 4 roda (4x), motor punya 2 roda (2y).</span>"},
+        // E10 match
+        {type:"E",etype:"match",
+         q:"Match each scenario with its system: <span class='id-lang'>Cocokkan setiap skenario dengan sistemnya:</span>",
+         left:["Sum is 10, diff is 2 <span class='id-lang'>Jumlah 10, selisih 2</span>","8 vehicles, 22 wheels <span class='id-lang'>8 kendaraan, 22 roda</span>","Sum is 6, diff is 2 <span class='id-lang'>Jumlah 6, selisih 2</span>","5 animals, 16 legs (chickens & cows) <span class='id-lang'>5 hewan, 16 kaki (ayam & sapi)</span>"],
+         right:["\\(x+y=10,\\; x-y=2\\)","\\(x+y=8,\\; 4x+2y=22\\)","\\(x+y=6,\\; x-y=2\\)","\\(x+y=5,\\; 2x+4y=16\\)"],
+         a:[0,1,2,3],
+         h:"Identify the two conditions in each scenario. <span class='id-lang'>Identifikasi dua kondisi dalam setiap skenario.</span>"},
+      ]
+    },
+    // ==================== PETA 5 ====================
+    {
+      id:5, title:"Guided Practice <span class='id-lang'>Latihan Terbimbing</span>", icon:"fa-chalkboard-user", color:"#ec4899", branch:false,
+      lessons:[
+        // T1
+        {type:"T",title:"Graphing Two Lines to Find Intersection <span class='id-lang'>Menggambar Dua Garis untuk Mencari Titik Potong</span>",
+         body:`<p>Now we'll graph <strong>both equations</strong> on the <strong>same coordinate plane</strong> and find where they meet! <span class='id-lang'>Sekarang kita akan menggambar <strong>kedua persamaan</strong> pada <strong>bidang koordinat yang sama</strong> dan mencari di mana mereka bertemu!</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-pink-500/10 border border-pink-500/20">
+           <div class="text-pink-400 font-bold mb-2">System: \\(x + y = 10\\) and \\(x - y = 2\\)</div>
+           <div class="mt-3 grid grid-cols-1 md:grid-cols-2 gap-3">
+             <div class="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
+               <div class="text-emerald-400 font-semibold text-sm">Line 1: \\(y = 10 - x\\)</div>
+               <p class="text-xs text-slate-300 mt-1">\\(x=0 \\rightarrow y=10\\) → point \\((0, 10)\\)</p>
+               <p class="text-xs text-slate-300">\\(x=5 \\rightarrow y=5\\) → point \\((5, 5)\\)</p>
+               <p class="text-xs text-slate-300">\\(x=10 \\rightarrow y=0\\) → point \\((10, 0)\\)</p>
+             </div>
+             <div class="p-3 rounded-lg bg-orange-500/10 border border-orange-500/20">
+               <div class="text-orange-400 font-semibold text-sm">Line 2: \\(y = x - 2\\)</div>
+               <p class="text-xs text-slate-300 mt-1">\\(x=2 \\rightarrow y=0\\) → point \\((2, 0)\\)</p>
+               <p class="text-xs text-slate-300">\\(x=4 \\rightarrow y=2\\) → point \\((4, 2)\\)</p>
+               <p class="text-xs text-slate-300">\\(x=6 \\rightarrow y=4\\) → point \\((6, 4)\\)</p>
+             </div>
+           </div>
+           <p class="text-sm text-emerald-400 mt-3 font-bold">Both lines pass through \\((6, 4)\\)! That's the intersection! <span class='id-lang'>Kedua garis melalui \\((6, 4)\\)! Itulah titik potongnya!</span></p>
+         </div>`},
+        // E1 mc
+        {type:"E",etype:"mc",
+         q:"For \\(y = 10 - x\\), when \\(x = 0\\), what is \\(y\\)? <span class='id-lang'>Untuk \\(y = 10 - x\\), saat \\(x = 0\\), berapa \\(y\\)?</span>",
+         o:["\\(0\\)","\\(10\\)","\\(5\\)","\\(-10\\)"],
+         a:1,
+         h:"Substitute x=0: y = 10 - 0 = ? <span class='id-lang'>Substitusi x=0: y = 10 - 0 = ?</span>"},
+        // E2 fb
+        {type:"E",etype:"fb",
+         q:"For \\(y = x - 2\\), when \\(x = 6\\), \\(y =\\) ____. <span class='id-lang'>Untuk \\(y = x - 2\\), saat \\(x = 6\\), \\(y =\\) ____.</span>",
+         a:"4",
+         h:"Substitute x=6: y = 6 - 2 = ? <span class='id-lang'>Substitusi x=6: y = 6 - 2 = ?</span>"},
+        // E3 ord
+        {type:"E",etype:"ord",
+         q:"Order the steps to solve a system graphically: <span class='id-lang'>Urutkan langkah menyelesaikan sistem secara grafik:</span>",
+         o:["Find the intersection point <span class='id-lang'>Temukan titik potong</span>","Convert both equations to y = mx + c <span class='id-lang'>Ubah kedua persamaan ke y = mx + c</span>","Plot points and draw both lines <span class='id-lang'>Plot titik dan gambar kedua garis</span>","Verify the solution by substitution <span class='id-lang'>Verifikasi solusi dengan substitusi</span>"],
+         a:[1,2,0,3],
+         h:"Convert → Graph → Find intersection → Verify. <span class='id-lang'>Ubah → Gambar → Cari potong → Verifikasi.</span>"},
+        // T2
+        {type:"T",title:"Identifying the Intersection <span class='id-lang'>Mengidentifikasi Titik Potong</span>",
+         body:`<p>The <strong>intersection point</strong> of two lines on a graph is the <strong>solution</strong> to the system of equations. <span class='id-lang'><strong>Titik potong</strong> dua garis pada grafik adalah <strong>solusi</strong> dari sistem persamaan.</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+           <div class="text-emerald-400 font-bold mb-2">From Our Example <span class='id-lang'>Dari Contoh Kita</span></div>
+           <p class="text-sm text-slate-300">Line 1: \\(y = 10 - x\\) <span class='id-lang'>Garis 1: \\(y = 10 - x\\)</span></p>
+           <p class="text-sm text-slate-300">Line 2: \\(y = x - 2\\) <span class='id-lang'>Garis 2: \\(y = x - 2\\)</span></p>
+           <p class="text-sm text-emerald-400 mt-2">Intersection: \\((6, 4)\\) <span class='id-lang'>Titik potong: \\((6, 4)\\)</span></p>
+         </div>
+         <div class="mt-4 p-4 rounded-xl bg-rose-500/10 border border-rose-500/20">
+           <div class="text-rose-400 font-semibold mb-2">What if lines don't intersect? <span class='id-lang'>Bagaimana jika garis tidak berpotongan?</span></div>
+           <p class="text-sm text-slate-300"><strong>Parallel lines</strong> (same slope, different y-intercept) → <strong>No solution</strong> <span class='id-lang'><strong>Garis sejajar</strong> (kemiringan sama, titik potong-y berbeda) → <strong>Tidak ada solusi</strong></span></p>
+           <p class="text-sm text-slate-300 mt-1"><strong>Same line</strong> (identical equations) → <strong>Infinite solutions</strong> <span class='id-lang'><strong>Garis yang sama</strong> (persamaan identik) → <strong>Tak hingga solusi</strong></span></p>
+         </div>`},
+        // E4 mc
+        {type:"E",etype:"mc",
+         q:"The intersection point of two lines in a system represents: <span class='id-lang'>Titik potong dua garis dalam sistem mewakili:</span>",
+         o:["The y-intercept <span class='id-lang'>Titik potong sumbu-y</span>","The solution to the system <span class='id-lang'>Solusi dari sistem</span>","The slope <span class='id-lang'>Kemiringan</span>","The x-intercept <span class='id-lang'>Titik potong sumbu-x</span>"],
+         a:1,
+         h:"The intersection satisfies both equations simultaneously. <span class='id-lang'>Titik potong memenuhi kedua persamaan secara bersamaan.</span>"},
+        // E5 tf
+        {type:"E",etype:"tf",
+         q:"If two lines on a graph do not intersect, the system has no solution. <span class='id-lang'>Jika dua garis pada grafik tidak berpotongan, sistem tidak memiliki solusi.</span>",
+         a:true,
+         h:"No intersection = no point satisfies both equations. <span class='id-lang'>Tidak ada potongan = tidak ada titik yang memenuhi kedua persamaan.</span>"},
+        // E6 fb
+        {type:"E",etype:"fb",
+         q:"The intersection of \\(y = 10 - x\\) and \\(y = x - 2\\) is the point (____, ____). <span class='id-lang'>Titik potong \\(y = 10 - x\\) dan \\(y = x - 2\\) adalah titik (____, ____).</span>",
+         a:"6, 4",
+         h:"Set them equal: 10 - x = x - 2, so 12 = 2x, x = 6. Then y = 4. <span class='id-lang'>Samakan: 10 - x = x - 2, jadi 12 = 2x, x = 6. Lalu y = 4.</span>"},
+        // T3
+        {type:"T",title:"Verifying Solutions by Substitution <span class='id-lang'>Memverifikasi Solusi dengan Substitusi</span>",
+         body:`<p>Always <strong>verify</strong> your solution by substituting back into <strong>both original equations</strong>! <span class='id-lang'>Selalu <strong>verifikasi</strong> solusi dengan substitusi kembali ke <strong>kedua persamaan awal</strong>!</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+           <div class="text-emerald-400 font-bold mb-2">Verify \\((6, 4)\\) <span class='id-lang'>Verifikasi \\((6, 4)\\)</span></div>
+           <p class="text-sm text-slate-300">Equation 1: \\(x + y = 10\\) <span class='id-lang'>Persamaan 1: \\(x + y = 10\\)</span></p>
+           <p class="text-sm text-emerald-400">\\(6 + 4 = 10\\) ✓ Benar!</p>
+           <p class="text-sm text-slate-300 mt-2">Equation 2: \\(x - y = 2\\) <span class='id-lang'>Persamaan 2: \\(x - y = 2\\)</span></p>
+           <p class="text-sm text-emerald-400">\\(6 - 4 = 2\\) ✓ Benar!</p>
+           <p class="text-sm text-emerald-400 mt-2 font-bold">\\((6, 4)\\) is confirmed as the solution! <span class='id-lang'>\\((6, 4)\\) dikonfirmasi sebagai solusi!</span></p>
+         </div>
+         <div class="mt-4 p-4 rounded-xl bg-amber-500/10 border border-amber-500/20">
+           <div class="text-amber-400 font-semibold mb-2"><i class="fa-solid fa-triangle-exclamation mr-2"></i>Why Verify? <span class='id-lang'>Mengapa Verifikasi?</span></div>
+           <p class="text-sm text-slate-300">Graphical methods can be imprecise. Substitution gives <strong>exact</strong> confirmation. <span class='id-lang'>Metode grafik bisa tidak presisi. Substitusi memberikan konfirmasi yang <strong>tepat</strong>.</span></p>
+         </div>`},
+        // E7 mc
+        {type:"E",etype:"mc",
+         q:"Is \\((5, 5)\\) a solution to \\(x + y = 10\\) and \\(x - y = 2\\)? <span class='id-lang'>Apakah \\((5, 5)\\) solusi dari \\(x + y = 10\\) dan \\(x - y = 2\\)?</span>",
+         o:["Yes, it satisfies both <span class='id-lang'>Ya, memenuhi keduanya</span>","No, it only satisfies the first equation <span class='id-lang'>Tidak, hanya memenuhi persamaan pertama</span>","No, it doesn't satisfy either <span class='id-lang'>Tidak, tidak memenuhi keduanya</span>","Cannot be determined <span class='id-lang'>Tidak bisa ditentukan</span>"],
+         a:1,
+         h:"5+5=10 ✓ but 5-5=0≠2 ✗. <span class='id-lang'>5+5=10 ✓ tapi 5-5=0≠2 ✗.</span>"},
+        // E8 tf
+        {type:"E",etype:"tf",
+         q:"If a point satisfies the first equation but not the second, it is still a valid solution to the system. <span class='id-lang'>Jika suatu titik memenuhi persamaan pertama tapi tidak yang kedua, itu tetap solusi valid dari sistem.</span>",
+         a:false,
+         h:"A solution must satisfy ALL equations. <span class='id-lang'>Solusi harus memenuhi SEMUA persamaan.</span>"},
+        // E9 fb
+        {type:"E",etype:"fb",
+         q:"To verify \\((6, 4)\\) in \\(x - y = 2\\): \\(6 - 4 =\\) ____ ✓ <span class='id-lang'>Untuk verifikasi \\((6, 4)\\) pada \\(x - y = 2\\): \\(6 - 4 =\\) ____ ✓</span>",
+         a:"2",
+         h:"6 - 4 = ? Does it equal 2? <span class='id-lang'>6 - 4 = ? Apakah sama dengan 2?</span>"},
+        // E10 match
+        {type:"E",etype:"match",
+         q:"Match each point with whether it's a solution to \\(x + y = 10\\) and \\(x - y = 2\\): <span class='id-lang'>Cocokkan setiap titik dengan apakah solusi dari \\(x + y = 10\\) dan \\(x - y = 2\\):</span>",
+         left:["\\((6, 4)\\)","\\((5, 5)\\)","\\((8, 2)\\)","\\((7, 3)\\)"],
+         right:["Solution ✓ <span class='id-lang'>Solusi ✓</span>","Not a solution ✗ <span class='id-lang'>Bukan solusi ✗</span>","Not a solution ✗ <span class='id-lang'>Bukan solusi ✗</span>","Not a solution ✗ <span class='id-lang'>Bukan solusi ✗</span>"],
+         a:[0,1,2,3],
+         h:"Check both equations for each point. Only (6,4) satisfies both. <span class='id-lang'>Periksa kedua persamaan untuk setiap titik. Hanya (6,4) memenuhi keduanya.</span>"},
+      ]
+    },
+    // ==================== PETA 6 ====================
+    {
+      id:6, title:"Independent Practice <span class='id-lang'>Latihan Mandiri</span>", icon:"fa-user-graduate", color:"#14b8a6", branch:false,
+      lessons:[
+        // T1
+        {type:"T",title:"Solving SPLDV Independently <span class='id-lang'>Menyelesaikan SPLDV Secara Mandiri</span>",
+         body:`<p>Let's apply everything we've learned to solve a complete problem! <span class='id-lang'>Mari terapkan semua yang sudah kita pelajari untuk menyelesaikan masalah lengkap!</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-teal-500/10 border border-teal-500/20">
+           <div class="text-teal-400 font-bold mb-2"><i class="fa-solid fa-car mr-2"></i>The Parking Lot Problem <span class='id-lang'>Masalah Parkiran</span></div>
+           <p class="text-sm text-slate-300">"In a parking lot, there are 8 vehicles (cars and motorcycles). Total wheels = 22." <span class='id-lang'>"Di sebuah parkiran, ada 8 kendaraan (mobil dan motor). Total roda = 22."</span></p>
+           <div class="mt-3 space-y-2">
+             <div class="p-2 rounded bg-white/5">
+               <p class="text-sm text-emerald-400"><strong>Step 1:</strong> Define variables: \\(x\\) = cars, \\(y\\) = motorcycles <span class='id-lang'>Tentukan variabel: \\(x\\) = mobil, \\(y\\) = motor</span></p>
+             </div>
+             <div class="p-2 rounded bg-white/5">
+               <p class="text-sm text-emerald-400"><strong>Step 2:</strong> Set up equations: \\(x + y = 8\\) and \\(4x + 2y = 22\\) <span class='id-lang'>Susun persamaan: \\(x + y = 8\\) dan \\(4x + 2y = 22\\)</span></p>
+             </div>
+             <div class="p-2 rounded bg-white/5">
+               <p class="text-sm text-emerald-400"><strong>Step 3:</strong> Convert to \\(y = mx + c\\): \\(y = 8 - x\\) and \\(y = -2x + 11\\) <span class='id-lang'>Ubah ke \\(y = mx + c\\): \\(y = 8 - x\\) dan \\(y = -2x + 11\\)</span></p>
+             </div>
+             <div class="p-2 rounded bg-white/5">
+               <p class="text-sm text-emerald-400"><strong>Step 4:</strong> Graph and find intersection: \\((3, 5)\\) <span class='id-lang'>Gambar grafik dan cari titik potong: \\((3, 5)\\)</span></p>
+             </div>
+             <div class="p-2 rounded bg-white/5">
+               <p class="text-sm text-emerald-400"><strong>Step 5:</strong> Verify: \\(3 + 5 = 8\\) ✓ and \\(12 + 10 = 22\\) ✓ <span class='id-lang'>Verifikasi: \\(3 + 5 = 8\\) ✓ dan \\(12 + 10 = 22\\) ✓</span></p>
+             </div>
+           </div>
+           <p class="text-sm text-amber-400 mt-3 font-bold">Answer: 3 cars and 5 motorcycles! <span class='id-lang'>Jawaban: 3 mobil dan 5 motor!</span></p>
+         </div>`},
+        // E1 mc
+        {type:"E",etype:"mc",
+         q:"What is the first step in solving a word problem using SPLDV? <span class='id-lang'>Apa langkah pertama menyelesaikan soal cerita dengan SPLDV?</span>",
+         o:["Graph the equations <span class='id-lang'>Gambar grafik persamaan</span>","Define the variables <span class='id-lang'>Tentukan variabelnya</span>","Find the intersection <span class='id-lang'>Cari titik potong</span>","Verify the solution <span class='id-lang'>Verifikasi solusi</span>"],
+         a:1,
+                  h:"You must know what x and y represent first! <span class='id-lang'>Kamu harus tahu apa yang diwakili x dan y terlebih dahulu!</span>"},
+        // E2 fb
+        {type:"E",etype:"fb",
+         q:"Convert \\(4x + 2y = 22\\) to slope-intercept form: \\(y =\\) ____ \\(+ 11\\). <span class='id-lang'>Ubah \\(4x + 2y = 22\\) ke bentuk y = mx + c: \\(y =\\) ____ \\(+ 11\\).</span>",
+         a:"-2x",
+         h:"4x + 2y = 22 → 2y = 22 - 4x → y = 11 - 2x. <span class='id-lang'>4x + 2y = 22 → 2y = 22 - 4x → y = 11 - 2x.</span>"},
+        // E3 ord
+        {type:"E",etype:"ord",
+         q:"Order the complete steps to solve an SPLDV problem: <span class='id-lang'>Urutkan langkah lengkap menyelesaikan masalah SPLDV:</span>",
+         o:["Define variables and set up equations <span class='id-lang'>Tentukan variabel dan susun persamaan</span>","Convert to slope-intercept form <span class='id-lang'>Ubah ke bentuk y = mx + c</span>","Graph both lines <span class='id-lang'>Gambar kedua garis</span>","Find the intersection point <span class='id-lang'>Temukan titik potong</span>","Verify by substitution <span class='id-lang'>Verifikasi dengan substitusi</span>"],
+         a:[0,1,2,3,4],
+         h:"Follow the logical flow: Setup → Convert → Graph → Solve → Verify. <span class='id-lang'>Ikuti alur logika: Susun → Ubah → Gambar → Solusi → Verifikasi.</span>"},
+        // T2
+        {type:"T",title:"Graphing the Parking Lot Problem <span class='id-lang'>Menggambar Masalah Parkiran</span>",
+         body:`<p>Let's graph the parking lot system step by step! <span class='id-lang'>Mari kita gambar sistem parkiran langkah demi langkah!</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-teal-500/10 border border-teal-500/20">
+           <div class="text-teal-400 font-bold mb-2">System: \\(x + y = 8\\) and \\(4x + 2y = 22\\)</div>
+           <div class="mt-3 grid grid-cols-1 md:grid-cols-2 gap-3">
+             <div class="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
+               <div class="text-emerald-400 font-semibold text-sm">Line 1: \\(y = 8 - x\\)</div>
+               <p class="text-xs text-slate-300 mt-1">\\(x=0 \\rightarrow y=8\\) → point \\((0, 8)\\)</p>
+               <p class="text-xs text-slate-300">\\(x=4 \\rightarrow y=4\\) → point \\((4, 4)\\)</p>
+               <p class="text-xs text-slate-300">\\(x=8 \\rightarrow y=0\\) → point \\((8, 0)\\)</p>
+             </div>
+             <div class="p-3 rounded-lg bg-orange-500/10 border border-orange-500/20">
+               <div class="text-orange-400 font-semibold text-sm">Line 2: \\(y = -2x + 11\\)</div>
+               <p class="text-xs text-slate-300 mt-1">\\(x=0 \\rightarrow y=11\\) → point \\((0, 11)\\)</p>
+               <p class="text-xs text-slate-300">\\(x=3 \\rightarrow y=5\\) → point \\((3, 5)\\)</p>
+               <p class="text-xs text-slate-300">\\(x=5 \\rightarrow y=1\\) → point \\((5, 1)\\)</p>
+             </div>
+           </div>
+           <p class="text-sm text-emerald-400 mt-3 font-bold">Both lines pass through \\((3, 5)\\)! <span class='id-lang'>Kedua garis melalui \\((3, 5)\\)!</span></p>
+         </div>`},
+        // E4 mc
+        {type:"E",etype:"mc",
+         q:"For \\(y = 8 - x\\), which point lies on this line? <span class='id-lang'>Untuk \\(y = 8 - x\\), titik mana yang terletak pada garis ini?</span>",
+         o:["\\((2, 5)\\)","\\((3, 5)\\)","\\((4, 5)\\)","\\((5, 5)\\)"],
+         a:1,
+         h:"Substitute x=3: y = 8 - 3 = 5. <span class='id-lang'>Substitusi x=3: y = 8 - 3 = 5.</span>"},
+        // E5 mc
+        {type:"E",etype:"mc",
+         q:"For \\(y = -2x + 11\\), what is \\(y\\) when \\(x = 3\\)? <span class='id-lang'>Untuk \\(y = -2x + 11\\), berapa \\(y\\) saat \\(x = 3\\)?</span>",
+         o:["\\(3\\)","\\(5\\)","\\(7\\)","\\(11\\)"],
+         a:1,
+         h:"y = -2(3) + 11 = -6 + 11 = 5. <span class='id-lang'>y = -2(3) + 11 = -6 + 11 = 5.</span>"},
+        // E6 fb
+        {type:"E",etype:"fb",
+         q:"The solution to the parking lot problem is \\((x, y) =\\) (____). <span class='id-lang'>Solusi masalah parkiran adalah \\((x, y) =\\) (____).</span>",
+         a:"3, 5",
+         h:"x = 3 cars, y = 5 motorcycles. <span class='id-lang'>x = 3 mobil, y = 5 motor.</span>"},
+        // T3
+        {type:"T",title:"Types of Solutions <span class='id-lang'>Jenis-Jenis Solusi</span>",
+         body:`<p>A system of linear equations can have <strong>three types of solutions</strong>: <span class='id-lang'>Sistem persamaan linear bisa memiliki <strong>tiga jenis solusi</strong>:</span></p>
+         <div class="mt-4 space-y-3">
+           <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+             <div class="text-emerald-400 font-bold mb-1">1. One Solution <span class='id-lang'>Satu Solusi</span></div>
+             <p class="text-sm text-slate-300">Lines <strong>intersect</strong> at one point. Different slopes. <span class='id-lang'>Garis <strong>berpotongan</strong> di satu titik. Kemiringan berbeda.</span></p>
+             <p class="text-xs text-slate-400 mt-1">Example: \\(y = x + 2\\) and \\(y = -x + 10\\) <span class='id-lang'>Contoh: \\(y = x + 2\\) dan \\(y = -x + 10\\)</span></p>
+           </div>
+           <div class="p-4 rounded-xl bg-red-500/10 border border-red-500/20">
+             <div class="text-red-400 font-bold mb-1">2. No Solution <span class='id-lang'>Tidak Ada Solusi</span></div>
+             <p class="text-sm text-slate-300">Lines are <strong>parallel</strong> (same slope, different y-intercept). Never meet! <span class='id-lang'>Garis <strong>sejajar</strong> (kemiringan sama, titik potong-y berbeda). Tidak pernah bertemu!</span></p>
+             <p class="text-xs text-slate-400 mt-1">Example: \\(y = 2x + 1\\) and \\(y = 2x + 5\\) <span class='id-lang'>Contoh: \\(y = 2x + 1\\) dan \\(y = 2x + 5\\)</span></p>
+           </div>
+           <div class="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20">
+             <div class="text-amber-400 font-bold mb-1">3. Infinite Solutions <span class='id-lang'>Tak Hingga Solusi</span></div>
+             <p class="text-sm text-slate-300">Lines are <strong>identical</strong> (same slope, same y-intercept). Same line! <span class='id-lang'>Garis <strong>identik</strong> (kemiringan sama, titik potong-y sama). Garis yang sama!</span></p>
+             <p class="text-xs text-slate-400 mt-1">Example: \\(y = 3x + 2\\) and \\(2y = 6x + 4\\) <span class='id-lang'>Contoh: \\(y = 3x + 2\\) dan \\(2y = 6x + 4\\)</span></p>
+           </div>
+         </div>`},
+        // E7 mc
+        {type:"E",etype:"mc",
+         q:"What type of solution does the system \\(y = 2x + 3\\) and \\(y = 2x - 1\\) have? <span class='id-lang'>Jenis solusi apa yang dimiliki sistem \\(y = 2x + 3\\) dan \\(y = 2x - 1\\)?</span>",
+         o:["One solution <span class='id-lang'>Satu solusi</span>","No solution <span class='id-lang'>Tidak ada solusi</span>","Infinite solutions <span class='id-lang'>Tak hingga solusi</span>","Cannot be determined <span class='id-lang'>Tidak bisa ditentukan</span>"],
+         a:1,
+         h:"Both have slope m=2 but different y-intercepts. Parallel! <span class='id-lang'>Keduanya punya kemiringan m=2 tapi titik potong-y berbeda. Sejajar!</span>"},
+        // E8 tf
+        {type:"E",etype:"tf",
+         q:"If two equations represent the same line, the system has no solution. <span class='id-lang'>Jika dua persamaan mewakili garis yang sama, sistem tidak memiliki solusi.</span>",
+         a:false,
+         h:"Same line means every point on the line is a solution — infinite solutions! <span class='id-lang'>Garis yang sama berarti setiap titik pada garis adalah solusi — tak hingga solusi!</span>"},
+        // E9 fb
+        {type:"E",etype:"fb",
+         q:"If two lines have the same slope but different y-intercepts, they are ____ and have no solution. <span class='id-lang'>Jika dua garis memiliki kemiringan sama tapi titik potong-y berbeda, mereka ____ dan tidak punya solusi.</span>",
+         a:"parallel",
+         h:"Same slope + different intercept = parallel lines. <span class='id-lang'>Kemiringan sama + titik potong berbeda = garis sejajar.</span>"},
+        // E10 match
+        {type:"E",etype:"match",
+         q:"Match each system with its solution type: <span class='id-lang'>Cocokkan setiap sistem dengan jenis solusinya:</span>",
+         left:["\\(y = x+1,\\; y = -x+5\\)","\\(y = 2x+3,\\; y = 2x+7\\)","\\(y = 3x-1,\\; 2y = 6x-2\\)"],
+         right:["One solution <span class='id-lang'>Satu solusi</span>","No solution <span class='id-lang'>Tidak ada solusi</span>","Infinite solutions <span class='id-lang'>Tak hingga solusi</span>"],
+         a:[0,1,2],
+         h:"Check slopes: different = 1 solution, same = 0 or ∞. <span class='id-lang'>Cek kemiringan: beda = 1 solusi, sama = 0 atau ∞.</span>"},
+      ]
+    },
+	    // ==================== PETA 7A ====================
+    {
+      id:"7A", title:"Assessment A <span class='id-lang'>Asesmen A</span>", icon:"fa-clipboard-check", color:"#3b82f6", branch:true,
+      lessons:[
+        {type:"E",etype:"mc",
+         q:"Which of the following is a system of linear equations? <span class='id-lang'>Manakah yang merupakan sistem persamaan linear?</span>",
+         o:["\\(x + y = 5\\) <span class='id-lang'>\\(x + y = 5\\)</span>","\\(x + y = 5\\) and \\(2x - y = 4\\) <span class='id-lang'>\\(x + y = 5\\) dan \\(2x - y = 4\\)</span>","\\(x^2 + y = 3\\) <span class='id-lang'>\\(x^2 + y = 3\\)</span>","\\(y = 2x\\) <span class='id-lang'>\\(y = 2x\\)</span>"],
+         a:1,
+         h:"A system must have at least two linear equations. <span class='id-lang'>Sistem harus memiliki minimal dua persamaan linear.</span>"},
+        {type:"E",etype:"tf",
+         q:"The equation \\(y = 3x + 2\\) is a linear equation with two variables. <span class='id-lang'>Persamaan \\(y = 3x + 2\\) adalah persamaan linear dua variabel.</span>",
+         a:true,
+         h:"It has variables x and y, both to the first power. <span class='id-lang'>Memiliki variabel x dan y, keduanya berpangkat satu.</span>"},
+        {type:"E",etype:"fb",
+         q:"The ordered pair \\((x, y)\\) that satisfies both equations in a system is called a ____. <span class='id-lang'>Pasangan berurutan \\((x, y)\\) yang memenuhi kedua persamaan dalam sistem disebut ____.</span>",
+         a:"solution",
+         h:"It solves both equations at the same time. <span class='id-lang'>Ini menyelesaikan kedua persamaan sekaligus.</span>"},
+        {type:"E",etype:"mc",
+         q:"Is \\((3, 2)\\) a solution to \\(x + y = 5\\) and \\(2x - y = 4\\)? <span class='id-lang'>Apakah \\((3, 2)\\) solusi dari \\(x + y = 5\\) dan \\(2x - y = 4\\)?</span>",
+         o:["Yes, it satisfies both <span class='id-lang'>Ya, memenuhi keduanya</span>","No, it only satisfies the first <span class='id-lang'>Tidak, hanya memenuhi yang pertama</span>","No, it only satisfies the second <span class='id-lang'>Tidak, hanya memenuhi yang kedua</span>","No, it satisfies neither <span class='id-lang'>Tidak, tidak memenuhi keduanya</span>"],
+         a:0,
+         h:"3+2=5 ✓ and 2(3)-2=4 ✓. <span class='id-lang'>3+2=5 ✓ dan 2(3)-2=4 ✓.</span>"},
+        {type:"E",etype:"tf",
+         q:"The point \\((1, 4)\\) is a solution to \\(x + y = 5\\) and \\(2x - y = 4\\). <span class='id-lang'>Titik \\((1, 4)\\) adalah solusi dari \\(x + y = 5\\) dan \\(2x - y = 4\\).</span>",
+         a:false,
+         h:"1+4=5 ✓ but 2(1)-4=-2≠4 ✗. <span class='id-lang'>1+4=5 ✓ tapi 2(1)-4=-2≠4 ✗.</span>"},
+        {type:"E",etype:"fb",
+         q:"To check if \\((4, 1)\\) is a solution to \\(x + y = 5\\), substitute: \\(4 +\\) ____ \\(= 5\\). <span class='id-lang'>Untuk cek apakah \\((4, 1)\\) solusi dari \\(x + y = 5\\), substitusi: \\(4 +\\) ____ \\(= 5\\).</span>",
+         a:"1",
+         h:"y = 1, so 4 + 1 = 5. <span class='id-lang'>y = 1, jadi 4 + 1 = 5.</span>"},
+        {type:"E",etype:"mc",
+         q:"What does the intersection point of two lines represent in SPLDV? <span class='id-lang'>Apa yang diwakili titik potong dua garis dalam SPLDV?</span>",
+         o:["The y-intercepts <span class='id-lang'>Titik potong sumbu-y</span>","The solution to the system <span class='id-lang'>Solusi dari sistem</span>","The slopes <span class='id-lang'>Kemiringan</span>","The x-intercepts <span class='id-lang'>Titik potong sumbu-x</span>"],
+         a:1,
+         h:"The intersection satisfies both equations. <span class='id-lang'>Titik potong memenuhi kedua persamaan.</span>"},
+        {type:"E",etype:"tf",
+         q:"A system of two linear equations always has exactly one solution. <span class='id-lang'>Sistem dua persamaan linear selalu memiliki tepat satu solusi.</span>",
+         a:false,
+         h:"It can have 1, 0, or infinite solutions. <span class='id-lang'>Bisa memiliki 1, 0, atau tak hingga solusi.</span>"},
+        {type:"E",etype:"fb",
+         q:"An ordered pair \\((x, y)\\) must satisfy ____ equations to be a solution of the system. <span class='id-lang'>Pasangan berurutan \\((x, y)\\) harus memenuhi ____ persamaan untuk menjadi solusi sistem.</span>",
+         a:"both",
+         h:"Not just one, but all equations. <span class='id-lang'>Bukan hanya satu, tapi semua persamaan.</span>"},
+        {type:"E",etype:"mc",
+         q:"Which point is a solution to \\(x + y = 6\\) and \\(x - y = 2\\)? <span class='id-lang'>Titik mana yang merupakan solusi dari \\(x + y = 6\\) dan \\(x - y = 2\\)?</span>",
+         o:["\\((4, 2)\\)","\\((5, 1)\\)","\\((3, 3)\\)","\\((2, 4)\\)"],
+         a:0,
+         h:"4+2=6 ✓ and 4-2=2 ✓. <span class='id-lang'>4+2=6 ✓ dan 4-2=2 ✓.</span>"},
+      ]
+    },
+    // ==================== PETA 7B ====================
+    {
+      id:"7B", title:"Assessment B <span class='id-lang'>Asesmen B</span>", icon:"fa-clipboard-check", color:"#ef4444", branch:true,
+      lessons:[
+        {type:"E",etype:"mc",
+         q:"What is the slope of \\(y = -x + 10\\)? <span class='id-lang'>Berapa kemiringan \\(y = -x + 10\\)?</span>",
+         o:["\\(1\\)","\\(-1\\)","\\(10\\)","\\(-10\\)"],
+         a:1,
+         h:"In y = mx + c, m is the slope. <span class='id-lang'>Pada y = mx + c, m adalah kemiringan.</span>"},
+        {type:"E",etype:"tf",
+         q:"The y-intercept of \\(y = x - 2\\) is \\(-2\\). <span class='id-lang'>Titik potong sumbu-y dari \\(y = x - 2\\) adalah \\(-2\\).</span>",
+         a:true,
+         h:"In y = mx + c, c = -2. <span class='id-lang'>Pada y = mx + c, c = -2.</span>"},
+        {type:"E",etype:"fb",
+         q:"Convert \\(x + y = 6\\) to slope-intercept form: \\(y =\\) ____. <span class='id-lang'>Ubah \\(x + y = 6\\) ke bentuk y = mx + c: \\(y =\\) ____.</span>",
+         a:"-x + 6",
+         h:"Move x to the right: y = 6 - x = -x + 6. <span class='id-lang'>Pindahkan x ke kanan: y = 6 - x = -x + 6.</span>"},
+        {type:"E",etype:"mc",
+         q:"What is the y-intercept of \\(2x + y = 8\\)? <span class='id-lang'>Berapa titik potong sumbu-y dari \\(2x + y = 8\\)?</span>",
+         o:["\\(2\\)","\\(8\\)","\\(-2\\)","\\(4\\)"],
+         a:1,
+         h:"Convert to y = -2x + 8. The y-intercept is 8. <span class='id-lang'>Ubah ke y = -2x + 8. Titik potong-y adalah 8.</span>"},
+        {type:"E",etype:"tf",
+         q:"The slope of \\(y = 4\\) is \\(4\\). <span class='id-lang'>Kemiringan \\(y = 4\\) adalah \\(4\\).</span>",
+         a:false,
+         h:"y = 4 is the same as y = 0x + 4. The slope is 0. <span class='id-lang'>y = 4 sama dengan y = 0x + 4. Kemiringannya 0.</span>"},
+        {type:"E",etype:"fb",
+         q:"For \\(y = 2x - 1\\), when \\(x = 3\\), \\(y =\\) ____. <span class='id-lang'>Untuk \\(y = 2x - 1\\), saat \\(x = 3\\), \\(y =\\) ____.</span>",
+         a:"5",
+         h:"y = 2(3) - 1 = 6 - 1 = 5. <span class='id-lang'>y = 2(3) - 1 = 6 - 1 = 5.</span>"},
+        {type:"E",etype:"mc",
+         q:"Which point lies on the line \\(y = -x + 5\\)? <span class='id-lang'>Titik mana yang terletak pada garis \\(y = -x + 5\\)?</span>",
+         o:["\\((1, 4)\\)","\\((2, 3)\\)","\\((3, 2)\\)","All of the above <span class='id-lang'>Semua di atas</span>"],
+         a:3,
+         h:"Check each: 1+4=5 ✓, -2+5=3 ✓, -3+5=2 ✓. <span class='id-lang'>Cek: -1+5=4 ✓, -2+5=3 ✓, -3+5=2 ✓.</span>"},
+        {type:"E",etype:"tf",
+         q:"The line \\(y = 2x\\) passes through the origin \\((0, 0)\\). <span class='id-lang'>Garis \\(y = 2x\\) melalui titik asal \\((0, 0)\\).</span>",
+         a:true,
+         h:"When x=0, y=2(0)=0. So yes! <span class='id-lang'>Saat x=0, y=2(0)=0. Jadi ya!</span>"},
+        {type:"E",etype:"fb",
+         q:"Convert \\(x - y = 2\\) to slope-intercept form: \\(y =\\) ____. <span class='id-lang'>Ubah \\(x - y = 2\\) ke bentuk y = mx + c: \\(y =\\) ____.</span>",
+         a:"x - 2",
+         h:"x - y = 2 → -y = 2 - x → y = x - 2. <span class='id-lang'>x - y = 2 → -y = 2 - x → y = x - 2.</span>"},
+        {type:"E",etype:"mc",
+         q:"The slope of \\(y = 5 - x\\) is: <span class='id-lang'>Kemiringan \\(y = 5 - x\\) adalah:</span>",
+         o:["\\(5\\)","\\(1\\)","\\(-1\\)","\\(-5\\)"],
+         a:2,
+         h:"y = 5 - x is the same as y = -x + 5. <span class='id-lang'>y = 5 - x sama dengan y = -x + 5.</span>"},
+      ]
+    },
+    // ==================== PETA 7C ====================
+    {
+      id:"7C", title:"Assessment C <span class='id-lang'>Asesmen C</span>", icon:"fa-clipboard-check", color:"#a855f7", branch:true,
+      lessons:[
+        {type:"E",etype:"mc",
+         q:"When graphing \\(y = 2x - 1\\) and \\(y = -x + 5\\), the intersection is at: <span class='id-lang'>Saat menggambar \\(y = 2x - 1\\) dan \\(y = -x + 5\\), titik potongnya di:</span>",
+         o:["\\((2, 3)\\)","\\((3, 2)\\)","\\((1, 1)\\)","\\((4, 1)\\)"],
+         a:0,
+         h:"Set equal: 2x - 1 = -x + 5 → 3x = 6 → x = 2. <span class='id-lang'>Samakan: 2x - 1 = -x + 5 → 3x = 6 → x = 2.</span>"},
+        {type:"E",etype:"tf",
+         q:"If two lines have the same slope, they will always intersect. <span class='id-lang'>Jika dua garis memiliki kemiringan yang sama, mereka akan selalu berpotongan.</span>",
+         a:false,
+         h:"Same slope = parallel (unless they are the same line). <span class='id-lang'>Kemiringan sama = sejajar (kecuali garis yang sama).</span>"},
+        {type:"E",etype:"fb",
+         q:"If \\(y = 2x + 4\\) and \\(2x - y = 8\\), the system has ____ solution(s). <span class='id-lang'>Jika \\(y = 2x + 4\\) dan \\(2x - y = 8\\), sistem memiliki ____ solusi.</span>",
+         a:"no",
+         h:"2x - (2x+4) = 8 → -4 = 8 is false. Parallel lines! <span class='id-lang'>2x - (2x+4) = 8 → -4 = 8 salah. Garis sejajar!</span>"},
+        {type:"E",etype:"mc",
+         q:"What type of solution does the system \\(y = 3x + 2\\) and \\(2y = 6x + 4\\) have? <span class='id-lang'>Jenis solusi apa yang dimiliki sistem \\(y = 3x + 2\\) dan \\(2y = 6x + 4\\)?</span>",
+         o:["One solution <span class='id-lang'>Satu solusi</span>","No solution <span class='id-lang'>Tidak ada solusi</span>","Infinite solutions <span class='id-lang'>Tak hingga solusi</span>","Cannot be determined <span class='id-lang'>Tidak bisa ditentukan</span>"],
+         a:2,
+         h:"2y = 6x + 4 → y = 3x + 2. Same equation! <span class='id-lang'>2y = 6x + 4 → y = 3x + 2. Persamaan yang sama!</span>"},
+        {type:"E",etype:"tf",
+         q:"The graph of \\(y = 2x - 1\\) is a straight line going up from left to right. <span class='id-lang'>Grafik \\(y = 2x - 1\\) adalah garis lurus yang naik dari kiri ke kanan.</span>",
+         a:true,
+         h:"Slope m = 2 > 0, so the line goes up (↗). <span class='id-lang'>Kemiringan m = 2 > 0, jadi garis naik (↗).</span>"},
+        {type:"E",etype:"fb",
+         q:"The intersection of \\(y = 10 - x\\) and \\(y = x - 2\\) is \\((6, 4)\\). Verify: \\(6 + 4 =\\) ____ ✓ <span class='id-lang'>Titik potong \\(y = 10 - x\\) dan \\(y = x - 2\\) adalah \\((6, 4)\\). Verifikasi: \\(6 + 4 =\\) ____ ✓</span>",
+         a:"10",
+         h:"6 + 4 = 10, which matches the first equation. <span class='id-lang'>6 + 4 = 10, yang cocok dengan persamaan pertama.</span>"},
+        {type:"E",etype:"mc",
+         q:"If a system has no solution, the lines on the graph are: <span class='id-lang'>Jika sistem tidak memiliki solusi, garis pada grafik adalah:</span>",
+         o:["Intersecting <span class='id-lang'>Berpotongan</span>","Parallel <span class='id-lang'>Sejajar</span>","Identical <span class='id-lang'>Identik</span>","Curved <span class='id-lang'>Melengkung</span>"],
+         a:1,
+         h:"Parallel lines never meet = no solution. <span class='id-lang'>Garis sejajar tidak pernah bertemu = tidak ada solusi.</span>"},
+        {type:"E",etype:"tf",
+         q:"The point \\((2, 3)\\) is the intersection of \\(y = 2x - 1\\) and \\(y = -x + 5\\). <span class='id-lang'>Titik \\((2, 3)\\) adalah potongan dari \\(y = 2x - 1\\) dan \\(y = -x + 5\\).</span>",
+         a:true,
+         h:"2(2)-1=3 ✓ and -(2)+5=3 ✓. <span class='id-lang'>2(2)-1=3 ✓ dan -(2)+5=3 ✓.</span>"},
+        {type:"E",etype:"fb",
+         q:"To find the intersection algebraically, set the two \\(y\\)-expressions ____ to each other. <span class='id-lang'>Untuk mencari titik potong secara aljabar, samakan dua ekspresi \\(y\\) satu sama ____.</span>",
+         a:"equal",
+         h:"Set y₁ = y₂ to solve for x. <span class='id-lang'>Samakan y₁ = y₂ untuk menyelesaikan x.</span>"},
+        {type:"E",etype:"mc",
+         q:"What is the solution to \\(x + y = 6\\) and \\(x - y = 2\\) by graphing? <span class='id-lang'>Apa solusi dari \\(x + y = 6\\) dan \\(x - y = 2\\) secara grafik?</span>",
+         o:["\\((4, 2)\\)","\\((2, 4)\\)","\\((3, 3)\\)","\\((5, 1)\\)"],
+         a:0,
+         h:"4+2=6 ✓ and 4-2=2 ✓. <span class='id-lang'>4+2=6 ✓ dan 4-2=2 ✓.</span>"},
+      ]
+    },
+    // ==================== PETA 7D ====================
+    {
+      id:"7D", title:"Assessment D <span class='id-lang'>Asesmen D</span>", icon:"fa-clipboard-check", color:"#06b6d4", branch:true,
+      lessons:[
+        {type:"E",etype:"mc",
+         q:"'The price of 2 coffees and 1 bread is 25,000' translates to: <span class='id-lang'>'Harga 2 kopi dan 1 roti adalah 25.000' diterjemahkan menjadi:</span>",
+         o:["\\(2c + b = 25{,}000\\)","\\(c + 2b = 25{,}000\\)","\\(2c - b = 25{,}000\\)","\\(cb = 25{,}000\\)"],
+         a:0,
+         h:"2 coffees (2c) + 1 bread (b) = 25,000. <span class='id-lang'>2 kopi (2c) + 1 roti (b) = 25.000.</span>"},
+        {type:"E",etype:"tf",
+         q:"In the parking lot problem, \\(4x + 2y = 22\\) represents the total number of vehicles. <span class='id-lang'>Pada masalah parkiran, \\(4x + 2y = 22\\) mewakili jumlah total kendaraan.</span>",
+         a:false,
+         h:"4x + 2y = 22 represents total WHEELS, not vehicles. <span class='id-lang'>4x + 2y = 22 mewakili total RODA, bukan kendaraan.</span>"},
+        {type:"E",etype:"fb",
+         q:"'1 coffee and 3 breads cost 35,000' translates to \\(c + 3b =\\) ____. <span class='id-lang'>'1 kopi dan 3 roti harganya 35.000' diterjemahkan menjadi \\(c + 3b =\\) ____.</span>",
+         a:"35000",
+         h:"1c + 3b = 35,000. <span class='id-lang'>1c + 3b = 35.000.</span>"},
+        {type:"E",etype:"mc",
+         q:"A store sells Pack A (2 controllers + 1 game = 1.2M) and Pack B (1 controller + 3 games = 1.6M). What is the system? <span class='id-lang'>Toko menjual Paket A (2 controller + 1 game = 1.2jt) dan Paket B (1 controller + 3 game = 1.6jt). Apa sistemnya?</span>",
+         o:["\\(2c + g = 1.2,\\; c + 3g = 1.6\\)","\\(c + 2g = 1.2,\\; 3c + g = 1.6\\)","\\(2c + g = 1.6,\\; c + 3g = 1.2\\)","\\(2c - g = 1.2,\\; c - 3g = 1.6\\)"],
+         a:0,
+         h:"c = controller, g = game. Pack A: 2c+g, Pack B: c+3g. <span class='id-lang'>c = controller, g = game. Paket A: 2c+g, Paket B: c+3g.</span>"},
+        {type:"E",etype:"tf",
+         q:"When setting up a system from a word problem, the two equations must use the same variables. <span class='id-lang'>Saat menyusun sistem dari soal cerita, kedua persamaan harus menggunakan variabel yang sama.</span>",
+         a:true,
+         h:"That's what makes it a 'system' — shared variables! <span class='id-lang'>Itulah yang membuatnya 'sistem' — variabel yang sama!</span>"},
+        {type:"E",etype:"fb",
+         q:"If \\(x\\) = number of chickens and \\(y\\) = number of cows, '5 animals total' is \\(x + y =\\) ____. <span class='id-lang'>Jika \\(x\\) = jumlah ayam dan \\(y\\) = jumlah sapi, 'total 5 hewan' adalah \\(x + y =\\) ____.</span>",
+         a:"5",
+         h:"Total animals = chickens + cows = x + y. <span class='id-lang'>Total hewan = ayam + sapi = x + y.</span>"},
+        {type:"E",etype:"mc",
+         q:"Chickens have 2 legs, cows have 4. If there are 16 legs total, the equation is: <span class='id-lang'>Ayam punya 2 kaki, sapi punya 4. Jika total ada 16 kaki, persamaannya:</span>",
+         o:["\\(x + y = 16\\)","\\(2x + 4y = 16\\)","\\(4x + 2y = 16\\)","\\(2x - 4y = 16\\)"],
+         a:1,
+         h:"2 legs per chicken (2x) + 4 legs per cow (4y). <span class='id-lang'>2 kaki per ayam (2x) + 4 kaki per sapi (4y).</span>"},
+        {type:"E",etype:"tf",
+         q:"The sentence 'Dua kali umur Nicholas dikurangi 5' translates to \\(2n - 5\\). <span class='id-lang'>Kalimat 'Dua kali umur Nicholas dikurangi 5' diterjemahkan menjadi \\(2n - 5\\).</span>",
+         a:true,
+         h:"Dua kali = 2n, dikurangi 5 = -5. <span class='id-lang'>Dua kali = 2n, dikurangi 5 = -5.</span>"},
+        {type:"E",etype:"fb",
+         q:"'Harga 3 burger (b) dan 2 minum (m) adalah 50.000' translates to \\(3b + 2m =\\) ____. <span class='id-lang'>'Harga 3 burger (b) dan 2 minum (m) adalah 50.000' diterjemahkan menjadi \\(3b + 2m =\\) ____.</span>",
+         a:"50000",
+         h:"3 burgers + 2 drinks = 50,000. <span class='id-lang'>3 burger + 2 minuman = 50.000.</span>"},
+        {type:"E",etype:"mc",
+         q:"A problem states: 'x + y = 20 and 5x + 10y = 150'. What could x and y represent? <span class='id-lang'>Soal menyatakan: 'x + y = 20 dan 5x + 10y = 150'. Apa yang bisa diwakili x dan y?</span>",
+         o:["Number of items (total 20) where some cost 5 and others cost 10 <span class='id-lang'>Jumlah item (total 20) yang sebagian harganya 5 dan lainnya 10</span>","Two numbers that multiply to 20 <span class='id-lang'>Dua angka yang dikalikan jadi 20</span>","Ages that add to 20 and multiply to 150 <span class='id-lang'>Umur yang jumlahnya 20 dan dikalikan jadi 150</span>","Distances that add to 20 <span class='id-lang'>Jarak yang jumlahnya 20</span>"],
+         a:0,
+         h:"x+y=20 (count) and 5x+10y=150 (value). <span class='id-lang'>x+y=20 (jumlah) dan 5x+10y=150 (nilai).</span>"},
+      ]
+    },
+    // ==================== PETA 7E ====================
+    {
+      id:"7E", title:"Assessment E <span class='id-lang'>Asesmen E</span>", icon:"fa-clipboard-check", color:"#f97316", branch:true,
+      lessons:[
+        {type:"E",etype:"mc",
+         q:"Find the value of \\(k\\) so that \\(x + y = 5\\) and \\(2x + ky = 10\\) have infinite solutions. <span class='id-lang'>Cari nilai \\(k\\) agar \\(x + y = 5\\) dan \\(2x + ky = 10\\) memiliki tak hingga solusi.</span>",
+         o:["\\(k = 1\\)","\\(k = 2\\)","\\(k = 5\\)","\\(k = 10\\)"],
+         a:1,
+         h:"For infinite solutions, the equations must be identical. Multiply eq1 by 2: 2x + 2y = 10. So k = 2. <span class='id-lang'>Untuk solusi tak hingga, persamaan harus identik. Kali eq1 dengan 2: 2x + 2y = 10. Jadi k = 2.</span>"},
+        {type:"E",etype:"tf",
+         q:"The system \\(y = 2x + 4\\) and \\(2x - y = 8\\) has exactly one solution. <span class='id-lang'>Sistem \\(y = 2x + 4\\) dan \\(2x - y = 8\\) memiliki tepat satu solusi.</span>",
+         a:false,
+         h:"Substitute y: 2x - (2x+4) = 8 → -4 = 8. False! No solution. <span class='id-lang'>Substitusi y: 2x - (2x+4) = 8 → -4 = 8. Salah! Tidak ada solusi.</span>"},
+        {type:"E",etype:"fb",
+         q:"Solve graphically: \\(\\frac{1}{2}x + y = 4\\) and \\(x - y = 2\\). The x-coordinate of the intersection is ____. <span class='id-lang'>Selesaikan secara grafik: \\(\\frac{1}{2}x + y = 4\\) dan \\(x - y = 2\\). Koordinat x titik potongnya adalah ____.</span>",
+         a:"4",
+         h:"Convert: y = -½x + 4 and y = x - 2. Set equal: -½x + 4 = x - 2 → 6 = 1.5x → x = 4. <span class='id-lang'>Ubah: y = -½x + 4 dan y = x - 2. Samakan: -½x + 4 = x - 2 → 6 = 1.5x → x = 4.</span>"},
+        {type:"E",etype:"mc",
+         q:"Line g passes through (0,0) and (2,4). Line h passes through (0,6) and (3,0). What is the intersection? <span class='id-lang'>Garis g melalui (0,0) dan (2,4). Garis h melalui (0,6) dan (3,0). Berapa titik potongnya?</span>",
+         o:["\\((1, 2)\\)","\\((2, 4)\\)","\\((3, 0)\\)","\\((1.5, 3)\\)"],
+         a:3,
+         h:"g: y = 2x. h: y = -2x + 6. Set equal: 2x = -2x + 6 → 4x = 6 → x = 1.5, y = 3. <span class='id-lang'>g: y = 2x. h: y = -2x + 6. Samakan: 2x = -2x + 6 → 4x = 6 → x = 1.5, y = 3.</span>"},
+        {type:"E",etype:"tf",
+         q:"If \\((4, 2)\\) is the solution to \\(\\frac{1}{2}x + y = 4\\) and \\(x - y = 2\\), then \\(4 - 2 = 2\\) is true. <span class='id-lang'>Jika \\((4, 2)\\) adalah solusi dari \\(\\frac{1}{2}x + y = 4\\) dan \\(x - y = 2\\), maka \\(4 - 2 = 2\\) bernilai benar.</span>",
+         a:true,
+         h:"4 - 2 = 2 ✓ and ½(4) + 2 = 4 ✓. <span class='id-lang'>4 - 2 = 2 ✓ dan ½(4) + 2 = 4 ✓.</span>"},
+        {type:"E",etype:"fb",
+         q:"The graph of \\(y = 2x + 4\\) and \\(2x - y = 8\\) shows ____ lines. <span class='id-lang'>Grafik \\(y = 2x + 4\\) dan \\(2x - y = 8\\) menunjukkan garis ____.</span>",
+         a:"parallel",
+         h:"Both have slope 2 but different y-intercepts. <span class='id-lang'>Keduanya punya kemiringan 2 tapi titik potong-y berbeda.</span>"},
+        {type:"E",etype:"mc",
+         q:"Which system matches: 'The sum of two numbers is 20, and the difference of 5 times the first and 10 times the second is 150'? <span class='id-lang'>Sistem mana yang cocok: 'Jumlah dua angka adalah 20, dan selisih 5 kali angka pertama dan 10 kali angka kedua adalah 150'?</span>",
+         o:["\\(x + y = 20,\\; 5x + 10y = 150\\)","\\(x - y = 20,\\; 5x - 10y = 150\\)","\\(xy = 20,\\; 5x + 10y = 150\\)","\\(x + y = 20,\\; 10x + 5y = 150\\)"],
+         a:0,
+         h:"Sum = x+y=20. 5 times first + 10 times second = 5x+10y=150. <span class='id-lang'>Jumlah = x+y=20. 5 kali pertama + 10 kali kedua = 5x+10y=150.</span>"},
+        {type:"E",etype:"tf",
+         q:"A system with parallel lines has infinite solutions. <span class='id-lang'>Sistem dengan garis sejajar memiliki tak hingga solusi.</span>",
+         a:false,
+         h:"Parallel lines = NO solution. Identical lines = infinite solutions. <span class='id-lang'>Garis sejajar = TIDAK ADA solusi. Garis identik = tak hingga solusi.</span>"},
+        {type:"E",etype:"fb",
+         q:"In the game server scenario, Server A: \\(y = 2x + 10\\) and Server B: \\(y = 4x\\). Setting them equal gives \\(2x + 10 =\\) ____. <span class='id-lang'>Pada skenario server game, Server A: \\(y = 2x + 10\\) dan Server B: \\(y = 4x\\). Menyamakan keduanya menghasilkan \\(2x + 10 =\\) ____.</span>",
+         a:"4x",
+         h:"Set y₁ = y₂: 2x + 10 = 4x. <span class='id-lang'>Samakan y₁ = y₂: 2x + 10 = 4x.</span>"},
+        {type:"E",etype:"mc",
+         q:"For the game server scenario, when are the costs equal? <span class='id-lang'>Untuk skenario server game, kapan biayanya sama?</span>",
+         o:["After 5 hours <span class='id-lang'>Setelah 5 jam</span>","After 10 hours <span class='id-lang'>Setelah 10 jam</span>","After 3 hours <span class='id-lang'>Setelah 3 jam</span>","Never <span class='id-lang'>Tidak pernah</span>"],
+         a:0,
+         h:"2x+10=4x → 10=2x → x=5 hours. Cost = 20 coins. <span class='id-lang'>2x+10=4x → 10=2x → x=5 jam. Biaya = 20 koin.</span>"},
+      ]
+    },
+    // ==================== PETA 8 ====================
+    {
+      id:8, title:"Consolidation & Reflection <span class='id-lang'>Konsolidasi & Refleksi</span>", icon:"fa-star", color:"#fbbf24", branch:false,
+      lessons:[
+        {type:"T",title:"From Equations to Real Solutions <span class='id-lang'>Dari Persamaan ke Solusi Nyata</span>",
+                  body:`<p>Congratulations! You've completed the journey through Systems of Linear Equations! <span class='id-lang'>Selamat! Kamu telah menyelesaikan perjalanan melalui Sistem Persamaan Linear!</span></p> Linear!</span></p>
+         <div class="mt-4 p-5 rounded-xl bg-gradient-to-r from-emerald-500/10 to-teal-500/10 border border-emerald-500/20">
+           <div class="text-emerald-400 font-bold mb-3 text-lg"><i class="fa-solid fa-medal mr-2"></i>Journey Summary <span class='id-lang'>Ringkasan Perjalanan</span></div>
+           <ul class="space-y-2 text-sm text-slate-300 list-disc list-inside">
+             <li><strong>Maps 1-3:</strong> Foundations — variables, expressions, coordinate systems, and graphing lines <span class='id-lang'>Peta 1-3: Fondasi — variabel, ekspresi, sistem koordinat, dan menggambar garis</span></li>
+             <li><strong>Maps 4-6:</strong> Building SPLDV — translating problems, converting forms, graphing systems, and verifying solutions <span class='id-lang'>Peta 4-6: Membangun SPLDV — menerjemahkan masalah, mengubah bentuk, menggambar sistem, dan memverifikasi solusi</span></li>
+             <li><strong>Maps 7A-7E:</strong> Assessment — evaluating solutions, graphing intersections, and solving word problems <span class='id-lang'>Peta 7A-7E: Asesmen — mengevaluasi solusi, menggambar titik potong, dan menyelesaikan soal cerita</span></li>
+           </ul>
+         </div>
+         <p class="mt-4">Remember: every time you compare prices, calculate costs, or find a "meeting point" between two options — <strong>that's SPLDV in action!</strong> <span class='id-lang'>Ingat: setiap kali kamu membandingkan harga, menghitung biaya, atau mencari "titik temu" antara dua pilihan — <strong>itulah SPLDV dalam kehidupan nyata!</strong></span></p>
+         <div class="mt-6 p-5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-center">
+           <div class="text-amber-400 font-bold text-xl mb-2">Keep Practicing! <span class='id-lang'>Teruslah Berlatih!</span></div>
+           <p class="text-sm text-slate-300 mb-4">For more practice and challenges, continue your learning journey on the Algonova platform. <span class='id-lang'>Untuk latihan dan tantangan lebih lanjut, lanjutkan perjalanan belajarmu di platform Algonova.</span></p>
+           <a href="https://learn.algonova.id/login" target="_blank" class="btn-primary inline-flex">
+             <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Algonova <span class="id-lang" style="color:rgba(11,17,33,0.7); display:inline;">Buka Algonova</span>
+           </a>
+         </div>`}
+      ]
+    }
+  ]
+};
+
+// ============================================================
+// STATE APLIKASI
+// ============================================================
+let state = {
+  xp: 0,
+  streak: 0,
+  completed: {},   // { "1-0": true, "1-1": true, ... }  mapIndex-lessonIndex
+  currentView: 'map',
+  currentMap: null,  // index di COURSE.maps
+  currentLesson: null, // index lesson dalam map
+  exerciseState: {},  // state untuk exercise interaktif
+};
+
+// Load dari localStorage
+function loadState() {
+  try {
+    const saved = localStorage.getItem('logicode_state');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      state.xp = parsed.xp || 0;
+      state.streak = parsed.streak || 0;
+      state.completed = parsed.completed || {};
+	  state.mapAnswers = parsed.mapAnswers || {};
+    }
+  } catch(e) {}
+}
+function saveState() {
+  try {
+    localStorage.setItem('logicode_state', JSON.stringify({
+      xp: state.xp, streak: state.streak, completed: state.completed, mapAnswers: state.mapAnswers
+    }));
+  } catch(e) {}
+}
+
+function resetProgress() {
+  if (confirm('Apakah kamu yakin ingin menghapus semua progress? Tindakan ini tidak bisa dibatalkan.')) {
+    // Hapus data dari localStorage
+    localStorage.removeItem('logicode_state');
+    
+    // Reset state di memori
+    state.xp = 0;
+    state.streak = 0;
+    state.completed = {};
+    
+    // Render ulang tampilan peta
+    renderMap();
+    
+    // Tampilkan notifikasi
+    showToast('Progress berhasil direset!', 'info');
+  }
+}
+
+// ============================================================
+// HELPER: Cek apakah peta terbuka
+// ============================================================
+function isMapUnlocked(mapIdx) {
+  return true; // Semua peta selalu terbuka
+}
+
+function isMapCompleted(mapIdx) {
+  const map = COURSE.maps[mapIdx];
+  if (!map) return false;
+  return map.lessons.every((_, li) => state.completed[`${mapIdx}-${li}`]);
+}
+
+function isLessonUnlocked(mapIdx, lessonIdx) {
+  return true; // Semua lesson selalu terbuka
+}
+
+function getMapProgress(mapIdx) {
+  const map = COURSE.maps[mapIdx];
+  if (!map) return 0;
+  const done = map.lessons.filter((_, li) => state.completed[`${mapIdx}-${li}`]).length;
+  return Math.round((done / map.lessons.length) * 100);
+}
+
+function getTotalProgress() {
+  let total = 0, done = 0;
+  COURSE.maps.forEach((m, mi) => {
+    m.lessons.forEach((_, li) => {
+      total++;
+      if (state.completed[`${mi}-${li}`]) done++;
+    });
+  });
+  return total > 0 ? Math.round((done / total) * 100) : 0;
+}
+
+// ============================================================
+// RENDER: PETA MAP (halaman utama)
+// ============================================================
+function renderMap() {
+  const container = document.getElementById('mapContainer');
+  let html = '';
+
+	COURSE.maps.forEach((map, mi) => {
+	const unlocked = isMapUnlocked(mi);
+	const completed = isMapCompleted(mi);
+	const progress = getMapProgress(mi);
+	const isBranch = map.branch;
+	const isLastBranch = isBranch && !COURSE.maps[mi+1]?.branch;
+	const isFirstBranch = isBranch && !COURSE.maps[mi-1]?.branch;
+
+	// Node kelas
+	const nodeClass = completed ? 'completed' : unlocked ? 'unlocked' + (progress === 0 ? ' current' : '') : 'locked';
+
+	// --- BRANCH START: Visual dari Peta 6 ke Peta 7A-7E ---
+	if (isFirstBranch) {
+      const peta6Completed = isMapCompleted(mi - 1);
+      // Garis vertikal turun dari Peta 6
+      html += `<div class="map-line ${peta6Completed ? 'done' : ''}"></div>`;
+      // Garis horizontal branch (diperlebar)
+      html += `<div style="height: 3px; width: 95%; max-width: 850px; margin: 0 auto; background: var(--border);"></div>`;
+      // Buka container flex untuk 7A-7E (ditambah flex-wrap agar rapi di HP)
+      html += `<div class="flex flex-wrap justify-center" style="gap: 20px; max-width: 850px; margin: 0 auto;">`;
+    }
+
+	// --- RENDER NODE ---
+	html += `
+	  <div class="flex flex-col items-center" style="${isBranch ? 'min-width: 150px;' : ''}" onclick="${unlocked ? `openPeta(${mi})` : ''}">
+		${isBranch ? `<div style="width: 3px; height: 25px; background: var(--border);"></div>` : ''}
+		<div class="map-node ${nodeClass}" style="${unlocked ? `border-color:${map.color};${completed ? `background:${map.color}` : ''}` : ''}">
+		  ${completed ? '<i class="fa-solid fa-check"></i>' : unlocked ? `<i class="fa-solid ${map.icon}"></i>` : '<i class="fa-solid fa-lock text-sm"></i>'}
+		</div>
+		<div class="mt-2 text-center">
+		  <div class="text-sm font-semibold node-title ${unlocked ? 'text-slate-200' : 'text-slate-600'}">Peta ${map.id}</div>
+		  <div class="text-xs node-title ${unlocked ? 'text-slate-400' : 'text-slate-600'}">${map.title}</div>
+		  ${unlocked && !completed ? `<div class="mt-1 w-16 mx-auto"><div class="prog-bar"><div class="prog-fill" style="width:${progress}%;background:${map.color}"></div></div></div>` : ''}
+		</div>
+		${isBranch ? `<div style="width: 3px; height: 25px; background: var(--border);"></div>` : ''}
+	  </div>
+	`;
+
+	// --- BRANCH END: Visual dari Peta 7A-7E ke Peta 8 ---
+	if (isLastBranch) {
+      // Tutup container flex 7A-7E
+      html += `</div>`;
+      // Garis horizontal merge (diperlebar)
+      html += `<div style="height: 3px; width: 95%; max-width: 850px; margin: 0 auto; background: var(--border);"></div>`;
+      // Garis vertikal turun ke Peta 8
+      html += `<div class="map-line"></div>`;
+    }
+
+	// --- GARIS VERTIKAL NORMAL (Peta 1-5) ---
+	if (!isBranch && mi < COURSE.maps.length - 1 && !COURSE.maps[mi+1]?.branch) {
+	  html += `<div class="map-line ${completed ? 'done' : ''}"></div>`;
+	}
+	});
+
+  container.innerHTML = html;
+
+  // Update header stats
+  document.getElementById('headerXP').textContent = state.xp;
+  document.getElementById('headerStreak').textContent = state.streak;
+  document.getElementById('totalProgress').textContent = getTotalProgress() + '%';
+  document.getElementById('totalProgFill').style.width = getTotalProgress() + '%';
+}
+
+// ============================================================
+// RENDER: PETA DETAIL (daftar lesson)
+// ============================================================
+function openPeta(mapIdx) {
+  state.currentMap = mapIdx;
+  showView('peta');
+  const map = COURSE.maps[mapIdx];
+  document.getElementById('petaTitle').innerHTML = `Peta ${map.id}: ${map.title}`;
+  const totalLessons = map.lessons.length;
+  const doneLessons = map.lessons.filter((_, li) => state.completed[`${mapIdx}-${li}`]).length;
+  document.getElementById('petaSubtitle').textContent = `${doneLessons}/${totalLessons} selesai`;
+
+  const container = document.getElementById('lessonContainer');
+  let html = '<div class="stagger-in flex flex-col items-center">';
+
+  map.lessons.forEach((lesson, li) => {
+    const unlocked = isLessonUnlocked(mapIdx, li);
+    const completed = state.completed[`${mapIdx}-${li}`] === true;
+    const isTheory = lesson.type === 'T';
+    const isCurrent = unlocked && !completed;
+
+    const nodeClass = completed ? 'completed' : unlocked ? 'unlocked' : 'locked';
+    const shapeClass = isTheory ? 'theory' : 'exercise';
+
+    html += `
+      <div class="flex flex-col items-center">
+        <div class="lesson-node ${shapeClass} ${nodeClass} ${isCurrent ? 'current' : ''}"
+             style="${unlocked ? `border-color:${map.color};${completed ? `background:${map.color}` : ''}` : ''}"
+             onclick="${unlocked ? `openLesson(${mapIdx},${li})` : ''}">
+          ${completed ? '<i class="fa-solid fa-check text-sm"></i>' : isTheory ? '<i class="fa-solid fa-book text-sm"></i>' : '<i class="fa-solid fa-dumbbell text-sm"></i>'}
+        </div>
+        <div class="mt-1 text-center">
+          <div class="text-xs node-title ${unlocked ? 'text-slate-300' : 'text-slate-600'}">${isTheory ? lesson.title : `Exercise ${li+1}`}</div>
+        </div>
+      </div>
+    `;
+
+    // Koneksi ke lesson berikutnya
+    if (li < map.lessons.length - 1) {
+      const connDone = completed;
+      html += `<div class="lesson-connector ${connDone ? 'done' : ''}"></div>`;
+    }
+  });
+
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+// ============================================================
+// RENDER: LESSON (teori atau exercise)
+// ============================================================
+function openLesson(mapIdx, lessonIdx) {
+  state.currentMap = mapIdx;
+  state.currentLesson = lessonIdx;
+  state.exerciseState = {};
+  showView('lesson');
+
+  const map = COURSE.maps[mapIdx];
+  const lesson = map.lessons[lessonIdx];
+  const total = map.lessons.length;
+
+  document.getElementById('lessonCounter').textContent = `${lessonIdx+1}/${total}`;
+  const done = map.lessons.filter((_, li) => state.completed[`${mapIdx}-${li}`] || li < lessonIdx).length;
+  document.getElementById('lessonProgFill').style.width = `${(done/total)*100}%`;
+
+  if (lesson.type === 'T') {
+    renderTheory(lesson);
+  } else {
+    renderExercise(lesson, mapIdx, lessonIdx);
+  }
+}
+
+function renderTheory(lesson) {
+  const content = document.getElementById('lessonContent');
+  content.innerHTML = `
+    <div class="stagger-in">
+      <div class="text-xs font-semibold text-emerald-400 uppercase tracking-wider mb-2">
+        <i class="fa-solid fa-book-open mr-1"></i> Theory <span class="id-lang" style="display:inline; color:#64748b;">Teori</span>
+      </div>
+      <h2 class="text-2xl font-bold mb-6">${lesson.title}</h2>
+      <div class="text-slate-300 leading-relaxed space-y-3">
+        ${lesson.body}
+      </div>
+      <div class="mt-8 flex justify-end">
+        <button id="nextBtn" class="btn-primary" onclick="completeAndNext()">
+          Next <span class="id-lang" style="color:rgba(11,17,33,0.7); display:inline;">Lanjut</span> <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function renderExercise(lesson, mapIdx, lessonIdx) {
+  const content = document.getElementById('lessonContent');
+  const etype = lesson.etype;
+  let exerciseHTML = '';
+
+  switch(etype) {
+    case 'mc': exerciseHTML = renderMC(lesson); break;
+    case 'tf': exerciseHTML = renderTF(lesson); break;
+    case 'fb': exerciseHTML = renderFB(lesson); break;
+    case 'ord': exerciseHTML = renderOrd(lesson); break;
+    case 'match': exerciseHTML = renderMatch(lesson); break;
+    case 'sa': exerciseHTML = renderSA(lesson); break;
+    case 'code': exerciseHTML = renderCode(lesson); break;
+    default: exerciseHTML = '<p>Tipe exercise tidak dikenal</p>';
+  }
+
+  content.innerHTML = `
+    <div class="stagger-in">
+      <div class="text-xs font-semibold text-amber-400 uppercase tracking-wider mb-2">
+        <i class="fa-solid fa-dumbbell mr-1"></i> Exercise <span class="id-lang" style="display:inline; color:#64748b;">Latihan</span>
+      </div>
+      <h2 class="text-xl font-bold mb-6">${lesson.q}</h2>
+      ${lesson.code ? `<div class="code-block mb-6">${escapeHTML(lesson.code)}</div>` : ''}
+      <div id="exerciseArea">${exerciseHTML}</div>
+      <div id="feedbackArea" class="mt-4"></div>
+      <div class="mt-6 flex items-center justify-between">
+        <button class="btn-secondary text-sm" onclick="showHint()" id="hintBtn">
+          <i class="fa-solid fa-lightbulb mr-1"></i> Hint <span class="id-lang" style="display:inline;">Petunjuk</span>
+        </button>
+        <button class="btn-primary" id="checkBtn" onclick="checkAnswer()" disabled>
+          Check <span class="id-lang" style="display:inline;">Periksa</span> <i class="fa-solid fa-check"></i>
+        </button>
+      </div>
+      <div id="hintArea" class="mt-4 hidden">
+        <div class="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-sm text-amber-200">
+          <i class="fa-solid fa-lightbulb text-amber-400 mr-2"></i>${lesson.h || 'Tidak ada petunjuk'}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// ============================================================
+// EXERCISE RENDERERS
+// ============================================================
+
+// Multiple Choice
+function renderMC(lesson) {
+  const labels = ['A','B','C','D','E','F'];
+  return `<div class="space-y-3" id="mcOptions">
+    ${lesson.o.map((opt, i) => `
+      <div class="opt-card" data-idx="${i}" onclick="selectMC(${i})">
+        <span class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-sm font-bold flex-shrink-0">${labels[i]}</span>
+        <span>${opt}</span>
+      </div>
+    `).join('')}
+  </div>`;
+}
+
+function selectMC(idx) {
+  if (state.exerciseState.answered) return;
+  state.exerciseState.selected = idx;
+  document.querySelectorAll('#mcOptions .opt-card').forEach((el, i) => {
+    el.classList.toggle('selected', i === idx);
+  });
+  document.getElementById('checkBtn').disabled = false;
+}
+
+// True/False
+function renderTF(lesson) {
+  return `<div class="flex gap-4" id="tfOptions">
+    <div class="opt-card flex-1 justify-center text-center text-lg" onclick="selectTF(true)" data-val="true">
+      <i class="fa-solid fa-check text-emerald-400 mr-2"></i> True <span class="id-lang">Benar</span>
+    </div>
+    <div class="opt-card flex-1 justify-center text-center text-lg" onclick="selectTF(false)" data-val="false">
+      <i class="fa-solid fa-xmark text-red-400 mr-2"></i> False <span class="id-lang">Salah</span>
+    </div>
+  </div>`;
+}
+
+function selectTF(val) {
+  if (state.exerciseState.answered) return;
+  state.exerciseState.selected = val;
+  document.querySelectorAll('#tfOptions .opt-card').forEach(el => {
+    el.classList.toggle('selected', el.dataset.val === String(val));
+  });
+  document.getElementById('checkBtn').disabled = false;
+}
+
+// Fill Blank
+function renderFB(lesson) {
+  return `<div>
+    <input type="text" class="ex-input" id="fbInput" placeholder="Ketik jawaban..." autocomplete="off" oninput="onFBInput()">
+  </div>`;
+}
+
+function onFBInput() {
+  const val = document.getElementById('fbInput').value.trim();
+  document.getElementById('checkBtn').disabled = val.length === 0;
+}
+
+// Order
+function renderOrd(lesson) {
+  // Tampilkan item dalam urutan acak
+  const shuffled = lesson.o.map((item, i) => ({text: item, origIdx: i}));
+  // Shuffle
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  state.exerciseState.ordOrder = [];
+  state.exerciseState.ordItems = shuffled;
+
+  return `<div>
+	<div class="text-sm text-slate-400 mb-3">Click items in the correct order: <span class="id-lang">Klik item dalam urutan yang benar:</span></div>
+    <div class="space-y-2" id="ordList">
+      ${shuffled.map((item, i) => `
+        <div class="order-item flex items-center gap-3" data-orig="${item.origIdx}" onclick="selectOrd(this,${item.origIdx})">
+          <span class="w-7 h-7 rounded-full bg-white/5 flex items-center justify-center text-xs font-bold ord-num"></span>
+          <span>${item.text}</span>
+        </div>
+      `).join('')}
+    </div>
+    <div class="mt-3 text-xs text-slate-500" id="ordStatus">Urutan terpilih: (belum ada)</div>
+  </div>`;
+}
+
+function selectOrd(el, origIdx) {
+  if (state.exerciseState.answered) return;
+  if (el.classList.contains('ordered')) return;
+
+  const order = state.exerciseState.ordOrder;
+  order.push(origIdx);
+  el.classList.add('ordered');
+  const numEl = el.querySelector('.ord-num');
+  numEl.textContent = order.length;
+
+  document.getElementById('ordStatus').textContent = `Urutan terpilih: ${order.length}/${state.exerciseState.ordItems.length}`;
+  document.getElementById('checkBtn').disabled = order.length < state.exerciseState.ordItems.length;
+}
+
+// Match
+function renderMatch(lesson) {
+  state.exerciseState.matchLeft = null;
+  state.exerciseState.matchPairs = [];
+  state.exerciseState.matchedLeft = new Set();
+  state.exerciseState.matchedRight = new Set();
+
+  // Shuffle right column
+  const rightShuffled = [...lesson.right];
+  for (let i = rightShuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [rightShuffled[i], rightShuffled[j]] = [rightShuffled[j], rightShuffled[i]];
+  }
+  state.exerciseState.rightShuffled = rightShuffled;
+
+  return `<div>
+    <div class="text-sm text-slate-400 mb-3">Klik item kiri, lalu item kanan untuk mencocokkan:</div>
+    <div class="grid grid-cols-2 gap-3" id="matchGrid">
+      <div class="space-y-2" id="matchLeft">
+        ${lesson.left.map((item, i) => `
+          <div class="match-item" data-side="left" data-idx="${i}" onclick="selectMatch('left',${i})">${item}</div>
+        `).join('')}
+      </div>
+      <div class="space-y-2" id="matchRight">
+        ${rightShuffled.map((item, i) => `
+          <div class="match-item" data-side="right" data-idx="${i}" data-val="${item}" onclick="selectMatch('right',${i})">${item}</div>
+        `).join('')}
+      </div>
+    </div>
+  </div>`;
+}
+
+function selectMatch(side, idx) {
+  if (state.exerciseState.answered) return;
+  const es = state.exerciseState;
+
+  if (side === 'left') {
+    if (es.matchedLeft.has(idx)) return;
+    // Highlight
+    document.querySelectorAll('#matchLeft .match-item').forEach(el => el.classList.remove('active'));
+    const el = document.querySelector(`#matchLeft .match-item[data-idx="${idx}"]`);
+    el.classList.add('active');
+    es.matchLeft = idx;
+  } else {
+    if (es.matchedRight.has(idx)) return;
+    if (es.matchLeft === null) {
+      showToast('Pilih item kiri terlebih dahulu', 'info');
+      return;
+    }
+    // Create pair
+    const lesson = COURSE.maps[state.currentMap].lessons[state.currentLesson];
+    const leftIdx = es.matchLeft;
+    const rightVal = es.rightShuffled[idx];
+    es.matchPairs.push({leftIdx, rightVal, rightShuffledIdx: idx});
+    es.matchedLeft.add(leftIdx);
+    es.matchedRight.add(idx);
+
+    // Visual
+    const leftEl = document.querySelector(`#matchLeft .match-item[data-idx="${leftIdx}"]`);
+    const rightEl = document.querySelector(`#matchRight .match-item[data-idx="${idx}"]`);
+    leftEl.classList.remove('active');
+    leftEl.classList.add('matched');
+    rightEl.classList.add('matched');
+
+    es.matchLeft = null;
+
+    document.getElementById('checkBtn').disabled = es.matchPairs.length < lesson.left.length;
+  }
+}
+
+// Select All
+function renderSA(lesson) {
+  state.exerciseState.selectedSet = new Set();
+  return `<div>
+    <div class="text-sm text-slate-400 mb-3">Pilih semua jawaban yang benar:</div>
+    <div class="space-y-2" id="saOptions">
+      ${lesson.o.map((opt, i) => `
+        <div class="opt-card" data-idx="${i}" onclick="toggleSA(${i})">
+          <span class="w-6 h-6 rounded border-2 border-slate-600 flex items-center justify-center flex-shrink-0 sa-check"></span>
+          <span>${opt}</span>
+        </div>
+      `).join('')}
+    </div>
+  </div>`;
+}
+
+function toggleSA(idx) {
+  if (state.exerciseState.answered) return;
+  const set = state.exerciseState.selectedSet;
+  if (set.has(idx)) set.delete(idx); else set.add(idx);
+  document.querySelectorAll('#saOptions .opt-card').forEach((el, i) => {
+    const check = el.querySelector('.sa-check');
+    if (set.has(i)) {
+      el.classList.add('selected');
+      check.innerHTML = '<i class="fa-solid fa-check text-emerald-400 text-xs"></i>';
+      check.style.borderColor = '#10b981';
+    } else {
+      el.classList.remove('selected');
+      check.innerHTML = '';
+      check.style.borderColor = '';
+    }
+  });
+  document.getElementById('checkBtn').disabled = set.size === 0;
+}
+
+// Code Output
+function renderCode(lesson) {
+  return `<div>
+    <div class="text-sm text-slate-400 mb-3">Tulis output yang akan ditampilkan:</div>
+    <input type="text" class="ex-input font-mono" id="codeInput" placeholder="Ketik output..." autocomplete="off" oninput="onCodeInput()">
+  </div>`;
+}
+
+function onCodeInput() {
+  const val = document.getElementById('codeInput').value.trim();
+  document.getElementById('checkBtn').disabled = val.length === 0;
+}
+
+// ============================================================
+// CHECK ANSWER
+// ============================================================
+function checkAnswer() {
+  if (state.exerciseState.answered) return;
+  state.exerciseState.answered = true;
+
+  const lesson = COURSE.maps[state.currentMap].lessons[state.currentLesson];
+  const etype = lesson.etype;
+  let correct = false;
+  let correctAnswer = '';
+
+  switch(etype) {
+    case 'mc': {
+      const sel = state.exerciseState.selected;
+      correct = sel === lesson.a;
+      document.querySelectorAll('#mcOptions .opt-card').forEach((el, i) => {
+        el.classList.add('disabled');
+        if (i === lesson.a) el.classList.add('correct');
+        if (i === sel && !correct) el.classList.add('wrong');
+      });
+      correctAnswer = lesson.o[lesson.a];
+      break;
+    }
+    case 'tf': {
+      const sel = state.exerciseState.selected;
+      correct = sel === lesson.a;
+      document.querySelectorAll('#tfOptions .opt-card').forEach(el => {
+        el.classList.add('disabled');
+        if (String(lesson.a) === el.dataset.val) el.classList.add('correct');
+        if (String(sel) === el.dataset.val && !correct) el.classList.add('wrong');
+      });
+            correctAnswer = lesson.a ? 'True <span class="id-lang">Benar</span>' : 'False <span class="id-lang">Salah</span>';
+      break;
+    }
+    case 'fb': {
+      const input = document.getElementById('fbInput').value.trim();
+      // Normalisasi: hapus semua spasi dan ubah jadi huruf kecil
+      const normalize = str => str.replace(/\s+/g, '').toLowerCase();
+      // Terima beberapa jawaban yang benar (dipisah /)
+      const answers = lesson.a.split('/');
+      correct = answers.some(a => normalize(input) === normalize(a));
+      document.getElementById('fbInput').classList.add(correct ? 'correct' : 'wrong');
+      document.getElementById('fbInput').disabled = true;
+      correctAnswer = lesson.a;
+      break;
+    }
+    case 'ord': {
+      const order = state.exerciseState.ordOrder;
+      correct = order.length === lesson.a.length && order.every((v, i) => v === lesson.a[i]);
+      correctAnswer = lesson.a.map(i => lesson.o[i]).join(' → ');
+      break;
+    }
+    case 'match': {
+      const pairs = state.exerciseState.matchPairs;
+      const lesson_data = lesson;
+      correct = pairs.length === lesson_data.a.length && pairs.every((p, i) => {
+        // Cek apakah leftIdx-i cocok dengan right yang benar
+        const expectedRightVal = lesson_data.right[lesson_data.a[p.leftIdx]];
+        return p.rightVal === expectedRightVal;
+      });
+      correctAnswer = lesson_data.left.map((l, i) => `${l} ↔ ${lesson_data.right[lesson_data.a[i]]}`).join(', ');
+      break;
+    }
+    case 'sa': {
+      const selected = [...state.exerciseState.selectedSet].sort();
+      const expected = [...lesson.a].sort();
+      correct = selected.length === expected.length && selected.every((v, i) => v === expected[i]);
+      document.querySelectorAll('#saOptions .opt-card').forEach((el, i) => {
+        el.classList.add('disabled');
+        if (lesson.a.includes(i)) el.classList.add('correct');
+        if (selected.includes(i) && !lesson.a.includes(i)) el.classList.add('wrong');
+      });
+      correctAnswer = lesson.a.map(i => lesson.o[i]).join(', ');
+      break;
+    }
+    case 'code': {
+      const input = document.getElementById('codeInput').value.trim();
+      // Normalisasi: hapus semua spasi dan ubah jadi huruf kecil
+      const normalize = str => str.replace(/\s+/g, '').toLowerCase();
+      correct = normalize(input) === normalize(lesson.a);
+      document.getElementById('codeInput').classList.add(correct ? 'correct' : 'wrong');
+      document.getElementById('codeInput').disabled = true;
+      correctAnswer = lesson.a;
+      break;
+    }
+  }
+
+  // Simpan jawaban untuk Print Result
+  const mi = state.currentMap;
+  const li = state.currentLesson;
+  let studentAnswerText = "";
+  let correctAnswerText = "";
+
+  switch(etype) {
+    case 'mc':
+      studentAnswerText = state.exerciseState.selected !== undefined ? lesson.o[state.exerciseState.selected] : "-";
+      correctAnswerText = lesson.o[lesson.a];
+      break;
+    case 'tf':
+      studentAnswerText = state.exerciseState.selected !== null ? (state.exerciseState.selected ? "True" : "False") : "-";
+      correctAnswerText = lesson.a ? "True" : "False";
+      break;
+    case 'fb':
+      studentAnswerText = document.getElementById('fbInput').value.trim() || "-";
+      correctAnswerText = lesson.a;
+      break;
+    case 'code':
+      studentAnswerText = document.getElementById('codeInput').value.trim() || "-";
+      correctAnswerText = lesson.a;
+      break;
+    case 'ord':
+      studentAnswerText = state.exerciseState.ordOrder.map(i => lesson.o[i]).join(' → ') || "-";
+      correctAnswerText = lesson.a.map(i => lesson.o[i]).join(' → ');
+      break;
+    case 'match':
+      studentAnswerText = "Matched pairs";
+      correctAnswerText = lesson.left.map((l, i) => `${l} ↔ ${lesson.right[lesson.a[i]]}`).join('; ');
+      break;
+    case 'sa':
+      studentAnswerText = [...state.exerciseState.selectedSet].sort().map(i => lesson.o[i]).join(', ') || "-";
+      correctAnswerText = lesson.a.map(i => lesson.o[i]).join(', ');
+      break;
+  }
+
+  if (!state.mapAnswers) state.mapAnswers = {};
+  if (!state.mapAnswers[mi]) state.mapAnswers[mi] = {};
+  state.mapAnswers[mi][li] = {
+    q: lesson.q,
+    studentAnswer: studentAnswerText,
+    correctAnswer: correctAnswerText,
+    isCorrect: correct
+  };
+  saveState();
+
+  // Tampilkan feedback
+  const feedback = document.getElementById('feedbackArea');
+  if (correct) {
+    feedback.innerHTML = `
+      <div class="feedback-bar correct-fb">
+        <i class="fa-solid fa-check-circle text-2xl"></i>
+        <div>
+          <div class="text-lg">Correct! Excellent! <span class="id-lang">Benar! Hebat!</span></div>
+          ${correctAnswer ? `<div class="text-sm opacity-80 mt-1">Jawaban: ${correctAnswer}</div>` : ''}
+        </div>
+      </div>
+    `;
+    // Tambah XP
+    state.xp += 10;
+    state.streak += 1;
+    showXPPopup(10);
+    spawnConfetti();
+  } else {
+    feedback.innerHTML = `
+      <div class="feedback-bar wrong-fb">
+        <i class="fa-solid fa-times-circle text-2xl"></i>
+        <div>
+			<div class="text-lg">Incorrect <span class="id-lang">Belum tepat</span></div>
+			<div class="text-sm opacity-80 mt-1">Correct answer: ${correctAnswer} <span class="id-lang">Jawaban yang benar: ${correctAnswer}</span></div>
+        </div>
+      </div>
+    `;
+    state.streak = 0;
+  }
+  
+  renderKatexInElement(feedback);
+  
+  // Update header
+  document.getElementById('headerXP').textContent = state.xp;
+  document.getElementById('headerStreak').textContent = state.streak;
+
+  // Ganti tombol check menjadi lanjut
+  const checkBtn = document.getElementById('checkBtn');
+  checkBtn.textContent = 'Lanjut ';
+  checkBtn.innerHTML = 'Next <span class="id-lang" style="color:rgba(11,17,33,0.7); display:inline;">Lanjut</span> <i class="fa-solid fa-arrow-right"></i>';
+  checkBtn.disabled = false;
+  checkBtn.onclick = () => completeAndNext();
+
+  saveState();
+}
+
+// ============================================================
+// PRINT RESULT UNTUK ASSESSMENT
+// ============================================================
+function showPrintResultForm(mapIdx) {
+  const map = COURSE.maps[mapIdx];
+  const totalLessons = map.lessons.length;
+  let correctCount = 0;
+  
+  if (state.mapAnswers && state.mapAnswers[mapIdx]) {
+    for (let i = 0; i < totalLessons; i++) {
+      if (state.mapAnswers[mapIdx][i] && state.mapAnswers[mapIdx][i].isCorrect) {
+        correctCount++;
+      }
+    }
+  }
+  
+  const score = Math.round((correctCount / totalLessons) * 100);
+
+  const content = document.getElementById('lessonContent');
+  content.innerHTML = `
+    <div class="stagger-in text-center">
+      <div class="text-5xl mb-4">🎉</div>
+      <h2 class="text-2xl font-bold mb-2">Assessment Completed! <span class="id-lang">Asesmen Selesai!</span></h2>
+      <p class="text-slate-400 mb-6">You scored <span class="text-emerald-400 font-bold text-xl">${score}%</span> (${correctCount}/${totalLessons})</p>
+      
+      <div class="max-w-md mx-auto text-left space-y-4 mb-8">
+        <div>
+          <label class="text-sm text-slate-400 block mb-1">Name / <span class="id-lang">Nama</span></label>
+          <input type="text" id="printName" class="ex-input" placeholder="Enter your name / Masukkan nama">
+        </div>
+        <div>
+          <label class="text-sm text-slate-400 block mb-1">Date / <span class="id-lang">Tanggal</span></label>
+          <input type="date" id="printDate" class="ex-input" value="${new Date().toISOString().split('T')[0]}">
+        </div>
+        <div>
+          <label class="text-sm text-slate-400 block mb-1">Assessment / <span class="id-lang">Asesmen</span></label>
+          <input type="text" class="ex-input" value="Assessment ${map.id}" disabled style="opacity:0.6">
+        </div>
+        <div>
+          <label class="text-sm text-slate-400 block mb-1">Score / <span class="id-lang">Skor</span></label>
+          <input type="text" class="ex-input" value="${score}%" disabled style="opacity:0.6">
+        </div>
+      </div>
+
+      <button class="btn-primary text-lg" onclick="generatePrintout(${mapIdx})">
+        <i class="fa-solid fa-print mr-2"></i> Print Result <span class="id-lang" style="color:rgba(11,17,33,0.7); display:inline;">Cetak Hasil</span>
+      </button>
+      
+      <div class="mt-4">
+        <button class="btn-secondary" onclick="openPeta(${mapIdx})">
+          Back to Map <span class="id-lang">Kembali ke Peta</span>
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function generatePrintout(mapIdx) {
+  const map = COURSE.maps[mapIdx];
+  const studentName = document.getElementById('printName').value || '-';
+  const printDate = document.getElementById('printDate').value || '-';
+  
+  let correctCount = 0;
+  let tableRows = '';
+  
+  for (let i = 0; i < map.lessons.length; i++) {
+    const ansData = (state.mapAnswers && state.mapAnswers[mapIdx] && state.mapAnswers[mapIdx][i]) ? state.mapAnswers[mapIdx][i] : null;
+    // Hapus tag id-lang dari pertanyaan agar printout lebih bersih (hanya bahasa Inggris)
+    const qText = map.lessons[i].q.replace(/<span class='id-lang'>.*?<\/span>/g, '');
+    const studentAns = ansData ? ansData.studentAnswer : '-';
+    const correctAns = ansData ? ansData.correctAnswer : '-';
+    const isCorrect = ansData ? ansData.isCorrect : false;
+    
+    if (isCorrect) correctCount++;
+    
+    const noteSymbol = isCorrect ? '✓' : '✗';
+    const noteColor = isCorrect ? 'green' : 'red';
+    
+    tableRows += `
+      <tr>
+        <td style="text-align:center; width: 40px;">${i + 1}</td>
+        <td>${qText}</td>
+        <td>${studentAns}</td>
+        <td>${correctAns}</td>
+        <td style="text-align:center; color: ${noteColor}; font-weight:bold; font-size:1.2rem;">${noteSymbol}</td>
+      </tr>
+    `;
+  }
+  
+  const score = Math.round((correctCount / map.lessons.length) * 100);
+
+  const printWindow = window.open('', '_blank');
+  printWindow.document.write(`
+    <!DOCTYPE html>
+    <html lang="id">
+    <head>
+      <meta charset="UTF-8">
+      <title>Assessment Result - ${map.id}</title>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+      <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"><\/script>
+      <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+        onload="renderMathInElement(document.body, {delimiters: [{left: '\\\\(', right: '\\\\)', display: false},{left: '\\\\[', right: '\\\\]', display: true}], throwOnError: false}); setTimeout(function(){window.print();}, 1000);"><\/script>
+      <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 30px; color: #333; line-height: 1.5; }
+        h1 { text-align: center; margin-bottom: 5px; }
+        .subtitle { text-align: center; color: #666; font-size: 0.9rem; margin-bottom: 20px; }
+        .header-info { margin-bottom: 20px; border: 1px solid #ddd; padding: 15px; border-radius: 8px; display: flex; justify-content: space-between; flex-wrap: wrap; }
+        .header-info p { margin: 5px 0; font-size: 14px; }
+        .header-info strong { margin-right: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 13px; }
+        th, td { border: 1px solid #333; padding: 10px; text-align: left; vertical-align: top; }
+        th { background: #f0f0f0; font-weight: bold; text-align: center; }
+        @media print {
+          body { padding: 0; }
+          .header-info { border: none; padding: 0; }
+        }
+      </style>
+    </head>
+    <body>
+      <h1>Assessment Result</h1>
+      <div class="subtitle">Intro to Systems of Linear Equations</div>
+      
+      <div class="header-info">
+        <div style="flex:1; min-width: 200px;">
+          <p><strong>Name:</strong> ${studentName}</p>
+          <p><strong>Date:</strong> ${printDate}</p>
+        </div>
+        <div style="flex:1; min-width: 200px;">
+          <p><strong>Assessment:</strong> ${map.id}</p>
+          <p><strong>Score:</strong> ${score}% (${correctCount}/${map.lessons.length})</p>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>Question</th>
+            <th>Student Answer</th>
+            <th>Correct Answer</th>
+            <th>Note</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${tableRows}
+        </tbody>
+      </table>
+    </body>
+    </html>
+  `);
+  printWindow.document.close();
+}
+
+// ============================================================
+// COMPLETE & NEXT
+// ============================================================
+function completeAndNext() {
+  const mi = state.currentMap;
+  const li = state.currentLesson;
+  state.completed[`${mi}-${li}`] = true;
+  saveState();
+
+  const map = COURSE.maps[mi];
+  const isLastLesson = li + 1 >= map.lessons.length;
+  const isAssessment = map.branch; // Peta 7A-7E adalah branch: true
+
+  // Jika ini exercise terakhir di Assessment, tampilkan form Print
+  if (isAssessment && isLastLesson) {
+    showPrintResultForm(mi);
+  } else if (li + 1 < map.lessons.length && isLessonUnlocked(mi, li + 1)) {
+    openLesson(mi, li + 1);
+  } else {
+    openPeta(mi);
+  }
+}
+
+// ============================================================
+// NAVIGASI
+// ============================================================
+function showView(viewName) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById(viewName + 'View').classList.add('active');
+  state.currentView = viewName;
+  window.scrollTo(0, 0);
+}
+
+function showMap() {
+  showView('map');
+  renderMap();
+}
+
+function closeLesson() {
+  openPeta(state.currentMap);
+}
+
+// ============================================================
+// UI HELPERS
+// ============================================================
+function showToast(msg, type='info') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast ${type} show`;
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function showXPPopup(amount) {
+  document.getElementById('xpAmount').textContent = amount;
+  const popup = document.getElementById('xpPopup');
+  popup.classList.add('show');
+  setTimeout(() => popup.classList.remove('show'), 1500);
+}
+
+function spawnConfetti() {
+  const colors = ['#10b981','#f59e0b','#ec4899','#8b5cf6','#06b6d4','#ef4444'];
+  for (let i = 0; i < 30; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti';
+    c.style.left = Math.random() * 100 + 'vw';
+    c.style.background = colors[Math.floor(Math.random() * colors.length)];
+    c.style.width = (Math.random() * 8 + 4) + 'px';
+    c.style.height = (Math.random() * 8 + 4) + 'px';
+    c.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    c.style.animationDuration = (Math.random() * 1.5 + 1) + 's';
+    c.style.animationDelay = (Math.random() * 0.5) + 's';
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 3000);
+  }
+}
+
+function showHint() {
+  document.getElementById('hintArea').classList.remove('hidden');
+  document.getElementById('hintBtn').disabled = true;
+}
+
+function escapeHTML(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// --- FUNGSI UNTUK MODAL RULES ---
+function openRules() {
+  document.getElementById('rulesModal').classList.add('active');
+}
+
+function closeRules() {
+  document.getElementById('rulesModal').classList.remove('active');
+}
+
+// ============================================================
+// KATEX RENDERING
+// ============================================================
+function renderKatexInElement(el) {
+  if (typeof renderMathInElement === 'function') {
+    renderMathInElement(el, {
+      delimiters: [
+        {left: '\\(', right: '\\)', display: false},  //
+        {left: '\\[', right: '\\]', display: true}    //
+      ],
+      throwOnError: false
+    });
+  }
+}
+
+// Override showView untuk render KaTeX setiap pindah halaman
+const originalShowView = showView;
+showView = function(viewName) {
+  originalShowView(viewName);
+  setTimeout(() => renderKatexInElement(document.body), 100);
+};
+
+// Override openLesson untuk render KaTeX di konten lesson
+const originalOpenLesson = openLesson;
+openLesson = function(mapIdx, lessonIdx) {
+  originalOpenLesson(mapIdx, lessonIdx);
+  setTimeout(() => renderKatexInElement(document.body), 100);
+};
+
+// ============================================================
+// INISIALISASI APLIKASI
+// ============================================================
+loadState();
+renderMap();
+
+// Keyboard shortcuts
+document.addEventListener('keydown', (e) => {
+  // Tekan Escape untuk menutup lesson
+  if (e.key === 'Escape' && state.currentView === 'lesson') {
+    closeLesson();
+  }
+  
+  // Tekan Enter untuk memeriksa jawaban / lanjut ke soal berikutnya
+  if (e.key === 'Enter' && state.currentView === 'lesson') {
+    const checkBtn = document.getElementById('checkBtn');
+    // Pastikan tombol ada dan tidak dalam keadaan disabled
+    if (checkBtn && !checkBtn.disabled) {
+      e.preventDefault(); 
+      checkBtn.click();   // Untuk halaman Exercise
+    } else if (nextBtn) {
+      e.preventDefault();
+      nextBtn.click();    // Untuk halaman Teori
+    }
+  }
+});
+</script>
+</body>
+</html>
