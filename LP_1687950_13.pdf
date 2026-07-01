@@ -1,0 +1,1252 @@
+%PDF-1.3
+%ºß¬à
+3 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 4 0 R
+>>
+endobj
+4 0 obj
+<<
+/Length 4082
+>>
+stream
+0.5670000000000001 w
+0 G
+BT
+/F2 20 Tf
+23. TL
+0 g
+56.6929133858267775 785.1970866141732586 Td
+(Advanced Integer and Fraction Operations - Nicholas) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+56.6929133858267775 742.6774015748030706 Td
+(Created: 01/07/2026) Tj
+ET
+56.6929133858267775 714.3309448818897636 m
+538.5826771653544256 714.3309448818897636 l
+S
+BT
+/F2 14 Tf
+16.0999999999999979 TL
+0 g
+56.6929133858267775 685.9844881889763428 Td
+(Student) Tj
+ET
+BT
+/F1 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 657.6380314960629221 Td
+(Student: Nicholas) Tj
+ET
+BT
+/F1 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 634.9608661417322537 Td
+(Topic: Advanced Integer and Fraction Operations) Tj
+ET
+BT
+/F1 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 612.2837007874015853 Td
+(Status: completed) Tj
+ET
+BT
+/F2 16 Tf
+18.3999999999999986 TL
+0 g
+56.6929133858267775 569.7640157480313974 Td
+(Lesson Plan) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 527.2443307086614368 Td
+(Learning Objectives) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 504.5671653543306547 Td
+(• Menghitung hasil operasi campuran yang melibatkan bilangan bulat negatif dan pecahan) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 487.559291338582625 Td
+(menggunakan urutan operasi \(PEMDAS/BODMAS\).) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 464.8821259842518998 Td
+(• Menganalisis probabilitas item drop dalam konteks game menggunakan operasi perkalian dan) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 447.8742519685038701 Td
+(pembagian pecahan.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 425.1970866141731449 Td
+(• Mengonstruksi penyelesaian masalah bertahap \(multi-step\) yang memadukan variabel konstanta) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 408.1892125984251152 Td
+(dengan bilangan real.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 385.5120472440944468 Td
+(• Justifikasi hasil perhitungan operasi kompleks melalui pengecekan ulang langkah-langkah logika) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 368.5041732283464171 Td
+(matematika.) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 323.1498425196849666 Td
+(Lesson Information) Tj
+ET
+BT
+/F2 14 Tf
+16.0999999999999979 TL
+0 g
+56.6929133858267775 277.7955118110235162 Td
+(Lesson Sections) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 249.4490551181102092 Td
+(1. Spiral Review Warm-up \(10 minutes\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 226.7718897637794271 Td
+(Teacher Script:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 209.7640157480313974 Td
+(Halo Nicholas! Senang bertemu lagi. Sebelum kita masuk ke misi utama, kita cek dulu 'inventory') Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 195.5907874015747439 Td
+(pengetahuan kita yuk. Coba lihat layar: \(1\) Ubah kalimat ini jadi aljabar: '3 lebihnya dari 2 kali jumlah) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 181.4175590551179766 Td
+(koin emas \(k\)'. \(2\) 'Total HP berkurang 50 setiap 10 detik \(t\)'. \(3\) Di ekspresi 4x - 7, mana yang variabel) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 167.2443307086613231 Td
+(dan mana yang konstanta? \(4\) Tentukan konstanta dari ekspresi 2y + 5 + 3y - 2. Tulis jawabannya di) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 153.0711023622046696 Td
+(chatbox ya!) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 127.559291338582625 Td
+(Activities:) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 110.5514173228345953 Td
+(• Menyelesaikan 2 soal penyusunan ekspresi aljabar dari kalimat.) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 93.5435433070865656 Td
+(• Menentukan variabel dan konstanta dari 2 ekspresi aljabar yang diberikan.) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+56.6929133858267775 34.0159842519684616 Td
+(Generated on: 01/07/2026, 09:32:03) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+523.0626771653543301 34.0159842519684616 Td
+(1 / 4) Tj
+ET
+endstream
+endobj
+5 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 6 0 R
+>>
+endobj
+6 0 obj
+<<
+/Length 5132
+>>
+stream
+0.5670000000000001 w
+0 G
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 785.1970866141732586 Td
+(2. Introduction & Real-World Connection \(5 minutes\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 762.5199212598424765 Td
+(Teacher Script:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 745.5120472440944468 Td
+(Pernah tidak kamu grinding di game tapi item yang kamu cari sulit banget didapat? Nah, itu namanya) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 731.3388188976377933 Td
+('Drop Rate'. Hari ini kita akan belajar gimana cara menghitung peluang itu pakai operasi pecahan dan) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 717.1655905511811397 Td
+(bilangan bulat negatif \(seperti debuff HP\). Bayangkan kamu punya 'Luck Score' yang bisa naik-turun.) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 702.9923622047243725 Td
+(Kita akan hitung itu hari ini!) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 677.480551181102328 Td
+(Activities:) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 660.4726771653542983 Td
+(• Diskusi singkat tentang mekanisme game \(drop rate dan buff/debuff\).) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 615.1183464566928478 Td
+(3. Review of Prior Knowledge \(5 minutes\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 592.4411811023621794 Td
+(Teacher Script:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 575.4333070866141497 Td
+(Ingat aturan PEMDAS? Parentheses \(Kurung\), Exponents, Multiplication & Division, Addition &) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 561.2600787401574962 Td
+(Subtraction. Kalau ada \(-5\) + 3 * 2, mana dulu yang dikerjakan? Benar, perkalian dulu. Bagaimana) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 547.086850393700729 Td
+(kalau ada pecahan? Aturannya tetap sama. Yuk, kita segarkan ingatan tentang menyamakan penyebut) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 532.9136220472440755 Td
+(pecahan.) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 507.4018110236219741 Td
+(Activities:) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 490.3939370078739444 Td
+(• Review singkat aturan urutan operasi.) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 473.3860629921259147 Td
+(• Latihan cepat menjumlahkan pecahan beda penyebut.) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 428.0317322834645211 Td
+(4. Problem Introduction \(10 minutes\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 405.3545669291337958 Td
+(Teacher Script:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 388.3466929133857661 Td
+(Ini ada tantangan: Seorang Boss di Game punya Drop Rate item langka sebesar 1/20. Nicholas) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 374.1734645669290558 Td
+(memakai ramuan 'Luck Buff' yang menambah rate sebesar 1/50, tapi terkena kutukan 'Debuff' yang) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 360.0002362204724022 Td
+(mengurangi rate 1/100. Jika Nicholas mengalahkan Boss 5 kali, berapa total peluang akumulatifnya?) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 345.8270078740156919 Td
+(Perhatikan, kita harus menjumlahkan pecahan dulu sebelum mengalikan dengan jumlah kalahnya) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 331.6537795275589815 Td
+(Boss.) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 306.1419685039369369 Td
+(Activities:) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 289.1340944881889072 Td
+(• Menganalisis soal cerita kompleks.) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 272.1262204724408775 Td
+(• Menyusun urutan operasi: 5 * \(1/20 + 1/50 - 1/100\).) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 226.7718897637794271 Td
+(5. Guided Practice \(15 minutes\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 204.0947244094487587 Td
+(Teacher Script:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 187.086850393700729 Td
+(Ayo kita kerjakan bersama. Pertama, samakan penyebut untuk 1/20, 1/50, dan 1/100. Berapa) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 172.9136220472439618 Td
+(KPK-nya? Ya, 100! Sekarang ubah pembilangnya. \(Menunggu Nicholas menulis\). Bagus! Jadi \(5/100 +) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 158.7403937007873083 Td
+(2/100 - 1/100\). Selesaikan yang di dalam kurung dulu. Setelah itu, baru kita kalikan dengan 5 di luar) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 144.5671653543306547 Td
+(kurung. Jika hasilnya pecahan, bisakah kita ubah ke desimal atau persentase?) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 119.0553543307086102 Td
+(Activities:) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 102.0474803149605805 Td
+(• Step-by-step solving pada whiteboard.) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 85.0396062992125508 Td
+(• Eksperimen dengan angka negatif: Bagaimana jika debuff-nya sangat besar sehingga hasilnya negatif?) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+56.6929133858267775 34.0159842519684616 Td
+(Generated on: 01/07/2026, 09:32:03) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+523.0626771653543301 34.0159842519684616 Td
+(2 / 4) Tj
+ET
+endstream
+endobj
+7 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 8 0 R
+>>
+endobj
+8 0 obj
+<<
+/Length 4942
+>>
+stream
+0.5670000000000001 w
+0 G
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 785.1970866141732586 Td
+(6. Independent Practice \(15 minutes\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 762.5199212598424765 Td
+(Teacher Script:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 745.5120472440944468 Td
+(Sekarang giliranmu, Nicholas. Di layar ada 3 soal 'Boss Level'. Satu tentang HP yang berkurang) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 731.3388188976377933 Td
+(secara berkala \(bilangan bulat negatif\), satu tentang pembagian loot box, dan satu lagi campuran) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 717.1655905511811397 Td
+(keduanya. Aku akan diam sebentar, silakan coret-coret di whiteboard. Kalau bingung, panggil aku ya!) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 691.6537795275589815 Td
+(Activities:) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 674.6459055118109518 Td
+(• Menyelesaikan soal: [-150 + \(2/5 * 500\)] / \(-2\).) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 657.6380314960629221 Td
+(• Menghitung sisa resource game setelah dibagi ke 3 anggota party.) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 612.2837007874015853 Td
+(7. Consolidation & Reflection \(5 minutes\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 589.6065354330708033 Td
+(Teacher Script:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 572.5986614173227736 Td
+(Luar biasa hari ini, Nicholas! Kamu sudah berhasil menguasai perhitungan drop rate yang rumit. Ingat:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 558.42543307086612 Td
+(kurung selalu duluan, dan hati-hati dengan tanda negatif. Sebelum kita selesai, jangan lupa login ke) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 544.2522047244094665 Td
+(https://learn.algonova.id/login untuk mengerjakan tantangan seru lainnya dan cek progresmu di sana) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 530.0789763779526993 Td
+(ya!) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 504.5671653543306547 Td
+(Activities:) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 487.559291338582625 Td
+(• Ringkasan poin utama \(PEMDAS & Pecahan\).) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 470.5514173228345953 Td
+(• Self-reflection: Bagian mana yang paling menantang?) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 425.1970866141731449 Td
+(Homework) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 396.850629921259781 Td
+(Medium Questions:) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 379.8427559055117513 Td
+(1. Hitunglah: \(3/4 + 1/2\) * \(-8\).) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 357.1655905511810261 Td
+(2. Selesaikan: -25 + \(3/5 * 100\) / 2.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 334.4884251968503008 Td
+(3. Seorang pemain kehilangan 1/5 dari 500 gold, lalu mendapat bonus 50 gold. Berapa gold) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 320.3151968503935905 Td
+(sekarang?) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 297.6380314960629221 Td
+(4. Jika x = -10, berapakah nilai dari \(1/2 * x\) + 15?) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 257.952992125984224 Td
+(Hard Questions:) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 240.9451181102361943 Td
+(1. Hitunglah: [\(-2/3\) / \(4/9\)] + \(5 * -1.2\).) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 218.2679527559054122 Td
+(2. Selesaikan operasi campuran berikut: 12 + \(-3\) * \(1/2 - 1/6\) / \(1/3\).) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 195.5907874015747439 Td
+(3. Sebuah drop rate item adalah 0.05. Jika Nicholas memakai buff yang meningkatkan rate) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 181.4175590551179766 Td
+(sebesar 1/4 dari rate awal, berapa rate barunya dalam pecahan?) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 158.7403937007873083 Td
+(4. Berapakah hasil dari: -\(-15 + 5\) * \(3/5\) - \(1/2 * -20\)?) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 136.0632283464566399 Td
+(5. Dalam sebuah dungeon, HP Nicholas berkurang 5% setiap menit. Jika HP awal 2000,) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 121.8899999999998727 Td
+(hitung sisa HP setelah 3 menit menggunakan operasi pecahan \(19/20\).) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 99.2128346456692043 Td
+(6. Selesaikan: \(5/2 * -4\) + \(10 / -0.5\) - \(-15\).) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 59.5277952755905062 Td
+(Answer Key:) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+56.6929133858267775 34.0159842519684616 Td
+(Generated on: 01/07/2026, 09:32:03) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+523.0626771653543301 34.0159842519684616 Td
+(3 / 4) Tj
+ET
+endstream
+endobj
+9 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 10 0 R
+>>
+endobj
+10 0 obj
+<<
+/Length 4830
+>>
+stream
+0.5670000000000001 w
+0 G
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 785.1970866141732586 Td
+(`\(3/4 + 2/4\) * -8 = 5/4 * -8 = -10`) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 771.0238582677164914 Td
+(`-25 + \(60 / 2\) = -25 + 30 = 5`) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 756.8506299212598378 Td
+(`500 - \(1/5 * 500\) + 50 = 500 - 100 + 50 = 450`) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 742.6774015748030706 Td
+(`\(1/2 * -10\) + 15 = -5 + 15 = 10`) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 728.5041732283464171 Td
+(`[\(-2/3\) * \(9/4\)] + \(-6\) = -3/2 - 6 = -1.5 - 6 = -7.5`) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 714.3309448818897636 Td
+(`12 + \(-3\) * \(1/3\) / \(1/3\) = 12 + \(-3\) * 1 = 9`) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 700.15771653543311 Td
+(`0.05 + \(1/4 * 0.05\) = 1/20 + \(1/4 * 1/20\) = 1/20 + 1/80 = 5/80 = 1/16`) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 685.9844881889763428 Td
+(`-\(-10\) * \(3/5\) - \(-10\) = 10 * 3/5 + 10 = 6 + 10 = 16`) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 671.8112598425196893 Td
+(`2000 * 19/20 * 19/20 * 19/20 = 1714.75`) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 657.6380314960629221 Td
+(`\(-10\) + \(-20\) + 15 = -15`) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 643.4648031496062686 Td
+(REVIEW: Menyusun Ekspresi Aljabar dari Kalimat - Nicholas - '5 kurangnya dari x': `x - 5`) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 629.291574803149615 Td
+(REVIEW: Menyusun Ekspresi Aljabar dari Kalimat - Nicholas - 'Dua kali total y dan 3': `2\(y +) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 615.1183464566928478 Td
+(3\)`) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 600.9451181102361943 Td
+(REVIEW: Menyusun Ekspresi Aljabar dari Kalimat - Nicholas - 'Harga n barang jika) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 586.7718897637794271 Td
+(satuannya 5000 dipotong diskon 1000': `5000n - 1000`) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 572.5986614173227736 Td
+(REVIEW: Menyusun Ekspresi Aljabar dari Kalimat - Nicholas - 'Sepertiga dari selisih a dan b':) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 558.42543307086612 Td
+(`1/3\(a - b\)`) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 544.2522047244094665 Td
+(REVIEW: Pengenalan Aljabar: Variabel dan Konstanta - Nicholas - Tentukan konstanta dari) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 530.0789763779526993 Td
+(3x - 4y + 12: `12`) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 515.9057480314959321 Td
+(REVIEW: Pengenalan Aljabar: Variabel dan Konstanta - Nicholas - Sebutkan variabel pada) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 501.7325196850393354 Td
+(5a + 2b - 7: `a dan b`) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 487.559291338582625 Td
+(REVIEW: Pengenalan Aljabar: Variabel dan Konstanta - Nicholas - Pada ekspresi -x + 10,) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 473.3860629921259147 Td
+(berapa koefisien x?: `-1`) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 459.2128346456692611 Td
+(REVIEW: Pengenalan Aljabar: Variabel dan Konstanta - Nicholas - Jika 2x + 5 = 15, mana) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 445.0396062992125508 Td
+(yang merupakan konstanta di sisi kiri?: `5`) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 408.1892125984251152 Td
+(Parent Reminder) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 385.5120472440944468 Td
+(Update Belajar Math Nicholas: Misi Drop Rate Game!) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 368.5041732283464171 Td
+(Hari ini Nicholas belajar topik yang cukup sulit: Operasi Campuran Pecahan dan Bilangan) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 354.3309448818897067 Td
+(Bulat Negatif dalam konteks game. Ia belajar menghitung peluang 'drop rate' item dan debuff) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 340.1577165354329964 Td
+(HP. Nicholas menunjukkan pemahaman yang baik pada urutan operasi. Silakan cek tugasnya) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 325.9844881889763428 Td
+(untuk memperkuat konsep ini!) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+56.6929133858267775 34.0159842519684616 Td
+(Generated on: 01/07/2026, 09:32:03) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+523.0626771653543301 34.0159842519684616 Td
+(4 / 4) Tj
+ET
+endstream
+endobj
+1 0 obj
+<</Type /Pages
+/Kids [3 0 R 5 0 R 7 0 R 9 0 R ]
+/Count 4
+>>
+endobj
+11 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+12 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+13 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-Oblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+14 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-BoldOblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+15 0 obj
+<<
+/Type /Font
+/BaseFont /Courier
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+16 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+17 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-Oblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+18 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-BoldOblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+19 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Roman
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+20 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+21 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Italic
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+22 0 obj
+<<
+/Type /Font
+/BaseFont /Times-BoldItalic
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+23 0 obj
+<<
+/Type /Font
+/BaseFont /ZapfDingbats
+/Subtype /Type1
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+24 0 obj
+<<
+/Type /Font
+/BaseFont /Symbol
+/Subtype /Type1
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+2 0 obj
+<<
+/ProcSet [/PDF /Text /ImageB /ImageC /ImageI]
+/Font <<
+/F1 11 0 R
+/F2 12 0 R
+/F3 13 0 R
+/F4 14 0 R
+/F5 15 0 R
+/F6 16 0 R
+/F7 17 0 R
+/F8 18 0 R
+/F9 19 0 R
+/F10 20 0 R
+/F11 21 0 R
+/F12 22 0 R
+/F13 23 0 R
+/F14 24 0 R
+>>
+/XObject <<
+>>
+>>
+endobj
+25 0 obj
+<<
+/Producer (jsPDF 3.0.2)
+/CreationDate (D:20260701093203+07'00')
+>>
+endobj
+26 0 obj
+<<
+/Type /Catalog
+/Pages 1 0 R
+/OpenAction [3 0 R /FitH null]
+/PageLayout /OneColumn
+>>
+endobj
+xref
+0 27
+0000000000 65535 f 
+0000019759 00000 n 
+0000021599 00000 n 
+0000000015 00000 n 
+0000000152 00000 n 
+0000004286 00000 n 
+0000004423 00000 n 
+0000009607 00000 n 
+0000009744 00000 n 
+0000014738 00000 n 
+0000014876 00000 n 
+0000019834 00000 n 
+0000019960 00000 n 
+0000020091 00000 n 
+0000020225 00000 n 
+0000020363 00000 n 
+0000020487 00000 n 
+0000020616 00000 n 
+0000020748 00000 n 
+0000020884 00000 n 
+0000021012 00000 n 
+0000021139 00000 n 
+0000021268 00000 n 
+0000021401 00000 n 
+0000021503 00000 n 
+0000021852 00000 n 
+0000021938 00000 n 
+trailer
+<<
+/Size 27
+/Root 26 0 R
+/Info 25 0 R
+/ID [ <EA375E3D83ED12D02E835FF2CB119293> <EA375E3D83ED12D02E835FF2CB119293> ]
+>>
+startxref
+22042
+%%EOF
