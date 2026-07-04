@@ -1,0 +1,2116 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Math Tutoring — by Deni</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+:root {
+  --bg: #0b1121; --bg2: #111827; --card: rgba(17,24,39,0.85);
+  --fg: #e2e8f0; --muted: #64748b; --accent: #10b981;
+  --accent2: #f59e0b; --danger: #ef4444; --border: rgba(100,116,139,0.2);
+  --glass: rgba(16,185,129,0.08);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: var(--fg); min-height: 100vh; overflow-x: hidden; }
+.font-mono { font-family: 'JetBrains Mono', monospace; }
+
+/* Latar belakang animasi */
+.bg-grid {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    radial-gradient(circle at 20% 50%, rgba(16,185,129,0.06) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(245,158,11,0.04) 0%, transparent 50%),
+    radial-gradient(circle at 50% 80%, rgba(16,185,129,0.03) 0%, transparent 50%);
+}
+.bg-grid::after {
+  content: ''; position: absolute; inset: 0;
+  background-image: linear-gradient(rgba(16,185,129,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(16,185,129,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* Transisi halaman */
+.view { display: none; position: relative; z-index: 1; }
+.view.active { display: block; animation: fadeSlideIn 0.4s ease; }
+@keyframes fadeSlideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Peta node */
+.map-node {
+  width: 72px; height: 72px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 1.2rem; cursor: pointer; transition: all 0.3s ease;
+  position: relative; border: 3px solid var(--border);
+  background: var(--bg2);
+}
+.map-node.unlocked { border-color: var(--accent); box-shadow: 0 0 20px rgba(16,185,129,0.2); }
+.map-node.unlocked:hover { transform: scale(1.12); box-shadow: 0 0 30px rgba(16,185,129,0.4); }
+.map-node.completed { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+.map-node.completed:hover { transform: scale(1.08); }
+.map-node.locked { opacity: 0.35; cursor: not-allowed; }
+.map-node.current { animation: pulseGlow 2s ease-in-out infinite; }
+@keyframes pulseGlow {
+  0%,100% { box-shadow: 0 0 15px rgba(16,185,129,0.3); }
+  50% { box-shadow: 0 0 35px rgba(16,185,129,0.6); }
+}
+
+/* Koneksi garis peta */
+.map-line { width: 3px; height: 40px; margin: 0 auto; background: var(--border); transition: background 0.5s; }
+.map-line.done { background: var(--accent); }
+.map-branch-line { height: 3px; width: 60px; background: var(--border); transition: background 0.5s; }
+.map-branch-line.done { background: var(--accent); }
+
+/* Lesson node di peta detail */
+.lesson-node {
+  width: 56px; height: 56px; border-radius: 16px; display: flex; align-items: center; justify-content: center;
+  font-size: 0.85rem; cursor: pointer; transition: all 0.3s; border: 2px solid var(--border); background: var(--bg2);
+}
+.lesson-node.theory { border-radius: 50%; }
+.lesson-node.exercise { border-radius: 16px; }
+.lesson-node.unlocked { border-color: var(--accent); }
+.lesson-node.unlocked:hover { transform: scale(1.15); box-shadow: 0 0 20px rgba(16,185,129,0.3); }
+.lesson-node.completed { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+.lesson-node.locked { opacity: 0.3; cursor: not-allowed; }
+.lesson-connector { width: 2px; height: 24px; margin: 0 auto; background: var(--border); }
+.lesson-connector.done { background: var(--accent); }
+
+/* Tombol */
+.btn-primary {
+  background: var(--accent); color: var(--bg); font-weight: 600; padding: 14px 32px; border-radius: 14px;
+  border: none; cursor: pointer; font-size: 1rem; font-family: inherit; transition: all 0.2s;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-primary:hover { filter: brightness(1.15); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(16,185,129,0.3); }
+.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; filter: none; }
+.btn-secondary {
+  background: transparent; color: var(--accent); font-weight: 600; padding: 12px 24px; border-radius: 14px;
+  border: 2px solid var(--accent); cursor: pointer; font-size: 0.9rem; font-family: inherit; transition: all 0.2s;
+}
+.btn-secondary:hover { background: rgba(16,185,129,0.1); }
+
+/* Opsi exercise */
+.opt-card {
+  padding: 16px 20px; border: 2px solid var(--border); border-radius: 14px; cursor: pointer;
+  transition: all 0.2s; background: var(--card); min-height: 52px; display: flex; align-items: center; gap: 12px;
+}
+.opt-card:hover { border-color: rgba(16,185,129,0.4); background: var(--glass); }
+.opt-card.selected { border-color: var(--accent); background: rgba(16,185,129,0.12); }
+.opt-card.correct { border-color: #10b981; background: rgba(16,185,129,0.15); }
+.opt-card.wrong { border-color: #ef4444; background: rgba(239,68,68,0.1); }
+.opt-card.disabled { pointer-events: none; opacity: 0.7; }
+
+/* Input exercise */
+.ex-input {
+  background: var(--bg2); border: 2px solid var(--border); border-radius: 12px; padding: 14px 18px;
+  color: var(--fg); font-size: 1rem; font-family: inherit; width: 100%; outline: none; transition: border-color 0.2s;
+}
+.ex-input:focus { border-color: var(--accent); }
+.ex-input.correct { border-color: #10b981; }
+.ex-input.wrong { border-color: #ef4444; }
+
+/* Code block */
+.code-block {
+  background: #0d1117; border: 1px solid rgba(100,116,139,0.2); border-radius: 12px;
+  padding: 20px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;
+  line-height: 1.7; overflow-x: auto; white-space: pre;
+}
+
+/* Progress bar */
+.prog-bar { height: 6px; border-radius: 3px; background: rgba(100,116,139,0.2); overflow: hidden; }
+.prog-fill { height: 100%; border-radius: 3px; background: var(--accent); transition: width 0.5s ease; }
+
+/* Toast */
+.toast {
+  position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
+  padding: 14px 28px; border-radius: 14px; font-weight: 600; z-index: 999;
+  transition: transform 0.4s ease; pointer-events: none;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast.success { background: #10b981; color: #0b1121; }
+.toast.error { background: #ef4444; color: white; }
+.toast.info { background: #f59e0b; color: #0b1121; }
+
+/* XP popup */
+.xp-popup {
+  position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%) scale(0);
+  background: var(--bg2); border: 2px solid var(--accent2); border-radius: 24px;
+  padding: 40px 60px; z-index: 100; text-align: center;
+  transition: transform 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
+}
+.xp-popup.show { transform: translate(-50%,-50%) scale(1); }
+
+/* Celebration particles */
+.confetti { position: fixed; top: -10px; z-index: 99; pointer-events: none; animation: confettiFall 2s ease-out forwards; }
+@keyframes confettiFall {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+/* Match exercise */
+.match-item {
+  padding: 12px 18px; border: 2px solid var(--border); border-radius: 12px; cursor: pointer;
+  transition: all 0.2s; background: var(--card); text-align: center; user-select: none;
+}
+.match-item:hover { border-color: rgba(16,185,129,0.4); }
+.match-item.active { border-color: var(--accent); background: rgba(16,185,129,0.12); box-shadow: 0 0 15px rgba(16,185,129,0.2); }
+.match-item.matched { border-color: #10b981; background: rgba(16,185,129,0.15); opacity: 0.6; pointer-events: none; }
+.match-item.wrong-match { border-color: #ef4444; background: rgba(239,68,68,0.1); }
+
+/* Order exercise */
+.order-item {
+  padding: 14px 20px; border: 2px solid var(--border); border-radius: 12px; cursor: pointer;
+  transition: all 0.2s; background: var(--card); user-select: none;
+}
+.order-item:hover { border-color: rgba(16,185,129,0.4); }
+.order-item.ordered { border-color: var(--accent2); background: rgba(245,158,11,0.1); opacity: 0.5; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(100,116,139,0.3); border-radius: 3px; }
+
+/* Responsif */
+@media (max-width: 640px) {
+  .map-node { width: 56px; height: 56px; font-size: 1rem; }
+  .lesson-node { width: 48px; height: 48px; font-size: 0.75rem; }
+}
+
+/* Animasi masuk */
+.stagger-in > * { opacity: 0; transform: translateY(15px); animation: staggerFade 0.4s ease forwards; }
+.stagger-in > *:nth-child(1) { animation-delay: 0.05s; }
+.stagger-in > *:nth-child(2) { animation-delay: 0.1s; }
+.stagger-in > *:nth-child(3) { animation-delay: 0.15s; }
+.stagger-in > *:nth-child(4) { animation-delay: 0.2s; }
+.stagger-in > *:nth-child(5) { animation-delay: 0.25s; }
+.stagger-in > *:nth-child(6) { animation-delay: 0.3s; }
+.stagger-in > *:nth-child(7) { animation-delay: 0.35s; }
+.stagger-in > *:nth-child(8) { animation-delay: 0.4s; }
+.stagger-in > *:nth-child(9) { animation-delay: 0.45s; }
+.stagger-in > *:nth-child(10) { animation-delay: 0.5s; }
+@keyframes staggerFade { to { opacity: 1; transform: translateY(0); } }
+
+/* Feedback benar/salah */
+.feedback-bar {
+  padding: 18px 24px; border-radius: 14px; font-weight: 600; display: flex; align-items: center; gap: 12px;
+  animation: fadeSlideIn 0.3s ease;
+}
+.feedback-bar.correct-fb { background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.3); color: #10b981; }
+.feedback-bar.wrong-fb { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #ef4444; }
+
+/* Terjemahan bahasa Indonesia di bawah teks utama */
+.id-lang { display: block; font-size: 0.75rem; color: #94a3b8; margin-top: 2px; line-height: 1.4; }
+
+/* Khusus label di node peta/lesson: tidak wrap, indo di bawah inggris */
+.node-title { text-align: center; white-space: nowrap; }
+.node-title .id-lang { display: block; white-space: nowrap; margin-top: 2px; }
+
+/* Modal Rules */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 200;
+  display: none; align-items: center; justify-content: center;
+}
+.modal-overlay.active { display: flex; animation: fadeIn 0.3s ease; }
+.modal-box {
+  background: var(--bg2); border: 1px solid var(--border); border-radius: 20px;
+  padding: 30px; max-width: 450px; width: 90%; position: relative;
+  animation: scaleIn 0.3s ease;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes scaleIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<!-- Rules Modal -->
+<div id="rulesModal" class="modal-overlay">
+  <div class="modal-box">
+    <button onclick="closeRules()" class="absolute top-4 right-4 text-slate-500 hover:text-slate-300 transition">
+      <i class="fa-solid fa-xmark text-lg"></i>
+    </button>
+    <h3 class="text-xl font-bold mb-5 text-amber-400">
+      <i class="fa-solid fa-gavel mr-2"></i>Class Rules <span class="id-lang" style="display:inline; color:#f59e0b;">Aturan Kelas</span>
+    </h3>
+    <ul class="space-y-4 text-slate-300">
+      <li class="flex items-start gap-3">
+        <span class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center flex-shrink-0 mt-0.5"><i class="fa-solid fa-comments text-emerald-400"></i></span>
+        <div>
+          <strong>Take turns speaking</strong>
+          <span class="id-lang">Berbicara secara bergantian</span>
+        </div>
+      </li>
+      <li class="flex items-start gap-3">
+        <span class="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center flex-shrink-0 mt-0.5"><i class="fa-solid fa-video text-amber-400"></i></span>
+        <div>
+          <strong>Turn on camera & microphone when required</strong>
+          <span class="id-lang">Menyalakan kamera & microphone jika diperlukan</span>
+        </div>
+      </li>
+      <li class="flex items-start gap-3">
+        <span class="w-8 h-8 rounded-lg bg-violet-500/10 flex items-center justify-center flex-shrink-0 mt-0.5"><i class="fa-solid fa-hand text-violet-400"></i></span>
+        <div>
+          <strong>Ask for permission to leave the class</strong>
+          <span class="id-lang">Meminta izin jika ingin meninggalkan kelas</span>
+        </div>
+      </li>
+    </ul>
+    <div class="mt-6 text-right">
+      <button onclick="closeRules()" class="btn-primary">Got it! <span class="id-lang" style="color:rgba(11,17,33,0.7); display:inline;">Mengerti!</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="toast"></div>
+
+<!-- XP Popup -->
+<div id="xpPopup" class="xp-popup">
+  <div class="text-5xl font-bold text-amber-400 mb-2">+<span id="xpAmount">10</span> XP</div>
+  <div class="text-lg text-slate-400">Correct answer! <span class="id-lang">Jawaban benar!</span></div>
+</div>
+
+<!-- ========== MAP VIEW ========== -->
+<div id="mapView" class="view active">
+  <header class="sticky top-0 z-10 backdrop-blur-xl bg-[#0b1121]/80 border-b border-white/5">
+    <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center">
+          <i class="fa-solid fa-square-root-variable text-emerald-400"></i>
+        </div>
+        <div>
+          <div class="font-bold text-lg leading-tight">Math Tutoring</div>
+          <div class="text-xs text-slate-500">by Deni</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-5">
+        <button onclick="openRules()" class="text-xs text-slate-500 hover:text-amber-400 transition flex items-center gap-1 border border-transparent hover:border-amber-400/30 rounded-lg px-2 py-1" title="Class Rules">
+          <i class="fa-solid fa-gavel"></i> Rules
+        </button>
+        <button onclick="resetProgress()" class="text-xs text-slate-500 hover:text-red-400 transition flex items-center gap-1 border border-transparent hover:border-red-400/30 rounded-lg px-2 py-1" title="Reset Semua Progress">
+          <i class="fa-solid fa-rotate-left"></i> Reset
+        </button>
+        <div class="flex items-center gap-2 text-amber-400 font-semibold">
+          <i class="fa-solid fa-bolt"></i><span id="headerXP">0</span> XP
+        </div>
+        <div class="flex items-center gap-2 text-orange-400 font-semibold">
+          <i class="fa-solid fa-fire"></i><span id="headerStreak">0</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 pt-8 pb-20">
+    <div class="text-center mb-10">
+		<h1 class="text-2xl md:text-3xl font-extrabold mb-3 bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent leading-tight">
+		  Direct and Inverse Proportions
+		  <span class="id-lang" style="display:block; color:#94a3b8; margin-top: 4px; font-size: 1.25rem;">Perbandingan Senilai dan Berbalik Nilai</span>
+		</h1>
+            <div class="text-slate-400 mx-auto text-center" style="max-width: 90%;">
+        <div style="white-space: nowrap;">Complete each map to unlock the next. Collect XP and build your learning streak!</div>
+        <div class="id-lang" style="white-space: nowrap;">Selesaikan setiap peta untuk membuka peta berikutnya. Kumpulkan XP dan bangun streak belajarmu!</div>
+      </div>
+    </div>
+
+    <!-- Progress keseluruhan -->
+    <div class="max-w-md mx-auto mb-10">
+      <div class="flex justify-between text-sm mb-2">
+        <span class="text-slate-400">Overall Progress <span class="id-lang" style="display:inline; color:#64748b;">Progress Keseluruhan</span></span>
+        <span class="text-emerald-400 font-semibold" id="totalProgress">0%</span>
+      </div>
+      <div class="prog-bar">
+        <div class="prog-fill" id="totalProgFill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <!-- Peta nodes akan dirender oleh JS -->
+    <div id="mapContainer" class="flex flex-col items-center gap-0"></div>
+  </main>
+</div>
+
+<!-- ========== PETA VIEW (detail lesson) ========== -->
+<div id="petaView" class="view">
+  <header class="sticky top-0 z-10 backdrop-blur-xl bg-[#0b1121]/80 border-b border-white/5">
+    <div class="max-w-2xl mx-auto px-4 py-4 flex items-center gap-4">
+      <button onclick="showMap()" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center hover:bg-white/10 transition">
+        <i class="fa-solid fa-arrow-left text-slate-400"></i>
+      </button>
+      <div>
+        <div class="font-bold text-lg" id="petaTitle"></div>
+        <div class="text-xs text-slate-500" id="petaSubtitle"></div>
+      </div>
+    </div>
+  </header>
+  <main class="max-w-2xl mx-auto px-4 pt-8 pb-20">
+    <div id="lessonContainer" class="flex flex-col items-center"></div>
+  </main>
+</div>
+
+<!-- ========== LESSON VIEW ========== -->
+<div id="lessonView" class="view">
+  <header class="sticky top-0 z-10 backdrop-blur-xl bg-[#0b1121]/80 border-b border-white/5">
+    <div class="max-w-2xl mx-auto px-4 py-4 flex items-center gap-4">
+      <button onclick="closeLesson()" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center hover:bg-white/10 transition">
+        <i class="fa-solid fa-xmark text-slate-400"></i>
+      </button>
+      <div class="flex-1">
+        <div class="prog-bar">
+          <div class="prog-fill" id="lessonProgFill" style="width:0%"></div>
+        </div>
+      </div>
+      <div class="text-sm text-slate-400 font-mono" id="lessonCounter">1/10</div>
+    </div>
+  </header>
+  <main class="max-w-2xl mx-auto px-4 pt-6 pb-20" id="lessonContent"></main>
+</div>
+
+<script>
+// ============================================================
+// DATA KURSUS — Seluruh konten pembelajaran
+// ============================================================
+const COURSE = {
+  title: "Direct and Inverse Proportions <span class='id-lang'>Perbandingan Senilai dan Berbalik Nilai</span>",
+  maps: [
+    // ==================== SECTION 1 ====================
+    {
+      id:1, title:"Spiral Review Warm-up <span class='id-lang'>Pemanasan Review</span>", icon:"fa-rotate", color:"#10b981", branch:false,
+      lessons:[
+        // 1 Teori
+        {type:"T",title:"Variables & Constants <span class='id-lang'>Variabel & Konstanta</span>",
+         body:`<p>Before we build a stadium, we need to review our algebra tools! An expression combines variables (unknowns, like \\( x \\) or \\( y \\)) and constants (fixed numbers). <span class='id-lang'>Sebelum membangun stadion, kita review aljabar! Ekspresi menggabungkan variabel (tak diketahui) dan konstanta (angka tetap).</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+           <div class="text-emerald-400 font-semibold mb-2"><i class="fa-solid fa-cube mr-2"></i>Identifying Parts <span class='id-lang'>Mengidentifikasi Bagian</span></div>
+           <p class="text-sm text-slate-300">In \\( 5x + 3 \\), \\( x \\) is the variable, \\( 5 \\) is the coefficient, and \\( 3 \\) is the constant. <span class='id-lang'>Di \\( 5x + 3 \\), \\( x \\) adalah variabel, \\( 5 \\) koefisien, \\( 3 \\) konstanta.</span></p>
+         </div>`},
+        // 3 Exercise
+        {type:"E",etype:"mc",
+         q:"Manakah yang merupakan variabel dari ekspresi \\( 5x + 3 \\)? <span class='id-lang'>Which is the variable in \\( 5x + 3 \\)?</span>",
+         o:["\\( 5 \\) <span class='id-lang'>\\( 5 \\) (Koefisien)</span>","\\( x \\) <span class='id-lang'>\\( x \\) (Variabel)</span>","\\( + \\) <span class='id-lang'>\\( + \\) (Operator)</span>","\\( 3 \\) <span class='id-lang'>\\( 3 \\) (Konstanta)</span>"],
+         a:1,
+         h:"Variables are letters representing unknown values. <span class='id-lang'>Variabel adalah huruf yang mewakili nilai tak diketahui.</span>"},
+        {type:"E",etype:"mc",
+         q:"Sebutkan konstanta dari ekspresi \\( 7y - 12 \\). <span class='id-lang'>Identify the constant in \\( 7y - 12 \\).</span>",
+         o:["\\( 7 \\) <span class='id-lang'>\\( 7 \\)</span>","\\( y \\) <span class='id-lang'>\\( y \\)</span>","\\( -12 \\) <span class='id-lang'>\\( -12 \\)</span>","\\( 12 \\) <span class='id-lang'>\\( 12 \\)</span>"],
+         a:2,
+         h:"Constants are standalone numbers. Note the negative sign! <span class='id-lang'>Konstanta adalah angka berdiri sendiri. Perhatikan tanda negatif!</span>"},
+        {type:"E",etype:"fb",
+         q:"Ubah kalimat 'Dua kali umur Nicholas ditambah 5' menjadi ekspresi aljabar (gunakan variabel n). <span class='id-lang'>Translate 'Two times Nicholas's age plus 5' (use variable n).</span>",
+         a:"2n+5||5+2n",
+         h:"Two times n is 2n, plus 5. <span class='id-lang'>Dua kali n adalah 2n, tambah 5.</span>"},
+        // 1 Teori
+        {type:"T",title:"Translating Real-World Problems <span class='id-lang'>Menerjemahkan Masalah Dunia Nyata</span>",
+         body:`<p>In architecture and construction, we translate real-world situations into algebra. 'Price of 4 tickets minus 50k discount' becomes \\( 4t - 50000 \\). <span class='id-lang'>Di arsitektur, kita terjemahkan situasi nyata ke aljabar. 'Harga 4 tiket dikurangi diskon 50 ribu' jadi \\( 4t - 50000 \\).</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-cyan-500/10 border border-cyan-500/20">
+           <div class="text-cyan-400 font-semibold mb-2">Keywords <span class='id-lang'>Kata Kunci</span></div>
+           <p class="text-sm text-slate-300">'Times' or 'Product' means multiply (\\( \\times \\)). <span class='id-lang'>Kali / Hasil kali = perkalian.</span></p>
+           <p class="text-sm text-slate-300">'Minus' or 'Discount' means subtract (\\( - \\)). <span class='id-lang'>Kurang / Diskon = pengurangan.</span></p>
+         </div>`},
+        // 3 Exercise
+        {type:"E",etype:"fb",
+         q:"Harga 4 tiket bola dikurangi diskon 50 ribu. Jika harga 1 tiket adalah variabel \\( t \\), tulis ekspresi aljabarnya. <span class='id-lang'>Price of 4 tickets minus 50k discount. If ticket is \\( t \\), write the expression.</span>",
+         a:"4t-50000||4t-50000.0",
+         h:"4 times t, minus 50000. <span class='id-lang'>4 kali t, kurang 50000.</span>"},
+        {type:"E",etype:"mc",
+         q:"If a stadium needs \\( c \\) chairs per row and has 10 rows, how do you write the total chairs? <span class='id-lang'>Jika stadion butuh \\( c \\) kursi per baris dan ada 10 baris, bagaimana menulis total kursinya?</span>",
+         o:["\\( 10 + c \\) <span class='id-lang'>\\( 10 + c \\)</span>","\\( 10c \\) <span class='id-lang'>\\( 10c \\)</span>","\\( c - 10 \\) <span class='id-lang'>\\( c - 10 \\)</span>","\\( 10/c \\) <span class='id-lang'>\\( 10/c \\)</span>"],
+         a:1,
+         h:"10 rows times c chairs per row. <span class='id-lang'>10 baris kali c kursi per baris.</span>"},
+        {type:"E",etype:"tf",
+         q:"Ekspresi '5 kurangnya dari biaya total (p)' dapat ditulis sebagai \\( 5 - p \\). <span class='id-lang'>The expression '5 less than total cost (p)' can be written as \\( 5 - p \\).</span>",
+         a:false,
+         h:"'5 less than p' means \\( p - 5 \\), not \\( 5 - p \\). <span class='id-lang'>5 kurangnya dari p berarti p dikurang 5.</span>"},
+        // 1 Teori
+        {type:"T",title:"Evaluating Expressions <span class='id-lang'>Mengevaluasi Ekspresi</span>",
+         body:`<p>To find the actual cost or size, we evaluate expressions by substituting variables with numbers. <span class='id-lang'>Untuk mencari biaya atau ukuran asli, kita evaluasi ekspresi dengan mengganti variabel dengan angka.</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-amber-500/10 border border-amber-500/20">
+           <div class="text-amber-400 font-semibold mb-2">Example <span class='id-lang'>Contoh</span></div>
+           <p class="text-sm text-slate-300">If \\( t = 75000 \\), then \\( 4t - 50000 = 4(75000) - 50000 = 300000 - 50000 = 250000 \\). <span class='id-lang'>Jika \\( t = 75000 \\), maka \\( 4t - 50000 = 250000 \\).</span></p>
+         </div>`},
+        // 4 Exercise
+        {type:"E",etype:"fb",
+         q:"Evaluate \\( 2n + 5 \\) if \\( n = 10 \\). <span class='id-lang'>Hitung \\( 2n + 5 \\) jika \\( n = 10 \\).</span>",
+         a:"25",
+         h:"\\( 2(10) + 5 = 20 + 5 \\). <span class='id-lang'>\\( 2(10) + 5 = 25 \\).</span>"},
+        {type:"E",etype:"fb",
+         q:"Evaluate \\( 4t - 50000 \\) if \\( t = 100000 \\). <span class='id-lang'>Hitung \\( 4t - 50000 \\) jika \\( t = 100000 \\).</span>",
+         a:"350000",
+         h:"\\( 4(100000) - 50000 = 400000 - 50000 \\). <span class='id-lang'>\\( 400000 - 50000 = 350000 \\).</span>"},
+        {type:"E",etype:"mc",
+         q:"If \\( c = 500 \\), how many total chairs are there in 10 rows? <span class='id-lang'>Jika \\( c = 500 \\), berapa total kursi dalam 10 baris?</span>",
+         o:["510 <span class='id-lang'>510</span>","5000 <span class='id-lang'>5000</span>","500 <span class='id-lang'>500</span>","50 <span class='id-lang'>50</span>"],
+         a:1,
+         h:"\\( 10 \\times 500 = 5000 \\). <span class='id-lang'>\\( 10 \\times 500 = 5000 \\).</span>"},
+        {type:"E",etype:"fb",
+         q:"Evaluate \\( p - 5 \\) if \\( p = 20 \\). <span class='id-lang'>Hitung \\( p - 5 \\) jika \\( p = 20 \\).</span>",
+         a:"15",
+         h:"\\( 20 - 5 = 15 \\). <span class='id-lang'>\\( 20 - 5 = 15 \\).</span>"}
+      ]
+    },
+    // ==================== SECTION 2 ====================
+    {
+      id:2, title:"Real-World Connection <span class='id-lang'>Koneksi Dunia Nyata</span>", icon:"fa-lightbulb", color:"#06b6d4", branch:false,
+      lessons:[
+        // 1 Teori
+        {type:"T",title:"The Stadium Project <span class='id-lang'>Proyek Stadion</span>",
+         body:`<p>Imagine you are a stadium director! If you want to build a larger field but keep its shape proportional, or if you want to know how long grass takes to be cut by 10 vs 2 workers, you need 'Proportions'. <span class='id-lang'>Bayangkan kamu direktur stadion! Jika ingin membangun lapangan lebih besar tapi bentuknya proporsional, atau tahu berapa lama rumput dipotong 10 vs 2 pekerja, kamu butuh 'Perbandingan'.</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-cyan-500/10 border border-cyan-500/20">
+           <div class="text-cyan-400 font-semibold mb-2">Two Types of Proportions <span class='id-lang'>Dua Jenis Perbandingan</span></div>
+           <p class="text-sm text-slate-300">1. Direct Proportion: Larger field = Larger area. <span class='id-lang'>Senilai: Lapangan lebih besar = Area lebih besar.</span></p>
+           <p class="text-sm text-slate-300">2. Inverse Proportion: More workers = Less time. <span class='id-lang'>Berbalik Nilai: Lebih banyak pekerja = Lebih sedikit waktu.</span></p>
+         </div>`},
+        // 3 Exercise
+        {type:"E",etype:"mc",
+         q:"If a larger stadium requires more chairs, this is an example of... <span class='id-lang'>Jika stadion lebih besar butuh lebih banyak kursi, ini contoh...</span>",
+         o:["Direct Proportion <span class='id-lang'>Perbandingan Senilai</span>","Inverse Proportion <span class='id-lang'>Perbandingan Berbalik Nilai</span>","Random Chance <span class='id-lang'>Keacakan</span>","No relation <span class='id-lang'>Tak berhubungan</span>"],
+         a:0,
+         h:"More chairs needed for a larger area means they go in the same direction. <span class='id-lang'>Lebih banyak kursi untuk area lebih besar berarti searah.</span>"},
+        {type:"E",etype:"mc",
+         q:"If more workers are hired to cut the grass, the time needed to finish decreases. This is... <span class='id-lang'>Jika lebih banyak pekerja memotong rumput, waktu menyelesaikan berkurang. Ini...</span>",
+         o:["Direct Proportion <span class='id-lang'>Senilai</span>","Inverse Proportion <span class='id-lang'>Berbalik Nilai</span>","Equal <span class='id-lang'>Sama</span>","Impossible <span class='id-lang'>Mustahil</span>"],
+         a:1,
+         h:"More workers = Less time. They go in opposite directions. <span class='id-lang'>Lebih banyak pekerja = Kurang waktu. Berlawanan arah.</span>"},
+        {type:"E",etype:"tf",
+         q:"Proportions are only used in math class, not in real-world architecture. <span class='id-lang'>Perbandingan hanya dipakai di kelas matematika, bukan arsitektur nyata.</span>",
+         a:false,
+         h:"Proportions are essential for scaling models to real buildings! <span class='id-lang'>Perbandingan penting untuk skala maket ke bangunan asli!</span>"},
+        // 1 Teori
+        {type:"T",title:"Direct Proportion Concept <span class='id-lang'>Konsep Perbandingan Senilai</span>",
+         body:`<p>In a Direct Proportion, as one quantity increases, the other increases at the same rate. 'The more tickets you buy, the more expensive the total price.' <span class='id-lang'>Pada Perbandingan Senilai, saat satu kuantitas naik, yang lain naik dengan rate sama. 'Makin banyak tiket, makin mahal total harga.'</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+           <div class="text-emerald-400 font-semibold mb-2">The Key Rule <span class='id-lang'>Aturan Kunci</span></div>
+           <p class="text-sm text-slate-300">Both variables move in the SAME direction. (\\( x \\) goes up, \\( y \\) goes up). <span class='id-lang'>Kedua variabel bergerak ke ARAH SAMA.</span></p>
+         </div>`},
+        // 3 Exercise
+        {type:"E",etype:"mc",
+         q:"Which of these is a Direct Proportion? <span class='id-lang'>Mana yang merupakan Perbandingan Senilai?</span>",
+         o:["Speed and time to finish a race <span class='id-lang'>Kecepatan dan waktu lomba</span>","Number of workers and time to build <span class='id-lang'>Jumlah pekerja dan waktu bangun</span>","Liters of fuel and distance traveled <span class='id-lang'>Liter bensin dan jarak tempuh</span>","Number of people and food duration <span class='id-lang'>Jumlah orang dan durasi makanan</span>"],
+         a:2,
+         h:"More fuel means more distance. Same direction! <span class='id-lang'>Bensin banyak = jarak jauh.</span>"},
+        {type:"E",etype:"tf",
+         q:"In direct proportion, if \\( x \\) is divided by 2, \\( y \\) is also divided by 2. <span class='id-lang'>Pada senilai, jika \\( x \\) dibagi 2, \\( y \\) juga dibagi 2.</span>",
+         a:true,
+         h:"They must change by the same factor! <span class='id-lang'>Mereka berubah dengan faktor yang sama!</span>"},
+        {type:"E",etype:"fb",
+         q:"If 1 ticket costs 50k, 2 tickets cost 100k. How much does 3 tickets cost? (Just write the number, e.g., 50000) <span class='id-lang'>Jika 1 tiket 50rb, 3 tiket berapa? (Tulis angkanya)</span>",
+         a:"150000",
+         h:"\\( 3 \\times 50000 = 150000 \\). <span class='id-lang'>\\( 3 \\times 50000 = 150000 \\).</span>"},
+        // 1 Teori
+        {type:"T",title:"Inverse Proportion Concept <span class='id-lang'>Konsep Perbandingan Berbalik Nilai</span>",
+         body:`<p>In an Inverse Proportion, as one quantity increases, the other decreases. 'The more workers you have, the less time it takes to paint the stadium.' <span class='id-lang'>Pada Berbalik Nilai, saat satu naik, yang lain turun. 'Makin banyak pekerja, makin sedikit waktu cat stadion.'</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-amber-500/10 border border-amber-500/20">
+           <div class="text-amber-400 font-semibold mb-2">The Key Rule <span class='id-lang'>Aturan Kunci</span></div>
+           <p class="text-sm text-slate-300">Variables move in OPPOSITE directions. (\\( x \\) goes up, \\( y \\) goes down). <span class='id-lang'>Variabel bergerak ke ARAH BERLAWANAN.</span></p>
+         </div>`},
+        // 4 Exercise
+        {type:"E",etype:"mc",
+         q:"Which of these is an Inverse Proportion? <span class='id-lang'>Mana yang Berbalik Nilai?</span>",
+         o:["Price and quantity <span class='id-lang'>Harga dan kuantitas</span>","Speed and travel time <span class='id-lang'>Kecepatan dan waktu tempuh</span>","Size of field and cost of grass <span class='id-lang'>Ukuran lapangan dan biaya rumput</span>","Number of bricks and wall length <span class='id-lang'>Jumlah bata dan panjang tembok</span>"],
+         a:1,
+         h:"Faster speed = less time. Opposite directions! <span class='id-lang'>Kecepatan tinggi = waktu sedikit.</span>"},
+        {type:"E",etype:"tf",
+         q:"In inverse proportion, if the number of workers is multiplied by 3, the time needed is divided by 3. <span class='id-lang'>Pada berbalik nilai, jika pekerja dikali 3, waktu dibagi 3.</span>",
+         a:true,
+         h:"They change by reciprocal factors! <span class='id-lang'>Mereka berubah dengan faktor kebalikan!</span>"},
+        {type:"E",etype:"fb",
+         q:"If 2 workers take 10 hours to build a wall, 10 workers (5 times more) will take ___ hours. <span class='id-lang'>Jika 2 pekerja butuh 10 jam, 10 pekerja butuh ___ jam.</span>",
+         a:"2",
+         h:"\\( 10 \\div 5 = 2 \\) hours. <span class='id-lang'>\\( 10 \\div 5 = 2 \\) jam.</span>"},
+        {type:"E",etype:"mc",
+         q:"If it takes 4 days for 1 machine to do a job, how long for 4 machines? <span class='id-lang'>Jika 1 mesin butuh 4 hari, berapa lama untuk 4 mesin?</span>",
+         o:["16 days <span class='id-lang'>16 hari</span>","8 days <span class='id-lang'>8 hari</span>","1 day <span class='id-lang'>1 hari</span>","4 days <span class='id-lang'>4 hari</span>"],
+         a:2,
+         h:"4 times the machines means \\( 1/4 \\) the time. \\( 4 \\div 4 = 1 \\). <span class='id-lang'>4 kali mesin = 1/4 waktu. 1 hari.</span>"}
+      ]
+    },
+    // ==================== SECTION 3 ====================
+    {
+      id:3, title:"Review of Prior Knowledge <span class='id-lang'>Review Pengetahuan</span>", icon:"fa-brain", color:"#8b5cf6", branch:false,
+      lessons:[
+        // 1 Teori
+        {type:"T",title:"Equivalent Fractions <span class='id-lang'>Pecahan Senilai</span>",
+         body:`<p>Remember equivalent fractions? If \\( \\frac{1}{2} = \\frac{2}{4} \\), that is the basic form of a proportion. <span class='id-lang'>Ingat pecahan senilai? Jika \\( \\frac{1}{2} = \\frac{2}{4} \\), itu adalah bentuk dasar perbandingan.</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-violet-500/10 border border-violet-500/20">
+           <div class="text-violet-400 font-semibold mb-2">The Rule <span class='id-lang'>Aturan</span></div>
+           <p class="text-sm text-slate-300">If you multiply or divide the top and bottom by the same number, the value stays the same. <span class='id-lang'>Jika atas dan bawah dikali/dibagi angka sama, nilainya tetap.</span></p>
+         </div>`},
+        // 3 Exercise
+        {type:"E",etype:"mc",
+         q:"Which fraction is equivalent to \\( \\frac{1}{2} \\)? <span class='id-lang'>Pecahan mana yang senilai dengan \\( \\frac{1}{2} \\)?</span>",
+         o:["\\( \\frac{2}{3} \\) <span class='id-lang'>\\( \\frac{2}{3} \\)</span>","\\( \\frac{3}{6} \\) <span class='id-lang'>\\( \\frac{3}{6} \\)</span>","\\( \\frac{2}{5} \\) <span class='id-lang'>\\( \\frac{2}{5} \\)</span>","\\( \\frac{3}{4} \\) <span class='id-lang'>\\( \\frac{3}{4} \\)</span>"],
+         a:1,
+         h:"Multiply top and bottom by 3. <span class='id-lang'>Kali atas dan bawah dengan 3.</span>"},
+        {type:"E",etype:"fb",
+         q:"Find the missing value: \\( \\frac{2}{4} = \\frac{x}{8} \\). <span class='id-lang'>Cari nilai yang hilang: \\( \\frac{2}{4} = \\frac{x}{8} \\).</span>",
+         a:"4",
+         h:"Multiply top and bottom by 2. <span class='id-lang'>Kali atas dan bawah dengan 2.</span>"},
+        {type:"E",etype:"tf",
+         q:"\\( \\frac{1}{3} \\) is equivalent to \\( \\frac{3}{9} \\). <span class='id-lang'>\\( \\frac{1}{3} \\) senilai dengan \\( \\frac{3}{9} \\).</span>",
+         a:true,
+         h:"Multiply top and bottom by 3. <span class='id-lang'>Kali atas dan bawah dengan 3.</span>"},
+        // 1 Teori
+        {type:"T",title:"Cross Multiplication <span class='id-lang'>Perkalian Silang</span>",
+         body:`<p>To check if two fractions are proportional, or to find a missing value, we use Cross Multiplication. <span class='id-lang'>Untuk mengecek apakah dua pecahan proporsional, atau mencari nilai yang hilang, kita pakai Perkalian Silang.</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-cyan-500/10 border border-cyan-500/20">
+           <div class="text-cyan-400 font-semibold mb-2">The Formula <span class='id-lang'>Rumus</span></div>
+           <p class="text-sm text-slate-300">If \\( \\frac{a}{b} = \\frac{c}{d} \\), then \\( a \\times d = b \\times c \\). <span class='id-lang'>Jika \\( \\frac{a}{b} = \\frac{c}{d} \\), maka \\( a \\times d = b \\times c \\).</span></p>
+         </div>`},
+        // 3 Exercise
+        {type:"E",etype:"mc",
+         q:"What is the correct cross multiplication for \\( \\frac{a}{b} = \\frac{c}{d} \\)? <span class='id-lang'>Perkalian silang yang benar untuk \\( \\frac{a}{b} = \\frac{c}{d} \\) adalah?</span>",
+         o:["\\( a \\times b = c \\times d \\) <span class='id-lang'>\\( a \\times b = c \\times d \\)</span>","\\( a \\times c = b \\times d \\) <span class='id-lang'>\\( a \\times c = b \\times d \\)</span>","\\( a \\times d = b \\times c \\) <span class='id-lang'>\\( a \\times d = b \\times c \\)</span>","\\( a + d = b + c \\) <span class='id-lang'>\\( a + d = b + c \\)</span>"],
+         a:2,
+         h:"Multiply diagonally across the equals sign. <span class='id-lang'>Kali secara diagonal melintasi tanda sama dengan.</span>"},
+        {type:"E",etype:"fb",
+         q:"Solve for x using cross multiplication: \\( \\frac{2}{5} = \\frac{x}{10} \\). <span class='id-lang'>Selesaikan untuk x: \\( \\frac{2}{5} = \\frac{x}{10} \\).</span>",
+         a:"4",
+         h:"\\( 2 \\times 10 = 5 \\times x \\implies 20 = 5x \\). So \\( x = 4 \\). <span class='id-lang'>\\( 20 = 5x \\), maka \\( x = 4 \\).</span>"},
+        {type:"E",etype:"fb",
+         q:"Solve for x: \\( \\frac{3}{4} = \\frac{9}{x} \\). <span class='id-lang'>Selesaikan untuk x: \\( \\frac{3}{4} = \\frac{9}{x} \\).</span>",
+         a:"12",
+         h:"\\( 3 \\times x = 4 \\times 9 \\implies 3x = 36 \\). So \\( x = 12 \\). <span class='id-lang'>\\( 3x = 36 \\), maka \\( x = 12 \\).</span>"},
+        // 1 Teori
+        {type:"T",title:"Using Tables for Proportions <span class='id-lang'>Menggunakan Tabel untuk Perbandingan</span>",
+         body:`<p>We can organize values in a table to see patterns clearly. If the ratio \\( \\frac{y}{x} \\) is always the same, it's a direct proportion. <span class='id-lang'>Kita bisa susun nilai di tabel untuk melihat pola. Jika rasio \\( \\frac{y}{x} \\) selalu sama, itu perbandingan senilai.</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-amber-500/10 border border-amber-500/20">
+           <div class="text-amber-400 font-semibold mb-2">Example Table <span class='id-lang'>Tabel Contoh</span></div>
+           <p class="text-sm text-slate-300">x: 1, 2, 3 --- y: 5, 10, 15. The ratio is always \\( \\frac{5}{1} \\). <span class='id-lang'>Rasionya selalu \\( \\frac{5}{1} \\).</span></p>
+         </div>`},
+        // 4 Exercise
+        {type:"E",etype:"mc",
+         q:"In a table, x = 1 gives y = 5; x = 2 gives y = 10. What is y when x = 3? <span class='id-lang'>Di tabel, x=1 y=5; x=2 y=10. Berapa y saat x=3?</span>",
+         o:["12 <span class='id-lang'>12</span>","15 <span class='id-lang'>15</span>","20 <span class='id-lang'>20</span>","25 <span class='id-lang'>25</span>"],
+         a:1,
+         h:"The pattern is y = 5 times x. <span class='id-lang'>Pola y = 5 kali x.</span>"},
+        {type:"E",etype:"fb",
+         q:"Given the pattern \\( y = 4x \\), if \\( x = 2 \\) then \\( y = 8 \\). What is \\( y \\) if \\( x = 4 \\)? <span class='id-lang'>Jika \\( x = 4 \\), berapa \\( y \\)?</span>",
+         a:"16",
+         h:"\\( 4 \\times 4 = 16 \\). <span class='id-lang'>\\( 4 \\times 4 = 16 \\).</span>"},
+        {type:"E",etype:"mc",
+         q:"A table shows x = 1, y = 60; x = 2, y = 30; x = 3, y = 20. What type of proportion is this? <span class='id-lang'>Tabel menunjukkan x=1 y=60; x=2 y=30; x=3 y=20. Jenis perbandingan apa ini?</span>",
+         o:["Direct Proportion <span class='id-lang'>Senilai</span>","Inverse Proportion <span class='id-lang'>Berbalik Nilai</span>","No Proportion <span class='id-lang'>Tidak ada</span>","Linear <span class='id-lang'>Linear</span>"],
+         a:1,
+         h:"As x goes up, y goes down. <span class='id-lang'>Saat x naik, y turun.</span>"},
+        {type:"E",etype:"fb",
+         q:"Using the inverse table above (x=1, y=60; x=2, y=30; x=3, y=20), what is y when x = 4? <span class='id-lang'>Berapa y saat x = 4?</span>",
+         a:"15",
+         h:"The product \\( x \\times y \\) is always 60. So \\( 4 \\times y = 60 \\). <span class='id-lang'>Hasil kali x dan y selalu 60. Maka \\( 4 \\times y = 60 \\).</span>"}
+      ]
+    },
+    // ==================== SECTION 4 ====================
+    {
+      id:4, title:"Problem Introduction <span class='id-lang'>Pengenalan Masalah</span>", icon:"fa-circle-question", color:"#f59e0b", branch:false,
+      lessons:[
+        // 1 Teori
+        {type:"T",title:"Direct vs Inverse Characteristics <span class='id-lang'>Karakteristik Senilai vs Berbalik</span>",
+         body:`<p>Let's compare two scenarios. Scenario A: 'The more tickets you buy, the more expensive the total price.' (Direct). Scenario B: 'The more workers cutting grass, the less time needed.' (Inverse). <span class='id-lang'>Mari bandingkan dua skenario. A: Makin banyak tiket, makin mahal total (Senilai). b: Makin banyak pekerja, makin sedikit waktu (Berbalik).</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-amber-500/10 border border-amber-500/20">
+           <div class="text-amber-400 font-semibold mb-2">The Key Difference <span class='id-lang'>Perbedaan Kunci</span></div>
+           <p class="text-sm text-slate-300">Direct = SAME direction (x up, y up). Inverse = OPPOSITE direction (x up, y down). <span class='id-lang'>Senilai = arah SAMA. Berbalik = arah BERLAWANAN.</span></p>
+         </div>`},
+        // 3 Exercise
+        {type:"E",etype:"mc",
+         q:"If you buy more gasoline, you can travel further. This is... <span class='id-lang'>Jika beli bensin banyak, bisa tempuh jarak lebih jauh. Ini...</span>",
+         o:["Direct <span class='id-lang'>Senilai</span>","Inverse <span class='id-lang'>Berbalik Nilai</span>"],
+         a:0,
+         h:"More gas = more distance. Same direction. <span class='id-lang'>Bensin banyak = jarak jauh.</span>"},
+        {type:"E",etype:"mc",
+         q:"If more people share a pizza, each person gets less. This is... <span class='id-lang'>Jika lebih banyak orang berbagi pizza, masing-mapat dapat lebih sedikit. Ini...</span>",
+         o:["Direct <span class='id-lang'>Senilai</span>","Inverse <span class='id-lang'>Berbalik Nilai</span>"],
+         a:1,
+         h:"More people = less pizza per person. Opposite direction. <span class='id-lang'>Orang banyak = pizza sedikit per orang.</span>"},
+        {type:"E",etype:"tf",
+         q:"In a direct proportion, if x decreases, y increases. <span class='id-lang'>Pada senilai, jika x turun, y naik.</span>",
+         a:false,
+         h:"In direct proportion, they move in the SAME direction! <span class='id-lang'>Pada senilai, mereka bergerak ke arah SAMA!</span>"},
+        // 1 Teori
+        {type:"T",title:"Mathematical Models <span class='id-lang'>Model Matematika</span>",
+         body:`<p>We can write formulas for proportions. <span class='id-lang'>Kita bisa menulis rumus untuk perbandingan.</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+           <div class="text-emerald-400 font-semibold mb-2">The Formulas <span class='id-lang'>Rumus</span></div>
+           <p class="text-sm text-slate-300">Direct Proportion: \\( \\frac{y}{x} = k \\) (or \\( y = kx \\)). <span class='id-lang'>Senilai: \\( \\frac{y}{x} = k \\).</span></p>
+           <p class="text-sm text-slate-300">Inverse Proportion: \\( x \\times y = k \\) (or \\( y = \\frac{k}{x} \\)). <span class='id-lang'>Berbalik Nilai: \\( x \\times y = k \\).</span></p>
+         </div>`},
+        // 3 Exercise
+        {type:"E",etype:"mc",
+         q:"Which formula represents Direct Proportion? <span class='id-lang'>Rumus mana yang mewakili Perbandingan Senilai?</span>",
+         o:["\\( x \\times y = k \\) <span class='id-lang'>\\( x \\times y = k \\)</span>","\\( \\frac{y}{x} = k \\) <span class='id-lang'>\\( \\frac{y}{x} = k \\)</span>","\\( x + y = k \\) <span class='id-lang'>\\( x + y = k \\)</span>","\\( x - y = k \\) <span class='id-lang'>\\( x - y = k \\)</span>"],
+         a:1,
+         h:"The ratio of y to x is constant. <span class='id-lang'>Rasio y terhadap x konstan.</span>"},
+        {type:"E",etype:"mc",
+         q:"Which formula represents Inverse Proportion? <span class='id-lang'>Rumus mana yang mewakili Perbandingan Berbalik Nilai?</span>",
+         o:["\\( \\frac{y}{x} = k \\) <span class='id-lang'>\\( \\frac{y}{x} = k \\)</span>","\\( y = kx \\) <span class='id-lang'>\\( y = kx \\)</span>","\\( x \\times y = k \\) <span class='id-lang'>\\( x \\times y = k \\)</span>","\\( y = x + k \\) <span class='id-lang'>\\( y = x + k \\)</span>"],
+         a:2,
+         h:"The product of x and y is constant. <span class='id-lang'>Hasil kali x dan y konstan.</span>"},
+        {type:"E",etype:"fb",
+         q:"In a direct proportion \\( \\frac{y}{x} = k \\), if \\( y = 10 \\) and \\( x = 2 \\), what is \\( k \\)? <span class='id-lang'>Berapa \\( k \\)?</span>",
+         a:"5",
+         h:"\\( k = \\frac{10}{2} = 5 \\). <span class='id-lang'>\\( k = \\frac{10}{2} = 5 \\).</span>"},
+        // 1 Teori
+        {type:"T",title:"Graphing Proportions <span class='id-lang'>Grafik Perbandingan</span>",
+         body:`<p>We can visualize proportions on a graph! <span class='id-lang'>Kita bisa memvisualisasikan perbandingan di grafik!</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-violet-500/10 border border-violet-500/20">
+           <div class="text-violet-400 font-semibold mb-2">Visual Shapes <span class='id-lang'>Bentuk Visual</span></div>
+           <p class="text-sm text-slate-300">Direct Proportion makes a straight line passing through the origin (0,0). <span class='id-lang'>Senilai membentuk garis lurus melewati titik origin.</span></p>
+           <p class="text-sm text-slate-300">Inverse Proportion makes a curved line that approaches the axes but never touches them. <span class='id-lang'>Berbalik Nilai membentuk garis melengkung yang mendekati sumbu tapi tak menyentuhnya.</span></p>
+         </div>`},
+        // 4 Exercise
+        {type:"E",etype:"mc",
+         q:"Which graph represents a Direct Proportion? <span class='id-lang'>Grafik mana yang mewakili Senilai?</span>",
+         o:["A straight line through (0,0) <span class='id-lang'>Garis lurus melewati (0,0)</span>","A curved line <span class='id-lang'>Garis melengkung</span>","A circle <span class='id-lang'>Lingkaran</span>","A zigzag <span class='id-lang'>Zigzag</span>"],
+         a:0,
+         h:"Direct proportions are linear and pass through the origin. <span class='id-lang'>Senilai itu linear dan lewat origin.</span>"},
+        {type:"E",etype:"tf",
+         q:"An inverse proportion graphs as a straight line. <span class='id-lang'>Berbalik nilai grafiknya berupa garis lurus.</span>",
+         a:false,
+         h:"Inverse proportions graph as curves! <span class='id-lang'>Berbalik nilai grafiknya melengkung!</span>"},
+        {type:"E",etype:"mc",
+         q:"Given the inverse formula \\( x \\times y = 12 \\), if \\( x = 3 \\), what is \\( y \\)? <span class='id-lang'>Jika \\( x = 3 \\), berapa \\( y \\)?</span>",
+         o:["4 <span class='id-lang'>4</span>","36 <span class='id-lang'>36</span>","9 <span class='id-lang'>9</span>","15 <span class='id-lang'>15</span>"],
+         a:0,
+         h:"\\( 3 \\times y = 12 \\implies y = 4 \\). <span class='id-lang'>\\( 3 \\times y = 12 \\), maka \\( y = 4 \\).</span>"},
+        {type:"E",etype:"fb",
+         q:"Given the direct formula \\( y = 4x \\), if \\( x = 5 \\), what is \\( y \\)? <span class='id-lang'>Jika \\( x = 5 \\), berapa \\( y \\)?</span>",
+         a:"20",
+         h:"\\( y = 4(5) = 20 \\). <span class='id-lang'>\\( y = 4(5) = 20 \\).</span>"}
+      ]
+    },
+    // ==================== SECTION 5 ====================
+    {
+      id:5, title:"Guided Practice <span class='id-lang'>Latihan Terbimbing</span>", icon:"fa-chalkboard-user", color:"#ec4899", branch:false,
+      lessons:[
+        // 1 Teori
+        {type:"T",title:"Stadium Scale Models <span class='id-lang'>Maket Skala Stadion</span>",
+         body:`<p>Let's solve a stadium model problem! A stadium model has a length of 20 cm for a real field of 100 meters. We use a table and Direct Proportion to find the missing width. <span class='id-lang'>Mari selesaikan masalah maket stadion! Maket panjang 20 cm untuk lapangan asli 100 meter. Kita pakai tabel dan Senilai untuk mencari lebar yang hilang.</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-pink-500/10 border border-pink-500/20">
+           <div class="text-pink-400 font-semibold mb-2">The Setup <span class='id-lang'>Persiapan</span></div>
+           <p class="text-sm text-slate-300">Model: 20 cm. Real: 100 m (10,000 cm). Ratio is \\( \\frac{20}{10000} = \\frac{1}{500} \\). <span class='id-lang'>Rasio maket ke asli adalah 1:500.</span></p>
+         </div>`},
+        // 3 Exercise
+        {type:"E",etype:"mc",
+         q:"A stadium model has a scale of 1:500. If the real length is 100 meters, what is the model length? (100 m = 10,000 cm) <span class='id-lang'>Skala 1:500. Jika asli 100 meter (10.000 cm), berapa panjang maket?</span>",
+         o:["10 cm <span class='id-lang'>10 cm</span>","20 cm <span class='id-lang'>20 cm</span>","50 cm <span class='id-lang'>50 cm</span>","100 cm <span class='id-lang'>100 cm</span>"],
+         a:1,
+         h:"\\( 10000 \\div 500 = 20 \\). <span class='id-lang'>\\( 10000 \\div 500 = 20 \\).</span>"},
+        {type:"E",etype:"fb",
+         q:"Using the same scale (1:500), if the real width is 60 meters (6000 cm), what is the width of the model in cm? <span class='id-lang'>Jika lebar asli 60 meter (6000 cm), berapa lebar maket (cm)?</span>",
+         a:"12",
+         h:"\\( 6000 \\div 500 = 12 \\) cm. <span class='id-lang'>\\( 6000 \\div 500 = 12 \\) cm.</span>"},
+        {type:"E",etype:"tf",
+         q:"Making a smaller scale model from a real building is a Direct Proportion. <span class='id-lang'>Membuat maket lebih kecil dari bangunan asli adalah Perbandingan Senilai.</span>",
+         a:true,
+         h:"If the real building is bigger, the model is bigger in the same proportion. <span class='id-lang'>Bangunan asli lebih besar, maket juga lebih besar secara proporsional.</span>"},
+        // 1 Teori
+        {type:"T",title:"Workforce & Time (Inverse) <span class='id-lang'>Tenaga Kerja & Waktu (Berbalik)</span>",
+         body:`<p>Now let's look at workforce. If 5 people can paint the stands in 12 hours, how long will it take 10 people? <span class='id-lang'>Sekarang lihat tenaga kerja. Jika 5 orang mengecat tribun dalam 12 jam, berapa lama untuk 10 orang?</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+           <div class="text-emerald-400 font-semibold mb-2">The Setup <span class='id-lang'>Persiapan</span></div>
+           <p class="text-sm text-slate-300">More workers = Less time. This is Inverse! \\( 5 \\times 12 = 60 \\) total man-hours. <span class='id-lang'>Pekerja banyak = Waktu sedikit. Ini Berbalik! Total 60 jam-kerja.</span></p>
+         </div>`},
+        // 3 Exercise
+        {type:"E",etype:"mc",
+         q:"If 5 workers take 12 hours, is this a direct or inverse proportion when calculating time for 10 workers? <span class='id-lang'>Jika 5 pekerja butuh 12 jam, ini senilai atau berbalik untuk 10 pekerja?</span>",
+         o:["Direct <span class='id-lang'>Senilai</span>","Inverse <span class='id-lang'>Berbalik Nilai</span>"],
+         a:1,
+         h:"More workers means less time! <span class='id-lang'>Pekerja banyak = waktu sedikit!</span>"},
+        {type:"E",etype:"fb",
+         q:"If 5 workers take 12 hours, how many hours will 10 workers take? <span class='id-lang'>Berapa jam yang dibutuhkan 10 pekerja?</span>",
+         a:"6",
+         h:"\\( \\frac{5 \\times 12}{10} = \\frac{60}{10} = 6 \\). <span class='id-lang'>\\( 60 \\div 10 = 6 \\) jam.</span>"},
+        {type:"E",etype:"fb",
+         q:"If 3 workers take 20 hours to build a wall, how many hours will 4 workers take? <span class='id-lang'>Jika 3 pekerja butuh 20 jam, berapa jam untuk 4 pekerja?</span>",
+         a:"15",
+         h:"\\( 3 \\times 20 = 60 \\). Then \\( 60 \\div 4 = 15 \\). <span class='id-lang'>\\( 60 \\div 4 = 15 \\) jam.</span>"},
+        // 1 Teori
+        {type:"T",title:"Step-by-Step Coaching <span class='id-lang'>Bimbingan Langkah-demi-Langkah</span>",
+         body:`<p>Always identify the proportion type first! If values go UP together, use cross multiplication. If one goes UP and the other DOWN, multiply the first pair and divide by the new number. <span class='id-lang'>Selalu identifikasi jenis perbandingan dulu! Jika naik bersama, pakai kali silang. Jika satu naik satu turun, kali pasangan pertama lalu bagi angka baru.</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-amber-500/10 border border-amber-500/20">
+           <div class="text-amber-400 font-semibold mb-2">The Checklist <span class='id-lang'>Daftar Periksa</span></div>
+           <p class="text-sm text-slate-300">1. Identify type. 2. Set up equation. 3. Solve. <span class='id-lang'>1. Identifikasi tipe. 2. Susun persamaan. 3. Selesaikan.</span></p>
+         </div>`},
+        // 4 Exercise
+        {type:"E",etype:"mc",
+         q:"3 machines take 8 days to finish a job. How long for 6 machines? Is this direct or inverse? <span class='id-lang'>3 mesin butuh 8 hari. Berapa lama untuk 6 mesin? Senilai atau berbalik?</span>",
+         o:["Direct <span class='id-lang'>Senilai</span>","Inverse <span class='id-lang'>Berbalik Nilai</span>"],
+         a:1,
+         h:"More machines = less time. <span class='id-lang'>Mesin banyak = waktu sedikit.</span>"},
+        {type:"E",etype:"fb",
+         q:"3 machines take 8 days. How many days for 6 machines? <span class='id-lang'>Berapa hari untuk 6 mesin?</span>",
+         a:"4",
+         h:"\\( 3 \\times 8 = 24 \\). Then \\( 24 \\div 6 = 4 \\). <span class='id-lang'>\\( 24 \\div 6 = 4 \\) hari.</span>"},
+        {type:"E",etype:"mc",
+         q:"2 liters of paint covers 10 sq meters. How much paint for 30 sq meters? Is this direct or inverse? <span class='id-lang'>2 liter cat untuk 10 m2. Berapa cat untuk 30 m2? Senilai atau berbalik?</span>",
+         o:["Direct <span class='id-lang'>Senilai</span>","Inverse <span class='id-lang'>Berbalik Nilai</span>"],
+         a:0,
+         h:"More area = more paint needed. <span class='id-lang'>Area besar = cat banyak.</span>"},
+        {type:"E",etype:"fb",
+         q:"2 liters of paint covers 10 sq meters. How many liters for 30 sq meters? <span class='id-lang'>Berapa liter cat untuk 30 m2?</span>",
+         a:"6",
+         h:"\\( \\frac{2}{10} = \\frac{x}{30} \\implies 10x = 60 \\implies x = 6 \\). <span class='id-lang'>\\( 2 \\times 30 \\div 10 = 6 \\) liter.</span>"}
+      ]
+    },
+    // ==================== SECTION 6 ====================
+    {
+      id:6, title:"Independent Practice <span class='id-lang'>Latihan Mandiri</span>", icon:"fa-user-graduate", color:"#14b8a6", branch:false,
+      lessons:[
+        // 1 Teori
+        {type:"T",title:"Team Bus Fuel <span class='id-lang'>Bensin Bus Tim</span>",
+         body:`<p>Your first independent challenge! A team bus requires 5 liters of fuel to travel 60 km. How much fuel is needed for 150 km? <span class='id-lang'>Tantangan mandiri pertama! Bus tim butuh 5 liter bensin untuk 60 km. Berapa bensin untuk 150 km?</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-teal-500/10 border border-teal-500/20">
+           <div class="text-teal-400 font-semibold mb-2">Think First <span class='id-lang'>Berpikir Dulu</span></div>
+           <p class="text-sm text-slate-300">Distance increases, so fuel must increase. This is Direct Proportion. <span class='id-lang'>Jarak naik, bensin naik. Ini Senilai.</span></p>
+         </div>`},
+        // 3 Exercise
+        {type:"E",etype:"mc",
+         q:"If a bus travels further, it needs more fuel. This is an example of... <span class='id-lang'>Jika bus tempuh jarak lebih jauh, butuh bensin lebih banyak. Ini contoh...</span>",
+         o:["Direct Proportion <span class='id-lang'>Senilai</span>","Inverse Proportion <span class='id-lang'>Berbalik Nilai</span>"],
+         a:0,
+         h:"Distance and fuel go in the same direction. <span class='id-lang'>Jarak dan bensin searah.</span>"},
+        {type:"E",etype:"fb",
+         q:"5 liters = 60 km. How many liters for 150 km? <span class='id-lang'>Berapa liter untuk 150 km?</span>",
+         a:"12.5||12 1/2||25/2",
+         h:"\\( \\frac{5}{60} = \\frac{x}{150} \\implies 60x = 750 \\implies x = 12.5 \\). <span class='id-lang'>\\( 5 \\times 150 \\div 60 = 12.5 \\) liter.</span>"},
+        {type:"E",etype:"fb",
+         q:"If the bus has 20 liters of fuel, how far can it travel (in km)? <span class='id-lang'>Jika bus punya 20 liter, berapa jarak yang ditempuh (km)?</span>",
+         a:"240",
+         h:"\\( \\frac{5}{60} = \\frac{20}{x} \\implies 5x = 1200 \\implies x = 240 \\). <span class='id-lang'>\\( 20 \\times 60 \\div 5 = 240 \\) km.</span>"},
+        // 1 Teori
+        {type:"T",title:"Club Logo Design <span class='id-lang'>Desain Logo Klub</span>",
+         body:`<p>For a club logo, a designer scales a small image to a large banner. If a 4 cm wide logo represents a 2 meter wide banner, what is the scale? <span class='id-lang'>Untuk logo klub, desainer memperbesar gambar ke banner. Jika logo 4 cm mewakili banner 2 meter, apa skalanya?</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-amber-500/10 border border-amber-500/20">
+           <div class="text-amber-400 font-semibold mb-2">Unit Check! <span class='id-lang'>Cek Satuan!</span></div>
+           <p class="text-sm text-slate-300">Always convert to the same unit first. 2 meters = 200 cm. <span class='id-lang'>Selalu samakan satuan dulu. 2 meter = 200 cm.</span></p>
+         </div>`},
+        // 3 Exercise
+        {type:"E",etype:"mc",
+         q:"A 4 cm logo represents a 200 cm banner. What is the scale ratio? <span class='id-lang'>Logo 4 cm mewakili banner 200 cm. Berapa rasio skalanya?</span>",
+         o:["1:50 <span class='id-lang'>1:50</span>","1:200 <span class='id-lang'>1:200</span>","4:200 <span class='id-lang'>4:200</span>","1:4 <span class='id-lang'>1:4</span>"],
+         a:0,
+         h:"\\( \\frac{4}{200} = \\frac{1}{50} \\). <span class='id-lang'>Sederhanakan pecahan 4/200.</span>"},
+        {type:"E",etype:"fb",
+         q:"If the logo is 6 cm tall, how tall is the real banner in cm? <span class='id-lang'>Jika logo tinggi 6 cm, berapa tinggi banner asli (cm)?</span>",
+         a:"300",
+         h:"\\( 6 \\times 50 = 300 \\) cm. <span class='id-lang'>\\( 6 \\times 50 = 300 \\) cm.</span>"},
+        {type:"E",etype:"tf",
+         q:"Scaling a logo design is an Inverse Proportion. <span class='id-lang'>Membuat skala desain logo adalah Perbandingan Berbalik Nilai.</span>",
+         a:false,
+         h:"If the design is bigger, the print is bigger. It's Direct! <span class='id-lang'>Desain besar, cetakan besar. Itu Senilai!</span>"},
+        // 1 Teori
+        {type:"T",title:"Player Bus Travel Time <span class='id-lang'>Waktu Tempuh Bus Pemain</span>",
+         body:`<p>A player bus travels at 60 km/h and takes 4 hours. If the driver wants to arrive in 2 hours, what speed is needed? <span class='id-lang'>Bus pemain melaju 60 km/jam butuh 4 jam. Jika pengemudi ingin tiba dalam 2 jam, kecepatan berapa yang dibutuhkan?</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-red-500/10 border border-red-500/20">
+           <div class="text-red-400 font-semibold mb-2">Think First <span class='id-lang'>Berpikir Dulu</span></div>
+           <p class="text-sm text-slate-300">Less time means more speed. This is Inverse Proportion! <span class='id-lang'>Waktu sedikit = kecepatan tinggi. Ini Berbalik Nilai!</span></p>
+         </div>`},
+        // 4 Exercise
+        {type:"E",etype:"mc",
+         q:"Speed and travel time are... <span class='id-lang'>Kecepatan dan waktu tempuh adalah...</span>",
+         o:["Direct Proportion <span class='id-lang'>Senilai</span>","Inverse Proportion <span class='id-lang'>Berbalik Nilai</span>","Not related <span class='id-lang'>Tak berhubungan</span>","Always constant <span class='id-lang'>Selalu konstan</span>"],
+         a:1,
+         h:"Faster speed = less time. <span class='id-lang'>Kecepatan tinggi = waktu sedikit.</span>"},
+        {type:"E",etype:"fb",
+         q:"A bus travels at 60 km/h for 4 hours. What is the distance (in km)? <span class='id-lang'>Berapa jaraknya (km)?</span>",
+         a:"240",
+         h:"\\( 60 \\times 4 = 240 \\) km. <span class='id-lang'>\\( 60 \\times 4 = 240 \\) km.</span>"},
+        {type:"E",etype:"fb",
+         q:"Using the distance from the previous question (240 km), what speed is needed to arrive in 2 hours? <span class='id-lang'>Kecepatan berapa untuk tiba dalam 2 jam?</span>",
+         a:"120",
+         h:"\\( 240 \\div 2 = 120 \\) km/h. <span class='id-lang'>\\( 240 \\div 2 = 120 \\) km/jam.</span>"},
+        {type:"E",etype:"fb",
+         q:"If the bus travels at 80 km/h, how long will the 240 km trip take? (in hours) <span class='id-lang'>Jika bus melaju 80 km/jam, berapa jam perjalanan 240 km?</span>",
+         a:"3",
+         h:"\\( 240 \\div 80 = 3 \\) hours. <span class='id-lang'>\\( 240 \\div 80 = 3 \\) jam.</span>"}
+      ]
+    },
+    // ==================== SECTION 7A ====================
+    {
+      id:"7A", title:"Assessment A <span class='id-lang'>Asesmen A</span>", icon:"fa-clipboard-check", color:"#3b82f6", branch:true,
+      lessons:[
+        {type:"E",etype:"mc",
+         q:"Which of the following is an example of Direct Proportion? <span class='id-lang'>Manakah contoh Perbandingan Senilai?</span>",
+         o:["Speed and travel time <span class='id-lang'>Kecepatan dan waktu tempuh</span>","Number of workers and days to finish <span class='id-lang'>Jumlah pekerja dan hari selesai</span>","Price of gasoline and total cost <span class='id-lang'>Harga bensin dan total biaya</span>","Number of people and food duration <span class='id-lang'>Jumlah orang dan durasi makanan</span>"],
+         a:2,
+         h:"More gasoline means more cost. Same direction! <span class='id-lang'>Bensin banyak = biaya mahal.</span>"},
+        {type:"E",etype:"fb",
+         q:"A car requires 5 liters of fuel to travel 60 km. How many liters for 150 km? <span class='id-lang'>Mobil butuh 5 liter untuk 60 km. Berapa liter untuk 150 km?</span>",
+         a:"12.5||12 1/2||25/2",
+         h:"\\( \\frac{5}{60} = \\frac{x}{150} \\implies 60x = 750 \\implies x = 12.5 \\). <span class='id-lang'>\\( 5 \\times 150 \\div 60 = 12.5 \\).</span>"},
+        {type:"E",etype:"fb",
+         q:"The price of 3 kg of oranges is Rp 45,000. What is the price of 7 kg? (Write number only, e.g., 45000) <span class='id-lang'>Harga 3 kg jeruk Rp 45.000. Berapa harga 7 kg?</span>",
+         a:"105000",
+         h:"\\( \\frac{3}{45000} = \\frac{7}{x} \\implies 3x = 315000 \\implies x = 105000 \\). <span class='id-lang'>\\( 7 \\times 45000 \\div 3 = 105000 \\).</span>"},
+        {type:"E",etype:"tf",
+         q:"In a direct proportion, if \\( x \\) is multiplied by 3, \\( y \\) is divided by 3. <span class='id-lang'>Pada senilai, jika x dikali 3, y dibagi 3.</span>",
+         a:false,
+         h:"Direct proportion means they change by the SAME factor. <span class='id-lang'>Senilai berubah dengan faktor SAMA.</span>"},
+        {type:"E",etype:"fb",
+         q:"A tailor can make 10 shirts in 4 days. How many shirts in 12 days? <span class='id-lang'>Penjahit buat 10 baju dalam 4 hari. Berapa baju dalam 12 hari?</span>",
+         a:"30",
+         h:"\\( \\frac{10}{4} = \\frac{x}{12} \\implies 4x = 120 \\implies x = 30 \\). <span class='id-lang'>\\( 10 \\times 12 \\div 4 = 30 \\).</span>"},
+        {type:"E",etype:"mc",
+         q:"A house plan has a scale of 1:200. If the length on the plan is 8 cm, what is the real length in meters? <span class='id-lang'>Skala denah 1:200. Panjang denah 8 cm, berapa meter panjang aslinya?</span>",
+         o:["16 m <span class='id-lang'>16 m</span>","160 m <span class='id-lang'>160 m</span>","8 m <span class='id-lang'>8 m</span>","200 m <span class='id-lang'>200 m</span>"],
+         a:0,
+         h:"\\( 8 \\times 200 = 1600 \\) cm = 16 m. <span class='id-lang'>\\( 8 \\times 200 = 1600 \\) cm = 16 m.</span>"},
+        {type:"E",etype:"fb",
+         q:"Solve for x: \\( \\frac{1}{2} = \\frac{x}{10} \\). <span class='id-lang'>Selesaikan untuk x.</span>",
+         a:"5",
+         h:"\\( 1 \\times 10 = 2 \\times x \\implies 2x = 10 \\). <span class='id-lang'>\\( 10 \\div 2 = 5 \\).</span>"},
+        {type:"E",etype:"mc",
+         q:"Which graph represents a Direct Proportion? <span class='id-lang'>Grafik mana yang Senilai?</span>",
+         o:["A straight line through (0,0) <span class='id-lang'>Garis lurus lewat (0,0)</span>","A curved line <span class='id-lang'>Garis melengkung</span>","A vertical line <span class='id-lang'>Garis vertikal</span>","A horizontal line <span class='id-lang'>Garis horizontal</span>"],
+         a:0,
+         h:"Direct proportions are linear and pass through the origin. <span class='id-lang'>Senilai linear dan lewat origin.</span>"},
+        {type:"E",etype:"fb",
+         q:"In a direct proportion \\( \\frac{y}{x} = k \\), if \\( y = 15 \\) and \\( x = 3 \\), what is \\( k \\)? <span class='id-lang'>Berapa k?</span>",
+         a:"5",
+         h:"\\( k = \\frac{15}{3} = 5 \\). <span class='id-lang'>\\( 15 \\div 3 = 5 \\).</span>"},
+        {type:"E",etype:"tf",
+         q:"If distance is constant, speed and time are directly proportional. <span class='id-lang'>Jika jarak tetap, kecepatan dan waktu senilai.</span>",
+         a:false,
+         h:"If distance is constant, speed and time are INVERSELY proportional. <span class='id-lang'>Jarak tetap, kecepatan dan waktu berbalik nilai.</span>"}
+      ]
+    },
+    // ==================== SECTION 7B ====================
+    {
+      id:"7B", title:"Assessment B <span class='id-lang'>Asesmen B</span>", icon:"fa-clipboard-check", color:"#ef4444", branch:true,
+      lessons:[
+        {type:"E",etype:"mc",
+         q:"Which of the following is an example of Inverse Proportion? <span class='id-lang'>Manakah contoh Berbalik Nilai?</span>",
+         o:["More fuel = more distance <span class='id-lang'>Bensin banyak = jarak jauh</span>","More workers = less time <span class='id-lang'>Pekerja banyak = waktu sedikit</span>","More tickets = more total cost <span class='id-lang'>Tiket banyak = biaya mahal</span>","Taller height = bigger shoe size <span class='id-lang'>Tinggi = sepatu besar</span>"],
+         a:1,
+         h:"More workers means less time. Opposite directions! <span class='id-lang'>Pekerja banyak = waktu sedikit.</span>"},
+        {type:"E",etype:"fb",
+         q:"Food supply for 50 chickens lasts 12 days. If 20 chickens are sold (leaving 30), how many days will it last? <span class='id-lang'>Makanan 50 ayam habis 12 hari. Jika tersisa 30 ayam, berapa hari?</span>",
+         a:"20",
+         h:"\\( 50 \\times 12 = 600 \\). Then \\( 600 \\div 30 = 20 \\). <span class='id-lang'>\\( 50 \\times 12 \\div 30 = 20 \\) hari.</span>"},
+        {type:"E",etype:"fb",
+         q:"A bus travels 60 km/h for 4 hours. To arrive in 3 hours, what speed is needed? <span class='id-lang'>Bus 60 km/jam selama 4 jam. Kecepatan untuk tiba 3 jam?</span>",
+         a:"80",
+         h:"Distance = \\( 60 \\times 4 = 240 \\). Then \\( 240 \\div 3 = 80 \\). <span class='id-lang'>\\( 240 \\div 3 = 80 \\) km/jam.</span>"},
+        {type:"E",etype:"tf",
+         q:"In an inverse proportion, the product \\( x \\times y \\) is constant. <span class='id-lang'>Pada berbalik nilai, hasil kali x dan y konstan.</span>",
+         a:true,
+         h:"Yes, the formula is \\( x \\times y = k \\). <span class='id-lang'>Rumusnya \\( x \\times y = k \\).</span>"},
+        {type:"E",etype:"fb",
+         q:"20 workers finish a stadium in 30 days. How many workers are needed to finish in 20 days? <span class='id-lang'>20 pekerja selesai 30 hari. Berapa pekerja untuk 20 hari?</span>",
+         a:"30",
+         h:"\\( 20 \\times 30 = 600 \\). Then \\( 600 \\div 20 = 30 \\). <span class='id-lang'>\\( 600 \\div 20 = 30 \\) pekerja.</span>"},
+        {type:"E",etype:"mc",
+         q:"Gear A has 24 teeth, Gear B has 36 teeth. If Gear A turns 15 times, how many times does Gear B turn? <span class='id-lang'>Gir A 24 gigi, Gir B 36 gigi. Gir A 15 putaran, Gir B berapa putaran?</span>",
+         o:["10 <span class='id-lang'>10</span>","20 <span class='id-lang'>20</span>","15 <span class='id-lang'>15</span>","24 <span class='id-lang'>24</span>"],
+         a:0,
+         h:"\\( 24 \\times 15 = 360 \\). Then \\( 360 \\div 36 = 10 \\). <span class='id-lang'>\\( 24 \\times 15 \\div 36 = 10 \\).</span>"},
+        {type:"E",etype:"fb",
+         q:"3 machines take 2 hours to make 500 bottles. How many hours for 1 machine to make 500 bottles? <span class='id-lang'>3 mesin butuh 2 jam untuk 500 botol. Berapa jam untuk 1 mesin?</span>",
+         a:"6",
+         h:"\\( 3 \\times 2 = 6 \\) machine-hours. \\( 6 \\div 1 = 6 \\). <span class='id-lang'>\\( 3 \\times 2 \\div 1 = 6 \\) jam.</span>"},
+        {type:"E",etype:"mc",
+         q:"Which graph represents an Inverse Proportion? <span class='id-lang'>Grafik mana yang Berbalik Nilai?</span>",
+         o:["A straight line through (0,0) <span class='id-lang'>Garis lurus</span>","A curved line approaching axes <span class='id-lang'>Garis melengkung mendekati sumbu</span>","A circle <span class='id-lang'>Lingkaran</span>","A square <span class='id-lang'>Persegi</span>"],
+         a:1,
+         h:"Inverse proportions form curves! <span class='id-lang'>Berbalik nilai membentuk kurva!</span>"},
+        {type:"E",etype:"fb",
+         q:"If \\( x \\times y = 24 \\) and \\( x = 8 \\), what is \\( y \\)? <span class='id-lang'>Jika x = 8, berapa y?</span>",
+         a:"3",
+         h:"\\( 8 \\times y = 24 \\implies y = 3 \\). <span class='id-lang'>\\( 24 \\div 8 = 3 \\).</span>"},
+        {type:"E",etype:"tf",
+         q:"If more people work, it takes more time. This is an inverse proportion. <span class='id-lang'>Jika lebih banyak orang bekerja, butuh lebih banyak waktu. Ini berbalik nilai.</span>",
+         a:false,
+         h:"More people = less time. The statement is false. <span class='id-lang'>Pernyataan itu salah.</span>"}
+      ]
+    },
+    // ==================== SECTION 7C ====================
+    {
+      id:"7C", title:"Assessment C <span class='id-lang'>Asesmen C</span>", icon:"fa-clipboard-check", color:"#a855f7", branch:true,
+      lessons:[
+        {type:"E",etype:"fb",
+         q:"A team bus requires 5 liters of fuel for 60 km. How far can it go with 20 liters? (in km) <span class='id-lang'>Bus butuh 5 liter untuk 60 km. Berapa km untuk 20 liter?</span>",
+         a:"240",
+         h:"\\( \\frac{5}{60} = \\frac{20}{x} \\implies 5x = 1200 \\implies x = 240 \\). <span class='id-lang'>\\( 20 \\times 60 \\div 5 = 240 \\).</span>"},
+        {type:"E",etype:"fb",
+         q:"5 workers can paint a stadium in 12 hours. How long for 10 workers? (in hours) <span class='id-lang'>5 pekerja mengecat 12 jam. Berapa jam untuk 10 pekerja?</span>",
+         a:"6",
+         h:"\\( 5 \\times 12 = 60 \\). Then \\( 60 \\div 10 = 6 \\). <span class='id-lang'>\\( 60 \\div 10 = 6 \\) jam.</span>"},
+        {type:"E",etype:"mc",
+         q:"A car travels from A to B in 4 hours at 75 km/h. If the driver wants to arrive 1 hour faster (3 hours), what speed is needed? <span class='id-lang'>Mobil 4 jam 75 km/jam. Untuk tiba 3 jam, kecepatan berapa?</span>",
+         o:["100 km/h <span class='id-lang'>100 km/jam</span>","80 km/h <span class='id-lang'>80 km/jam</span>","120 km/h <span class='id-lang'>120 km/jam</span>","90 km/h <span class='id-lang'>90 km/jam</span>"],
+         a:0,
+         h:"Distance = \\( 4 \\times 75 = 300 \\). \\( 300 \\div 3 = 100 \\). <span class='id-lang'>\\( 300 \\div 3 = 100 \\).</span>"},
+        {type:"E",etype:"fb",
+         q:"On a map with a scale of 1:250,000, the distance between P and Q is 12 cm. What is the real distance in km? <span class='id-lang'>Skala 1:250.000, jarak P-Q 12 cm. Berapa km aslinya?</span>",
+         a:"30",
+         h:"\\( 12 \\times 250000 = 3000000 \\) cm. \\( 3000000 \\div 100000 = 30 \\) km. <span class='id-lang'>Bagi 100.000 untuk konversi cm ke km.</span>"},
+        {type:"E",etype:"tf",
+         q:"Buying more apples costs more money. This is an Inverse Proportion. <span class='id-lang'>Beli apel banyak butuh uang banyak. Ini Berbalik Nilai.</span>",
+         a:false,
+         h:"More apples = more money. This is Direct! <span class='id-lang'>Itu Senilai!</span>"},
+        {type:"E",etype:"fb",
+         q:"3 kg of oranges cost Rp 45,000. How much is 1 kg? <span class='id-lang'>3 kg jeruk Rp 45.000. Berapa 1 kg?</span>",
+         a:"15000",
+         h:"\\( 45000 \\div 3 = 15000 \\). <span class='id-lang'>\\( 45000 \\div 3 = 15000 \\).</span>"},
+        {type:"E",etype:"mc",
+         q:"If \\( x \\) increases and \\( y \\) increases, it is... <span class='id-lang'>Jika x naik dan y naik, itu...</span>",
+         o:["Direct Proportion <span class='id-lang'>Senilai</span>","Inverse Proportion <span class='id-lang'>Berbalik Nilai</span>","No relation <span class='id-lang'>Tak berhubungan</span>","Constant <span class='id-lang'>Konstan</span>"],
+         a:0,
+         h:"Same direction means Direct. <span class='id-lang'>Arah sama = Senilai.</span>"},
+        {type:"E",etype:"fb",
+         q:"2 liters of paint covers 10 sq meters. How many liters for 30 sq meters? <span class='id-lang'>2 liter cat untuk 10 m2. Berapa liter untuk 30 m2?</span>",
+         a:"6",
+         h:"\\( \\frac{2}{10} = \\frac{x}{30} \\implies 10x = 60 \\implies x = 6 \\). <span class='id-lang'>\\( 2 \\times 30 \\div 10 = 6 \\).</span>"},
+        {type:"E",etype:"tf",
+         q:"The formula \\( x \\times y = k \\) applies to Inverse Proportions. <span class='id-lang'>Rumus \\( x \\times y = k \\) untuk Berbalik Nilai.</span>",
+         a:true,
+         h:"The product is constant! <span class='id-lang'>Hasil kali konstan!</span>"},
+        {type:"E",etype:"fb",
+         q:"A car travels from A to B in 4 hours at 75 km/h. What is the distance? (in km) <span class='id-lang'>Mobil 4 jam 75 km/jam. Berapa jaraknya?</span>",
+         a:"300",
+         h:"\\( 4 \\times 75 = 300 \\) km. <span class='id-lang'>\\( 4 \\times 75 = 300 \\) km.</span>"}
+      ]
+    },
+    // ==================== SECTION 7D ====================
+    {
+      id:"7D", title:"Assessment D <span class='id-lang'>Asesmen D</span>", icon:"fa-clipboard-check", color:"#06b6d4", branch:true,
+      lessons:[
+        {type:"E",etype:"fb",
+         q:"A stadium model has a scale of 1:500. If the real length is 100 meters, what is the model length in cm? (100 m = 10,000 cm) <span class='id-lang'>Skala 1:500. Asli 100 m. Berapa cm maketnya?</span>",
+         a:"20",
+         h:"\\( 10000 \\div 500 = 20 \\). <span class='id-lang'>\\( 10000 \\div 500 = 20 \\) cm.</span>"},
+        {type:"E",etype:"fb",
+         q:"3 machines can produce 500 bottles in 2 hours. How many hours for 6 machines to produce 500 bottles? <span class='id-lang'>3 mesin 500 botol 2 jam. Berapa jam 6 mesin untuk 500 botol?</span>",
+         a:"1",
+         h:"\\( 3 \\times 2 = 6 \\). Then \\( 6 \\div 6 = 1 \\). <span class='id-lang'>\\( 6 \\div 6 = 1 \\) jam.</span>"},
+        {type:"E",etype:"mc",
+         q:"Using the map from Assessment C (Scale 1:250,000, 12 cm on map = 30 km real). If traveled at 40 km/h, how many minutes does it take? <span class='id-lang'>Skala 1:250.000, 12 cm = 30 km. Jika 40 km/jam, berapa menit?</span>",
+         o:["45 minutes <span class='id-lang'>45 menit</span>","60 minutes <span class='id-lang'>60 menit</span>","30 minutes <span class='id-lang'>30 menit</span>","15 minutes <span class='id-lang'>15 menit</span>"],
+         a:0,
+         h:"\\( 30 \\div 40 = 0.75 \\) hours. \\( 0.75 \\times 60 = 45 \\) minutes. <span class='id-lang'>\\( 30 \\div 40 \\times 60 = 45 \\).</span>"},
+        {type:"E",etype:"tf",
+         q:"If 1 worker takes 10 hours, 2 workers take 5 hours. This is an Inverse Proportion. <span class='id-lang'>1 pekerja 10 jam, 2 pekerja 5 jam. Ini Berbalik Nilai.</span>",
+         a:true,
+         h:"More workers = less time! <span class='id-lang'>Pekerja banyak = waktu sedikit!</span>"},
+        {type:"E",etype:"fb",
+         q:"Food for 50 chickens lasts 12 days. If 20 are sold, 30 remain. How many days will it last? <span class='id-lang'>Makanan 50 ayam 12 hari. Sisa 30 ayam, berapa hari?</span>",
+         a:"20",
+         h:"\\( 50 \\times 12 = 600 \\). Then \\( 600 \\div 30 = 20 \\). <span class='id-lang'>\\( 600 \\div 30 = 20 \\) hari.</span>"},
+        {type:"E",etype:"mc",
+         q:"Gear A has 24 teeth, Gear B has 36 teeth. Gear A turns 15 times. How many turns for Gear B? <span class='id-lang'>Gir A 24 gigi, Gir B 36 gigi. Gir A 15 putaran, Gir B?</span>",
+         o:["10 <span class='id-lang'>10</span>","20 <span class='id-lang'>20</span>","15 <span class='id-lang'>15</span>","24 <span class='id-lang'>24</span>"],
+         a:0,
+         h:"\\( 24 \\times 15 = 360 \\). \\( 360 \\div 36 = 10 \\). <span class='id-lang'>\\( 360 \\div 36 = 10 \\).</span>"},
+        {type:"E",etype:"fb",
+         q:"Price of 4 tickets minus 50k discount = 250k. What is the price of 1 ticket? (Number only) <span class='id-lang'>Harga 4 tiket dikurangi 50 ribu = 250 ribu. Berapa harga 1 tiket?</span>",
+         a:"75000",
+         h:"\\( 4t - 50000 = 250000 \\implies 4t = 300000 \\implies t = 75000 \\). <span class='id-lang'>\\( 300000 \\div 4 = 75000 \\).</span>"},
+        {type:"E",etype:"tf",
+         q:"Cross multiplication for \\( \\frac{a}{b} = \\frac{c}{d} \\) results in \\( a \\times d = b \\times c \\). <span class='id-lang'>Kali silang menghasilkan \\( a \\times d = b \\times c \\).</span>",
+         a:true,
+         h:"Multiply diagonally! <span class='id-lang'>Kali secara diagonal!</span>"},
+        {type:"E",etype:"fb",
+         q:"3 kg of oranges is Rp 45,000. How much is 7 kg? (Number only) <span class='id-lang'>3 kg jeruk Rp 45.000. Berapa 7 kg?</span>",
+         a:"105000",
+         h:"\\( 45000 \\div 3 \\times 7 = 105000 \\). <span class='id-lang'>\\( 15000 \\times 7 = 105000 \\).</span>"},
+        {type:"E",etype:"mc",
+         q:"If \\( x \\times y = 100 \\) and \\( x = 5 \\), what is \\( y \\)? <span class='id-lang'>Jika \\( x = 5 \\), berapa \\( y \\)?</span>",
+         o:["20 <span class='id-lang'>20</span>","500 <span class='id-lang'>500</span>","50 <span class='id-lang'>50</span>","10 <span class='id-lang'>10</span>"],
+         a:0,
+         h:"\\( 5 \\times y = 100 \\implies y = 20 \\). <span class='id-lang'>\\( 100 \\div 5 = 20 \\).</span>"}
+      ]
+    },
+    // ==================== SECTION 7E ====================
+    {
+      id:"7E", title:"Assessment E <span class='id-lang'>Asesmen E</span>", icon:"fa-clipboard-check", color:"#f97316", branch:true,
+      lessons:[
+        {type:"E",etype:"fb",
+         q:"A car requires 5 liters for 60 km. How many liters for 150 km? <span class='id-lang'>Mobil butuh 5 liter untuk 60 km. Berapa liter untuk 150 km?</span>",
+         a:"12.5||12 1/2||25/2",
+         h:"\\( \\frac{5}{60} = \\frac{x}{150} \\implies x = 12.5 \\). <span class='id-lang'>\\( 5 \\times 150 \\div 60 = 12.5 \\).</span>"},
+        {type:"E",etype:"fb",
+         q:"A bus travels 60 km/h for 4 hours. To arrive in 2 hours, what speed is needed? <span class='id-lang'>Bus 60 km/jam 4 jam. Kecepatan untuk tiba 2 jam?</span>",
+         a:"120",
+         h:"Distance = 240. \\( 240 \\div 2 = 120 \\). <span class='id-lang'>\\( 240 \\div 2 = 120 \\).</span>"},
+        {type:"E",etype:"mc",
+         q:"20 workers finish a job in 30 days. How many days for 1 worker? <span class='id-lang'>20 pekerja selesai 30 hari. Berapa hari untuk 1 pekerja?</span>",
+         o:["600 days <span class='id-lang'>600 hari</span>","30 days <span class='id-lang'>30 hari</span>","50 days <span class='id-lang'>50 hari</span>","10 days <span class='id-lang'>10 hari</span>"],
+         a:0,
+         h:"\\( 20 \\times 30 = 600 \\) man-days. <span class='id-lang'>\\( 20 \\times 30 = 600 \\).</span>"},
+        {type:"E",etype:"tf",
+         q:"If \\( \\frac{y}{x} = 5 \\), it is an inverse proportion. <span class='id-lang'>\\( \\frac{y}{x} = 5 \\) adalah berbalik nilai.</span>",
+         a:false,
+         h:"It's a direct proportion because the ratio is constant. <span class='id-lang'>Itu senilai karena rasio konstan.</span>"},
+        {type:"E",etype:"fb",
+         q:"A house plan scale is 1:200. If the plan length is 8 cm, what is the real length in meters? <span class='id-lang'>Skala 1:200. Denah 8 cm, berapa meter aslinya?</span>",
+         a:"16",
+         h:"\\( 8 \\times 200 = 1600 \\) cm = 16 m. <span class='id-lang'>\\( 1600 \\div 100 = 16 \\) m.</span>"},
+        {type:"E",etype:"mc",
+         q:"3 machines take 2 hours to make 500 bottles. If 1 machine breaks, how long for 2 machines to make 500 bottles? <span class='id-lang'>3 mesin 2 jam untuk 500 botol. Jika 1 rusak, berapa jam 2 mesin untuk 500 botol?</span>",
+         o:["3 hours <span class='id-lang'>3 jam</span>","4 hours <span class='id-lang'>4 jam</span>","2 hours <span class='id-lang'>2 jam</span>","1 hour <span class='id-lang'>1 jam</span>"],
+         a:0,
+         h:"\\( 3 \\times 2 = 6 \\). Then \\( 6 \\div 2 = 3 \\). <span class='id-lang'>\\( 6 \\div 2 = 3 \\).</span>"},
+        {type:"E",etype:"fb",
+         q:"If \\( x \\times y = 36 \\) and \\( x = 4 \\), what is \\( y \\)? <span class='id-lang'>Jika \\( x = 4 \\), berapa \\( y \\)?</span>",
+         a:"9",
+         h:"\\( 4 \\times y = 36 \\implies y = 9 \\). <span class='id-lang'>\\( 36 \\div 4 = 9 \\).</span>"},
+        {type:"E",etype:"tf",
+         q:"More people sharing a pizza means less pizza per person. This is Inverse. <span class='id-lang'>Orang berbagi pizza banyak = pizza per orang sedikit. Ini Berbalik.</span>",
+         a:true,
+         h:"More people = less pizza. Opposite directions! <span class='id-lang'>Berlawanan arah!</span>"},
+        {type:"E",etype:"fb",
+         q:"2 liters of paint covers 10 sq meters. How many liters for 35 sq meters? <span class='id-lang'>2 liter cat 10 m2. Berapa liter 35 m2?</span>",
+         a:"7",
+         h:"\\( \\frac{2}{10} = \\frac{x}{35} \\implies 10x = 70 \\implies x = 7 \\). <span class='id-lang'>\\( 2 \\times 35 \\div 10 = 7 \\).</span>"},
+        {type:"E",etype:"mc",
+         q:"The formula \\( \\frac{y}{x} = k \\) means that... <span class='id-lang'>Rumus \\( \\frac{y}{x} = k \\) berarti...</span>",
+         o:["y is inversely proportional to x <span class='id-lang'>y berbalik nilai dengan x</span>","y is directly proportional to x <span class='id-lang'>y senilai dengan x</span>","y and x are unrelated <span class='id-lang'>y dan x tak berhubungan</span>","y is always equal to x <span class='id-lang'>y selalu sama dengan x</span>"],
+         a:1,
+         h:"The ratio is constant, which means Direct Proportion! <span class='id-lang'>Rasio konstan = Senilai!</span>"}
+      ]
+    },
+    // ==================== SECTION 8 ====================
+    {
+      id:8, title:"Consolidation & Reflection <span class='id-lang'>Konsolidasi & Refleksi</span>", icon:"fa-star", color:"#fbbf24", branch:false,
+      lessons:[
+        {type:"T",title:"Summary & Next Steps <span class='id-lang'>Ringkasan & Langkah Berikutnya</span>",
+         body:`<p>Brilliant work today, Nicholas! You've successfully mastered the architect's tools for scaling stadiums and managing construction time! <span class='id-lang'>Kerja luar biasa hari ini, Nicholas! Kamu berhasil menguasai alat arsitek untuk skala stadion dan manajemen waktu konstruksi!</span></p>
+         <div class="mt-4 p-5 rounded-xl bg-gradient-to-r from-emerald-500/10 to-teal-500/10 border border-emerald-500/20">
+           <div class="text-emerald-400 font-bold mb-3 text-lg"><i class="fa-solid fa-medal mr-2"></i>The 2-Step Checklist <span class='id-lang'>Daftar Periksa 2 Langkah</span></div>
+           <ul class="space-y-2 text-sm text-slate-300 list-decimal list-inside">
+             <li><strong>Direct Proportion (Senilai):</strong> Use Cross Multiplication! (Same direction). <span class='id-lang'><strong>Senilai:</strong> Pakai Kali Silang! (Arah sama).</span></li>
+             <li><strong>Inverse Proportion (Berbalik Nilai):</strong> Multiply the first pair, divide by the new number! (Opposite direction). <span class='id-lang'><strong>Berbalik Nilai:</strong> Kali pasangan pertama, bagi angka baru! (Arah berlawanan).</span></li>
+           </ul>
+         </div>
+         <p class="mt-4">Remember to complete your customized homework set on the portal! <span class='id-lang'>Ingat untuk menyelesaikan PR kustomismu di portal!</span></p>
+         <div class="mt-6 p-5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-center">
+           <div class="text-amber-400 font-bold text-xl mb-2">Your Next Mission <span class='id-lang'>Misi Berikutnya</span></div>
+           <p class="text-sm text-slate-300 mb-4">Ready for more challenges? Continue your learning journey on the Algonova platform! <span class='id-lang'>Siap untuk tantangan lainnya? Lanjutkan perjalanan belajarmu di platform Algonova!</span></p>
+           <a href="https://learn.algonova.id/login" target="_blank" class="btn-primary inline-flex">
+             <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Algonova <span class="id-lang" style="color:rgba(11,17,33,0.7); display:inline;">Buka Algonova</span>
+           </a>
+         </div>`}
+      ]
+    }
+  ]
+};
+
+// ============================================================
+// STATE APLIKASI
+// ============================================================
+let state = {
+  xp: 0,
+  streak: 0,
+  completed: {},   // { "1-0": true, "1-1": true, ... }  mapIndex-lessonIndex
+  currentView: 'map',
+  currentMap: null,  // index di COURSE.maps
+  currentLesson: null, // index lesson dalam map
+  exerciseState: {},  // state untuk exercise interaktif
+};
+
+// Load dari localStorage
+function loadState() {
+  try {
+    const saved = localStorage.getItem('logicode_state');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      state.xp = parsed.xp || 0;
+      state.streak = parsed.streak || 0;
+      state.completed = parsed.completed || {};
+	  state.mapAnswers = parsed.mapAnswers || {};
+    }
+  } catch(e) {}
+}
+function saveState() {
+  try {
+    localStorage.setItem('logicode_state', JSON.stringify({
+      xp: state.xp, streak: state.streak, completed: state.completed, mapAnswers: state.mapAnswers
+    }));
+  } catch(e) {}
+}
+
+function resetProgress() {
+  if (confirm('Apakah kamu yakin ingin menghapus semua progress? Tindakan ini tidak bisa dibatalkan.')) {
+    // Hapus data dari localStorage
+    localStorage.removeItem('logicode_state');
+    
+    // Reset state di memori
+    state.xp = 0;
+    state.streak = 0;
+    state.completed = {};
+    
+    // Render ulang tampilan peta
+    renderMap();
+    
+    // Tampilkan notifikasi
+    showToast('Progress berhasil direset!', 'info');
+  }
+}
+
+// ============================================================
+// HELPER: Cek apakah peta terbuka
+// ============================================================
+function isMapUnlocked(mapIdx) {
+  return true; // Semua peta selalu terbuka
+}
+
+function isMapCompleted(mapIdx) {
+  const map = COURSE.maps[mapIdx];
+  if (!map) return false;
+  return map.lessons.every((_, li) => state.completed[`${mapIdx}-${li}`]);
+}
+
+function isLessonUnlocked(mapIdx, lessonIdx) {
+  return true; // Semua lesson selalu terbuka
+}
+
+function getMapProgress(mapIdx) {
+  const map = COURSE.maps[mapIdx];
+  if (!map) return 0;
+  const done = map.lessons.filter((_, li) => state.completed[`${mapIdx}-${li}`]).length;
+  return Math.round((done / map.lessons.length) * 100);
+}
+
+function getTotalProgress() {
+  let total = 0, done = 0;
+  COURSE.maps.forEach((m, mi) => {
+    m.lessons.forEach((_, li) => {
+      total++;
+      if (state.completed[`${mi}-${li}`]) done++;
+    });
+  });
+  return total > 0 ? Math.round((done / total) * 100) : 0;
+}
+
+// ============================================================
+// RENDER: PETA MAP (halaman utama)
+// ============================================================
+function renderMap() {
+  const container = document.getElementById('mapContainer');
+  let html = '';
+
+	COURSE.maps.forEach((map, mi) => {
+	const unlocked = isMapUnlocked(mi);
+	const completed = isMapCompleted(mi);
+	const progress = getMapProgress(mi);
+	const isBranch = map.branch;
+	const isLastBranch = isBranch && !COURSE.maps[mi+1]?.branch;
+	const isFirstBranch = isBranch && !COURSE.maps[mi-1]?.branch;
+
+	// Node kelas
+	const nodeClass = completed ? 'completed' : unlocked ? 'unlocked' + (progress === 0 ? ' current' : '') : 'locked';
+
+	// --- BRANCH START: Visual dari Peta 6 ke Peta 7A-7E ---
+	if (isFirstBranch) {
+      const peta6Completed = isMapCompleted(mi - 1);
+      // Garis vertikal turun dari Peta 6
+      html += `<div class="map-line ${peta6Completed ? 'done' : ''}"></div>`;
+      // Garis horizontal branch (diperlebar)
+      html += `<div style="height: 3px; width: 95%; max-width: 850px; margin: 0 auto; background: var(--border);"></div>`;
+      // Buka container flex untuk 7A-7E (ditambah flex-wrap agar rapi di HP)
+      html += `<div class="flex flex-wrap justify-center" style="gap: 20px; max-width: 850px; margin: 0 auto;">`;
+    }
+
+	// --- RENDER NODE ---
+	html += `
+	  <div class="flex flex-col items-center" style="${isBranch ? 'min-width: 150px;' : ''}" onclick="${unlocked ? `openPeta(${mi})` : ''}">
+		${isBranch ? `<div style="width: 3px; height: 25px; background: var(--border);"></div>` : ''}
+		<div class="map-node ${nodeClass}" style="${unlocked ? `border-color:${map.color};${completed ? `background:${map.color}` : ''}` : ''}">
+		  ${completed ? '<i class="fa-solid fa-check"></i>' : unlocked ? `<i class="fa-solid ${map.icon}"></i>` : '<i class="fa-solid fa-lock text-sm"></i>'}
+		</div>
+		<div class="mt-2 text-center">
+		  <div class="text-sm font-semibold node-title ${unlocked ? 'text-slate-200' : 'text-slate-600'}">Peta ${map.id}</div>
+		  <div class="text-xs node-title ${unlocked ? 'text-slate-400' : 'text-slate-600'}">${map.title}</div>
+		  ${unlocked && !completed ? `<div class="mt-1 w-16 mx-auto"><div class="prog-bar"><div class="prog-fill" style="width:${progress}%;background:${map.color}"></div></div></div>` : ''}
+		</div>
+		${isBranch ? `<div style="width: 3px; height: 25px; background: var(--border);"></div>` : ''}
+	  </div>
+	`;
+
+	// --- BRANCH END: Visual dari Peta 7A-7E ke Peta 8 ---
+	if (isLastBranch) {
+      // Tutup container flex 7A-7E
+      html += `</div>`;
+      // Garis horizontal merge (diperlebar)
+      html += `<div style="height: 3px; width: 95%; max-width: 850px; margin: 0 auto; background: var(--border);"></div>`;
+      // Garis vertikal turun ke Peta 8
+      html += `<div class="map-line"></div>`;
+    }
+
+	// --- GARIS VERTIKAL NORMAL (Peta 1-5) ---
+	if (!isBranch && mi < COURSE.maps.length - 1 && !COURSE.maps[mi+1]?.branch) {
+	  html += `<div class="map-line ${completed ? 'done' : ''}"></div>`;
+	}
+	});
+
+  container.innerHTML = html;
+
+  // Update header stats
+  document.getElementById('headerXP').textContent = state.xp;
+  document.getElementById('headerStreak').textContent = state.streak;
+  document.getElementById('totalProgress').textContent = getTotalProgress() + '%';
+  document.getElementById('totalProgFill').style.width = getTotalProgress() + '%';
+}
+
+// ============================================================
+// RENDER: PETA DETAIL (daftar lesson)
+// ============================================================
+function openPeta(mapIdx) {
+  state.currentMap = mapIdx;
+  showView('peta');
+  const map = COURSE.maps[mapIdx];
+  document.getElementById('petaTitle').innerHTML = `Peta ${map.id}: ${map.title}`;
+  const totalLessons = map.lessons.length;
+  const doneLessons = map.lessons.filter((_, li) => state.completed[`${mapIdx}-${li}`]).length;
+  document.getElementById('petaSubtitle').textContent = `${doneLessons}/${totalLessons} selesai`;
+
+  const container = document.getElementById('lessonContainer');
+  let html = '<div class="stagger-in flex flex-col items-center">';
+
+  map.lessons.forEach((lesson, li) => {
+    const unlocked = isLessonUnlocked(mapIdx, li);
+    const completed = state.completed[`${mapIdx}-${li}`] === true;
+    const isTheory = lesson.type === 'T';
+    const isCurrent = unlocked && !completed;
+
+    const nodeClass = completed ? 'completed' : unlocked ? 'unlocked' : 'locked';
+    const shapeClass = isTheory ? 'theory' : 'exercise';
+
+    html += `
+      <div class="flex flex-col items-center">
+        <div class="lesson-node ${shapeClass} ${nodeClass} ${isCurrent ? 'current' : ''}"
+             style="${unlocked ? `border-color:${map.color};${completed ? `background:${map.color}` : ''}` : ''}"
+             onclick="${unlocked ? `openLesson(${mapIdx},${li})` : ''}">
+          ${completed ? '<i class="fa-solid fa-check text-sm"></i>' : isTheory ? '<i class="fa-solid fa-book text-sm"></i>' : '<i class="fa-solid fa-dumbbell text-sm"></i>'}
+        </div>
+        <div class="mt-1 text-center">
+          <div class="text-xs node-title ${unlocked ? 'text-slate-300' : 'text-slate-600'}">${isTheory ? lesson.title : `Exercise ${li+1}`}</div>
+        </div>
+      </div>
+    `;
+
+    // Koneksi ke lesson berikutnya
+    if (li < map.lessons.length - 1) {
+      const connDone = completed;
+      html += `<div class="lesson-connector ${connDone ? 'done' : ''}"></div>`;
+    }
+  });
+
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+// ============================================================
+// RENDER: LESSON (teori atau exercise)
+// ============================================================
+function openLesson(mapIdx, lessonIdx) {
+  state.currentMap = mapIdx;
+  state.currentLesson = lessonIdx;
+  state.exerciseState = {};
+  showView('lesson');
+
+  const map = COURSE.maps[mapIdx];
+  const lesson = map.lessons[lessonIdx];
+  const total = map.lessons.length;
+
+  document.getElementById('lessonCounter').textContent = `${lessonIdx+1}/${total}`;
+  const done = map.lessons.filter((_, li) => state.completed[`${mapIdx}-${li}`] || li < lessonIdx).length;
+  document.getElementById('lessonProgFill').style.width = `${(done/total)*100}%`;
+
+  if (lesson.type === 'T') {
+    renderTheory(lesson);
+  } else {
+    renderExercise(lesson, mapIdx, lessonIdx);
+  }
+}
+
+function renderTheory(lesson) {
+  const content = document.getElementById('lessonContent');
+  content.innerHTML = `
+    <div class="stagger-in">
+      <div class="text-xs font-semibold text-emerald-400 uppercase tracking-wider mb-2">
+        <i class="fa-solid fa-book-open mr-1"></i> Theory <span class="id-lang" style="display:inline; color:#64748b;">Teori</span>
+      </div>
+      <h2 class="text-2xl font-bold mb-6">${lesson.title}</h2>
+      <div class="text-slate-300 leading-relaxed space-y-3">
+        ${lesson.body}
+      </div>
+      <div class="mt-8 flex justify-end">
+        <button id="nextBtn" class="btn-primary" onclick="completeAndNext()">
+          Next <span class="id-lang" style="color:rgba(11,17,33,0.7); display:inline;">Lanjut</span> <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function renderExercise(lesson, mapIdx, lessonIdx) {
+  const content = document.getElementById('lessonContent');
+  const etype = lesson.etype;
+  let exerciseHTML = '';
+
+  switch(etype) {
+    case 'mc': exerciseHTML = renderMC(lesson); break;
+    case 'tf': exerciseHTML = renderTF(lesson); break;
+    case 'fb': exerciseHTML = renderFB(lesson); break;
+    case 'ord': exerciseHTML = renderOrd(lesson); break;
+    case 'match': exerciseHTML = renderMatch(lesson); break;
+    case 'sa': exerciseHTML = renderSA(lesson); break;
+    case 'code': exerciseHTML = renderCode(lesson); break;
+    default: exerciseHTML = '<p>Tipe exercise tidak dikenal</p>';
+  }
+
+  content.innerHTML = `
+    <div class="stagger-in">
+      <div class="text-xs font-semibold text-amber-400 uppercase tracking-wider mb-2">
+        <i class="fa-solid fa-dumbbell mr-1"></i> Exercise <span class="id-lang" style="display:inline; color:#64748b;">Latihan</span>
+      </div>
+      <h2 class="text-xl font-bold mb-6">${lesson.q}</h2>
+      ${lesson.code ? `<div class="code-block mb-6">${escapeHTML(lesson.code)}</div>` : ''}
+      <div id="exerciseArea">${exerciseHTML}</div>
+      <div id="feedbackArea" class="mt-4"></div>
+      <div class="mt-6 flex items-center justify-between flex-wrap gap-3">
+        <div class="flex gap-2">
+          <button class="btn-secondary text-sm" onclick="showHint()" id="hintBtn">
+            <i class="fa-solid fa-lightbulb mr-1"></i> Hint <span class="id-lang" style="display:inline;">Petunjuk</span>
+          </button>
+          <button class="btn-secondary text-sm" onclick="resetExercise()" id="resetBtn">
+            <i class="fa-solid fa-rotate-left mr-1"></i> Reset <span class="id-lang" style="display:inline;">Atur Ulang</span>
+          </button>
+        </div>
+        <button class="btn-primary" id="checkBtn" onclick="checkAnswer()" disabled>
+          Check <span class="id-lang" style="display:inline;">Periksa</span> <i class="fa-solid fa-check"></i>
+        </button>
+      </div>
+      <div id="hintArea" class="mt-4 hidden">
+        <div class="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-sm text-amber-200">
+          <i class="fa-solid fa-lightbulb text-amber-400 mr-2"></i>${lesson.h || 'Tidak ada petunjuk'}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// Fungsi baru untuk mereset exercise
+function resetExercise() {
+  if (state.exerciseState.answered) return; // Tidak bisa reset jika sudah di-check
+  const lesson = COURSE.maps[state.currentMap].lessons[state.currentLesson];
+  renderExercise(lesson, state.currentMap, state.currentLesson);
+}
+
+// ============================================================
+// EXERCISE RENDERERS
+// ============================================================
+
+// Multiple Choice
+function renderMC(lesson) {
+  const labels = ['A','B','C','D','E','F'];
+  return `<div class="space-y-3" id="mcOptions">
+    ${lesson.o.map((opt, i) => `
+      <div class="opt-card" data-idx="${i}" onclick="selectMC(${i})">
+        <span class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-sm font-bold flex-shrink-0">${labels[i]}</span>
+        <span>${opt}</span>
+      </div>
+    `).join('')}
+  </div>`;
+}
+
+function selectMC(idx) {
+  if (state.exerciseState.answered) return;
+  state.exerciseState.selected = idx;
+  document.querySelectorAll('#mcOptions .opt-card').forEach((el, i) => {
+    el.classList.toggle('selected', i === idx);
+  });
+  document.getElementById('checkBtn').disabled = false;
+}
+
+// True/False
+function renderTF(lesson) {
+  return `<div class="flex gap-4" id="tfOptions">
+    <div class="opt-card flex-1 justify-center text-center text-lg" onclick="selectTF(true)" data-val="true">
+      <i class="fa-solid fa-check text-emerald-400 mr-2"></i> True <span class="id-lang">Benar</span>
+    </div>
+    <div class="opt-card flex-1 justify-center text-center text-lg" onclick="selectTF(false)" data-val="false">
+      <i class="fa-solid fa-xmark text-red-400 mr-2"></i> False <span class="id-lang">Salah</span>
+    </div>
+  </div>`;
+}
+
+function selectTF(val) {
+  if (state.exerciseState.answered) return;
+  state.exerciseState.selected = val;
+  document.querySelectorAll('#tfOptions .opt-card').forEach(el => {
+    el.classList.toggle('selected', el.dataset.val === String(val));
+  });
+  document.getElementById('checkBtn').disabled = false;
+}
+
+// Fill Blank
+function renderFB(lesson) {
+  return `<div>
+    <input type="text" class="ex-input" id="fbInput" placeholder="Ketik jawaban..." autocomplete="off" oninput="onFBInput()">
+  </div>`;
+}
+
+function onFBInput() {
+  const val = document.getElementById('fbInput').value.trim();
+  document.getElementById('checkBtn').disabled = val.length === 0;
+}
+
+// Order
+function renderOrd(lesson) {
+  // Tampilkan item dalam urutan acak
+  const shuffled = lesson.o.map((item, i) => ({text: item, origIdx: i}));
+  // Shuffle
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  state.exerciseState.ordOrder = [];
+  state.exerciseState.ordItems = shuffled;
+
+  return `<div>
+	<div class="text-sm text-slate-400 mb-3">Click items in the correct order: <span class="id-lang">Klik item dalam urutan yang benar:</span></div>
+    <div class="space-y-2" id="ordList">
+      ${shuffled.map((item, i) => `
+        <div class="order-item flex items-center gap-3" data-orig="${item.origIdx}" onclick="selectOrd(this,${item.origIdx})">
+          <span class="w-7 h-7 rounded-full bg-white/5 flex items-center justify-center text-xs font-bold ord-num"></span>
+          <span>${item.text}</span>
+        </div>
+      `).join('')}
+    </div>
+    <div class="mt-3 text-xs text-slate-500" id="ordStatus">Urutan terpilih: (belum ada)</div>
+  </div>`;
+}
+
+function selectOrd(el, origIdx) {
+  if (state.exerciseState.answered) return;
+  if (el.classList.contains('ordered')) return;
+
+  const order = state.exerciseState.ordOrder;
+  order.push(origIdx);
+  el.classList.add('ordered');
+  const numEl = el.querySelector('.ord-num');
+  numEl.textContent = order.length;
+
+  document.getElementById('ordStatus').textContent = `Urutan terpilih: ${order.length}/${state.exerciseState.ordItems.length}`;
+  document.getElementById('checkBtn').disabled = order.length < state.exerciseState.ordItems.length;
+}
+
+// Match
+function renderMatch(lesson) {
+  state.exerciseState.matchLeft = null;
+  state.exerciseState.matchPairs = [];
+  state.exerciseState.matchedLeft = new Set();
+  state.exerciseState.matchedRight = new Set();
+
+  // Shuffle right column
+  const rightShuffled = [...lesson.right];
+  for (let i = rightShuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [rightShuffled[i], rightShuffled[j]] = [rightShuffled[j], rightShuffled[i]];
+  }
+  state.exerciseState.rightShuffled = rightShuffled;
+
+  return `<div>
+    <div class="text-sm text-slate-400 mb-3">Klik item kiri, lalu item kanan untuk mencocokkan:</div>
+    <div class="grid grid-cols-2 gap-3" id="matchGrid">
+      <div class="space-y-2" id="matchLeft">
+        ${lesson.left.map((item, i) => `
+          <div class="match-item" data-side="left" data-idx="${i}" onclick="selectMatch('left',${i})">${item}</div>
+        `).join('')}
+      </div>
+      <div class="space-y-2" id="matchRight">
+        ${rightShuffled.map((item, i) => `
+          <div class="match-item" data-side="right" data-idx="${i}" data-val="${item}" onclick="selectMatch('right',${i})">${item}</div>
+        `).join('')}
+      </div>
+    </div>
+  </div>`;
+}
+
+function selectMatch(side, idx) {
+  if (state.exerciseState.answered) return;
+  const es = state.exerciseState;
+
+  if (side === 'left') {
+    if (es.matchedLeft.has(idx)) return;
+    // Highlight
+    document.querySelectorAll('#matchLeft .match-item').forEach(el => el.classList.remove('active'));
+    const el = document.querySelector(`#matchLeft .match-item[data-idx="${idx}"]`);
+    el.classList.add('active');
+    es.matchLeft = idx;
+  } else {
+    if (es.matchedRight.has(idx)) return;
+    if (es.matchLeft === null) {
+      showToast('Pilih item kiri terlebih dahulu', 'info');
+      return;
+    }
+    // Create pair
+    const lesson = COURSE.maps[state.currentMap].lessons[state.currentLesson];
+    const leftIdx = es.matchLeft;
+    const rightVal = es.rightShuffled[idx];
+    es.matchPairs.push({leftIdx, rightVal, rightShuffledIdx: idx});
+    es.matchedLeft.add(leftIdx);
+    es.matchedRight.add(idx);
+
+    // Visual
+    const leftEl = document.querySelector(`#matchLeft .match-item[data-idx="${leftIdx}"]`);
+    const rightEl = document.querySelector(`#matchRight .match-item[data-idx="${idx}"]`);
+    leftEl.classList.remove('active');
+    leftEl.classList.add('matched');
+    rightEl.classList.add('matched');
+
+    es.matchLeft = null;
+
+    document.getElementById('checkBtn').disabled = es.matchPairs.length < lesson.left.length;
+  }
+}
+
+// Select All
+function renderSA(lesson) {
+  state.exerciseState.selectedSet = new Set();
+  return `<div>
+    <div class="text-sm text-slate-400 mb-3">Pilih semua jawaban yang benar:</div>
+    <div class="space-y-2" id="saOptions">
+      ${lesson.o.map((opt, i) => `
+        <div class="opt-card" data-idx="${i}" onclick="toggleSA(${i})">
+          <span class="w-6 h-6 rounded border-2 border-slate-600 flex items-center justify-center flex-shrink-0 sa-check"></span>
+          <span>${opt}</span>
+        </div>
+      `).join('')}
+    </div>
+  </div>`;
+}
+
+function toggleSA(idx) {
+  if (state.exerciseState.answered) return;
+  const set = state.exerciseState.selectedSet;
+  if (set.has(idx)) set.delete(idx); else set.add(idx);
+  document.querySelectorAll('#saOptions .opt-card').forEach((el, i) => {
+    const check = el.querySelector('.sa-check');
+    if (set.has(i)) {
+      el.classList.add('selected');
+      check.innerHTML = '<i class="fa-solid fa-check text-emerald-400 text-xs"></i>';
+      check.style.borderColor = '#10b981';
+    } else {
+      el.classList.remove('selected');
+      check.innerHTML = '';
+      check.style.borderColor = '';
+    }
+  });
+  document.getElementById('checkBtn').disabled = set.size === 0;
+}
+
+// Code Output
+function renderCode(lesson) {
+  return `<div>
+    <div class="text-sm text-slate-400 mb-3">Tulis output yang akan ditampilkan:</div>
+    <input type="text" class="ex-input font-mono" id="codeInput" placeholder="Ketik output..." autocomplete="off" oninput="onCodeInput()">
+  </div>`;
+}
+
+function onCodeInput() {
+  const val = document.getElementById('codeInput').value.trim();
+  document.getElementById('checkBtn').disabled = val.length === 0;
+}
+
+// ============================================================
+// CHECK ANSWER
+// ============================================================
+function checkAnswer() {
+  if (state.exerciseState.answered) return;
+  state.exerciseState.answered = true;
+
+  // Sembunyikan tombol Hint dan Reset
+  const resetBtn = document.getElementById('resetBtn');
+  if (resetBtn) resetBtn.style.display = 'none';
+
+  const lesson = COURSE.maps[state.currentMap].lessons[state.currentLesson];
+  const etype = lesson.etype;
+  let correct = false;
+  let correctAnswer = '';
+
+  switch(etype) {
+    case 'mc': {
+      const sel = state.exerciseState.selected;
+      correct = sel === lesson.a;
+      document.querySelectorAll('#mcOptions .opt-card').forEach((el, i) => {
+        el.classList.add('disabled');
+        if (i === lesson.a) el.classList.add('correct');
+        if (i === sel && !correct) el.classList.add('wrong');
+      });
+      correctAnswer = lesson.o[lesson.a];
+      break;
+    }
+    case 'tf': {
+      const sel = state.exerciseState.selected;
+      correct = sel === lesson.a;
+      document.querySelectorAll('#tfOptions .opt-card').forEach(el => {
+        el.classList.add('disabled');
+        if (String(lesson.a) === el.dataset.val) el.classList.add('correct');
+        if (String(sel) === el.dataset.val && !correct) el.classList.add('wrong');
+      });
+            correctAnswer = lesson.a ? 'True <span class="id-lang">Benar</span>' : 'False <span class="id-lang">Salah</span>';
+      break;
+    }
+    case 'fb': {
+      const input = document.getElementById('fbInput').value.trim();
+      // Normalisasi: hapus semua spasi dan ubah jadi huruf kecil
+      const normalize = str => str
+        .replace(/[\u200B-\u200D\u2060-\u206F\uFEFF]/g, '') // Hapus karakter tak terlihat (Zero-width, function apply, BOM)
+        .replace(/[（﹝]/g, '(') // Ubah kurung buka full-width ke setengah
+        .replace(/[）﹞]/g, ')') // Ubah kurung tutup full-width ke setengah
+        .replace(/\s+/g, '')    // Hapus semua spasi
+        .toLowerCase();         // Jadiin huruf kecil
+      // Terima beberapa jawaban yang benar (dipisah /)
+      const answers = lesson.a.split('||');
+      correct = answers.some(a => normalize(input) === normalize(a));
+      document.getElementById('fbInput').classList.add(correct ? 'correct' : 'wrong');
+      document.getElementById('fbInput').disabled = true;
+      correctAnswer = lesson.a;
+      break;
+    }
+    case 'ord': {
+      const order = state.exerciseState.ordOrder;
+      correct = order.length === lesson.a.length && order.every((v, i) => v === lesson.a[i]);
+      correctAnswer = lesson.a.map(i => lesson.o[i]).join(' → ');
+      break;
+    }
+    case 'match': {
+      const pairs = state.exerciseState.matchPairs;
+      const lesson_data = lesson;
+      correct = pairs.length === lesson_data.a.length && pairs.every((p, i) => {
+        // Cek apakah leftIdx-i cocok dengan right yang benar
+        const expectedRightVal = lesson_data.right[lesson_data.a[p.leftIdx]];
+        return p.rightVal === expectedRightVal;
+      });
+      correctAnswer = lesson_data.left.map((l, i) => `${l} ↔ ${lesson_data.right[lesson_data.a[i]]}`).join(', ');
+      break;
+    }
+    case 'sa': {
+      const selected = [...state.exerciseState.selectedSet].sort();
+      const expected = [...lesson.a].sort();
+      correct = selected.length === expected.length && selected.every((v, i) => v === expected[i]);
+      document.querySelectorAll('#saOptions .opt-card').forEach((el, i) => {
+        el.classList.add('disabled');
+        if (lesson.a.includes(i)) el.classList.add('correct');
+        if (selected.includes(i) && !lesson.a.includes(i)) el.classList.add('wrong');
+      });
+      correctAnswer = lesson.a.map(i => lesson.o[i]).join(', ');
+      break;
+    }
+    case 'code': {
+      const input = document.getElementById('codeInput').value.trim();
+      // Normalisasi: hapus semua spasi dan ubah jadi huruf kecil
+      const normalize = str => str
+        .replace(/[\u200B-\u200D\u2060-\u206F\uFEFF]/g, '') // Hapus karakter tak terlihat
+        .replace(/[（﹝]/g, '(') // Standar kurung buka
+        .replace(/[）﹞]/g, ')') // Standar kurung tutup
+        .replace(/\s+/g, '')    // Hapus spasi
+        .toLowerCase();         // Huruf kecil
+      correct = normalize(input) === normalize(lesson.a);
+      document.getElementById('codeInput').classList.add(correct ? 'correct' : 'wrong');
+      document.getElementById('codeInput').disabled = true;
+      correctAnswer = lesson.a;
+      break;
+    }
+  }
+
+  // Simpan jawaban untuk Print Result
+  const mi = state.currentMap;
+  const li = state.currentLesson;
+  let studentAnswerText = "";
+  let correctAnswerText = "";
+
+  switch(etype) {
+    case 'mc':
+      studentAnswerText = state.exerciseState.selected !== undefined ? lesson.o[state.exerciseState.selected] : "-";
+      correctAnswerText = lesson.o[lesson.a];
+      break;
+    case 'tf':
+      studentAnswerText = state.exerciseState.selected !== null ? (state.exerciseState.selected ? "True" : "False") : "-";
+      correctAnswerText = lesson.a ? "True" : "False";
+      break;
+    case 'fb':
+      studentAnswerText = document.getElementById('fbInput').value.trim() || "-";
+      correctAnswerText = lesson.a;
+      break;
+    case 'code':
+      studentAnswerText = document.getElementById('codeInput').value.trim() || "-";
+      correctAnswerText = lesson.a;
+      break;
+    case 'ord':
+      studentAnswerText = state.exerciseState.ordOrder.map(i => lesson.o[i]).join(' → ') || "-";
+      correctAnswerText = lesson.a.map(i => lesson.o[i]).join(' → ');
+      break;
+    case 'match':
+      studentAnswerText = "Matched pairs";
+      correctAnswerText = lesson.left.map((l, i) => `${l} ↔ ${lesson.right[lesson.a[i]]}`).join('; ');
+      break;
+    case 'sa':
+      studentAnswerText = [...state.exerciseState.selectedSet].sort().map(i => lesson.o[i]).join(', ') || "-";
+      correctAnswerText = lesson.a.map(i => lesson.o[i]).join(', ');
+      break;
+  }
+
+  if (!state.mapAnswers) state.mapAnswers = {};
+  if (!state.mapAnswers[mi]) state.mapAnswers[mi] = {};
+  state.mapAnswers[mi][li] = {
+    q: lesson.q,
+    studentAnswer: studentAnswerText,
+    correctAnswer: correctAnswerText,
+    isCorrect: correct
+  };
+  saveState();
+
+  // Tampilkan feedback
+  const feedback = document.getElementById('feedbackArea');
+  if (correct) {
+    feedback.innerHTML = `
+      <div class="feedback-bar correct-fb">
+        <i class="fa-solid fa-check-circle text-2xl"></i>
+        <div>
+          <div class="text-lg">Correct! Excellent! <span class="id-lang">Benar! Hebat!</span></div>
+          ${correctAnswer ? `<div class="text-sm opacity-80 mt-1">Answer: ${correctAnswer}</div>` : ''}
+        </div>
+      </div>
+    `;
+    // Tambah XP
+    state.xp += 10;
+    state.streak += 1;
+    showXPPopup(10);
+    spawnConfetti();
+  } else {
+    feedback.innerHTML = `
+      <div class="feedback-bar wrong-fb">
+        <i class="fa-solid fa-times-circle text-2xl"></i>
+        <div>
+            <div class="text-lg">Incorrect <span class="id-lang">Belum tepat</span></div>
+            <div class="text-sm opacity-80 mt-1">Answer: ${correctAnswer}</div>
+        </div>
+      </div>
+    `;
+    state.streak = 0;
+  }
+  
+  renderKatexInElement(feedback);
+  
+  // Update header
+  document.getElementById('headerXP').textContent = state.xp;
+  document.getElementById('headerStreak').textContent = state.streak;
+
+  // Ganti tombol check menjadi lanjut
+  const checkBtn = document.getElementById('checkBtn');
+  checkBtn.textContent = 'Lanjut ';
+  checkBtn.innerHTML = 'Next <span class="id-lang" style="color:rgba(11,17,33,0.7); display:inline;">Lanjut</span> <i class="fa-solid fa-arrow-right"></i>';
+  checkBtn.disabled = false;
+  checkBtn.onclick = () => completeAndNext();
+
+  saveState();
+}
+
+// ============================================================
+// PRINT RESULT UNTUK ASSESSMENT
+// ============================================================
+function showPrintResultForm(mapIdx) {
+  const map = COURSE.maps[mapIdx];
+  const totalLessons = map.lessons.length;
+  let correctCount = 0;
+  
+  if (state.mapAnswers && state.mapAnswers[mapIdx]) {
+    for (let i = 0; i < totalLessons; i++) {
+      if (state.mapAnswers[mapIdx][i] && state.mapAnswers[mapIdx][i].isCorrect) {
+        correctCount++;
+      }
+    }
+  }
+  
+  const score = Math.round((correctCount / totalLessons) * 100);
+
+  const content = document.getElementById('lessonContent');
+  content.innerHTML = `
+    <div class="stagger-in text-center">
+      <div class="text-5xl mb-4">🎉</div>
+      <h2 class="text-2xl font-bold mb-2">Assessment Completed! <span class="id-lang">Asesmen Selesai!</span></h2>
+      <p class="text-slate-400 mb-6">You scored <span class="text-emerald-400 font-bold text-xl">${score}%</span> (${correctCount}/${totalLessons})</p>
+      
+      <div class="max-w-md mx-auto text-left space-y-4 mb-8">
+        <div>
+          <label class="text-sm text-slate-400 block mb-1">Name / <span class="id-lang">Nama</span></label>
+          <input type="text" id="printName" class="ex-input" placeholder="Enter your name / Masukkan nama">
+        </div>
+        <div>
+          <label class="text-sm text-slate-400 block mb-1">Date / <span class="id-lang">Tanggal</span></label>
+          <input type="date" id="printDate" class="ex-input" value="${new Date().toISOString().split('T')[0]}">
+        </div>
+        <div>
+          <label class="text-sm text-slate-400 block mb-1">Assessment / <span class="id-lang">Asesmen</span></label>
+          <input type="text" class="ex-input" value="Assessment ${map.id}" disabled style="opacity:0.6">
+        </div>
+        <div>
+          <label class="text-sm text-slate-400 block mb-1">Score / <span class="id-lang">Skor</span></label>
+          <input type="text" class="ex-input" value="${score}%" disabled style="opacity:0.6">
+        </div>
+      </div>
+
+      <button class="btn-primary text-lg" onclick="generatePrintout(${mapIdx})">
+        <i class="fa-solid fa-print mr-2"></i> Print Result <span class="id-lang" style="color:rgba(11,17,33,0.7); display:inline;">Cetak Hasil</span>
+      </button>
+      
+      <div class="mt-4">
+        <button class="btn-secondary" onclick="openPeta(${mapIdx})">
+          Back to Map <span class="id-lang">Kembali ke Peta</span>
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function generatePrintout(mapIdx) {
+  const map = COURSE.maps[mapIdx];
+  const studentName = document.getElementById('printName').value || '-';
+  const printDate = document.getElementById('printDate').value || '-';
+  
+  let correctCount = 0;
+  let tableRows = '';
+  
+  for (let i = 0; i < map.lessons.length; i++) {
+    const ansData = (state.mapAnswers && state.mapAnswers[mapIdx] && state.mapAnswers[mapIdx][i]) ? state.mapAnswers[mapIdx][i] : null;
+    // Hapus tag id-lang dari pertanyaan agar printout lebih bersih (hanya bahasa Inggris)
+    const qText = map.lessons[i].q.replace(/<span class='id-lang'>.*?<\/span>/g, '');
+    const studentAns = ansData ? ansData.studentAnswer : '-';
+    const correctAns = ansData ? ansData.correctAnswer : '-';
+    const isCorrect = ansData ? ansData.isCorrect : false;
+    
+    if (isCorrect) correctCount++;
+    
+    const noteSymbol = isCorrect ? '✓' : '✗';
+    const noteColor = isCorrect ? 'green' : 'red';
+    
+    tableRows += `
+      <tr>
+        <td style="text-align:center; width: 40px;">${i + 1}</td>
+        <td>${qText}</td>
+        <td>${studentAns}</td>
+        <td>${correctAns}</td>
+        <td style="text-align:center; color: ${noteColor}; font-weight:bold; font-size:1.2rem;">${noteSymbol}</td>
+      </tr>
+    `;
+  }
+  
+  const score = Math.round((correctCount / map.lessons.length) * 100);
+
+  const printWindow = window.open('', '_blank');
+  printWindow.document.write(`
+    <!DOCTYPE html>
+    <html lang="id">
+    <head>
+      <meta charset="UTF-8">
+      <title>Assessment Result - ${map.id}</title>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+      <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"><\/script>
+      <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+        onload="renderMathInElement(document.body, {delimiters: [{left: '\\\\(', right: '\\\\)', display: false},{left: '\\\\[', right: '\\\\]', display: true}], throwOnError: false}); setTimeout(function(){window.print();}, 1000);"><\/script>
+      <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 30px; color: #333; line-height: 1.5; }
+        h1 { text-align: center; margin-bottom: 5px; }
+        .subtitle { text-align: center; color: #666; font-size: 0.9rem; margin-bottom: 20px; }
+        .header-info { margin-bottom: 20px; border: 1px solid #ddd; padding: 15px; border-radius: 8px; display: flex; justify-content: space-between; flex-wrap: wrap; }
+        .header-info p { margin: 5px 0; font-size: 14px; }
+        .header-info strong { margin-right: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 13px; }
+        th, td { border: 1px solid #333; padding: 10px; text-align: left; vertical-align: top; }
+        th { background: #f0f0f0; font-weight: bold; text-align: center; }
+        @media print {
+          body { padding: 0; }
+          .header-info { border: none; padding: 0; }
+        }
+      </style>
+    </head>
+    <body>
+      <h1>Assessment Result</h1>
+      <div class="subtitle">Direct and Inverse Proportions</div>
+      
+      <div class="header-info">
+        <div style="flex:1; min-width: 200px;">
+          <p><strong>Name:</strong> ${studentName}</p>
+          <p><strong>Date:</strong> ${printDate}</p>
+        </div>
+        <div style="flex:1; min-width: 200px;">
+          <p><strong>Assessment:</strong> ${map.id}</p>
+          <p><strong>Score:</strong> ${score}% (${correctCount}/${map.lessons.length})</p>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>Question</th>
+            <th>Student Answer</th>
+            <th>Correct Answer</th>
+            <th>Note</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${tableRows}
+        </tbody>
+      </table>
+    </body>
+    </html>
+  `);
+  printWindow.document.close();
+}
+
+// ============================================================
+// COMPLETE & NEXT
+// ============================================================
+function completeAndNext() {
+  const mi = state.currentMap;
+  const li = state.currentLesson;
+  state.completed[`${mi}-${li}`] = true;
+  saveState();
+
+  const map = COURSE.maps[mi];
+  const isLastLesson = li + 1 >= map.lessons.length;
+  const isAssessment = map.branch; // Peta 7A-7E adalah branch: true
+
+  // Jika ini exercise terakhir di Assessment, tampilkan form Print
+  if (isAssessment && isLastLesson) {
+    showPrintResultForm(mi);
+  } else if (li + 1 < map.lessons.length && isLessonUnlocked(mi, li + 1)) {
+    openLesson(mi, li + 1);
+  } else {
+    openPeta(mi);
+  }
+}
+
+// ============================================================
+// NAVIGASI
+// ============================================================
+function showView(viewName) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById(viewName + 'View').classList.add('active');
+  state.currentView = viewName;
+  window.scrollTo(0, 0);
+}
+
+function showMap() {
+  showView('map');
+  renderMap();
+}
+
+function closeLesson() {
+  openPeta(state.currentMap);
+}
+
+// ============================================================
+// UI HELPERS
+// ============================================================
+function showToast(msg, type='info') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast ${type} show`;
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function showXPPopup(amount) {
+  document.getElementById('xpAmount').textContent = amount;
+  const popup = document.getElementById('xpPopup');
+  popup.classList.add('show');
+  setTimeout(() => popup.classList.remove('show'), 1500);
+}
+
+function spawnConfetti() {
+  const colors = ['#10b981','#f59e0b','#ec4899','#8b5cf6','#06b6d4','#ef4444'];
+  for (let i = 0; i < 30; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti';
+    c.style.left = Math.random() * 100 + 'vw';
+    c.style.background = colors[Math.floor(Math.random() * colors.length)];
+    c.style.width = (Math.random() * 8 + 4) + 'px';
+    c.style.height = (Math.random() * 8 + 4) + 'px';
+    c.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    c.style.animationDuration = (Math.random() * 1.5 + 1) + 's';
+    c.style.animationDelay = (Math.random() * 0.5) + 's';
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 3000);
+  }
+}
+
+function showHint() {
+  document.getElementById('hintArea').classList.remove('hidden');
+  document.getElementById('hintBtn').disabled = true;
+}
+
+function escapeHTML(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// --- FUNGSI UNTUK MODAL RULES ---
+function openRules() {
+  document.getElementById('rulesModal').classList.add('active');
+}
+
+function closeRules() {
+  document.getElementById('rulesModal').classList.remove('active');
+}
+
+// ============================================================
+// KATEX RENDERING
+// ============================================================
+function renderKatexInElement(el) {
+  if (typeof renderMathInElement === 'function') {
+    renderMathInElement(el, {
+      delimiters: [
+        {left: '\\(', right: '\\)', display: false},  //
+        {left: '\\[', right: '\\]', display: true}    //
+      ],
+      throwOnError: false
+    });
+  }
+}
+
+// Override showView untuk render KaTeX setiap pindah halaman
+const originalShowView = showView;
+showView = function(viewName) {
+  originalShowView(viewName);
+  setTimeout(() => renderKatexInElement(document.body), 100);
+};
+
+// Override openLesson untuk render KaTeX di konten lesson
+const originalOpenLesson = openLesson;
+openLesson = function(mapIdx, lessonIdx) {
+  originalOpenLesson(mapIdx, lessonIdx);
+  setTimeout(() => renderKatexInElement(document.body), 100);
+};
+
+// ============================================================
+// INISIALISASI APLIKASI
+// ============================================================
+loadState();
+renderMap();
+
+// Keyboard shortcuts
+document.addEventListener('keydown', (e) => {
+  // Tekan Escape untuk menutup lesson
+  if (e.key === 'Escape' && state.currentView === 'lesson') {
+    closeLesson();
+  }
+  
+  // Tekan Enter untuk memeriksa jawaban / lanjut ke soal berikutnya
+  if (e.key === 'Enter' && state.currentView === 'lesson') {
+    const checkBtn = document.getElementById('checkBtn');
+    // Pastikan tombol ada dan tidak dalam keadaan disabled
+    if (checkBtn && !checkBtn.disabled) {
+      e.preventDefault(); 
+      checkBtn.click();   // Untuk halaman Exercise
+    } else if (nextBtn) {
+      e.preventDefault();
+      nextBtn.click();    // Untuk halaman Teori
+    }
+  }
+});
+</script>
+</body>
+</html>
