@@ -1,0 +1,2142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Math Tutoring — by Deni</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+:root {
+  --bg: #0b1121; --bg2: #111827; --card: rgba(17,24,39,0.85);
+  --fg: #e2e8f0; --muted: #64748b; --accent: #10b981;
+  --accent2: #f59e0b; --danger: #ef4444; --border: rgba(100,116,139,0.2);
+  --glass: rgba(16,185,129,0.08);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: var(--fg); min-height: 100vh; overflow-x: hidden; }
+.font-mono { font-family: 'JetBrains Mono', monospace; }
+
+/* Latar belakang animasi */
+.bg-grid {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    radial-gradient(circle at 20% 50%, rgba(16,185,129,0.06) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(245,158,11,0.04) 0%, transparent 50%),
+    radial-gradient(circle at 50% 80%, rgba(16,185,129,0.03) 0%, transparent 50%);
+}
+.bg-grid::after {
+  content: ''; position: absolute; inset: 0;
+  background-image: linear-gradient(rgba(16,185,129,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(16,185,129,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* Transisi halaman */
+.view { display: none; position: relative; z-index: 1; }
+.view.active { display: block; animation: fadeSlideIn 0.4s ease; }
+@keyframes fadeSlideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Peta node */
+.map-node {
+  width: 72px; height: 72px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 1.2rem; cursor: pointer; transition: all 0.3s ease;
+  position: relative; border: 3px solid var(--border);
+  background: var(--bg2);
+}
+.map-node.unlocked { border-color: var(--accent); box-shadow: 0 0 20px rgba(16,185,129,0.2); }
+.map-node.unlocked:hover { transform: scale(1.12); box-shadow: 0 0 30px rgba(16,185,129,0.4); }
+.map-node.completed { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+.map-node.completed:hover { transform: scale(1.08); }
+.map-node.locked { opacity: 0.35; cursor: not-allowed; }
+.map-node.current { animation: pulseGlow 2s ease-in-out infinite; }
+@keyframes pulseGlow {
+  0%,100% { box-shadow: 0 0 15px rgba(16,185,129,0.3); }
+  50% { box-shadow: 0 0 35px rgba(16,185,129,0.6); }
+}
+
+/* Koneksi garis peta */
+.map-line { width: 3px; height: 40px; margin: 0 auto; background: var(--border); transition: background 0.5s; }
+.map-line.done { background: var(--accent); }
+.map-branch-line { height: 3px; width: 60px; background: var(--border); transition: background 0.5s; }
+.map-branch-line.done { background: var(--accent); }
+
+/* Lesson node di peta detail */
+.lesson-node {
+  width: 56px; height: 56px; border-radius: 16px; display: flex; align-items: center; justify-content: center;
+  font-size: 0.85rem; cursor: pointer; transition: all 0.3s; border: 2px solid var(--border); background: var(--bg2);
+}
+.lesson-node.theory { border-radius: 50%; }
+.lesson-node.exercise { border-radius: 16px; }
+.lesson-node.unlocked { border-color: var(--accent); }
+.lesson-node.unlocked:hover { transform: scale(1.15); box-shadow: 0 0 20px rgba(16,185,129,0.3); }
+.lesson-node.completed { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+.lesson-node.locked { opacity: 0.3; cursor: not-allowed; }
+.lesson-connector { width: 2px; height: 24px; margin: 0 auto; background: var(--border); }
+.lesson-connector.done { background: var(--accent); }
+
+/* Tombol */
+.btn-primary {
+  background: var(--accent); color: var(--bg); font-weight: 600; padding: 14px 32px; border-radius: 14px;
+  border: none; cursor: pointer; font-size: 1rem; font-family: inherit; transition: all 0.2s;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-primary:hover { filter: brightness(1.15); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(16,185,129,0.3); }
+.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; filter: none; }
+.btn-secondary {
+  background: transparent; color: var(--accent); font-weight: 600; padding: 12px 24px; border-radius: 14px;
+  border: 2px solid var(--accent); cursor: pointer; font-size: 0.9rem; font-family: inherit; transition: all 0.2s;
+}
+.btn-secondary:hover { background: rgba(16,185,129,0.1); }
+
+/* Opsi exercise */
+.opt-card {
+  padding: 16px 20px; border: 2px solid var(--border); border-radius: 14px; cursor: pointer;
+  transition: all 0.2s; background: var(--card); min-height: 52px; display: flex; align-items: center; gap: 12px;
+}
+.opt-card:hover { border-color: rgba(16,185,129,0.4); background: var(--glass); }
+.opt-card.selected { border-color: var(--accent); background: rgba(16,185,129,0.12); }
+.opt-card.correct { border-color: #10b981; background: rgba(16,185,129,0.15); }
+.opt-card.wrong { border-color: #ef4444; background: rgba(239,68,68,0.1); }
+.opt-card.disabled { pointer-events: none; opacity: 0.7; }
+
+/* Input exercise */
+.ex-input {
+  background: var(--bg2); border: 2px solid var(--border); border-radius: 12px; padding: 14px 18px;
+  color: var(--fg); font-size: 1rem; font-family: inherit; width: 100%; outline: none; transition: border-color 0.2s;
+}
+.ex-input:focus { border-color: var(--accent); }
+.ex-input.correct { border-color: #10b981; }
+.ex-input.wrong { border-color: #ef4444; }
+
+/* Code block */
+.code-block {
+  background: #0d1117; border: 1px solid rgba(100,116,139,0.2); border-radius: 12px;
+  padding: 20px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;
+  line-height: 1.7; overflow-x: auto; white-space: pre;
+}
+
+/* Progress bar */
+.prog-bar { height: 6px; border-radius: 3px; background: rgba(100,116,139,0.2); overflow: hidden; }
+.prog-fill { height: 100%; border-radius: 3px; background: var(--accent); transition: width 0.5s ease; }
+
+/* Toast */
+.toast {
+  position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
+  padding: 14px 28px; border-radius: 14px; font-weight: 600; z-index: 999;
+  transition: transform 0.4s ease; pointer-events: none;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast.success { background: #10b981; color: #0b1121; }
+.toast.error { background: #ef4444; color: white; }
+.toast.info { background: #f59e0b; color: #0b1121; }
+
+/* XP popup */
+.xp-popup {
+  position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%) scale(0);
+  background: var(--bg2); border: 2px solid var(--accent2); border-radius: 24px;
+  padding: 40px 60px; z-index: 100; text-align: center;
+  transition: transform 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
+}
+.xp-popup.show { transform: translate(-50%,-50%) scale(1); }
+
+/* Celebration particles */
+.confetti { position: fixed; top: -10px; z-index: 99; pointer-events: none; animation: confettiFall 2s ease-out forwards; }
+@keyframes confettiFall {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+/* Match exercise */
+.match-item {
+  padding: 12px 18px; border: 2px solid var(--border); border-radius: 12px; cursor: pointer;
+  transition: all 0.2s; background: var(--card); text-align: center; user-select: none;
+}
+.match-item:hover { border-color: rgba(16,185,129,0.4); }
+.match-item.active { border-color: var(--accent); background: rgba(16,185,129,0.12); box-shadow: 0 0 15px rgba(16,185,129,0.2); }
+.match-item.matched { border-color: #10b981; background: rgba(16,185,129,0.15); opacity: 0.6; pointer-events: none; }
+.match-item.wrong-match { border-color: #ef4444; background: rgba(239,68,68,0.1); }
+
+/* Order exercise */
+.order-item {
+  padding: 14px 20px; border: 2px solid var(--border); border-radius: 12px; cursor: pointer;
+  transition: all 0.2s; background: var(--card); user-select: none;
+}
+.order-item:hover { border-color: rgba(16,185,129,0.4); }
+.order-item.ordered { border-color: var(--accent2); background: rgba(245,158,11,0.1); opacity: 0.5; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(100,116,139,0.3); border-radius: 3px; }
+
+/* Responsif */
+@media (max-width: 640px) {
+  .map-node { width: 56px; height: 56px; font-size: 1rem; }
+  .lesson-node { width: 48px; height: 48px; font-size: 0.75rem; }
+}
+
+/* Animasi masuk */
+.stagger-in > * { opacity: 0; transform: translateY(15px); animation: staggerFade 0.4s ease forwards; }
+.stagger-in > *:nth-child(1) { animation-delay: 0.05s; }
+.stagger-in > *:nth-child(2) { animation-delay: 0.1s; }
+.stagger-in > *:nth-child(3) { animation-delay: 0.15s; }
+.stagger-in > *:nth-child(4) { animation-delay: 0.2s; }
+.stagger-in > *:nth-child(5) { animation-delay: 0.25s; }
+.stagger-in > *:nth-child(6) { animation-delay: 0.3s; }
+.stagger-in > *:nth-child(7) { animation-delay: 0.35s; }
+.stagger-in > *:nth-child(8) { animation-delay: 0.4s; }
+.stagger-in > *:nth-child(9) { animation-delay: 0.45s; }
+.stagger-in > *:nth-child(10) { animation-delay: 0.5s; }
+@keyframes staggerFade { to { opacity: 1; transform: translateY(0); } }
+
+/* Feedback benar/salah */
+.feedback-bar {
+  padding: 18px 24px; border-radius: 14px; font-weight: 600; display: flex; align-items: center; gap: 12px;
+  animation: fadeSlideIn 0.3s ease;
+}
+.feedback-bar.correct-fb { background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.3); color: #10b981; }
+.feedback-bar.wrong-fb { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #ef4444; }
+
+/* Terjemahan bahasa Indonesia di bawah teks utama */
+.id-lang { display: block; font-size: 0.75rem; color: #94a3b8; margin-top: 2px; line-height: 1.4; }
+
+/* Khusus label di node peta/lesson: tidak wrap, indo di bawah inggris */
+.node-title { text-align: center; white-space: nowrap; }
+.node-title .id-lang { display: block; white-space: nowrap; margin-top: 2px; }
+
+/* Modal Rules */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 200;
+  display: none; align-items: center; justify-content: center;
+}
+.modal-overlay.active { display: flex; animation: fadeIn 0.3s ease; }
+.modal-box {
+  background: var(--bg2); border: 1px solid var(--border); border-radius: 20px;
+  padding: 30px; max-width: 450px; width: 90%; position: relative;
+  animation: scaleIn 0.3s ease;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes scaleIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<!-- Rules Modal -->
+<div id="rulesModal" class="modal-overlay">
+  <div class="modal-box">
+    <button onclick="closeRules()" class="absolute top-4 right-4 text-slate-500 hover:text-slate-300 transition">
+      <i class="fa-solid fa-xmark text-lg"></i>
+    </button>
+    <h3 class="text-xl font-bold mb-5 text-amber-400">
+      <i class="fa-solid fa-gavel mr-2"></i>Class Rules <span class="id-lang" style="display:inline; color:#f59e0b;">Aturan Kelas</span>
+    </h3>
+    <ul class="space-y-4 text-slate-300">
+      <li class="flex items-start gap-3">
+        <span class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center flex-shrink-0 mt-0.5"><i class="fa-solid fa-comments text-emerald-400"></i></span>
+        <div>
+          <strong>Take turns speaking</strong>
+          <span class="id-lang">Berbicara secara bergantian</span>
+        </div>
+      </li>
+      <li class="flex items-start gap-3">
+        <span class="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center flex-shrink-0 mt-0.5"><i class="fa-solid fa-video text-amber-400"></i></span>
+        <div>
+          <strong>Turn on camera & microphone when required</strong>
+          <span class="id-lang">Menyalakan kamera & microphone jika diperlukan</span>
+        </div>
+      </li>
+      <li class="flex items-start gap-3">
+        <span class="w-8 h-8 rounded-lg bg-violet-500/10 flex items-center justify-center flex-shrink-0 mt-0.5"><i class="fa-solid fa-hand text-violet-400"></i></span>
+        <div>
+          <strong>Ask for permission to leave the class</strong>
+          <span class="id-lang">Meminta izin jika ingin meninggalkan kelas</span>
+        </div>
+      </li>
+    </ul>
+    <div class="mt-6 text-right">
+      <button onclick="closeRules()" class="btn-primary">Got it! <span class="id-lang" style="color:rgba(11,17,33,0.7); display:inline;">Mengerti!</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="toast"></div>
+
+<!-- XP Popup -->
+<div id="xpPopup" class="xp-popup">
+  <div class="text-5xl font-bold text-amber-400 mb-2">+<span id="xpAmount">10</span> XP</div>
+  <div class="text-lg text-slate-400">Correct answer! <span class="id-lang">Jawaban benar!</span></div>
+</div>
+
+<!-- ========== MAP VIEW ========== -->
+<div id="mapView" class="view active">
+  <header class="sticky top-0 z-10 backdrop-blur-xl bg-[#0b1121]/80 border-b border-white/5">
+    <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center">
+          <i class="fa-solid fa-square-root-variable text-emerald-400"></i>
+        </div>
+        <div>
+          <div class="font-bold text-lg leading-tight">Math Tutoring</div>
+          <div class="text-xs text-slate-500">by Deni</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-5">
+        <button onclick="openRules()" class="text-xs text-slate-500 hover:text-amber-400 transition flex items-center gap-1 border border-transparent hover:border-amber-400/30 rounded-lg px-2 py-1" title="Class Rules">
+          <i class="fa-solid fa-gavel"></i> Rules
+        </button>
+        <button onclick="resetProgress()" class="text-xs text-slate-500 hover:text-red-400 transition flex items-center gap-1 border border-transparent hover:border-red-400/30 rounded-lg px-2 py-1" title="Reset Semua Progress">
+          <i class="fa-solid fa-rotate-left"></i> Reset
+        </button>
+        <div class="flex items-center gap-2 text-amber-400 font-semibold">
+          <i class="fa-solid fa-bolt"></i><span id="headerXP">0</span> XP
+        </div>
+        <div class="flex items-center gap-2 text-orange-400 font-semibold">
+          <i class="fa-solid fa-fire"></i><span id="headerStreak">0</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 pt-8 pb-20">
+    <div class="text-center mb-10">
+		<h1 class="text-2xl md:text-3xl font-extrabold mb-3 bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent leading-tight">
+		  Exponents and Roots
+		  <span class="id-lang" style="display:block; color:#94a3b8; margin-top: 4px; font-size: 1.25rem;">Eksponen dan Akar</span>
+		</h1>
+            <div class="text-slate-400 mx-auto text-center" style="max-width: 90%;">
+        <div style="white-space: nowrap;">Complete each map to unlock the next. Collect XP and build your learning streak!</div>
+        <div class="id-lang" style="white-space: nowrap;">Selesaikan setiap peta untuk membuka peta berikutnya. Kumpulkan XP dan bangun streak belajarmu!</div>
+      </div>
+    </div>
+
+    <!-- Progress keseluruhan -->
+    <div class="max-w-md mx-auto mb-10">
+      <div class="flex justify-between text-sm mb-2">
+        <span class="text-slate-400">Overall Progress <span class="id-lang" style="display:inline; color:#64748b;">Progress Keseluruhan</span></span>
+        <span class="text-emerald-400 font-semibold" id="totalProgress">0%</span>
+      </div>
+      <div class="prog-bar">
+        <div class="prog-fill" id="totalProgFill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <!-- Peta nodes akan dirender oleh JS -->
+    <div id="mapContainer" class="flex flex-col items-center gap-0"></div>
+  </main>
+</div>
+
+<!-- ========== PETA VIEW (detail lesson) ========== -->
+<div id="petaView" class="view">
+  <header class="sticky top-0 z-10 backdrop-blur-xl bg-[#0b1121]/80 border-b border-white/5">
+    <div class="max-w-2xl mx-auto px-4 py-4 flex items-center gap-4">
+      <button onclick="showMap()" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center hover:bg-white/10 transition">
+        <i class="fa-solid fa-arrow-left text-slate-400"></i>
+      </button>
+      <div>
+        <div class="font-bold text-lg" id="petaTitle"></div>
+        <div class="text-xs text-slate-500" id="petaSubtitle"></div>
+      </div>
+    </div>
+  </header>
+  <main class="max-w-2xl mx-auto px-4 pt-8 pb-20">
+    <div id="lessonContainer" class="flex flex-col items-center"></div>
+  </main>
+</div>
+
+<!-- ========== LESSON VIEW ========== -->
+<div id="lessonView" class="view">
+  <header class="sticky top-0 z-10 backdrop-blur-xl bg-[#0b1121]/80 border-b border-white/5">
+    <div class="max-w-2xl mx-auto px-4 py-4 flex items-center gap-4">
+      <button onclick="closeLesson()" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center hover:bg-white/10 transition">
+        <i class="fa-solid fa-xmark text-slate-400"></i>
+      </button>
+      <div class="flex-1">
+        <div class="prog-bar">
+          <div class="prog-fill" id="lessonProgFill" style="width:0%"></div>
+        </div>
+      </div>
+      <div class="text-sm text-slate-400 font-mono" id="lessonCounter">1/10</div>
+    </div>
+  </header>
+  <main class="max-w-2xl mx-auto px-4 pt-6 pb-20" id="lessonContent"></main>
+</div>
+
+<script>
+// ============================================================
+// DATA KURSUS — Seluruh konten pembelajaran
+// ============================================================
+const COURSE = {
+  title: "Exponents and Roots <span class='id-lang'>Eksponen dan Akar</span>",
+  maps: [
+    // ==================== SECTION 1 ====================
+    {
+      id:1, title:"Spiral Review Warm-up <span class='id-lang'>Pemanasan Review</span>", icon:"fa-rotate", color:"#10b981", branch:false,
+      lessons:[
+        // 1 Teori
+        {type:"T",title:"Variables and Constants <span class='id-lang'>Variabel dan Konstanta</span>",
+         body:`<p>Before we dive into exponents, let's review algebra! A variable is a symbol (like x or y) representing an unknown number, while a constant is a fixed number. <span class='id-lang'>Sebelum masuk ke eksponen, mari review aljabar! Variabel adalah simbol (seperti x atau y) yang mewakili angka tak diketahui, sedangkan konstanta adalah angka tetap.</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+           <div class="text-emerald-400 font-semibold mb-2">Example <span class='id-lang'>Contoh</span></div>
+           <p class="text-sm text-slate-300">In \\( 7x - 12 \\), 7 is the coefficient, \\( x \\) is the variable, and -12 is the constant. <span class='id-lang'>Pada \\( 7x - 12 \\), 7 adalah koefisien, \\( x \\) adalah variabel, dan -12 adalah konstanta.</span></p>
+         </div>`},
+        // 3 Exercise
+        {type:"E",etype:"mc",
+         q:"Identify the coefficient in the expression \\( 7x - 12 \\). <span class='id-lang'>Sebutkan koefisien dari ekspresi \\( 7x - 12 \\).</span>",
+         o:["7 <span class='id-lang'></span>","12 <span class='id-lang'></span>","x <span class='id-lang'></span>","-12 <span class='id-lang'></span>"],
+         a:0,
+         h:"The coefficient is the number multiplying the variable. <span class='id-lang'>Koefisien adalah angka yang mengalikan variabel.</span>"},
+        {type:"E",etype:"mc",
+         q:"Which of the following algebraic expressions has exactly 3 terms and a constant of 5? <span class='id-lang'>Manakah dari ekspresi aljabar berikut yang memiliki tepat 3 suku dan konstanta 5?</span>",
+         o:["\\( 2x + 3y + 5 \\) <span class='id-lang'></span>","\\( x + 5 \\) <span class='id-lang'></span>","\\( 2x - 5y \\) <span class='id-lang'></span>","\\( 3x + 2y + 5z \\) <span class='id-lang'></span>"],
+         a:0,
+         h:"Look for two variable terms and the standalone number 5. <span class='id-lang'>Cari dua suku variabel dan angka berdiri sendiri 5.</span>"},
+        {type:"E",etype:"ord",
+         q:"Order the steps to translate: '8 more than twice the age (x)'. <span class='id-lang'>Urutkan langkah menerjemahkan: '8 lebihnya dari dua kali umur (x)'.</span>",
+         o:["Identify 'twice the age': \\( 2x \\)","Identify '8 more than': \\( + 8 \\)","Combine them: \\( 2x + 8 \\)"],
+         a:[0,1,2],
+         h:"Start with the multiplication, then add the constant. <span class='id-lang'>Mulai dengan perkalian, lalu tambah konstanta.</span>"},
+        // 1 Teori
+        {type:"T",title:"Constructing Expressions <span class='id-lang'>Menyusun Ekspresi</span>",
+         body:`<p>Translating real-world problems into algebraic expressions is crucial. If 1 book costs a certain amount, multiple books cost a multiple of that amount. <span class='id-lang'>Menerjemahkan masalah dunia nyata ke ekspresi aljabar itu penting. Jika 1 buku berharga sejumlah tertentu, beberapa buku berharga kelipatannya.</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-cyan-500/10 border border-cyan-500/20">
+           <div class="text-cyan-400 font-semibold mb-2">Example <span class='id-lang'>Contoh</span></div>
+           <p class="text-sm text-slate-300">If \\( x \\) books cost 50,000, the price of 5 books is \\( 5 \\times \\frac{50000}{x} \\). <span class='id-lang'>Jika \\( x \\) buku berharga 50.000, harga 5 buku adalah \\( 5 \\times \\frac{50000}{x} \\).</span></p>
+         </div>`},
+        // 3 Exercise
+        {type:"E",etype:"fb",
+         q:"If the price of \\( x \\) books is 50,000, what is the expression for the price of 5 books? <span class='id-lang'>Jika harga \\( x \\) buku adalah 50.000, tuliskan ekspresi untuk harga 5 buku.</span>",
+         a:"250000/x||5*(50000/x)||5*50000/x",
+         h:"Find the price of 1 book first, then multiply by 5. <span class='id-lang'>Cari harga 1 buku dulu, lalu kali 5.</span>"},
+        {type:"E",etype:"mc",
+         q:"Which of the following represents a mathematical expression (not an equation)? <span class='id-lang'>Manakah yang merupakan ekspresi matematika (bukan persamaan)?</span>",
+         o:["\\( 3x + 2 = 5 \\) <span class='id-lang'></span>","\\( 4y - 7 \\) <span class='id-lang'></span>","\\( x > 10 \\) <span class='id-lang'></span>","\\( 8 \\div 2 = 4 \\) <span class='id-lang'></span>"],
+         a:1,
+         h:"An expression does not have an equals sign. <span class='id-lang'>Ekspresi tidak memiliki tanda sama dengan.</span>"},
+        {type:"E",etype:"tf",
+         q:"In the expression \\( 3y + 2x - 9 \\), the constant is 3. <span class='id-lang'>Pada ekspresi \\( 3y + 2x - 9 \\), konstantanya adalah 3.</span>",
+         a:false,
+         h:"The constant is the standalone number, which is -9. <span class='id-lang'>Konstanta adalah angka berdiri sendiri, yaitu -9.</span>"},
+        // 1 Teori
+        {type:"T",title:"Translating Sentences to Algebra <span class='id-lang'>Menerjemahkan Kalimat ke Aljabar</span>",
+         body:`<p>Math phrases can be tricky. 'Half of the sum' means you add first, then divide by 2. 'Square of the difference' means you subtract first, then square it. <span class='id-lang'>Frasa matematika bisa sulit. 'Setengah dari jumlah' berarti kamu tambah dulu, lalu bagi 2. 'Kuadrat dari selisih' berarti kamu kurang dulu, lalu dikuadratkan.</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-amber-500/10 border border-amber-500/20">
+           <div class="text-amber-400 font-semibold mb-2">Key Words <span class='id-lang'>Kata Kunci</span></div>
+           <p class="text-sm text-slate-300">Sum = addition, Difference = subtraction, Product = multiplication, Quotient = division. <span class='id-lang'>Sum = penjumlahan, Difference = pengurangan, Product = perkalian, Quotient = pembagian.</span></p>
+         </div>`},
+        // 4 Exercise
+        {type:"E",etype:"match",
+         q:"Match the verbal expression to the algebraic expression. <span class='id-lang'>Cocokkan kalimat dengan ekspresi aljabarnya.</span>",
+         left:["5 less than \\( x \\)","Product of 3 and \\( y \\)","Half of sum of \\( p \\) and 10"],
+         right:["\\( x - 5 \\)","\\( 3y \\)","\\( \\frac{1}{2}(p + 10) \\)"],
+         a:[0,1,2],
+         h:"'Less than' means subtraction. 'Product' means multiplication. <span class='id-lang'>'Less than' berarti pengurangan. 'Product' berarti perkalian.</span>"},
+        {type:"E",etype:"sa",
+         q:"Which of these are algebraic terms? <span class='id-lang'>Manakah yang merupakan suku aljabar?</span>",
+         o:["\\( 4x \\)","\\( -7 \\)","\\( y^2 \\)","\\( = \\)"],
+         a:[0,1,2],
+         h:"Terms are separated by + or - signs. An equals sign is not a term. <span class='id-lang'>Suku dipisahkan oleh tanda + atau -. Tanda sama dengan bukan suku.</span>"},
+        {type:"E",etype:"fb",
+         q:"Translate into algebra: 'Square of the difference of a and b'. <span class='id-lang'>Terjemahkan ke aljabar: 'Kuadrat dari selisih a dan b'.</span>",
+         a:"(a-b)^2||(a - b)^2",
+         h:"Difference is a-b, then put it in parentheses and square it. <span class='id-lang'>Selisih adalah a-b, lalu masukkan kurung dan dikuadratkan.</span>"},
+        {type:"E",etype:"fb",
+         q:"Identify all variables in \\( 2p + 3q - r \\). (Separate with commas) <span class='id-lang'>Sebutkan semua variabel pada \\( 2p + 3q - r \\). (Pisahkan dengan koma)</span>",
+         a:"p,q,r",
+         h:"Variables are the letters representing unknown numbers. <span class='id-lang'>Variabel adalah huruf yang mewakili angka tak diketahui.</span>"}
+      ]
+    },
+    // ==================== SECTION 2 ====================
+    {
+      id:2, title:"Real-World Connection <span class='id-lang'>Koneksi Dunia Nyata</span>", icon:"fa-lightbulb", color:"#06b6d4", branch:false,
+      lessons:[
+        // 1 Teori
+        {type:"T",title:"Why Exponents? Large Numbers <span class='id-lang'>Mengapa Eksponen? Bilangan Besar</span>",
+         body:`<p>The distance from Earth to Sun is about 150,000,000 km. Writing all those zeros is boring and prone to errors. Exponents give us a 'cool' way to write giant numbers! <span class='id-lang'>Jarak Bumi ke Matahari sekitar 150.000.000 km. Menulis nol sebanyak itu membosankan dan mudah salah. Eksponen memberi cara 'keren' menulis angka raksasa!</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-cyan-500/10 border border-cyan-500/20">
+           <div class="text-cyan-400 font-semibold mb-2">Scientific Notation <span class='id-lang'>Notasi Ilmiah</span></div>
+           <p class="text-sm text-slate-300">We write numbers as \\( a \\times 10^n \\), where \\( 1 \\le a < 10 \\). <span class='id-lang'>Kita menulis angka sebagai \\( a \\times 10^n \\), di mana \\( 1 \\le a < 10 \\).</span></p>
+         </div>`},
+        // 3 Exercise
+        {type:"E",etype:"fb",
+         q:"The distance from Earth to Sun is 150,000,000 km. How many zeros are in the number? <span class='id-lang'>Jarak Bumi ke Matahari 150.000.000 km. Ada berapa nol dalam angka tersebut?</span>",
+         a:"7",
+         h:"Count the zeros after the 15. <span class='id-lang'>Hitung nol setelah angka 15.</span>"},
+        {type:"E",etype:"mc",
+         q:"Which of the following is the correct scientific notation for 150,000,000? <span class='id-lang'>Manakah notasi ilmiah yang benar untuk 150.000.000?</span>",
+         o:["150000000 <span class='id-lang'></span>","\\( 15 \\times 10^7 \\) <span class='id-lang'></span>","\\( 1.5 \\times 10^8 \\) <span class='id-lang'></span>","150 million <span class='id-lang'></span>"],
+         a:2,
+         h:"Scientific notation requires the first number to be between 1 and 10. <span class='id-lang'>Notasi ilmiah mengharuskan angka pertama antara 1 dan 10.</span>"},
+        {type:"E",etype:"tf",
+         q:"Writing large numbers with many zeros is efficient and rarely causes errors. <span class='id-lang'>Menulis angka besar dengan banyak nol itu efisien dan jarang salah.</span>",
+         a:false,
+         h:"It is inefficient and causes errors. That's why we use exponents! <span class='id-lang'>Itu tidak efisien dan menyebabkan kesalahan. Makanya kita pakai eksponen!</span>"},
+        // 1 Teori
+        {type:"T",title:"Small Numbers and Negative Exponents <span class='id-lang'>Bilangan Kecil dan Pangkat Negatif</span>",
+         body:`<p>Exponents also help with tiny numbers, like the size of an atom. We use negative exponents to represent decimals. <span class='id-lang'>Eksponen juga membantu untuk angka kecil, seperti ukuran atom. Kita pakai pangkat negatif untuk mewakili desimal.</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+           <div class="text-emerald-400 font-semibold mb-2">Negative Exponents <span class='id-lang'>Pangkat Negatif</span></div>
+           <p class="text-sm text-slate-300">\\( 10^{-1} = 0.1 \\), \\( 10^{-2} = 0.01 \\), and so on. <span class='id-lang'>\\( 10^{-1} = 0,1 \\), \\( 10^{-2} = 0,01 \\), dan seterusnya.</span></p>
+         </div>`},
+        // 3 Exercise
+        {type:"E",etype:"fb",
+         q:"What is \\( 10^{-1} \\) as a decimal? <span class='id-lang'>Berapa \\( 10^{-1} \\) dalam desimal?</span>",
+         a:"0.1||0,1",
+         h:"Move the decimal one place to the left. <span class='id-lang'>Pindahkan koma satu tempah ke kiri.</span>"},
+        {type:"E",etype:"mc",
+         q:"An atom is approximately \\( 10^{-8} \\) cm in diameter. Is this a large or small number? <span class='id-lang'>Diameter atom sekitar \\( 10^{-8} \\) cm. Apakah ini bilangan besar atau kecil?</span>",
+         o:["Large <span class='id-lang'>Besar</span>","Small <span class='id-lang'>Kecil</span>"],
+         a:1,
+         h:"Negative exponents represent very small decimals. <span class='id-lang'>Pangkat negatif mewakili desimal yang sangat kecil.</span>"},
+        {type:"E",etype:"ord",
+         q:"Order the steps to write 0.00000045 in scientific notation. <span class='id-lang'>Urutkan langkah menulis 0,00000045 dalam notasi ilmiah.</span>",
+         o:["Move decimal right 7 places to get 4.5","Determine the exponent: -7","Write as \\( 4.5 \\times 10^{-7} \\)"],
+         a:[0,1,2],
+         h:"Moving right means negative exponent. <span class='id-lang'>Memindahkan ke kanan berarti pangkat negatif.</span>"},
+        // 1 Teori
+        {type:"T",title:"Efficiency in Science <span class='id-lang'>Efisiensi dalam Sains</span>",
+         body:`<p>Scientists use scientific notation to handle extremely large or small measurements efficiently. <span class='id-lang'>Ilmuwan menggunakan notasi ilmiah untuk menangani pengukuran yang sangat besar atau kecil secara efisien.</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-amber-500/10 border border-amber-500/20">
+           <div class="text-amber-400 font-semibold mb-2">Format <span class='id-lang'>Format</span></div>
+           <p class="text-sm text-slate-300">Always \\( a \\times 10^n \\) where \\( 1 \\le a < 10 \\) and \\( n \\) is an integer. <span class='id-lang'>Selalu \\( a \\times 10^n \\) di mana \\( 1 \\le a < 10 \\) dan \\( n \\) adalah bilangan bulat.</span></p>
+         </div>`},
+        // 4 Exercise
+        {type:"E",etype:"sa",
+         q:"Which of the following are written in proper scientific notation? <span class='id-lang'>Manakah yang ditulis dalam notasi ilmiah yang benar?</span>",
+         o:["\\( 3 \\times 10^5 \\)","\\( 15 \\times 10^4 \\)","\\( 4.5 \\times 10^{-3} \\)","\\( 0.8 \\times 10^2 \\)"],
+         a:[0,2],
+         h:"The first number (coefficient) must be 1 or greater, but less than 10. <span class='id-lang'>Angka pertama (koefisien) harus 1 atau lebih, tapi kurang dari 10.</span>"},
+        {type:"E",etype:"match",
+         q:"Match the power of 10 to its value. <span class='id-lang'>Cocokkan pangkat 10 dengan nilainya.</span>",
+         left:["\\( 10^3 \\)","\\( 10^0 \\)","\\( 10^{-2} \\)"],
+         right:["1,000","1","0.01"],
+         a:[0,1,2],
+         h:"Positive exponents are large, zero is 1, negative are small. <span class='id-lang'>Pangkat positif besar, nol adalah 1, negatif kecil.</span>"},
+        {type:"E",etype:"fb",
+         q:"Evaluate \\( 10^3 \\). <span class='id-lang'>Hitung \\( 10^3 \\).</span>",
+         a:"1000||1,000",
+         h:"It's 10 multiplied by itself 3 times. <span class='id-lang'>Itu 10 dikali dirinya sendiri 3 kali.</span>"},
+        {type:"E",etype:"fb",
+         q:"Evaluate \\( 10^{-2} \\). <span class='id-lang'>Hitung \\( 10^{-2} \\).</span>",
+         a:"0.01||0,01",
+         h:"It is 1 over \\( 10^2 \\). <span class='id-lang'>Itu 1 per \\( 10^2 \\).</span>"},
+      ]
+    },
+    // ==================== SECTION 3 ====================
+    {
+      id:3, title:"Review of Prior Knowledge <span class='id-lang'>Review Pengetahuan</span>", icon:"fa-brain", color:"#8b5cf6", branch:false,
+      lessons:[
+        // 1 Teori
+        {type:"T",title:"Repeated Multiplication <span class='id-lang'>Perkalian Berulang</span>",
+         body:`<p>Exponents are just a shortcut for repeated multiplication. \\( 2 \\times 2 \\) is \\( 2^2 \\). \\( 5 \\times 5 \\times 5 \\) is \\( 5^3 \\). <span class='id-lang'>Eksponen adalah jalan pintas untuk perkalian berulang. \\( 2 \\times 2 \\) adalah \\( 2^2 \\). \\( 5 \\times 5 \\times 5 \\) adalah \\( 5^3 \\).</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-violet-500/10 border border-violet-500/20">
+           <div class="text-violet-400 font-semibold mb-2">Anatomy of an Exponent <span class='id-lang'>Anatomi Eksponen</span></div>
+           <p class="text-sm text-slate-300">In \\( 5^3 \\), 5 is the base and 3 is the exponent (or power). <span class='id-lang'>Pada \\( 5^3 \\), 5 adalah basis dan 3 adalah eksponen (atau pangkat).</span></p>
+         </div>`},
+        // 3 Exercise
+        {type:"E",etype:"fb",
+         q:"Evaluate \\( 5^3 \\). <span class='id-lang'>Hitung \\( 5^3 \\).</span>",
+         a:"125",
+         h:"Calculate \\( 5 \\times 5 \\times 5 \\). <span class='id-lang'>Hitung \\( 5 \\times 5 \\times 5 \\).</span>"},
+        {type:"E",etype:"mc",
+         q:"What does \\( 4^2 \\) mean? <span class='id-lang'>Apa arti dari \\( 4^2 \\)?</span>",
+         o:["\\( 4 + 4 \\) <span class='id-lang'></span>","\\( 4 \\times 2 \\) <span class='id-lang'></span>","\\( 4 \\times 4 \\) <span class='id-lang'></span>","\\( 2 \\times 2 \\times 2 \\times 2 \\) <span class='id-lang'></span>"],
+         a:2,
+         h:"The exponent tells you how many times to multiply the base by itself. <span class='id-lang'>Eksponen memberitahu berapa kali basis dikali dirinya sendiri.</span>"},
+        {type:"E",etype:"tf",
+         q:"\\( 3^2 \\) is equal to 6. <span class='id-lang'>Apakah \\( 3^2 \\) sama dengan 6?</span>",
+         a:false,
+         h:"\\( 3^2 = 3 \\times 3 = 9 \\), not \\( 3 \\times 2 \\). <span class='id-lang'>\\( 3^2 = 3 \\times 3 = 9 \\), bukan \\( 3 \\times 2 \\).</span>"},
+        // 1 Teori
+        {type:"T",title:"Perfect Squares and Cubes <span class='id-lang'>Bilangan Kuadrat dan Kubik Sempurna</span>",
+         body:`<p>The inverse of squaring a number is finding its square root. The inverse of cubing is finding the cube root. <span class='id-lang'>Kebalikan dari mengkuadratkan angka adalah mencari akar kuadratnya. Kebalikan dari mempangkatkan tiga adalah mencari akar pangkat tiga.</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-cyan-500/10 border border-cyan-500/20">
+           <div class="text-cyan-400 font-semibold mb-2">Roots <span class='id-lang'>Akar</span></div>
+           <p class="text-sm text-slate-300">\\( \\sqrt{64} = 8 \\) because \\( 8^2 = 64 \\). \\( \\sqrt[3]{27} = 3 \\) because \\( 3^3 = 27 \\). <span class='id-lang'>\\( \\sqrt{64} = 8 \\) karena \\( 8^2 = 64 \\). \\( \\sqrt[3]{27} = 3 \\) karena \\( 3^3 = 27 \\).</span></p>
+         </div>`},
+        // 3 Exercise
+        {type:"E",etype:"fb",
+         q:"What is the square root of 64? <span class='id-lang'>Berapa akar kuadrat dari 64?</span>",
+         a:"8",
+         h:"What number times itself equals 64? <span class='id-lang'>Angka apa dikali dirinya sendiri sama dengan 64?</span>"},
+        {type:"E",etype:"mc",
+         q:"What is the cube root of 27? <span class='id-lang'>Berapa akar pangkat tiga dari 27?</span>",
+         o:["3 <span class='id-lang'></span>","9 <span class='id-lang'></span>","-3 <span class='id-lang'></span>","6 <span class='id-lang'></span>"],
+         a:0,
+         h:"What number times itself three times equals 27? <span class='id-lang'>Angka apa dikali tiga kali sama dengan 27?</span>"},
+        {type:"E",etype:"match",
+         q:"Match the root to its value. <span class='id-lang'>Cocokkan akar dengan nilainya.</span>",
+         left:["\\( \\sqrt{16} \\)","\\( \\sqrt{49} \\)","\\( \\sqrt{100} \\)"],
+         right:["4","7","10"],
+         a:[0,1,2],
+         h:"Think of perfect squares. <span class='id-lang'>Ingat bilangan kuadrat sempurna.</span>"},
+        // 1 Teori
+        {type:"T",title:"Relationship Between Roots and Powers <span class='id-lang'>Hubungan Akar dan Pangkat</span>",
+         body:`<p>Roots and powers are inverse operations. They 'undo' each other. <span class='id-lang'>Akar dan pangkat adalah operasi kebalikan. Mereka saling 'membatalkan'.</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-amber-500/10 border border-amber-500/20">
+           <div class="text-amber-400 font-semibold mb-2">Order of Operations <span class='id-lang'>Urutan Operasi</span></div>
+           <p class="text-sm text-slate-300">Treat roots like parentheses. Calculate the root before adding or multiplying. <span class='id-lang'>Perlakukan akar seperti kurung. Hitung akar sebelum menjumlah atau mengalikan.</span></p>
+         </div>`},
+        // 4 Exercise
+        {type:"E",etype:"sa",
+         q:"Which of the following are perfect squares? <span class='id-lang'>Manakah yang merupakan bilangan kuadrat sempurna?</span>",
+         o:["25","36","50","81"],
+         a:[0,1,3],
+         h:"Perfect squares are 1, 4, 9, 16, 25, 36, 49, 64, 81... <span class='id-lang'>Kuadrat sempurna adalah 1, 4, 9, 16, 25, 36, 49, 64, 81...</span>"},
+        {type:"E",etype:"fb",
+         q:"Evaluate \\( \\sqrt{81} \\). <span class='id-lang'>Hitung \\( \\sqrt{81} \\).</span>",
+         a:"9",
+         h:"\\( 9 \\times 9 = 81 \\). <span class='id-lang'>\\( 9 \\times 9 = 81 \\).</span>"},
+        {type:"E",etype:"fb",
+         q:"Evaluate \\( \\sqrt[3]{8} \\). <span class='id-lang'>Hitung \\( \\sqrt[3]{8} \\).</span>",
+         a:"2",
+         h:"\\( 2 \\times 2 \\times 2 = 8 \\). <span class='id-lang'>\\( 2 \\times 2 \\times 2 = 8 \\).</span>"},
+        {type:"E",etype:"ord",
+         q:"Order the steps to evaluate \\( 2 + \\sqrt{9} \\). <span class='id-lang'>Urutkan langkah menghitung \\( 2 + \\sqrt{9} \\).</span>",
+         o:["Find the square root of 9, which is 3","Add 2 to the result","Final answer is 5"],
+         a:[0,1,2],
+         h:"Roots come before addition. <span class='id-lang'>Akar didahulukan sebelum penjumlahan.</span>"}
+      ]
+    },
+    // ==================== SECTION 4 ====================
+    {
+      id:4, title:"Problem Introduction <span class='id-lang'>Pengenalan Masalah</span>", icon:"fa-circle-question", color:"#f59e0b", branch:false,
+      lessons:[
+        // 1 Teori
+        {type:"T",title:"Product Rule for Exponents <span class='id-lang'>Aturan Perkalian Eksponen</span>",
+         body:`<p>When multiplying numbers with the same base, you just add the exponents! <span class='id-lang'>Saat mengalikan angka dengan basis yang sama, kamu cukup menjumlahkan eksponennya!</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-amber-500/10 border border-amber-500/20">
+           <div class="text-amber-400 font-semibold mb-2">The Rule <span class='id-lang'>Aturan</span></div>
+           <p class="text-sm text-slate-300">\\( a^m \\times a^n = a^{m+n} \\). Example: \\( x^2 \\times x^3 = x^5 \\). <span class='id-lang'>Contoh: \\( x^2 \\times x^3 = x^5 \\).</span></p>
+         </div>`},
+        // 3 Exercise
+        {type:"E",etype:"mc",
+         q:"Simplify \\( a^2 \\times a^3 \\). <span class='id-lang'>Sederhanakan \\( a^2 \\times a^3 \\).</span>",
+         o:["\\( a^5 \\) <span class='id-lang'></span>","\\( a^6 \\) <span class='id-lang'></span>","\\( 2a^5 \\) <span class='id-lang'></span>","\\( a^1 \\) <span class='id-lang'></span>"],
+         a:0,
+         h:"Add the exponents: 2 + 3. <span class='id-lang'>Jumlahkan eksponen: 2 + 3.</span>"},
+        {type:"E",etype:"fb",
+         q:"Simplify \\( x^5 \\times x^4 \\). <span class='id-lang'>Sederhanakan \\( x^5 \\times x^4 \\).</span>",
+         a:"x^9",
+         h:"Add the exponents. <span class='id-lang'>Jumlahkan eksponen.</span>"},
+        {type:"E",etype:"tf",
+         q:"\\( 2^2 \\times 2^3 \\) is equal to \\( 4^5 \\). <span class='id-lang'>Apakah \\( 2^2 \\times 2^3 \\) sama dengan \\( 4^5 \\)?</span>",
+         a:false,
+         h:"You add exponents, not multiply bases. It equals \\( 2^5 \\). <span class='id-lang'>Kamu menjumlahkan eksponen, bukan mengalikan basis. Hasilnya \\( 2^5 \\).</span>"},
+        // 1 Teori
+        {type:"E",etype:"fb",
+         q:"Simplify \\( \\frac{y^7}{y^3} \\). <span class='id-lang'>Sederhanakan \\( \\frac{y^7}{y^3} \\).</span>",
+         a:"y^4",
+         h:"Subtract the exponents: 7 - 3. <span class='id-lang'>Kurangi eksponen: 7 - 3.</span>"},
+        // 3 Exercise
+        {type:"E",etype:"mc",
+         q:"Simplify \\( \\frac{y^7}{y^3} \\). <span class='id-lang'>Sederhanakan \\( \\frac{y^7}{y^3} \\).</span>",
+         o:["\\( y^4 \\) <span class='id-lang'></span>","\\( y^{10} \\) <span class='id-lang'></span>","\\( y^{21} \\) <span class='id-lang'></span>","\\( y^{-4} \\) <span class='id-lang'></span>"],
+         a:0,
+         h:"Subtract the exponents: 7 - 3. <span class='id-lang'>Kurangi eksponen: 7 - 3.</span>"},
+        {type:"E",etype:"mc",
+         q:"Simplify \\( \\frac{10^6}{10^2} \\). <span class='id-lang'>Sederhanakan \\( \\frac{10^6}{10^2} \\).</span>",
+         o:["\\( 10^3 \\) <span class='id-lang'></span>","\\( 10^4 \\) <span class='id-lang'></span>","\\( 10^8 \\) <span class='id-lang'></span>","\\( 10^{12} \\) <span class='id-lang'></span>"],
+         a:1,
+         h:"Subtract: 6 - 2 = 4. <span class='id-lang'>Kurangi: 6 - 2 = 4.</span>"},
+        {type:"E",etype:"ord",
+         q:"Order the steps to simplify \\( \\frac{2^3 \\times 2^4}{2^5} \\). <span class='id-lang'>Urutkan langkah menyederhanakan \\( \\frac{2^3 \\times 2^4}{2^5} \\).</span>",
+         o:["Multiply top exponents: \\( 2^7 \\)","Divide by bottom: \\( \\frac{2^7}{2^5} \\)","Subtract exponents: \\( 2^2 \\)","Final answer: 4"],
+         a:[0,1,2,3],
+         h:"Combine numerator first, then divide. <span class='id-lang'>Gabungkan pembilang dulu, lalu bagi.</span>"},
+        // 1 Teori
+        {type:"T",title:"Power Rule for Exponents <span class='id-lang'>Aturan Pangkat Eksponen</span>",
+         body:`<p>When a power is raised to another power, you multiply the exponents. <span class='id-lang'>Saat pangkat dinaikkan ke pangkat lain, kamu mengalikan eksponennya.</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-amber-500/10 border border-amber-500/20">
+           <div class="text-amber-400 font-semibold mb-2">The Rule <span class='id-lang'>Aturan</span></div>
+           <p class="text-sm text-slate-300">\\( (a^m)^n = a^{m \\times n} \\). Example: \\( (x^3)^2 = x^6 \\). <span class='id-lang'>Contoh: \\( (x^3)^2 = x^6 \\).</span></p>
+         </div>`},
+        // 4 Exercise
+        {type:"E",etype:"fb",
+         q:"Simplify \\( (x^3)^2 \\). <span class='id-lang'>Sederhanakan \\( (x^3)^2 \\).</span>",
+         a:"x^6",
+         h:"Multiply the exponents: 3 * 2. <span class='id-lang'>Kali eksponen: 3 * 2.</span>"},
+        {type:"E",etype:"sa",
+         q:"Which of these are correct exponent rules? <span class='id-lang'>Manakah aturan eksponen yang benar?</span>",
+         o:["\\( a^m \\times a^n = a^{m+n} \\)","\\( \\frac{a^m}{a^n} = a^{m-n} \\)","\\( (a^m)^n = a^{mn} \\)","\\( a^m + a^n = a^{m+n} \\)"],
+         a:[0,1,2],
+         h:"Addition rule is only for multiplication, not adding bases. <span class='id-lang'>Aturan penjumlahan hanya untuk perkalian, bukan menambah basis.</span>"},
+        {type:"E",etype:"match",
+         q:"Match the expression to its simplified form. <span class='id-lang'>Cocokkan ekspresi ke bentuk sederhananya.</span>",
+         left:["\\( x^2 \\times x^3 \\)","\\( \\frac{x^5}{x^2} \\)","\\( (x^4)^2 \\)"],
+         right:["\\( x^5 \\)","\\( x^3 \\)","\\( x^8 \\)"],
+         a:[0,1,2],
+         h:"Apply product, quotient, and power rules. <span class='id-lang'>Terapkan aturan perkalian, pembagian, dan pangkat.</span>"},
+        {type:"E",etype:"fb",
+         q:"Simplify \\( (3x^2)^3 \\). <span class='id-lang'>Sederhanakan \\( (3x^2)^3 \\).</span>",
+         a:"27x^6",
+         h:"Cube the 3, and multiply the exponent 2 by 3. <span class='id-lang'>Kuadratkan 3, dan kali eksponen 2 dengan 3.</span>"},
+      ]
+    },
+    // ==================== SECTION 5 ====================
+    {
+      id:5, title:"Guided Practice <span class='id-lang'>Latihan Terbimbing</span>", icon:"fa-chalkboard-user", color:"#ec4899", branch:false,
+      lessons:[
+        // 1 Teori
+        {type:"T",title:"Squaring Scientific Notation <span class='id-lang'>Mengkuadratkan Notasi Ilmiah</span>",
+         body:`<p>Let's calculate the speed of light squared! When you square a number in scientific notation, you square the first part and multiply the exponent by 2. <span class='id-lang'>Mari hitung kecepatan cahaya dikuadratkan! Saat mengkuadratkan notasi ilmiah, kamu kuadratkan bagian pertama dan kali eksponen dengan 2.</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-pink-500/10 border border-pink-500/20">
+           <div class="text-pink-400 font-semibold mb-2">Example <span class='id-lang'>Contoh</span></div>
+           <p class="text-sm text-slate-300">\\( (3 \\times 10^8)^2 = 3^2 \\times (10^8)^2 = 9 \\times 10^{16} \\). <span class='id-lang'>\\( (3 \\times 10^8)^2 = 3^2 \\times (10^8)^2 = 9 \\times 10^{16} \\).</span></p>
+         </div>`},
+        // 3 Exercise
+        {type:"E",etype:"fb",
+         q:"Simplify \\( (3 \\times 10^4)^2 \\). <span class='id-lang'>Sederhanakan \\( (3 \\times 10^4)^2 \\).</span>",
+         a:"9*10^8||9x10^8",
+         h:"Square the 3, and multiply 4 by 2. <span class='id-lang'>Kuadratkan 3, dan kali 4 dengan 2.</span>"},
+        {type:"E",etype:"mc",
+         q:"What happens to the exponent when you square \\( 10^5 \\)? <span class='id-lang'>Apa yang terjadi pada eksponen saat mengkuadratkan \\( 10^5 \\)?</span>",
+         o:["It is multiplied by 2 <span class='id-lang'>Dikali 2</span>","It is divided by 2 <span class='id-lang'>Dibagi 2</span>","It is squared <span class='id-lang'>Dikuadratkan</span>","It stays the same <span class='id-lang'>Tetap</span>"],
+         a:0,
+         h:"Power rule: \\( (a^m)^n = a^{mn} \\). <span class='id-lang'>Aturan pangkat: \\( (a^m)^n = a^{mn} \\).</span>"},
+        {type:"E",etype:"tf",
+         q:"\\( (2 \\times 10^5)^3 \\) results in \\( 6 \\times 10^{15} \\). <span class='id-lang'>Apakah \\( (2 \\times 10^5)^3 \\) menghasilkan \\( 6 \\times 10^{15} \\)?</span>",
+         a:false,
+         h:"\\( 2^3 = 8 \\), not 6. So it should be \\( 8 \\times 10^{15} \\). <span class='id-lang'>\\( 2^3 = 8 \\), bukan 6. Jadi seharusnya \\( 8 \\times 10^{15} \\).</span>"},
+        // 1 Teori
+        {type:"T",title:"Finding Cube Roots <span class='id-lang'>Mencari Akar Pangkat Tiga</span>",
+         body:`<p>To find the cube root of 216, you need to find a number that, when multiplied by itself 3 times, equals 216. <span class='id-lang'>Untuk mencari akar pangkat tiga dari 216, kamu harus mencari angka yang jika dikali dirinya sendiri 3 kali sama dengan 216.</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+           <div class="text-emerald-400 font-semibold mb-2">Calculation <span class='id-lang'>Perhitungan</span></div>
+           <p class="text-sm text-slate-300">\\( 6 \\times 6 \\times 6 = 216 \\), so \\( \\sqrt[3]{216} = 6 \\). <span class='id-lang'>\\( 6 \\times 6 \\times 6 = 216 \\), jadi \\( \\sqrt[3]{216} = 6 \\).</span></p>
+         </div>`},
+        // 3 Exercise
+        {type:"E",etype:"fb",
+         q:"Evaluate \\( \\sqrt[3]{216} \\). <span class='id-lang'>Hitung \\( \\sqrt[3]{216} \\).</span>",
+         a:"6",
+         h:"Think of a number multiplied 3 times that gives 216. <span class='id-lang'>Pikirkan angka yang dikali 3 kali menghasilkan 216.</span>"},
+        {type:"E",etype:"mc",
+         q:"Which number cubed equals 216? <span class='id-lang'>Angka apa yang dipangkatkan tiga sama dengan 216?</span>",
+         o:["4 <span class='id-lang'></span>","5 <span class='id-lang'></span>","6 <span class='id-lang'></span>","7 <span class='id-lang'></span>"],
+         a:2,
+         h:"Calculate \\( 6^3 \\). <span class='id-lang'>Hitung \\( 6^3 \\).</span>"},
+        {type:"E",etype:"ord",
+         q:"Order the steps to verify \\( \\sqrt[3]{216} = 6 \\). <span class='id-lang'>Urutkan langkah memverifikasi \\( \\sqrt[3]{216} = 6 \\).</span>",
+         o:["Start with the guess 6","Multiply 6 by itself three times: \\( 6 \\times 6 \\times 6 \\)","Confirm the result is 216"],
+         a:[0,1,2],
+         h:"Guess, calculate, confirm. <span class='id-lang'>Tebak, hitung, konfirmasi.</span>"},
+        // 1 Teori
+        {type:"T",title:"Scientific Notation for Tiny Numbers <span class='id-lang'>Notasi Ilmiah untuk Angka Kecil</span>",
+         body:`<p>Let's convert 0.00000045. Move the decimal to the right until it's between 4 and 5. That's 7 places! <span class='id-lang'>Mari ubah 0,00000045. Pindahkan koma ke kanan sampai di antara 4 dan 5. Itu 7 tempat!</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-amber-500/10 border border-amber-500/20">
+           <div class="text-amber-400 font-semibold mb-2">Result <span class='id-lang'>Hasil</span></div>
+           <p class="text-sm text-slate-300">Since we moved right, the exponent is negative. \\( 4.5 \\times 10^{-7} \\). <span class='id-lang'>Karena kita pindah kanan, eksponen negatif. \\( 4.5 \\times 10^{-7} \\).</span></p>
+         </div>`},
+        // 4 Exercise
+        {type:"E",etype:"fb",
+         q:"Convert 0.00000045 to scientific notation. <span class='id-lang'>Ubah 0,00000045 ke notasi ilmiah.</span>",
+         a:"4.5*10^-7||4.5x10^-7",
+         h:"Move decimal 7 places right, exponent is -7. <span class='id-lang'>Pindahkan koma 7 tempat kanan, eksponen -7.</span>"},
+        {type:"E",etype:"mc",
+         q:"Which of the following represents 0.00000045? <span class='id-lang'>Manakah yang mewakili 0,00000045?</span>",
+         o:["\\( 4.5 \\times 10^7 \\) <span class='id-lang'></span>","\\( 45 \\times 10^{-8} \\) <span class='id-lang'></span>","\\( 4.5 \\times 10^{-7} \\) <span class='id-lang'></span>","\\( 0.45 \\times 10^{-6} \\) <span class='id-lang'></span>"],
+         a:2,
+         h:"Proper scientific notation requires a single digit before the decimal. <span class='id-lang'>Notasi ilmiah benar membutuhkan satu digit sebelum koma.</span>"},
+        {type:"E",etype:"match",
+         q:"Match the decimal to its scientific notation. <span class='id-lang'>Cocokkan desimal dengan notasi ilmiahnya.</span>",
+         left:["0.001","0.00001","0.0000001"],
+         right:["\\( 10^{-3} \\)","\\( 10^{-5} \\)","\\( 10^{-7} \\)"],
+         a:[0,1,2],
+         h:"Count the zeros to the right of the decimal. <span class='id-lang'>Hitung nol di sebelah kanan koma.</span>"},
+        {type:"E",etype:"sa",
+         q:"Which of these represent the same value as \\( 0.00000045 \\)? <span class='id-lang'>Manakah yang mewakili nilai yang sama dengan \\( 0,00000045 \\)?</span>",
+         o:["\\( 4.5 \\times 10^{-7} \\)","\\( 45 \\times 10^{-8} \\)","\\( 4.5 \\times 10^7 \\)","\\( 450 \\times 10^{-9} \\)"],
+         a:[0,1,3],
+         h:"Make sure the overall value is the same, even if not in proper scientific notation. <span class='id-lang'>Pastikan nilai keseluruhannya sama, walaupun bukan notasi ilmiah baku.</span>"}
+      ]
+    },
+    // ==================== SECTION 6 ====================
+    {
+      id:6, title:"Independent Practice <span class='id-lang'>Latihan Mandiri</span>", icon:"fa-user-graduate", color:"#14b8a6", branch:false,
+      lessons:[
+        // 1 Teori
+        {type:"T",title:"Complex Exponent Division <span class='id-lang'>Pembagian Eksponen Kompleks</span>",
+         body:`<p>Let's tackle a 'Boss Level' problem: \\( \\frac{(x^5 y^3)^2}{x^2 y} \\). We need to use multiple rules! <span class='id-lang'>Mari kerjakan soal 'Boss Level': \\( \\frac{(x^5 y^3)^2}{x^2 y} \\). Kita butuh beberapa aturan!</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-teal-500/10 border border-teal-500/20">
+           <div class="text-teal-400 font-semibold mb-2">The Steps <span class='id-lang'>Langkah</span></div>
+           <p class="text-sm text-slate-300">Step 1: Apply power rule to numerator: \\( x^{10} y^6 \\). <br>Step 2: Divide by subtracting exponents. <span class='id-lang'>Langkah 1: Terapkan aturan pangkat. Langkah 2: Bagi dengan mengurangi eksponen.</span></p>
+         </div>`},
+        // 3 Exercise
+        {type:"E",etype:"fb",
+         q:"Simplify the numerator \\( (x^5 y^3)^2 \\). <span class='id-lang'>Sederhanakan pembilang \\( (x^5 y^3)^2 \\).</span>",
+         a:"x^10y^6",
+         h:"Multiply the outside exponent 2 by both 5 and 3. <span class='id-lang'>Kali eksponen luar 2 dengan 5 dan 3.</span>"},
+        {type:"E",etype:"mc",
+         q:"What is the first step to simplify \\( \\frac{(x^5 y^3)^2}{x^2 y} \\)? <span class='id-lang'>Apa langkah pertama menyederhanakannya?</span>",
+         o:["Divide \\( x^5 \\) by \\( x^2 \\) <span class='id-lang'></span>","Square the numerator <span class='id-lang'>Kuadratkan pembilang</span>","Multiply numerator and denominator <span class='id-lang'>Kali pembilang dan penyebut</span>","Subtract exponents <span class='id-lang'>Kurangi eksponen</span>"],
+         a:1,
+         h:"You must remove the parentheses first using the power rule. <span class='id-lang'>Kamu harus menghapus kurung dulu dengan aturan pangkat.</span>"},
+        {type:"E",etype:"tf",
+         q:"The power rule applies to both variables inside the parentheses. <span class='id-lang'>Aturan pangkat berlaku untuk kedua variabel di dalam kurung.</span>",
+         a:true,
+         h:"Yes, \\( (ab)^m = a^m b^m \\). <span class='id-lang'>Ya, \\( (ab)^m = a^m b^m \\).</span>"},
+        // 1 Teori
+        {type:"T",title:"Combining Roots <span class='id-lang'>Menggabungkan Akar</span>",
+         body:`<p>When you have an expression like \\( \\sqrt{144} + \\sqrt[3]{1000} \\), you evaluate each root separately, then add them. <span class='id-lang'>Saat ada ekspresi seperti \\( \\sqrt{144} + \\sqrt[3]{1000} \\), kamu hitung setiap akar secara terpisah, lalu jumlahkan.</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-amber-500/10 border border-amber-500/20">
+           <div class="text-amber-400 font-semibold mb-2">Calculation <span class='id-lang'>Perhitungan</span></div>
+           <p class="text-sm text-slate-300">\\( \\sqrt{144} = 12 \\) and \\( \\sqrt[3]{1000} = 10 \\). So, \\( 12 + 10 = 22 \\). <span class='id-lang'>\\( \\sqrt{144} = 12 \\) dan \\( \\sqrt[3]{1000} = 10 \\). Jadi, \\( 12 + 10 = 22 \\).</span></p>
+         </div>`},
+        // 3 Exercise
+        {type:"E",etype:"fb",
+         q:"Evaluate \\( \\sqrt{144} \\). <span class='id-lang'>Hitung \\( \\sqrt{144} \\).</span>",
+         a:"12",
+         h:"What number squared is 144? <span class='id-lang'>Angka apa yang dikuadratkan menjadi 144?</span>"},
+        {type:"E",etype:"mc",
+         q:"Evaluate \\( \\sqrt[3]{1000} \\). <span class='id-lang'>Hitung \\( \\sqrt[3]{1000} \\).</span>",
+         o:["10 <span class='id-lang'></span>","100 <span class='id-lang'></span>","1000 <span class='id-lang'></span>","1 <span class='id-lang'></span>"],
+         a:0,
+         h:"\\( 10 \\times 10 \\times 10 = 1000 \\). <span class='id-lang'>\\( 10 \\times 10 \\times 10 = 1000 \\).</span>"},
+        {type:"E",etype:"ord",
+         q:"Order the steps to evaluate \\( \\sqrt{144} + \\sqrt[3]{1000} \\). <span class='id-lang'>Urutkan langkah menghitungnya.</span>",
+         o:["Find \\( \\sqrt{144} = 12 \\)","Find \\( \\sqrt[3]{1000} = 10 \\)","Add the results: 12 + 10"],
+         a:[0,1,2],
+         h:"Solve each root before adding. <span class='id-lang'>Selesaikan setiap akar sebelum menjumlahkan.</span>"},
+        // 1 Teori
+        {type:"T",title:"Converting Massive Numbers <span class='id-lang'>Mengubah Bilangan Besar</span>",
+         body:`<p>Let's convert 1,250,000,000. Move the decimal to the left until it's between 1 and 2. That's 9 places! <span class='id-lang'>Mari ubah 1.250.000.000. Pindahkan koma ke kiri sampai di antara 1 dan 2. Itu 9 tempat!</span></p>
+         <div class="mt-4 p-4 rounded-xl bg-red-500/10 border border-red-500/20">
+           <div class="text-red-400 font-semibold mb-2">Result <span class='id-lang'>Hasil</span></div>
+           <p class="text-sm text-slate-300">Moving left means positive exponent. \\( 1.25 \\times 10^9 \\). <span class='id-lang'>Pindah kiri berarti eksponen positif. \\( 1.25 \\times 10^9 \\).</span></p>
+         </div>`},
+        // 4 Exercise
+        {type:"E",etype:"fb",
+         q:"Convert 1,250,000,000 to scientific notation. <span class='id-lang'>Ubah 1.250.000.000 ke notasi ilmiah.</span>",
+         a:"1.25*10^9||1.25x10^9",
+         h:"Move decimal 9 places left. <span class='id-lang'>Pindahkan koma 9 tempat kiri.</span>"},
+        {type:"E",etype:"mc",
+         q:"How many places do you move the decimal to convert 1,250,000,000? <span class='id-lang'>Berapa tempat koma dipindahkan untuk mengubah 1.250.000.000?</span>",
+         o:["8 <span class='id-lang'></span>","9 <span class='id-lang'></span>","10 <span class='id-lang'></span>","7 <span class='id-lang'></span>"],
+         a:1,
+         h:"Count the digits after the first non-zero digit. <span class='id-lang'>Hitung digit setelah digit bukan nol pertama.</span>"},
+        {type:"E",etype:"match",
+         q:"Match the number to its scientific notation. <span class='id-lang'>Cocokkan angka dengan notasi ilmiahnya.</span>",
+         left:["1,250,000,000","4,500,000","625"],
+         right:["\\( 1.25 \\times 10^9 \\)","\\( 4.5 \\times 10^6 \\)","\\( 6.25 \\times 10^2 \\)"],
+         a:[0,1,2],
+         h:"Move the decimal to create a number between 1 and 10. <span class='id-lang'>Pindahkan koma untuk membuat angka antara 1 dan 10.</span>"},
+        {type:"E",etype:"code",
+         q:"Write 1,250,000,000 in scientific notation. Use * for multiplication and ^ for power. <span class='id-lang'>Tulis 1.250.000.000 dalam notasi ilmiah. Gunakan * untuk perkalian dan ^ untuk pangkat.</span>",
+         a:"1.25*10^9||1.25x10^9",
+         h:"Follow the instructions for symbols. <span class='id-lang'>Ikuti instruksi simbol.</span>"}
+      ]
+    },
+    // ==================== SECTION 7A ====================
+    {
+      id:"7A", title:"Assessment A <span class='id-lang'>Asesmen A</span>", icon:"fa-clipboard-check", color:"#3b82f6", branch:true,
+      lessons:[
+        {type:"E",etype:"mc",
+         q:"Simplify \\( 2^3 \\times 2^4 \\). <span class='id-lang'>Sederhanakan \\( 2^3 \\times 2^4 \\).</span>",
+         o:["\\( 2^7 \\) <span class='id-lang'></span>","\\( 4^7 \\) <span class='id-lang'></span>","\\( 2^{12} \\) <span class='id-lang'></span>","\\( 4^{12} \\) <span class='id-lang'></span>"],
+         a:0,
+         h:"Add the exponents. <span class='id-lang'>Jumlahkan eksponen.</span>"},
+        {type:"E",etype:"fb",
+         q:"Evaluate \\( 2^4 \\). <span class='id-lang'>Hitung \\( 2^4 \\).</span>",
+         a:"16",
+         h:"\\( 2 \\times 2 \\times 2 \\times 2 \\). <span class='id-lang'>\\( 2 \\times 2 \\times 2 \\times 2 \\).</span>"},
+        {type:"E",etype:"tf",
+         q:"\\( \\sqrt[3]{64} = 4 \\). <span class='id-lang'>Apakah \\( \\sqrt[3]{64} = 4 \\)?</span>",
+         a:true,
+         h:"\\( 4 \\times 4 \\times 4 = 64 \\). <span class='id-lang'>\\( 4 \\times 4 \\times 4 = 64 \\).</span>"},
+        {type:"E",etype:"ord",
+         q:"Order the steps to simplify \\( (2x^3)^4 \\). <span class='id-lang'>Urutkan langkah menyederhanakannya.</span>",
+         o:["Apply power to 2: \\( 2^4 \\)","Apply power to \\( x^3 \\): \\( x^{12} \\)","Combine: \\( 16x^{12} \\)"],
+         a:[0,1,2],
+         h:"Power rule applies to everything inside parentheses. <span class='id-lang'>Aturan pangkat berlaku untuk semua di dalam kurung.</span>"},
+        {type:"E",etype:"match",
+         q:"Match the numbers to their scientific notation. <span class='id-lang'>Cocokkan angka dengan notasi ilmiahnya.</span>",
+         left:["1,000","100","10"],
+         right:["\\( 10^3 \\)","\\( 10^2 \\)","\\( 10^1 \\)"],
+         a:[0,1,2],
+         h:"Count the zeros. <span class='id-lang'>Hitung nolnya.</span>"},
+        {type:"E",etype:"sa",
+         q:"Which of the following are perfect cubes? <span class='id-lang'>Manakah yang merupakan kubik sempurna?</span>",
+         o:["8","27","64","100"],
+         a:[0,1,2],
+         h:"Find numbers that have an integer cube root. <span class='id-lang'>Cari angka dengan akar pangkat tiga bulat.</span>"},
+        {type:"E",etype:"fb",
+         q:"Evaluate \\( \\sqrt{225} \\). <span class='id-lang'>Hitung \\( \\sqrt{225} \\).</span>",
+         a:"15",
+         h:"\\( 15^2 = 225 \\). <span class='id-lang'>\\( 15^2 = 225 \\).</span>"},
+        {type:"E",etype:"mc",
+         q:"Convert 0.00078 to scientific notation. <span class='id-lang'>Ubah 0,00078 ke notasi ilmiah.</span>",
+         o:["\\( 7.8 \\times 10^{-4} \\) <span class='id-lang'></span>","\\( 7.8 \\times 10^4 \\) <span class='id-lang'></span>","\\( 78 \\times 10^{-5} \\) <span class='id-lang'></span>","\\( 0.78 \\times 10^{-3} \\) <span class='id-lang'></span>"],
+         a:0,
+         h:"Move decimal 4 places right, so exponent is -4. <span class='id-lang'>Pindahkan koma 4 tempah kanan, eksponen -4.</span>"},
+        {type:"E",etype:"tf",
+         q:"\\( (a^2)^3 = a^5 \\). <span class='id-lang'>Apakah \\( (a^2)^3 = a^5 \\)?</span>",
+         a:false,
+         h:"You multiply the exponents: \\( 2 \\times 3 = 6 \\). <span class='id-lang'>Kamu mengalikan eksponen: \\( 2 \\times 3 = 6 \\).</span>"},
+        {type:"E",etype:"code",
+         q:"Simplify \\( x^3 \\times x^4 \\) without spaces. (Use ^ for power) <span class='id-lang'>Sederhanakan tanpa spasi.</span>",
+         a:"x^7",
+         h:"Add the exponents. <span class='id-lang'>Jumlahkan eksponen.</span>"}
+      ]
+    },
+    // ==================== SECTION 7B ====================
+    {
+      id:"7B", title:"Assessment B <span class='id-lang'>Asesmen B</span>", icon:"fa-clipboard-check", color:"#ef4444", branch:true,
+      lessons:[
+        {type:"E",etype:"fb",
+         q:"Simplify \\( (3^2)^3 \\). <span class='id-lang'>Sederhanakan \\( (3^2)^3 \\).</span>",
+         a:"3^6||729",
+         h:"Multiply the exponents. <span class='id-lang'>Kali eksponen.</span>"},
+        {type:"E",etype:"mc",
+         q:"Evaluate \\( \\sqrt[3]{1000} + \\sqrt{144} \\). <span class='id-lang'>Hitung \\( \\sqrt[3]{1000} + \\sqrt{144} \\).</span>",
+         o:["22 <span class='id-lang'></span>","112 <span class='id-lang'></span>","104 <span class='id-lang'></span>","28 <span class='id-lang'></span>"],
+         a:0,
+         h:"\\( 10 + 12 = 22 \\). <span class='id-lang'>\\( 10 + 12 = 22 \\).</span>"},
+        {type:"E",etype:"tf",
+         q:"\\( 10^5 \\times 10^{-3} = 10^2 \\). <span class='id-lang'>Apakah benar?</span>",
+         a:true,
+         h:"Add exponents: \\( 5 + (-3) = 2 \\). <span class='id-lang'>Jumlahkan eksponen.</span>"},
+        {type:"E",etype:"ord",
+         q:"Order the steps to convert 250,000 to scientific notation. <span class='id-lang'>Urutkan langkah mengubah 250.000 ke notasi ilmiah.</span>",
+         o:["Move decimal 5 places left","Get 2.5","Write as \\( 2.5 \\times 10^5 \\)"],
+         a:[0,1,2],
+         h:"Left movement means positive exponent. <span class='id-lang'>Gerak kiri berarti eksponen positif.</span>"},
+        {type:"E",etype:"match",
+         q:"Match the expressions to their simplified forms. <span class='id-lang'>Cocokkan ekspresi ke bentuk sederhananya.</span>",
+         left:["\\( \\frac{x^6}{x^2} \\)","\\( (y^3)^2 \\)","\\( z^5 \\times z^1 \\)"],
+         right:["\\( x^4 \\)","\\( y^6 \\)","\\( z^6 \\)"],
+         a:[0,1,2],
+         h:"Apply quotient, power, and product rules. <span class='id-lang'>Terapkan aturan pembagian, pangkat, dan perkalian.</span>"},
+        {type:"E",etype:"sa",
+         q:"Which of these are valid scientific notation? <span class='id-lang'>Manakah notasi ilmiah yang valid?</span>",
+         o:["\\( 4 \\times 10^2 \\)","\\( 12 \\times 10^3 \\)","\\( 3.1 \\times 10^{-4} \\)","\\( 0.5 \\times 10^5 \\)"],
+         a:[0,2],
+         h:"First number must be 1 or greater, but less than 10. <span class='id-lang'>Angka pertama harus 1 atau lebih, tapi kurang dari 10.</span>"},
+        {type:"E",etype:"fb",
+         q:"What is \\( 10^{-4} \\) as a decimal? <span class='id-lang'>Berapa \\( 10^{-4} \\) dalam desimal?</span>",
+         a:"0.0001||0,0001",
+         h:"Move decimal 4 places left. <span class='id-lang'>Pindahkan koma 4 tempat kiri.</span>"},
+        {type:"E",etype:"mc",
+         q:"Simplify \\( \\frac{y^8}{y^3} \\). <span class='id-lang'>Sederhanakan \\( \\frac{y^8}{y^3} \\).</span>",
+         o:["\\( y^5 \\) <span class='id-lang'></span>","\\( y^{11} \\) <span class='id-lang'></span>","\\( y^4 \\) <span class='id-lang'></span>","\\( y^{24} \\) <span class='id-lang'></span>"],
+         a:0,
+         h:"Subtract exponents. <span class='id-lang'>Kurangi eksponen.</span>"},
+        {type:"E",etype:"tf",
+         q:"\\( 7^0 = 0 \\). <span class='id-lang'>Apakah \\( 7^0 = 0 \\)?</span>",
+         a:false,
+         h:"Any non-zero number to the power of 0 is 1. <span class='id-lang'>Angka bukan nol pangkat 0 adalah 1.</span>"},
+        {type:"E",etype:"code",
+         q:"Convert 4,500,000 to scientific notation. Use * for multiplication and ^ for power. <span class='id-lang'>Ubah 4.500.000 ke notasi ilmiah. Gunakan * untuk perkalian dan ^ untuk pangkat.</span>",
+         a:"4.5*10^6||4.5x10^6",
+         h:"Move decimal 6 places left. <span class='id-lang'>Pindahkan koma 6 tempat kiri.</span>"}
+      ]
+    },
+    // ==================== SECTION 7C ====================
+    {
+      id:"7C", title:"Assessment C <span class='id-lang'>Asesmen C</span>", icon:"fa-clipboard-check", color:"#a855f7", branch:true,
+      lessons:[
+        {type:"E",etype:"fb",
+         q:"Simplify \\( (x^2 y^3)^2 \\). <span class='id-lang'>Sederhanakan \\( (x^2 y^3)^2 \\).</span>",
+         a:"x^4y^6",
+         h:"Multiply the outside exponent 2 by both inside exponents. <span class='id-lang'>Kali eksponen luar 2 dengan kedua eksponen di dalam.</span>"},
+        {type:"E",etype:"mc",
+         q:"Evaluate the square root of 625. <span class='id-lang'>Hitung akar kuadrat dari 625.</span>",
+         o:["25 <span class='id-lang'></span>","15 <span class='id-lang'></span>","35 <span class='id-lang'></span>","20 <span class='id-lang'></span>"],
+         a:0,
+         h:"\\( 25 \\times 25 = 625 \\). <span class='id-lang'>\\( 25 \\times 25 = 625 \\).</span>"},
+        {type:"E",etype:"tf",
+         q:"\\( \\frac{10^2}{10^5} \\) is equal to \\( 10^3 \\). <span class='id-lang'>Apakah \\( \\frac{10^2}{10^5} \\) sama dengan \\( 10^3 \\)?</span>",
+         a:false,
+         h:"Subtract exponents: 2 - 5 = -3. So it's \\( 10^{-3} \\). <span class='id-lang'>Kurangi eksponen: 2 - 5 = -3. Jadi \\( 10^{-3} \\).</span>"},
+        {type:"E",etype:"ord",
+         q:"Order the steps to simplify \\( \\frac{2^3 \\times 2^4}{2^5} \\). <span class='id-lang'>Urutkan langkah menyederhanakannya.</span>",
+         o:["Add top exponents: \\( 2^7 \\)","Subtract bottom exponent: \\( 2^{7-5} \\)","Final result: \\( 2^2 = 4 \\)"],
+         a:[0,1,2],
+         h:"Combine numerator first, then divide. <span class='id-lang'>Gabungkan pembilang dulu, lalu bagi.</span>"},
+        {type:"E",etype:"match",
+         q:"Match the power to its value. <span class='id-lang'>Cocokkan pangkat dengan nilainya.</span>",
+         left:["\\( 2^5 \\)","\\( 3^3 \\)","\\( 5^2 \\)"],
+         right:["32","27","25"],
+         a:[0,1,2],
+         h:"Calculate each carefully. <span class='id-lang'>Hitung setiapnya dengan hati-hati.</span>"},
+        {type:"E",etype:"sa",
+         q:"Which of the following expressions equal 1? <span class='id-lang'>Manakah ekspresi yang sama dengan 1?</span>",
+         o:["\\( 5^0 \\)","\\( 10^0 \\)","\\( x^0 \\) (where \\( x \\neq 0 \\))","\\( 1^1 \\)"],
+         a:[0,1,2,3],
+         h:"Anything to the power of 0 is 1. 1 to any power is 1. <span class='id-lang'>Apa pun pangkat 0 adalah 1. 1 pangkat apa pun adalah 1.</span>"},
+        {type:"E",etype:"fb",
+         q:"Evaluate \\( (3^2)^3 \\). <span class='id-lang'>Hitung \\( (3^2)^3 \\).</span>",
+         a:"729||3^6",
+         h:"Multiply exponents: \\( 2 \\times 3 = 6 \\). Then calculate \\( 3^6 \\). <span class='id-lang'>Kali eksponen: \\( 2 \\times 3 = 6 \\). Lalu hitung \\( 3^6 \\).</span>"},
+        {type:"E",etype:"mc",
+         q:"Evaluate \\( \\sqrt[3]{1728} + \\sqrt{225} \\). <span class='id-lang'>Hitung \\( \\sqrt[3]{1728} + \\sqrt{225} \\).</span>",
+         o:["27 <span class='id-lang'></span>","15 <span class='id-lang'></span>","42 <span class='id-lang'></span>","39 <span class='id-lang'></span>"],
+         a:0,
+         h:"\\( 12 + 15 = 27 \\). <span class='id-lang'>\\( 12 + 15 = 27 \\).</span>"},
+        {type:"E",etype:"tf",
+         q:"To write 0.000301 in scientific notation, the exponent will be positive. <span class='id-lang'>Untuk menulis 0,000301 dalam notasi ilmiah, eksponennya akan positif.</span>",
+         a:false,
+         h:"Small decimals have negative exponents. <span class='id-lang'>Desimal kecil memiliki eksponen negatif.</span>"},
+        {type:"E",etype:"code",
+         q:"Convert 0.00000000078 to scientific notation without spaces. (e.g., 7.8*10^-10) <span class='id-lang'>Ubah 0,00000000078 ke notasi ilmiah tanpa spasi.</span>",
+         a:"7.8*10^-10||7.8x10^-10",
+         h:"Move decimal 10 places to the right. <span class='id-lang'>Pindahkan koma 10 tempat ke kanan.</span>"}
+      ]
+    },
+    // ==================== SECTION 7D ====================
+    {
+      id:"7D", title:"Assessment D <span class='id-lang'>Asesmen D</span>", icon:"fa-clipboard-check", color:"#06b6d4", branch:true,
+      lessons:[
+        {type:"E",etype:"fb",
+         q:"Simplify \\( \\frac{(2a^3 b^2)^4}{4a^5 b} \\). <span class='id-lang'>Sederhanakan \\( \\frac{(2a^3 b^2)^4}{4a^5 b} \\.</span>",
+         a:"4a^7b^7",
+         h:"Numerator becomes \\( 16a^{12} b^8 \\). Divide by \\( 4a^5 b \\). <span class='id-lang'>Pembilang jadi \\( 16a^{12} b^8 \\). Bagi dengan \\( 4a^5 b \\).</span>"},
+        {type:"E",etype:"mc",
+         q:"Convert 1,250,000,000 to scientific notation. <span class='id-lang'>Ubah 1.250.000.000 ke notasi ilmiah.</span>",
+         o:["\\( 1.25 \\times 10^9 \\) <span class='id-lang'></span>","\\( 12.5 \\times 10^8 \\) <span class='id-lang'></span>","\\( 1.25 \\times 10^{-9} \\) <span class='id-lang'></span>","\\( 125 \\times 10^7 \\) <span class='id-lang'></span>"],
+         a:0,
+         h:"Move decimal 9 places left. <span class='id-lang'>Pindahkan koma 9 tempat kiri.</span>"},
+        {type:"E",etype:"tf",
+         q:"\\( \\sqrt{144} + \\sqrt[3]{1000} \\) equals 22. <span class='id-lang'>Apakah \\( \\sqrt{144} + \\sqrt[3]{1000} \\) sama dengan 22?</span>",
+         a:true,
+         h:"\\( 12 + 10 = 22 \\). <span class='id-lang'>\\( 12 + 10 = 22 \\).</span>"},
+        {type:"E",etype:"ord",
+         q:"Order the steps to simplify \\( \\frac{(x^5 y^3)^2}{x^2 y} \\). <span class='id-lang'>Urutkan langkah menyederhanakannya.</span>",
+         o:["Apply power to numerator: \\( x^{10} y^6 \\)","Subtract x exponents: \\( x^8 y^6 \\)","Subtract y exponents: \\( x^8 y^5 \\)"],
+         a:[0,1,2],
+         h:"Square the numerator first, then divide each variable. <span class='id-lang'>Kuadratkan pembilang dulu, lalu bagi setiap variabel.</span>"},
+        {type:"E",etype:"match",
+         q:"Match the algebraic expressions to their simplified forms. <span class='id-lang'>Cocokkan ekspresi aljabar ke bentuk sederhananya.</span>",
+         left:["\\( (x^2)^3 \\)","\\( x^2 \\times x^3 \\)","\\( \\frac{x^6}{x^2} \\)"],
+         right:["\\( x^6 \\)","\\( x^5 \\)","\\( x^4 \\)"],
+         a:[0,1,2],
+         h:"Power rule, Product rule, Quotient rule. <span class='id-lang'>Aturan pangkat, perkalian, pembagian.</span>"},
+        {type:"E",etype:"sa",
+         q:"Which of these expressions simplify to \\( 10^{-6} \\)? <span class='id-lang'>Manakah ekspresi yang disederhanakan menjadi \\( 10^{-6} \\)?</span>",
+         o:["\\( 10^5 \\times 10^{-11} \\)","\\( \\frac{10^{-2}}{10^4} \\)","\\( (10^{-3})^2 \\)","\\( \\frac{10^4}{10^{-2}} \\)"],
+         a:[0,1,2],
+         h:"Check the rules for multiplication, division, and powers. <span class='id-lang'>Periksa aturan perkalian, pembagian, dan pangkat.</span>"},
+        {type:"E",etype:"fb",
+         q:"Evaluate \\( \\frac{5^2 \\times 5^4}{5^3} \\). <span class='id-lang'>Hitung \\( \\frac{5^2 \\times 5^4}{5^3} \\).</span>",
+         a:"125||5^3",
+         h:"Numerator is \\( 5^6 \\). Divide by \\( 5^3 \\). <span class='id-lang'>Pembilang \\( 5^6 \\). Bagi \\( 5^3 \\).</span>"},
+        {type:"E",etype:"mc",
+         q:"What is the opposite operation of squaring a number? <span class='id-lang'>Apa kebalikan dari operasi mengkuadratkan angka?</span>",
+         o:["Doubling <span class='id-lang'>Menggandakan</span>","Square root <span class='id-lang'>Akar kuadrat</span>","Cubing <span class='id-lang'>Memangkatkan tiga</span>","Halving <span class='id-lang'>Memsetengahkan</span>"],
+         a:1,
+         h:"Squaring and square roots are inverse operations. <span class='id-lang'>Kuadrat dan akar kuadrat adalah operasi kebalikan.</span>"},
+        {type:"E",etype:"tf",
+         q:"Any number to the power of 1 is itself (e.g., \\( 8^1 = 8 \\)). <span class='id-lang'>Angka apa pun pangkat 1 adalah dirinya sendiri (mis. \\( 8^1 = 8 \\)).</span>",
+         a:true,
+         h:"Yes, an exponent of 1 means the number appears once. <span class='id-lang'>Ya, eksponen 1 berarti angka muncul sekali.</span>"},
+        {type:"E",etype:"code",
+         q:"Simplify \\( 10^5 \\times 10^{-3} \\) without spaces. (Use ^ for power) <span class='id-lang'>Sederhanakan tanpa spasi.</span>",
+         a:"10^2",
+         h:"Add the exponents 5 and -3. <span class='id-lang'>Jumlahkan eksponen 5 dan -3.</span>"}
+      ]
+    },
+    // ==================== SECTION 7E ====================
+    {
+      id:"7E", title:"Assessment E <span class='id-lang'>Asesmen E</span>", icon:"fa-clipboard-check", color:"#f97316", branch:true,
+      lessons:[
+        {type:"E",etype:"fb",
+         q:"If \\( x = 2 \\) and \\( y = 3 \\), evaluate \\( \\frac{(x^3 y^2)^2}{x^4 y^3} \\). <span class='id-lang'>Jika \\( x = 2 \\) dan \\( y = 3 \\), hitung \\( \\frac{(x^3 y^2)^2}{x^4 y^3} \\).</span>",
+         a:"12",
+         h:"Simplify first to \\( x^2 y \\). Then plug in 2 and 3: \\( 2^2 \\times 3 = 12 \\). <span class='id-lang'>Sederhanakan jadi \\( x^2 y \\). Lalu masukkan 2 dan 3: \\( 2^2 \\times 3 = 12 \\).</span>"},
+        {type:"E",etype:"mc",
+         q:"A bacteria splits into 2 every hour. If you start with 1, how many are there after 24 hours? <span class='id-lang'>Bakteri membelah jadi 2 tiap jam. Jika mulai 1, ada berapa setelah 24 jam?</span>",
+         o:["\\( 2^{24} \\) <span class='id-lang'></span>","24 <span class='id-lang'></span>","\\( 2^{12} \\) <span class='id-lang'></span>","\\( 1^{24} \\) <span class='id-lang'></span>"],
+         a:0,
+         h:"It doubles every hour, so after 24 hours it's \\( 2^{24} \\). <span class='id-lang'>Berganda tiap jam, jadi setelah 24 jam \\( 2^{24} \\).</span>"},
+        {type:"E",etype:"tf",
+         q:"\\( a^m \\times a^n = a^{m \\times n} \\). <span class='id-lang'>Apakah \\( a^m \\times a^n = a^{m \\times n} \\)?</span>",
+         a:false,
+         h:"No, you add the exponents: \\( a^{m+n} \\). <span class='id-lang'>Tidak, kamu menjumlahkan eksponen: \\( a^{m+n} \\).</span>"},
+        {type:"E",etype:"fb",
+         q:"Convert 0.00000000078 to scientific notation. <span class='id-lang'>Ubah 0,00000000078 ke notasi ilmiah.</span>",
+         a:"7.8*10^-10||7.8x10^-10",
+         h:"Move decimal 10 places to the right. <span class='id-lang'>Pindahkan koma 10 tempat ke kanan.</span>"},
+        {type:"E",etype:"match",
+         q:"Match the roots to their values. <span class='id-lang'>Cocokkan akar dengan nilainya.</span>",
+         left:["\\( \\sqrt[3]{216} \\)","\\( \\sqrt{144} \\)","\\( \\sqrt[3]{1000} \\)"],
+         right:["6","12","10"],
+         a:[0,1,2],
+         h:"Think of perfect squares and cubes. <span class='id-lang'>Ingat kuadrat dan kubik sempurna.</span>"},
+        {type:"E",etype:"sa",
+         q:"Which of the following are perfect squares and perfect cubes? <span class='id-lang'>Manakah yang merupakan kuadrat sempurna dan kubik sempurna?</span>",
+         o:["64","729","100","216"],
+         a:[0,1,3],
+         h:"64 is 8^2 and 4^3. 729 is 27^2 and 9^3. 216 is 6^3. <span class='id-lang'>64 adalah 8^2 dan 4^3. 729 adalah 27^2 dan 9^3. 216 adalah 6^3.</span>"},
+        {type:"E",etype:"fb",
+         q:"Simplify \\( (10^2)^4 \\). <span class='id-lang'>Sederhanakan \\( (10^2)^4 \\.</span>",
+         a:"10^8",
+         h:"Multiply the exponents. <span class='id-lang'>Kali eksponen.</span>"},
+        {type:"E",etype:"mc",
+         q:"What is \\( 10^0 \\)? <span class='id-lang'>Berapa \\( 10^0 \\)?</span>",
+         o:["0 <span class='id-lang'></span>","1 <span class='id-lang'></span>","10 <span class='id-lang'></span>","Undefined <span class='id-lang'></span>"],
+         a:1,
+         h:"Any non-zero number to the power of 0 is 1. <span class='id-lang'>Angka bukan nol pangkat 0 adalah 1.</span>"},
+        {type:"E",etype:"tf",
+         q:"In the expression \\( 1.5 \\times 10^4 \\), the number 4 is called the base. <span class='id-lang'>Pada ekspresi \\( 1.5 \\times 10^4 \\), angka 4 disebut basis.</span>",
+         a:false,
+         h:"4 is the exponent. 10 is the base. <span class='id-lang'>4 adalah eksponen. 10 adalah basis.</span>"},
+        {type:"E",etype:"code",
+         q:"Evaluate \\( 2^5 \\) without spaces. <span class='id-lang'>Hitung \\( 2^5 \\) tanpa spasi.</span>",
+         a:"32",
+         h:"2 times itself 5 times. <span class='id-lang'>2 dikali dirinya 5 kali.</span>"}
+      ]
+    },
+    // ==================== SECTION 8 ====================
+    {
+      id:8, title:"Consolidation & Reflection <span class='id-lang'>Konsolidasi & Refleksi</span>", icon:"fa-star", color:"#fbbf24", branch:false,
+      lessons:[
+        {type:"T",title:"Mission Complete <span class='id-lang'>Misi Selesai</span>",
+         body:`<p>Brilliant work! Today you mastered how to simplify complex exponent expressions, calculate square and cube roots, and use scientific notation to model massive numbers. <span class='id-lang'>Kerja luar biasa! Hari ini kamu menguasai cara menyederhanakan ekspresi eksponen kompleks, menghitung akar kuadrat dan pangkat tiga, serta menggunakan notasi ilmiah untuk memodelkan angka raksasa.</span></p>
+         <div class="mt-4 p-5 rounded-xl bg-gradient-to-r from-emerald-500/10 to-teal-500/10 border border-emerald-500/20">
+           <div class="text-emerald-400 font-bold mb-3 text-lg"><i class="fa-solid fa-medal mr-2"></i>3 Key Takeaways <span class='id-lang'>3 Poin Utama</span></div>
+           <ul class="space-y-2 text-sm text-slate-300 list-disc list-inside">
+             <li><strong>Exponent Rules:</strong> Add for multiplication, subtract for division, multiply for powers. <span class='id-lang'>Sifat Eksponen: Tambah untuk perkalian, kurang untuk pembagian, kali untuk pangkat.</span></li>
+             <li><strong>Roots:</strong> Roots are the inverse of powers. <span class='id-lang'>Akar: Akar adalah kebalikan dari pangkat.</span></li>
+             <li><strong>Scientific Notation:</strong> Essential for very large and very small numbers. <span class='id-lang'>Notasi Ilmiah: Penting untuk bilangan sangat besar dan sangat kecil.</span></li>
+           </ul>
+         </div>
+         <p class="mt-4">Before we finish, remember to join the Algonova platform to access your guided notes and continue your learning journey! <span class='id-lang'>Sebelum kita selesai, ingat untuk bergabung dengan platform Algonova untuk mengakses catatan terbimbing!</span></p>
+         <div class="mt-6 p-5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-center">
+           <div class="text-amber-400 font-bold text-xl mb-2">Your Next Mission <span class='id-lang'>Misi Berikutnya</span></div>
+           <p class="text-sm text-slate-300 mb-4">Ready for more challenges? Login to Algonova now! <span class='id-lang'>Siap untuk tantangan lainnya? Login ke Algonova sekarang!</span></p>
+           <a href="https://learn.algonova.id/login" target="_blank" class="btn-primary inline-flex">
+             <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Algonova <span class="id-lang" style="color:rgba(11,17,33,0.7); display:inline;">Buka Algonova</span>
+           </a>
+         </div>`}
+      ]
+    }
+  ]
+};
+
+// ============================================================
+// STATE APLIKASI
+// ============================================================
+let state = {
+  xp: 0,
+  streak: 0,
+  completed: {},   // { "1-0": true, "1-1": true, ... }  mapIndex-lessonIndex
+  currentView: 'map',
+  currentMap: null,  // index di COURSE.maps
+  currentLesson: null, // index lesson dalam map
+  exerciseState: {},  // state untuk exercise interaktif
+};
+
+// Load dari localStorage
+function loadState() {
+  try {
+    const saved = localStorage.getItem('logicode_state');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      state.xp = parsed.xp || 0;
+      state.streak = parsed.streak || 0;
+      state.completed = parsed.completed || {};
+	  state.mapAnswers = parsed.mapAnswers || {};
+    }
+  } catch(e) {}
+}
+function saveState() {
+  try {
+    localStorage.setItem('logicode_state', JSON.stringify({
+      xp: state.xp, streak: state.streak, completed: state.completed, mapAnswers: state.mapAnswers
+    }));
+  } catch(e) {}
+}
+
+function resetProgress() {
+  if (confirm('Apakah kamu yakin ingin menghapus semua progress? Tindakan ini tidak bisa dibatalkan.')) {
+    // Hapus data dari localStorage
+    localStorage.removeItem('logicode_state');
+    
+    // Reset state di memori
+    state.xp = 0;
+    state.streak = 0;
+    state.completed = {};
+    
+    // Render ulang tampilan peta
+    renderMap();
+    
+    // Tampilkan notifikasi
+    showToast('Progress berhasil direset!', 'info');
+  }
+}
+
+// ============================================================
+// HELPER: Cek apakah peta terbuka
+// ============================================================
+function isMapUnlocked(mapIdx) {
+  return true; // Semua peta selalu terbuka
+}
+
+function isMapCompleted(mapIdx) {
+  const map = COURSE.maps[mapIdx];
+  if (!map) return false;
+  return map.lessons.every((_, li) => state.completed[`${mapIdx}-${li}`]);
+}
+
+function isLessonUnlocked(mapIdx, lessonIdx) {
+  return true; // Semua lesson selalu terbuka
+}
+
+function getMapProgress(mapIdx) {
+  const map = COURSE.maps[mapIdx];
+  if (!map) return 0;
+  const done = map.lessons.filter((_, li) => state.completed[`${mapIdx}-${li}`]).length;
+  return Math.round((done / map.lessons.length) * 100);
+}
+
+function getTotalProgress() {
+  let total = 0, done = 0;
+  COURSE.maps.forEach((m, mi) => {
+    m.lessons.forEach((_, li) => {
+      total++;
+      if (state.completed[`${mi}-${li}`]) done++;
+    });
+  });
+  return total > 0 ? Math.round((done / total) * 100) : 0;
+}
+
+// ============================================================
+// RENDER: PETA MAP (halaman utama)
+// ============================================================
+function renderMap() {
+  const container = document.getElementById('mapContainer');
+  let html = '';
+
+	COURSE.maps.forEach((map, mi) => {
+	const unlocked = isMapUnlocked(mi);
+	const completed = isMapCompleted(mi);
+	const progress = getMapProgress(mi);
+	const isBranch = map.branch;
+	const isLastBranch = isBranch && !COURSE.maps[mi+1]?.branch;
+	const isFirstBranch = isBranch && !COURSE.maps[mi-1]?.branch;
+
+	// Node kelas
+	const nodeClass = completed ? 'completed' : unlocked ? 'unlocked' + (progress === 0 ? ' current' : '') : 'locked';
+
+	// --- BRANCH START: Visual dari Peta 6 ke Peta 7A-7E ---
+	if (isFirstBranch) {
+      const peta6Completed = isMapCompleted(mi - 1);
+      // Garis vertikal turun dari Peta 6
+      html += `<div class="map-line ${peta6Completed ? 'done' : ''}"></div>`;
+      // Garis horizontal branch (diperlebar)
+      html += `<div style="height: 3px; width: 95%; max-width: 850px; margin: 0 auto; background: var(--border);"></div>`;
+      // Buka container flex untuk 7A-7E (ditambah flex-wrap agar rapi di HP)
+      html += `<div class="flex flex-wrap justify-center" style="gap: 20px; max-width: 850px; margin: 0 auto;">`;
+    }
+
+	// --- RENDER NODE ---
+	html += `
+	  <div class="flex flex-col items-center" style="${isBranch ? 'min-width: 150px;' : ''}" onclick="${unlocked ? `openPeta(${mi})` : ''}">
+		${isBranch ? `<div style="width: 3px; height: 25px; background: var(--border);"></div>` : ''}
+		<div class="map-node ${nodeClass}" style="${unlocked ? `border-color:${map.color};${completed ? `background:${map.color}` : ''}` : ''}">
+		  ${completed ? '<i class="fa-solid fa-check"></i>' : unlocked ? `<i class="fa-solid ${map.icon}"></i>` : '<i class="fa-solid fa-lock text-sm"></i>'}
+		</div>
+		<div class="mt-2 text-center">
+		  <div class="text-sm font-semibold node-title ${unlocked ? 'text-slate-200' : 'text-slate-600'}">Peta ${map.id}</div>
+		  <div class="text-xs node-title ${unlocked ? 'text-slate-400' : 'text-slate-600'}">${map.title}</div>
+		  ${unlocked && !completed ? `<div class="mt-1 w-16 mx-auto"><div class="prog-bar"><div class="prog-fill" style="width:${progress}%;background:${map.color}"></div></div></div>` : ''}
+		</div>
+		${isBranch ? `<div style="width: 3px; height: 25px; background: var(--border);"></div>` : ''}
+	  </div>
+	`;
+
+	// --- BRANCH END: Visual dari Peta 7A-7E ke Peta 8 ---
+	if (isLastBranch) {
+      // Tutup container flex 7A-7E
+      html += `</div>`;
+      // Garis horizontal merge (diperlebar)
+      html += `<div style="height: 3px; width: 95%; max-width: 850px; margin: 0 auto; background: var(--border);"></div>`;
+      // Garis vertikal turun ke Peta 8
+      html += `<div class="map-line"></div>`;
+    }
+
+	// --- GARIS VERTIKAL NORMAL (Peta 1-5) ---
+	if (!isBranch && mi < COURSE.maps.length - 1 && !COURSE.maps[mi+1]?.branch) {
+	  html += `<div class="map-line ${completed ? 'done' : ''}"></div>`;
+	}
+	});
+
+  container.innerHTML = html;
+
+  // Update header stats
+  document.getElementById('headerXP').textContent = state.xp;
+  document.getElementById('headerStreak').textContent = state.streak;
+  document.getElementById('totalProgress').textContent = getTotalProgress() + '%';
+  document.getElementById('totalProgFill').style.width = getTotalProgress() + '%';
+}
+
+// ============================================================
+// RENDER: PETA DETAIL (daftar lesson)
+// ============================================================
+function openPeta(mapIdx) {
+  state.currentMap = mapIdx;
+  showView('peta');
+  const map = COURSE.maps[mapIdx];
+  document.getElementById('petaTitle').innerHTML = `Peta ${map.id}: ${map.title}`;
+  const totalLessons = map.lessons.length;
+  const doneLessons = map.lessons.filter((_, li) => state.completed[`${mapIdx}-${li}`]).length;
+  document.getElementById('petaSubtitle').textContent = `${doneLessons}/${totalLessons} selesai`;
+
+  const container = document.getElementById('lessonContainer');
+  let html = '<div class="stagger-in flex flex-col items-center">';
+
+  map.lessons.forEach((lesson, li) => {
+    const unlocked = isLessonUnlocked(mapIdx, li);
+    const completed = state.completed[`${mapIdx}-${li}`] === true;
+    const isTheory = lesson.type === 'T';
+    const isCurrent = unlocked && !completed;
+
+    const nodeClass = completed ? 'completed' : unlocked ? 'unlocked' : 'locked';
+    const shapeClass = isTheory ? 'theory' : 'exercise';
+
+    html += `
+      <div class="flex flex-col items-center">
+        <div class="lesson-node ${shapeClass} ${nodeClass} ${isCurrent ? 'current' : ''}"
+             style="${unlocked ? `border-color:${map.color};${completed ? `background:${map.color}` : ''}` : ''}"
+             onclick="${unlocked ? `openLesson(${mapIdx},${li})` : ''}">
+          ${completed ? '<i class="fa-solid fa-check text-sm"></i>' : isTheory ? '<i class="fa-solid fa-book text-sm"></i>' : '<i class="fa-solid fa-dumbbell text-sm"></i>'}
+        </div>
+        <div class="mt-1 text-center">
+          <div class="text-xs node-title ${unlocked ? 'text-slate-300' : 'text-slate-600'}">${isTheory ? lesson.title : `Exercise ${li+1}`}</div>
+        </div>
+      </div>
+    `;
+
+    // Koneksi ke lesson berikutnya
+    if (li < map.lessons.length - 1) {
+      const connDone = completed;
+      html += `<div class="lesson-connector ${connDone ? 'done' : ''}"></div>`;
+    }
+  });
+
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+// ============================================================
+// RENDER: LESSON (teori atau exercise)
+// ============================================================
+function openLesson(mapIdx, lessonIdx) {
+  state.currentMap = mapIdx;
+  state.currentLesson = lessonIdx;
+  state.exerciseState = {};
+  showView('lesson');
+
+  const map = COURSE.maps[mapIdx];
+  const lesson = map.lessons[lessonIdx];
+  const total = map.lessons.length;
+
+  document.getElementById('lessonCounter').textContent = `${lessonIdx+1}/${total}`;
+  const done = map.lessons.filter((_, li) => state.completed[`${mapIdx}-${li}`] || li < lessonIdx).length;
+  document.getElementById('lessonProgFill').style.width = `${(done/total)*100}%`;
+
+  if (lesson.type === 'T') {
+    renderTheory(lesson);
+  } else {
+    renderExercise(lesson, mapIdx, lessonIdx);
+  }
+}
+
+function renderTheory(lesson) {
+  const content = document.getElementById('lessonContent');
+  content.innerHTML = `
+    <div class="stagger-in">
+      <div class="text-xs font-semibold text-emerald-400 uppercase tracking-wider mb-2">
+        <i class="fa-solid fa-book-open mr-1"></i> Theory <span class="id-lang" style="display:inline; color:#64748b;">Teori</span>
+      </div>
+      <h2 class="text-2xl font-bold mb-6">${lesson.title}</h2>
+      <div class="text-slate-300 leading-relaxed space-y-3">
+        ${lesson.body}
+      </div>
+      <div class="mt-8 flex justify-end">
+        <button id="nextBtn" class="btn-primary" onclick="completeAndNext()">
+          Next <span class="id-lang" style="color:rgba(11,17,33,0.7); display:inline;">Lanjut</span> <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function renderExercise(lesson, mapIdx, lessonIdx) {
+  const content = document.getElementById('lessonContent');
+  const etype = lesson.etype;
+  let exerciseHTML = '';
+
+  switch(etype) {
+    case 'mc': exerciseHTML = renderMC(lesson); break;
+    case 'tf': exerciseHTML = renderTF(lesson); break;
+    case 'fb': exerciseHTML = renderFB(lesson); break;
+    case 'ord': exerciseHTML = renderOrd(lesson); break;
+    case 'match': exerciseHTML = renderMatch(lesson); break;
+    case 'sa': exerciseHTML = renderSA(lesson); break;
+    case 'code': exerciseHTML = renderCode(lesson); break;
+    default: exerciseHTML = '<p>Tipe exercise tidak dikenal</p>';
+  }
+
+  content.innerHTML = `
+    <div class="stagger-in">
+      <div class="text-xs font-semibold text-amber-400 uppercase tracking-wider mb-2">
+        <i class="fa-solid fa-dumbbell mr-1"></i> Exercise <span class="id-lang" style="display:inline; color:#64748b;">Latihan</span>
+      </div>
+      <h2 class="text-xl font-bold mb-6">${lesson.q}</h2>
+      ${lesson.code ? `<div class="code-block mb-6">${escapeHTML(lesson.code)}</div>` : ''}
+      <div id="exerciseArea">${exerciseHTML}</div>
+      <div id="feedbackArea" class="mt-4"></div>
+      <div class="mt-6 flex items-center justify-between flex-wrap gap-3">
+        <div class="flex gap-2">
+          <button class="btn-secondary text-sm" onclick="showHint()" id="hintBtn">
+            <i class="fa-solid fa-lightbulb mr-1"></i> Hint <span class="id-lang" style="display:inline;">Petunjuk</span>
+          </button>
+          <button class="btn-secondary text-sm" onclick="resetExercise()" id="resetBtn">
+            <i class="fa-solid fa-rotate-left mr-1"></i> Reset <span class="id-lang" style="display:inline;">Atur Ulang</span>
+          </button>
+        </div>
+        <button class="btn-primary" id="checkBtn" onclick="checkAnswer()" disabled>
+          Check <span class="id-lang" style="display:inline;">Periksa</span> <i class="fa-solid fa-check"></i>
+        </button>
+      </div>
+      <div id="hintArea" class="mt-4 hidden">
+        <div class="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-sm text-amber-200">
+          <i class="fa-solid fa-lightbulb text-amber-400 mr-2"></i>${lesson.h || 'Tidak ada petunjuk'}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// Fungsi baru untuk mereset exercise
+function resetExercise() {
+  if (state.exerciseState.answered) return; // Tidak bisa reset jika sudah di-check
+  const lesson = COURSE.maps[state.currentMap].lessons[state.currentLesson];
+  renderExercise(lesson, state.currentMap, state.currentLesson);
+  // Panggil KaTeX setelah HTML dirender ulang
+  setTimeout(() => renderKatexInElement(document.getElementById('lessonContent')), 50);
+}
+
+// ============================================================
+// EXERCISE RENDERERS
+// ============================================================
+
+// Multiple Choice
+function renderMC(lesson) {
+  const labels = ['A','B','C','D','E','F'];
+  return `<div class="space-y-3" id="mcOptions">
+    ${lesson.o.map((opt, i) => `
+      <div class="opt-card" data-idx="${i}" onclick="selectMC(${i})">
+        <span class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-sm font-bold flex-shrink-0">${labels[i]}</span>
+        <span>${opt}</span>
+      </div>
+    `).join('')}
+  </div>`;
+}
+
+function selectMC(idx) {
+  if (state.exerciseState.answered) return;
+  state.exerciseState.selected = idx;
+  document.querySelectorAll('#mcOptions .opt-card').forEach((el, i) => {
+    el.classList.toggle('selected', i === idx);
+  });
+  document.getElementById('checkBtn').disabled = false;
+}
+
+// True/False
+function renderTF(lesson) {
+  return `<div class="flex gap-4" id="tfOptions">
+    <div class="opt-card flex-1 justify-center text-center text-lg" onclick="selectTF(true)" data-val="true">
+      <i class="fa-solid fa-check text-emerald-400 mr-2"></i> True <span class="id-lang">Benar</span>
+    </div>
+    <div class="opt-card flex-1 justify-center text-center text-lg" onclick="selectTF(false)" data-val="false">
+      <i class="fa-solid fa-xmark text-red-400 mr-2"></i> False <span class="id-lang">Salah</span>
+    </div>
+  </div>`;
+}
+
+function selectTF(val) {
+  if (state.exerciseState.answered) return;
+  state.exerciseState.selected = val;
+  document.querySelectorAll('#tfOptions .opt-card').forEach(el => {
+    el.classList.toggle('selected', el.dataset.val === String(val));
+  });
+  document.getElementById('checkBtn').disabled = false;
+}
+
+// Fill Blank
+function renderFB(lesson) {
+  return `<div>
+    <input type="text" class="ex-input" id="fbInput" placeholder="Ketik jawaban..." autocomplete="off" oninput="onFBInput()">
+  </div>`;
+}
+
+function onFBInput() {
+  const val = document.getElementById('fbInput').value.trim();
+  document.getElementById('checkBtn').disabled = val.length === 0;
+}
+
+// Order
+function renderOrd(lesson) {
+  // Tampilkan item dalam urutan acak
+  const shuffled = lesson.o.map((item, i) => ({text: item, origIdx: i}));
+  // Shuffle
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  state.exerciseState.ordOrder = [];
+  state.exerciseState.ordItems = shuffled;
+
+  return `<div>
+	<div class="text-sm text-slate-400 mb-3">Click items in the correct order: <span class="id-lang">Klik item dalam urutan yang benar:</span></div>
+    <div class="space-y-2" id="ordList">
+      ${shuffled.map((item, i) => `
+        <div class="order-item flex items-center gap-3" data-orig="${item.origIdx}" onclick="selectOrd(this,${item.origIdx})">
+          <span class="w-7 h-7 rounded-full bg-white/5 flex items-center justify-center text-xs font-bold ord-num"></span>
+          <span>${item.text}</span>
+        </div>
+      `).join('')}
+    </div>
+    <div class="mt-3 text-xs text-slate-500" id="ordStatus">Urutan terpilih: (belum ada)</div>
+  </div>`;
+}
+
+function selectOrd(el, origIdx) {
+  if (state.exerciseState.answered) return;
+  if (el.classList.contains('ordered')) return;
+
+  const order = state.exerciseState.ordOrder;
+  order.push(origIdx);
+  el.classList.add('ordered');
+  const numEl = el.querySelector('.ord-num');
+  numEl.textContent = order.length;
+
+  document.getElementById('ordStatus').textContent = `Urutan terpilih: ${order.length}/${state.exerciseState.ordItems.length}`;
+  document.getElementById('checkBtn').disabled = order.length < state.exerciseState.ordItems.length;
+}
+
+// Match
+function renderMatch(lesson) {
+  state.exerciseState.matchLeft = null;
+  state.exerciseState.matchPairs = [];
+  state.exerciseState.matchedLeft = new Set();
+  state.exerciseState.matchedRight = new Set();
+
+  // Shuffle right column
+  const rightShuffled = [...lesson.right];
+  for (let i = rightShuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [rightShuffled[i], rightShuffled[j]] = [rightShuffled[j], rightShuffled[i]];
+  }
+  state.exerciseState.rightShuffled = rightShuffled;
+
+  return `<div>
+    <div class="text-sm text-slate-400 mb-3">Klik item kiri, lalu item kanan untuk mencocokkan:</div>
+    <div class="grid grid-cols-2 gap-3" id="matchGrid">
+      <div class="space-y-2" id="matchLeft">
+        ${lesson.left.map((item, i) => `
+          <div class="match-item" data-side="left" data-idx="${i}" onclick="selectMatch('left',${i})">${item}</div>
+        `).join('')}
+      </div>
+      <div class="space-y-2" id="matchRight">
+        ${rightShuffled.map((item, i) => `
+          <div class="match-item" data-side="right" data-idx="${i}" data-val="${item}" onclick="selectMatch('right',${i})">${item}</div>
+        `).join('')}
+      </div>
+    </div>
+  </div>`;
+}
+
+function selectMatch(side, idx) {
+  if (state.exerciseState.answered) return;
+  const es = state.exerciseState;
+
+  if (side === 'left') {
+    if (es.matchedLeft.has(idx)) return;
+    // Highlight
+    document.querySelectorAll('#matchLeft .match-item').forEach(el => el.classList.remove('active'));
+    const el = document.querySelector(`#matchLeft .match-item[data-idx="${idx}"]`);
+    el.classList.add('active');
+    es.matchLeft = idx;
+  } else {
+    if (es.matchedRight.has(idx)) return;
+    if (es.matchLeft === null) {
+      showToast('Pilih item kiri terlebih dahulu', 'info');
+      return;
+    }
+    // Create pair
+    const lesson = COURSE.maps[state.currentMap].lessons[state.currentLesson];
+    const leftIdx = es.matchLeft;
+    const rightVal = es.rightShuffled[idx];
+    es.matchPairs.push({leftIdx, rightVal, rightShuffledIdx: idx});
+    es.matchedLeft.add(leftIdx);
+    es.matchedRight.add(idx);
+
+    // Visual
+    const leftEl = document.querySelector(`#matchLeft .match-item[data-idx="${leftIdx}"]`);
+    const rightEl = document.querySelector(`#matchRight .match-item[data-idx="${idx}"]`);
+    leftEl.classList.remove('active');
+    leftEl.classList.add('matched');
+    rightEl.classList.add('matched');
+
+    es.matchLeft = null;
+
+    document.getElementById('checkBtn').disabled = es.matchPairs.length < lesson.left.length;
+  }
+}
+
+// Select All
+function renderSA(lesson) {
+  state.exerciseState.selectedSet = new Set();
+  return `<div>
+    <div class="text-sm text-slate-400 mb-3">Pilih semua jawaban yang benar:</div>
+    <div class="space-y-2" id="saOptions">
+      ${lesson.o.map((opt, i) => `
+        <div class="opt-card" data-idx="${i}" onclick="toggleSA(${i})">
+          <span class="w-6 h-6 rounded border-2 border-slate-600 flex items-center justify-center flex-shrink-0 sa-check"></span>
+          <span>${opt}</span>
+        </div>
+      `).join('')}
+    </div>
+  </div>`;
+}
+
+function toggleSA(idx) {
+  if (state.exerciseState.answered) return;
+  const set = state.exerciseState.selectedSet;
+  if (set.has(idx)) set.delete(idx); else set.add(idx);
+  document.querySelectorAll('#saOptions .opt-card').forEach((el, i) => {
+    const check = el.querySelector('.sa-check');
+    if (set.has(i)) {
+      el.classList.add('selected');
+      check.innerHTML = '<i class="fa-solid fa-check text-emerald-400 text-xs"></i>';
+      check.style.borderColor = '#10b981';
+    } else {
+      el.classList.remove('selected');
+      check.innerHTML = '';
+      check.style.borderColor = '';
+    }
+  });
+  document.getElementById('checkBtn').disabled = set.size === 0;
+}
+
+// Code Output
+function renderCode(lesson) {
+  return `<div>
+    <div class="text-sm text-slate-400 mb-3">Tulis output yang akan ditampilkan:</div>
+    <input type="text" class="ex-input font-mono" id="codeInput" placeholder="Ketik output..." autocomplete="off" oninput="onCodeInput()">
+  </div>`;
+}
+
+function onCodeInput() {
+  const val = document.getElementById('codeInput').value.trim();
+  document.getElementById('checkBtn').disabled = val.length === 0;
+}
+
+// ============================================================
+// CHECK ANSWER
+// ============================================================
+function checkAnswer() {
+  if (state.exerciseState.answered) return;
+  state.exerciseState.answered = true;
+
+  // Sembunyikan tombol Hint dan Reset
+  const resetBtn = document.getElementById('resetBtn');
+  if (resetBtn) resetBtn.style.display = 'none';
+
+  const lesson = COURSE.maps[state.currentMap].lessons[state.currentLesson];
+  const etype = lesson.etype;
+  let correct = false;
+  let correctAnswer = '';
+
+  switch(etype) {
+    case 'mc': {
+      const sel = state.exerciseState.selected;
+      correct = sel === lesson.a;
+      document.querySelectorAll('#mcOptions .opt-card').forEach((el, i) => {
+        el.classList.add('disabled');
+        if (i === lesson.a) el.classList.add('correct');
+        if (i === sel && !correct) el.classList.add('wrong');
+      });
+      correctAnswer = lesson.o[lesson.a];
+      break;
+    }
+    case 'tf': {
+      const sel = state.exerciseState.selected;
+      correct = sel === lesson.a;
+      document.querySelectorAll('#tfOptions .opt-card').forEach(el => {
+        el.classList.add('disabled');
+        if (String(lesson.a) === el.dataset.val) el.classList.add('correct');
+        if (String(sel) === el.dataset.val && !correct) el.classList.add('wrong');
+      });
+            correctAnswer = lesson.a ? 'True <span class="id-lang">Benar</span>' : 'False <span class="id-lang">Salah</span>';
+      break;
+    }
+    case 'fb': {
+      const input = document.getElementById('fbInput').value.trim();
+      // Normalisasi: hapus semua spasi dan ubah jadi huruf kecil
+      const normalize = str => str
+        .replace(/[\u200B-\u200D\u2060-\u206F\uFEFF]/g, '') // Hapus karakter tak terlihat (Zero-width, function apply, BOM)
+        .replace(/[（﹝]/g, '(') // Ubah kurung buka full-width ke setengah
+        .replace(/[）﹞]/g, ')') // Ubah kurung tutup full-width ke setengah
+        .replace(/\s+/g, '')    // Hapus semua spasi
+        .toLowerCase();         // Jadiin huruf kecil
+      // Terima beberapa jawaban yang benar (dipisah /)
+      const answers = lesson.a.split('||');
+      correct = answers.some(a => normalize(input) === normalize(a));
+      document.getElementById('fbInput').classList.add(correct ? 'correct' : 'wrong');
+      document.getElementById('fbInput').disabled = true;
+      correctAnswer = lesson.a;
+      break;
+    }
+    case 'ord': {
+      const order = state.exerciseState.ordOrder;
+      correct = order.length === lesson.a.length && order.every((v, i) => v === lesson.a[i]);
+      correctAnswer = lesson.a.map(i => lesson.o[i]).join(' → ');
+      break;
+    }
+    case 'match': {
+      const pairs = state.exerciseState.matchPairs;
+      const lesson_data = lesson;
+      correct = pairs.length === lesson_data.a.length && pairs.every((p, i) => {
+        // Cek apakah leftIdx-i cocok dengan right yang benar
+        const expectedRightVal = lesson_data.right[lesson_data.a[p.leftIdx]];
+        return p.rightVal === expectedRightVal;
+      });
+      correctAnswer = lesson_data.left.map((l, i) => `${l} ↔ ${lesson_data.right[lesson_data.a[i]]}`).join(', ');
+      break;
+    }
+    case 'sa': {
+      const selected = [...state.exerciseState.selectedSet].sort();
+      const expected = [...lesson.a].sort();
+      correct = selected.length === expected.length && selected.every((v, i) => v === expected[i]);
+      document.querySelectorAll('#saOptions .opt-card').forEach((el, i) => {
+        el.classList.add('disabled');
+        if (lesson.a.includes(i)) el.classList.add('correct');
+        if (selected.includes(i) && !lesson.a.includes(i)) el.classList.add('wrong');
+      });
+      correctAnswer = lesson.a.map(i => lesson.o[i]).join(', ');
+      break;
+    }
+    case 'code': {
+      const input = document.getElementById('codeInput').value.trim();
+      // Normalisasi: hapus semua spasi dan ubah jadi huruf kecil
+      const normalize = str => str
+        .replace(/[\u200B-\u200D\u2060-\u206F\uFEFF]/g, '') // Hapus karakter tak terlihat
+        .replace(/[（﹝]/g, '(') // Standar kurung buka
+        .replace(/[）﹞]/g, ')') // Standar kurung tutup
+        .replace(/\s+/g, '')    // Hapus spasi
+        .toLowerCase();         // Huruf kecil
+      const answers = lesson.a.split('||');
+      correct = answers.some(a => normalize(input) === normalize(a));
+      document.getElementById('codeInput').classList.add(correct ? 'correct' : 'wrong');
+      document.getElementById('codeInput').disabled = true;
+      correctAnswer = lesson.a;
+      break;
+    }
+  }
+
+  // Simpan jawaban untuk Print Result
+  const mi = state.currentMap;
+  const li = state.currentLesson;
+  let studentAnswerText = "";
+  let correctAnswerText = "";
+
+  switch(etype) {
+    case 'mc':
+      studentAnswerText = state.exerciseState.selected !== undefined ? lesson.o[state.exerciseState.selected] : "-";
+      correctAnswerText = lesson.o[lesson.a];
+      break;
+    case 'tf':
+      studentAnswerText = state.exerciseState.selected !== null ? (state.exerciseState.selected ? "True" : "False") : "-";
+      correctAnswerText = lesson.a ? "True" : "False";
+      break;
+    case 'fb':
+      studentAnswerText = document.getElementById('fbInput').value.trim() || "-";
+      correctAnswerText = lesson.a;
+      break;
+    case 'code':
+      studentAnswerText = document.getElementById('codeInput').value.trim() || "-";
+      correctAnswerText = lesson.a;
+      break;
+    case 'ord':
+      studentAnswerText = state.exerciseState.ordOrder.map(i => lesson.o[i]).join(' → ') || "-";
+      correctAnswerText = lesson.a.map(i => lesson.o[i]).join(' → ');
+      break;
+    case 'match':
+      studentAnswerText = "Matched pairs";
+      correctAnswerText = lesson.left.map((l, i) => `${l} ↔ ${lesson.right[lesson.a[i]]}`).join('; ');
+      break;
+    case 'sa':
+      studentAnswerText = [...state.exerciseState.selectedSet].sort().map(i => lesson.o[i]).join(', ') || "-";
+      correctAnswerText = lesson.a.map(i => lesson.o[i]).join(', ');
+      break;
+  }
+
+  if (!state.mapAnswers) state.mapAnswers = {};
+  if (!state.mapAnswers[mi]) state.mapAnswers[mi] = {};
+  state.mapAnswers[mi][li] = {
+    q: lesson.q,
+    studentAnswer: studentAnswerText,
+    correctAnswer: correctAnswerText,
+    isCorrect: correct
+  };
+  saveState();
+
+  // Tampilkan feedback
+  const feedback = document.getElementById('feedbackArea');
+  if (correct) {
+    feedback.innerHTML = `
+      <div class="feedback-bar correct-fb">
+        <i class="fa-solid fa-check-circle text-2xl"></i>
+        <div>
+          <div class="text-lg">Correct! Excellent! <span class="id-lang">Benar! Hebat!</span></div>
+          ${correctAnswer ? `<div class="text-sm opacity-80 mt-1">Answer: ${correctAnswer}</div>` : ''}
+        </div>
+      </div>
+    `;
+    // Tambah XP
+    state.xp += 10;
+    state.streak += 1;
+    showXPPopup(10);
+    spawnConfetti();
+  } else {
+    feedback.innerHTML = `
+      <div class="feedback-bar wrong-fb">
+        <i class="fa-solid fa-times-circle text-2xl"></i>
+        <div>
+            <div class="text-lg">Incorrect <span class="id-lang">Belum tepat</span></div>
+            <div class="text-sm opacity-80 mt-1">Answer: ${correctAnswer}</div>
+        </div>
+      </div>
+    `;
+    state.streak = 0;
+  }
+  
+  renderKatexInElement(feedback);
+  
+  // Update header
+  document.getElementById('headerXP').textContent = state.xp;
+  document.getElementById('headerStreak').textContent = state.streak;
+
+  // Ganti tombol check menjadi lanjut
+  const checkBtn = document.getElementById('checkBtn');
+  checkBtn.textContent = 'Lanjut ';
+  checkBtn.innerHTML = 'Next <span class="id-lang" style="color:rgba(11,17,33,0.7); display:inline;">Lanjut</span> <i class="fa-solid fa-arrow-right"></i>';
+  checkBtn.disabled = false;
+  checkBtn.onclick = () => completeAndNext();
+
+  saveState();
+}
+
+// ============================================================
+// PRINT RESULT UNTUK ASSESSMENT
+// ============================================================
+function showPrintResultForm(mapIdx) {
+  const map = COURSE.maps[mapIdx];
+  const totalLessons = map.lessons.length;
+  let correctCount = 0;
+  
+  if (state.mapAnswers && state.mapAnswers[mapIdx]) {
+    for (let i = 0; i < totalLessons; i++) {
+      if (state.mapAnswers[mapIdx][i] && state.mapAnswers[mapIdx][i].isCorrect) {
+        correctCount++;
+      }
+    }
+  }
+  
+  const score = Math.round((correctCount / totalLessons) * 100);
+
+  const content = document.getElementById('lessonContent');
+  content.innerHTML = `
+    <div class="stagger-in text-center">
+      <div class="text-5xl mb-4">🎉</div>
+      <h2 class="text-2xl font-bold mb-2">Assessment Completed! <span class="id-lang">Asesmen Selesai!</span></h2>
+      <p class="text-slate-400 mb-6">You scored <span class="text-emerald-400 font-bold text-xl">${score}%</span> (${correctCount}/${totalLessons})</p>
+      
+      <div class="max-w-md mx-auto text-left space-y-4 mb-8">
+        <div>
+          <label class="text-sm text-slate-400 block mb-1">Name / <span class="id-lang">Nama</span></label>
+          <input type="text" id="printName" class="ex-input" placeholder="Enter your name / Masukkan nama">
+        </div>
+        <div>
+          <label class="text-sm text-slate-400 block mb-1">Date / <span class="id-lang">Tanggal</span></label>
+          <input type="date" id="printDate" class="ex-input" value="${new Date().toISOString().split('T')[0]}">
+        </div>
+        <div>
+          <label class="text-sm text-slate-400 block mb-1">Assessment / <span class="id-lang">Asesmen</span></label>
+          <input type="text" class="ex-input" value="Assessment ${map.id}" disabled style="opacity:0.6">
+        </div>
+        <div>
+          <label class="text-sm text-slate-400 block mb-1">Score / <span class="id-lang">Skor</span></label>
+          <input type="text" class="ex-input" value="${score}%" disabled style="opacity:0.6">
+        </div>
+      </div>
+
+      <button class="btn-primary text-lg" onclick="generatePrintout(${mapIdx})">
+        <i class="fa-solid fa-print mr-2"></i> Print Result <span class="id-lang" style="color:rgba(11,17,33,0.7); display:inline;">Cetak Hasil</span>
+      </button>
+      
+      <div class="mt-4">
+        <button class="btn-secondary" onclick="openPeta(${mapIdx})">
+          Back to Map <span class="id-lang">Kembali ke Peta</span>
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function generatePrintout(mapIdx) {
+  const map = COURSE.maps[mapIdx];
+  const studentName = document.getElementById('printName').value || '-';
+  const printDate = document.getElementById('printDate').value || '-';
+  
+  let correctCount = 0;
+  let tableRows = '';
+  
+  for (let i = 0; i < map.lessons.length; i++) {
+    const ansData = (state.mapAnswers && state.mapAnswers[mapIdx] && state.mapAnswers[mapIdx][i]) ? state.mapAnswers[mapIdx][i] : null;
+    // Hapus tag id-lang dari pertanyaan agar printout lebih bersih (hanya bahasa Inggris)
+    const qText = map.lessons[i].q.replace(/<span class='id-lang'>.*?<\/span>/g, '');
+    const studentAns = ansData ? ansData.studentAnswer : '-';
+    const correctAns = ansData ? ansData.correctAnswer : '-';
+    const isCorrect = ansData ? ansData.isCorrect : false;
+    
+    if (isCorrect) correctCount++;
+    
+    const noteSymbol = isCorrect ? '✓' : '✗';
+    const noteColor = isCorrect ? 'green' : 'red';
+    
+    tableRows += `
+      <tr>
+        <td style="text-align:center; width: 40px;">${i + 1}</td>
+        <td>${qText}</td>
+        <td>${studentAns}</td>
+        <td>${correctAns}</td>
+        <td style="text-align:center; color: ${noteColor}; font-weight:bold; font-size:1.2rem;">${noteSymbol}</td>
+      </tr>
+    `;
+  }
+  
+  const score = Math.round((correctCount / map.lessons.length) * 100);
+
+  const printWindow = window.open('', '_blank');
+  printWindow.document.write(`
+    <!DOCTYPE html>
+    <html lang="id">
+    <head>
+      <meta charset="UTF-8">
+      <title>Assessment Result - ${map.id}</title>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+      <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"><\/script>
+      <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+        onload="renderMathInElement(document.body, {delimiters: [{left: '\\\\(', right: '\\\\)', display: false},{left: '\\\\[', right: '\\\\]', display: true}], throwOnError: false}); setTimeout(function(){window.print();}, 1000);"><\/script>
+      <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 30px; color: #333; line-height: 1.5; }
+        h1 { text-align: center; margin-bottom: 5px; }
+        .subtitle { text-align: center; color: #666; font-size: 0.9rem; margin-bottom: 20px; }
+        .header-info { margin-bottom: 20px; border: 1px solid #ddd; padding: 15px; border-radius: 8px; display: flex; justify-content: space-between; flex-wrap: wrap; }
+        .header-info p { margin: 5px 0; font-size: 14px; }
+        .header-info strong { margin-right: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 13px; }
+        th, td { border: 1px solid #333; padding: 10px; text-align: left; vertical-align: top; }
+        th { background: #f0f0f0; font-weight: bold; text-align: center; }
+        @media print {
+          body { padding: 0; }
+          .header-info { border: none; padding: 0; }
+        }
+      </style>
+    </head>
+    <body>
+      <h1>Assessment Result</h1>
+      <div class="subtitle">Exponents and Roots</div>
+      
+      <div class="header-info">
+        <div style="flex:1; min-width: 200px;">
+          <p><strong>Name:</strong> ${studentName}</p>
+          <p><strong>Date:</strong> ${printDate}</p>
+        </div>
+        <div style="flex:1; min-width: 200px;">
+          <p><strong>Assessment:</strong> ${map.id}</p>
+          <p><strong>Score:</strong> ${score}% (${correctCount}/${map.lessons.length})</p>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>Question</th>
+            <th>Student Answer</th>
+            <th>Correct Answer</th>
+            <th>Note</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${tableRows}
+        </tbody>
+      </table>
+    </body>
+    </html>
+  `);
+  printWindow.document.close();
+}
+
+// ============================================================
+// COMPLETE & NEXT
+// ============================================================
+function completeAndNext() {
+  const mi = state.currentMap;
+  const li = state.currentLesson;
+  state.completed[`${mi}-${li}`] = true;
+  saveState();
+
+  const map = COURSE.maps[mi];
+  const isLastLesson = li + 1 >= map.lessons.length;
+  const isAssessment = map.branch; // Peta 7A-7E adalah branch: true
+
+  // Jika ini exercise terakhir di Assessment, tampilkan form Print
+  if (isAssessment && isLastLesson) {
+    showPrintResultForm(mi);
+  } else if (li + 1 < map.lessons.length && isLessonUnlocked(mi, li + 1)) {
+    openLesson(mi, li + 1);
+  } else {
+    openPeta(mi);
+  }
+}
+
+// ============================================================
+// NAVIGASI
+// ============================================================
+function showView(viewName) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById(viewName + 'View').classList.add('active');
+  state.currentView = viewName;
+  window.scrollTo(0, 0);
+}
+
+function showMap() {
+  showView('map');
+  renderMap();
+}
+
+function closeLesson() {
+  openPeta(state.currentMap);
+}
+
+// ============================================================
+// UI HELPERS
+// ============================================================
+function showToast(msg, type='info') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast ${type} show`;
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function showXPPopup(amount) {
+  document.getElementById('xpAmount').textContent = amount;
+  const popup = document.getElementById('xpPopup');
+  popup.classList.add('show');
+  setTimeout(() => popup.classList.remove('show'), 1500);
+}
+
+function spawnConfetti() {
+  const colors = ['#10b981','#f59e0b','#ec4899','#8b5cf6','#06b6d4','#ef4444'];
+  for (let i = 0; i < 30; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti';
+    c.style.left = Math.random() * 100 + 'vw';
+    c.style.background = colors[Math.floor(Math.random() * colors.length)];
+    c.style.width = (Math.random() * 8 + 4) + 'px';
+    c.style.height = (Math.random() * 8 + 4) + 'px';
+    c.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    c.style.animationDuration = (Math.random() * 1.5 + 1) + 's';
+    c.style.animationDelay = (Math.random() * 0.5) + 's';
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 3000);
+  }
+}
+
+function showHint() {
+  document.getElementById('hintArea').classList.remove('hidden');
+  document.getElementById('hintBtn').disabled = true;
+}
+
+function escapeHTML(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// --- FUNGSI UNTUK MODAL RULES ---
+function openRules() {
+  document.getElementById('rulesModal').classList.add('active');
+}
+
+function closeRules() {
+  document.getElementById('rulesModal').classList.remove('active');
+}
+
+// ============================================================
+// KATEX RENDERING
+// ============================================================
+function renderKatexInElement(el) {
+  if (typeof renderMathInElement === 'function') {
+    renderMathInElement(el, {
+      delimiters: [
+        {left: '\\(', right: '\\)', display: false},  //
+        {left: '\\[', right: '\\]', display: true}    //
+      ],
+      throwOnError: false
+    });
+  }
+}
+
+// Override showView untuk render KaTeX setiap pindah halaman
+const originalShowView = showView;
+showView = function(viewName) {
+  originalShowView(viewName);
+  setTimeout(() => renderKatexInElement(document.body), 100);
+};
+
+// Override openLesson untuk render KaTeX di konten lesson
+const originalOpenLesson = openLesson;
+openLesson = function(mapIdx, lessonIdx) {
+  originalOpenLesson(mapIdx, lessonIdx);
+  setTimeout(() => renderKatexInElement(document.body), 100);
+};
+
+// ============================================================
+// INISIALISASI APLIKASI
+// ============================================================
+loadState();
+renderMap();
+
+// Keyboard shortcuts
+document.addEventListener('keydown', (e) => {
+  // Tekan Escape untuk menutup lesson
+  if (e.key === 'Escape' && state.currentView === 'lesson') {
+    closeLesson();
+  }
+  
+  // Tekan Enter untuk memeriksa jawaban / lanjut ke soal berikutnya
+  if (e.key === 'Enter' && state.currentView === 'lesson') {
+    const checkBtn = document.getElementById('checkBtn');
+    // Pastikan tombol ada dan tidak dalam keadaan disabled
+    if (checkBtn && !checkBtn.disabled) {
+      e.preventDefault(); 
+      checkBtn.click();   // Untuk halaman Exercise
+    } else if (nextBtn) {
+      e.preventDefault();
+      nextBtn.click();    // Untuk halaman Teori
+    }
+  }
+});
+</script>
+</body>
+</html>
