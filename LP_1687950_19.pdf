@@ -1,0 +1,1238 @@
+%PDF-1.3
+%ºß¬à
+3 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 4 0 R
+>>
+endobj
+4 0 obj
+<<
+/Length 4001
+>>
+stream
+0.5670000000000001 w
+0 G
+BT
+/F2 20 Tf
+23. TL
+0 g
+56.6929133858267775 785.1970866141732586 Td
+(Slope and Equations of Straight Lines - Nicholas) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+56.6929133858267775 742.6774015748030706 Td
+(Created: 24/07/2026) Tj
+ET
+56.6929133858267775 714.3309448818897636 m
+538.5826771653544256 714.3309448818897636 l
+S
+BT
+/F2 14 Tf
+16.0999999999999979 TL
+0 g
+56.6929133858267775 685.9844881889763428 Td
+(Student) Tj
+ET
+BT
+/F1 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 657.6380314960629221 Td
+(Student: Nicholas) Tj
+ET
+BT
+/F1 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 634.9608661417322537 Td
+(Topic: Slope and Equations of Straight Lines) Tj
+ET
+BT
+/F1 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 612.2837007874015853 Td
+(Status: completed) Tj
+ET
+BT
+/F2 16 Tf
+18.3999999999999986 TL
+0 g
+56.6929133858267775 569.7640157480313974 Td
+(Lesson Plan) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 527.2443307086614368 Td
+(Learning Objectives) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 504.5671653543306547 Td
+(• Menghitung nilai gradien \(m\) melalui dua titik koordinat yang berbeda menggunakan rumus m =) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 487.559291338582625 Td
+(\(y2 - y1\) / \(x2 - x1\).) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 464.8821259842518998 Td
+(• Menyusun persamaan garis lurus baru berdasarkan nilai gradien dan satu titik koordinat yang) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 447.8742519685038701 Td
+(diketahui menggunakan rumus y - y1 = m\(x - x1\).) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 425.1970866141731449 Td
+(• Menganalisis hubungan antara dua garis untuk menentukan apakah dua garis tersebut sejajar) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 408.1892125984251152 Td
+(berdasarkan kemiringan \(gradien\) yang identik.) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 362.8348818897637216 Td
+(Lesson Information) Tj
+ET
+BT
+/F2 14 Tf
+16.0999999999999979 TL
+0 g
+56.6929133858267775 317.480551181102328 Td
+(Lesson Sections) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 289.1340944881889072 Td
+(1. Spiral Review Warm-up \(10 minutes\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 266.4569291338582389 Td
+(Teacher Script:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 249.4490551181102092 Td
+(Halo Nicholas! Senang bertemu lagi hari ini. Sebelum kita masuk ke materi seru tentang kemiringan) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 235.2758267716534419 Td
+(garis, ayo kita asah otak dulu dengan tantangan kilat aljabar! Ingat saat kita belajar variabel dan) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 221.1025984251967884 Td
+(konstanta minggu lalu? Coba jawab di chat box ya: \(1\) Sebutkan konstanta dari 5x + 7 - 2y. \(2\) Berapa) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 206.9293700787401349 Td
+(koefisien dari y di 3x - 4y + 9? Sekarang tantangan menyusun ekspresi: \(3\) Jika 'p' adalah jumlah poin) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 192.7561417322833677 Td
+(game-mu, tuliskan ekspresi untuk '3 poin lebih sedikit dari dua kali poinmu'. Terakhir, \(4\) 'Total harga x) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 178.5829133858267141 Td
+(buku seharga 5000 dan satu pulpen 2000'. Tuliskan ekspresinya!) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 153.0711023622046696 Td
+(Activities:) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 136.0632283464566399 Td
+(• Quick-fire Chat Box Quiz) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 119.0553543307086102 Td
+(• Decoding Real-world problems into algebraic expressions) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+56.6929133858267775 34.0159842519684616 Td
+(Generated on: 24/07/2026, 15:51:30) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+523.0626771653543301 34.0159842519684616 Td
+(1 / 4) Tj
+ET
+endstream
+endobj
+5 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 6 0 R
+>>
+endobj
+6 0 obj
+<<
+/Length 5172
+>>
+stream
+0.5670000000000001 w
+0 G
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 785.1970866141732586 Td
+(2. Introduction & Real-World Connection \(5 minutes\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 762.5199212598424765 Td
+(Teacher Script:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 745.5120472440944468 Td
+(Nicholas, pernahkah kamu memperhatikan saat bermain Minecraft atau game membangun lainnya?) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 731.3388188976377933 Td
+(Setiap tangga atau atap yang kita buat punya 'kemiringan'. Dalam matematika, kemiringan ini disebut) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 717.1655905511811397 Td
+(Gradien. Bayangkan kamu sedang membangun jalur kereta api cepat \(Roller Coaster\). Kalau terlalu) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 702.9923622047243725 Td
+(miring, kereta jatuh; kalau terlalu datar, kereta tidak jalan. Hari ini kita akan belajar rumus rahasia) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 688.819133858267719 Td
+(untuk menentukan kemiringan itu agar jalurmu sempurna!) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 663.3073228346456744 Td
+(Activities:) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 646.2994488188976447 Td
+(• Diskusi singkat tentang kemiringan di dunia nyata \(tangga, atap, jalan pegunungan\)) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 600.9451181102361943 Td
+(3. Review of Prior Knowledge \(5 minutes\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 578.2679527559055259 Td
+(Teacher Script:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 561.2600787401574962 Td
+(Untuk bisa menghitung gradien, kita harus lancar dengan koordinat Kartesius. Coba arahkan kursor) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 547.086850393700729 Td
+(kamu ke whiteboard ini. Plot titik A\(2, 3\) dan B\(5, 9\). Ingat, gradien adalah 'perubahan posisi vertikal') Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 532.9136220472440755 Td
+(dibagi 'perubahan posisi horizontal' atau Rise over Run.) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 507.4018110236219741 Td
+(Activities:) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 490.3939370078739444 Td
+(• Plotting dua titik di koordinat kartesius virtual) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 445.0396062992125508 Td
+(4. Problem Introduction \(10 minutes\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 422.3624409448818255 Td
+(Teacher Script:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 405.3545669291337958 Td
+(Oke, sekarang kita masuk ke rumus inti. Gradien \(m\) = \(y2 - y1\) / \(x2 - x1\). Mari kita hitung gradien) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 391.1813385826770855 Td
+(garis yang melewati titik A\(1, 2\) dan B\(3, 10\). Perhatikan Nicholas: y-nya berubah dari 2 ke 10 \(naik 8) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 377.0081102362204319 Td
+(tingkat\), x-nya berubah dari 1 ke 3 \(maju 2 langkah\). Jadi gradiennya 8/2 = 4. Mudah kan? Nah, kalau) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 362.8348818897637216 Td
+(kita punya gradien 4 dan lewat titik \(1, 2\), persamaannya adalah y - 2 = 4\(x - 1\). Mari kita bongkar) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 348.6616535433070112 Td
+(persamaannya!) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 323.1498425196849666 Td
+(Activities:) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 306.1419685039369369 Td
+(• Penjelasan rumus gradien m = \(y2 - y1\) / \(x2 - x1\)) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 289.1340944881889072 Td
+(• Penjelasan rumus persamaan garis y - y1 = m\(x - x1\)) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 243.7797637795274568 Td
+(5. Guided Practice \(15 minutes\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 221.1025984251967884 Td
+(Teacher Script:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 204.0947244094487587 Td
+(Sekarang giliranmu, Nicholas. Di layar ada dua titik: C\(2, -1\) dan D\(4, 7\). Ayo kita hitung gradiennya) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 189.9214960629919915 Td
+(bersama-sama. Step 1: Berapa \(y2 - y1\)? Hati-hati dengan tanda negatif. Step 2: Berapa \(x2 - x1\)?) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 175.748267716535338 Td
+(Nah, sekarang bagi hasilnya. Bagus! Selanjutnya, kalau aku bilang ada Garis 2 yang SEJAJAR) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 161.5750393700786844 Td
+(dengan garis CD tadi, berapa gradien Garis 2 itu? Ingat, garis sejajar punya kemiringan yang SAMA!) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 136.0632283464566399 Td
+(Activities:) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 119.0553543307086102 Td
+(• Latihan interaktif menghitung gradien negatif/positif) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 102.0474803149605805 Td
+(• Menentukan gradien garis sejajar) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+56.6929133858267775 34.0159842519684616 Td
+(Generated on: 24/07/2026, 15:51:30) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+523.0626771653543301 34.0159842519684616 Td
+(2 / 4) Tj
+ET
+endstream
+endobj
+7 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 8 0 R
+>>
+endobj
+8 0 obj
+<<
+/Length 5037
+>>
+stream
+0.5670000000000001 w
+0 G
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 785.1970866141732586 Td
+(6. Independent Practice \(15 minutes\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 762.5199212598424765 Td
+(Teacher Script:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 745.5120472440944468 Td
+(Tantangan Arsitek dimulai! Saya akan memberikan 2 set koordinat dan 1 kondisi garis sejajar di) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 731.3388188976377933 Td
+(whiteboard. Kamu harus menyelesaikannya sendiri tanpa bantuan saya. Tuliskan jawaban akhirnya di) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 717.1655905511811397 Td
+(layar. Soal 1: Cari persamaan garis melalui titik \(0, 3\) dengan gradien -2. Soal 2: Cari gradien garis) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 702.9923622047243725 Td
+(yang melewati \(5, 2\) dan \(1, 10\). Soal 3: Apakah garis y = 3x + 5 sejajar dengan garis yang melewati) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 688.819133858267719 Td
+(\(1, 2\) dan \(2, 5\)? Buktikan!) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 663.3073228346456744 Td
+(Activities:) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 646.2994488188976447 Td
+(• Independent Problem Solving) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 629.291574803149615 Td
+(• Perbandingan gradien dua garis) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 583.9372440944881646 Td
+(7. Consolidation & Reflection \(5 minutes\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 561.2600787401574962 Td
+(Teacher Script:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 544.2522047244094665 Td
+(Luar biasa Nicholas! Kamu sudah menguasai cara mencari kemiringan dan membuat persamaan) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 530.0789763779526993 Td
+(garis. Jadi, apa satu hal paling penting yang kamu pelajari hari ini? Ingat ya, gradien adalah kunci) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 515.9057480314959321 Td
+(untuk memahami arah garis. Sebelum kita tutup, jangan lupa cek PR-mu dan login ke) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 501.7325196850393354 Td
+(https://learn.algonova.id/login untuk materi pengayaan. Sampai jumpa di sesi berikutnya!) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 476.2207086614172908 Td
+(Activities:) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 459.2128346456692611 Td
+(• Refleksi lisan) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 442.2049606299212314 Td
+(• Pemberian instruksi akses portal) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 396.850629921259781 Td
+(Homework) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 368.5041732283464171 Td
+(Medium Questions:) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 351.4962992125983874 Td
+(1. Hitung gradien garis yang melalui titik \(2, 5\) dan \(4, 9\).) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 328.8191338582676053 Td
+(2. Tentukan gradien garis yang melalui titik \(-1, 3\) dan \(2, 0\).) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 306.1419685039369369 Td
+(3. Tentukan persamaan garis lurus yang memiliki gradien 3 dan melalui titik \(1, 2\).) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 283.4648031496062686 Td
+(4. Tentukan persamaan garis lurus yang memiliki gradien -1 dan melalui titik \(0, 5\).) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 243.7797637795274568 Td
+(Hard Questions:) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 226.7718897637794271 Td
+(1. Tentukan persamaan garis yang melalui titik A\(2, 3\) dan B\(4, 7\). Tuliskan dalam bentuk y =) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 212.5986614173227736 Td
+(mx + c.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 189.9214960629919915 Td
+(2. Garis k melalui titik \(1, 1\) dan \(3, 5\). Garis l sejajar dengan garis k. Berapakah gradien) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 175.748267716535338 Td
+(garis l?) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 153.0711023622046696 Td
+(3. Tentukan persamaan garis yang sejajar dengan garis y = 4x - 2 dan melalui titik \(2, 10\).) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 130.3939370078738875 Td
+(4. Apakah garis yang melalui titik \(0, 0\) dan \(2, 6\) sejajar dengan garis yang melalui \(1, 1\)) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 116.220708661417234 Td
+(dan \(3, 7\)? Jelaskan alasannya.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 93.5435433070865656 Td
+(5. Garis m melalui titik \(a, 5\) dan \(2, 3\) memiliki gradien 1. Tentukan nilai a.) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+56.6929133858267775 34.0159842519684616 Td
+(Generated on: 24/07/2026, 15:51:30) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+523.0626771653543301 34.0159842519684616 Td
+(3 / 4) Tj
+ET
+endstream
+endobj
+9 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 10 0 R
+>>
+endobj
+10 0 obj
+<<
+/Length 4998
+>>
+stream
+0.5670000000000001 w
+0 G
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 785.1970866141732586 Td
+(6. Tentukan persamaan garis yang melalui titik potong sumbu y di \(0, -4\) dan sejajar dengan) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 771.0238582677164914 Td
+(garis yang menghubungkan titik \(1, 2\) dan \(3, 8\).) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 731.3388188976377933 Td
+(Answer Key:) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 714.3309448818897636 Td
+(Medium 1: m = \(9-5\)/\(4-2\) = 4/2 = 2) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 700.15771653543311 Td
+(Medium 2: m = \(0-3\)/\(2-\(-1\)\) = -3/3 = -1) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 685.9844881889763428 Td
+(Medium 3: y - 2 = 3\(x - 1\) => y = 3x - 1) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 671.8112598425196893 Td
+(Medium 4: y - 5 = -1\(x - 0\) => y = -x + 5) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 657.6380314960629221 Td
+(Hard 1: m = \(7-3\)/\(4-2\) = 2. Persamaan: y - 3 = 2\(x - 2\) => y = 2x - 1) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 643.4648031496062686 Td
+(Hard 2: m_k = \(5-1\)/\(3-1\) = 2. Karena sejajar, m_l = 2) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 629.291574803149615 Td
+(Hard 3: m = 4. Persamaan: y - 10 = 4\(x - 2\) => y = 4x + 2) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 615.1183464566928478 Td
+(Hard 4: m1 = \(6-0\)/\(2-0\) = 3; m2 = \(7-1\)/\(3-1\) = 3. Ya, sejajar karena m1 = m2) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 600.9451181102361943 Td
+(Hard 5: \(3-5\)/\(2-a\) = 1 => -2 = 2-a => a = 4) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 586.7718897637794271 Td
+(Hard 6: m = \(8-2\)/\(3-1\) = 3. Melalui \(0, -4\): y = 3x - 4) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 572.5986614173227736 Td
+(REVIEW: Pengenalan Aljabar - Koefisien x dari 2x + 4 adalah 2 \(Medium\)) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 558.42543307086612 Td
+(REVIEW: Pengenalan Aljabar - Konstanta dari 3y - 10 adalah -10 \(Medium\)) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 544.2522047244094665 Td
+(REVIEW: Pengenalan Aljabar - Nilai dari 2a + 3b jika a=2, b=5 adalah 4+15=19 \(Hard\)) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 530.0789763779526993 Td
+(REVIEW: Pengenalan Aljabar - Tentukan jumlah variabel pada 2x + 3y - z + 5 \(Jawab: 3) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 515.9057480314959321 Td
+(variabel\) \(Hard\)) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 501.7325196850393354 Td
+(REVIEW: Menyusun Ekspresi - 'Lima lebihnya dari x' adalah x + 5 \(Medium\)) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 487.559291338582625 Td
+(REVIEW: Menyusun Ekspresi - 'Tujuh kali sebuah angka n' adalah 7n \(Medium\)) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 473.3860629921259147 Td
+(REVIEW: Menyusun Ekspresi - 'Harga total jika 3 burger \(b\) masing-masing diskon 2000') Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 459.2128346456692611 Td
+(adalah 3\(b - 2000\) \(Hard\)) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 445.0396062992125508 Td
+(REVIEW: Menyusun Ekspresi - 'Selisih antara kuadrat y dan setengah dari x' adalah y^2 -) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 430.8663779527558404 Td
+(1/2x \(Hard\)) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 394.0159842519684616 Td
+(Parent Reminder) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 371.3388188976377364 Td
+(Update Sesi Matematika Nicholas: Gradien & Garis Lurus) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 354.3309448818897067 Td
+(Hari ini Nicholas belajar topik yang cukup menantang: Gradien dan Persamaan Garis Lurus.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 340.1577165354329964 Td
+(Nicholas belajar bagaimana menghitung kemiringan \(gradien\) dari dua titik dan membangun) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 325.9844881889763428 Td
+(persamaan matematis untuk garis yang sejajar. Topik ini sangat penting untuk dasar kalkulus) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 311.8112598425195756 Td
+(dan desain di masa depan. Mohon pastikan Nicholas mencoba tantangan pekerjaan) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 297.6380314960629221 Td
+(rumahnya di portal untuk memperkuat konsep ini!) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+56.6929133858267775 34.0159842519684616 Td
+(Generated on: 24/07/2026, 15:51:30) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+523.0626771653543301 34.0159842519684616 Td
+(4 / 4) Tj
+ET
+endstream
+endobj
+1 0 obj
+<</Type /Pages
+/Kids [3 0 R 5 0 R 7 0 R 9 0 R ]
+/Count 4
+>>
+endobj
+11 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+12 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+13 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-Oblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+14 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-BoldOblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+15 0 obj
+<<
+/Type /Font
+/BaseFont /Courier
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+16 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+17 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-Oblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+18 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-BoldOblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+19 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Roman
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+20 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+21 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Italic
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+22 0 obj
+<<
+/Type /Font
+/BaseFont /Times-BoldItalic
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+23 0 obj
+<<
+/Type /Font
+/BaseFont /ZapfDingbats
+/Subtype /Type1
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+24 0 obj
+<<
+/Type /Font
+/BaseFont /Symbol
+/Subtype /Type1
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+2 0 obj
+<<
+/ProcSet [/PDF /Text /ImageB /ImageC /ImageI]
+/Font <<
+/F1 11 0 R
+/F2 12 0 R
+/F3 13 0 R
+/F4 14 0 R
+/F5 15 0 R
+/F6 16 0 R
+/F7 17 0 R
+/F8 18 0 R
+/F9 19 0 R
+/F10 20 0 R
+/F11 21 0 R
+/F12 22 0 R
+/F13 23 0 R
+/F14 24 0 R
+>>
+/XObject <<
+>>
+>>
+endobj
+25 0 obj
+<<
+/Producer (jsPDF 3.0.2)
+/CreationDate (D:20260724155130+07'00')
+>>
+endobj
+26 0 obj
+<<
+/Type /Catalog
+/Pages 1 0 R
+/OpenAction [3 0 R /FitH null]
+/PageLayout /OneColumn
+>>
+endobj
+xref
+0 27
+0000000000 65535 f 
+0000019981 00000 n 
+0000021821 00000 n 
+0000000015 00000 n 
+0000000152 00000 n 
+0000004205 00000 n 
+0000004342 00000 n 
+0000009566 00000 n 
+0000009703 00000 n 
+0000014792 00000 n 
+0000014930 00000 n 
+0000020056 00000 n 
+0000020182 00000 n 
+0000020313 00000 n 
+0000020447 00000 n 
+0000020585 00000 n 
+0000020709 00000 n 
+0000020838 00000 n 
+0000020970 00000 n 
+0000021106 00000 n 
+0000021234 00000 n 
+0000021361 00000 n 
+0000021490 00000 n 
+0000021623 00000 n 
+0000021725 00000 n 
+0000022074 00000 n 
+0000022160 00000 n 
+trailer
+<<
+/Size 27
+/Root 26 0 R
+/Info 25 0 R
+/ID [ <033B416E65A489B1F177F6E36E94F9E7> <033B416E65A489B1F177F6E36E94F9E7> ]
+>>
+startxref
+22264
+%%EOF
