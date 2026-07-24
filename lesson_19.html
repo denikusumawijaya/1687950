@@ -1,0 +1,2057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Tutoring - Slope & Equations of Straight Lines</title>
+    <!-- KaTeX CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary: #58cc02;
+            --primary-dark: #58a700;
+            --blue: #1cb0f6;
+            --blue-dark: #1899d6;
+            --red: #ff4b4b;
+            --gray-bg: #f7f7f7;
+            --text-dark: #3c3c3c;
+            --border-color: #e5e5e5;
+            --shadow: 0 4px 0 rgba(0,0,0,0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Nunito', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--gray-bg);
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        /* Top Navigation */
+        .top-nav {
+            background: white;
+            padding: 15px 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-title {
+            font-weight: 800;
+            color: var(--text-dark);
+            font-size: 1.2rem;
+        }
+
+        .reset-btn {
+            background: var(--red);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            border-bottom: 3px solid #cc3333;
+            transition: transform 0.1s;
+        }
+
+        .reset-btn:active {
+            transform: translateY(2px);
+            border-bottom: 1px solid #cc3333;
+        }
+
+        /* Layout */
+        .container {
+            display: flex;
+            max-width: 1200px;
+            margin: 0 auto;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        /* Duolingo Style Path Sidebar */
+        .path-sidebar {
+            width: 300px;
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            height: fit-content;
+            position: sticky;
+            top: 80px;
+            box-shadow: var(--shadow);
+            border: 2px solid var(--border-color);
+        }
+
+        .path-node {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            cursor: pointer;
+            transition: transform 0.2s;
+            text-decoration: none;
+            color: var(--text-dark);
+        }
+
+        .path-node:hover {
+            transform: translateX(5px);
+        }
+
+        .node-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-weight: bold;
+            color: white;
+            flex-shrink: 0;
+            border-bottom: 3px solid rgba(0,0,0,0.1);
+            transition: background 0.3s;
+        }
+
+        .path-node.completed .node-circle {
+            background: var(--primary);
+            border-color: var(--primary-dark);
+        }
+
+        .path-node.active .node-circle {
+            background: var(--blue);
+            border-color: var(--blue-dark);
+            box-shadow: 0 0 0 4px rgba(28, 176, 246, 0.2);
+        }
+
+        .node-info {
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .node-info small {
+            display: block;
+            font-weight: 400;
+            color: #777;
+        }
+
+        /* Content Area */
+        .content-area {
+            flex: 1;
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            border: 2px solid var(--border-color);
+            min-height: 600px;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Typography & Bilingual */
+        h1, h2, h3 { color: var(--text-dark); }
+        h2 { margin-bottom: 10px; font-size: 1.8rem; }
+        
+        .id-text {
+            font-size: 0.9rem;
+            color: #777;
+            font-style: italic;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .theory-box {
+            background: #e3f2fd;
+            border-left: 5px solid var(--blue);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .theory-box p { margin-bottom: 5px; }
+
+        /* Exercises */
+        .exercise-card {
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            background: #fff;
+        }
+
+        .exercise-question {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .option-btn, .text-input {
+            padding: 12px;
+            border: 2px solid var(--border-color);
+            background: white;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .option-btn:hover {
+            border-color: var(--blue);
+            background: #f0f8ff;
+        }
+
+        .option-btn.selected {
+            border-color: var(--blue);
+            background: #e3f2fd;
+            color: var(--blue-dark);
+        }
+
+        .option-btn.correct {
+            border-color: var(--primary);
+            background: #e7ffe0;
+            color: var(--primary-dark);
+        }
+
+        .option-btn.wrong {
+            border-color: var(--red);
+            background: #ffe5e5;
+            color: var(--red);
+        }
+
+        .text-input {
+            width: 100%;
+            text-align: left;
+        }
+
+        .check-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-bottom: 3px solid var(--primary-dark);
+            transition: transform 0.1s;
+        }
+
+        .check-btn:active {
+            transform: translateY(2px);
+            border-bottom: 1px solid var(--primary-dark);
+        }
+
+        .check-btn:disabled {
+            background: #a0a0a0;
+            border-bottom-color: #808080;
+            cursor: not-allowed;
+        }
+
+        .feedback-box {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .feedback-box.show { display: block; animation: slideDown 0.3s ease; }
+        .feedback-box.correct { background: #e7ffe0; border: 1px solid var(--primary); }
+        .feedback-box.wrong { background: #ffe5e5; border: 1px solid var(--red); }
+
+        @keyframes slideDown {
+            from { opacity: 0; max-height: 0; }
+            to { opacity: 1; max-height: 500px; }
+        }
+
+        .nav-btns {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid var(--border-color);
+        }
+
+        .nav-btn {
+            background: white;
+            border: 2px solid var(--border-color);
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .nav-btn:hover {
+            border-color: var(--blue);
+            color: var(--blue);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* SVG Illustrations */
+        .illustration {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        
+        /* Print Styles for Assignments */
+        @media print {
+            body { background: white; }
+            .top-nav, .path-sidebar, .nav-btns, .check-btn, .reset-btn, .no-print { display: none !important; }
+            .container { display: block; padding: 0; }
+            .content-area { box-shadow: none; border: none; padding: 0; }
+            .section { display: none !important; }
+            .section.print-active { display: block !important; }
+            @page { size: A4; margin: 15mm; }
+            
+            .print-header {
+                display: flex;
+                justify-content: space-between;
+                border-bottom: 2px solid #000;
+                padding-bottom: 10px;
+                margin-bottom: 20px;
+            }
+            .print-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 15px;
+                font-size: 12px;
+            }
+            .print-table th, .print-table td {
+                border: 1px solid #000;
+                padding: 8px;
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Navigation -->
+    <div class="top-nav">
+        <div class="nav-title">MATH TUTORING by Deni</div>
+        <button class="reset-btn" onclick="resetAllProgress()"><i class="fas fa-redo"></i> Reset All Progress</button>
+    </div>
+
+    <div class="container">
+        <!-- Sidebar Path -->
+        <div class="path-sidebar">
+            <div class="path-node active" onclick="showSection('home')">
+                <div class="node-circle"><i class="fas fa-home"></i></div>
+                <div class="node-info">Home<small>Start Here</small></div>
+            </div>
+            <div class="path-node" id="nav-s1" onclick="showSection('s1')">
+                <div class="node-circle">1</div>
+                <div class="node-info">Warm-up<small>00:00 - 00:10</small></div>
+            </div>
+            <div class="path-node" id="nav-s2" onclick="showSection('s2')">
+                <div class="node-circle">2</div>
+                <div class="node-info">Real-World<small>00:10 - 00:15</small></div>
+            </div>
+            <div class="path-node" id="nav-s3" onclick="showSection('s3')">
+                <div class="node-circle">3</div>
+                <div class="node-info">Prior Knowledge<small>00:15 - 00:20</small></div>
+            </div>
+            <div class="path-node" id="nav-s4" onclick="showSection('s4')">
+                <div class="node-circle">4</div>
+                <div class="node-info">Problem Intro<small>00:20 - 00:30</small></div>
+            </div>
+            <div class="path-node" id="nav-s5" onclick="showSection('s5')">
+                <div class="node-circle">5</div>
+                <div class="node-info">Guided Practice<small>00:30 - 00:45</small></div>
+            </div>
+            <div class="path-node" id="nav-s6" onclick="showSection('s6')">
+                <div class="node-circle">6</div>
+                <div class="node-info">Indep. Practice<small>00:50 - 01:00</small></div>
+            </div>
+            <div class="path-node" id="nav-final" onclick="showSection('final')">
+                <div class="node-circle"><i class="fas fa-flag-checkered"></i></div>
+                <div class="node-info">Reflection<small>01:00 - 01:05</small></div>
+            </div>
+        </div>
+
+        <!-- Content Area -->
+        <div class="content-area">
+            
+            <!-- HOME SECTION -->
+            <div id="home" class="section active">
+                <h2>Welcome to Math Tutoring!</h2>
+                <span class="id-text">Selamat datang di les Matematika!</span>
+                
+                <div class="theory-box">
+                    <p><strong>Topic:</strong> Slope and Equations of Straight Lines</p>
+                    <span class="id-text">Topik: Gradien dan Persamaan Garis Lurus</span>
+                </div>
+
+                <h3>Class Rules:</h3>
+                <span class="id-text">Aturan Kelas:</span>
+                <ul style="margin-left: 20px; margin-bottom: 15px;">
+                    <li>Take turns speaking. <span class="id-text">Berbicara secara bergantian.</span></li>
+                    <li>Ask permission if you need to leave the class. <span class="id-text">Meminta izin jika ingin meninggalkan kelas.</span></li>
+                    <li>Turn on your camera and microphone when needed. <span class="id-text">Menyalakan kamera dan microphone jika diperlukan.</span></li>
+                </ul>
+
+                <div class="illustration">
+                    <svg width="200" height="150" viewBox="0 0 200 150">
+                        <path d="M10,140 L50,100 L90,120 L130,40 L190,80" fill="none" stroke="#1cb0f6" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <circle cx="50" cy="100" r="6" fill="#58cc02"/>
+                        <circle cx="130" cy="40" r="6" fill="#ff4b4b"/>
+                        <text x="60" y="95" font-size="12" fill="#3c3c3c">(x1, y1)</text>
+                        <text x="140" y="35" font-size="12" fill="#3c3c3c">(x2, y2)</text>
+                    </svg>
+                </div>
+
+                <button class="check-btn" style="width: 100%;" onclick="showSection('s1')">
+                    Start Lesson <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+
+            <!-- SECTION 1: Spiral Review Warm-up -->
+            <div id="s1" class="section">
+                <h2>1. Spiral Review Warm-up</h2>
+                <span class="id-text">1. Tinjauan Pengulangan</span>
+                
+                <div class="theory-box">
+                    <p><strong>Theory 1: Algebra Basics</strong></p>
+                    <p>In algebra, a <strong>constant</strong> is a number on its own, a <strong>coefficient</strong> is a number multiplied by a variable, and a <strong>variable</strong> is a letter representing an unknown number.</p>
+                    <span class="id-text">Dalam aljabar, konstanta adalah angka tersendiri, koefisien adalah angka dikali variabel, dan variabel adalah huruf yang mewakili angka yang tidak diketahui.</span>
+                </div>
+
+                <!-- Ex 1 -->
+                <div class="exercise-card" id="s1-ex1">
+                    <div class="exercise-question">1. What is the constant in the expression \( 5x + 7 - 2y \)? <br><small class="id-text">Berapakah konstanta dari ekspresi tersebut?</small></div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="selectOption(this, 's1-ex1', false)">5</button>
+                        <button class="option-btn" onclick="selectOption(this, 's1-ex1', true)">7</button>
+                        <button class="option-btn" onclick="selectOption(this, 's1-ex1', false)">-2</button>
+                        <button class="option-btn" onclick="selectOption(this, 's1-ex1', false)">x</button>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('s1-ex1')">Check</button>
+                    <div class="feedback-box" id="s1-ex1-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" disabled><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="nextExercise('s1-ex1', 's1-ex2')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Ex 2 -->
+                <div class="exercise-card" id="s1-ex2" style="display:none;">
+                    <div class="exercise-question">2. What is the coefficient of \( y \) in \( 3x - 4y + 9 \)? <br><small class="id-text">Berapakah koefisien dari y?</small></div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="selectOption(this, 's1-ex2', false)">3</button>
+                        <button class="option-btn" onclick="selectOption(this, 's1-ex2', true)">-4</button>
+                        <button class="option-btn" onclick="selectOption(this, 's1-ex2', false)">4</button>
+                        <button class="option-btn" onclick="selectOption(this, 's1-ex2', false)">9</button>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('s1-ex2')">Check</button>
+                    <div class="feedback-box" id="s1-ex2-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s1-ex2', 's1-ex1')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="nextExercise('s1-ex2', 's1-ex3')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Ex 3 -->
+                <div class="exercise-card" id="s1-ex3" style="display:none;">
+                    <div class="exercise-question">3. If 'p' is your game score, write the expression for '3 points less than twice your score'. <br><small class="id-text">Tuliskan ekspresi untuk '3 poin lebih sedikit dari dua kali poinmu'.</small></div>
+                    <input type="text" class="text-input" id="s1-ex3-input" placeholder="Type your answer (e.g., 2x+1)">
+                    <br><br>
+                    <button class="check-btn" onclick="checkTextAnswer('s1-ex3', ['2p-3', '2*p-3'])">Check</button>
+                    <div class="feedback-box" id="s1-ex3-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s1-ex3', 's1-ex2')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="nextExercise('s1-ex3', 's1-ex4')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <div class="theory-box">
+                    <p><strong>Theory 2: Translating Words to Math</strong></p>
+                    <p>Real-world problems can be translated into algebraic expressions. "Total cost of \( x \) books at 5000 each and 1 pen at 2000" becomes \( 5000x + 2000 \).</p>
+                    <span class="id-text">Masalah dunia nyata dapat diterjemahkan ke dalam ekspresi aljabar. "Total harga x buku seharga 5000 dan satu pulpen 2000" menjadi \( 5000x + 2000 \).</span>
+                </div>
+
+                <!-- Ex 4 -->
+                <div class="exercise-card" id="s1-ex4" style="display:none;">
+                    <div class="exercise-question">4. Write the expression for "Total price of \( x \) books at 5000 each and 1 pen at 2000". <br><small class="id-text">Tuliskan ekspresi untuk total harga tersebut.</small></div>
+                    <input type="text" class="text-input" id="s1-ex4-input" placeholder="Type your answer">
+                    <br><br>
+                    <button class="check-btn" onclick="checkTextAnswer('s1-ex4', ['5000x+2000', '2000+5000x'])">Check</button>
+                    <div class="feedback-box" id="s1-ex4-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s1-ex4', 's1-ex3')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="nextExercise('s1-ex4', 's1-ex5')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Ex 5 -->
+                <div class="exercise-card" id="s1-ex5" style="display:none;">
+                    <div class="exercise-question">5. Which expression represents "5 more than a number \( n \)"? <br><small class="id-text">Ekspresi mana yang mewakili "5 lebihnya dari sebuah angka n"?</small></div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="selectOption(this, 's1-ex5', false)">5n</button>
+                        <button class="option-btn" onclick="selectOption(this, 's1-ex5', false)">n - 5</button>
+                        <button class="option-btn" onclick="selectOption(this, 's1-ex5', true)">n + 5</button>
+                        <button class="option-btn" onclick="selectOption(this, 's1-ex5', false)">5 - n</button>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('s1-ex5')">Check</button>
+                    <div class="feedback-box" id="s1-ex5-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s1-ex5', 's1-ex4')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="nextExercise('s1-ex5', 's1-ex6')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Ex 6 -->
+                <div class="exercise-card" id="s1-ex6" style="display:none;">
+                    <div class="exercise-question">6. A burger costs \( b \). If you buy 3 burgers with a 2000 discount on each, what is the expression? <br><small class="id-text">Harga burger b. Jika beli 3 burger masing-masing diskon 2000, apa ekspresinya?</small></div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="selectOption(this, 's1-ex6', false)">3b - 2000</button>
+                        <button class="option-btn" onclick="selectOption(this, 's1-ex6', true)">3(b - 2000)</button>
+                        <button class="option-btn" onclick="selectOption(this, 's1-ex6', false)">3(b + 2000)</button>
+                        <button class="option-btn" onclick="selectOption(this, 's1-ex6', false)">b - 6000</button>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('s1-ex6')">Check</button>
+                    <div class="feedback-box" id="s1-ex6-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s1-ex6', 's1-ex5')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="nextExercise('s1-ex6', 's1-ex7')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <div class="theory-box">
+                    <p><strong>Theory 3: Cartesian Coordinates</strong></p>
+                    <p>Points on a plane are given as \( (x, y) \). The x-axis is horizontal, and the y-axis is vertical.</p>
+                    <span class="id-text">Titik pada bidang diberikan sebagai (x, y). Sumbu x horizontal, sumbu y vertikal.</span>
+                </div>
+
+                <!-- Ex 7 -->
+                <div class="exercise-card" id="s1-ex7" style="display:none;">
+                    <div class="exercise-question">7. In the point \( (2, 3) \), what does 2 represent? <br><small class="id-text">Pada titik (2, 3), apa yang diwakili oleh 2?</small></div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="selectOption(this, 's1-ex7', true)">x-coordinate (horizontal)</button>
+                        <button class="option-btn" onclick="selectOption(this, 's1-ex7', false)">y-coordinate (vertical)</button>
+                        <button class="option-btn" onclick="selectOption(this, 's1-ex7', false)">Origin</button>
+                        <button class="option-btn" onclick="selectOption(this, 's1-ex7', false)">Slope</button>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('s1-ex7')">Check</button>
+                    <div class="feedback-box" id="s1-ex7-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s1-ex7', 's1-ex6')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="nextExercise('s1-ex7', 's1-ex8')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Ex 8 -->
+                <div class="exercise-card" id="s1-ex8" style="display:none;">
+                    <div class="exercise-question">8. Which point lies on the y-axis? <br><small class="id-text">Titik mana yang terletak pada sumbu y?</small></div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="selectOption(this, 's1-ex8', false)">(2, 0)</button>
+                        <button class="option-btn" onclick="selectOption(this, 's1-ex8', true)">(0, 5)</button>
+                        <button class="option-btn" onclick="selectOption(this, 's1-ex8', false)">(3, 3)</button>
+                        <button class="option-btn" onclick="selectOption(this, 's1-ex8', false)">(-1, 2)</button>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('s1-ex8')">Check</button>
+                    <div class="feedback-box" id="s1-ex8-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s1-ex8', 's1-ex7')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="nextExercise('s1-ex8', 's1-ex9')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Ex 9 -->
+                <div class="exercise-card" id="s1-ex9" style="display:none;">
+                    <div class="exercise-question">9. If you move from \( (1, 1) \) to \( (1, 4) \), how many units did you move vertically? <br><small class="id-text">Jika bergerak dari (1,1) ke (1,4), berapa unit gerak vertikalnya?</small></div>
+                    <input type="text" class="text-input" id="s1-ex9-input" placeholder="Type number">
+                    <br><br>
+                    <button class="check-btn" onclick="checkTextAnswer('s1-ex9', ['3'])">Check</button>
+                    <div class="feedback-box" id="s1-ex9-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s1-ex9', 's1-ex8')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="nextExercise('s1-ex9', 's1-ex10')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Ex 10 -->
+                <div class="exercise-card" id="s1-ex10" style="display:none;">
+                    <div class="exercise-question">10. If you move from \( (2, 3) \) to \( (5, 3) \), how many units did you move horizontally? <br><small class="id-text">Berapa unit gerak horizontalnya?</small></div>
+                    <input type="text" class="text-input" id="s1-ex10-input" placeholder="Type number">
+                    <br><br>
+                    <button class="check-btn" onclick="checkTextAnswer('s1-ex10', ['3'])">Check</button>
+                    <div class="feedback-box" id="s1-ex10-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s1-ex10', 's1-ex9')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="completeSection('s1', 's2')">Next Section <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 2: Introduction & Real-World Connection -->
+            <div id="s2" class="section">
+                <h2>2. Introduction & Real-World Connection</h2>
+                <span class="id-text">2. Pengenalan & Koneksi Dunia Nyata</span>
+                
+                <div class="theory-box">
+                    <p><strong>Theory 1: What is Slope?</strong></p>
+                    <p>In games like Minecraft, stairs and roofs have a "tilt" or "steepness". In math, this is called the <strong>Slope</strong> (Gradien). If it's too steep, a roller coaster might crash; if too flat, it won't move.</p>
+                    <span class="id-text">Dalam game seperti Minecraft, tangga dan atap punya "kemiringan". Dalam matematika, ini disebut Gradien. Kalau terlalu miring kereta jatuh, kalau terlalu datar kereta tidak jalan.</span>
+                </div>
+
+                <div class="illustration">
+                    <svg width="300" height="150" viewBox="0 0 300 150">
+                        <rect x="0" y="130" width="300" height="20" fill="#8b5e3c"/>
+                        <polyline points="10,130 100,30 190,130 280,30" fill="none" stroke="#ff4b4b" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                        <circle cx="100" cy="30" r="8" fill="#1cb0f6"/>
+                        <circle cx="280" cy="30" r="8" fill="#58cc02"/>
+                    </svg>
+                </div>
+
+                <!-- Ex 1 -->
+                <div class="exercise-card" id="s2-ex1">
+                    <div class="exercise-question">1. In real life, which of these has the steepest slope? <br><small class="id-text">Di dunia nyata, mana yang memiliki kemiringan paling curam?</small></div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="selectOption(this, 's2-ex1', false)">A flat highway</button>
+                        <button class="option-btn" onclick="selectOption(this, 's2-ex1', true)">A ladder against a wall</button>
+                        <button class="option-btn" onclick="selectOption(this, 's2-ex1', false)">A gentle ramp</button>
+                        <button class="option-btn" onclick="selectOption(this, 's2-ex1', false)">A dining table</button>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('s2-ex1')">Check</button>
+                    <div class="feedback-box" id="s2-ex1-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s2-ex1', 's1-ex10')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="nextExercise('s2-ex1', 's2-ex2')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Ex 2 -->
+                <div class="exercise-card" id="s2-ex2" style="display:none;">
+                    <div class="exercise-question">2. A roller coaster needs to move forward. What kind of slope is ideal for the start? <br><small class="id-text">Roller coaster perlu maju. Kemiringan seperti apa yang ideal untuk awal?</small></div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="selectOption(this, 's2-ex2', false)">Perfectly flat</button>
+                        <button class="option-btn" onclick="selectOption(this, 's2-ex2', true)">Slightly downhill</button>
+                        <button class="option-btn" onclick="selectOption(this, 's2-ex2', false)">Completely vertical</button>
+                        <button class="option-btn" onclick="selectOption(this, 's2-ex2', false)">Uphill only</button>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('s2-ex2')">Check</button>
+                    <div class="feedback-box" id="s2-ex2-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s2-ex2', 's2-ex1')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="nextExercise('s2-ex2', 's2-ex3')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Ex 3 -->
+                <div class="exercise-card" id="s2-ex3" style="display:none;">
+                    <div class="exercise-question">3. What do we call the "steepness" of a line in mathematics? <br><small class="id-text">Apa yang kita sebut "kemiringan" garis di matematika?</small></div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="selectOption(this, 's2-ex3', false)">Constant</button>
+                        <button class="option-btn" onclick="selectOption(this, 's2-ex3', false)">Variable</button>
+                        <button class="option-btn" onclick="selectOption(this, 's2-ex3', true)">Slope (Gradien)</button>
+                        <button class="option-btn" onclick="selectOption(this, 's2-ex3', false)">Intercept</button>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('s2-ex3')">Check</button>
+                    <div class="feedback-box" id="s2-ex3-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s2-ex3', 's2-ex2')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="nextExercise('s2-ex3', 's2-ex4')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <div class="theory-box">
+                    <p><strong>Theory 2: Types of Slopes</strong></p>
+                    <p>A line can go up (positive), go down (negative), be flat (zero), or go straight up/down (undefined).</p>
+                    <span class="id-text">Garis bisa naik (positif), turun (negatif), datar (nol), atau vertikal (tidak terdefinisi).</span>
+                </div>
+
+                <!-- Ex 4 -->
+                <div class="exercise-card" id="s2-ex4" style="display:none;">
+                    <div class="exercise-question">4. If a line goes upwards from left to right, its slope is... <br><small class="id-text">Jika garis naik dari kiri ke kanan, gradiennya adalah...</small></div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="selectOption(this, 's2-ex4', true)">Positive</button>
+                        <button class="option-btn" onclick="selectOption(this, 's2-ex4', false)">Negative</button>
+                        <button class="option-btn" onclick="selectOption(this, 's2-ex4', false)">Zero</button>
+                        <button class="option-btn" onclick="selectOption(this, 's2-ex4', false)">Undefined</button>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('s2-ex4')">Check</button>
+                    <div class="feedback-box" id="s2-ex4-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s2-ex4', 's2-ex3')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="nextExercise('s2-ex4', 's2-ex5')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Ex 5 -->
+                <div class="exercise-card" id="s2-ex5" style="display:none;">
+                    <div class="exercise-question">5. A horizontal flat line has a slope of... <br><small class="id-text">Garis horizontal datar memiliki gradien...</small></div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="selectOption(this, 's2-ex5', false)">1</button>
+                        <button class="option-btn" onclick="selectOption(this, 's2-ex5', false)">-1</button>
+                        <button class="option-btn" onclick="selectOption(this, 's2-ex5', true)">0</button>
+                        <button class="option-btn" onclick="selectOption(this, 's2-ex5', false)">Infinity</button>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('s2-ex5')">Check</button>
+                    <div class="feedback-box" id="s2-ex5-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s2-ex5', 's2-ex4')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="nextExercise('s2-ex5', 's2-ex6')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Ex 6 -->
+                <div class="exercise-card" id="s2-ex6" style="display:none;">
+                    <div class="exercise-question">6. If a line goes downwards from left to right, its slope is... <br><small class="id-text">Jika garis turun dari kiri ke kanan, gradiennya adalah...</small></div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="selectOption(this, 's2-ex6', false)">Positive</button>
+                        <button class="option-btn" onclick="selectOption(this, 's2-ex6', true)">Negative</button>
+                        <button class="option-btn" onclick="selectOption(this, 's2-ex6', false)">Zero</button>
+                        <button class="option-btn" onclick="selectOption(this, 's2-ex6', false)">Undefined</button>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('s2-ex6')">Check</button>
+                    <div class="feedback-box" id="s2-ex6-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s2-ex6', 's2-ex5')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="nextExercise('s2-ex6', 's2-ex7')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <div class="theory-box">
+                    <p><strong>Theory 3: Rise over Run</strong></p>
+                    <p>Slope is calculated as the change in vertical position (Rise) divided by the change in horizontal position (Run).</p>
+                    <span class="id-text">Gradien dihitung sebagai perubahan posisi vertikal (Rise) dibagi perubahan posisi horizontal (Run).</span>
+                </div>
+
+                <!-- Ex 7 -->
+                <div class="exercise-card" id="s2-ex7" style="display:none;">
+                    <div class="exercise-question">7. In "Rise over Run", what does "Rise" refer to? <br><small class="id-text">Pada "Rise over Run", apa arti "Rise"?</small></div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="selectOption(this, 's2-ex7', false)">Horizontal change</button>
+                        <button class="option-btn" onclick="selectOption(this, 's2-ex7', true)">Vertical change</button>
+                        <button class="option-btn" onclick="selectOption(this, 's2-ex7', false)">Diagonal distance</button>
+                        <button class="option-btn" onclick="selectOption(this, 's2-ex7', false)">The starting point</button>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('s2-ex7')">Check</button>
+                    <div class="feedback-box" id="s2-ex7-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s2-ex7', 's2-ex6')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="nextExercise('s2-ex7', 's2-ex8')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Ex 8 -->
+                <div class="exercise-card" id="s2-ex8" style="display:none;">
+                    <div class="exercise-question">8. If the Rise is 4 and the Run is 2, what is the slope? <br><small class="id-text">Jika Rise 4 dan Run 2, berapakah gradiennya?</small></div>
+                    <input type="text" class="text-input" id="s2-ex8-input" placeholder="Type number">
+                    <br><br>
+                    <button class="check-btn" onclick="checkTextAnswer('s2-ex8', ['2'])">Check</button>
+                    <div class="feedback-box" id="s2-ex8-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s2-ex8', 's2-ex7')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="nextExercise('s2-ex8', 's2-ex9')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Ex 9 -->
+                <div class="exercise-card" id="s2-ex9" style="display:none;">
+                    <div class="exercise-question">9. If the Rise is -3 and the Run is 3, what is the slope? <br><small class="id-text">Jika Rise -3 dan Run 3, berapakah gradiennya?</small></div>
+                    <input type="text" class="text-input" id="s2-ex9-input" placeholder="Type number">
+                    <br><br>
+                    <button class="check-btn" onclick="checkTextAnswer('s2-ex9', ['-1'])">Check</button>
+                    <div class="feedback-box" id="s2-ex9-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s2-ex9', 's2-ex8')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="nextExercise('s2-ex9', 's2-ex10')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Ex 10 -->
+                <div class="exercise-card" id="s2-ex10" style="display:none;">
+                    <div class="exercise-question">10. True or False: A larger "Run" than "Rise" means the slope is steep (greater than 1). <br><small class="id-text">Benar atau Salah: Run yang lebih besar dari Rise berarti kemiringan curam.</small></div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="selectOption(this, 's2-ex10', true)">False</button>
+                        <button class="option-btn" onclick="selectOption(this, 's2-ex10', false)">True</button>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('s2-ex10')">Check</button>
+                    <div class="feedback-box" id="s2-ex10-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s2-ex10', 's2-ex9')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="completeSection('s2', 's3')">Next Section <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 3: Review of Prior Knowledge -->
+            <div id="s3" class="section">
+                <h2>3. Review of Prior Knowledge</h2>
+                <span class="id-text">3. Tinjauan Pengetahuan Sebelumnya</span>
+                
+                <div class="theory-box">
+                    <p><strong>Theory 1: Cartesian Coordinates</strong></p>
+                    <p>To find slope, we must be fluent with Cartesian coordinates. Points are written as \( (x, y) \). The x-axis is horizontal, and the y-axis is vertical.</p>
+                    <span class="id-text">Untuk mencari gradien, kita harus lancar dengan koordinat Kartesius. Titik ditulis sebagai (x, y). Sumbu x horizontal, sumbu y vertikal.</span>
+                </div>
+
+                <div class="illustration">
+                    <svg width="250" height="200" viewBox="0 0 250 200">
+                        <!-- Grid -->
+                        <line x1="0" y1="150" x2="250" y2="150" stroke="#ccc" stroke-width="2"/>
+                        <line x1="50" y1="0" x2="50" y2="200" stroke="#ccc" stroke-width="2"/>
+                        <!-- Points -->
+                        <circle cx="100" cy="120" r="5" fill="#ff4b4b"/>
+                        <text x="105" y="115" font-size="12" fill="#3c3c3c">A(2, 3)</text>
+                        <circle cx="175" cy="60" r="5" fill="#58cc02"/>
+                        <text x="180" y="55" font-size="12" fill="#3c3c3c">B(5, 9)</text>
+                        <!-- Line -->
+                        <line x1="100" y1="120" x2="175" y2="60" stroke="#1cb0f6" stroke-width="3"/>
+                        <!-- Rise/Run -->
+                        <line x1="100" y1="120" x2="175" y2="120" stroke="#888" stroke-dasharray="4" stroke-width="2"/>
+                        <line x1="175" y1="120" x2="175" y2="60" stroke="#888" stroke-dasharray="4" stroke-width="2"/>
+                        <text x="135" y="135" font-size="10" fill="#888">Run (3)</text>
+                        <text x="180" y="95" font-size="10" fill="#888">Rise (6)</text>
+                    </svg>
+                </div>
+
+                <!-- Ex 1 -->
+                <div class="exercise-card" id="s3-ex1">
+                    <div class="exercise-question">1. In the point \( A(2, 3) \), what is the x-coordinate? <br><small class="id-text">Pada titik A(2, 3), berapakah koordinat x-nya?</small></div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="selectOption(this, 's3-ex1', true)">2</button>
+                        <button class="option-btn" onclick="selectOption(this, 's3-ex1', false)">3</button>
+                        <button class="option-btn" onclick="selectOption(this, 's3-ex1', false)">5</button>
+                        <button class="option-btn" onclick="selectOption(this, 's3-ex1', false)">9</button>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('s3-ex1')">Check</button>
+                    <div class="feedback-box" id="s3-ex1-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s3-ex1', 's2-ex10')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="resetExercise('s3-ex1')"><i class="fas fa-redo"></i> Reset</button>
+                        <button class="nav-btn" onclick="nextExercise('s3-ex1', 's3-ex2')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Ex 2 -->
+                <div class="exercise-card" id="s3-ex2" style="display:none;">
+                    <div class="exercise-question">2. Plot point \( A(2, 3) \) mentally. If you move to point \( B(5, 9) \), how many units do you move horizontally (Run)? <br><small class="id-text">Pindah dari A(2,3) ke B(5,9), berapa unit gerak horizontal (Run)?</small></div>
+                    <input type="text" class="text-input" id="s3-ex2-input" placeholder="Type number">
+                    <br><br>
+                    <button class="check-btn" onclick="checkTextAnswer('s3-ex2', ['3'])">Check</button>
+                    <div class="feedback-box" id="s3-ex2-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s3-ex2', 's3-ex1')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="resetExercise('s3-ex2')"><i class="fas fa-redo"></i> Reset</button>
+                        <button class="nav-btn" onclick="nextExercise('s3-ex2', 's3-ex3')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Ex 3 -->
+                <div class="exercise-card" id="s3-ex3" style="display:none;">
+                    <div class="exercise-question">3. Moving from \( A(2, 3) \) to \( B(5, 9) \), how many units do you move vertically (Rise)? <br><small class="id-text">Berapa unit gerak vertikal (Rise)?</small></div>
+                    <input type="text" class="text-input" id="s3-ex3-input" placeholder="Type number">
+                    <br><br>
+                    <button class="check-btn" onclick="checkTextAnswer('s3-ex3', ['6'])">Check</button>
+                    <div class="feedback-box" id="s3-ex3-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s3-ex3', 's3-ex2')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="resetExercise('s3-ex3')"><i class="fas fa-redo"></i> Reset</button>
+                        <button class="nav-btn" onclick="nextExercise('s3-ex3', 's3-ex4')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <div class="theory-box">
+                    <p><strong>Theory 2: Rise and Run as Differences</strong></p>
+                    <p>The "Rise" is the difference in y-values: \( y_2 - y_1 \). The "Run" is the difference in x-values: \( x_2 - x_1 \). It's like finding the distance between two steps.</p>
+                    <span class="id-text">"Rise" adalah selisih nilai y: y2 - y1. "Run" adalah selisih nilai x: x2 - x1. Seperti mencari jarak antar dua anak tangga.</span>
+                </div>
+
+                <!-- Ex 4 -->
+                <div class="exercise-card" id="s3-ex4" style="display:none;">
+                    <div class="exercise-question">4. Given points \( P(1, 2) \) and \( Q(4, 6) \). Calculate the Rise (\( y_2 - y_1 \)). <br><small class="id-text">Hitunglah Rise (y2 - y1).</small></div>
+                    <input type="text" class="text-input" id="s3-ex4-input" placeholder="Type number">
+                    <br><br>
+                    <button class="check-btn" onclick="checkTextAnswer('s3-ex4', ['4'])">Check</button>
+                    <div class="feedback-box" id="s3-ex4-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s3-ex4', 's3-ex3')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="resetExercise('s3-ex4')"><i class="fas fa-redo"></i> Reset</button>
+                        <button class="nav-btn" onclick="nextExercise('s3-ex4', 's3-ex5')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Ex 5 -->
+                <div class="exercise-card" id="s3-ex5" style="display:none;">
+                    <div class="exercise-question">5. For the same points \( P(1, 2) \) and \( Q(4, 6) \). Calculate the Run (\( x_2 - x_1 \)). <br><small class="id-text">Hitunglah Run (x2 - x1).</small></div>
+                    <input type="text" class="text-input" id="s3-ex5-input" placeholder="Type number">
+                    <br><br>
+                    <button class="check-btn" onclick="checkTextAnswer('s3-ex5', ['3'])">Check</button>
+                    <div class="feedback-box" id="s3-ex5-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s3-ex5', 's3-ex4')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="resetExercise('s3-ex5')"><i class="fas fa-redo"></i> Reset</button>
+                        <button class="nav-btn" onclick="nextExercise('s3-ex5', 's3-ex6')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Ex 6 -->
+                <div class="exercise-card" id="s3-ex6" style="display:none;">
+                    <div class="exercise-question">6. If Rise is 5 and Run is 5, what fraction represents the slope conceptually? <br><small class="id-text">Jika Rise 5 dan Run 5, berapa pecahan yang merepresentasikan gradien?</small></div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="selectOption(this, 's3-ex6', false)">5/0</button>
+                        <button class="option-btn" onclick="selectOption(this, 's3-ex6', true)">5/5</button>
+                        <button class="option-btn" onclick="selectOption(this, 's3-ex6', false)">0/5</button>
+                        <button class="option-btn" onclick="selectOption(this, 's3-ex6', false)">5/1</button>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('s3-ex6')">Check</button>
+                    <div class="feedback-box" id="s3-ex6-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s3-ex6', 's3-ex5')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="resetExercise('s3-ex6')"><i class="fas fa-redo"></i> Reset</button>
+                        <button class="nav-btn" onclick="nextExercise('s3-ex6', 's3-ex7')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <div class="theory-box">
+                    <p><strong>Theory 3: Connecting Rise/Run to Formula</strong></p>
+                    <p>Slope (\( m \)) is Rise divided by Run. This gives us the core formula: \( m = \frac{y_2 - y_1}{x_2 - x_1} \).</p>
+                    <span class="id-text">Gradien (m) adalah Rise dibagi Run. Ini memberi kita rumus inti: m = (y2 - y1) / (x2 - x1).</span>
+                </div>
+
+                <!-- Ex 7 -->
+                <div class="exercise-card" id="s3-ex7" style="display:none;">
+                    <div class="exercise-question">7. Using the formula \( m = \frac{y_2 - y_1}{x_2 - x_1} \), plug in \( A(2, 3) \) and \( B(5, 9) \). What is the numerator (top)? <br><small class="id-text">Menggunakan rumus, masukkan A(2,3) dan B(5,9). Berapakah pembilangnya?</small></div>
+                    <input type="text" class="text-input" id="s3-ex7-input" placeholder="Type number">
+                    <br><br>
+                    <button class="check-btn" onclick="checkTextAnswer('s3-ex7', ['6', '9-3'])">Check</button>
+                    <div class="feedback-box" id="s3-ex7-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s3-ex7', 's3-ex6')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="resetExercise('s3-ex7')"><i class="fas fa-redo"></i> Reset</button>
+                        <button class="nav-btn" onclick="nextExercise('s3-ex7', 's3-ex8')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Ex 8 -->
+                <div class="exercise-card" id="s3-ex8" style="display:none;">
+                    <div class="exercise-question">8. What is the denominator (bottom) for the same points \( A(2, 3) \) and \( B(5, 9) \)? <br><small class="id-text">Berapakah penyebutnya?</small></div>
+                    <input type="text" class="text-input" id="s3-ex8-input" placeholder="Type number">
+                    <br><br>
+                    <button class="check-btn" onclick="checkTextAnswer('s3-ex8', ['3', '5-2'])">Check</button>
+                    <div class="feedback-box" id="s3-ex8-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s3-ex8', 's3-ex7')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="resetExercise('s3-ex8')"><i class="fas fa-redo"></i> Reset</button>
+                        <button class="nav-btn" onclick="nextExercise('s3-ex8', 's3-ex9')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Ex 9 -->
+                <div class="exercise-card" id="s3-ex9" style="display:none;">
+                    <div class="exercise-question">9. Calculate the slope \( m \) for \( A(2, 3) \) and \( B(5, 9) \). <br><small class="id-text">Hitunglah gradien m.</small></div>
+                    <input type="text" class="text-input" id="s3-ex9-input" placeholder="Type number">
+                    <br><br>
+                    <button class="check-btn" onclick="checkTextAnswer('s3-ex9', ['2'])">Check</button>
+                    <div class="feedback-box" id="s3-ex9-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s3-ex9', 's3-ex8')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="resetExercise('s3-ex9')"><i class="fas fa-redo"></i> Reset</button>
+                        <button class="nav-btn" onclick="nextExercise('s3-ex9', 's3-ex10')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Ex 10 -->
+                <div class="exercise-card" id="s3-ex10" style="display:none;">
+                    <div class="exercise-question">10. If a line goes through \( (0,0) \) and \( (2,6) \), what is its slope? <br><small class="id-text">Jika garis melalui (0,0) dan (2,6), berapakah gradiennya?</small></div>
+                    <input type="text" class="text-input" id="s3-ex10-input" placeholder="Type number">
+                    <br><br>
+                    <button class="check-btn" onclick="checkTextAnswer('s3-ex10', ['3'])">Check</button>
+                    <div class="feedback-box" id="s3-ex10-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s3-ex10', 's3-ex9')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="resetExercise('s3-ex10')"><i class="fas fa-redo"></i> Reset</button>
+                        <button class="nav-btn" onclick="completeSection('s3', 's4')">Next Section <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 4: Problem Introduction -->
+            <div id="s4" class="section">
+                <h2>4. Problem Introduction</h2>
+                <span class="id-text">4. Pengenalan Masalah</span>
+
+                <div class="theory-box">
+                    <p><strong>Theory 1: The Core Slope Formula</strong></p>
+                    <p>To find the slope between any two points \( A(x_1, y_1) \) and \( B(x_2, y_2) \), we use: \( m = \frac{y_2 - y_1}{x_2 - x_1} \).</p>
+                    <span class="id-text">Untuk mencari gradien antara dua titik, kita gunakan: m = (y2 - y1) / (x2 - x1).</span>
+                </div>
+
+                <!-- Ex 1 -->
+                <div class="exercise-card" id="s4-ex1">
+                    <div class="exercise-question">1. Find the slope of the line passing through \( (2, 4) \) and \( (4, 8) \). <br><small class="id-text">Cari gradien garis yang melalui (2,4) dan (4,8).</small></div>
+                    <input type="text" class="text-input" id="s4-ex1-input" placeholder="Type number or fraction (e.g., 2 or 1/2)">
+                    <br><br>
+                    <button class="check-btn" onclick="checkTextAnswer('s4-ex1', ['2'])">Check</button>
+                    <div class="feedback-box" id="s4-ex1-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s4-ex1', 's3-ex10')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="resetExercise('s4-ex1')"><i class="fas fa-redo"></i> Reset</button>
+                        <button class="nav-btn" onclick="nextExercise('s4-ex1', 's4-ex2')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Ex 2 -->
+                <div class="exercise-card" id="s4-ex2" style="display:none;">
+                    <div class="exercise-question">2. Calculate the slope for points \( (-1, 2) \) and \( (2, 11) \). <br><small class="id-text">Hitung gradien untuk titik (-1,2) dan (2,11).</small></div>
+                    <input type="text" class="text-input" id="s4-ex2-input" placeholder="Type number">
+                    <br><br>
+                    <button class="check-btn" onclick="checkTextAnswer('s4-ex2', ['3'])">Check</button>
+                    <div class="feedback-box" id="s4-ex2-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s4-ex2', 's4-ex1')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="resetExercise('s4-ex2')"><i class="fas fa-redo"></i> Reset</button>
+                        <button class="nav-btn" onclick="nextExercise('s4-ex2', 's4-ex3')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Ex 3 -->
+                <div class="exercise-card" id="s4-ex3" style="display:none;">
+                    <div class="exercise-question">3. Find the slope passing through \( (2, 3) \) and \( (6, -1) \). <br><small class="id-text">Cari gradien yang melalui (2,3) dan (6,-1).</small></div>
+                    <input type="text" class="text-input" id="s4-ex3-input" placeholder="Type number">
+                    <br><br>
+                    <button class="check-btn" onclick="checkTextAnswer('s4-ex3', ['-1'])">Check</button>
+                    <div class="feedback-box" id="s4-ex3-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s4-ex3', 's4-ex2')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="resetExercise('s4-ex3')"><i class="fas fa-redo"></i> Reset</button>
+                        <button class="nav-btn" onclick="nextExercise('s4-ex3', 's4-ex4')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <div class="theory-box">
+                    <p><strong>Theory 2: Point-Slope Form Equation</strong></p>
+                    <p>Once you have the slope \( m \) and a point \( (x_1, y_1) \), you can build the line's equation using: \( y - y_1 = m(x - x_1) \).</p>
+                    <span class="id-text">Setelah punya gradien m dan titik (x1, y1), kamu bisa membuat persamaan garisnya menggunakan: y - y1 = m(x - x1).</span>
+                </div>
+
+                <!-- Ex 4 -->
+                <div class="exercise-card" id="s4-ex4" style="display:none;">
+                    <div class="exercise-question">4. If slope \( m = 4 \) and the line passes through \( (1, 2) \), plug these into \( y - y_1 = m(x - x_1) \). What replaces \( y_1 \)? <br><small class="id-text">Masukkan ke rumus. Apa pengganti y1?</small></div>
+                    <input type="text" class="text-input" id="s4-ex4-input" placeholder="Type number">
+                    <br><br>
+                    <button class="check-btn" onclick="checkTextAnswer('s4-ex4', ['2'])">Check</button>
+                    <div class="feedback-box" id="s4-ex4-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s4-ex4', 's4-ex3')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="resetExercise('s4-ex4')"><i class="fas fa-redo"></i> Reset</button>
+                        <button class="nav-btn" onclick="nextExercise('s4-ex4', 's4-ex5')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Ex 5 -->
+                <div class="exercise-card" id="s4-ex5" style="display:none;">
+                    <div class="exercise-question">5. Using the same \( m = 4 \) and point \( (1, 2) \), write the full equation in point-slope form. <br><small class="id-text">Tulis persamaan penuh dalam bentuk titik-gradien.</small></div>
+                    <input type="text" class="text-input" id="s4-ex5-input" placeholder="e.g., y-2=4(x-1)">
+                    <br><br>
+                    <button class="check-btn" onclick="checkTextAnswer('s4-ex5', ['y-2=4(x-1)', 'y-2=4(x-1)'])">Check</button>
+                    <div class="feedback-box" id="s4-ex5-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s4-ex5', 's4-ex4')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="resetExercise('s4-ex5')"><i class="fas fa-redo"></i> Reset</button>
+                        <button class="nav-btn" onclick="nextExercise('s4-ex5', 's4-ex6')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Ex 6 -->
+                <div class="exercise-card" id="s4-ex6" style="display:none;">
+                    <div class="exercise-question">6. If a line has slope \( m = 3 \) and passes through \( (0, 5) \), what is its equation in point-slope form? <br><small class="id-text">Jika gradien 3 dan melalui (0,5), apa persamaannya?</small></div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="selectOption(this, 's4-ex6', false)">y - 3 = 5(x - 0)</button>
+                        <button class="option-btn" onclick="selectOption(this, 's4-ex6', true)">y - 5 = 3(x - 0)</button>
+                        <button class="option-btn" onclick="selectOption(this, 's4-ex6', false)">y - 0 = 3(x - 5)</button>
+                        <button class="option-btn" onclick="selectOption(this, 's4-ex6', false)">y - 5 = 0(x - 3)</button>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('s4-ex6')">Check</button>
+                    <div class="feedback-box" id="s4-ex6-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s4-ex6', 's4-ex5')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="resetExercise('s4-ex6')"><i class="fas fa-redo"></i> Reset</button>
+                        <button class="nav-btn" onclick="nextExercise('s4-ex6', 's4-ex7')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <div class="theory-box">
+                    <p><strong>Theory 3: Distributing to Slope-Intercept Form</strong></p>
+                    <p>We can expand \( y - y_1 = m(x - x_1) \) to get \( y = mx + c \). For example, \( y - 2 = 4(x - 1) \) becomes \( y = 4x - 4 + 2 \), which simplifies to \( y = 4x - 2 \).</p>
+                    <span class="id-text">Kita bisa uraikan y - y1 = m(x - x1) untuk mendapatkan y = mx + c. Contohnya menjadi y = 4x - 2.</span>
+                </div>
+
+                <!-- Ex 7 -->
+                <div class="exercise-card" id="s4-ex7" style="display:none;">
+                    <div class="exercise-question">7. Expand \( y - 3 = 2(x - 1) \). What is the result after distributing the 2? <br><small class="id-text">Urakan persamaan tersebut. Hasilnya apa setelah dikalikan 2?</small></div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="selectOption(this, 's4-ex7', false)">y - 3 = 2x - 1</button>
+                        <button class="option-btn" onclick="selectOption(this, 's4-ex7', true)">y - 3 = 2x - 2</button>
+                        <button class="option-btn" onclick="selectOption(this, 's4-ex7', false)">y - 3 = 2x + 2</button>
+                        <button class="option-btn" onclick="selectOption(this, 's4-ex7', false)">y - 3 = x - 2</button>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('s4-ex7')">Check</button>
+                    <div class="feedback-box" id="s4-ex7-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s4-ex7', 's4-ex6')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="resetExercise('s4-ex7')"><i class="fas fa-redo"></i> Reset</button>
+                        <button class="nav-btn" onclick="nextExercise('s4-ex7', 's4-ex8')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Ex 8 -->
+                <div class="exercise-card" id="s4-ex8" style="display:none;">
+                    <div class="exercise-question">8. Finish the equation: \( y - 3 = 2x - 2 \). Move the -3 to the other side. What is \( y \)? <br><small class="id-text">Selesaikan persamaannya. Pindahkan -3. Berapakah y?</small></div>
+                    <input type="text" class="text-input" id="s4-ex8-input" placeholder="e.g., y=2x+1">
+                    <br><br>
+                    <button class="check-btn" onclick="checkTextAnswer('s4-ex8', ['y=2x+1', '2x+1'])">Check</button>
+                    <div class="feedback-box" id="s4-ex8-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s4-ex8', 's4-ex7')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="resetExercise('s4-ex8')"><i class="fas fa-redo"></i> Reset</button>
+                        <button class="nav-btn" onclick="nextExercise('s4-ex8', 's4-ex9')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Ex 9 -->
+                <div class="exercise-card" id="s4-ex9" style="display:none;">
+                    <div class="exercise-question">9. A line passes through \( (1, 2) \) and \( (3, 10) \). Find the slope \( m \) first. <br><small class="id-text">Garis melalui (1,2) dan (3,10). Cari gradien m dulu.</small></div>
+                    <input type="text" class="text-input" id="s4-ex9-input" placeholder="Type number">
+                    <br><br>
+                    <button class="check-btn" onclick="checkTextAnswer('s4-ex9', ['4'])">Check</button>
+                    <div class="feedback-box" id="s4-ex9-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s4-ex9', 's4-ex8')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="resetExercise('s4-ex9')"><i class="fas fa-redo"></i> Reset</button>
+                        <button class="nav-btn" onclick="nextExercise('s4-ex9', 's4-ex10')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Ex 10 -->
+                <div class="exercise-card" id="s4-ex10" style="display:none;">
+                    <div class="exercise-question">10. Using the slope from Q9 (\( m=4 \)) and point \( (1, 2) \), convert to \( y = mx + c \) form. <br><small class="id-text">Mengubah ke bentuk y = mx + c.</small></div>
+                    <input type="text" class="text-input" id="s4-ex10-input" placeholder="e.g., y=4x-2">
+                    <br><br>
+                    <button class="check-btn" onclick="checkTextAnswer('s4-ex10', ['y=4x-2', '4x-2'])">Check</button>
+                    <div class="feedback-box" id="s4-ex10-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s4-ex10', 's4-ex9')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="resetExercise('s4-ex10')"><i class="fas fa-redo"></i> Reset</button>
+                        <button class="nav-btn" onclick="completeSection('s4', 's5')">Next Section <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 5: Guided Practice -->
+            <div id="s5" class="section">
+                <h2>5. Guided Practice</h2>
+                <span class="id-text">5. Latihan Terbimbing</span>
+                
+                <div class="theory-box">
+                    <p><strong>Theory 1: Handling Negative Coordinates</strong></p>
+                    <p>When calculating slope with negative numbers, be very careful with signs. For points \( C(2, -1) \) and \( D(4, 7) \): <br> \( m = \frac{7 - (-1)}{4 - 2} = \frac{7 + 1}{2} = \frac{8}{2} = 4 \).</p>
+                    <span class="id-text">Saat menghitung gradien dengan angka negatif, berhati-hatilah dengan tanda. Untuk C(2, -1) dan D(4, 7): m = (7 - (-1)) / (4 - 2) = 8/2 = 4.</span>
+                </div>
+
+                <div class="illustration">
+                    <svg width="250" height="150" viewBox="0 0 250 150">
+                        <line x1="0" y1="100" x2="250" y2="100" stroke="#ccc" stroke-width="2"/>
+                        <line x1="50" y1="0" x2="50" y2="150" stroke="#ccc" stroke-width="2"/>
+                        <circle cx="100" cy="120" r="5" fill="#ff4b4b"/>
+                        <text x="105" y="120" font-size="12" fill="#3c3c3c">C(2, -1)</text>
+                        <circle cx="150" cy="60" r="5" fill="#58cc02"/>
+                        <text x="155" y="60" font-size="12" fill="#3c3c3c">D(4, 7)</text>
+                        <line x1="100" y1="120" x2="150" y2="60" stroke="#1cb0f6" stroke-width="3"/>
+                    </svg>
+                </div>
+
+                <!-- Ex 1 -->
+                <div class="exercise-card" id="s5-ex1">
+                    <div class="exercise-question">1. For points \( C(2, -1) \) and \( D(4, 7) \), calculate the numerator (Rise): \( y_2 - y_1 \). <br><small class="id-text">Hitung pembilang (Rise): y2 - y1.</small></div>
+                    <input type="text" class="text-input" id="s5-ex1-input" placeholder="Type number">
+                    <br><br>
+                    <button class="check-btn" onclick="checkTextAnswer('s5-ex1', ['8', '7-(-1)'])">Check</button>
+                    <div class="feedback-box" id="s5-ex1-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s5-ex1', 's4-ex10')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="resetExercise('s5-ex1')"><i class="fas fa-redo"></i> Reset</button>
+                        <button class="nav-btn" onclick="nextExercise('s5-ex1', 's5-ex2')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Ex 2 -->
+                <div class="exercise-card" id="s5-ex2" style="display:none;">
+                    <div class="exercise-question">2. For the same points, calculate the denominator (Run): \( x_2 - x_1 \). <br><small class="id-text">Hitung penyebut (Run): x2 - x1.</small></div>
+                    <input type="text" class="text-input" id="s5-ex2-input" placeholder="Type number">
+                    <br><br>
+                    <button class="check-btn" onclick="checkTextAnswer('s5-ex2', ['2', '4-2'])">Check</button>
+                    <div class="feedback-box" id="s5-ex2-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s5-ex2', 's5-ex1')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="resetExercise('s5-ex2')"><i class="fas fa-redo"></i> Reset</button>
+                        <button class="nav-btn" onclick="nextExercise('s5-ex2', 's5-ex3')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Ex 3 -->
+                <div class="exercise-card" id="s5-ex3" style="display:none;">
+                    <div class="exercise-question">3. What is the final slope \( m \) of the line passing through \( C(2, -1) \) and \( D(4, 7) \)? <br><small class="id-text">Berapakah gradien akhir m?</small></div>
+                    <input type="text" class="text-input" id="s5-ex3-input" placeholder="Type number">
+                    <br><br>
+                    <button class="check-btn" onclick="checkTextAnswer('s5-ex3', ['4'])">Check</button>
+                    <div class="feedback-box" id="s5-ex3-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s5-ex3', 's5-ex2')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="resetExercise('s5-ex3')"><i class="fas fa-redo"></i> Reset</button>
+                        <button class="nav-btn" onclick="nextExercise('s5-ex3', 's5-ex4')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <div class="theory-box">
+                    <p><strong>Theory 2: Negative Slopes</strong></p>
+                    <p>If a line goes downwards from left to right, its slope is negative. Example: Points \( (1, 4) \) and \( (3, 0) \). <br> \( m = \frac{0 - 4}{3 - 1} = \frac{-4}{2} = -2 \).</p>
+                    <span class="id-text">Jika garis turun dari kiri ke kanan, gradiennya negatif. Contoh: m = (0 - 4) / (3 - 1) = -4/2 = -2.</span>
+                </div>
+
+                <!-- Ex 4 -->
+                <div class="exercise-card" id="s5-ex4" style="display:none;">
+                    <div class="exercise-question">4. Calculate the slope of a line passing through \( (1, 4) \) and \( (3, 0) \). <br><small class="id-text">Hitung gradien garis yang melalui (1,4) dan (3,0).</small></div>
+                    <input type="text" class="text-input" id="s5-ex4-input" placeholder="Type number">
+                    <br><br>
+                    <button class="check-btn" onclick="checkTextAnswer('s5-ex4', ['-2'])">Check</button>
+                    <div class="feedback-box" id="s5-ex4-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s5-ex4', 's5-ex3')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="resetExercise('s5-ex4')"><i class="fas fa-redo"></i> Reset</button>
+                        <button class="nav-btn" onclick="nextExercise('s5-ex4', 's5-ex5')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Ex 5 -->
+                <div class="exercise-card" id="s5-ex5" style="display:none;">
+                    <div class="exercise-question">5. Find the slope passing through \( (-2, 5) \) and \( (1, -1) \). <br><small class="id-text">Cari gradien yang melalui (-2,5) dan (1,-1).</small></div>
+                    <input type="text" class="text-input" id="s5-ex5-input" placeholder="Type number">
+                    <br><br>
+                    <button class="check-btn" onclick="checkTextAnswer('s5-ex5', ['-2'])">Check</button>
+                    <div class="feedback-box" id="s5-ex5-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s5-ex5', 's5-ex4')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="resetExercise('s5-ex5')"><i class="fas fa-redo"></i> Reset</button>
+                        <button class="nav-btn" onclick="nextExercise('s5-ex5', 's5-ex6')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Ex 6 -->
+                <div class="exercise-card" id="s5-ex6" style="display:none;">
+                    <div class="exercise-question">6. If a line has a slope of \( -3 \), does it go up or down from left to right? <br><small class="id-text">Jika gradien -3, apakah garis naik atau turun dari kiri ke kanan?</small></div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="selectOption(this, 's5-ex6', false)">Up (Positive)</button>
+                        <button class="option-btn" onclick="selectOption(this, 's5-ex6', true)">Down (Negative)</button>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('s5-ex6')">Check</button>
+                    <div class="feedback-box" id="s5-ex6-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s5-ex6', 's5-ex5')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="resetExercise('s5-ex6')"><i class="fas fa-redo"></i> Reset</button>
+                        <button class="nav-btn" onclick="nextExercise('s5-ex6', 's5-ex7')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <div class="theory-box">
+                    <p><strong>Theory 3: Parallel Lines</strong></p>
+                    <p>Two lines are parallel if and only if they have the EXACT SAME slope (\( m_1 = m_2 \)). If Line 1 has \( m = 4 \), any line parallel to it also has \( m = 4 \).</p>
+                    <span class="id-text">Dua garis sejajar jika dan hanya jika mereka punya gradien yang SAMA PERSIS. Jika Garis 1 punya m=4, garis sejajar apa pun dengannya juga punya m=4.</span>
+                </div>
+
+                <div class="illustration">
+                    <svg width="250" height="150" viewBox="0 0 250 150">
+                        <line x1="20" y1="130" x2="230" y2="20" stroke="#1cb0f6" stroke-width="4"/>
+                        <line x1="20" y1="100" x2="230" y2="-10" stroke="#ff4b4b" stroke-width="4" stroke-dasharray="5"/>
+                        <text x="100" y="145" font-size="12" fill="#1cb0f6">Parallel Lines</text>
+                    </svg>
+                </div>
+
+                <!-- Ex 7 -->
+                <div class="exercise-card" id="s5-ex7" style="display:none;">
+                    <div class="exercise-question">7. True or False: Parallel lines must have different slopes. <br><small class="id-text">Benar atau Salah: Garis sejajar harus punya gradien berbeda.</small></div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="selectOption(this, 's5-ex7', true)">False</button>
+                        <button class="option-btn" onclick="selectOption(this, 's5-ex7', false)">True</button>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('s5-ex7')">Check</button>
+                    <div class="feedback-box" id="s5-ex7-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s5-ex7', 's5-ex6')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="resetExercise('s5-ex7')"><i class="fas fa-redo"></i> Reset</button>
+                        <button class="nav-btn" onclick="nextExercise('s5-ex7', 's5-ex8')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Ex 8 -->
+                <div class="exercise-card" id="s5-ex8" style="display:none;">
+                    <div class="exercise-question">8. Line A has a slope of 5. Line B is parallel to Line A. What is the slope of Line B? <br><small class="id-text">Garis A gradiennya 5. Garis B sejajar dengan A. Berapa gradien B?</small></div>
+                    <input type="text" class="text-input" id="s5-ex8-input" placeholder="Type number">
+                    <br><br>
+                    <button class="check-btn" onclick="checkTextAnswer('s5-ex8', ['5'])">Check</button>
+                    <div class="feedback-box" id="s5-ex8-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s5-ex8', 's5-ex7')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="resetExercise('s5-ex8')"><i class="fas fa-redo"></i> Reset</button>
+                        <button class="nav-btn" onclick="nextExercise('s5-ex8', 's5-ex9')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Ex 9 -->
+                <div class="exercise-card" id="s5-ex9" style="display:none;">
+                    <div class="exercise-question">9. A line passes through \( (2, 3) \) and \( (4, 7) \). What is the slope of a line parallel to it? <br><small class="id-text">Garis melalui (2,3) dan (4,7). Berapa gradien garis sejajar dengannya?</small></div>
+                    <input type="text" class="text-input" id="s5-ex9-input" placeholder="Type number">
+                    <br><br>
+                    <button class="check-btn" onclick="checkTextAnswer('s5-ex9', ['2'])">Check</button>
+                    <div class="feedback-box" id="s5-ex9-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s5-ex9', 's5-ex8')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="resetExercise('s5-ex9')"><i class="fas fa-redo"></i> Reset</button>
+                        <button class="nav-btn" onclick="nextExercise('s5-ex9', 's5-ex10')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Ex 10 -->
+                <div class="exercise-card" id="s5-ex10" style="display:none;">
+                    <div class="exercise-question">10. The equation of a line is \( y = 3x + 5 \). What is the slope of a line parallel to it? <br><small class="id-text">Persamaan garis y = 3x + 5. Berapa gradien garis sejajar dengannya?</small></div>
+                    <input type="text" class="text-input" id="s5-ex10-input" placeholder="Type number">
+                    <br><br>
+                    <button class="check-btn" onclick="checkTextAnswer('s5-ex10', ['3'])">Check</button>
+                    <div class="feedback-box" id="s5-ex10-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s5-ex10', 's5-ex9')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="resetExercise('s5-ex10')"><i class="fas fa-redo"></i> Reset</button>
+                        <button class="nav-btn" onclick="completeSection('s5', 's6')">Next Section <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 6: Independent Practice -->
+            <div id="s6" class="section">
+                <h2>6. Independent Practice</h2>
+                <span class="id-text">6. Latihan Mandiri</span>
+                
+                <div class="theory-box">
+                    <p><strong>Theory 1: Architect Challenge - Building Equations</strong></p>
+                    <p>Given a slope \( m \) and a point \( (x_1, y_1) \), you can construct the equation directly. Example: \( m = -2 \) through \( (0, 3) \). <br> Equation: \( y - 3 = -2(x - 0) \Rightarrow y = -2x + 3 \).</p>
+                    <span class="id-text">Diketahui gradien m dan titik (x1, y1), kamu bisa langsung membuat persamaannya. Contoh: y = -2x + 3.</span>
+                </div>
+
+                <!-- Ex 1 -->
+                <div class="exercise-card" id="s6-ex1">
+                    <div class="exercise-question">1. Find the equation of the line with slope \( 3 \) passing through \( (1, 2) \). Convert to \( y = mx + c \). <br><small class="id-text">Cari persamaan garis dengan gradien 3 melalui (1,2). Ubah ke y = mx + c.</small></div>
+                    <input type="text" class="text-input" id="s6-ex1-input" placeholder="e.g., y=3x-1">
+                    <br><br>
+                    <button class="check-btn" onclick="checkTextAnswer('s6-ex1', ['y=3x-1', '3x-1'])">Check</button>
+                    <div class="feedback-box" id="s6-ex1-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s6-ex1', 's5-ex10')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="resetExercise('s6-ex1')"><i class="fas fa-redo"></i> Reset</button>
+                        <button class="nav-btn" onclick="nextExercise('s6-ex1', 's6-ex2')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Ex 2 -->
+                <div class="exercise-card" id="s6-ex2" style="display:none;">
+                    <div class="exercise-question">2. Find the equation of the line with slope \( -1 \) passing through \( (0, 5) \). Convert to \( y = mx + c \). <br><small class="id-text">Cari persamaan garis dengan gradien -1 melalui (0,5).</small></div>
+                    <input type="text" class="text-input" id="s6-ex2-input" placeholder="e.g., y=-x+5">
+                    <br><br>
+                    <button class="check-btn" onclick="checkTextAnswer('s6-ex2', ['y=-x+5', '-x+5', 'y=-1x+5'])">Check</button>
+                    <div class="feedback-box" id="s6-ex2-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s6-ex2', 's6-ex1')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="resetExercise('s6-ex2')"><i class="fas fa-redo"></i> Reset</button>
+                        <button class="nav-btn" onclick="nextExercise('s6-ex2', 's6-ex3')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Ex 3 -->
+                <div class="exercise-card" id="s6-ex3" style="display:none;">
+                    <div class="exercise-question">3. Find the equation of the line with slope \( 4 \) passing through \( (2, 10) \). Convert to \( y = mx + c \). <br><small class="id-text">Cari persamaan garis dengan gradien 4 melalui (2,10).</small></div>
+                    <input type="text" class="text-input" id="s6-ex3-input" placeholder="e.g., y=4x+2">
+                    <br><br>
+                    <button class="check-btn" onclick="checkTextAnswer('s6-ex3', ['y=4x+2', '4x+2'])">Check</button>
+                    <div class="feedback-box" id="s6-ex3-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s6-ex3', 's6-ex2')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="resetExercise('s6-ex3')"><i class="fas fa-redo"></i> Reset</button>
+                        <button class="nav-btn" onclick="nextExercise('s6-ex3', 's6-ex4')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <div class="theory-box">
+                    <p><strong>Theory 2: Finding Slope from Two Points</strong></p>
+                    <p>To find the slope between \( (5, 2) \) and \( (1, 10) \): <br> \( m = \frac{10 - 2}{1 - 5} = \frac{8}{-4} = -2 \).</p>
+                    <span class="id-text">Untuk mencari gradien antara (5,2) dan (1,10): m = (10 - 2) / (1 - 5) = 8/-4 = -2.</span>
+                </div>
+
+                <!-- Ex 4 -->
+                <div class="exercise-card" id="s6-ex4" style="display:none;">
+                    <div class="exercise-question">4. Find the slope of the line passing through \( (5, 2) \) and \( (1, 10) \). <br><small class="id-text">Cari gradien garis melalui (5,2) dan (1,10).</small></div>
+                    <input type="text" class="text-input" id="s6-ex4-input" placeholder="Type number">
+                    <br><br>
+                    <button class="check-btn" onclick="checkTextAnswer('s6-ex4', ['-2'])">Check</button>
+                    <div class="feedback-box" id="s6-ex4-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s6-ex4', 's6-ex3')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="resetExercise('s6-ex4')"><i class="fas fa-redo"></i> Reset</button>
+                        <button class="nav-btn" onclick="nextExercise('s6-ex4', 's6-ex5')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Ex 5 -->
+                <div class="exercise-card" id="s6-ex5" style="display:none;">
+                    <div class="exercise-question">5. Find the slope of the line passing through \( (-1, 3) \) and \( (2, 0) \). <br><small class="id-text">Cari gradien garis melalui (-1,3) dan (2,0).</small></div>
+                    <input type="text" class="text-input" id="s6-ex5-input" placeholder="Type number">
+                    <br><br>
+                    <button class="check-btn" onclick="checkTextAnswer('s6-ex5', ['-1'])">Check</button>
+                    <div class="feedback-box" id="s6-ex5-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s6-ex5', 's6-ex4')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="resetExercise('s6-ex5')"><i class="fas fa-redo"></i> Reset</button>
+                        <button class="nav-btn" onclick="nextExercise('s6-ex5', 's6-ex6')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Ex 6 -->
+                <div class="exercise-card" id="s6-ex6" style="display:none;">
+                    <div class="exercise-question">6. Find the slope of the line passing through \( (2, 5) \) and \( (4, 9) \). <br><small class="id-text">Cari gradien garis melalui (2,5) dan (4,9).</small></div>
+                    <input type="text" class="text-input" id="s6-ex6-input" placeholder="Type number">
+                    <br><br>
+                    <button class="check-btn" onclick="checkTextAnswer('s6-ex6', ['2'])">Check</button>
+                    <div class="feedback-box" id="s6-ex6-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s6-ex6', 's6-ex5')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="resetExercise('s6-ex6')"><i class="fas fa-redo"></i> Reset</button>
+                        <button class="nav-btn" onclick="nextExercise('s6-ex6', 's6-ex7')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <div class="theory-box">
+                    <p><strong>Theory 3: Proving Parallel Lines</strong></p>
+                    <p>Are \( y = 3x + 5 \) and the line through \( (1, 2) \) & \( (2, 5) \) parallel? <br> Line 1 slope: 3. Line 2 slope: \( m = \frac{5-2}{2-1} = 3 \). Since \( 3 = 3 \), they ARE parallel.</p>
+                    <span class="id-text">Apakah sejajar? Gradien Garis 1 adalah 3. Gradien Garis 2 adalah 3. Karena 3=3, mereka SEJAJAR.</span>
+                </div>
+
+                <!-- Ex 7 -->
+                <div class="exercise-card" id="s6-ex7" style="display:none;">
+                    <div class="exercise-question">7. What is the slope of the line \( y = 4x - 2 \)? <br><small class="id-text">Berapakah gradien garis y = 4x - 2?</small></div>
+                    <input type="text" class="text-input" id="s6-ex7-input" placeholder="Type number">
+                    <br><br>
+                    <button class="check-btn" onclick="checkTextAnswer('s6-ex7', ['4'])">Check</button>
+                    <div class="feedback-box" id="s6-ex7-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s6-ex7', 's6-ex6')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="resetExercise('s6-ex7')"><i class="fas fa-redo"></i> Reset</button>
+                        <button class="nav-btn" onclick="nextExercise('s6-ex7', 's6-ex8')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Ex 8 -->
+                <div class="exercise-card" id="s6-ex8" style="display:none;">
+                    <div class="exercise-question">8. What is the slope of the line passing through \( (1, 2) \) and \( (2, 5) \)? <br><small class="id-text">Berapakah gradien garis yang melalui (1,2) dan (2,5)?</small></div>
+                    <input type="text" class="text-input" id="s6-ex8-input" placeholder="Type number">
+                    <br><br>
+                    <button class="check-btn" onclick="checkTextAnswer('s6-ex8', ['3'])">Check</button>
+                    <div class="feedback-box" id="s6-ex8-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s6-ex8', 's6-ex7')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="resetExercise('s6-ex8')"><i class="fas fa-redo"></i> Reset</button>
+                        <button class="nav-btn" onclick="nextExercise('s6-ex8', 's6-ex9')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Ex 9 -->
+                <div class="exercise-card" id="s6-ex9" style="display:none;">
+                    <div class="exercise-question">9. Based on Q7 and Q8, is \( y = 3x + 5 \) parallel to the line through \( (1, 2) \) and \( (2, 5) \)? <br><small class="id-text">Berdasarkan jawaban sebelumnya, apakah keduanya sejajar?</small></div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="selectOption(this, 's6-ex9', false)">No, because the y-intercepts are different.</button>
+                        <button class="option-btn" onclick="selectOption(this, 's6-ex9', true)">Yes, because the slopes are equal (both are 3).</button>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('s6-ex9')">Check</button>
+                    <div class="feedback-box" id="s6-ex9-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s6-ex9', 's6-ex8')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="resetExercise('s6-ex9')"><i class="fas fa-redo"></i> Reset</button>
+                        <button class="nav-btn" onclick="nextExercise('s6-ex9', 's6-ex10')">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Ex 10 -->
+                <div class="exercise-card" id="s6-ex10" style="display:none;">
+                    <div class="exercise-question">10. Find the equation of the line parallel to \( y = 4x - 2 \) that passes through \( (2, 10) \). Write in \( y = mx + c \). <br><small class="id-text">Cari persamaan garis sejajar dengan y = 4x - 2 melalui (2, 10).</small></div>
+                    <input type="text" class="text-input" id="s6-ex10-input" placeholder="e.g., y=4x+2">
+                    <br><br>
+                    <button class="check-btn" onclick="checkTextAnswer('s6-ex10', ['y=4x+2', '4x+2'])">Check</button>
+                    <div class="feedback-box" id="s6-ex10-feedback"></div>
+                    <div class="nav-btns">
+                        <button class="nav-btn" onclick="prevExercise('s6-ex10', 's6-ex9')"><i class="fas fa-chevron-left"></i> Prev</button>
+                        <button class="nav-btn" onclick="resetExercise('s6-ex10')"><i class="fas fa-redo"></i> Reset</button>
+                        <button class="nav-btn" onclick="completeSection('s6', 'a1')">Start Assignments <i class="fas fa-clipboard-list"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FINAL SECTION: CONSOLIDATION & REFLECTION -->
+            <div id="final" class="section">
+                <h2>Consolidation & Reflection</h2>
+                <span class="id-text">Konsolidasi & Refleksi</span>
+                
+                <div class="theory-box">
+                    <p><strong>Congratulations on completing the lesson!</strong></p>
+                    <p>You've mastered how to calculate slope from two points, build linear equations, and determine if lines are parallel. This is a crucial foundation for calculus and design!</p>
+                    <span class="id-text">Selamat telah menyelesaikan pelajaran! Kamu telah menguasai cara menghitung gradien, membuat persamaan garis, dan menentukan garis sejajar. Ini adalah dasar yang penting untuk kalkulus dan desain!</span>
+                </div>
+
+                <div class="illustration">
+                    <svg width="150" height="150" viewBox="0 0 150 150">
+                        <circle cx="75" cy="75" r="60" fill="#58cc02" />
+                        <path d="M45,80 L65,100 L105,50" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+
+                <h3>What is the most important thing you learned today?</h3>
+                <span class="id-text">Apa satu hal paling penting yang kamu pelajari hari ini?</span>
+                <textarea class="text-input" style="min-height: 80px; margin-bottom: 20px;" placeholder="Type your reflection here... / Ketik refleksi Anda di sini..."></textarea>
+
+                <h3>Homework Portal</h3>
+                <span class="id-text">Portal PR</span>
+                <p style="margin-bottom: 20px;">Don't forget to check your homework and log in to the portal for enrichment materials!</p>
+                <span class="id-text">Jangan lupa cek PR-mu dan login ke portal untuk materi pengayaan!</span>
+                
+                <a href="https://learn.algonova.id/login" target="_blank" style="text-decoration: none;">
+                    <button class="check-btn" style="width: 100%; background: var(--blue); border-bottom-color: var(--blue-dark);">
+                        <i class="fas fa-external-link-alt"></i> Go to learn.algonova.id
+                    </button>
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- KaTeX JS -->
+	<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+	<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <script>
+        // --- ASSIGNMENT DATA & LOGIC ---
+        const assignmentsData = {
+            a1: {
+                title: "Assignment 1: Basic Slope Calculation",
+                id: "a1",
+                questions: [
+                    { q: "Find the slope of the line passing through (1, 2) and (3, 6).", a: "2" },
+                    { q: "Find the slope of the line passing through (0, 0) and (2, 8).", a: "4" },
+                    { q: "Find the slope of the line passing through (2, 5) and (4, 9).", a: "2" },
+                    { q: "Find the slope of the line passing through (1, 1) and (4, 10).", a: "3" },
+                    { q: "Find the slope of the line passing through (-1, 3) and (2, 0).", a: "-1" },
+                    { q: "Find the slope of the line passing through (2, 3) and (6, -1).", a: "-1" },
+                    { q: "Find the slope of the line passing through (1, 4) and (3, 0).", a: "-2" },
+                    { q: "Find the slope of the line passing through (-2, 5) and (1, -1).", a: "-2" },
+                    { q: "Find the slope of the line passing through (0, 5) and (5, 0).", a: "-1" },
+                    { q: "Find the slope of the line passing through (2, 2) and (4, 4).", a: "1" }
+                ]
+            },
+            a2: {
+                title: "Assignment 2: Point-Slope Form",
+                id: "a2",
+                questions: [
+                    { q: "Write the equation in point-slope form: m = 2, point (1, 3).", a: "y-3=2(x-1)" },
+                    { q: "Write the equation in point-slope form: m = -1, point (0, 4).", a: "y-4=-1(x-0)" },
+                    { q: "Write the equation in point-slope form: m = 4, point (2, 10).", a: "y-10=4(x-2)" },
+                    { q: "Write the equation in point-slope form: m = 3, point (0, 0).", a: "y-0=3(x-0)" },
+                    { q: "Write the equation in point-slope form: m = 0, point (5, 5).", a: "y-5=0(x-5)" },
+                    { q: "Write the equation in point-slope form: m = -2, point (1, 1).", a: "y-1=-2(x-1)" },
+                    { q: "Write the equation in point-slope form: m = 5, point (3, 3).", a: "y-3=5(x-3)" },
+                    { q: "Write the equation in point-slope form: m = 1, point (-1, 0).", a: "y-0=1(x+1)" },
+                    { q: "Write the equation in point-slope form: m = -3, point (0, -2).", a: "y+2=-3(x-0)" },
+                    { q: "Write the equation in point-slope form: m = 2, point (4, 9).", a: "y-9=2(x-4)" }
+                ]
+            },
+            a3: {
+                title: "Assignment 3: Parallel Lines",
+                id: "a3",
+                questions: [
+                    { q: "Line A has slope 4. What is the slope of a parallel line?", a: "4" },
+                    { q: "Given y = 2x + 1. What is the slope of a parallel line?", a: "2" },
+                    { q: "A line passes through (1,2) and (2,4). What is the slope of a parallel line?", a: "2" },
+                    { q: "Are y = 3x + 2 and y = 3x - 5 parallel? (Yes/No)", a: "Yes" },
+                    { q: "Given y = -x + 4. What is the slope of a parallel line?", a: "-1" },
+                    { q: "Line A: y = 5x. Line B: y = 5x - 1. Are they parallel? (Yes/No)", a: "Yes" },
+                    { q: "What is the slope of a line parallel to y = 0.5x - 3?", a: "0.5" },
+                    { q: "Are y = 2x and y = x + 2 parallel? (Yes/No)", a: "No" },
+                    { q: "Find m of line through (0,0) & (1,1). If line B is parallel, m_b = ?", a: "1" },
+                    { q: "True or False: Parallel lines must have different y-intercepts.", a: "False" }
+                ]
+            },
+            a4: {
+                title: "Assignment 4: Slope-Intercept Form (y = mx + c)",
+                id: "a4",
+                questions: [
+                    { q: "Convert to y=mx+c: y - 2 = 3(x - 1)", a: "y=3x-1" },
+                    { q: "Convert to y=mx+c: y - 5 = -1(x - 0)", a: "y=-x+5" },
+                    { q: "Convert to y=mx+c: y - 10 = 4(x - 2)", a: "y=4x+2" },
+                    { q: "Convert to y=mx+c: y - 0 = 2(x - 3)", a: "y=2x-6" },
+                    { q: "Convert to y=mx+c: y - 1 = 1(x + 1)", a: "y=x+2" },
+                    { q: "Convert to y=mx+c: y + 2 = -3(x - 0)", a: "y=-3x-2" },
+                    { q: "Convert to y=mx+c: y - 3 = 0(x - 5)", a: "y=3" },
+                    { q: "Convert to y=mx+c: y - 4 = -2(x + 1)", a: "y=-2x+2" },
+                    { q: "Convert to y=mx+c: y - 0 = 5(x - 0)", a: "y=5x" },
+                    { q: "Convert to y=mx+c: y - 6 = 2(x - 2)", a: "y=2x+2" }
+                ]
+            },
+            a5: {
+                title: "Assignment 5: Mixed Challenge",
+                id: "a5",
+                questions: [
+                    { q: "Find the slope of (0, 0) and (2, 6).", a: "3" },
+                    { q: "What is the slope of a line parallel to y = 4x - 2?", a: "4" },
+                    { q: "Find y=mx+c equation for m=3, point (1, 2).", a: "y=3x-1" },
+                    { q: "Find the slope of (2, 3) and (4, 7).", a: "2" },
+                    { q: "Find the slope of (-1, 3) and (2, 0).", a: "-1" },
+                    { q: "Write point-slope form for m=4, point (1, 2).", a: "y-2=4(x-1)" },
+                    { q: "Convert to y=mx+c: y - 5 = -1(x - 0).", a: "y=-x+5" },
+                    { q: "Are y = 2x + 1 and y = 2x - 3 parallel? (Yes/No)", a: "Yes" },
+                    { q: "Line through (1,2) & (2,4). Find equation in y=mx+c.", a: "y=2x" },
+                    { q: "What is the slope of y = -5x + 7?", a: "-5" }
+                ]
+            }
+        };
+
+        // Inject Assignments into HTML and Sidebar
+        function initAssignments() {
+            const contentArea = document.querySelector('.content-area');
+            const sidebar = document.querySelector('.path-sidebar');
+            const finalNode = document.getElementById('nav-final');
+            
+            for(let i=1; i<=5; i++) {
+                const aId = `a${i}`;
+                const data = assignmentsData[aId];
+                
+                // Add to Sidebar
+                let div = document.createElement('div');
+                div.className = 'path-node';
+                div.id = `nav-${aId}`;
+                div.onclick = () => showSection(aId);
+                div.innerHTML = `<div class="node-circle">A${i}</div><div class="node-info">Assignment ${i}<small>10 Questions</small></div>`;
+                sidebar.insertBefore(div, finalNode);
+
+                // Add to Content Area
+                let section = document.createElement('div');
+                section.id = aId;
+                section.className = 'section';
+                
+                let html = `<h2>${data.title}</h2>
+                            <span class="id-text">Kerjakan 10 soal berikut. Klik tombol print untuk mencetak hasil dalam 1 halaman A4.</span>
+                            <div class="assignment-list">`;
+                
+                data.questions.forEach((qObj, idx) => {
+                    const qNum = idx + 1;
+                    html += `
+                        <div class="exercise-card" id="${aId}-ex${qNum}">
+                            <div class="exercise-question">${qNum}. ${qObj.q}</div>
+                            <input type="text" class="text-input" id="${aId}-input-${idx}" placeholder="Your answer...">
+                        </div>
+                    `;
+                });
+
+                html += `</div>
+                         <button class="check-btn" style="width: 100%; background: var(--blue); border-bottom-color: var(--blue-dark);" onclick="printResult('${aId}')">
+                            <i class="fas fa-print"></i> Print Result (A4)
+                         </button>`;
+                
+                section.innerHTML = html;
+                contentArea.insertBefore(section, document.getElementById('final'));
+            }
+        }
+
+        // Print Logic
+        function printResult(assignmentId) {
+            const data = assignmentsData[assignmentId];
+            const studentName = prompt("Enter Student Name:", "Student");
+            if(!studentName) return;
+            
+            const dateStr = new Date().toLocaleDateString();
+            let score = 0;
+            let tableRows = "";
+
+            data.questions.forEach((q, i) => {
+                const inputVal = document.getElementById(`${assignmentId}-input-${i}`).value.trim();
+                const isCorrect = inputVal.toLowerCase() === q.a.toLowerCase();
+                if(isCorrect) score++;
+                
+                tableRows += `
+                    <tr>
+                        <td style="text-align: center;">${i+1}</td>
+                        <td>${q.q}</td>
+                        <td style="text-align: center;">${inputVal || "-"}</td>
+                        <td style="text-align: center;">${q.a}</td>
+                        <td style="text-align: center;">${isCorrect ? "&#10004;" : "&#10006;"}</td>
+                    </tr>
+                `;
+            });
+
+            const printContent = `
+                <div class="print-active" style="padding: 20px; font-family: Arial, sans-serif;">
+                    <div style="display: flex; justify-content: space-between; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px;">
+                        <div>
+                            <h2 style="margin:0;">MATH TUTORING by Deni</h2>
+                            <p style="margin:2px 0;"><strong>Name:</strong> ${studentName}</p>
+                            <p style="margin:2px 0;"><strong>Date:</strong> ${dateStr}</p>
+                            <p style="margin:2px 0;"><strong>Topic:</strong> Slope and Equations of Straight Lines</p>
+                            <p style="margin:2px 0;"><strong>Assignment Group:</strong> ${data.title}</p>
+                        </div>
+                        <div style="text-align: right;">
+                            <h3 style="margin:0;">Score: ${score} / 10</h3>
+                        </div>
+                    </div>
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 12px;">
+                        <thead>
+                            <tr style="background: #f0f0f0;">
+                                <th style="border: 1px solid #000; padding: 5px; width: 5%;">No.</th>
+                                <th style="border: 1px solid #000; padding: 5px; width: 45%;">Question</th>
+                                <th style="border: 1px solid #000; padding: 5px; width: 20%;">Student Answer</th>
+                                <th style="border: 1px solid #000; padding: 5px; width: 20%;">Correct Answer</th>
+                                <th style="border: 1px solid #000; padding: 5px; width: 10%;">Note</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${tableRows}
+                        </tbody>
+                    </table>
+                    <div style="margin-top: 40px; text-align: right; padding-right: 50px;">
+                        <p>Checked by,</p>
+                        <br><br>
+                        <p><strong>Deni</strong></p>
+                    </div>
+                </div>
+            `;
+
+            const printDiv = document.createElement('div');
+            printDiv.id = 'print-area';
+            printDiv.innerHTML = printContent;
+            document.body.appendChild(printDiv);
+
+            // Hide everything else, show print div
+            document.body.style.visibility = 'hidden';
+            printDiv.style.visibility = 'visible';
+
+            window.print();
+
+            // Cleanup
+            document.body.removeChild(printDiv);
+            document.body.style.visibility = 'visible';
+            
+            // Mark assignment as completed in sidebar
+            document.getElementById(`nav-${assignmentId}`).classList.add('completed');
+        }
+		
+        // --- CORE FUNCTIONS (Pasted back to restore functionality) ---
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            
+            document.querySelectorAll('.path-node').forEach(n => n.classList.remove('active'));
+            const navMap = {
+                'home': 'home', 's1': 'nav-s1', 's2': 'nav-s2', 's3': 'nav-s3', 
+                's4': 'nav-s4', 's5': 'nav-s5', 's6': 'nav-s6', 'final': 'nav-final',
+                'a1': 'nav-a1', 'a2': 'nav-a2', 'a3': 'nav-a3', 'a4': 'nav-a4', 'a5': 'nav-a5'
+            };
+            if(navMap[sectionId]) {
+                const navEl = document.getElementById(navMap[sectionId]);
+                if(navEl) navEl.classList.add('active');
+            }
+            
+            window.scrollTo({top: 0, behavior: 'smooth'});
+            if(typeof renderMath === 'function') renderMath();
+        }
+
+        function completeSection(currentSectionId, nextSectionId) {
+            const navId = 'nav-' + currentSectionId;
+            const navEl = document.getElementById(navId);
+            if(navEl) navEl.classList.add('completed');
+            showSection(nextSectionId);
+        }
+
+        function selectOption(btn, exerciseId, isCorrect) {
+            const card = document.getElementById(exerciseId);
+            card.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            card.dataset.selectedCorrect = isCorrect;
+        }
+
+        function checkAnswer(exerciseId) {
+            const card = document.getElementById(exerciseId);
+            const selected = card.querySelector('.option-btn.selected');
+            if(!selected) return alert("Please select an answer! / Silakan pilih jawaban!");
+
+            const isCorrect = card.dataset.selectedCorrect === 'true';
+            const feedback = document.getElementById(exerciseId + '-feedback');
+            
+            selected.classList.remove('selected');
+            
+            if(isCorrect) {
+                selected.classList.add('correct');
+                feedback.className = 'feedback-box show correct';
+                feedback.innerHTML = "<strong>Correct! / Benar!</strong><br>Great job. Click 'Next' to continue.";
+            } else {
+                selected.classList.add('wrong');
+                feedback.className = 'feedback-box show wrong';
+                feedback.innerHTML = "<strong>Incorrect! / Salah!</strong><br>Review the theory and try again. You can reset this question.";
+            }
+        }
+
+        function checkTextAnswer(exerciseId, correctAnswers) {
+            const card = document.getElementById(exerciseId);
+            const input = card.querySelector('.text-input');
+            const userAns = input.value.replace(/\s/g, '').toLowerCase();
+            const feedback = document.getElementById(exerciseId + '-feedback');
+            
+            if(!userAns) return alert("Please type an answer! / Silakan ketik jawaban!");
+
+            if(correctAnswers.some(ans => userAns === ans.replace(/\s/g, '').toLowerCase())) {
+                input.style.borderColor = 'var(--primary)';
+                input.style.backgroundColor = '#e7ffe0';
+                feedback.className = 'feedback-box show correct';
+                feedback.innerHTML = "<strong>Correct! / Benar!</strong><br>Great job. Click 'Next' to continue.";
+            } else {
+                input.style.borderColor = 'var(--red)';
+                input.style.backgroundColor = '#ffe5e5';
+                feedback.className = 'feedback-box show wrong';
+                feedback.innerHTML = "<strong>Incorrect! / Salah!</strong><br>Check your spelling and signs. Click reset to try again.";
+            }
+        }
+
+        function nextExercise(currentId, nextId) {
+            document.getElementById(currentId).style.display = 'none';
+            document.getElementById(nextId).style.display = 'block';
+            if(typeof renderMath === 'function') renderMath();
+            window.scrollTo({top: document.getElementById(nextId).offsetTop - 100, behavior: 'smooth'});
+        }
+
+        function prevExercise(currentId, prevId) {
+            document.getElementById(currentId).style.display = 'none';
+            document.getElementById(prevId).style.display = 'block';
+            if(typeof renderMath === 'function') renderMath();
+            window.scrollTo({top: document.getElementById(prevId).offsetTop - 100, behavior: 'smooth'});
+        }
+
+        function resetExercise(exerciseId) {
+            const card = document.getElementById(exerciseId);
+            if(!card) return;
+            card.querySelectorAll('.option-btn').forEach(b => {
+                b.classList.remove('selected', 'correct', 'wrong');
+            });
+            const input = card.querySelector('.text-input');
+            if(input) {
+                input.value = '';
+                input.style.borderColor = '';
+                input.style.backgroundColor = '';
+            }
+            const feedback = document.getElementById(exerciseId + '-feedback');
+            if(feedback) {
+                feedback.className = 'feedback-box';
+                feedback.innerHTML = '';
+            }
+        }
+
+        function resetAllProgress() {
+            if(confirm("Are you sure you want to reset all progress? / Yakin ingin mereset semua progres?")) {
+                document.querySelectorAll('.path-node').forEach(n => n.classList.remove('completed'));
+                document.querySelectorAll('.exercise-card').forEach(c => {
+                    if(c.id !== 's1-ex1' && c.id !== 's2-ex1') c.style.display = 'none';
+                    if(c.id === 's1-ex1' || c.id === 's2-ex1') c.style.display = 'block';
+                });
+                document.querySelectorAll('.option-btn, .text-input, .feedback-box').forEach(el => {
+                    el.classList.remove('selected', 'correct', 'wrong');
+                    if(el.tagName === 'INPUT') el.value = '';
+                    if(el.classList.contains('feedback-box')) {
+                        el.className = 'feedback-box';
+                        el.innerHTML = '';
+                    }
+                });
+                showSection('home');
+            }
+        }
+
+        function renderMath() {
+            if(typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: '\\(', right: '\\)', display: false},
+                        {left: '\\[', right: '\\]', display: true}
+                    ]
+                });
+            }
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', function() {
+            initAssignments();
+            renderMath();
+        });
+    </script>
+<script>
+    // DATABASE PENJELASAN SOAL (BILINGUAL)
+    const explanations = {
+        // SECTION 1
+        's1-ex1': "A constant is a number on its own. In 5x + 7 - 2y, 5 and -2 are coefficients. 7 is the constant.<br><i>Konstanta adalah angka tersendiri. Pada 5x + 7 - 2y, 7 adalah konstanta.</i>",
+        's1-ex2': "The coefficient of y is the number multiplying it. Here it is -4 (because of the minus sign).<br><i>Koefisien y adalah angka di depannya, yaitu -4.</i>",
+        's1-ex3': "Twice the score is 2p. 3 points less means subtract 3: 2p - 3.<br><i>Dua kali poin adalah 2p. 3 poin kurang berarti kurangi 3: 2p - 3.</i>",
+        's1-ex4': "x books cost 5000x. 1 pen costs 2000. Total = 5000x + 2000.<br><i>x buku harganya 5000x. Total = 5000x + 2000.</i>",
+        's1-ex5': "5 more than n means we add 5 to n: n + 5.<br><i>5 lebihnya dari n berarti ditambah 5: n + 5.</i>",
+        's1-ex6': "Each burger costs (b - 2000). For 3 burgers: 3(b - 2000).<br><i>Tiap burger harga (b - 2000). Untuk 3 burger: 3(b - 2000).</i>",
+        's1-ex7': "In (x, y), the first number is the x-coordinate. So 2 is x.<br><i>Pada (x,y), angka pertama adalah x.</i>",
+        's1-ex8': "A point on the y-axis has x = 0. Only (0, 5) has x = 0.<br><i>Titik di sumbu y memiliki x = 0.</i>",
+        's1-ex9': "From (1,1) to (1,4), x stays 1, y goes from 1 to 4. Vertical move = 4 - 1 = 3.<br><i>Gerak vertikal = 4 - 1 = 3.</i>",
+        's1-ex10': "From (2,3) to (5,3), y stays 3, x goes from 2 to 5. Horizontal move = 5 - 2 = 3.<br><i>Gerak horizontal = 5 - 2 = 3.</i>",
+        // SECTION 2
+        's2-ex1': "A ladder is nearly vertical, making it the steepest.<br><i>Tangga hampir vertikal, paling curam.</i>",
+        's2-ex2': "To move forward naturally, it needs a slight downhill slope.<br><i>Untuk maju butuh sedikit turunan.</i>",
+        's2-ex3': "The steepness of a line is called the slope (gradien).<br><i>Kemiringan garis disebut gradien.</i>",
+        's2-ex4': "Upwards from left to right means positive slope.<br><i>Naik dari kiri ke kanan berarti positif.</i>",
+        's2-ex5': "A flat horizontal line has no rise, so slope = 0.<br><i>Garis datar tidak ada naik, gradien = 0.</i>",
+        's2-ex6': "Downwards from left to right means negative slope.<br><i>Turun dari kiri ke kanan berarti negatif.</i>",
+        's2-ex7': "Rise is the vertical change.<br><i>Rise adalah perubahan vertikal.</i>",
+        's2-ex8': "Slope = Rise / Run = 4 / 2 = 2.<br><i>Gradien = 4 / 2 = 2.</i>",
+        's2-ex9': "Slope = Rise / Run = -3 / 3 = -1.<br><i>Gradien = -3 / 3 = -1.</i>",
+        's2-ex10': "If Run is larger than Rise, the fraction is less than 1 (gentle). So it's False.<br><i>Jika Run > Rise, gradien < 1. Jadi False.</i>",
+        // SECTION 3
+        's3-ex1': "In A(2, 3), x is the first coordinate, which is 2.<br><i>Pada A(2,3), x adalah angka pertama (2).</i>",
+        's3-ex2': "Run is change in x: 5 - 2 = 3.<br><i>Run adalah perubahan x: 5 - 2 = 3.</i>",
+        's3-ex3': "Rise is change in y: 9 - 3 = 6.<br><i>Rise adalah perubahan y: 9 - 3 = 6.</i>",
+        's3-ex4': "Rise = y2 - y1 = 6 - 2 = 4.<br><i>Rise = 6 - 2 = 4.</i>",
+        's3-ex5': "Run = x2 - x1 = 4 - 1 = 3.<br><i>Run = 4 - 1 = 3.</i>",
+        's3-ex6': "Slope is Rise/Run, so 5/5.<br><i>Gradien adalah Rise/Run, jadi 5/5.</i>",
+        's3-ex7': "Numerator = y2 - y1 = 9 - 3 = 6.<br><i>Pembilang = 9 - 3 = 6.</i>",
+        's3-ex8': "Denominator = x2 - x1 = 5 - 2 = 3.<br><i>Penyebut = 5 - 2 = 3.</i>",
+        's3-ex9': "m = 6 / 3 = 2.<br><i>m = 6 / 3 = 2.</i>",
+        's3-ex10': "m = (6-0) / (2-0) = 6 / 2 = 3.<br><i>m = 6 / 2 = 3.</i>",
+        // SECTION 4
+        's4-ex1': "m = (8-4) / (4-2) = 4 / 2 = 2.<br><i>m = 4 / 2 = 2.</i>",
+        's4-ex2': "m = (11-2) / (2 - (-1)) = 9 / 3 = 3.<br><i>m = 9 / 3 = 3.</i>",
+        's4-ex3': "m = (-1-3) / (6-2) = -4 / 4 = -1.<br><i>m = -4 / 4 = -1.</i>",
+        's4-ex4': "y1 is the y-coordinate of (1,2), so it's 2.<br><i>y1 adalah koordinat y dari (1,2), yaitu 2.</i>",
+        's4-ex5': "Substitute m=4, x1=1, y1=2 into y - y1 = m(x - x1): y - 2 = 4(x - 1).<br><i>Substitusi: y - 2 = 4(x - 1).</i>",
+        's4-ex6': "m=3, point (0,5). Equation: y - 5 = 3(x - 0).<br><i>y - 5 = 3(x - 0).</i>",
+        's4-ex7': "Distribute 2: 2(x - 1) = 2x - 2. So, y - 3 = 2x - 2.<br><i>Uraikan 2: 2x - 2.</i>",
+        's4-ex8': "Add 3 to both sides: y = 2x - 2 + 3 = 2x + 1.<br><i>Pindahkan -3: y = 2x + 1.</i>",
+        's4-ex9': "m = (10-2) / (3-1) = 8 / 2 = 4.<br><i>m = 8 / 2 = 4.</i>",
+        's4-ex10': "y - 2 = 4(x - 1) -> y = 4x - 4 + 2 -> y = 4x - 2.<br><i>y = 4x - 2.</i>",
+        // SECTION 5
+        's5-ex1': "Rise = 7 - (-1) = 7 + 1 = 8.<br><i>Rise = 7 + 1 = 8.</i>",
+        's5-ex2': "Run = 4 - 2 = 2.<br><i>Run = 4 - 2 = 2.</i>",
+        's5-ex3': "m = 8 / 2 = 4.<br><i>m = 8 / 2 = 4.</i>",
+        's5-ex4': "m = (0-4) / (3-1) = -4 / 2 = -2.<br><i>m = -4 / 2 = -2.</i>",
+        's5-ex5': "m = (-1-5) / (1 - (-2)) = -6 / 3 = -2.<br><i>m = -6 / 3 = -2.</i>",
+        's5-ex6': "Negative slope means the line goes down from left to right.<br><i>Gradien negatif berarti turun.</i>",
+        's5-ex7': "Parallel lines must have the SAME slope, so this is False.<br><i>Garis sejajar punya gradien SAMA, jadi False.</i>",
+        's5-ex8': "Parallel lines have same slope. If m_A = 5, then m_B = 5.<br><i>m_B = 5.</i>",
+        's5-ex9': "First find m = (7-3)/(4-2) = 2. Parallel also has m=2.<br><i>m = 2.</i>",
+        's5-ex10': "In y = 3x + 5, m = 3. Parallel also has m=3.<br><i>m = 3.</i>",
+        // SECTION 6
+        's6-ex1': "y - 2 = 3(x - 1) -> y = 3x - 3 + 2 -> y = 3x - 1.<br><i>y = 3x - 1.</i>",
+        's6-ex2': "y - 5 = -1(x - 0) -> y = -x + 5.<br><i>y = -x + 5.</i>",
+        's6-ex3': "y - 10 = 4(x - 2) -> y = 4x - 8 + 10 -> y = 4x + 2.<br><i>y = 4x + 2.</i>",
+        's6-ex4': "m = (10-2)/(1-5) = 8/-4 = -2.<br><i>m = -2.</i>",
+        's6-ex5': "m = (0-3)/(2-(-1)) = -3/3 = -1.<br><i>m = -1.</i>",
+        's6-ex6': "m = (9-5)/(4-2) = 4/2 = 2.<br><i>m = 2.</i>",
+        's6-ex7': "In y = 4x - 2, the slope (m) is 4.<br><i>Gradien (m) = 4.</i>",
+        's6-ex8': "m = (5-2)/(2-1) = 3/1 = 3.<br><i>m = 3.</i>",
+        's6-ex9': "Line 1 has m=3, Line 2 has m=3. Same slope = parallel.<br><i>Karena m=3 dan m=3, maka sejajar.</i>",
+        's6-ex10': "Parallel means m=4. Through (2,10): y - 10 = 4(x - 2) -> y = 4x + 2.<br><i>y = 4x + 2.</i>"
+    };
+
+    // FUNGSI OVERRIDE UNTUK MENAMBAHKAN COLLAPSE EXPLANATION
+    function getExplanation(id) {
+        return explanations[id] || "Explanation not available for this question. / Penjelasan belum tersedia.";
+    }
+
+    function checkAnswer(exerciseId) {
+        const card = document.getElementById(exerciseId);
+        const selected = card.querySelector('.option-btn.selected');
+        if(!selected) return alert("Please select an answer! / Silakan pilih jawaban!");
+
+        const isCorrect = card.dataset.selectedCorrect === 'true';
+        const feedback = document.getElementById(exerciseId + '-feedback');
+        
+        selected.classList.remove('selected');
+        
+        const explanationHTML = `<br><details style="margin-top:10px; cursor:pointer;"><summary style="font-weight:bold;">View Explanation / Lihat Pembahasan</summary><p style="margin-top:5px; padding:5px; background:rgba(255,255,255,0.5); border-radius:5px;">${getExplanation(exerciseId)}</p></details>`;
+
+        if(isCorrect) {
+            selected.classList.add('correct');
+            feedback.className = 'feedback-box show correct';
+            feedback.innerHTML = "<strong>Correct! / Benar!</strong><br>Great job." + explanationHTML;
+        } else {
+            selected.classList.add('wrong');
+            feedback.className = 'feedback-box show wrong';
+            feedback.innerHTML = "<strong>Incorrect! / Salah!</strong><br>Review the theory and try again." + explanationHTML;
+        }
+    }
+
+    function checkTextAnswer(exerciseId, correctAnswers) {
+        const card = document.getElementById(exerciseId);
+        const input = card.querySelector('.text-input');
+        const userAns = input.value.replace(/\s/g, '').toLowerCase();
+        const feedback = document.getElementById(exerciseId + '-feedback');
+        
+        if(!userAns) return alert("Please type an answer! / Silakan ketik jawaban!");
+
+        const explanationHTML = `<br><details style="margin-top:10px; cursor:pointer;"><summary style="font-weight:bold;">View Explanation / Lihat Pembahasan</summary><p style="margin-top:5px; padding:5px; background:rgba(255,255,255,0.5); border-radius:5px;">${getExplanation(exerciseId)}</p></details>`;
+
+        if(correctAnswers.some(ans => userAns === ans.replace(/\s/g, '').toLowerCase())) {
+            input.style.borderColor = 'var(--primary)';
+            input.style.backgroundColor = '#e7ffe0';
+            feedback.className = 'feedback-box show correct';
+            feedback.innerHTML = "<strong>Correct! / Benar!</strong><br>Great job." + explanationHTML;
+        } else {
+            input.style.borderColor = 'var(--red)';
+            input.style.backgroundColor = '#ffe5e5';
+            feedback.className = 'feedback-box show wrong';
+            feedback.innerHTML = "<strong>Incorrect! / Salah!</strong><br>Check your spelling and signs." + explanationHTML;
+        }
+    }
+</script>	
+</body>
+</html>
