@@ -7,6 +7,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
 /* ===== CSS VARIABLES ===== */
@@ -282,6 +286,701 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
       </button>
     </div>
     <!-- ==================== END HOME NODE ==================== -->
+
+<!-- ===== MAIN ENGINE ===== -->
+<script>
+/* ============================================================
+   1. NODE DEFINITIONS
+   ============================================================ */
+const NODES = [
+  { id:'home',       label:'Home',                            sub:'',                              type:'home' },
+  { id:'section1',   label:'Spiral Review Warm-up',           sub:'00:00 – 00:10',                 type:'section' },
+  { id:'section2',   label:'Intro & Real-World Connection',   sub:'00:10 – 00:15',                 type:'section' },
+  { id:'section3',   label:'Review of Prior Knowledge',       sub:'00:15 – 00:20',                 type:'section' },
+  { id:'section4',   label:'Problem Introduction',            sub:'00:20 – 00:30',                 type:'section' },
+  { id:'section5',   label:'Guided Practice',                 sub:'00:30 – 00:45',                 type:'section' },
+  { id:'section6',   label:'Independent Practice',            sub:'00:50 – 01:00',                 type:'section' },
+  { id:'assignment1',label:'Assignment 1',                    sub:'',                              type:'assignment' },
+  { id:'assignment2',label:'Assignment 2',                    sub:'',                              type:'assignment' },
+  { id:'assignment3',label:'Assignment 3',                    sub:'',                              type:'assignment' },
+  { id:'assignment4',label:'Assignment 4',                    sub:'',                              type:'assignment' },
+  { id:'assignment5',label:'Assignment 5',                    sub:'',                              type:'assignment' },
+  { id:'reflection', label:'Consolidation & Reflection',      sub:'01:00 – 01:05',                 type:'reflection' },
+];
+
+/* ============================================================
+   2. STATE MANAGEMENT
+   ============================================================
+   Global data containers — populated by Parts 2–8 */
+window.sectionData   = {};   // { section1: { blocks:[...] }, ... }
+window.assignmentData = {};  // { assignment1: { blocks:[...] }, ... }
+
+const STORAGE_KEY = 'deni_elimination_v1';
+let state = loadState();
+
+function defaultState(){
+  return {
+    currentNode: 'home',
+    answers: {},          // { exId: { selected:[indices], isCorrect:bool, inputText:'' } }
+    shuffled: {},         // { exId: { options:[], correctIndices:[] } }
+    completed: {},        // { nodeId: true }
+    assignResults: {},    // { assignment1: [{q,sa,ca,ok},...] }
+  };
+}
+function loadState(){
+  try{ const s=localStorage.getItem(STORAGE_KEY); return s?{...defaultState(),...JSON.parse(s)}:defaultState(); }
+  catch(e){ return defaultState(); }
+}
+function saveState(){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){}
+}
+
+/* ============================================================
+   3. TOAST NOTIFICATIONS
+   ============================================================ */
+function showToast(msg, type='info', duration=2500){
+  const c=document.getElementById('toast-container');
+  const t=document.createElement('div');
+  t.className='toast '+type;
+  t.textContent=msg;
+  c.appendChild(t);
+  setTimeout(()=>{t.style.animation='toastOut .3s ease-in forwards';setTimeout(()=>t.remove(),300)},duration);
+}
+
+/* ============================================================
+   4. SIDEBAR / PATH RENDERING
+   ============================================================ */
+function renderPath(){
+  const nav=document.getElementById('path-nav');
+  nav.innerHTML='';
+  NODES.forEach((n,i)=>{
+    const div=document.createElement('div');
+    div.className='path-node'+(state.currentNode===n.id?' active':'')+(state.completed[n.id]?' completed':'');
+    div.setAttribute('role','button');
+    div.setAttribute('tabindex','0');
+    div.setAttribute('aria-label',n.label);
+    div.onclick=()=>goToNode(n.id);
+    div.onkeydown=e=>{if(e.key==='Enter')goToNode(n.id)};
+
+    /* Circle content */
+    let circleInner='';
+    if(n.type==='home'){
+      circleInner=`<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z"/></svg>`;
+    } else if(n.type==='assignment'){
+      circleInner=`A${n.id.replace('assignment','')}`;
+    } else if(n.type==='reflection'){
+      circleInner=`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
+    } else {
+      circleInner=String(i);
+    }
+    const checkSvg=`<span class="check-overlay"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--bg)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>`;
+
+    div.innerHTML=`
+      <div class="node-circle">${circleInner}${checkSvg}</div>
+      <div><div class="node-label">${n.label}</div>${n.sub?`<div class="node-sub">${n.sub}</div>`:''}</div>
+    `;
+    nav.appendChild(div);
+  });
+}
+
+/* ============================================================
+   5. NODE SWITCHING
+   ============================================================ */
+function goToNode(id){
+  state.currentNode=id;
+  saveState();
+  /* Hide all, show target */
+  document.querySelectorAll('.node-content').forEach(el=>{el.classList.remove('active');el.style.display='none'});
+  const target=document.getElementById('node-'+id);
+  if(target){target.style.display='block';requestAnimationFrame(()=>target.classList.add('active'))}
+  /* Update path */
+  renderPath();
+  /* Update title */
+  const nodeDef=NODES.find(n=>n.id===id);
+  document.getElementById('current-title').textContent=nodeDef?nodeDef.label:'';
+  /* Update progress pill */
+  updateProgressPill(id);
+  /* Render dynamic content if section/assignment/reflection */
+  if(nodeDef && (nodeDef.type==='section'||nodeDef.type==='assignment'||nodeDef.type==='reflection')){
+    renderDynamicNode(id);
+  }
+  /* Scroll to top */
+  document.getElementById('content-scroll').scrollTop=0;
+  /* Close sidebar on mobile */
+  closeSidebar();
+}
+
+function updateProgressPill(id){
+  const pill=document.getElementById('progress-pill');
+  const data=window.sectionData[id]||window.assignmentData[id];
+  if(!data){pill.textContent='';return}
+  const exs=getAllExercises(data);
+  const answered=exs.filter(e=>state.answers[e.id]).length;
+  const correct=exs.filter(e=>state.answers[e.id]&&state.answers[e.id].isCorrect).length;
+  if(data._isAssignment){
+    pill.textContent=correct+'/'+exs.length+' correct';
+  } else {
+    pill.textContent=answered+'/'+exs.length+' done';
+  }
+}
+
+function getAllExercises(data){
+  const arr=[];
+  data.blocks.forEach(b=>{if(b.type==='exercises')b.items.forEach(e=>arr.push(e))});
+  return arr;
+}
+
+/* ============================================================
+   6. DYNAMIC NODE RENDERER (Sections & Assignments)
+   ============================================================ */
+function renderDynamicNode(nodeId){
+  const data=window.sectionData[nodeId]||window.assignmentData[nodeId];
+  if(!data) return;
+  const container=document.getElementById(nodeId+'-content');
+  if(!container) return;
+
+  let html='';
+
+  /* Assignment: name/date header */
+  if(data._isAssignment){
+    html+=`<div class="assign-header">
+      <div class="assign-field"><label>Name / Nama</label><input type="text" id="inp-name-${nodeId}" placeholder="Student name..."></div>
+      <div class="assign-field"><label>Date / Tanggal</label><input type="date" id="inp-date-${nodeId}"></div>
+    </div>`;
+  }
+
+  data.blocks.forEach((block,bi)=>{
+    if(block.type==='theory'){
+      html+=`<div class="theory-block" style="animation-delay:${bi*0.05}s">${block.html}</div>`;
+    } else if(block.type==='exercises'){
+      block.items.forEach(ex=>{
+        html+=renderExerciseHTML(ex, data._isAssignment);
+      });
+    }
+  });
+
+  /* Assignment: print button */
+  if(data._isAssignment){
+    html+=`<button class="print-btn" id="print-btn-${nodeId}" onclick="printAssignment('${nodeId}')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Print Result
+    </button>`;
+  }
+
+  container.innerHTML=html;
+
+  /* Render KaTeX in new content */
+  renderMathInElement(container, {
+    delimiters:[
+      {left:'$$',right:'$$',display:true},
+      {left:'$',right:'$',display:false},
+      {left:'\\(',right:'\\)',display:false},
+      {left:'\\[',right:'\\]',display:true}
+    ],
+    throwOnError:false
+  });
+
+  /* Restore answered states */
+  restoreStates(nodeId, data);
+
+  /* Check if print button should show */
+  if(data._isAssignment) checkPrintReady(nodeId, data);
+
+  /* Bind MCQ/checkbox clicks */
+  container.querySelectorAll('.option-label[data-exid]').forEach(lbl=>{
+    lbl.addEventListener('click', function(e){
+      const exId=this.dataset.exid;
+      if(state.answers[exId]) return; // already answered
+      const input=this.querySelector('input');
+      if(input.type==='radio'){
+        this.closest('.options-list').querySelectorAll('.option-label').forEach(l=>l.classList.remove('selected'));
+        this.classList.add('selected');
+        input.checked=true;
+        checkAnswer(exId);
+      } else if(input.type==='checkbox'){
+        input.checked=!input.checked;
+        this.classList.toggle('selected', input.checked);
+      }
+    });
+  });
+
+  /* Bind checkbox check buttons */
+  container.querySelectorAll('.check-cb-btn').forEach(btn=>{
+    btn.addEventListener('click', function(){
+      const exId=this.dataset.exid;
+      if(state.answers[exId]) return;
+      checkAnswer(exId);
+    });
+  });
+
+  /* Bind input check buttons */
+  container.querySelectorAll('.check-input-btn').forEach(btn=>{
+    btn.addEventListener('click', function(){
+      const exId=this.dataset.exid;
+      if(state.answers[exId]) return;
+      checkInputAnswer(exId);
+    });
+  });
+
+  /* Bind input enter key */
+  container.querySelectorAll('.answer-input').forEach(inp=>{
+    inp.addEventListener('keydown', function(e){
+      if(e.key==='Enter'){
+        const exId=this.id.replace('input-','');
+        if(!state.answers[exId]) checkInputAnswer(exId);
+      }
+    });
+  });
+}
+
+/* ============================================================
+   7. EXERCISE HTML RENDERER
+   ============================================================ */
+function renderExerciseHTML(ex, isAssignment){
+  const num = ex._displayNum || '?';
+  const typeLabel = ex.type==='mcq'?'Multiple Choice':ex.type==='checkbox'?'Multiple Select':'Fill in the Blank';
+  let body='';
+
+  if(ex.type==='mcq'){
+    const sh=getShuffled(ex);
+    body=`<div class="options-list">
+      ${sh.options.map((opt,i)=>`
+        <label class="option-label" data-exid="${ex.id}" data-idx="${i}">
+          <input type="radio" name="${ex.id}" value="${i}" class="option-input">
+          <span class="option-marker">${String.fromCharCode(65+i)}</span>
+          <span class="option-text">${opt}</span>
+        </label>`).join('')}
+    </div>`;
+  } else if(ex.type==='checkbox'){
+    const sh=getShuffled(ex);
+    body=`<div class="options-list">
+      ${sh.options.map((opt,i)=>`
+        <label class="option-label" data-exid="${ex.id}" data-idx="${i}">
+          <input type="checkbox" name="${ex.id}" value="${i}" class="option-input">
+          <span class="option-marker">${String.fromCharCode(65+i)}</span>
+          <span class="option-text">${opt}</span>
+        </label>`).join('')}
+      <button class="check-btn check-cb-btn" data-exid="${ex.id}" style="margin-top:10px">Check</button>
+    </div>`;
+  } else {
+    body=`<div class="input-row">
+      <input type="text" class="answer-input" id="input-${ex.id}" placeholder="Type your answer..." autocomplete="off">
+      <button class="check-btn check-input-btn" data-exid="${ex.id}">Check</button>
+    </div>`;
+  }
+
+  return `<div class="exercise-block" id="exblock-${ex.id}">
+    <div class="ex-header">
+      <span class="ex-num">${num}</span>
+      <span class="ex-badge">${typeLabel}</span>
+    </div>
+    <div class="ex-question">${ex.question}</div>
+    ${body}
+    <div class="result-banner" id="result-${ex.id}"></div>
+    <div class="explanation-wrap" id="explain-${ex.id}">
+      <button class="explain-toggle" onclick="toggleExplain('${ex.id}')">
+        <span>View Explanation / Lihat Penjelasan</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="explain-content" id="explain-c-${ex.id}"><p>${ex.explanation}</p></div>
+    </div>
+  </div>`;
+}
+
+/* ============================================================
+   8. OPTION SHUFFLING
+   ============================================================ */
+function getShuffled(ex){
+  if(state.shuffled[ex.id]) return state.shuffled[ex.id];
+  const options=[...ex.options];
+  /* Track where correct indices land */
+  let correctMap;
+  if(ex.type==='checkbox'){
+    correctMap=ex.correctIndices.map(ci=>({orig:ci, cur:ci}));
+  } else {
+    correctMap=[{orig:ex.correctIndex, cur:ex.correctIndex}];
+  }
+  /* Fisher-Yates */
+  for(let i=options.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [options[i],options[j]]=[options[j],options[i]];
+    correctMap.forEach(m=>{
+      if(m.cur===i) m.cur=j;
+      else if(m.cur===j) m.cur=i;
+    });
+  }
+  const correctIndices=correctMap.map(m=>m.cur).sort((a,b)=>a-b);
+  const result={options, correctIndices};
+  state.shuffled[ex.id]=result;
+  saveState();
+  return result;
+}
+
+/* ============================================================
+   9. ANSWER CHECKING
+   ============================================================ */
+function checkAnswer(exId){
+  if(state.answers[exId]) return;
+  const ex=findEx(exId);
+  if(!ex) return;
+  const sh=state.shuffled[exId];
+  if(!sh) return;
+
+  let selected=[];
+  const block=document.getElementById('exblock-'+exId);
+  const labels=block.querySelectorAll('.option-label');
+
+  if(ex.type==='mcq'){
+    const checked=block.querySelector('input[type="radio"]:checked');
+    if(!checked){showToast('Please select an answer','error');return}
+    selected=[parseInt(checked.value)];
+  } else {
+    labels.forEach(l=>{
+      const inp=l.querySelector('input[type="checkbox"]');
+      if(inp&&inp.checked) selected.push(parseInt(inp.value));
+    });
+    if(selected.length===0){showToast('Please select at least one answer','error');return}
+  }
+
+  const isCorrect=sh.correctIndices.length===selected.length && sh.correctIndices.every(ci=>selected.includes(ci));
+
+  /* Disable & highlight */
+  labels.forEach(l=>{
+    const idx=parseInt(l.dataset.idx);
+    l.classList.add('disabled');
+    l.querySelector('input').disabled=true;
+    if(sh.correctIndices.includes(idx)) l.classList.add('correct');
+    if(selected.includes(idx)&&!sh.correctIndices.includes(idx)) l.classList.add('wrong');
+  });
+
+  /* Disable checkbox check button */
+  const cbBtn=block.querySelector('.check-cb-btn');
+  if(cbBtn) cbBtn.disabled=true;
+
+  saveAnswerResult(exId, ex, selected, isCorrect, labels);
+}
+
+function checkInputAnswer(exId){
+  if(state.answers[exId]) return;
+  const ex=findEx(exId);
+  if(!ex) return;
+  const inp=document.getElementById('input-'+exId);
+  if(!inp) return;
+  const val=inp.value.trim();
+  if(!val){showToast('Please type your answer','error');return}
+
+  const isCorrect=val===ex.correctAnswer;
+  inp.disabled=true;
+  const btn=inp.parentElement.querySelector('.check-input-btn');
+  if(btn) btn.disabled=true;
+
+  saveAnswerResult(exId, ex, [val], isCorrect, null);
+}
+
+function saveAnswerResult(exId, ex, selected, isCorrect, labels){
+  const sh=state.shuffled[exId];
+  let studentAnswerStr='';
+  let correctAnswerStr='';
+
+  if(ex.type==='input'){
+    studentAnswerStr=selected[0];
+    correctAnswerStr=ex.correctAnswer;
+  } else {
+    studentAnswerStr=selected.map(idx=>String.fromCharCode(65+idx)).join(', ');
+    correctAnswerStr=sh.correctIndices.map(idx=>String.fromCharCode(65+idx)).join(', ');
+  }
+
+  state.answers[exId]={selected, isCorrect, studentAnswer:studentAnswerStr, correctAnswer:correctAnswerStr};
+
+  /* Result banner */
+  const rb=document.getElementById('result-'+exId);
+  rb.className='result-banner show '+(isCorrect?'correct':'wrong');
+  rb.innerHTML=isCorrect
+    ?`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Correct! / Benar!`
+    :`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Incorrect. / Salah.`;
+
+  /* Block border */
+  const block=document.getElementById('exblock-'+exId);
+  block.classList.add(isCorrect?'answered-correct':'answered-wrong');
+
+  /* Show explanation (auto-open) */
+  const ew=document.getElementById('explain-'+exId);
+  ew.classList.add('show');
+  const toggle=ew.querySelector('.explain-toggle');
+  const content=ew.querySelector('.explain-content');
+  toggle.classList.add('open');
+  content.classList.add('open');
+
+  /* Render KaTeX inside explanation */
+  renderMathInElement(content, {
+    delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false},{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}],
+    throwOnError:false
+  });
+
+  saveState();
+  updateProgressPill(state.currentNode);
+  checkSectionCompletion();
+
+  /* If assignment, update print readiness */
+  const nodeDef=NODES.find(n=>n.id===state.currentNode);
+  if(nodeDef&&nodeDef.type==='assignment'){
+    const data=window.assignmentData[state.currentNode];
+    if(data) checkPrintReady(state.currentNode, data);
+  }
+}
+
+function findEx(exId){
+  for(const key of Object.keys(window.sectionData)){
+    const exs=getAllExercises(window.sectionData[key]);
+    const found=exs.find(e=>e.id===exId);
+    if(found) return found;
+  }
+  for(const key of Object.keys(window.assignmentData)){
+    const exs=getAllExercises(window.assignmentData[key]);
+    const found=exs.find(e=>e.id===exId);
+    if(found) return found;
+  }
+  return null;
+}
+
+/* ============================================================
+   10. RESTORE STATES ON RE-RENDER
+   ============================================================ */
+function restoreStates(nodeId, data){
+  const exs=getAllExercises(data);
+  exs.forEach(ex=>{
+    const a=state.answers[ex.id];
+    if(!a) return;
+    const sh=state.shuffled[ex.id];
+    const block=document.getElementById('exblock-'+ex.id);
+    if(!block) return;
+
+    block.classList.add(a.isCorrect?'answered-correct':'answered-wrong');
+
+    if(ex.type==='input'){
+      const inp=document.getElementById('input-'+ex.id);
+      if(inp){inp.value=a.studentAnswer;inp.disabled=true}
+      const btn=block.querySelector('.check-input-btn');
+      if(btn) btn.disabled=true;
+    } else {
+      const labels=block.querySelectorAll('.option-label');
+      labels.forEach(l=>{
+        const idx=parseInt(l.dataset.idx);
+        l.classList.add('disabled');
+        const input=l.querySelector('input');
+        input.disabled=true;
+        if(sh&&sh.correctIndices.includes(idx)){
+          l.classList.add('correct');
+        }
+        if(a.selected.includes(idx)){
+          input.checked=true;
+          l.classList.add('selected');
+          if(sh&&!sh.correctIndices.includes(idx)) l.classList.add('wrong');
+        }
+      });
+      const cbBtn=block.querySelector('.check-cb-btn');
+      if(cbBtn) cbBtn.disabled=true;
+    }
+
+    /* Result banner */
+    const rb=document.getElementById('result-'+ex.id);
+    rb.className='result-banner show '+(a.isCorrect?'correct':'wrong');
+    rb.innerHTML=a.isCorrect
+      ?`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Correct! / Benar!`
+      :`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Incorrect. / Salah.`;
+
+    /* Show explanation */
+    const ew=document.getElementById('explain-'+ex.id);
+    ew.classList.add('show');
+    const toggle=ew.querySelector('.explain-toggle');
+    const content=ew.querySelector('.explain-content');
+    toggle.classList.add('open');
+    content.classList.add('open');
+  });
+}
+
+/* ============================================================
+   11. EXPLANATION TOGGLE
+   ============================================================ */
+function toggleExplain(exId){
+  const ew=document.getElementById('explain-'+exId);
+  const toggle=ew.querySelector('.explain-toggle');
+  const content=ew.querySelector('.explain-content');
+  toggle.classList.toggle('open');
+  content.classList.toggle('open');
+}
+
+/* ============================================================
+   12. SECTION COMPLETION CHECK
+   ============================================================ */
+function checkSectionCompletion(){
+  const nodeId=state.currentNode;
+  const data=window.sectionData[nodeId]||window.assignmentData[nodeId];
+  if(!data) return;
+  const exs=getAllExercises(data);
+  const allAnswered=exs.every(e=>state.answers[e.id]);
+  if(allAnswered) state.completed[nodeId]=true;
+  saveState();
+  renderPath();
+}
+
+/* ============================================================
+   13. PRINT SYSTEM (Assignments only)
+   ============================================================ */
+function checkPrintReady(nodeId, data){
+  const exs=getAllExercises(data);
+  const allAnswered=exs.every(e=>state.answers[e.id]);
+  const btn=document.getElementById('print-btn-'+nodeId);
+  if(btn) btn.classList.toggle('show', allAnswered);
+}
+
+function printAssignment(nodeId){
+  const data=window.assignmentData[nodeId];
+  if(!data) return;
+  const exs=getAllExercises(data);
+  const nameInp=document.getElementById('inp-name-'+nodeId);
+  const dateInp=document.getElementById('inp-date-'+nodeId);
+  const studentName=nameInp?nameInp.value:'';
+  const studentDate=dateInp?dateInp.value:'';
+  const correctCount=exs.filter(e=>state.answers[e.id]&&state.answers[e.id].isCorrect).length;
+
+  /* Build table rows */
+  let rows='';
+  exs.forEach((ex,i)=>{
+    const a=state.answers[ex.id]||{};
+    const qPlain=ex.question.replace(/\$[^$]+\$/g,'[math]').replace(/\\[\(\[][^\\\[\)]]*\\[\)\]]/g,'[math]').replace(/<[^>]+>/g,'').trim();
+    const note=a.isCorrect
+      ?'<span style="color:#16a34a;font-size:16px">&#10003;</span>'
+      :'<span style="color:#dc2626;font-size:16px">&#10007;</span>';
+    rows+=`<tr>
+      <td style="text-align:center;padding:4px 6px;font-size:11px;border:1px solid #333">${i+1}</td>
+      <td style="padding:4px 8px;font-size:10.5px;border:1px solid #333;max-width:200px">${qPlain}</td>
+      <td style="text-align:center;padding:4px 6px;font-size:11px;border:1px solid #333">${a.studentAnswer||'-'}</td>
+      <td style="text-align:center;padding:4px 6px;font-size:11px;border:1px solid #333">${a.correctAnswer||'-'}</td>
+      <td style="text-align:center;padding:4px 6px;border:1px solid #333">${note}</td>
+    </tr>`;
+  });
+
+  const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Assignment Result</title>
+  <style>
+    @page{size:A4;margin:15mm}
+    body{font-family:Arial,sans-serif;font-size:12px;color:#111;margin:0;padding:0}
+    .header{text-align:center;margin-bottom:14px}
+    .header h1{font-size:16px;margin:0 0 4px}
+    .header p{margin:2px 0;font-size:11px;color:#555}
+    table{width:100%;border-collapse:collapse;margin-top:10px}
+    th{background:#e5e7eb;padding:5px 8px;font-size:11px;text-align:center;border:1px solid #333}
+    .score{font-size:13px;font-weight:bold;margin-top:10px}
+    .sign{text-align:right;margin-top:30px;font-size:12px}
+    .sign-line{border-top:1px solid #111;display:inline-block;width:150px;margin-top:4px}
+  </style></head><body>
+  <div class="header">
+    <h1>MATH TUTORING by Deni</h1>
+    <p>Name: ${studentName||'____________________'}</p>
+    <p>Date: ${studentDate||'____________________'}</p>
+    <p>Topic: Elimination Method for Systems of Equations</p>
+    <p>Assignment Group: ${nodeId.replace('assignment','Assignment ')}</p>
+    <p class="score">Score: ${correctCount} / ${exs.length}</p>
+  </div>
+  <table>
+    <thead><tr><th>No.</th><th>Question</th><th>Student Answer</th><th>Correct Answer</th><th>Note</th></tr></thead>
+    <tbody>${rows}</tbody>
+  </table>
+  <div class="sign">Checked by,<br><br><span class="sign-line"></span><br>Deni</div>
+  </body></html>`;
+
+  const w=window.open('','_blank');
+  w.document.write(html);
+  w.document.close();
+  w.focus();
+  setTimeout(()=>w.print(),400);
+}
+
+/* ============================================================
+   14. NAVIGATION
+   ============================================================ */
+function goNext(){
+  const idx=NODES.findIndex(n=>n.id===state.currentNode);
+  if(idx<NODES.length-1) goToNode(NODES[idx+1].id);
+  else showToast('You have reached the end','info');
+}
+function goPrev(){
+  const idx=NODES.findIndex(n=>n.id===state.currentNode);
+  if(idx>0) goToNode(NODES[idx-1].id);
+  else showToast('You are at the beginning','info');
+}
+
+function resetCurrentSection(){
+  const nodeId=state.currentNode;
+  if(nodeId==='home'){showToast('Use "Reset All Progress" on this page','info');return}
+  const data=window.sectionData[nodeId]||window.assignmentData[nodeId];
+  if(!data){showToast('Nothing to reset','info');return}
+  const exs=getAllExercises(data);
+  exs.forEach(e=>{
+    delete state.answers[e.id];
+    delete state.shuffled[e.id];
+  });
+  delete state.completed[nodeId];
+  if(state.assignResults[nodeId]) delete state.assignResults[nodeId];
+  saveState();
+  goToNode(nodeId);
+  showToast('Section reset','success');
+}
+
+function resetAllProgress(){
+  /* Custom inline confirm */
+  const existing=document.getElementById('confirm-modal');
+  if(existing) existing.remove();
+  const modal=document.createElement('div');
+  modal.id='confirm-modal';
+  modal.style.cssText='position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.6);backdrop-filter:blur(4px)';
+  modal.innerHTML=`<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;max-width:360px;width:90%;text-align:center">
+    <p style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px">Reset All Progress?</p>
+    <p style="font-size:13px;color:var(--text-muted);margin-bottom:20px">This will clear all your answers and progress. This action cannot be undone.</p>
+    <div style="display:flex;gap:10px;justify-content:center">
+      <button class="nav-btn" onclick="document.getElementById('confirm-modal').remove()" style="flex:1">Cancel</button>
+      <button class="nav-btn danger" onclick="confirmResetAll()" style="flex:1">Reset</button>
+    </div>
+  </div>`;
+  document.body.appendChild(modal);
+}
+function confirmResetAll(){
+  document.getElementById('confirm-modal').remove();
+  state=defaultState();
+  saveState();
+  goToNode('home');
+  showToast('All progress has been reset','success');
+}
+
+/* ============================================================
+   15. SIDEBAR MOBILE
+   ============================================================ */
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebar-overlay').classList.toggle('show');
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('show');
+}
+
+/* ============================================================
+   16. KEYBOARD NAVIGATION
+   ============================================================ */
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA') return;
+  if(e.key==='ArrowRight') goNext();
+  if(e.key==='ArrowLeft') goPrev();
+});
+
+/* ============================================================
+   17. INITIALIZATION
+   ============================================================ */
+(function init(){
+  renderPath();
+  goToNode(state.currentNode||'home');
+})();
+</script>
 
 <!-- INSERT_SECTION_1 -->
 <div id="node-section1" class="node-content">
@@ -748,7 +1447,7 @@ window.sectionData.section3 = {
           <text x="180" y="143" text-anchor="middle" fill="var(--accent)" font-family="Outfit" font-weight="800" font-size="14">2x + 2y = 10</text>
           <!-- Success label -->
           <rect x="100" y="158" width="160" height="20" rx="10" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1"/>
-          <text x="180" y="172" text-anchor="middle" fill="var(--accent)" font-family="DM Sans" font-weight="600" font-size="10">Now $y$ coefficients: 3 and 2 (not yet opposites, but same variable to match!)</text>
+          <text x="180" y="172" text-anchor="middle" fill="var(--accent)" font-family="DM Sans" font-weight="600" font-size="10">Now y coefficients: 3 and 2 (not yet opposites, but same variable to match!)</text>
         </svg>
       </div>
       <p class="theory-en">Sometimes the coefficients are <em>not</em> opposites yet. That's when we multiply one or both equations to <strong style="color:var(--accent)">make the coefficients match</strong> (same absolute value), so we can eliminate by adding or subtracting.</p>
@@ -856,9 +1555,9 @@ window.sectionData.section4 = {
         explanation:'$4x + x = 5x$, $y + (-y) = 0$, $11 + 2 = 13$. Result: $5x = 13$.<br>$4x + x = 5x$, $y + (-y) = 0$, $11 + 2 = 13$. Hasil: $5x = 13$.'
       },
       { id:'s4e3', type:'input', _displayNum:3,
-        question:'From $5x + y = 14$ and $2x - y = 5$, after adding and eliminating $y$, what is the value of $x$?<br><span style="color:var(--text-muted);font-size:12.5px">Dari $5x + y = 14$ dan $2x - y = 5$, setelah menjumlahkan dan mengeliminasi $y$, berapa nilai $x$?</span><br><span style="font-size:12px;color:var(--text-muted)">Answer in numbers only (e.g., 3)</span>',
+        question:'From $5x + y = 16$ and $2x - y = 5$, after adding and eliminating $y$, what is the value of $x$?<br><span style="color:var(--text-muted);font-size:12.5px">Dari $5x + y = 16$ dan $2x - y = 5$, setelah menjumlahkan dan mengeliminasi $y$, berapa nilai $x$?</span><br><span style="font-size:12px;color:var(--text-muted)">Answer in numbers only (e.g., 3)</span>',
         correctAnswer:'3',
-        explanation:'Adding: $7x = 19$... wait, let me recalculate. $5x + 2x = 7x$, $14 + 5 = 19$. So $7x = 19$, $x = 19/7$. Hmm, that\'s not clean. Let me fix: Actually $5x + y = 14$ and $-2x + y = 5$ would give $3x = 19$... Let me use the correct numbers: $5x + y = 14$ and $2x - y = 5$ gives $7x = 19$, $x = 19/7$.<br><br>Actually the answer should be clean. The correct calculation: $5x + 2x = 7x$, $y - y = 0$, $14 + 5 = 19$. So $7x = 19$, $x = \\frac{19}{7}$. For this exercise, the answer is 19/7 but since we expect a clean number, let me note: $x = \\frac{19}{7}$.'
+        explanation:'Adding: $5x + 2x = 7x$, $y + (-y) = 0$, $16 + 5 = 21$. So $7x = 21$, $x = 3$.<br>Menjumlahkan: $5x + 2x = 7x$, $y + (-y) = 0$, $16 + 5 = 21$. Jadi $7x = 21$, $x = 3$.'
       }
       /* NOTE: s4e3 above has a messy answer. In the actual file, replace s4e3 with the corrected version below */
     ]},
@@ -979,22 +1678,6 @@ window.sectionData.section4 = {
 
   ] /* end blocks */
 };
-
-/* ============================================================
-   IMPORTANT: Fix s4e3 — replace with a clean-answer version
-   The original had 5x+y=14 and 2x-y=5 giving x=19/7 (not clean).
-   Replace with: 5x+y=16 and 2x-y=5 → 7x=21 → x=3
-   ============================================================ */
-(function(){
-  const sec = window.sectionData.section4;
-  const exBlock = sec.blocks[1]; // exercises block 1
-  exBlock.items[2] = {
-    id:'s4e3', type:'input', _displayNum:3,
-    question:'From $5x + y = 16$ and $2x - y = 5$, after adding and eliminating $y$, what is the value of $x$?<br><span style="color:var(--text-muted);font-size:12.5px">Dari $5x + y = 16$ dan $2x - y = 5$, setelah menjumlahkan dan mengeliminasi $y$, berapa nilai $x$?</span><br><span style="font-size:12px;color:var(--text-muted)">Answer in numbers only (e.g., 3)</span>',
-    correctAnswer:'3',
-    explanation:'Adding: $5x + 2x = 7x$, $y + (-y) = 0$, $16 + 5 = 21$. So $7x = 21$, $x = 3$.<br>Menjumlahkan: $5x + 2x = 7x$, $y + (-y) = 0$, $16 + 5 = 21$. Jadi $7x = 21$, $x = 3$.'
-  };
-})();
 </script>
 
 <!-- INSERT_SECTION_5 -->
@@ -1858,6 +2541,20 @@ window.assignmentData.assignment5 = {
     </div>
   `;
 
+  /* Render KaTeX in reflection content */
+  renderMathInElement(container, {
+    delimiters:[
+      {left:'$$',right:'$$',display:true},
+      {left:'$',right:'$',display:false},
+      {left:'\\(',right:'\\)',display:false},
+      {left:'\\[',right:'\\]',display:true}
+    ],
+    throwOnError:false
+  });
+
+  /* Render progress summary */
+  renderProgressSummary();
+
   /* Render progress summary */
   renderProgressSummary();
 
@@ -1948,704 +2645,5 @@ function renderProgressSummary(){
     </button>
   </footer>
 </main>
-
-<!-- KATEX -->
-<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
-
-<!-- ===== MAIN ENGINE ===== -->
-<script>
-/* ============================================================
-   1. NODE DEFINITIONS
-   ============================================================ */
-const NODES = [
-  { id:'home',       label:'Home',                            sub:'',                              type:'home' },
-  { id:'section1',   label:'Spiral Review Warm-up',           sub:'00:00 – 00:10',                 type:'section' },
-  { id:'section2',   label:'Intro & Real-World Connection',   sub:'00:10 – 00:15',                 type:'section' },
-  { id:'section3',   label:'Review of Prior Knowledge',       sub:'00:15 – 00:20',                 type:'section' },
-  { id:'section4',   label:'Problem Introduction',            sub:'00:20 – 00:30',                 type:'section' },
-  { id:'section5',   label:'Guided Practice',                 sub:'00:30 – 00:45',                 type:'section' },
-  { id:'section6',   label:'Independent Practice',            sub:'00:50 – 01:00',                 type:'section' },
-  { id:'assignment1',label:'Assignment 1',                    sub:'',                              type:'assignment' },
-  { id:'assignment2',label:'Assignment 2',                    sub:'',                              type:'assignment' },
-  { id:'assignment3',label:'Assignment 3',                    sub:'',                              type:'assignment' },
-  { id:'assignment4',label:'Assignment 4',                    sub:'',                              type:'assignment' },
-  { id:'assignment5',label:'Assignment 5',                    sub:'',                              type:'assignment' },
-  { id:'reflection', label:'Consolidation & Reflection',      sub:'01:00 – 01:05',                 type:'reflection' },
-];
-
-/* ============================================================
-   2. STATE MANAGEMENT
-   ============================================================
-   Global data containers — populated by Parts 2–8 */
-window.sectionData   = {};   // { section1: { blocks:[...] }, ... }
-window.assignmentData = {};  // { assignment1: { blocks:[...] }, ... }
-
-const STORAGE_KEY = 'deni_elimination_v1';
-let state = loadState();
-
-function defaultState(){
-  return {
-    currentNode: 'home',
-    answers: {},          // { exId: { selected:[indices], isCorrect:bool, inputText:'' } }
-    shuffled: {},         // { exId: { options:[], correctIndices:[] } }
-    completed: {},        // { nodeId: true }
-    assignResults: {},    // { assignment1: [{q,sa,ca,ok},...] }
-  };
-}
-function loadState(){
-  try{ const s=localStorage.getItem(STORAGE_KEY); return s?{...defaultState(),...JSON.parse(s)}:defaultState(); }
-  catch(e){ return defaultState(); }
-}
-function saveState(){
-  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){}
-}
-
-/* ============================================================
-   3. TOAST NOTIFICATIONS
-   ============================================================ */
-function showToast(msg, type='info', duration=2500){
-  const c=document.getElementById('toast-container');
-  const t=document.createElement('div');
-  t.className='toast '+type;
-  t.textContent=msg;
-  c.appendChild(t);
-  setTimeout(()=>{t.style.animation='toastOut .3s ease-in forwards';setTimeout(()=>t.remove(),300)},duration);
-}
-
-/* ============================================================
-   4. SIDEBAR / PATH RENDERING
-   ============================================================ */
-function renderPath(){
-  const nav=document.getElementById('path-nav');
-  nav.innerHTML='';
-  NODES.forEach((n,i)=>{
-    const div=document.createElement('div');
-    div.className='path-node'+(state.currentNode===n.id?' active':'')+(state.completed[n.id]?' completed':'');
-    div.setAttribute('role','button');
-    div.setAttribute('tabindex','0');
-    div.setAttribute('aria-label',n.label);
-    div.onclick=()=>goToNode(n.id);
-    div.onkeydown=e=>{if(e.key==='Enter')goToNode(n.id)};
-
-    /* Circle content */
-    let circleInner='';
-    if(n.type==='home'){
-      circleInner=`<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z"/></svg>`;
-    } else if(n.type==='assignment'){
-      circleInner=`A${n.id.replace('assignment','')}`;
-    } else if(n.type==='reflection'){
-      circleInner=`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
-    } else {
-      circleInner=String(i);
-    }
-    const checkSvg=`<span class="check-overlay"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--bg)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>`;
-
-    div.innerHTML=`
-      <div class="node-circle">${circleInner}${checkSvg}</div>
-      <div><div class="node-label">${n.label}</div>${n.sub?`<div class="node-sub">${n.sub}</div>`:''}</div>
-    `;
-    nav.appendChild(div);
-  });
-}
-
-/* ============================================================
-   5. NODE SWITCHING
-   ============================================================ */
-function goToNode(id){
-  state.currentNode=id;
-  saveState();
-  /* Hide all, show target */
-  document.querySelectorAll('.node-content').forEach(el=>{el.classList.remove('active');el.style.display='none'});
-  const target=document.getElementById('node-'+id);
-  if(target){target.style.display='block';requestAnimationFrame(()=>target.classList.add('active'))}
-  /* Update path */
-  renderPath();
-  /* Update title */
-  const nodeDef=NODES.find(n=>n.id===id);
-  document.getElementById('current-title').textContent=nodeDef?nodeDef.label:'';
-  /* Update progress pill */
-  updateProgressPill(id);
-  /* Render dynamic content if section/assignment/reflection */
-  if(nodeDef && (nodeDef.type==='section'||nodeDef.type==='assignment'||nodeDef.type==='reflection')){
-    renderDynamicNode(id);
-  }
-  /* Scroll to top */
-  document.getElementById('content-scroll').scrollTop=0;
-  /* Close sidebar on mobile */
-  closeSidebar();
-}
-
-function updateProgressPill(id){
-  const pill=document.getElementById('progress-pill');
-  const data=window.sectionData[id]||window.assignmentData[id];
-  if(!data){pill.textContent='';return}
-  const exs=getAllExercises(data);
-  const answered=exs.filter(e=>state.answers[e.id]).length;
-  const correct=exs.filter(e=>state.answers[e.id]&&state.answers[e.id].isCorrect).length;
-  if(data._isAssignment){
-    pill.textContent=correct+'/'+exs.length+' correct';
-  } else {
-    pill.textContent=answered+'/'+exs.length+' done';
-  }
-}
-
-function getAllExercises(data){
-  const arr=[];
-  data.blocks.forEach(b=>{if(b.type==='exercises')b.items.forEach(e=>arr.push(e))});
-  return arr;
-}
-
-/* ============================================================
-   6. DYNAMIC NODE RENDERER (Sections & Assignments)
-   ============================================================ */
-function renderDynamicNode(nodeId){
-  const data=window.sectionData[nodeId]||window.assignmentData[nodeId];
-  if(!data) return;
-  const container=document.getElementById(nodeId+'-content');
-  if(!container) return;
-
-  let html='';
-
-  /* Assignment: name/date header */
-  if(data._isAssignment){
-    html+=`<div class="assign-header">
-      <div class="assign-field"><label>Name / Nama</label><input type="text" id="inp-name-${nodeId}" placeholder="Student name..."></div>
-      <div class="assign-field"><label>Date / Tanggal</label><input type="date" id="inp-date-${nodeId}"></div>
-    </div>`;
-  }
-
-  data.blocks.forEach((block,bi)=>{
-    if(block.type==='theory'){
-      html+=`<div class="theory-block" style="animation-delay:${bi*0.05}s">${block.html}</div>`;
-    } else if(block.type==='exercises'){
-      block.items.forEach(ex=>{
-        html+=renderExerciseHTML(ex, data._isAssignment);
-      });
-    }
-  });
-
-  /* Assignment: print button */
-  if(data._isAssignment){
-    html+=`<button class="print-btn" id="print-btn-${nodeId}" onclick="printAssignment('${nodeId}')">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-      Print Result
-    </button>`;
-  }
-
-  container.innerHTML=html;
-
-  /* Render KaTeX in new content */
-  renderMathInElement(container, {
-    delimiters:[
-      {left:'$$',right:'$$',display:true},
-      {left:'$',right:'$',display:false},
-      {left:'\\(',right:'\\)',display:false},
-      {left:'\\[',right:'\\]',display:true}
-    ],
-    throwOnError:false
-  });
-
-  /* Restore answered states */
-  restoreStates(nodeId, data);
-
-  /* Check if print button should show */
-  if(data._isAssignment) checkPrintReady(nodeId, data);
-
-  /* Bind MCQ/checkbox clicks */
-  container.querySelectorAll('.option-label[data-exid]').forEach(lbl=>{
-    lbl.addEventListener('click', function(e){
-      const exId=this.dataset.exid;
-      if(state.answers[exId]) return; // already answered
-      const input=this.querySelector('input');
-      if(input.type==='radio'){
-        this.closest('.options-list').querySelectorAll('.option-label').forEach(l=>l.classList.remove('selected'));
-        this.classList.add('selected');
-        input.checked=true;
-        checkAnswer(exId);
-      } else if(input.type==='checkbox'){
-        input.checked=!input.checked;
-        this.classList.toggle('selected', input.checked);
-      }
-    });
-  });
-
-  /* Bind checkbox check buttons */
-  container.querySelectorAll('.check-cb-btn').forEach(btn=>{
-    btn.addEventListener('click', function(){
-      const exId=this.dataset.exid;
-      if(state.answers[exId]) return;
-      checkAnswer(exId);
-    });
-  });
-
-  /* Bind input check buttons */
-  container.querySelectorAll('.check-input-btn').forEach(btn=>{
-    btn.addEventListener('click', function(){
-      const exId=this.dataset.exid;
-      if(state.answers[exId]) return;
-      checkInputAnswer(exId);
-    });
-  });
-
-  /* Bind input enter key */
-  container.querySelectorAll('.answer-input').forEach(inp=>{
-    inp.addEventListener('keydown', function(e){
-      if(e.key==='Enter'){
-        const exId=this.id.replace('input-','');
-        if(!state.answers[exId]) checkInputAnswer(exId);
-      }
-    });
-  });
-}
-
-/* ============================================================
-   7. EXERCISE HTML RENDERER
-   ============================================================ */
-function renderExerciseHTML(ex, isAssignment){
-  const num = ex._displayNum || '?';
-  const typeLabel = ex.type==='mcq'?'Multiple Choice':ex.type==='checkbox'?'Multiple Select':'Fill in the Blank';
-  let body='';
-
-  if(ex.type==='mcq'){
-    const sh=getShuffled(ex);
-    body=`<div class="options-list">
-      ${sh.options.map((opt,i)=>`
-        <label class="option-label" data-exid="${ex.id}" data-idx="${i}">
-          <input type="radio" name="${ex.id}" value="${i}" class="option-input">
-          <span class="option-marker">${String.fromCharCode(65+i)}</span>
-          <span class="option-text">${opt}</span>
-        </label>`).join('')}
-    </div>`;
-  } else if(ex.type==='checkbox'){
-    const sh=getShuffled(ex);
-    body=`<div class="options-list">
-      ${sh.options.map((opt,i)=>`
-        <label class="option-label" data-exid="${ex.id}" data-idx="${i}">
-          <input type="checkbox" name="${ex.id}" value="${i}" class="option-input">
-          <span class="option-marker">${String.fromCharCode(65+i)}</span>
-          <span class="option-text">${opt}</span>
-        </label>`).join('')}
-      <button class="check-btn check-cb-btn" data-exid="${ex.id}" style="margin-top:10px">Check</button>
-    </div>`;
-  } else {
-    body=`<div class="input-row">
-      <input type="text" class="answer-input" id="input-${ex.id}" placeholder="Type your answer..." autocomplete="off">
-      <button class="check-btn check-input-btn" data-exid="${ex.id}">Check</button>
-    </div>`;
-  }
-
-  return `<div class="exercise-block" id="exblock-${ex.id}">
-    <div class="ex-header">
-      <span class="ex-num">${num}</span>
-      <span class="ex-badge">${typeLabel}</span>
-    </div>
-    <div class="ex-question">${ex.question}</div>
-    ${body}
-    <div class="result-banner" id="result-${ex.id}"></div>
-    <div class="explanation-wrap" id="explain-${ex.id}">
-      <button class="explain-toggle" onclick="toggleExplain('${ex.id}')">
-        <span>View Explanation / Lihat Penjelasan</span>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-      <div class="explain-content" id="explain-c-${ex.id}"><p>${ex.explanation}</p></div>
-    </div>
-  </div>`;
-}
-
-/* ============================================================
-   8. OPTION SHUFFLING
-   ============================================================ */
-function getShuffled(ex){
-  if(state.shuffled[ex.id]) return state.shuffled[ex.id];
-  const options=[...ex.options];
-  /* Track where correct indices land */
-  let correctMap;
-  if(ex.type==='checkbox'){
-    correctMap=ex.correctIndices.map(ci=>({orig:ci, cur:ci}));
-  } else {
-    correctMap=[{orig:ex.correctIndex, cur:ex.correctIndex}];
-  }
-  /* Fisher-Yates */
-  for(let i=options.length-1;i>0;i--){
-    const j=Math.floor(Math.random()*(i+1));
-    [options[i],options[j]]=[options[j],options[i]];
-    correctMap.forEach(m=>{
-      if(m.cur===i) m.cur=j;
-      else if(m.cur===j) m.cur=i;
-    });
-  }
-  const correctIndices=correctMap.map(m=>m.cur).sort((a,b)=>a-b);
-  const result={options, correctIndices};
-  state.shuffled[ex.id]=result;
-  saveState();
-  return result;
-}
-
-/* ============================================================
-   9. ANSWER CHECKING
-   ============================================================ */
-function checkAnswer(exId){
-  if(state.answers[exId]) return;
-  const ex=findEx(exId);
-  if(!ex) return;
-  const sh=state.shuffled[exId];
-  if(!sh) return;
-
-  let selected=[];
-  const block=document.getElementById('exblock-'+exId);
-  const labels=block.querySelectorAll('.option-label');
-
-  if(ex.type==='mcq'){
-    const checked=block.querySelector('input[type="radio"]:checked');
-    if(!checked){showToast('Please select an answer','error');return}
-    selected=[parseInt(checked.value)];
-  } else {
-    labels.forEach(l=>{
-      const inp=l.querySelector('input[type="checkbox"]');
-      if(inp&&inp.checked) selected.push(parseInt(inp.value));
-    });
-    if(selected.length===0){showToast('Please select at least one answer','error');return}
-  }
-
-  const isCorrect=sh.correctIndices.length===selected.length && sh.correctIndices.every(ci=>selected.includes(ci));
-
-  /* Disable & highlight */
-  labels.forEach(l=>{
-    const idx=parseInt(l.dataset.idx);
-    l.classList.add('disabled');
-    l.querySelector('input').disabled=true;
-    if(sh.correctIndices.includes(idx)) l.classList.add('correct');
-    if(selected.includes(idx)&&!sh.correctIndices.includes(idx)) l.classList.add('wrong');
-  });
-
-  /* Disable checkbox check button */
-  const cbBtn=block.querySelector('.check-cb-btn');
-  if(cbBtn) cbBtn.disabled=true;
-
-  saveAnswerResult(exId, ex, selected, isCorrect, labels);
-}
-
-function checkInputAnswer(exId){
-  if(state.answers[exId]) return;
-  const ex=findEx(exId);
-  if(!ex) return;
-  const inp=document.getElementById('input-'+exId);
-  if(!inp) return;
-  const val=inp.value.trim();
-  if(!val){showToast('Please type your answer','error');return}
-
-  const isCorrect=val===ex.correctAnswer;
-  inp.disabled=true;
-  const btn=inp.parentElement.querySelector('.check-input-btn');
-  if(btn) btn.disabled=true;
-
-  saveAnswerResult(exId, ex, [val], isCorrect, null);
-}
-
-function saveAnswerResult(exId, ex, selected, isCorrect, labels){
-  const sh=state.shuffled[exId];
-  let studentAnswerStr='';
-  let correctAnswerStr='';
-
-  if(ex.type==='input'){
-    studentAnswerStr=selected[0];
-    correctAnswerStr=ex.correctAnswer;
-  } else {
-    studentAnswerStr=selected.map(i=>String.fromCharCode(65+i)).join(', ');
-    correctAnswerStr=sh.correctIndices.map(i=>String.fromCharCode(65+i)).join(', ');
-  }
-
-  state.answers[exId]={selected, isCorrect, studentAnswer:studentAnswerStr, correctAnswer:correctAnswerStr};
-
-  /* Result banner */
-  const rb=document.getElementById('result-'+exId);
-  rb.className='result-banner show '+(isCorrect?'correct':'wrong');
-  rb.innerHTML=isCorrect
-    ?`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Correct! / Benar!`
-    :`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Incorrect. / Salah.`;
-
-  /* Block border */
-  const block=document.getElementById('exblock-'+exId);
-  block.classList.add(isCorrect?'answered-correct':'answered-wrong');
-
-  /* Show explanation (auto-open) */
-  const ew=document.getElementById('explain-'+exId);
-  ew.classList.add('show');
-  const toggle=ew.querySelector('.explain-toggle');
-  const content=ew.querySelector('.explain-content');
-  toggle.classList.add('open');
-  content.classList.add('open');
-
-  /* Render KaTeX inside explanation */
-  renderMathInElement(content, {
-    delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false},{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}],
-    throwOnError:false
-  });
-
-  saveState();
-  updateProgressPill(state.currentNode);
-  checkSectionCompletion();
-
-  /* If assignment, update print readiness */
-  const nodeDef=NODES.find(n=>n.id===state.currentNode);
-  if(nodeDef&&nodeDef.type==='assignment'){
-    const data=window.assignmentData[state.currentNode];
-    if(data) checkPrintReady(state.currentNode, data);
-  }
-}
-
-function findEx(exId){
-  for(const key of Object.keys(window.sectionData)){
-    const exs=getAllExercises(window.sectionData[key]);
-    const found=exs.find(e=>e.id===exId);
-    if(found) return found;
-  }
-  for(const key of Object.keys(window.assignmentData)){
-    const exs=getAllExercises(window.assignmentData[key]);
-    const found=exs.find(e=>e.id===exId);
-    if(found) return found;
-  }
-  return null;
-}
-
-/* ============================================================
-   10. RESTORE STATES ON RE-RENDER
-   ============================================================ */
-function restoreStates(nodeId, data){
-  const exs=getAllExercises(data);
-  exs.forEach(ex=>{
-    const a=state.answers[ex.id];
-    if(!a) return;
-    const sh=state.shuffled[ex.id];
-    const block=document.getElementById('exblock-'+ex.id);
-    if(!block) return;
-
-    block.classList.add(a.isCorrect?'answered-correct':'answered-wrong');
-
-    if(ex.type==='input'){
-      const inp=document.getElementById('input-'+ex.id);
-      if(inp){inp.value=a.studentAnswer;inp.disabled=true}
-      const btn=block.querySelector('.check-input-btn');
-      if(btn) btn.disabled=true;
-    } else {
-      const labels=block.querySelectorAll('.option-label');
-      labels.forEach(l=>{
-        const idx=parseInt(l.dataset.idx);
-        l.classList.add('disabled');
-        const input=l.querySelector('input');
-        input.disabled=true;
-        if(sh&&sh.correctIndices.includes(idx)){
-          l.classList.add('correct');
-        }
-        if(a.selected.includes(idx)){
-          input.checked=true;
-          l.classList.add('selected');
-          if(sh&&!sh.correctIndices.includes(idx)) l.classList.add('wrong');
-        }
-      });
-      const cbBtn=block.querySelector('.check-cb-btn');
-      if(cbBtn) cbBtn.disabled=true;
-    }
-
-    /* Result banner */
-    const rb=document.getElementById('result-'+ex.id);
-    rb.className='result-banner show '+(a.isCorrect?'correct':'wrong');
-    rb.innerHTML=a.isCorrect
-      ?`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Correct! / Benar!`
-      :`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Incorrect. / Salah.`;
-
-    /* Show explanation */
-    const ew=document.getElementById('explain-'+ex.id);
-    ew.classList.add('show');
-    const toggle=ew.querySelector('.explain-toggle');
-    const content=ew.querySelector('.explain-content');
-    toggle.classList.add('open');
-    content.classList.add('open');
-  });
-}
-
-/* ============================================================
-   11. EXPLANATION TOGGLE
-   ============================================================ */
-function toggleExplain(exId){
-  const ew=document.getElementById('explain-'+exId);
-  const toggle=ew.querySelector('.explain-toggle');
-  const content=ew.querySelector('.explain-content');
-  toggle.classList.toggle('open');
-  content.classList.toggle('open');
-}
-
-/* ============================================================
-   12. SECTION COMPLETION CHECK
-   ============================================================ */
-function checkSectionCompletion(){
-  const nodeId=state.currentNode;
-  const data=window.sectionData[nodeId]||window.assignmentData[nodeId];
-  if(!data) return;
-  const exs=getAllExercises(data);
-  const allAnswered=exs.every(e=>state.answers[e.id]);
-  if(allAnswered) state.completed[nodeId]=true;
-  saveState();
-  renderPath();
-}
-
-/* ============================================================
-   13. PRINT SYSTEM (Assignments only)
-   ============================================================ */
-function checkPrintReady(nodeId, data){
-  const exs=getAllExercises(data);
-  const allAnswered=exs.every(e=>state.answers[e.id]);
-  const btn=document.getElementById('print-btn-'+nodeId);
-  if(btn) btn.classList.toggle('show', allAnswered);
-}
-
-function printAssignment(nodeId){
-  const data=window.assignmentData[nodeId];
-  if(!data) return;
-  const exs=getAllExercises(data);
-  const nameInp=document.getElementById('inp-name-'+nodeId);
-  const dateInp=document.getElementById('inp-date-'+nodeId);
-  const studentName=nameInp?nameInp.value:'';
-  const studentDate=dateInp?dateInp.value:'';
-  const correctCount=exs.filter(e=>state.answers[e.id]&&state.answers[e.id].isCorrect).length;
-
-  /* Build table rows */
-  let rows='';
-  exs.forEach((ex,i)=>{
-    const a=state.answers[ex.id]||{};
-    const qPlain=ex.question.replace(/\$[^$]+\$/g,'[math]').replace(/\\[\(\[][^\\\[\)]]*\\[\)\]]/g,'[math]').replace(/<[^>]+>/g,'').trim();
-    const note=a.isCorrect
-      ?'<span style="color:#16a34a;font-size:16px">&#10003;</span>'
-      :'<span style="color:#dc2626;font-size:16px">&#10007;</span>';
-    rows+=`<tr>
-      <td style="text-align:center;padding:4px 6px;font-size:11px;border:1px solid #333">${i+1}</td>
-      <td style="padding:4px 8px;font-size:10.5px;border:1px solid #333;max-width:200px">${qPlain}</td>
-      <td style="text-align:center;padding:4px 6px;font-size:11px;border:1px solid #333">${a.studentAnswer||'-'}</td>
-      <td style="text-align:center;padding:4px 6px;font-size:11px;border:1px solid #333">${a.correctAnswer||'-'}</td>
-      <td style="text-align:center;padding:4px 6px;border:1px solid #333">${note}</td>
-    </tr>`;
-  });
-
-  const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Assignment Result</title>
-  <style>
-    @page{size:A4;margin:15mm}
-    body{font-family:Arial,sans-serif;font-size:12px;color:#111;margin:0;padding:0}
-    .header{text-align:center;margin-bottom:14px}
-    .header h1{font-size:16px;margin:0 0 4px}
-    .header p{margin:2px 0;font-size:11px;color:#555}
-    table{width:100%;border-collapse:collapse;margin-top:10px}
-    th{background:#e5e7eb;padding:5px 8px;font-size:11px;text-align:center;border:1px solid #333}
-    .score{font-size:13px;font-weight:bold;margin-top:10px}
-    .sign{text-align:right;margin-top:30px;font-size:12px}
-    .sign-line{border-top:1px solid #111;display:inline-block;width:150px;margin-top:4px}
-  </style></head><body>
-  <div class="header">
-    <h1>MATH TUTORING by Deni</h1>
-    <p>Name: ${studentName||'____________________'}</p>
-    <p>Date: ${studentDate||'____________________'}</p>
-    <p>Topic: Elimination Method for Systems of Equations</p>
-    <p>Assignment Group: ${nodeId.replace('assignment','Assignment ')}</p>
-    <p class="score">Score: ${correctCount} / ${exs.length}</p>
-  </div>
-  <table>
-    <thead><tr><th>No.</th><th>Question</th><th>Student Answer</th><th>Correct Answer</th><th>Note</th></tr></thead>
-    <tbody>${rows}</tbody>
-  </table>
-  <div class="sign">Checked by,<br><br><span class="sign-line"></span><br>Deni</div>
-  </body></html>`;
-
-  const w=window.open('','_blank');
-  w.document.write(html);
-  w.document.close();
-  w.focus();
-  setTimeout(()=>w.print(),400);
-}
-
-/* ============================================================
-   14. NAVIGATION
-   ============================================================ */
-function goNext(){
-  const idx=NODES.findIndex(n=>n.id===state.currentNode);
-  if(idx<NODES.length-1) goToNode(NODES[idx+1].id);
-  else showToast('You have reached the end','info');
-}
-function goPrev(){
-  const idx=NODES.findIndex(n=>n.id===state.currentNode);
-  if(idx>0) goToNode(NODES[idx-1].id);
-  else showToast('You are at the beginning','info');
-}
-
-function resetCurrentSection(){
-  const nodeId=state.currentNode;
-  if(nodeId==='home'){showToast('Use "Reset All Progress" on this page','info');return}
-  const data=window.sectionData[nodeId]||window.assignmentData[nodeId];
-  if(!data){showToast('Nothing to reset','info');return}
-  const exs=getAllExercises(data);
-  exs.forEach(e=>{
-    delete state.answers[e.id];
-    delete state.shuffled[e.id];
-  });
-  delete state.completed[nodeId];
-  if(state.assignResults[nodeId]) delete state.assignResults[nodeId];
-  saveState();
-  goToNode(nodeId);
-  showToast('Section reset','success');
-}
-
-function resetAllProgress(){
-  /* Custom inline confirm */
-  const existing=document.getElementById('confirm-modal');
-  if(existing) existing.remove();
-  const modal=document.createElement('div');
-  modal.id='confirm-modal';
-  modal.style.cssText='position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.6);backdrop-filter:blur(4px)';
-  modal.innerHTML=`<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;max-width:360px;width:90%;text-align:center">
-    <p style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px">Reset All Progress?</p>
-    <p style="font-size:13px;color:var(--text-muted);margin-bottom:20px">This will clear all your answers and progress. This action cannot be undone.</p>
-    <div style="display:flex;gap:10px;justify-content:center">
-      <button class="nav-btn" onclick="document.getElementById('confirm-modal').remove()" style="flex:1">Cancel</button>
-      <button class="nav-btn danger" onclick="confirmResetAll()" style="flex:1">Reset</button>
-    </div>
-  </div>`;
-  document.body.appendChild(modal);
-}
-function confirmResetAll(){
-  document.getElementById('confirm-modal').remove();
-  state=defaultState();
-  saveState();
-  goToNode('home');
-  showToast('All progress has been reset','success');
-}
-
-/* ============================================================
-   15. SIDEBAR MOBILE
-   ============================================================ */
-function toggleSidebar(){
-  document.getElementById('sidebar').classList.toggle('open');
-  document.getElementById('sidebar-overlay').classList.toggle('show');
-}
-function closeSidebar(){
-  document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('sidebar-overlay').classList.remove('show');
-}
-
-/* ============================================================
-   16. KEYBOARD NAVIGATION
-   ============================================================ */
-document.addEventListener('keydown',e=>{
-  if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA') return;
-  if(e.key==='ArrowRight') goNext();
-  if(e.key==='ArrowLeft') goPrev();
-});
-
-/* ============================================================
-   17. INITIALIZATION
-   ============================================================ */
-(function init(){
-  renderPath();
-  goToNode(state.currentNode||'home');
-})();
-</script>
 </body>
 </html>
