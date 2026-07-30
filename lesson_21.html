@@ -1,0 +1,2651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MATH TUTORING by Deni — Elimination Method</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+/* ===== CSS VARIABLES ===== */
+:root {
+  --bg:#0f1210;--bg-raised:#161c18;--card:#1c2420;--card-active:#243028;
+  --border:#2e3d2a;--text:#e8efe9;--text-muted:#7d9682;
+  --accent:#4ade80;--accent-soft:rgba(74,222,128,.1);--accent-glow:rgba(74,222,128,.25);
+  --gold:#fbbf24;--gold-soft:rgba(251,191,36,.1);
+  --danger:#f87171;--danger-soft:rgba(248,113,113,.1);
+  --sidebar-w:290px;--bottom-h:64px;--top-h:56px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+h1,h2,h3,h4{font-family:'Outfit',sans-serif}
+/* ===== BACKGROUND ATMOSPHERE ===== */
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 15% 20%,rgba(74,222,128,.04) 0%,transparent 55%),radial-gradient(ellipse at 85% 80%,rgba(251,191,36,.03) 0%,transparent 55%);pointer-events:none;z-index:0}
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg-raised)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--text-muted)}
+/* ===== SIDEBAR ===== */
+#sidebar{position:fixed;left:0;top:0;bottom:0;width:var(--sidebar-w);background:var(--bg-raised);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:100;transition:transform .35s cubic-bezier(.4,0,.2,1)}
+#sidebar.closed{transform:translateX(-100%)}
+.sidebar-brand{padding:20px 20px 8px;border-bottom:1px solid var(--border)}
+.sidebar-brand h1{font-size:15px;font-weight:800;color:var(--accent);letter-spacing:.5px}
+.sidebar-brand p{font-size:11px;color:var(--text-muted);margin-top:2px}
+#path-nav{flex:1;overflow-y:auto;padding:12px 0}
+/* ===== PATH NODES ===== */
+.path-node{display:flex;align-items:center;gap:12px;padding:7px 20px;cursor:pointer;position:relative;transition:all .25s}
+.path-node:hover{background:var(--accent-soft)}
+.path-node::after{content:'';position:absolute;left:33px;top:100%;width:2px;height:20px;background:var(--border);transition:background .3s}
+.path-node:last-child::after{display:none}
+.path-node.completed::after{background:var(--accent)}
+.node-circle{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;border:2px solid var(--border);background:var(--bg);color:var(--text-muted);transition:all .3s;position:relative}
+.path-node.active .node-circle{border-color:var(--accent);background:var(--accent);color:var(--bg);box-shadow:0 0 16px var(--accent-glow),0 0 32px var(--accent-glow);animation:pulse-glow 2s infinite}
+.path-node.completed .node-circle{border-color:var(--accent);background:rgba(74,222,128,.15);color:var(--accent)}
+.node-circle .check-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s}
+.path-node.completed .check-overlay{opacity:1}
+.node-label{font-size:12.5px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .3s;line-height:1.3}
+.path-node.active .node-label{color:var(--text);font-weight:600}
+.node-sub{font-size:10px;color:var(--text-muted);opacity:.6}
+@keyframes pulse-glow{0%,100%{box-shadow:0 0 16px var(--accent-glow),0 0 32px var(--accent-glow)}50%{box-shadow:0 0 24px var(--accent-glow),0 0 48px var(--accent-glow)}}
+/* ===== MAIN AREA ===== */
+#main{margin-left:var(--sidebar-w);min-height:100vh;display:flex;flex-direction:column;position:relative;z-index:1;transition:margin-left .35s cubic-bezier(.4,0,.2,1)}
+#main.full{margin-left:0}
+#top-bar{height:var(--top-h);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;gap:16px;background:rgba(15,18,16,.85);backdrop-filter:blur(12px);position:sticky;top:0;z-index:50}
+#menu-toggle{background:none;border:none;color:var(--text-muted);cursor:pointer;padding:6px;display:none;border-radius:6px;transition:all .2s}
+#menu-toggle:hover{color:var(--text);background:var(--accent-soft)}
+#current-title{font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;color:var(--text);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#progress-pill{font-size:11px;color:var(--accent);background:var(--accent-soft);padding:4px 12px;border-radius:20px;font-weight:600;white-space:nowrap}
+/* ===== CONTENT ===== */
+#content-scroll{flex:1;padding:28px 24px 80px;overflow-y:auto;max-width:800px;width:100%;margin:0 auto}
+.node-content{display:none;animation:fadeSlideIn .4s ease-out}
+.node-content.active{display:block}
+@keyframes fadeSlideIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+/* ===== HOME NODE ===== */
+.home-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:32px;margin-bottom:20px;position:relative;overflow:hidden}
+.home-card::before{content:'';position:absolute;top:-40px;right:-40px;width:120px;height:120px;border-radius:50%;background:var(--accent-soft);filter:blur(30px)}
+.home-title{font-size:32px;font-weight:900;background:linear-gradient(135deg,var(--accent),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.2}
+.home-topic{font-size:18px;font-weight:700;margin-top:16px;color:var(--text)}
+.home-topic-id{font-size:14px;color:var(--text-muted);margin-top:2px}
+.rule-card{display:flex;align-items:flex-start;gap:14px;padding:16px;background:var(--bg-raised);border:1px solid var(--border);border-radius:12px;margin-top:12px;transition:transform .2s,border-color .2s}
+.rule-card:hover{transform:translateX(4px);border-color:var(--accent)}
+.rule-num{width:28px;height:28px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0}
+.rule-en{font-size:14px;font-weight:600;color:var(--text)}
+.rule-id{font-size:12px;color:var(--text-muted);margin-top:2px}
+.reset-all-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;border:2px dashed var(--danger);border-radius:12px;background:var(--danger-soft);color:var(--danger);font-weight:700;font-size:14px;cursor:pointer;transition:all .25s;margin-top:20px}
+.reset-all-btn:hover{background:rgba(248,113,113,.2);transform:scale(1.01)}
+/* ===== BOTTOM NAV ===== */
+#bottom-nav{position:fixed;bottom:0;left:var(--sidebar-w);right:0;height:var(--bottom-h);background:rgba(15,18,16,.92);backdrop-filter:blur(12px);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:center;gap:12px;padding:0 24px;z-index:50;transition:left .35s cubic-bezier(.4,0,.2,1)}
+#bottom-nav.full{left:0}
+.nav-btn{padding:10px 24px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text);font-weight:600;font-size:13px;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:6px}
+.nav-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.nav-btn.primary{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+.nav-btn.primary:hover{background:#22c55e;box-shadow:0 0 16px var(--accent-glow)}
+.nav-btn.danger{border-color:var(--danger);color:var(--danger);background:var(--danger-soft)}
+.nav-btn.danger:hover{background:rgba(248,113,113,.2)}
+/* ===== THEORY BLOCKS ===== */
+.theory-block{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:20px;position:relative;overflow:hidden;animation:fadeSlideIn .4s ease-out}
+.theory-block::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--gold));opacity:.4}
+.theory-en{font-size:15px;line-height:1.7;color:var(--text);margin-bottom:6px}
+.theory-id{font-size:13px;line-height:1.6;color:var(--text-muted);margin-bottom:12px}
+.theory-svg{display:flex;justify-content:center;margin:16px 0}
+.theory-svg svg{max-width:100%}
+/* ===== EXERCISE BLOCKS ===== */
+.exercise-block{background:var(--bg-raised);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px;transition:border-color .3s}
+.exercise-block.answered-correct{border-color:var(--accent)}
+.exercise-block.answered-wrong{border-color:var(--danger)}
+.ex-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.ex-num{width:28px;height:28px;border-radius:8px;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px}
+.ex-badge{font-size:10px;padding:3px 10px;border-radius:20px;background:var(--card);color:var(--text-muted);font-weight:600;border:1px solid var(--border)}
+.ex-question{font-size:14.5px;line-height:1.7;color:var(--text);margin-bottom:16px;padding-left:38px}
+.ex-question .katex{font-size:1.05em}
+/* ===== OPTIONS ===== */
+.options-list{display:flex;flex-direction:column;gap:8px;padding-left:38px}
+.option-label{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;transition:all .2s;position:relative}
+.option-label:hover{border-color:var(--text-muted);background:var(--card)}
+.option-label.selected{border-color:var(--accent);background:var(--accent-soft)}
+.option-label.correct{border-color:var(--accent);background:var(--accent-soft)}
+.option-label.wrong{border-color:var(--danger);background:var(--danger-soft)}
+.option-label.disabled{pointer-events:none;opacity:.85}
+.option-input{appearance:none;-webkit-appearance:none;width:18px;height:18px;border:2px solid var(--border);border-radius:50%;cursor:pointer;transition:all .2s;flex-shrink:0;position:relative}
+.option-input[type="checkbox"]{border-radius:4px}
+.option-label.selected .option-input{border-color:var(--accent);background:var(--accent)}
+.option-label.selected .option-input::after{content:'';position:absolute;top:3px;left:3px;width:8px;height:8px;border-radius:50%;background:var(--bg)}
+.option-label.correct .option-input{border-color:var(--accent);background:var(--accent)}
+.option-label.wrong .option-input{border-color:var(--danger);background:var(--danger)}
+.option-marker{width:24px;height:24px;border-radius:6px;background:var(--card);color:var(--text-muted);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;flex-shrink:0}
+.option-text{font-size:14px;color:var(--text);flex:1;line-height:1.5}
+.option-text .katex{font-size:1em}
+/* ===== INPUT ANSWER ===== */
+.input-row{display:flex;gap:10px;padding-left:38px;align-items:center;flex-wrap:wrap}
+.answer-input{flex:1;min-width:180px;padding:12px 16px;border:1.5px solid var(--border);border-radius:10px;background:var(--card);color:var(--text);font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s}
+.answer-input:focus{border-color:var(--accent)}
+.answer-input:disabled{opacity:.6;cursor:not-allowed}
+.check-btn{padding:12px 22px;border:none;border-radius:10px;background:var(--accent);color:var(--bg);font-weight:700;font-size:13px;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif}
+.check-btn:hover{background:#22c55e;box-shadow:0 0 12px var(--accent-glow)}
+.check-btn:disabled{opacity:.4;cursor:not-allowed}
+/* ===== RESULT BANNER ===== */
+.result-banner{display:none;align-items:center;gap:10px;padding:12px 16px;border-radius:10px;margin-top:14px;margin-left:38px;font-size:13px;font-weight:600;animation:fadeSlideIn .3s ease-out}
+.result-banner.show{display:flex}
+.result-banner.correct{background:var(--accent-soft);color:var(--accent);border:1px solid rgba(74,222,128,.2)}
+.result-banner.wrong{background:var(--danger-soft);color:var(--danger);border:1px solid rgba(248,113,113,.2)}
+/* ===== EXPLANATION COLLAPSE ===== */
+.explanation-wrap{margin-top:10px;margin-left:38px;display:none;animation:fadeSlideIn .3s ease-out}
+.explanation-wrap.show{display:block}
+.explain-toggle{display:flex;align-items:center;justify-content:space-between;width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--gold);font-size:12.5px;font-weight:600;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif}
+.explain-toggle:hover{border-color:var(--gold);background:var(--gold-soft)}
+.explain-toggle svg{transition:transform .3s}
+.explain-toggle.open svg{transform:rotate(180deg)}
+.explain-content{max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s;padding:0 14px}
+.explain-content.open{max-height:600px;padding:14px}
+.explain-content p{font-size:13.5px;line-height:1.7;color:var(--text-muted)}
+.explain-content .katex{font-size:1em}
+/* ===== ASSIGNMENT HEADER ===== */
+.assign-header{display:flex;gap:16px;margin-bottom:24px;flex-wrap:wrap}
+.assign-field{flex:1;min-width:160px}
+.assign-field label{display:block;font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:6px}
+.assign-field input{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;background:var(--card);color:var(--text);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s}
+.assign-field input:focus{border-color:var(--accent)}
+/* ===== PRINT BUTTON ===== */
+.print-btn{display:none;align-items:center;justify-content:center;gap:8px;width:100%;padding:16px;margin-top:24px;border:2px solid var(--gold);border-radius:12px;background:var(--gold-soft);color:var(--gold);font-weight:700;font-size:15px;cursor:pointer;transition:all .25s;font-family:'DM Sans',sans-serif}
+.print-btn.show{display:flex}
+.print-btn:hover{background:rgba(251,191,36,.2);transform:scale(1.01)}
+/* ===== TOAST ===== */
+#toast-container{position:fixed;top:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:8px}
+.toast{padding:12px 20px;border-radius:10px;font-size:13px;font-weight:600;animation:toastIn .35s ease-out;box-shadow:0 8px 24px rgba(0,0,0,.4)}
+.toast.success{background:var(--accent);color:var(--bg)}
+.toast.error{background:var(--danger);color:#fff}
+.toast.info{background:var(--gold);color:var(--bg)}
+@keyframes toastIn{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+@keyframes toastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(40px)}}
+/* ===== OVERLAY ===== */
+#sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:90;backdrop-filter:blur(2px)}
+#sidebar-overlay.show{display:block}
+/* ===== REFLECTION ===== */
+.reflect-card{background:linear-gradient(135deg,var(--card),var(--card-active));border:1px solid var(--accent);border-radius:16px;padding:28px;margin-bottom:20px;position:relative;overflow:hidden}
+.reflect-card::before{content:'';position:absolute;top:-60px;right:-60px;width:160px;height:160px;border-radius:50%;background:var(--accent-glow);filter:blur(40px)}
+.summary-step{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--border)}
+.summary-step:last-child{border-bottom:none}
+.step-num{width:32px;height:32px;border-radius:50%;background:var(--accent);color:var(--bg);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0}
+.step-en{font-size:14px;font-weight:600;color:var(--text)}
+.step-id{font-size:12px;color:var(--text-muted);margin-top:2px}
+.algonova-btn{display:inline-flex;align-items:center;gap:10px;padding:16px 32px;border:none;border-radius:14px;background:linear-gradient(135deg,var(--accent),#22c55e);color:var(--bg);font-weight:800;font-size:16px;cursor:pointer;transition:all .25s;font-family:'Outfit',sans-serif;text-decoration:none;margin-top:16px}
+.algonova-btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px var(--accent-glow)}
+/* ===== RESPONSIVE ===== */
+@media(max-width:900px){
+  #sidebar{transform:translateX(-100%)}
+  #sidebar.open{transform:translateX(0)}
+  #main{margin-left:0}
+  #bottom-nav{left:0}
+  #menu-toggle{display:flex}
+  .ex-question,.options-list,.input-row,.result-banner,.explanation-wrap{padding-left:0;margin-left:0}
+  .home-title{font-size:24px}
+}
+@media(max-width:500px){
+  #content-scroll{padding:20px 14px 80px}
+  .home-card{padding:20px}
+  .theory-block{padding:16px}
+  .exercise-block{padding:14px}
+  .nav-btn{padding:8px 14px;font-size:12px}
+}
+/* ===== PREFERS REDUCED MOTION ===== */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+
+<!-- TOAST CONTAINER -->
+<div id="toast-container" aria-live="polite"></div>
+
+<!-- SIDEBAR OVERLAY (mobile) -->
+<div id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+<!-- ===== SIDEBAR ===== -->
+<aside id="sidebar" role="navigation" aria-label="Lesson path">
+  <div class="sidebar-brand">
+    <h1>MATH TUTORING</h1>
+    <p>by Deni</p>
+  </div>
+  <nav id="path-nav" aria-label="Lesson sections"></nav>
+</aside>
+
+<!-- ===== MAIN ===== -->
+<main id="main" role="main">
+  <!-- TOP BAR -->
+  <header id="top-bar">
+    <button id="menu-toggle" onclick="toggleSidebar()" aria-label="Toggle menu">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <h2 id="current-title">Home</h2>
+    <span id="progress-pill"></span>
+  </header>
+
+  <!-- CONTENT SCROLL AREA -->
+  <div id="content-scroll">
+
+    <!-- ==================== HOME NODE ==================== -->
+    <div id="node-home" class="node-content active">
+      <div class="home-card">
+        <div class="home-title">MATH TUTORING by Deni</div>
+        <div style="margin-top:24px">
+          <p class="home-topic">Topic: Elimination Method for Systems of Equations</p>
+          <p class="home-topic-id">Topik: Metode Eliminasi untuk Sistem Persamaan Linear</p>
+        </div>
+        <!-- Decorative SVG: equation symbols -->
+        <div class="theory-svg" style="margin-top:20px">
+          <svg width="280" height="70" viewBox="0 0 280 70" fill="none">
+            <rect x="10" y="12" width="60" height="36" rx="8" stroke="var(--accent)" stroke-width="1.5" fill="var(--accent-soft)"/>
+            <text x="40" y="36" text-anchor="middle" fill="var(--accent)" font-family="Outfit" font-weight="700" font-size="14">2x + y</text>
+            <text x="85" y="36" fill="var(--text-muted)" font-family="Outfit" font-weight="600" font-size="18">=</text>
+            <rect x="100" y="12" width="30" height="36" rx="8" stroke="var(--gold)" stroke-width="1.5" fill="var(--gold-soft)"/>
+            <text x="115" y="36" text-anchor="middle" fill="var(--gold)" font-family="Outfit" font-weight="700" font-size="14">8</text>
+            <text x="148" y="36" fill="var(--text-muted)" font-family="Outfit" font-weight="300" font-size="16">+</text>
+            <rect x="162" y="12" width="50" height="36" rx="8" stroke="var(--accent)" stroke-width="1.5" fill="var(--accent-soft)"/>
+            <text x="187" y="36" text-anchor="middle" fill="var(--accent)" font-family="Outfit" font-weight="700" font-size="14">x - y</text>
+            <text x="225" y="36" fill="var(--text-muted)" font-family="Outfit" font-weight="600" font-size="18">=</text>
+            <rect x="240" y="12" width="30" height="36" rx="8" stroke="var(--gold)" stroke-width="1.5" fill="var(--gold-soft)"/>
+            <text x="255" y="36" text-anchor="middle" fill="var(--gold)" font-family="Outfit" font-weight="700" font-size="14">1</text>
+            <!-- Arrow -->
+            <line x1="140" y1="56" x2="140" y2="66" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="3 2"/>
+            <polygon points="136,66 144,66 140,70" fill="var(--accent)"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Rules -->
+      <div class="home-card" style="padding:24px">
+        <p style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:14px">Before We Begin</p>
+        <p style="font-size:12px;color:var(--text-muted);margin-bottom:16px">Sebelum kita mulai</p>
+        <div class="rule-card">
+          <div class="rule-num">1</div>
+          <div><p class="rule-en">Take turns speaking</p><p class="rule-id">Berbicara secara bergantian</p></div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-num">2</div>
+          <div><p class="rule-en">Ask permission if you need to leave the class</p><p class="rule-id">Meminta izin jika ingin meninggalkan kelas</p></div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-num">3</div>
+          <div><p class="rule-en">Turn on camera and microphone when needed</p><p class="rule-id">Menyalakan kamera dan microphone jika diperlukan</p></div>
+        </div>
+      </div>
+
+      <!-- Reset All -->
+      <button class="reset-all-btn" onclick="resetAllProgress()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+        Reset All Progress
+      </button>
+    </div>
+    <!-- ==================== END HOME NODE ==================== -->
+
+<!-- INSERT_SECTION_1 -->
+<div id="node-section1" class="node-content">
+  <div id="section1-content"></div>
+</div>
+<!-- END INSERT_SECTION_1 -->
+
+<script>
+/* ============================================================
+   SECTION 1 — Spiral Review Warm-up
+   Koefisien, Konstanta, Variabel, Menyusun Ekspresi
+   3 theory + 10 exercise
+   ============================================================ */
+window.sectionData.section1 = {
+  _isAssignment: false,
+  blocks: [
+
+    /* ============ THEORY 1: COEFFICIENTS ============ */
+    { type:'theory', html:`
+      <div class="theory-svg">
+        <svg width="320" height="100" viewBox="0 0 320 100" fill="none">
+          <rect x="30" y="20" width="260" height="60" rx="14" stroke="var(--border)" stroke-width="1.5" fill="var(--bg-raised)"/>
+          <text x="70" y="58" text-anchor="middle" fill="var(--text)" font-family="Outfit" font-weight="700" font-size="22">5x</text>
+          <text x="115" y="58" text-anchor="middle" fill="var(--text-muted)" font-family="Outfit" font-weight="400" font-size="20">&minus;</text>
+          <rect x="130" y="30" width="52" height="40" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+          <text x="156" y="58" text-anchor="middle" fill="var(--accent)" font-family="Outfit" font-weight="800" font-size="22">3y</text>
+          <text x="205" y="58" text-anchor="middle" fill="var(--text-muted)" font-family="Outfit" font-weight="400" font-size="20">+</text>
+          <text x="245" y="58" text-anchor="middle" fill="var(--gold)" font-family="Outfit" font-weight="700" font-size="22">7</text>
+          <line x1="156" y1="72" x2="156" y2="88" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="3 2"/>
+          <text x="156" y="99" text-anchor="middle" fill="var(--accent)" font-family="DM Sans" font-weight="600" font-size="11">coefficient</text>
+        </svg>
+      </div>
+      <p class="theory-en">In an algebraic expression like $5x - 3y + 7$, each variable has a <strong style="color:var(--accent)">coefficient</strong> &mdash; the number multiplied by the variable.</p>
+      <p class="theory-id">Dalam ekspresi aljabar seperti $5x - 3y + 7$, setiap variabel memiliki <strong style="color:var(--accent)">koefisien</strong> &mdash; yaitu bilangan yang mengalikan variabel tersebut.</p>
+      <p class="theory-en" style="margin-top:10px">The coefficient of $x$ is $5$ and the coefficient of $y$ is $-3$. If no number is written before a variable, the coefficient is $1$ (e.g., $y$ means $1y$).</p>
+      <p class="theory-id">Koefisien $x$ adalah $5$ dan koefisien $y$ adalah $-3$. Jika tidak ada bilangan sebelum variabel, koefisiennya adalah $1$ (misalnya $y$ berarti $1y$).</p>
+    `},
+
+    /* ============ EXERCISES 1–3 ============ */
+    { type:'exercises', items:[
+      { id:'s1e1', type:'mcq', _displayNum:1,
+        question:'What is the coefficient of $y$ in the expression $5x - 3y + 7$?<br><span style="color:var(--text-muted);font-size:12.5px">Berapa koefisien $y$ pada ekspresi $5x - 3y + 7$?</span>',
+        options:['$5$','$-3$','$7$','$3$'],
+        correctIndex:1,
+        explanation:'The term containing $y$ is $-3y$. The number multiplied by $y$ is $-3$, so the coefficient of $y$ is $-3$.<br>Suku yang mengandung $y$ adalah $-3y$. Bilangan yang mengalikan $y$ adalah $-3$, jadi koefisien $y$ adalah $-3$.'
+      },
+      { id:'s1e2', type:'mcq', _displayNum:2,
+        question:'What is the coefficient of $x$ in the expression $-2x + 9$?<br><span style="color:var(--text-muted);font-size:12.5px">Berapa koefisien $x$ pada ekspresi $-2x + 9$?</span>',
+        options:['$9$','$2$','$-2$','$-9$'],
+        correctIndex:2,
+        explanation:'The term with $x$ is $-2x$. The coefficient is the number in front of $x$, which is $-2$.<br>Suku yang mengandung $x$ adalah $-2x$. Koefisiennya adalah bilangan di depan $x$, yaitu $-2$.'
+      },
+      { id:'s1e3', type:'mcq', _displayNum:3,
+        question:'In $4a + b - 6c + 11$, what is the coefficient of $c$?<br><span style="color:var(--text-muted);font-size:12.5px">Pada $4a + b - 6c + 11$, berapa koefisien $c$?</span>',
+        options:['$4$','$6$','$11$','$-6$'],
+        correctIndex:3,
+        explanation:'The term with $c$ is $-6c$, so the coefficient is $-6$.<br>Suku yang mengandung $c$ adalah $-6c$, jadi koefisiennya adalah $-6$.'
+      }
+    ]},
+
+    /* ============ THEORY 2: CONSTANTS VS VARIABLES ============ */
+    { type:'theory', html:`
+      <div class="theory-svg">
+        <svg width="340" height="120" viewBox="0 0 340 120" fill="none">
+          <!-- Expression: 2x + 10 -->
+          <rect x="20" y="15" width="300" height="55" rx="12" stroke="var(--border)" stroke-width="1.5" fill="var(--bg-raised)"/>
+          <text x="90" y="50" text-anchor="middle" fill="var(--accent)" font-family="Outfit" font-weight="800" font-size="24">2x</text>
+          <text x="140" y="50" text-anchor="middle" fill="var(--text-muted)" font-family="Outfit" font-size="22">+</text>
+          <text x="210" y="50" text-anchor="middle" fill="var(--gold)" font-family="Outfit" font-weight="800" font-size="24">10</text>
+          <!-- Labels below -->
+          <line x1="90" y1="72" x2="90" y2="88" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="3 2"/>
+          <rect x="40" y="90" width="100" height="26" rx="6" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1"/>
+          <text x="90" y="108" text-anchor="middle" fill="var(--accent)" font-family="DM Sans" font-weight="600" font-size="11">Variable term</text>
+          <line x1="210" y1="72" x2="210" y2="88" stroke="var(--gold)" stroke-width="1.5" stroke-dasharray="3 2"/>
+          <rect x="165" y="90" width="90" height="26" rx="6" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1"/>
+          <text x="210" y="108" text-anchor="middle" fill="var(--gold)" font-family="DM Sans" font-weight="600" font-size="11">Constant</text>
+        </svg>
+      </div>
+      <p class="theory-en">A <strong style="color:var(--accent)">variable</strong> is a symbol (like $x$, $y$, $g$) that represents an unknown value. A <strong style="color:var(--gold)">constant</strong> is a fixed number (like $10$, $-5$, $7$) that does not change.</p>
+      <p class="theory-id"><strong style="color:var(--accent)">Variabel</strong> adalah simbol (seperti $x$, $y$, $g$) yang mewakili nilai yang belum diketahui. <strong style="color:var(--gold)">Konstanta</strong> adalah bilangan tetap (seperti $10$, $-5$, $7$) yang nilainya tidak berubah.</p>
+      <p class="theory-en" style="margin-top:10px">In $2x + 10$: the variable part is $2x$ (contains $x$), and the constant is $10$ (standalone number). Coefficients are also numbers, but they are attached to a variable.</p>
+      <p class="theory-id">Pada $2x + 10$: bagian variabel adalah $2x$ (mengandung $x$), dan konstantanya adalah $10$ (bilangan yang berdiri sendiri). Koefisien juga berupa bilangan, tetapi melekat pada variabel.</p>
+    `},
+
+    /* ============ EXERCISES 4–6 ============ */
+    { type:'exercises', items:[
+      { id:'s1e4', type:'mcq', _displayNum:4,
+        question:'What is the constant in the expression $2x + 10$?<br><span style="color:var(--text-muted);font-size:12.5px">Apa konstanta pada ekspresi $2x + 10$?</span>',
+        options:['$2$','$x$','$10$','$2x$'],
+        correctIndex:2,
+        explanation:'The constant is the standalone number that does not change. In $2x + 10$, the number $10$ stands alone, so $10$ is the constant.<br>Konstanta adalah bilangan yang berdiri sendiri. Pada $2x + 10$, bilangan $10$ berdiri sendiri, jadi $10$ adalah konstanta.'
+      },
+      { id:'s1e5', type:'checkbox', _displayNum:5,
+        question:'Which of the following are <strong>variables</strong> in $7y - 5 + 3z$? (Select all that apply)<br><span style="color:var(--text-muted);font-size:12.5px">Manakah di bawah ini yang merupakan <strong>variabel</strong> pada $7y - 5 + 3z$? (Pilih semua yang benar)</span>',
+        options:['$y$','$-5$','$z$','$7$','$3$'],
+        correctIndices:[0,2],
+        explanation:'Variables are symbols that represent unknown values. In $7y - 5 + 3z$, the symbols $y$ and $z$ are variables. The numbers $-5$, $7$, and $3$ are constants or coefficients.<br>Variabel adalah simbol yang mewakili nilai belum diketahui. Pada $7y - 5 + 3z$, simbol $y$ dan $z$ adalah variabel. Bilangan $-5$, $7$, dan $3$ adalah konstanta atau koefisien.'
+      },
+      { id:'s1e6', type:'mcq', _displayNum:6,
+        question:'Which of the following is a <strong>constant</strong>?<br><span style="color:var(--text-muted);font-size:12.5px">Manakah di bawah ini yang merupakan <strong>konstanta</strong>?</span>',
+        options:['$3m$','$15$','$n^2$','$-8p$'],
+        correctIndex:1,
+        explanation:'A constant is a fixed number with no variable attached. Only $15$ is a standalone number. $3m$, $n^2$, and $-8p$ all contain variables.<br>Konstanta adalah bilangan tetap tanpa variabel. Hanya $15$ yang berdiri sendiri. $3m$, $n^2$, dan $-8p$ semuanya mengandung variabel.'
+      }
+    ]},
+
+    /* ============ THEORY 3: WRITING EXPRESSIONS ============ */
+    { type:'theory', html:`
+      <div class="theory-svg">
+        <svg width="360" height="130" viewBox="0 0 360 130" fill="none">
+          <!-- Word box -->
+          <rect x="10" y="10" width="340" height="40" rx="10" fill="var(--bg-raised)" stroke="var(--border)" stroke-width="1"/>
+          <text x="180" y="36" text-anchor="middle" fill="var(--text)" font-family="DM Sans" font-weight="500" font-size="12">"Five more than three times the number of gold coins (g)"</text>
+          <!-- Arrow -->
+          <line x1="180" y1="52" x2="180" y2="68" stroke="var(--accent)" stroke-width="2" stroke-dasharray="4 3"/>
+          <polygon points="174,68 186,68 180,74" fill="var(--accent)"/>
+          <!-- Expression box -->
+          <rect x="80" y="76" width="200" height="48" rx="12" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+          <text x="180" y="107" text-anchor="middle" fill="var(--accent)" font-family="Outfit" font-weight="800" font-size="26">3g + 5</text>
+        </svg>
+      </div>
+      <p class="theory-en">To write an algebraic expression from words, follow these steps:</p>
+      <p class="theory-id">Untuk menulis ekspresi aljabar dari kata-kata, ikuti langkah berikut:</p>
+      <p class="theory-en" style="margin-top:8px"><strong>1.</strong> Identify the variable and what happens to it ("three times $g$" &rarr; $3g$).</p>
+      <p class="theory-id"><strong>1.</strong> Identifikasi variabel dan apa yang terjadi padanya ("tiga kali $g$" &rarr; $3g$).</p>
+      <p class="theory-en"><strong>2.</strong> Identify the comparison ("five more than" &rarr; add $5$).</p>
+      <p class="theory-id"><strong>2.</strong> Identifikasi perbandingannya ("lima lebihnya dari" &rarr; tambah $5$).</p>
+      <p class="theory-en"><strong>3.</strong> Combine: $3g + 5$. Be careful with order &mdash; "five more than three times $g$" is $3g + 5$, <em>not</em> $5 + 3g$ (though mathematically equal, the first matches the word order better).</p>
+      <p class="theory-id"><strong>3.</strong> Gabungkan: $3g + 5$. Perhatikan urutannya &mdash; "lima lebihnya dari tiga kali $g$" adalah $3g + 5$, <em>bukan</em> $5 + 3g$ (meski secara matematis sama, yang pertama lebih sesuai urutan kata).</p>
+    `},
+
+    /* ============ EXERCISES 7–10 ============ */
+    { type:'exercises', items:[
+      { id:'s1e7', type:'input', _displayNum:7,
+        question:'Write the expression for: <em>"Five more than three times the number of gold coins ($g$)."</em><br><span style="color:var(--text-muted);font-size:12.5px">Tuliskan ekspresi untuk: <em>"Lima lebihnya dari tiga kali jumlah koin emas ($g$)."</em></span><br><span style="font-size:12px;color:var(--text-muted)">Use format: 3g+5 (no spaces)</span>',
+        correctAnswer:'3g+5',
+        explanation:'"Three times $g$" = $3g$. "Five more than" means add $5$. So the expression is $3g + 5$ (written as 3g+5).<br>"Tiga kali $g$" = $3g$. "Lima lebihnya dari" berarti tambah $5$. Jadi ekspresinya adalah $3g + 5$.'
+      },
+      { id:'s1e8', type:'input', _displayNum:8,
+        question:'Write the expression for: <em>"The price of 2 burgers ($b$) and 3 drinks ($m$)."</em><br><span style="color:var(--text-muted);font-size:12.5px">Tuliskan ekspresi untuk: <em>"Harga 2 burger ($b$) dan 3 minum ($m$)."</em></span><br><span style="font-size:12px;color:var(--text-muted)">Use format: 2b+3m (no spaces)</span>',
+        correctAnswer:'2b+3m',
+        explanation:'"2 burgers" = $2b$. "3 drinks" = $3m$. "and" connects them with $+$. So the expression is $2b + 3m$.<br>"2 burger" = $2b$. "3 minum" = $3m$. "dan" menghubungkan dengan $+$. Jadi ekspresinya $2b + 3m$.'
+      },
+      { id:'s1e9', type:'mcq', _displayNum:9,
+        question:'Which expression represents: <em>"Seven less than twice a number ($n$)"</em>?<br><span style="color:var(--text-muted);font-size:12.5px">Ekspresi mana yang mewakili: <em>"Tujuh kurangnya dari dua kali suatu bilangan ($n$)"</em>?</span>',
+        options:['$7 - 2n$','$2n - 7$','$2(n - 7)$','$7n - 2$'],
+        correctIndex:1,
+        explanation:'"Twice a number $n$" = $2n$. "Seven less than" means subtract $7$ from it. So $2n - 7$. Be careful: $7 - 2n$ would mean "seven minus twice $n$", which is different in wording.<br>"Dua kali suatu bilangan $n$" = $2n$. "Tujuh kurangnya dari" berarti kurangi $7$ darinya. Jadi $2n - 7$.'
+      },
+      { id:'s1e10', type:'input', _displayNum:10,
+        question:'Write the expression for: <em>"The sum of four times $x$ and the product of $3$ and $y$."</em><br><span style="color:var(--text-muted);font-size:12.5px">Tuliskan ekspresi untuk: <em>"Jumlah dari empat kali $x$ dan hasil kali $3$ dan $y$."</em></span><br><span style="font-size:12px;color:var(--text-muted)">Use format: 4x+3y (no spaces)</span>',
+        correctAnswer:'4x+3y',
+        explanation:'"Four times $x$" = $4x$. "Product of $3$ and $y$" = $3y$. "Sum" means add them: $4x + 3y$.<br>"Empat kali $x$" = $4x$. "Hasil kali $3$ dan $y$" = $3y$. "Jumlah" berarti menjumlahkan: $4x + 3y$.'
+      }
+    ]}
+
+  ] /* end blocks */
+};
+</script>
+
+<!-- INSERT_SECTION_2 -->
+<div id="node-section2" class="node-content">
+  <div id="section2-content"></div>
+</div>
+<!-- END INSERT_SECTION_2 -->
+
+<script>
+/* ============================================================
+   SECTION 2 — Introduction & Real-World Connection
+   Konsep eliminasi lewat analogi RPG, mengenali variabel
+   yang bisa dihilangkan, menyusun sistem dari soal cerita
+   3 theory + 10 exercise
+   ============================================================ */
+window.sectionData.section2 = {
+  _isAssignment: false,
+  blocks: [
+
+    /* ============ THEORY 1: THE RPG ANALOGY ============ */
+    { type:'theory', html:`
+      <div class="theory-svg">
+        <svg width="360" height="170" viewBox="0 0 360 170" fill="none">
+          <!-- Potion 1: Health -->
+          <rect x="30" y="20" width="130" height="55" rx="10" fill="var(--bg-raised)" stroke="var(--border)" stroke-width="1"/>
+          <circle cx="55" cy="47" r="14" fill="var(--danger-soft)" stroke="var(--danger)" stroke-width="1.2"/>
+          <text x="55" y="52" text-anchor="middle" fill="var(--danger)" font-size="14">&#9829;</text>
+          <text x="115" y="42" text-anchor="middle" fill="var(--text)" font-family="DM Sans" font-weight="600" font-size="11">2 health</text>
+          <text x="115" y="58" text-anchor="middle" fill="var(--text)" font-family="DM Sans" font-weight="600" font-size="11">+ 1 energy</text>
+          <text x="175" y="47" text-anchor="middle" fill="var(--gold)" font-family="Outfit" font-weight="700" font-size="16">= 10</text>
+          <!-- Potion 2: Energy -->
+          <rect x="195" y="20" width="130" height="55" rx="10" fill="var(--bg-raised)" stroke="var(--border)" stroke-width="1"/>
+          <circle cx="220" cy="47" r="14" fill="rgba(96,165,250,.12)" stroke="#60a5fa" stroke-width="1.2"/>
+          <text x="220" y="52" text-anchor="middle" fill="#60a5fa" font-size="14">&#9889;</text>
+          <text x="280" y="42" text-anchor="middle" fill="var(--text)" font-family="DM Sans" font-weight="600" font-size="11">1 health</text>
+          <text x="280" y="58" text-anchor="middle" fill="var(--text)" font-family="DM Sans" font-weight="600" font-size="11">+ 1 energy</text>
+          <text x="340" y="47" text-anchor="middle" fill="var(--gold)" font-family="Outfit" font-weight="700" font-size="16">= 7</text>
+          <!-- Arrow down -->
+          <line x1="180" y1="80" x2="180" y2="100" stroke="var(--accent)" stroke-width="2" stroke-dasharray="4 3"/>
+          <polygon points="174,100 186,100 180,108" fill="var(--accent)"/>
+          <!-- Result box -->
+          <rect x="60" y="112" width="240" height="48" rx="12" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+          <text x="180" y="142" text-anchor="middle" fill="var(--accent)" font-family="Outfit" font-weight="800" font-size="18">Energy eliminated! &#10003;</text>
+        </svg>
+      </div>
+      <p class="theory-en">Imagine you're playing an RPG game. You buy <strong>2 health potions + 1 energy potion</strong> for $10$ coins. Your friend buys <strong>1 health + 1 energy</strong> for $7$ coins. If we subtract the two purchases, the energy potions cancel out &mdash; and we instantly find the health potion price!</p>
+      <p class="theory-id">Bayangkan kamu bermain game RPG. Kamu membeli <strong>2 ramuan kesehatan + 1 ramuan energi</strong> seharga $10$ koin. Temanmu membeli <strong>1 kesehatan + 1 energi</strong> seharga $7$ koin. Jika kita kurangkan kedua pembelian itu, ramuan energi saling menghilangkan &mdash; dan kita langsung tahu harga ramuan kesehatan!</p>
+      <p class="theory-en" style="margin-top:10px">This strategy of <strong style="color:var(--accent)">"removing" one variable</strong> by adding or subtracting equations is called the <strong style="color:var(--accent)">Elimination Method</strong>.</p>
+      <p class="theory-id">Strategi <strong style="color:var(--accent)">"menghilangkan" satu variabel</strong> dengan menjumlahkan atau mengurangkan persamaan ini disebut <strong style="color:var(--accent)">Metode Eliminasi</strong>.</p>
+    `},
+
+    /* ============ EXERCISES 1–3 ============ */
+    { type:'exercises', items:[
+      { id:'s2e1', type:'mcq', _displayNum:1,
+        question:'In the RPG example, we subtracted the two purchases. What happened to the energy potions?<br><span style="color:var(--text-muted);font-size:12.5px">Pada contoh RPG, kita mengurangkan dua pembelian. Apa yang terjadi pada ramuan energi?</span>',
+        options:['They doubled','They canceled out (became zero)','They increased by 1','They became negative coins'],
+        correctIndex:1,
+        explanation:'Both purchases had 1 energy potion. When we subtract, $1 - 1 = 0$, so the energy potions are eliminated.<br>Kedua pembelian punya 1 ramuan energi. Saat dikurangkan, $1 - 1 = 0$, jadi ramuan energi tereliminasi.'
+      },
+      { id:'s2e2', type:'mcq', _displayNum:2,
+        question:'After eliminating the energy potions, how many health potions remain?<br><span style="color:var(--text-muted);font-size:12.5px">Setelah mengeliminasi ramuan energi, berapa ramuan kesehatan yang tersisa?</span>',
+        options:['$1$ health potion','$2$ health potions','$3$ health potions','$0$ health potions'],
+        correctIndex:0,
+        explanation:'You bought 2 health potions, your friend bought 1. Subtracting: $2 - 1 = 1$ health potion remains.<br>Kamu membeli 2 ramuan kesehatan, temanmu 1. Dikurangkan: $2 - 1 = 1$ ramuan kesehatan tersisa.'
+      },
+      { id:'s2e3', type:'input', _displayNum:3,
+        question:'If $1$ health potion costs the remaining value ($10 - 7 = 3$ coins), what is the price of $1$ energy potion?<br><span style="color:var(--text-muted);font-size:12.5px">Jika $1$ ramuan kesehatan harganya sisa nilai ($10 - 7 = 3$ koin), berapa harga $1$ ramuan energi?</span><br><span style="font-size:12px;color:var(--text-muted)">Answer in numbers only (e.g., 7)</span>',
+        correctAnswer:'4',
+        explanation:'Health potion = $3$ coins. From the second purchase: $1$ health $+ 1$ energy $= 7$. So $3 +$ energy $= 7$, energy $= 4$ coins.<br>Ramuan kesehatan = $3$ koin. Dari pembelian kedua: $1$ kesehatan $+ 1$ energi $= 7$. Jadi $3 +$ energi $= 7$, energi $= 4$ koin.'
+      }
+    ]},
+
+    /* ============ THEORY 2: RECOGNIZING CANCELLABLE COEFFICIENTS ============ */
+    { type:'theory', html:`
+      <div class="theory-svg">
+        <svg width="340" height="150" viewBox="0 0 340 150" fill="none">
+          <!-- Equation 1 -->
+          <rect x="15" y="10" width="310" height="36" rx="8" fill="var(--bg-raised)" stroke="var(--border)" stroke-width="1"/>
+          <text x="170" y="34" text-anchor="middle" fill="var(--text)" font-family="Outfit" font-weight="700" font-size="16">2x + y = 8</text>
+          <!-- Plus sign -->
+          <text x="170" y="62" text-anchor="middle" fill="var(--accent)" font-family="Outfit" font-weight="800" font-size="24">+</text>
+          <!-- Equation 2 -->
+          <rect x="15" y="70" width="310" height="36" rx="8" fill="var(--bg-raised)" stroke="var(--border)" stroke-width="1"/>
+          <text x="170" y="94" text-anchor="middle" fill="var(--text)" font-family="Outfit" font-weight="700" font-size="16">x − y = 1</text>
+          <!-- Result line -->
+          <line x1="15" y1="118" x2="325" y2="118" stroke="var(--accent)" stroke-width="1.5"/>
+          <!-- Result -->
+          <text x="170" y="142" text-anchor="middle" fill="var(--accent)" font-family="Outfit" font-weight="800" font-size="18">3x = 9</text>
+          <!-- Highlight y terms -->
+          <rect x="223" y="14" width="18" height="26" rx="4" fill="var(--danger-soft)" stroke="var(--danger)" stroke-width="1" opacity=".8"/>
+          <rect x="192" y="74" width="24" height="26" rx="4" fill="var(--danger-soft)" stroke="var(--danger)" stroke-width="1" opacity=".8"/>
+        </svg>
+      </div>
+      <p class="theory-en">The key to elimination is finding a variable whose coefficients are <strong style="color:var(--accent)">opposites</strong> (like $+1$ and $-1$). When you add the equations, those terms become zero!</p>
+      <p class="theory-id">Kunci eliminasi adalah menemukan variabel yang koefisiennya <strong style="color:var(--accent)">berlawanan tanda</strong> (seperti $+1$ dan $-1$). Saat persamaan dijumlahkan, suku-suku itu menjadi nol!</p>
+      <p class="theory-en" style="margin-top:10px">$+y + (-y) = 0$. The variable $y$ is eliminated, leaving only $x$ to solve.</p>
+      <p class="theory-id">$+y + (-y) = 0$. Variabel $y$ tereliminasi, menyisakan hanya $x$ untuk diselesaikan.</p>
+    `},
+
+    /* ============ EXERCISES 4–6 ============ */
+    { type:'exercises', items:[
+      { id:'s2e4', type:'mcq', _displayNum:4,
+        question:'In the system $3x + 2y = 10$ and $3x - 2y = 2$, which variable can be eliminated by <strong>adding</strong> the equations?<br><span style="color:var(--text-muted);font-size:12.5px">Pada sistem $3x + 2y = 10$ dan $3x - 2y = 2$, variabel mana yang bisa dieliminasi dengan <strong>menjumlahkan</strong> persamaan?</span>',
+        options:['$x$ only','$y$ only','Both $x$ and $y$','Neither'],
+        correctIndex:1,
+        explanation:'The coefficients of $y$ are $+2$ and $-2$ (opposites). Adding: $2y + (-2y) = 0$. The $x$ coefficients are both $+3$, so adding gives $6x$, not zero.<br>Koefisien $y$ adalah $+2$ dan $-2$ (berlawanan). Dijumlahkan: $2y + (-2y) = 0$. Koefisien $x$ sama-sama $+3$, jadi penjumlahan menghasilkan $6x$, bukan nol.'
+      },
+      { id:'s2e5', type:'mcq', _displayNum:5,
+        question:'In the system $5x + y = 12$ and $5x + 3y = 20$, which variable can be eliminated by <strong>subtracting</strong> the equations?<br><span style="color:var(--text-muted);font-size:12.5px">Pada sistem $5x + y = 12$ dan $5x + 3y = 20$, variabel mana yang bisa dieliminasi dengan <strong>mengurangkan</strong> persamaan?</span>',
+        options:['$y$','$x$','Neither','Both'],
+        correctIndex:1,
+        explanation:'Both equations have $5x$. Subtracting: $5x - 5x = 0$. So $x$ is eliminated. The $y$ coefficients ($1$ and $3$) are not opposites, so subtracting gives $y - 3y = -2y$, not zero.<br>Kedua persamaan punya $5x$. Dikurangkan: $5x - 5x = 0$. Jadi $x$ tereliminasi.'
+      },
+      { id:'s2e6', type:'checkbox', _displayNum:6,
+        question:'Which pairs of coefficients below are <strong>opposites</strong>? (Select all that apply)<br><span style="color:var(--text-muted);font-size:12.5px">Pasangan koefisien mana di bawah ini yang <strong>berlawanan tanda</strong>? (Pilih semua yang benar)</span>',
+        options:['$+4$ and $-4$','$+3$ and $+3$','$-5$ and $+5$','$+2$ and $-3$'],
+        correctIndices:[0,2],
+        explanation:'Opposites have the same magnitude but different signs: $+4$ and $-4$ are opposites, $-5$ and $+5$ are opposites. $+3$ and $+3$ are the same (not opposites). $+2$ and $-3$ have different magnitudes.<br>Lawan tanda memiliki besar sama tapi tanda berbeda: $+4$ dan $-4$ saling berlawanan, $-5$ dan $+5$ saling berlawanan.'
+      }
+    ]},
+
+    /* ============ THEORY 3: SETTING UP SYSTEMS FROM WORD PROBLEMS ============ */
+    { type:'theory', html:`
+      <div class="theory-svg">
+        <svg width="360" height="140" viewBox="0 0 360 140" fill="none">
+          <!-- Word problem box -->
+          <rect x="10" y="8" width="340" height="50" rx="10" fill="var(--bg-raised)" stroke="var(--border)" stroke-width="1"/>
+          <text x="180" y="30" text-anchor="middle" fill="var(--text-muted)" font-family="DM Sans" font-size="11">"2 pens + 3 erasers cost $13."</text>
+          <text x="180" y="48" text-anchor="middle" fill="var(--text-muted)" font-family="DM Sans" font-size="11">"1 pen + 2 erasers cost $8."</text>
+          <!-- Arrows -->
+          <line x1="110" y1="62" x2="110" y2="78" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="3 2"/>
+          <polygon points="105,78 115,78 110,83" fill="var(--accent)"/>
+          <line x1="260" y1="62" x2="260" y2="78" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="3 2"/>
+          <polygon points="255,78 265,78 260,83" fill="var(--accent)"/>
+          <!-- Equation 1 -->
+          <rect x="15" y="86" width="160" height="44" rx="10" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.2"/>
+          <text x="95" y="114" text-anchor="middle" fill="var(--accent)" font-family="Outfit" font-weight="800" font-size="17">2p + 3e = 13</text>
+          <!-- Equation 2 -->
+          <rect x="190" y="86" width="160" height="44" rx="10" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.2"/>
+          <text x="270" y="114" text-anchor="middle" fill="var(--accent)" font-family="Outfit" font-weight="800" font-size="17">p + 2e = 8</text>
+        </svg>
+      </div>
+      <p class="theory-en">To solve real-world problems with elimination, first <strong>translate the words into a system of two equations</strong>. Assign a variable to each unknown quantity.</p>
+      <p class="theory-id">Untuk menyelesaikan masalah nyata dengan eliminasi, pertama <strong>ubah kata-kata menjadi sistem dua persamaan</strong>. Berikan variabel pada setiap besaran yang belum diketahui.</p>
+      <p class="theory-en" style="margin-top:8px"><strong>Steps:</strong> (1) Identify the unknowns &rarr; assign variables. (2) Write each sentence as an equation. (3) Apply elimination to solve.</p>
+      <p class="theory-id"><strong>Langkah:</strong> (1) Identifikasi yang tidak diketahui &rarr; beri variabel. (2) Tulis setiap kalimat sebagai persamaan. (3) Terapkan eliminasi untuk menyelesaikan.</p>
+    `},
+
+    /* ============ EXERCISES 7–10 ============ */
+    { type:'exercises', items:[
+      { id:'s2e7', type:'mcq', _displayNum:7,
+        question:'A store sells notebooks ($n$) and pens ($p$). "3 notebooks and 2 pens cost $17$." Which equation represents this?<br><span style="color:var(--text-muted);font-size:12.5px">Toko menjual buku catatan ($n$) dan pulpen ($p$). "3 buku catatan dan 2 pulpen harga $17$." Persamaan mana yang benar?</span>',
+        options:['$3n + 2p = 17$','$3p + 2n = 17$','$n + p = 17$','$3n - 2p = 17$'],
+        correctIndex:0,
+        explanation:'"3 notebooks" = $3n$, "2 pens" = $2p$, "cost 17" = $= 17$. So $3n + 2p = 17$.<br>"3 buku catatan" = $3n$, "2 pulpen" = $2p$, "harga 17" = $= 17$. Jadi $3n + 2p = 17$.'
+      },
+      { id:'s2e8', type:'input', _displayNum:8,
+        question:'Using the same store: "1 notebook and 1 pen cost $7$." Write the equation using $n$ and $p$.<br><span style="color:var(--text-muted);font-size:12.5px">Menggunakan toko yang sama: "1 buku catatan dan 1 pulpen harga $7$." Tuliskan persamaannya menggunakan $n$ dan $p$.</span><br><span style="font-size:12px;color:var(--text-muted)">Format: n+p=7 (no spaces)</span>',
+        correctAnswer:'n+p=7',
+        explanation:'"1 notebook" = $n$, "1 pen" = $p$, "cost 7" = $= 7$. So $n + p = 7$.<br>"1 buku catatan" = $n$, "1 pulpen" = $p$, "harga 7" = $= 7$. Jadi $n + p = 7$.'
+      },
+      { id:'s2e9', type:'mcq', _displayNum:9,
+        question:'You have the system: $2a + b = 11$ and $a + b = 7$. What operation eliminates $b$?<br><span style="color:var(--text-muted);font-size:12.5px">Kamu punya sistem: $2a + b = 11$ dan $a + b = 7$. Operasi apa yang mengeliminasi $b$?</span>',
+        options:['Add the equations','Subtract the second from the first','Multiply then add','Multiply then subtract'],
+        correctIndex:1,
+        explanation:'Both have $+b$. Subtracting: $b - b = 0$. So subtracting the second equation from the first eliminates $b$.<br>Keduanya punya $+b$. Dikurangkan: $b - b = 0$. Jadi mengurangkan persamaan kedua dari pertama mengeliminasi $b$.'
+      },
+      { id:'s2e10', type:'input', _displayNum:10,
+        question:'After eliminating $b$ from $2a + b = 11$ and $a + b = 7$ (by subtracting), what equation remains?<br><span style="color:var(--text-muted);font-size:12.5px">Setelah mengeliminasi $b$ dari $2a + b = 11$ dan $a + b = 7$ (dengan mengurangkan), persamaan apa yang tersisa?</span><br><span style="font-size:12px;color:var(--text-muted)">Format: a=4 (no spaces)</span>',
+        correctAnswer:'a=4',
+        explanation:'Subtracting: $(2a + b) - (a + b) = 11 - 7$, which gives $a = 4$.<br>Mengurangkan: $(2a + b) - (a + b) = 11 - 7$, yang menghasilkan $a = 4$.'
+      }
+    ]}
+
+  ] /* end blocks */
+};
+</script>
+
+<!-- INSERT_SECTION_3 -->
+<div id="node-section3" class="node-content">
+  <div id="section3-content"></div>
+</div>
+<!-- END INSERT_SECTION_3 -->
+
+<script>
+/* ============================================================
+   SECTION 3 — Review of Prior Knowledge
+   Aturan emas persamaan, mengalikan persamaan, menyamakan
+   koefisien sebagai persiapan eliminasi
+   3 theory + 10 exercise
+   ============================================================ */
+window.sectionData.section3 = {
+  _isAssignment: false,
+  blocks: [
+
+    /* ============ THEORY 1: GOLDEN RULE OF EQUATIONS ============ */
+    { type:'theory', html:`
+      <div class="theory-svg">
+        <svg width="340" height="120" viewBox="0 0 340 120" fill="none">
+          <!-- Balance beam -->
+          <line x1="170" y1="20" x2="170" y2="40" stroke="var(--text-muted)" stroke-width="2"/>
+          <polygon points="160,20 180,20 170,12" fill="var(--text-muted)"/>
+          <line x1="50" y1="40" x2="290" y2="40" stroke="var(--text-muted)" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- Left pan -->
+          <rect x="40" y="44" width="100" height="34" rx="8" fill="var(--bg-raised)" stroke="var(--accent)" stroke-width="1.2"/>
+          <text x="90" y="66" text-anchor="middle" fill="var(--accent)" font-family="Outfit" font-weight="700" font-size="15">2x = 10</text>
+          <!-- Right pan -->
+          <rect x="200" y="44" width="100" height="34" rx="8" fill="var(--bg-raised)" stroke="var(--gold)" stroke-width="1.2"/>
+          <text x="250" y="66" text-anchor="middle" fill="var(--gold)" font-family="Outfit" font-weight="700" font-size="15">2x = 10</text>
+          <!-- Arrow: multiply both sides -->
+          <text x="170" y="102" text-anchor="middle" fill="var(--text)" font-family="DM Sans" font-weight="600" font-size="12">&times; 2 on BOTH sides</text>
+          <!-- Result below -->
+          <rect x="110" y="108" width="120" height="10" rx="3" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="0.8"/>
+        </svg>
+      </div>
+      <p class="theory-en">The <strong style="color:var(--accent)">Golden Rule of Equations</strong>: Whatever you do to the left side, you <em>must</em> do the exact same thing to the right side. This keeps the equation balanced.</p>
+      <p class="theory-id"><strong style="color:var(--accent)">Aturan Emas Persamaan</strong>: Apa pun yang kamu lakukan di ruas kiri, kamu <em>harus</em> melakukan hal yang sama persis di ruas kanan. Ini menjaga keseimbangan persamaan.</p>
+      <p class="theory-en" style="margin-top:10px">Example: If $2x = 10$ and we multiply both sides by $2$, we get $4x = 20$. The equation is still true because both sides were treated equally.</p>
+      <p class="theory-id">Contoh: Jika $2x = 10$ dan kita kali kedua ruas dengan $2$, hasilnya $4x = 20$. Persamaan tetap benar karena kedua ruas diperlakukan sama.</p>
+    `},
+
+    /* ============ EXERCISES 1–3 ============ */
+    { type:'exercises', items:[
+      { id:'s3e1', type:'mcq', _displayNum:1,
+        question:'If $3x = 15$, what do we get when we multiply both sides by $4$?<br><span style="color:var(--text-muted);font-size:12.5px">Jika $3x = 15$, apa yang kita peroleh saat kedua ruas dikali $4$?</span>',
+        options:['$7x = 19$','$12x = 60$','$12x = 15$','$3x = 60$'],
+        correctIndex:1,
+        explanation:'Multiply BOTH sides by $4$: left side $3x \\times 4 = 12x$, right side $15 \\times 4 = 60$. Result: $12x = 60$.<br>Kali KEDUA ruas dengan $4$: ruas kiri $3x \\times 4 = 12x$, ruas kanan $15 \\times 4 = 60$. Hasil: $12x = 60$.'
+      },
+      { id:'s3e2', type:'mcq', _displayNum:2,
+        question:'Is this operation valid? "From $x + y = 5$, multiply only the left side by $3$ to get $3x + 3y = 5$."<br><span style="color:var(--text-muted);font-size:12.5px">Apakah operasi ini sah? "Dari $x + y = 5$, kali hanya ruas kiri dengan $3$ menjadi $3x + 3y = 5$."</span>',
+        options:['Yes, it is valid','No, you must multiply both sides','Yes, but only for elimination','No, you can only add, not multiply'],
+        correctIndex:1,
+        explanation:'This violates the Golden Rule. You must multiply BOTH sides by $3$. The correct result is $3x + 3y = 15$.<br>Ini melanggar Aturan Emas. Kamu harus mengali KEDUA ruas dengan $3$. Hasil yang benar adalah $3x + 3y = 15$.'
+      },
+      { id:'s3e3', type:'input', _displayNum:3,
+        question:'Multiply both sides of $x - y = 4$ by $3$. Write the new equation.<br><span style="color:var(--text-muted);font-size:12.5px">Kalikan kedua ruas $x - y = 4$ dengan $3$. Tuliskan persamaan barunya.</span><br><span style="font-size:12px;color:var(--text-muted)">Format: 3x-3y=12 (no spaces)</span>',
+        correctAnswer:'3x-3y=12',
+        explanation:'$x \\times 3 = 3x$, $-y \\times 3 = -3y$, $4 \\times 3 = 12$. Result: $3x - 3y = 12$.<br>$x \\times 3 = 3x$, $-y \\times 3 = -3y$, $4 \\times 3 = 12$. Hasil: $3x - 3y = 12$.'
+      }
+    ]},
+
+    /* ============ THEORY 2: MULTIPLYING ENTIRE EQUATIONS ============ */
+    { type:'theory', html:`
+      <div class="theory-svg">
+        <svg width="360" height="130" viewBox="0 0 360 130" fill="none">
+          <!-- Original -->
+          <rect x="15" y="10" width="330" height="34" rx="8" fill="var(--bg-raised)" stroke="var(--border)" stroke-width="1"/>
+          <text x="180" y="33" text-anchor="middle" fill="var(--text-muted)" font-family="DM Sans" font-weight="500" font-size="12">Original: 3x + y = 5</text>
+          <!-- Multiply badge -->
+          <rect x="130" y="52" width="100" height="24" rx="12" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1"/>
+          <text x="180" y="69" text-anchor="middle" fill="var(--accent)" font-family="Outfit" font-weight="700" font-size="12">multiply by 2</text>
+          <!-- Arrow -->
+          <line x1="180" y1="78" x2="180" y2="90" stroke="var(--accent)" stroke-width="1.5"/>
+          <polygon points="175,90 185,90 180,96" fill="var(--accent)"/>
+          <!-- Result -->
+          <rect x="15" y="98" width="330" height="34" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+          <text x="180" y="121" text-anchor="middle" fill="var(--accent)" font-family="Outfit" font-weight="800" font-size="17">6x + 2y = 10</text>
+        </svg>
+      </div>
+      <p class="theory-en">When we multiply an <strong>entire equation</strong> by a number, <em>every term</em> on both sides gets multiplied &mdash; including the constant on the right side.</p>
+      <p class="theory-id">Saat kita mengali <strong>seluruh persamaan</strong> dengan suatu bilangan, <em>setiap suku</em> di kedua ruas ikut dikalikan &mdash; termasuk konstanta di ruas kanan.</p>
+      <p class="theory-en" style="margin-top:10px">$3x \\times 2 = 6x$, &nbsp; $y \\times 2 = 2y$, &nbsp; $5 \\times 2 = 10$. &nbsp; Every single term is affected!</p>
+      <p class="theory-id">$3x \\times 2 = 6x$, &nbsp; $y \\times 2 = 2y$, &nbsp; $5 \\times 2 = 10$. &nbsp; Setiap suku tanpa terkecuali berubah!</p>
+    `},
+
+    /* ============ EXERCISES 4–6 ============ */
+    { type:'exercises', items:[
+      { id:'s3e4', type:'input', _displayNum:4,
+        question:'Multiply the entire equation $2x + y = 9$ by $3$. Write the result.<br><span style="color:var(--text-muted);font-size:12.5px">Kalikan seluruh persamaan $2x + y = 9$ dengan $3$. Tuliskan hasilnya.</span><br><span style="font-size:12px;color:var(--text-muted)">Format: 6x+3y=27 (no spaces)</span>',
+        correctAnswer:'6x+3y=27',
+        explanation:'$2x \\times 3 = 6x$, $y \\times 3 = 3y$, $9 \\times 3 = 27$. Result: $6x + 3y = 27$.<br>$2x \\times 3 = 6x$, $y \\times 3 = 3y$, $9 \\times 3 = 27$. Hasil: $6x + 3y = 27$.'
+      },
+      { id:'s3e5', type:'mcq', _displayNum:5,
+        question:'What is the result of multiplying $x - 2y = 7$ by $-1$?<br><span style="color:var(--text-muted);font-size:12.5px">Apa hasil mengalikan $x - 2y = 7$ dengan $-1$?</span>',
+        options:['$-x - 2y = -7$','$-x + 2y = -7$','$x - 2y = -7$','$-x + 2y = 7$'],
+        correctIndex:1,
+        explanation:'$x \\times (-1) = -x$, $-2y \\times (-1) = +2y$, $7 \\times (-1) = -7$. Result: $-x + 2y = -7$.<br>$x \\times (-1) = -x$, $-2y \\times (-1) = +2y$, $7 \\times (-1) = -7$. Hasil: $-x + 2y = -7$.'
+      },
+      { id:'s3e6', type:'mcq', _displayNum:6,
+        question:'A student writes: "$2(x + 3y = 5)$ becomes $2x + 3y = 5$." What is the mistake?<br><span style="color:var(--text-muted);font-size:12.5px">Seorang siswa menulis: "$2(x + 3y = 5)$ menjadi $2x + 3y = 5$." Apa kesalahannya?</span>',
+        options:['Forgot to multiply $x$','Only multiplied the left side','Did not multiply $3y$ and $5$ by $2$','Should have divided instead'],
+        correctIndex:2,
+        explanation:'The student only multiplied $x$ by $2$ but forgot to multiply $3y$ and $5$ by $2$. Correct: $2x + 6y = 10$. Every term must be multiplied!<br>Siswa hanya mengali $x$ dengan $2$ tapi lupa mengali $3y$ dan $5$ dengan $2$. Benar: $2x + 6y = 10$. Setiap suku harus dikalikan!'
+      }
+    ]},
+
+    /* ============ THEORY 3: WHY MULTIPLY? — MATCHING COEFFICIENTS ============ */
+    { type:'theory', html:`
+      <div class="theory-svg">
+        <svg width="360" height="180" viewBox="0 0 360 180" fill="none">
+          <!-- Eq 1 -->
+          <rect x="15" y="8" width="330" height="30" rx="7" fill="var(--bg-raised)" stroke="var(--border)" stroke-width="1"/>
+          <text x="180" y="29" text-anchor="middle" fill="var(--text)" font-family="Outfit" font-weight="700" font-size="14">2x + 3y = 13</text>
+          <!-- Eq 2 -->
+          <rect x="15" y="44" width="330" height="30" rx="7" fill="var(--bg-raised)" stroke="var(--border)" stroke-width="1"/>
+          <text x="180" y="65" text-anchor="middle" fill="var(--text)" font-family="Outfit" font-weight="700" font-size="14">x + y = 5</text>
+          <!-- Problem label -->
+          <rect x="110" y="82" width="140" height="22" rx="11" fill="var(--danger-soft)" stroke="var(--danger)" stroke-width="1"/>
+          <text x="180" y="97" text-anchor="middle" fill="var(--danger)" font-family="DM Sans" font-weight="600" font-size="10">No opposites yet!</text>
+          <!-- Arrow down -->
+          <line x1="180" y1="106" x2="180" y2="118" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="3 2"/>
+          <text x="180" y="116" text-anchor="middle" fill="var(--accent)" font-family="DM Sans" font-weight="600" font-size="10">Multiply Eq 2 by 2</text>
+          <!-- New Eq 2 -->
+          <rect x="15" y="122" width="330" height="30" rx="7" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.2"/>
+          <text x="180" y="143" text-anchor="middle" fill="var(--accent)" font-family="Outfit" font-weight="800" font-size="14">2x + 2y = 10</text>
+          <!-- Success label -->
+          <rect x="100" y="158" width="160" height="20" rx="10" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1"/>
+          <text x="180" y="172" text-anchor="middle" fill="var(--accent)" font-family="DM Sans" font-weight="600" font-size="10">Now $y$ coefficients: 3 and 2 (not yet opposites, but same variable to match!)</text>
+        </svg>
+      </div>
+      <p class="theory-en">Sometimes the coefficients are <em>not</em> opposites yet. That's when we multiply one or both equations to <strong style="color:var(--accent)">make the coefficients match</strong> (same absolute value), so we can eliminate by adding or subtracting.</p>
+      <p class="theory-id">Terkadang koefisien <em>belum</em> berlawanan tanda. Di situlah kita mengali satu atau kedua persamaan untuk <strong style="color:var(--accent)">menyamakan koefisien</strong> (nilai mutlak sama), sehingga bisa dieliminasi dengan menjumlahkan atau mengurangkan.</p>
+      <p class="theory-en" style="margin-top:8px"><strong>Strategy:</strong> Look at both equations. Ask: "What number can I multiply each equation by so that one variable has the same coefficient (or opposite coefficients)?"</p>
+      <p class="theory-id"><strong>Strategi:</strong> Lihat kedua persamaan. Tanyakan: "Bilangan berapa yang bisa saya kalikan ke masing-masing persamaan agar satu variabel memiliki koefisien sama (atau berlawanan tanda)?"</p>
+    `},
+
+    /* ============ EXERCISES 7–10 ============ */
+    { type:'exercises', items:[
+      { id:'s3e7', type:'mcq', _displayNum:7,
+        question:'We have $3x + 2y = 16$ and $2x + y = 9$. To eliminate $y$, what should we multiply the second equation by?<br><span style="color:var(--text-muted);font-size:12.5px">Kita punya $3x + 2y = 16$ dan $2x + y = 9$. Untuk mengeliminasi $y$, persamaan kedua harus dikali berapa?</span>',
+        options:['$3$','$2$','$4$','$-2$'],
+        correctIndex:1,
+        explanation:'The first equation has $2y$. The second has $y$ (coefficient $1$). To match, multiply the second by $2$: $y \\times 2 = 2y$. Now both have $2y$ and we can subtract to eliminate.<br>Persamaan pertama punya $2y$. Kedua punya $y$ (koefisien $1$). Untuk menyamakan, kali kedua dengan $2$: $y \\times 2 = 2y$. Sekarang keduanya punya $2y$ dan bisa dikurangkan untuk mengeliminasi.'
+      },
+      { id:'s3e8', type:'mcq', _displayNum:8,
+        question:'We have $4x + 3y = 25$ and $2x + y = 9$. To eliminate $x$, what is the simplest multiplier for the second equation?<br><span style="color:var(--text-muted);font-size:12.5px">Kita punya $4x + 3y = 25$ dan $2x + y = 9$. Untuk mengeliminasi $x$, pengali paling sederhana untuk persamaan kedua adalah?</span>',
+        options:['$4$','$3$','$2$','$-2$'],
+        correctIndex:2,
+        explanation:'First equation has $4x$, second has $2x$. Multiply second by $2$: $2x \\times 2 = 4x$. Then subtract to eliminate $x$.<br>Persamaan pertama punya $4x$, kedua punya $2x$. Kali kedua dengan $2$: $2x \\times 2 = 4x$. Lalu kurangkan untuk mengeliminasi $x$.'
+      },
+      { id:'s3e9', type:'checkbox', _displayNum:9,
+        question:'We have $2x + 3y = 8$ and $3x + 2y = 7$. Which of these are valid ways to match a coefficient? (Select all that apply)<br><span style="color:var(--text-muted);font-size:12.5px">Kita punya $2x + 3y = 8$ dan $3x + 2y = 7$. Manakah di bawah ini cara sah untuk menyamakan koefisien? (Pilih semua yang benar)</span>',
+        options:['Multiply Eq 1 by $3$ and Eq 2 by $2$ to match $x$ (both become $6x$)','Multiply Eq 1 by $2$ and Eq 2 by $3$ to match $y$ (both become $6y$)','Multiply only Eq 1 by $6$','Multiply Eq 1 by $3$ only (no change to Eq 2) to eliminate $x$'],
+        correctIndices:[0,1],
+        explanation:'To match $x$: Eq1 has $2x$, Eq2 has $3x$. LCM of $2$ and $3$ is $6$. Multiply Eq1 by $3$ ($6x$) and Eq2 by $2$ ($6x$). To match $y$: Eq1 has $3y$, Eq2 has $2y$. LCM is $6$. Multiply Eq1 by $2$ ($6y$) and Eq2 by $3$ ($6y$). Both are valid! Options C and D don\'t properly match both equations.<br>Untuk menyamakan $x$: LCM dari $2$ dan $3$ adalah $6$. Kali Pers1 dengan $3$ dan Pers2 dengan $2$. Untuk menyamakan $y$: LCM sama yaitu $6$. Kali Pers1 dengan $2$ dan Pers2 dengan $3$. Keduanya sah!'
+      },
+      { id:'s3e10', type:'input', _displayNum:10,
+        question:'Multiply $x + y = 5$ by $3$. Then multiply $2x + 3y = 13$ by $1$ (no change). What are the $y$ coefficients in both new equations? Write them as "3 and 3" (no spaces).<br><span style="color:var(--text-muted);font-size:12.5px">Kalikan $x + y = 5$ dengan $3$. Lalu kalikan $2x + 3y = 13$ dengan $1$ (tetap). Berapa koefisien $y$ di kedua persamaan baru? Tulis sebagai "3dan3" (tanpa spasi).</span><br><span style="font-size:12px;color:var(--text-muted)">Format: 3dan3</span>',
+        correctAnswer:'3dan3',
+        explanation:'$x + y = 5$ times $3$ gives $3x + 3y = 15$ &rarr; $y$ coefficient is $3$. $2x + 3y = 13$ stays the same &rarr; $y$ coefficient is $3$. Both are $3$ and $3$!<br>$x + y = 5$ kali $3$ menghasilkan $3x + 3y = 15$ &rarr; koefisien $y$ adalah $3$. $2x + 3y = 13$ tetap &rarr; koefisien $y$ adalah $3$. Keduanya $3$ dan $3$!'
+      }
+    ]}
+
+  ] /* end blocks */
+};
+</script>
+
+<!-- INSERT_SECTION_4 -->
+<div id="node-section4" class="node-content">
+  <div id="section4-content"></div>
+</div>
+<!-- END INSERT_SECTION_4 -->
+
+<script>
+/* ============================================================
+   SECTION 4 — Problem Introduction
+   Eliminasi langsung: koefisien sudah berlawanan tanda (+y / -y)
+   atau sudah sama (+5x / +5x), tinggal jumlahkan atau kurangkan
+   3 theory + 10 exercise
+   ============================================================ */
+window.sectionData.section4 = {
+  _isAssignment: false,
+  blocks: [
+
+    /* ============ THEORY 1: ELIMINATION BY ADDING ============ */
+    { type:'theory', html:`
+      <div class="theory-svg">
+        <svg width="380" height="200" viewBox="0 0 380 200" fill="none">
+          <!-- Equation 1 -->
+          <rect x="20" y="10" width="340" height="38" rx="10" fill="var(--bg-raised)" stroke="var(--border)" stroke-width="1"/>
+          <text x="190" y="36" text-anchor="middle" fill="var(--text)" font-family="Outfit" font-weight="700" font-size="18">2x + y = 8</text>
+          <!-- Plus sign -->
+          <circle cx="190" cy="66" r="16" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+          <text x="190" y="72" text-anchor="middle" fill="var(--accent)" font-family="Outfit" font-weight="800" font-size="22">+</text>
+          <!-- Equation 2 -->
+          <rect x="20" y="82" width="340" height="38" rx="10" fill="var(--bg-raised)" stroke="var(--border)" stroke-width="1"/>
+          <text x="190" y="108" text-anchor="middle" fill="var(--text)" font-family="Outfit" font-weight="700" font-size="18">x − y = 1</text>
+          <!-- Result line -->
+          <line x1="20" y1="132" x2="360" y2="132" stroke="var(--accent)" stroke-width="2"/>
+          <!-- Result -->
+          <rect x="100" y="140" width="180" height="42" rx="10" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+          <text x="190" y="168" text-anchor="middle" fill="var(--accent)" font-family="Outfit" font-weight="800" font-size="22">3x = 9</text>
+          <!-- Highlight y terms being eliminated -->
+          <rect x="248" y="14" width="22" height="28" rx="5" fill="var(--danger-soft)" stroke="var(--danger)" stroke-width="1.2"/>
+          <text x="259" y="34" text-anchor="middle" fill="var(--danger)" font-family="Outfit" font-weight="700" font-size="16">y</text>
+          <rect x="206" y="86" width="30" height="28" rx="5" fill="var(--danger-soft)" stroke="var(--danger)" stroke-width="1.2"/>
+          <text x="221" y="106" text-anchor="middle" fill="var(--danger)" font-family="Outfit" font-weight="700" font-size="16">−y</text>
+          <!-- Cross-out on y terms -->
+          <line x1="248" y1="14" x2="270" y2="42" stroke="var(--danger)" stroke-width="2" opacity=".6"/>
+          <line x1="206" y1="86" x2="236" y2="114" stroke="var(--danger)" stroke-width="2" opacity=".6"/>
+          <!-- Poof indicators -->
+          <text x="259" y="58" text-anchor="middle" fill="var(--danger)" font-size="12" opacity=".7">0</text>
+          <text x="221" y="130" text-anchor="middle" fill="var(--danger)" font-size="12" opacity=".7">0</text>
+        </svg>
+      </div>
+      <p class="theory-en">When one variable has <strong style="color:var(--danger)">opposite coefficients</strong> (like $+y$ and $-y$), we simply <strong style="color:var(--accent)">add the two equations</strong>. The opposites cancel each other out and become $0$.</p>
+      <p class="theory-id">Ketika satu variabel memiliki <strong style="color:var(--danger)">koefisien berlawanan tanda</strong> (seperti $+y$ dan $-y$), kita cukup <strong style="color:var(--accent)">menjumlahkan dua persamaan</strong>. Yang berlawanan saling menghapus dan menjadi $0$.</p>
+      <p class="theory-en" style="margin-top:10px">Adding term by term: $2x + x = 3x$, &nbsp; $y + (-y) = 0$, &nbsp; $8 + 1 = 9$. &nbsp; Result: $3x = 9$, so $x = 3$.</p>
+      <p class="theory-id">Menjumlahkan suku per suku: $2x + x = 3x$, &nbsp; $y + (-y) = 0$, &nbsp; $8 + 1 = 9$. &nbsp; Hasil: $3x = 9$, jadi $x = 3$.</p>
+    `},
+
+    /* ============ EXERCISES 1–3 ============ */
+    { type:'exercises', items:[
+      { id:'s4e1', type:'mcq', _displayNum:1,
+        question:'In the system $3x + 2y = 10$ and $3x - 2y = 2$, which variable is eliminated when we <strong>add</strong> the equations?<br><span style="color:var(--text-muted);font-size:12.5px">Pada sistem $3x + 2y = 10$ dan $3x - 2y = 2$, variabel mana yang tereliminasi saat kita <strong>menjumlahkan</strong> persamaan?</span>',
+        options:['$x$ only','$y$ only','Both $x$ and $y$','Neither'],
+        correctIndex:1,
+        explanation:'The $y$ coefficients are $+2$ and $-2$ (opposites). Adding: $2y + (-2y) = 0$, so $y$ is eliminated. The $x$ coefficients are both $+3$, so adding gives $6x$, not zero.<br>Koefisien $y$ adalah $+2$ dan $-2$ (berlawanan). Dijumlahkan: $2y + (-2y) = 0$, jadi $y$ tereliminasi. Koefisien $x$ sama-sama $+3$, jadi penjumlahan menghasilkan $6x$, bukan nol.'
+      },
+      { id:'s4e2', type:'input', _displayNum:2,
+        question:'Add the equations $4x + y = 11$ and $x - y = 2$. What is the resulting equation after eliminating $y$?<br><span style="color:var(--text-muted);font-size:12.5px">Jumlahkan persamaan $4x + y = 11$ dan $x - y = 2$. Persamaan apa yang dihasilkan setelah $y$ dieliminasi?</span><br><span style="font-size:12px;color:var(--text-muted)">Format: 5x=13 (no spaces)</span>',
+        correctAnswer:'5x=13',
+        explanation:'$4x + x = 5x$, $y + (-y) = 0$, $11 + 2 = 13$. Result: $5x = 13$.<br>$4x + x = 5x$, $y + (-y) = 0$, $11 + 2 = 13$. Hasil: $5x = 13$.'
+      },
+      { id:'s4e3', type:'input', _displayNum:3,
+        question:'From $5x + y = 14$ and $2x - y = 5$, after adding and eliminating $y$, what is the value of $x$?<br><span style="color:var(--text-muted);font-size:12.5px">Dari $5x + y = 14$ dan $2x - y = 5$, setelah menjumlahkan dan mengeliminasi $y$, berapa nilai $x$?</span><br><span style="font-size:12px;color:var(--text-muted)">Answer in numbers only (e.g., 3)</span>',
+        correctAnswer:'3',
+        explanation:'Adding: $7x = 19$... wait, let me recalculate. $5x + 2x = 7x$, $14 + 5 = 19$. So $7x = 19$, $x = 19/7$. Hmm, that\'s not clean. Let me fix: Actually $5x + y = 14$ and $-2x + y = 5$ would give $3x = 19$... Let me use the correct numbers: $5x + y = 14$ and $2x - y = 5$ gives $7x = 19$, $x = 19/7$.<br><br>Actually the answer should be clean. The correct calculation: $5x + 2x = 7x$, $y - y = 0$, $14 + 5 = 19$. So $7x = 19$, $x = \\frac{19}{7}$. For this exercise, the answer is 19/7 but since we expect a clean number, let me note: $x = \\frac{19}{7}$.'
+      }
+      /* NOTE: s4e3 above has a messy answer. In the actual file, replace s4e3 with the corrected version below */
+    ]},
+
+    /* ============ THEORY 2: ELIMINATION BY SUBTRACTING ============ */
+    { type:'theory', html:`
+      <div class="theory-svg">
+        <svg width="380" height="200" viewBox="0 0 380 200" fill="none">
+          <!-- Equation 1 -->
+          <rect x="20" y="10" width="340" height="38" rx="10" fill="var(--bg-raised)" stroke="var(--border)" stroke-width="1"/>
+          <text x="190" y="36" text-anchor="middle" fill="var(--text)" font-family="Outfit" font-weight="700" font-size="18">5x + 3y = 22</text>
+          <!-- Minus sign -->
+          <circle cx="190" cy="66" r="16" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.5"/>
+          <text x="190" y="72" text-anchor="middle" fill="var(--gold)" font-family="Outfit" font-weight="800" font-size="22">−</text>
+          <!-- Equation 2 -->
+          <rect x="20" y="82" width="340" height="38" rx="10" fill="var(--bg-raised)" stroke="var(--border)" stroke-width="1"/>
+          <text x="190" y="108" text-anchor="middle" fill="var(--text)" font-family="Outfit" font-weight="700" font-size="18">5x + y = 10</text>
+          <!-- Result line -->
+          <line x1="20" y1="132" x2="360" y2="132" stroke="var(--gold)" stroke-width="2"/>
+          <!-- Result -->
+          <rect x="100" y="140" width="180" height="42" rx="10" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.5"/>
+          <text x="190" y="168" text-anchor="middle" fill="var(--gold)" font-family="Outfit" font-weight="800" font-size="22">2y = 12</text>
+          <!-- Highlight 5x terms being eliminated -->
+          <rect x="32" y="14" width="36" height="28" rx="5" fill="rgba(96,165,250,.12)" stroke="#60a5fa" stroke-width="1.2"/>
+          <text x="50" y="34" text-anchor="middle" fill="#60a5fa" font-family="Outfit" font-weight="700" font-size="16">5x</text>
+          <rect x="32" y="86" width="36" height="28" rx="5" fill="rgba(96,165,250,.12)" stroke="#60a5fa" stroke-width="1.2"/>
+          <text x="50" y="106" text-anchor="middle" fill="#60a5fa" font-family="Outfit" font-weight="700" font-size="16">5x</text>
+          <!-- Cross-out on 5x -->
+          <line x1="32" y1="14" x2="68" y2="42" stroke="#60a5fa" stroke-width="2" opacity=".6"/>
+          <line x1="32" y1="86" x2="68" y2="114" stroke="#60a5fa" stroke-width="2" opacity=".6"/>
+        </svg>
+      </div>
+      <p class="theory-en">When both equations have the <strong style="color:#60a5fa">same coefficient</strong> for a variable (like $+5x$ and $+5x$), we <strong style="color:var(--gold)">subtract</strong> one equation from the other. Same minus same equals zero!</p>
+      <p class="theory-id">Ketika kedua persamaan memiliki <strong style="color:#60a5fa">koefisien sama</strong> untuk suatu variabel (seperti $+5x$ dan $+5x$), kita <strong style="color:var(--gold)">kurangkan</strong> satu persamaan dari yang lain. Sama dikurangi sama hasilnya nol!</p>
+      <p class="theory-en" style="margin-top:10px">Subtracting term by term: $5x - 5x = 0$, &nbsp; $3y - y = 2y$, &nbsp; $22 - 10 = 12$. &nbsp; Result: $2y = 12$, so $y = 6$.</p>
+      <p class="theory-id">Mengurangkan suku per suku: $5x - 5x = 0$, &nbsp; $3y - y = 2y$, &nbsp; $22 - 10 = 12$. &nbsp; Hasil: $2y = 12$, jadi $y = 6$.</p>
+    `},
+
+    /* ============ EXERCISES 4–6 ============ */
+    { type:'exercises', items:[
+      { id:'s4e4', type:'mcq', _displayNum:4,
+        question:'In $7x + 2y = 20$ and $7x + 5y = 29$, which operation eliminates $x$?<br><span style="color:var(--text-muted);font-size:12.5px">Pada $7x + 2y = 20$ dan $7x + 5y = 29$, operasi apa yang mengeliminasi $x$?</span>',
+        options:['Add the equations','Subtract the second from the first','Multiply then add','Multiply then subtract'],
+        correctIndex:1,
+        explanation:'Both have $7x$. Subtracting: $7x - 7x = 0$. So $x$ is eliminated by subtracting the second equation from the first.<br>Keduanya punya $7x$. Dikurangkan: $7x - 7x = 0$. Jadi $x$ tereliminasi dengan mengurangkan persamaan kedua dari pertama.'
+      },
+      { id:'s4e5', type:'input', _displayNum:5,
+        question:'Subtract the second equation from the first: $(6x + y = 15) - (6x + 4y = 27)$. What equation remains?<br><span style="color:var(--text-muted);font-size:12.5px">Kurangkan persamaan kedua dari pertama: $(6x + y = 15) - (6x + 4y = 27)$. Persamaan apa yang tersisa?</span><br><span style="font-size:12px;color:var(--text-muted)">Format: -3y=-12 (no spaces)</span>',
+        correctAnswer:'-3y=-12',
+        explanation:'$6x - 6x = 0$, $y - 4y = -3y$, $15 - 27 = -12$. Result: $-3y = -12$.<br>$6x - 6x = 0$, $y - 4y = -3y$, $15 - 27 = -12$. Hasil: $-3y = -12$.'
+      },
+      { id:'s4e6', type:'input', _displayNum:6,
+        question:'From $3x + 4y = 25$ and $3x + y = 10$, after subtracting to eliminate $x$, what is the value of $y$?<br><span style="color:var(--text-muted);font-size:12.5px">Dari $3x + 4y = 25$ dan $3x + y = 10$, setelah mengurangkan untuk mengeliminasi $x$, berapa nilai $y$?</span><br><span style="font-size:12px;color:var(--text-muted)">Answer in numbers only (e.g., 5)</span>',
+        correctAnswer:'5',
+        explanation:'Subtracting: $4y - y = 3y$, $25 - 10 = 15$. So $3y = 15$, $y = 5$.<br>Mengurangkan: $4y - y = 3y$, $25 - 10 = 15$. Jadi $3y = 15$, $y = 5$.'
+      }
+    ]},
+
+    /* ============ THEORY 3: FULL WALKTHROUGH — ELIMINATE, SOLVE, SUBSTITUTES ============ */
+    { type:'theory', html:`
+      <div class="theory-svg">
+        <svg width="380" height="240" viewBox="0 0 380 240" fill="none">
+          <!-- Step 1: Add equations -->
+          <rect x="10" y="5" width="360" height="52" rx="10" fill="var(--bg-raised)" stroke="var(--border)" stroke-width="1"/>
+          <text x="190" y="22" text-anchor="middle" fill="var(--accent)" font-family="DM Sans" font-weight="700" font-size="11">STEP 1: ADD to eliminate y</text>
+          <text x="190" y="44" text-anchor="middle" fill="var(--text)" font-family="Outfit" font-weight="600" font-size="13">2x + y = 8 &nbsp; + &nbsp; x − y = 1 &nbsp; → &nbsp; 3x = 9</text>
+          <!-- Arrow -->
+          <line x1="190" y1="60" x2="190" y2="72" stroke="var(--accent)" stroke-width="1.5"/>
+          <polygon points="185,72 195,72 190,78" fill="var(--accent)"/>
+          <!-- Step 2: Solve for x -->
+          <rect x="80" y="80" width="220" height="36" rx="10" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.2"/>
+          <text x="190" y="104" text-anchor="middle" fill="var(--accent)" font-family="Outfit" font-weight="800" font-size="16">STEP 2: x = 9 ÷ 3 = 3</text>
+          <!-- Arrow -->
+          <line x1="190" y1="118" x2="190" y2="130" stroke="var(--accent)" stroke-width="1.5"/>
+          <polygon points="185,130 195,130 190,136" fill="var(--accent)"/>
+          <!-- Step 3: Substitute back -->
+          <rect x="10" y="138" width="360" height="48" rx="10" fill="var(--bg-raised)" stroke="var(--border)" stroke-width="1"/>
+          <text x="190" y="156" text-anchor="middle" fill="var(--gold)" font-family="DM Sans" font-weight="700" font-size="11">STEP 3: Substitute x = 3 into original equation</text>
+          <text x="190" y="178" text-anchor="middle" fill="var(--text)" font-family="Outfit" font-weight="600" font-size="13">2(3) + y = 8 → 6 + y = 8 → y = 2</text>
+          <!-- Arrow -->
+          <line x1="190" y1="188" x2="190" y2="200" stroke="var(--gold)" stroke-width="1.5"/>
+          <polygon points="185,200 195,200 190,206" fill="var(--gold)"/>
+          <!-- Final answer -->
+          <rect x="110" y="208" width="160" height="28" rx="10" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.5"/>
+          <text x="190" y="228" text-anchor="middle" fill="var(--gold)" font-family="Outfit" font-weight="800" font-size="15">Solution: x = 3, y = 2</text>
+        </svg>
+      </div>
+      <p class="theory-en">After eliminating one variable and solving for the other, we <strong style="color:var(--gold)">substitute the value back</strong> into either original equation to find the second variable. Always verify your answer!</p>
+      <p class="theory-id">Setelah mengeliminasi satu variabel dan menyelesaikan yang lain, kita <strong style="color:var(--gold)">mensubstitusikan nilainya kembali</strong> ke salah satu persamaan awal untuk menemukan variabel kedua. Selalu periksa jawabanmu!</p>
+      <p class="theory-en" style="margin-top:8px"><strong>Verification:</strong> Check $x=3, y=2$ in the second equation: $3 - 2 = 1$ ✓. Both equations are satisfied!</p>
+      <p class="theory-id"><strong>Verifikasi:</strong> Periksa $x=3, y=2$ di persamaan kedua: $3 - 2 = 1$ ✓. Kedua persamaan terpenuhi!</p>
+    `},
+
+    /* ============ EXERCISES 7–10 ============ */
+    { type:'exercises', items:[
+      { id:'s4e7', type:'input', _displayNum:7,
+        question:'Solve the system: $x + y = 10$ and $x - y = 4$. What is the value of $x$?<br><span style="color:var(--text-muted);font-size:12.5px">Selesaikan sistem: $x + y = 10$ dan $x - y = 4$. Berapa nilai $x$?</span><br><span style="font-size:12px;color:var(--text-muted)">Answer in numbers only</span>',
+        correctAnswer:'7',
+        explanation:'Adding: $(x+y) + (x-y) = 10 + 4$ → $2x = 14$ → $x = 7$.<br>Menjumlahkan: $(x+y) + (x-y) = 10 + 4$ → $2x = 14$ → $x = 7$.'
+      },
+      { id:'s4e8', type:'input', _displayNum:8,
+        question:'Using the same system $x + y = 10$ and $x - y = 4$, substitute $x = 7$ into the first equation. What is $y$?<br><span style="color:var(--text-muted);font-size:12.5px">Menggunakan sistem yang sama $x + y = 10$ dan $x - y = 4$, substitusikan $x = 7$ ke persamaan pertama. Berapa $y$?</span><br><span style="font-size:12px;color:var(--text-muted)">Answer in numbers only</span>',
+        correctAnswer:'3',
+        explanation:'$7 + y = 10$ → $y = 10 - 7 = 3$. Verify: $7 - 3 = 4$ ✓<br>$7 + y = 10$ → $y = 10 - 7 = 3$. Verifikasi: $7 - 3 = 4$ ✓'
+      },
+      { id:'s4e9', type:'mcq', _displayNum:9,
+        question:'Solve: $3x - 2y = 8$ and $x + 2y = 8$. After adding to eliminate $y$, what is $x$?<br><span style="color:var(--text-muted);font-size:12.5px">Selesaikan: $3x - 2y = 8$ dan $x + 2y = 8$. Setelah menjumlahkan untuk mengeliminasi $y$, berapa $x$?</span>',
+        options:['$x = 2$','$x = 3$','$x = 4$','$x = 8$'],
+        correctIndex:2,
+        explanation:'Adding: $3x + x = 4x$, $-2y + 2y = 0$, $8 + 8 = 16$. So $4x = 16$, $x = 4$.<br>Menjumlahkan: $3x + x = 4x$, $-2y + 2y = 0$, $8 + 8 = 16$. Jadi $4x = 16$, $x = 4$.'
+      },
+      { id:'s4e10', type:'input', _displayNum:10,
+        question:'From the previous system, substitute $x = 4$ into $x + 2y = 8$ to find $y$. What is $y$?<br><span style="color:var(--text-muted);font-size:12.5px">Dari sistem sebelumnya, substitusikan $x = 4$ ke $x + 2y = 8$ untuk mencari $y$. Berapa $y$?</span><br><span style="font-size:12px;color:var(--text-muted)">Answer in numbers only</span>',
+        correctAnswer:'2',
+        explanation:'$4 + 2y = 8$ → $2y = 4$ → $y = 2$. Verify in first equation: $3(4) - 2(2) = 12 - 4 = 8$ ✓<br>$4 + 2y = 8$ → $2y = 4$ → $y = 2$. Verifikasi di persamaan pertama: $3(4) - 2(2) = 12 - 4 = 8$ ✓'
+      }
+    ]}
+
+  ] /* end blocks */
+};
+
+/* ============================================================
+   IMPORTANT: Fix s4e3 — replace with a clean-answer version
+   The original had 5x+y=14 and 2x-y=5 giving x=19/7 (not clean).
+   Replace with: 5x+y=16 and 2x-y=5 → 7x=21 → x=3
+   ============================================================ */
+(function(){
+  const sec = window.sectionData.section4;
+  const exBlock = sec.blocks[1]; // exercises block 1
+  exBlock.items[2] = {
+    id:'s4e3', type:'input', _displayNum:3,
+    question:'From $5x + y = 16$ and $2x - y = 5$, after adding and eliminating $y$, what is the value of $x$?<br><span style="color:var(--text-muted);font-size:12.5px">Dari $5x + y = 16$ dan $2x - y = 5$, setelah menjumlahkan dan mengeliminasi $y$, berapa nilai $x$?</span><br><span style="font-size:12px;color:var(--text-muted)">Answer in numbers only (e.g., 3)</span>',
+    correctAnswer:'3',
+    explanation:'Adding: $5x + 2x = 7x$, $y + (-y) = 0$, $16 + 5 = 21$. So $7x = 21$, $x = 3$.<br>Menjumlahkan: $5x + 2x = 7x$, $y + (-y) = 0$, $16 + 5 = 21$. Jadi $7x = 21$, $x = 3$.'
+  };
+})();
+</script>
+
+<!-- INSERT_SECTION_5 -->
+<div id="node-section5" class="node-content">
+  <div id="section5-content"></div>
+</div>
+<!-- END INSERT_SECTION_5 -->
+
+<script>
+/* ============================================================
+   SECTION 5 — Guided Practice
+   Menyamakan koefisien terlebih dahulu, lalu eliminasi,
+   substitusi kembali, dan verifikasi
+   3 theory + 10 exercise
+   ============================================================ */
+window.sectionData.section5 = {
+  _isAssignment: false,
+  blocks: [
+
+    /* ============ THEORY 1: CHOOSING THE MULTIPLIER ============ */
+    { type:'theory', html:`
+      <div class="theory-svg">
+        <svg width="380" height="160" viewBox="0 0 380 160" fill="none">
+          <!-- Eq 1 -->
+          <rect x="15" y="8" width="350" height="34" rx="8" fill="var(--bg-raised)" stroke="var(--border)" stroke-width="1"/>
+          <text x="190" y="31" text-anchor="middle" fill="var(--text)" font-family="Outfit" font-weight="700" font-size="16">3x + 2y = 16</text>
+          <!-- Eq 2 -->
+          <rect x="15" y="48" width="350" height="34" rx="8" fill="var(--bg-raised)" stroke="var(--border)" stroke-width="1"/>
+          <text x="190" y="71" text-anchor="middle" fill="var(--text)" font-family="Outfit" font-weight="700" font-size="16">2x + y = 9</text>
+          <!-- Thought bubble -->
+          <rect x="60" y="94" width="260" height="28" rx="14" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1"/>
+          <text x="190" y="113" text-anchor="middle" fill="var(--gold)" font-family="DM Sans" font-weight="600" font-size="11">y has coefficients 2 and 1 — multiply Eq 2 by 2!</text>
+          <!-- Arrow to result -->
+          <line x1="190" y1="124" x2="190" y2="136" stroke="var(--accent)" stroke-width="1.5"/>
+          <polygon points="185,136 195,136 190,142" fill="var(--accent)"/>
+          <!-- New Eq 2 -->
+          <rect x="15" y="144" width="350" height="34" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+          <text x="190" y="167" text-anchor="middle" fill="var(--accent)" font-family="Outfit" font-weight="800" font-size="16">4x + 2y = 18</text>
+        </svg>
+      </div>
+      <p class="theory-en">When coefficients are <em>not</em> opposites or equal, we <strong style="color:var(--gold)">choose one variable to target</strong> and figure out what to multiply each equation by so that variable's coefficients match.</p>
+      <p class="theory-id">Ketika koefisien <em>belum</em> berlawanan atau sama, kita <strong style="color:var(--gold)">memilih satu variabel sebagai target</strong> dan menentukan pengali untuk masing-masing persamaan agar koefisien variabel itu menjadi sama.</p>
+      <p class="theory-en" style="margin-top:10px"><strong>Tip:</strong> Look for the variable with the simpler coefficients. Here, $y$ has coefficients $2$ and $1$ — it's easier to multiply the second equation by $2$ than to deal with $x$'s coefficients $3$ and $2$.</p>
+      <p class="theory-id"><strong>Tips:</strong> Cari variabel dengan koefisien paling sederhana. Di sini, $y$ punya koefisien $2$ dan $1$ — lebih mudah mengali persamaan kedua dengan $2$ daripada mengurus koefisien $x$ yaitu $3$ dan $2$.</p>
+    `},
+
+    /* ============ EXERCISES 1–3 ============ */
+    { type:'exercises', items:[
+      { id:'s5e1', type:'mcq', _displayNum:1,
+        question:'System: $3x + 2y = 16$ and $2x + y = 9$. To eliminate $y$, what should we multiply the second equation by?<br><span style="color:var(--text-muted);font-size:12.5px">Sistem: $3x + 2y = 16$ dan $2x + y = 9$. Untuk mengeliminasi $y$, persamaan kedua harus dikali berapa?</span>',
+        options:['$3$','$2$','$-2$','$4$'],
+        correctIndex:1,
+        explanation:'Eq 1 has $2y$, Eq 2 has $y$ (coefficient $1$). Multiply Eq 2 by $2$ to get $2y$, matching the coefficient in Eq 1. Then subtract to eliminate.<br>Pers 1 punya $2y$, Pers 2 punya $y$ (koefisien $1$). Kali Pers 2 dengan $2$ untuk mendapat $2y$, menyamai koefisien di Pers 1. Lalu kurangkan untuk mengeliminasi.'
+      },
+      { id:'s5e2', type:'input', _displayNum:2,
+        question:'Multiply the entire equation $2x + y = 9$ by $2$. Write the new equation.<br><span style="color:var(--text-muted);font-size:12.5px">Kalikan seluruh persamaan $2x + y = 9$ dengan $2$. Tuliskan persamaan barunya.</span><br><span style="font-size:12px;color:var(--text-muted)">Format: 4x+2y=18 (no spaces)</span>',
+        correctAnswer:'4x+2y=18',
+        explanation:'$2x \\times 2 = 4x$, $y \\times 2 = 2y$, $9 \\times 2 = 18$. Result: $4x + 2y = 18$.<br>$2x \\times 2 = 4x$, $y \\times 2 = 2y$, $9 \\times 2 = 18$. Hasil: $4x + 2y = 18$.'
+      },
+      { id:'s5e3', type:'input', _displayNum:3,
+        question:'Now subtract: $(3x + 2y = 16) - (4x + 2y = 18)$. What equation remains after eliminating $y$?<br><span style="color:var(--text-muted);font-size:12.5px">Sekarang kurangkan: $(3x + 2y = 16) - (4x + 2y = 18)$. Persamaan apa yang tersisa setelah $y$ dieliminasi?</span><br><span style="font-size:12px;color:var(--text-muted)">Format: -x=-2 (no spaces)</span>',
+        correctAnswer:'-x=-2',
+        explanation:'$3x - 4x = -x$, $2y - 2y = 0$, $16 - 18 = -2$. Result: $-x = -2$.<br>$3x - 4x = -x$, $2y - 2y = 0$, $16 - 18 = -2$. Hasil: $-x = -2$.'
+      }
+    ]},
+
+    /* ============ THEORY 2: SOLVING THE FIRST VARIABLE ============ */
+    { type:'theory', html:`
+      <div class="theory-svg">
+        <svg width="340" height="110" viewBox="0 0 340 110" fill="none">
+          <!-- From elimination -->
+          <rect x="30" y="10" width="280" height="36" rx="10" fill="var(--bg-raised)" stroke="var(--border)" stroke-width="1"/>
+          <text x="170" y="34" text-anchor="middle" fill="var(--text)" font-family="Outfit" font-weight="600" font-size="16">−x = −2</text>
+          <!-- Arrow -->
+          <line x1="170" y1="48" x2="170" y2="62" stroke="var(--accent)" stroke-width="1.5"/>
+          <polygon points="165,62 175,62 170,68" fill="var(--accent)"/>
+          <!-- Divide both sides by -1 -->
+          <rect x="90" y="68" width="160" height="20" rx="10" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1"/>
+          <text x="170" y="83" text-anchor="middle" fill="var(--accent)" font-family="DM Sans" font-weight="600" font-size="11">divide both sides by −1</text>
+          <!-- Result -->
+          <rect x="100" y="92" width="140" height="36" rx="10" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+          <text x="170" y="116" text-anchor="middle" fill="var(--accent)" font-family="Outfit" font-weight="800" font-size="22">x = 2</text>
+        </svg>
+      </div>
+      <p class="theory-en">After elimination, you get a simple equation with one variable. Solve it using basic algebra &mdash; divide both sides by the coefficient.</p>
+      <p class="theory-id">Setelah eliminasi, kamu mendapat persamaan sederhana dengan satu variabel. Selesaikan dengan aljabar dasar &mdash; bagi kedua ruas dengan koefisiennya.</p>
+      <p class="theory-en" style="margin-top:10px">$-x = -2$ &rarr; divide both sides by $-1$ &rarr; $x = 2$. Always simplify: if you get $-x = -2$, it means $x = 2$ (the negatives cancel).</p>
+      <p class="theory-id">$-x = -2$ &rarr; bagi kedua ruas dengan $-1$ &rarr; $x = 2$. Selalu sederhanakan: jika kamu dapat $-x = -2$, artinya $x = 2$ (negatifnya saling menghapus).</p>
+    `},
+
+    /* ============ EXERCISES 4–6 ============ */
+    { type:'exercises', items:[
+      { id:'s5e4', type:'mcq', _displayNum:4,
+        question:'From $-x = -2$, what is the value of $x$?<br><span style="color:var(--text-muted);font-size:12.5px">Dari $-x = -2$, berapa nilai $x$?</span>',
+        options:['$x = -2$','$x = 2$','$x = -1$','$x = 1$'],
+        correctIndex:1,
+        explanation:'Divide both sides by $-1$: $-x \\div (-1) = -2 \\div (-1)$, so $x = 2$. The negatives cancel out.<br>Bagi kedua ruas dengan $-1$: $-x \\div (-1) = -2 \\div (-1)$, jadi $x = 2$. Negatifnya saling menghapus.'
+      },
+      { id:'s5e5', type:'input', _displayNum:5,
+        question:'Now substitute $x = 2$ into the <strong>original</strong> equation $2x + y = 9$. What is $y$?<br><span style="color:var(--text-muted);font-size:12.5px">Sekarang substitusikan $x = 2$ ke persamaan <strong>awal</strong> $2x + y = 9$. Berapa $y$?</span><br><span style="font-size:12px;color:var(--text-muted)">Answer in numbers only</span>',
+        correctAnswer:'5',
+        explanation:'$2(2) + y = 9$ → $4 + y = 9$ → $y = 9 - 4 = 5$.<br>$2(2) + y = 9$ → $4 + y = 9$ → $y = 9 - 4 = 5$.'
+      },
+      { id:'s5e6', type:'mcq', _displayNum:6,
+        question:'Verify $x = 2$, $y = 5$ in the other original equation $3x + 2y = 16$. What is $3(2) + 2(5)$?<br><span style="color:var(--text-muted);font-size:12.5px">Verifikasi $x = 2$, $y = 5$ di persamaan awal lainnya $3x + 2y = 16$. Berapa $3(2) + 2(5)$?</span>',
+        options:['$14$','$15$','$16$','$18$'],
+        correctIndex:2,
+        explanation:'$3(2) + 2(5) = 6 + 10 = 16$ ✓ Matches the right side! The solution is verified.<br>$3(2) + 2(5) = 6 + 10 = 16$ ✓ Cocok dengan ruas kanan! Solusi terverifikasi.'
+      }
+    ]},
+
+    /* ============ THEORY 3: FULL GUIDED EXAMPLE #2 ============ */
+    { type:'theory', html:`
+      <div class="theory-svg">
+        <svg width="380" height="260" viewBox="0 0 380 260" fill="none">
+          <!-- Step 1 -->
+          <rect x="10" y="5" width="360" height="52" rx="8" fill="var(--bg-raised)" stroke="var(--border)" stroke-width="1"/>
+          <text x="190" y="20" text-anchor="middle" fill="var(--accent)" font-family="DM Sans" font-weight="700" font-size="10">STEP 1: Multiply to match coefficients</text>
+          <text x="190" y="38" text-anchor="middle" fill="var(--text)" font-family="Outfit" font-weight="600" font-size="12">4x + 3y = 18 &nbsp;&nbsp;|&nbsp;&nbsp; 2x + y = 8 → ×3 → 6x + 3y = 24</text>
+          <line x1="190" y1="59" x2="190" y2="69" stroke="var(--accent)" stroke-width="1.2"/>
+          <polygon points="186,69 194,69 190,74" fill="var(--accent)"/>
+          <!-- Step 2 -->
+          <rect x="10" y="76" width="360" height="36" rx="8" fill="var(--bg-raised)" stroke="var(--border)" stroke-width="1"/>
+          <text x="190" y="100" text-anchor="middle" fill="var(--gold)" font-family="DM Sans" font-weight="700" font-size="10">STEP 2: Subtract to eliminate y</text>
+          <text x="190" y="100" text-anchor="middle" fill="var(--text)" font-family="Outfit" font-weight="600" font-size="12" dy="14">(6x+3y=24) − (4x+3y=18) → 2x = 6</text>
+          <line x1="190" y1="118" x2="190" y2="128" stroke="var(--gold)" stroke-width="1.2"/>
+          <polygon points="186,128 194,128 190,133" fill="var(--gold)"/>
+          <!-- Step 3 -->
+          <rect x="80" y="135" width="220" height="30" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.2"/>
+          <text x="190" y="156" text-anchor="middle" fill="var(--accent)" font-family="Outfit" font-weight="800" font-size="15">STEP 3: x = 6 ÷ 2 = 3</text>
+          <line x1="190" y1="167" x2="190" y2="177" stroke="var(--accent)" stroke-width="1.2"/>
+          <polygon points="186,177 194,177 190,182" fill="var(--accent)"/>
+          <!-- Step 4 -->
+          <rect x="10" y="184" width="360" height="36" rx="8" fill="var(--bg-raised)" stroke="var(--border)" stroke-width="1"/>
+          <text x="190" y="208" text-anchor="middle" fill="var(--gold)" font-family="DM Sans" font-weight="700" font-size="10">STEP 4: Substitute x = 3 into 2x + y = 8</text>
+          <text x="190" y="208" text-anchor="middle" fill="var(--text)" font-family="Outfit" font-weight="600" font-size="12" dy="14">2(3) + y = 8 → 6 + y = 8 → y = 2</text>
+          <line x1="190" y1="226" x2="190" y2="236" stroke="var(--gold)" stroke-width="1.2"/>
+          <polygon points="186,236 194,236 190,241" fill="var(--gold)"/>
+          <!-- Final -->
+          <rect x="100" y="243" width="180" height="26" rx="10" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.5"/>
+          <text x="190" y="261" text-anchor="middle" fill="var(--gold)" font-family="Outfit" font-weight="800" font-size="14">Solution: x = 3, y = 2</text>
+        </svg>
+      </div>
+      <p class="theory-en">Notice the pattern: <strong style="color:var(--accent)">Match &rarr; Eliminate &rarr; Solve &rarr; Substitute &rarr; Verify</strong>. This 5-step cycle works for every elimination problem, even the hardest ones.</p>
+      <p class="theory-id">Perhatikan polanya: <strong style="color:var(--accent)">Samakan &rarr; Eliminasi &rarr; Selesaikan &rarr; Substitusi &rarr; Verifikasi</strong>. Siklus 5 langkah ini berlaku untuk setiap soal eliminasi, bahkan yang tersulit.</p>
+    `},
+
+    /* ============ EXERCISES 7–10 ============ */
+    { type:'exercises', items:[
+      { id:'s5e7', type:'input', _displayNum:7,
+        question:'System: $4x + 3y = 18$ and $2x + y = 8$. Multiply the second equation by $3$ to match the $y$-coefficient. Write the new equation.<br><span style="color:var(--text-muted);font-size:12.5px">Sistem: $4x + 3y = 18$ dan $2x + y = 8$. Kalikan persamaan kedua dengan $3$ untuk menyamakan koefisien $y$. Tuliskan persamaan barunya.</span><br><span style="font-size:12px;color:var(--text-muted)">Format: 6x+3y=24 (no spaces)</span>',
+        correctAnswer:'6x+3y=24',
+        explanation:'$2x \\times 3 = 6x$, $y \\times 3 = 3y$, $8 \\times 3 = 24$. Result: $6x + 3y = 24$.<br>$2x \\times 3 = 6x$, $y \\times 3 = 3y$, $8 \\times 3 = 24$. Hasil: $6x + 3y = 24$.'
+      },
+      { id:'s5e8', type:'input', _displayNum:8,
+        question:'Subtract $4x + 3y = 18$ from $6x + 3y = 24$. What equation remains?<br><span style="color:var(--text-muted);font-size:12.5px">Kurangkan $4x + 3y = 18$ dari $6x + 3y = 24$. Persamaan apa yang tersisa?</span><br><span style="font-size:12px;color:var(--text-muted)">Format: 2x=6 (no spaces)</span>',
+        correctAnswer:'2x=6',
+        explanation:'$6x - 4x = 2x$, $3y - 3y = 0$, $24 - 18 = 6$. Result: $2x = 6$.<br>$6x - 4x = 2x$, $3y - 3y = 0$, $24 - 18 = 6$. Hasil: $2x = 6$.'
+      },
+      { id:'s5e9', type:'input', _displayNum:9,
+        question:'From $2x = 6$, find $x$. Then substitute into $2x + y = 8$ to find $y$. Write your answer as "x=3,y=2" (no spaces).<br><span style="color:var(--text-muted);font-size:12.5px">Dari $2x = 6$, cari $x$. Lalu substitusi ke $2x + y = 8$ untuk cari $y$. Tulis jawaban sebagai "x=3,y=2" (tanpa spasi).</span>',
+        correctAnswer:'x=3,y=2',
+        explanation:'$2x = 6$ → $x = 3$. Substitute: $2(3) + y = 8$ → $6 + y = 8$ → $y = 2$.<br>$2x = 6$ → $x = 3$. Substitusi: $2(3) + y = 8$ → $6 + y = 8$ → $y = 2$.'
+      },
+      { id:'s5e10', type:'mcq', _displayNum:10,
+        question:'Verify $x = 3$, $y = 2$ in $4x + 3y = 18$. What is $4(3) + 3(2)$?<br><span style="color:var(--text-muted);font-size:12.5px">Verifikasi $x = 3$, $y = 2$ di $4x + 3y = 18$. Berapa $4(3) + 3(2)$?</span>',
+        options:['$15$','$16$','$17$','$18$'],
+        correctIndex:3,
+        explanation:'$4(3) + 3(2) = 12 + 6 = 18$ ✓ The solution $x=3, y=2$ satisfies both equations!<br>$4(3) + 3(2) = 12 + 6 = 18$ ✓ Solusi $x=3, y=2$ memenuhi kedua persamaan!'
+      }
+    ]}
+
+  ] /* end blocks */
+};
+</script>
+
+<!-- INSERT_SECTION_6 -->
+<div id="node-section6" class="node-content">
+  <div id="section6-content"></div>
+</div>
+<!-- END INSERT_SECTION_6 -->
+
+<script>
+/* ============================================================
+   SECTION 6 — Independent Practice
+   Soal cerita kontekstual: menerjemahkan ke sistem,
+   menentukan eliminasi, menyelesaikan
+   3 theory + 10 exercise
+   ============================================================ */
+window.sectionData.section6 = {
+  _isAssignment: false,
+  blocks: [
+
+    /* ============ THEORY 1: FROM WORDS TO EQUATIONS ============ */
+    { type:'theory', html:`
+      <div class="theory-svg">
+        <svg width="360" height="150" viewBox="0 0 360 150" fill="none">
+          <!-- Word box -->
+          <rect x="10" y="8" width="340" height="56" rx="10" fill="var(--bg-raised)" stroke="var(--border)" stroke-width="1"/>
+          <text x="180" y="28" text-anchor="middle" fill="var(--text-muted)" font-family="DM Sans" font-size="11">"3 skins (s) + 2 emblems (e) cost 180 coins."</text>
+          <text x="180" y="48" text-anchor="middle" fill="var(--text-muted)" font-family="DM Sans" font-size="11">"1 skin (s) + 3 emblems (e) cost 130 coins."</text>
+          <!-- Arrows -->
+          <line x1="110" y1="68" x2="110" y2="84" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="3 2"/>
+          <polygon points="105,84 115,84 110,89" fill="var(--accent)"/>
+          <line x1="260" y1="68" x2="260" y2="84" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="3 2"/>
+          <polygon points="255,84 265,84 260,89" fill="var(--accent)"/>
+          <!-- Eq 1 -->
+          <rect x="15" y="92" width="160" height="40" rx="10" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.2"/>
+          <text x="95" y="118" text-anchor="middle" fill="var(--accent)" font-family="Outfit" font-weight="800" font-size="18">3s + 2e = 180</text>
+          <!-- Eq 2 -->
+          <rect x="190" y="92" width="160" height="40" rx="10" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.2"/>
+          <text x="270" y="118" text-anchor="middle" fill="var(--accent)" font-family="Outfit" font-weight="800" font-size="18">s + 3e = 130</text>
+          <!-- Legend -->
+          <rect x="110" y="138" width="140" height="18" rx="6" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width=".8"/>
+          <text x="180" y="151" text-anchor="middle" fill="var(--gold)" font-family="DM Sans" font-weight="600" font-size="10">s = skin price, e = emblem price</text>
+        </svg>
+      </div>
+      <p class="theory-en">The first step in solving a word problem is <strong style="color:var(--accent)">translating each sentence into an equation</strong>. Each sentence usually gives you one equation. Two sentences &rarr; two equations &rarr; a system!</p>
+      <p class="theory-id">Langkah pertama menyelesaikan soal cerita adalah <strong style="color:var(--accent)">menerjemahkan setiap kalimat menjadi persamaan</strong>. Setiap kalimat biasanya memberikan satu persamaan. Dua kalimat &rarr; dua persamaan &rarr; sebuah sistem!</p>
+      <p class="theory-en" style="margin-top:8px"><strong>Key phrases:</strong> "cost" or "is" means $=$, "and" means $+$, the number before the item is its coefficient.</p>
+      <p class="theory-id"><strong>Kata kunci:</strong> "harga" atau "adalah" berarti $=$, "dan" berarti $+$, angka sebelum item adalah koefisiennya.</p>
+    `},
+
+    /* ============ EXERCISES 1–3 ============ */
+    { type:'exercises', items:[
+      { id:'s6e1', type:'mcq', _displayNum:1,
+        question:'"3 skins and 2 emblems cost 180 coins." Which equation is correct? ($s$ = skin, $e$ = emblem)<br><span style="color:var(--text-muted);font-size:12.5px">"3 skin dan 2 emblem harga 180 koin." Persamaan mana yang benar? ($s$ = skin, $e$ = emblem)</span>',
+        options:['$3s + 2e = 180$','$3e + 2s = 180$','$s + e = 180$','$3s - 2e = 180$'],
+        correctIndex:0,
+        explanation:'"3 skins" = $3s$, "2 emblems" = $2e$, "cost 180" = $= 180$. So $3s + 2e = 180$.<br>"3 skin" = $3s$, "2 emblem" = $2e$, "harga 180" = $= 180$. Jadi $3s + 2e = 180$.'
+      },
+      { id:'s6e2', type:'mcq', _displayNum:2,
+        question:'"1 skin and 3 emblems cost 130 coins." Which equation is correct?<br><span style="color:var(--text-muted);font-size:12.5px">"1 skin dan 3 emblem harga 130 koin." Persamaan mana yang benar?</span>',
+        options:['$1 + 3e = 130$','$s + 3e = 130$','$3s + e = 130$','$s + e = 130$'],
+        correctIndex:1,
+        explanation:'"1 skin" = $s$ (or $1s$, but we write just $s$), "3 emblems" = $3e$, "cost 130" = $= 130$. So $s + 3e = 130$.<br>"1 skin" = $s$, "3 emblem" = $3e$, "harga 130" = $= 130$. Jadi $s + 3e = 130$.'
+      },
+      { id:'s6e3', type:'input', _displayNum:3,
+        question:'"5 pencils and 2 erasers cost 29. 5 pencils and 1 eraser cost 22." Write the first equation using $p$ (pencil) and $e$ (eraser).<br><span style="color:var(--text-muted);font-size:12.5px">"5 pensil dan 2 penghapus harga 29. 5 pensil dan 1 penghapus harga 22." Tuliskan persamaan pertama menggunakan $p$ (pensil) dan $e$ (penghapus).</span><br><span style="font-size:12px;color:var(--text-muted)">Format: 5p+2e=29 (no spaces)</span>',
+        correctAnswer:'5p+2e=29',
+        explanation:'"5 pencils" = $5p$, "2 erasers" = $2e$, "cost 29" = $= 29$. So $5p + 2e = 29$.<br>"5 pensil" = $5p$, "2 penghapus" = $2e$, "harga 29" = $= 29$. Jadi $5p + 2e = 29$.'
+      }
+    ]},
+
+    /* ============ THEORY 2: CHOOSING THE ELIMINATION TARGET ============ */
+    { type:'theory', html:`
+      <div class="theory-svg">
+        <svg width="360" height="130" viewBox="0 0 360 130" fill="none">
+          <!-- Eq 1 -->
+          <rect x="15" y="8" width="330" height="30" rx="8" fill="var(--bg-raised)" stroke="var(--border)" stroke-width="1"/>
+          <text x="180" y="29" text-anchor="middle" fill="var(--text)" font-family="Outfit" font-weight="700" font-size="15">3s + 2e = 180</text>
+          <!-- Eq 2 original -->
+          <rect x="15" y="44" width="330" height="30" rx="8" fill="var(--bg-raised)" stroke="var(--border)" stroke-width="1"/>
+          <text x="180" y="65" text-anchor="middle" fill="var(--text)" font-family="Outfit" font-weight="700" font-size="15">s + 3e = 130</text>
+          <!-- Decision -->
+          <rect x="75" y="82" width="210" height="22" rx="11" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1"/>
+          <text x="180" y="97" text-anchor="middle" fill="var(--gold)" font-family="DM Sans" font-weight="600" font-size="10">Target: eliminate s → multiply Eq 2 by 3</text>
+          <!-- New Eq 2 -->
+          <rect x="15" y="108" width="330" height="30" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.2"/>
+          <text x="180" y="129" text-anchor="middle" fill="var(--accent)" font-family="Outfit" font-weight="800" font-size="15">3s + 9e = 390</text>
+        </svg>
+      </div>
+      <p class="theory-en">Look at both equations and ask: <strong>"Which variable is easier to match?"</strong> Here, $s$ has coefficients $3$ and $1$ &mdash; multiply the second by $3$ to get $3s$ in both. Then subtract!</p>
+      <p class="theory-id">Lihat kedua persamaan dan tanyakan: <strong>"Variabel mana yang lebih mudah disamakan?"</strong> Di sini, $s$ punya koefisien $3$ dan $1$ &mdash; kali persamaan kedua dengan $3$ agar keduanya punya $3s$. Lalu kurangkan!</p>
+      <p class="theory-en" style="margin-top:8px"><strong>Why not $e$?</strong> $e$ has coefficients $2$ and $3$. To match, we'd need to multiply Eq 1 by $3$ and Eq 2 by $2$ &mdash; that's two multiplications. Targeting $s$ only needs one!</p>
+      <p class="theory-id"><strong>Kenapa bukan $e$?</strong> $e$ punya koefisien $2$ dan $3$. Untuk menyamakan, kita perlu mengali Pers 1 dengan $3$ dan Pers 2 dengan $2$ &mdash; itu dua perkalian. Menargetkan $s$ hanya butuh satu!</p>
+    `},
+
+    /* ============ EXERCISES 4–6 ============ */
+    { type:'exercises', items:[
+      { id:'s6e4', type:'mcq', _displayNum:4,
+        question:'System: $3s + 2e = 180$ and $s + 3e = 130$. To eliminate $s$, what should we multiply the second equation by?<br><span style="color:var(--text-muted);font-size:12.5px">Sistem: $3s + 2e = 180$ dan $s + 3e = 130$. Untuk mengeliminasi $s$, persamaan kedua harus dikali berapa?</span>',
+        options:['$2$','$3$','$-3$','$6$'],
+        correctIndex:1,
+        explanation:'Eq 1 has $3s$, Eq 2 has $s$ ($= 1s$). Multiply Eq 2 by $3$ to get $3s$. Then subtract to eliminate $s$.<br>Pers 1 punya $3s$, Pers 2 punya $s$ ($= 1s$). Kali Pers 2 dengan $3$ agar mendapat $3s$. Lalu kurangkan untuk mengeliminasi $s$.'
+      },
+      { id:'s6e5', type:'input', _displayNum:5,
+        question:'After multiplying $s + 3e = 130$ by $3$, we get $3s + 9e = 390$. Subtract $3s + 2e = 180$ from it. What equation remains?<br><span style="color:var(--text-muted);font-size:12.5px">Setelah mengalikan $s + 3e = 130$ dengan $3$, kita dapat $3s + 9e = 390$. Kurangkan $3s + 2e = 180$ darinya. Persamaan apa yang tersisa?</span><br><span style="font-size:12px;color:var(--text-muted)">Format: 7e=210 (no spaces)</span>',
+        correctAnswer:'7e=210',
+        explanation:'$3s - 3s = 0$, $9e - 2e = 7e$, $390 - 180 = 210$. Result: $7e = 210$.<br>$3s - 3s = 0$, $9e - 2e = 7e$, $390 - 180 = 210$. Hasil: $7e = 210$.'
+      },
+      { id:'s6e6', type:'input', _displayNum:6,
+        question:'From $7e = 210$, find $e$. Then substitute into $s + 3e = 130$ to find $s$. Write as "s=40,e=30" (no spaces).<br><span style="color:var(--text-muted);font-size:12.5px">Dari $7e = 210$, cari $e$. Lalu substitusi ke $s + 3e = 130$ untuk cari $s$. Tulis sebagai "s=40,e=30" (tanpa spasi).</span>',
+        correctAnswer:'s=40,e=30',
+        explanation:'$7e = 210$ → $e = 30$. Substitute: $s + 3(30) = 130$ → $s + 90 = 130$ → $s = 40$.<br>$7e = 210$ → $e = 30$. Substitusi: $s + 3(30) = 130$ → $s + 90 = 130$ → $s = 40$.'
+      }
+    ]},
+
+    /* ============ THEORY 3: RECOGNIZING DIRECT ELIMINATION IN WORD PROBLEMS ============ */
+    { type:'theory', html:`
+      <div class="theory-svg">
+        <svg width="380" height="120" viewBox="0 0 380 120" fill="none">
+          <!-- Sentence 1 -->
+          <rect x="10" y="8" width="360" height="28" rx="8" fill="var(--bg-raised)" stroke="var(--border)" stroke-width="1"/>
+          <text x="190" y="27" text-anchor="middle" fill="var(--text-muted)" font-family="DM Sans" font-size="11">"3 pencils + 5 erasers = 29"</text>
+          <!-- Sentence 2 -->
+          <rect x="10" y="42" width="360" height="28" rx="8" fill="var(--bg-raised)" stroke="var(--border)" stroke-width="1"/>
+          <text x="190" y="61" text-anchor="middle" fill="var(--text-muted)" font-family="DM Sans" font-size="11">"3 pencils + 1 eraser = 13"</text>
+          <!-- Insight -->
+          <rect x="50" y="78" width="280" height="30" rx="12" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.2"/>
+          <text x="190" y="98" text-anchor="middle" fill="var(--accent)" font-family="DM Sans" font-weight="700" font-size="12">Both have "3 pencils" → subtract directly!</text>
+        </svg>
+      </div>
+      <p class="theory-en">Sometimes word problems already have <strong style="color:var(--accent)">matching coefficients</strong> built in! If both situations share the same quantity of one item (like "3 pencils" in both), you can subtract immediately &mdash; no multiplication needed.</p>
+      <p class="theory-id">Terkadang soal cerita sudah memiliki <strong style="color:var(--accent)">koefisien yang sama</strong> secara alami! Jika kedua situasi berbagi jumlah item yang sama (seperti "3 pensil" di keduanya), kamu bisa langsung mengurangkan &mdash; tanpa perlu mengalikan.</p>
+      <p class="theory-en" style="margin-top:8px">$(3p + 5e = 29) - (3p + e = 13)$ &rarr; $4e = 16$ &rarr; $e = 4$. Then $3p + 4 = 13$ &rarr; $p = 3$. Quick and clean!</p>
+      <p class="theory-id">$(3p + 5e = 29) - (3p + e = 13)$ &rarr; $4e = 16$ &rarr; $e = 4$. Lalu $3p + 4 = 13$ &rarr; $p = 3$. Cepat dan rapi!</p>
+    `},
+
+    /* ============ EXERCISES 7–10 ============ */
+    { type:'exercises', items:[
+      { id:'s6e7', type:'mcq', _displayNum:7,
+        question:'"2 bags of rice + 3 bags of flour cost 90. 2 bags of rice + 1 bag of flour cost 50." Which variable can be eliminated directly by subtracting?<br><span style="color:var(--text-muted);font-size:12.5px">"2 karung beras + 3 karung terigu harga 90. 2 karung beras + 1 karung terigu harga 50." Variabel mana yang bisa langsung dieliminasi dengan mengurangkan?</span>',
+        options:['Rice ($r$) only','Flour ($f$) only','Both','Neither'],
+        correctIndex:0,
+        explanation:'Both equations have "2 bags of rice" = $2r$. Subtracting eliminates $r$ directly: $2r - 2r = 0$.<br>Kedua persamaan punya "2 karung beras" = $2r$. Mengurangkan langsung mengeliminasi $r$: $2r - 2r = 0$.'
+      },
+      { id:'s6e8', type:'input', _displayNum:8,
+        question:'Using the rice/flour problem: subtract $(2r + 3f = 90) - (2r + f = 50)$. What equation remains?<br><span style="color:var(--text-muted);font-size:12.5px">Menggunakan soal beras/terigu: kurangkan $(2r + 3f = 90) - (2r + f = 50)$. Persamaan apa yang tersisa?</span><br><span style="font-size:12px;color:var(--text-muted)">Format: 2f=40 (no spaces)</span>',
+        correctAnswer:'2f=40',
+        explanation:'$2r - 2r = 0$, $3f - f = 2f$, $90 - 50 = 40$. Result: $2f = 40$.<br>$2r - 2r = 0$, $3f - f = 2f$, $90 - 50 = 40$. Hasil: $2f = 40$.'
+      },
+      { id:'s6e9', type:'input', _displayNum:9,
+        question:'From $2f = 40$, find $f$ (flour). Then substitute into $2r + f = 50$ to find $r$ (rice). Write as "r=15,f=20" (no spaces).<br><span style="color:var(--text-muted);font-size:12.5px">Dari $2f = 40$, cari $f$ (terigu). Lalu substitusi ke $2r + f = 50$ untuk cari $r$ (beras). Tulis sebagai "r=15,f=20" (tanpa spasi).</span>',
+        correctAnswer:'r=15,f=20',
+        explanation:'$2f = 40$ → $f = 20$. Substitute: $2r + 20 = 50$ → $2r = 30$ → $r = 15$.<br>$2f = 40$ → $f = 20$. Substitusi: $2r + 20 = 50$ → $2r = 30$ → $r = 15$.'
+      },
+      { id:'s6e10', type:'mcq', _displayNum:10,
+        question:'"4 cakes + 2 cookies cost 50. 2 cakes + 2 cookies cost 30." What is the price of 1 cake?<br><span style="color:var(--text-muted);font-size:12.5px">"4 kue + 2 kue kecil harga 50. 2 kue + 2 kue kecil harga 30." Berapa harga 1 kue?</span>',
+        options:['$5$','$8$','$10$','$12$'],
+        correctIndex:2,
+        explanation:'Both have $2$ cookies → subtract: $(4c + 2k = 50) - (2c + 2k = 30)$ → $2c = 20$ → $c = 10$. One cake costs $10$.<br>Keduanya punya $2$ kue kecil → kurangkan: $(4c + 2k = 50) - (2c + 2k = 30)$ → $2c = 20$ → $c = 10$. Satu kue harganya $10$.'
+      }
+    ]}
+
+  ] /* end blocks */
+};
+</script>
+
+<!-- INSERT_SECTION_7 -->
+<div id="node-assignment1" class="node-content">
+  <div id="assignment1-content"></div>
+</div>
+<!-- END INSERT_SECTION_7 -->
+
+<script>
+/* ============================================================
+   ASSIGNMENT 1 — Direct Elimination (Medium)
+   Koefisien sudah berlawanan/sama, tinggal jumlah/kurang
+   10 exercise + print result
+   ============================================================ */
+window.assignmentData.assignment1 = {
+  _isAssignment: true,
+  blocks: [
+    { type:'exercises', items:[
+      { id:'a1e1', type:'mcq', _displayNum:1,
+        question:'Solve by elimination: $x + y = 10$ and $x - y = 4$. What is $x$?',
+        options:['$5$','$6$','$7$','$8$'],
+        correctIndex:2,
+        explanation:'Adding: $2x = 14$, so $x = 7$.<br>Menjumlahkan: $2x = 14$, jadi $x = 7$.'
+      },
+      { id:'a1e2', type:'input', _displayNum:2,
+        question:'Using the same system $x + y = 10$ and $x - y = 4$, substitute $x = 7$ to find $y$.',
+        correctAnswer:'3',
+        explanation:'$7 + y = 10$, so $y = 3$. Verify: $7 - 3 = 4$ ✓<br>$7 + y = 10$, jadi $y = 3$. Verifikasi: $7 - 3 = 4$ ✓'
+      },
+      { id:'a1e3', type:'mcq', _displayNum:3,
+        question:'Solve by elimination: $2x + y = 7$ and $x + y = 4$. What is $x$?',
+        options:['$1$','$2$','$3$','$4$'],
+        correctIndex:2,
+        explanation:'Subtracting (both have $+y$): $(2x+y) - (x+y) = 7 - 4$, so $x = 3$.<br>Mengurangkan (keduanya punya $+y$): $(2x+y) - (x+y) = 7 - 4$, jadi $x = 3$.'
+      },
+      { id:'a1e4', type:'input', _displayNum:4,
+        question:'Using the same system $2x + y = 7$ and $x + y = 4$, substitute $x = 3$ to find $y$.',
+        correctAnswer:'1',
+        explanation:'$3 + y = 4$, so $y = 1$. Verify: $2(3) + 1 = 7$ ✓<br>$3 + y = 4$, jadi $y = 1$. Verifikasi: $2(3) + 1 = 7$ ✓'
+      },
+      { id:'a1e5', type:'mcq', _displayNum:5,
+        question:'Solve by elimination: $3x - 2y = 8$ and $x + 2y = 8$. What is $x$?',
+        options:['$2$','$3$','$4$','$5$'],
+        correctIndex:2,
+        explanation:'Adding (coefficients of $y$ are $-2$ and $+2$): $4x = 16$, so $x = 4$.<br>Menjumlahkan (koefisien $y$ adalah $-2$ dan $+2$): $4x = 16$, jadi $x = 4$.'
+      },
+      { id:'a1e6', type:'input', _displayNum:6,
+        question:'Using $3x - 2y = 8$ and $x + 2y = 8$ with $x = 4$, find $y$.',
+        correctAnswer:'2',
+        explanation:'$4 + 2y = 8$, so $2y = 4$, $y = 2$. Verify: $3(4) - 2(2) = 8$ ✓<br>$4 + 2y = 8$, jadi $2y = 4$, $y = 2$. Verifikasi: $3(4) - 2(2) = 8$ ✓'
+      },
+      { id:'a1e7', type:'input', _displayNum:7,
+        question:'Solve by elimination: $5x + 2y = 15$ and $3x + 2y = 11$. Find $x$. (Both have $+2y$, subtract to eliminate.)',
+        correctAnswer:'2',
+        explanation:'Subtracting: $(5x+2y) - (3x+2y) = 15-11$, so $2x = 4$, $x = 2$.<br>Mengurangkan: $(5x+2y) - (3x+2y) = 15-11$, jadi $2x = 4$, $x = 2$.'
+      },
+      { id:'a1e8', type:'input', _displayNum:8,
+        question:'Using $5x + 2y = 15$ with $x = 2$, find $y$.',
+        correctAnswer:'2.5',
+        explanation:'$5(2) + 2y = 15$, so $10 + 2y = 15$, $2y = 5$, $y = 2.5$.<br>$5(2) + 2y = 15$, jadi $10 + 2y = 15$, $2y = 5$, $y = 2.5$.'
+      },
+      { id:'a1e9', type:'mcq', _displayNum:9,
+        question:'Two numbers add up to $30$ and their difference is $6$. What is the larger number? (Use elimination: $x+y=30$, $x-y=6$)',
+        options:['$12$','$15$','$18$','$24$'],
+        correctIndex:2,
+        explanation:'Adding: $2x = 36$, so $x = 18$. The larger number is $18$. (The smaller is $y = 12$.)<br>Menjumlahkan: $2x = 36$, jadi $x = 18$. Bilangan yang lebih besar adalah $18$. (Yang lebih kecil $y = 12$.)'
+      },
+      { id:'a1e10', type:'input', _displayNum:10,
+        question:'Using the same word problem, find the smaller number.',
+        correctAnswer:'12',
+        explanation:'$x + y = 30$ with $x = 18$: $18 + y = 30$, so $y = 12$. Verify: $18 - 12 = 6$ ✓<br>$x + y = 30$ dengan $x = 18$: $18 + y = 30$, jadi $y = 12$. Verifikasi: $18 - 12 = 6$ ✓'
+      }
+    ]}
+  ]
+};
+</script>
+
+<!-- INSERT_SECTION_8 -->
+<div id="node-assignment2" class="node-content">
+  <div id="assignment2-content"></div>
+</div>
+<!-- END INSERT_SECTION_8 -->
+
+<script>
+/* ============================================================
+   ASSIGNMENT 2 — Coefficient Matching (Medium-Hard)
+   Perlu menyamakan koefisien terlebih dahulu, soal cerita,
+   desimal
+   10 exercise + print result
+   ============================================================ */
+window.assignmentData.assignment2 = {
+  _isAssignment: true,
+  blocks: [
+    { type:'exercises', items:[
+      { id:'a2e1', type:'mcq', _displayNum:1,
+        question:'Solve by elimination (match coefficients first): $2x + 3y = 8$ and $3x + 2y = 7$. What is $x$?',
+        options:['$0$','$1$','$2$','$3$'],
+        correctIndex:1,
+        explanation:'Multiply Eq1 by $3$: $6x+9y=24$. Multiply Eq2 by $2$: $6x+4y=14$. Subtract: $5y=10$, $y=2$. Then $2x+6=8$, $x=1$.<br>Kali Pers1 dg $3$: $6x+9y=24$. Kali Pers2 dg $2$: $6x+4y=14$. Kurangkan: $5y=10$, $y=2$. Lalu $2x+6=8$, $x=1$.'
+      },
+      { id:'a2e2', type:'input', _displayNum:2,
+        question:'Using $2x + 3y = 8$ and $3x + 2y = 7$, find $y$.',
+        correctAnswer:'2',
+        explanation:'From the working above: $5y = 10$, so $y = 2$. Verify: $3(1)+2(2)=7$ ✓<br>Dari perhitungan di atas: $5y = 10$, jadi $y = 2$. Verifikasi: $3(1)+2(2)=7$ ✓'
+      },
+      { id:'a2e3', type:'mcq', _displayNum:3,
+        question:'Solve: $4x - 3y = 1$ and $2x + y = 3$. What is $x$? (Hint: multiply Eq2 by $3$ then add.)',
+        options:['$0$','$1$','$2$','$3$'],
+        correctIndex:1,
+        explanation:'Multiply Eq2 by $3$: $6x+3y=9$. Add to Eq1: $10x=10$, so $x=1$.<br>Kali Pers2 dg $3$: $6x+3y=9$. Jumlahkan dg Pers1: $10x=10$, jadi $x=1$.'
+      },
+      { id:'a2e4', type:'input', _displayNum:4,
+        question:'Using $4x - 3y = 1$ and $2x + y = 3$ with $x = 1$, find $y$.',
+        correctAnswer:'1',
+        explanation:'$2(1) + y = 3$, so $y = 1$. Verify: $4(1)-3(1)=1$ ✓<br>$2(1) + y = 3$, jadi $y = 1$. Verifikasi: $4(1)-3(1)=1$ ✓'
+      },
+      { id:'a2e5', type:'input', _displayNum:5,
+        question:'"2 adult tickets + 3 child tickets cost Rp140.000. 1 adult ticket + 5 child tickets cost Rp175.000." Find the price of 1 adult ticket. (Answer in numbers only, e.g., 25000)',
+        correctAnswer:'25000',
+        explanation:'Eq1: $2a+3c=140000$. Eq2: $a+5c=175000$. Multiply Eq2 by $2$: $2a+10c=350000$. Subtract Eq1: $7c=210000$, $c=30000$. Then $a+150000=175000$, $a=25000$.<br>Pers1: $2a+3c=140000$. Pers2: $a+5c=175000$. Kali Pers2 dg $2$: $2a+10c=350000$. Kurangkan Pers1: $7c=210000$, $c=30000$. Lalu $a+150000=175000$, $a=25000$.'
+      },
+      { id:'a2e6', type:'input', _displayNum:6,
+        question:'Solve: $0.5x + 0.2y = 1.3$ and $x - y = 0.5$. First multiply Eq2 by $0.2$ to match the $y$-coefficient. Find $x$. (Answer in numbers only)',
+        correctAnswer:'2',
+        explanation:'Multiply Eq2 by $0.2$: $0.2x - 0.2y = 0.1$. Add to Eq1: $0.7x = 1.4$, so $x = 2$.<br>Kali Pers2 dg $0.2$: $0.2x - 0.2y = 0.1$. Jumlahkan dg Pers1: $0.7x = 1.4$, jadi $x = 2$.'
+      },
+      { id:'a2e7', type:'input', _displayNum:7,
+        question:'Using $0.5x + 0.2y = 1.3$ and $x - y = 0.5$ with $x = 2$, find $y$.',
+        correctAnswer:'1.5',
+        explanation:'$2 - y = 0.5$, so $y = 1.5$. Verify: $0.5(2)+0.2(1.5)=1+0.3=1.3$ ✓<br>$2 - y = 0.5$, jadi $y = 1.5$. Verifikasi: $0.5(2)+0.2(1.5)=1+0.3=1.3$ ✓'
+      },
+      { id:'a2e8', type:'mcq', _displayNum:8,
+        question:'If $3x + 4y = 25$ and $2x - y = 2$, what is the value of $x + y$?',
+        options:['$5$','$6$','$7$','$8$'],
+        correctIndex:2,
+        explanation:'Multiply Eq2 by $4$: $8x-4y=8$. Add to Eq1: $11x=33$, $x=3$. Then $2(3)-y=2$, $y=4$. So $x+y=3+4=7$.<br>Kali Pers2 dg $4$: $8x-4y=8$. Jumlahkan dg Pers1: $11x=33$, $x=3$. Lalu $2(3)-y=2$, $y=4$. Jadi $x+y=3+4=7$.'
+      },
+      { id:'a2e9', type:'mcq', _displayNum:9,
+        question:'Solve by matching coefficients: $3x + 5y = 31$ and $2x + 3y = 20$. What is $x$?',
+        options:['$5$','$6$','$7$','$8$'],
+        correctIndex:2,
+        explanation:'Multiply Eq1 by $2$: $6x+10y=62$. Multiply Eq2 by $3$: $6x+9y=60$. Subtract: $y=2$. Then $3x+10=31$, $x=7$.<br>Kali Pers1 dg $2$: $6x+10y=62$. Kali Pers2 dg $3$: $6x+9y=60$. Kurangkan: $y=2$. Lalu $3x+10=31$, $x=7$.'
+      },
+      { id:'a2e10', type:'input', _displayNum:10,
+        question:'Using $3x + 5y = 31$ and $2x + 3y = 20$, find $y$.',
+        correctAnswer:'2',
+        explanation:'From the working above: $y = 2$. Verify: $2(7)+3(2)=14+6=20$ ✓<br>Dari perhitungan di atas: $y = 2$. Verifikasi: $2(7)+3(2)=14+6=20$ ✓'
+      }
+    ]}
+  ]
+};
+</script>
+
+<!-- INSERT_SECTION_9 -->
+<div id="node-assignment3" class="node-content">
+  <div id="assignment3-content"></div>
+</div>
+<!-- END INSERT_SECTION_9 -->
+
+<script>
+/* ============================================================
+   ASSIGNMENT 3 — Mixed Medium Practice
+   Kombinasi eliminasi langsung, soal cerita sederhana,
+   berbagai variasi koefisien
+   10 exercise + print result
+   ============================================================ */
+window.assignmentData.assignment3 = {
+  _isAssignment: true,
+  blocks: [
+    { type:'exercises', items:[
+      { id:'a3e1', type:'mcq', _displayNum:1,
+        question:'Solve: $6x + 2y = 20$ and $3x + 2y = 11$. What is $x$?',
+        options:['$2$','$3$','$4$','$5$'],
+        correctIndex:1,
+        explanation:'Subtracting (both have $+2y$): $3x = 9$, so $x = 3$.<br>Mengurangkan (keduanya punya $+2y$): $3x = 9$, jadi $x = 3$.'
+      },
+      { id:'a3e2', type:'input', _displayNum:2,
+        question:'Using $6x + 2y = 20$ with $x = 3$, find $y$.',
+        correctAnswer:'1',
+        explanation:'$6(3) + 2y = 20$, so $18 + 2y = 20$, $2y = 2$, $y = 1$.<br>$6(3) + 2y = 20$, jadi $18 + 2y = 20$, $2y = 2$, $y = 1$.'
+      },
+      { id:'a3e3', type:'mcq', _displayNum:3,
+        question:'Solve: $4x + y = 19$ and $4x - y = 5$. What is $x$? (Notice the opposites!)',
+        options:['$2$','$3$','$4$','$6$'],
+        correctIndex:1,
+        explanation:'Adding (coefficients of $y$ are $+1$ and $-1$): $8x = 24$, so $x = 3$.<br>Menjumlahkan (koefisien $y$ adalah $+1$ dan $-1$): $8x = 24$, jadi $x = 3$.'
+      },
+      { id:'a3e4', type:'input', _displayNum:4,
+        question:'Using $4x + y = 19$ with $x = 3$, find $y$.',
+        correctAnswer:'7',
+        explanation:'$4(3) + y = 19$, so $12 + y = 19$, $y = 7$. Verify: $4(3)-7=5$ ✓<br>$4(3) + y = 19$, jadi $12 + y = 19$, $y = 7$. Verifikasi: $4(3)-7=5$ ✓'
+      },
+      { id:'a3e5', type:'input', _displayNum:5,
+        question:'Solve: $7x + 3y = 33$ and $7x - 3y = 9$. Find $x$. (The $y$-coefficients are opposites!)',
+        correctAnswer:'3',
+        explanation:'Adding: $14x = 42$, so $x = 3$.<br>Menjumlahkan: $14x = 42$, jadi $x = 3$.'
+      },
+      { id:'a3e6', type:'input', _displayNum:6,
+        question:'Using $7x + 3y = 33$ with $x = 3$, find $y$.',
+        correctAnswer:'4',
+        explanation:'$7(3) + 3y = 33$, so $21 + 3y = 33$, $3y = 12$, $y = 4$. Verify: $7(3)-3(4)=9$ ✓<br>$7(3) + 3y = 33$, jadi $21 + 3y = 33$, $3y = 12$, $y = 4$. Verifikasi: $7(3)-3(4)=9$ ✓'
+      },
+      { id:'a3e7', type:'mcq', _displayNum:7,
+        question:'"6 cups + 3 plates cost $48. 6 cups + 5 plates cost $56." What is the price of 1 cup?',
+        options:['$4$','$5$','$6$','$8$'],
+        correctIndex:2,
+        explanation:'Both have $6$ cups. Subtract: $2$ plates $= 8$, plate $= 4$. Then $6$ cups $+ 12 = 48$, $6$ cups $= 36$, cup $= 6$.<br>Keduanya punya $6$ cangkir. Kurangkan: $2$ piring $= 8$, piring $= 4$. Lalu $6$ cangkir $+ 12 = 48$, $6$ cangkir $= 36$, cangkir $= 6$.'
+      },
+      { id:'a3e8', type:'input', _displayNum:8,
+        question:'Using the same cup and plate problem, find the price of 1 plate.',
+        correctAnswer:'4',
+        explanation:'Subtracting the two equations: $2$ plates $= 56 - 48 = 8$, so $1$ plate $= 4$.<br>Mengurangkan kedua persamaan: $2$ piring $= 56 - 48 = 8$, jadi $1$ piring $= 4$.'
+      },
+      { id:'a3e9', type:'mcq', _displayNum:9,
+        question:'Solve: $5x + 2y = 23$ and $3x + 2y = 17$. What is $x$?',
+        options:['$2$','$3$','$4$','$5$'],
+        correctIndex:1,
+        explanation:'Subtracting (both have $+2y$): $2x = 6$, so $x = 3$.<br>Mengurangkan (keduanya punya $+2y$): $2x = 6$, jadi $x = 3$.'
+      },
+      { id:'a3e10', type:'input', _displayNum:10,
+        question:'Using $5x + 2y = 23$ with $x = 3$, find $y$.',
+        correctAnswer:'4',
+        explanation:'$5(3) + 2y = 23$, so $15 + 2y = 23$, $2y = 8$, $y = 4$. Verify: $3(3)+2(4)=9+8=17$ ✓<br>$5(3) + 2y = 23$, jadi $15 + 2y = 23$, $2y = 8$, $y = 4$. Verifikasi: $3(3)+2(4)=9+8=17$ ✓'
+      }
+    ]}
+  ]
+};
+</script>
+
+<!-- INSERT_SECTION_10 -->
+<div id="node-assignment4" class="node-content">
+  <div id="assignment4-content"></div>
+</div>
+<!-- END INSERT_SECTION_10 -->
+
+<script>
+/* ============================================================
+   ASSIGNMENT 4 — Hard Level Elimination
+   Menyamakan koefisien kedua persamaan, soal cerita kompleks,
+   desimal, cari x+y
+   10 exercise + print result
+   ============================================================ */
+window.assignmentData.assignment4 = {
+  _isAssignment: true,
+  blocks: [
+    { type:'exercises', items:[
+      { id:'a4e1', type:'mcq', _displayNum:1,
+        question:'Solve by elimination (match coefficients): $2x + 3y = 8$ and $3x + 2y = 7$. What is $x$? (Multiply Eq1 by $3$, Eq2 by $2$, then subtract.)',
+        options:['$0$','$1$','$2$','$3$'],
+        correctIndex:1,
+        explanation:'Eq1$\\times 3$: $6x+9y=24$. Eq2$\\times 2$: $6x+4y=14$. Subtract: $5y=10$, $y=2$. Then $2x+6=8$, $x=1$.<br>Pers1$\\times 3$: $6x+9y=24$. Pers2$\\times 2$: $6x+4y=14$. Kurangkan: $5y=10$, $y=2$. Lalu $2x+6=8$, $x=1$.'
+      },
+      { id:'a4e2', type:'input', _displayNum:2,
+        question:'Using $2x + 3y = 8$ and $3x + 2y = 7$, find $y$.',
+        correctAnswer:'2',
+        explanation:'From the working: $5y = 10$, so $y = 2$. Verify: $3(1)+2(2)=7$ ✓<br>Dari perhitungan: $5y = 10$, jadi $y = 2$. Verifikasi: $3(1)+2(2)=7$ ✓'
+      },
+      { id:'a4e3', type:'mcq', _displayNum:3,
+        question:'Solve: $4x - 3y = 1$ and $2x + y = 3$. What is $x$? (Hint: multiply Eq2 by $3$ then add.)',
+        options:['$0$','$1$','$2$','$3$'],
+        correctIndex:1,
+        explanation:'Multiply Eq2 by $3$: $6x+3y=9$. Add to Eq1: $10x=10$, $x=1$.<br>Kali Pers2 dg $3$: $6x+3y=9$. Jumlahkan dg Pers1: $10x=10$, $x=1$.'
+      },
+      { id:'a4e4', type:'input', _displayNum:4,
+        question:'Using $4x - 3y = 1$ and $2x + y = 3$ with $x = 1$, find $y$.',
+        correctAnswer:'1',
+        explanation:'$2(1) + y = 3$, so $y = 1$. Verify: $4(1)-3(1)=1$ ✓<br>$2(1) + y = 3$, jadi $y = 1$. Verifikasi: $4(1)-3(1)=1$ ✓'
+      },
+      { id:'a4e5', type:'mcq', _displayNum:5,
+        question:'Two numbers add up to $30$ and their difference is $6$. What is the larger number? ($x+y=30$, $x-y=6$)',
+        options:['$12$','$15$','$18$','$24$'],
+        correctIndex:2,
+        explanation:'Adding: $2x = 36$, $x = 18$. The larger number is $18$ (smaller is $y=12$). Verify: $18-12=6$ ✓<br>Menjumlahkan: $2x = 36$, $x = 18$. Bilangan lebih besar $18$ (lebih kecil $y=12$). Verifikasi: $18-12=6$ ✓'
+      },
+      { id:'a4e6', type:'input', _displayNum:6,
+        question:'"2 adult tickets + 3 child tickets cost Rp140.000. 1 adult ticket + 5 child tickets cost Rp175.000." Find the price of 1 adult ticket. (Answer in numbers only, e.g., 25000)',
+        correctAnswer:'25000',
+        explanation:'$2a+3c=140000$, $a+5c=175000$. Multiply Eq2 by $2$: $2a+10c=350000$. Subtract Eq1: $7c=210000$, $c=30000$. Then $a+150000=175000$, $a=25000$.<br>$2a+3c=140000$, $a+5c=175000$. Kali Pers2 dg $2$: $2a+10c=350000$. Kurangkan Pers1: $7c=210000$, $c=30000$. Lalu $a+150000=175000$, $a=25000$.'
+      },
+      { id:'a4e7', type:'input', _displayNum:7,
+        question:'Solve: $0.5x + 0.2y = 1.3$ and $x - y = 0.5$. Multiply Eq2 by $0.2$ to match the $y$-coefficient, then add. Find $x$. (Answer in numbers only)',
+        correctAnswer:'2',
+        explanation:'Multiply Eq2 by $0.2$: $0.2x - 0.2y = 0.1$. Add to Eq1: $0.7x = 1.4$, $x = 2$.<br>Kali Pers2 dg $0.2$: $0.2x - 0.2y = 0.1$. Jumlahkan dg Pers1: $0.7x = 1.4$, $x = 2$.'
+      },
+      { id:'a4e8', type:'mcq', _displayNum:8,
+        question:'If $3x + 4y = 25$ and $2x - y = 2$, what is the value of $x + y$?',
+        options:['$5$','$6$','$7$','$8$'],
+        correctIndex:2,
+        explanation:'Multiply Eq2 by $4$: $8x-4y=8$. Add to Eq1: $11x=33$, $x=3$. Then $2(3)-y=2$, $y=4$. So $x+y=7$.<br>Kali Pers2 dg $4$: $8x-4y=8$. Jumlahkan dg Pers1: $11x=33$, $x=3$. Lalu $2(3)-y=2$, $y=4$. Jadi $x+y=7$.'
+      },
+      { id:'a4e9', type:'input', _displayNum:9,
+        question:'Solve: $6x + 5y = 45$ and $4x + 5y = 35$. Find $x$. (Both have $+5y$, subtract to eliminate.)',
+        correctAnswer:'5',
+        explanation:'Subtracting: $(6x+5y)-(4x+5y)=45-35$, so $2x=10$, $x=5$.<br>Mengurangkan: $(6x+5y)-(4x+5y)=45-35$, jadi $2x=10$, $x=5$.'
+      },
+      { id:'a4e10', type:'input', _displayNum:10,
+        question:'Solve: $5x - 3y = 16$ and $2x + 3y = 19$. Find $y$. (The $y$-coefficients are opposites!)',
+        correctAnswer:'3',
+        explanation:'Adding: $7x=35$, $x=5$. Then $2(5)+3y=19$, $10+3y=19$, $3y=9$, $y=3$. Verify: $5(5)-3(3)=16$ ✓<br>Menjumlahkan: $7x=35$, $x=5$. Lalu $2(5)+3y=19$, $10+3y=19$, $3y=9$, $y=3$. Verifikasi: $5(5)-3(3)=16$ ✓'
+      }
+    ]}
+  ]
+};
+</script>
+
+<!-- INSERT_SECTION_11 -->
+<div id="node-assignment5" class="node-content">
+  <div id="assignment5-content"></div>
+</div>
+<!-- END INSERT_SECTION_11 -->
+
+<script>
+/* ============================================================
+   ASSIGNMENT 5 — Extra Hard Practice
+   Mengalikan kedua persamaan, soal cerita kompleks,
+   berbagai strategi eliminasi
+   10 exercise + print result
+   ============================================================ */
+window.assignmentData.assignment5 = {
+  _isAssignment: true,
+  blocks: [
+    { type:'exercises', items:[
+      { id:'a5e1', type:'mcq', _displayNum:1,
+        question:'Solve by elimination (multiply BOTH equations): $5x + 3y = 34$ and $3x + 5y = 30$. What is $x$?',
+        options:['$3$','$4$','$5$','$6$'],
+        correctIndex:2,
+        explanation:'Multiply Eq1 by $5$: $25x+15y=170$. Multiply Eq2 by $3$: $9x+15y=90$. Subtract: $16x=80$, $x=5$.<br>Kali Pers1 dg $5$: $25x+15y=170$. Kali Pers2 dg $3$: $9x+15y=90$. Kurangkan: $16x=80$, $x=5$.'
+      },
+      { id:'a5e2', type:'input', _displayNum:2,
+        question:'Using $5x + 3y = 34$ and $3x + 5y = 30$, find $y$.',
+        correctAnswer:'3',
+        explanation:'$5(5)+3y=34$, $25+3y=34$, $3y=9$, $y=3$. Verify: $3(5)+5(3)=30$ ✓<br>$5(5)+3y=34$, $25+3y=34$, $3y=9$, $y=3$. Verifikasi: $3(5)+5(3)=30$ ✓'
+      },
+      { id:'a5e3', type:'input', _displayNum:3,
+        question:'"8 apples + 6 oranges cost 76. 5 apples + 4 oranges cost 49." Find the price of 1 apple. (Answer in numbers only)',
+        correctAnswer:'5',
+        explanation:'$8a+6o=76$, $5a+4o=49$. Multiply Eq1 by $2$: $16a+12o=152$. Multiply Eq2 by $3$: $15a+12o=147$. Subtract: $a=5$.<br>$8a+6o=76$, $5a+4o=49$. Kali Pers1 dg $2$: $16a+12o=152$. Kali Pers2 dg $3$: $15a+12o=147$. Kurangkan: $a=5$.'
+      },
+      { id:'a5e4', type:'input', _displayNum:4,
+        question:'Solve: $2x + 3y = 13$ and $5x + 2y = 16$. Find $x$. (Multiply Eq1 by $2$, Eq2 by $3$, then subtract to eliminate $y$.)',
+        correctAnswer:'2',
+        explanation:'Eq1$\\times 2$: $4x+6y=26$. Eq2$\\times 3$: $15x+6y=48$. Subtract: $11x=22$, $x=2$.<br>Pers1$\\times 2$: $4x+6y=26$. Pers2$\\times 3$: $15x+6y=48$. Kurangkan: $11x=22$, $x=2$.'
+      },
+      { id:'a5e5', type:'mcq', _displayNum:5,
+        question:'Solve: $4x + 7y = 49$ and $6x - 7y = 21$. What is $x$? (The $y$-coefficients are opposites!)',
+        options:['$5$','$6$','$7$','$8$'],
+        correctIndex:2,
+        explanation:'Adding: $10x = 70$, so $x = 7$. Then $4(7)+7y=49$, $7y=21$, $y=3$. Verify: $6(7)-7(3)=21$ ✓<br>Menjumlahkan: $10x = 70$, jadi $x = 7$. Lalu $4(7)+7y=49$, $7y=21$, $y=3$. Verifikasi: $6(7)-7(3)=21$ ✓'
+      },
+      { id:'a5e6', type:'input', _displayNum:6,
+        question:'"3 breads + 2 cakes cost 28. 5 breads + 3 cakes cost 43." Find the price of 1 cake. (Answer in numbers only)',
+        correctAnswer:'11',
+        explanation:'$3b+2c=28$, $5b+3c=43$. Multiply Eq1 by $3$: $9b+6c=84$. Multiply Eq2 by $2$: $10b+6c=86$. Subtract: $b=2$. Then $3(2)+2c=28$, $2c=22$, $c=11$.<br>$3b+2c=28$, $5b+3c=43$. Kali Pers1 dg $3$: $9b+6c=84$. Kali Pers2 dg $2$: $10b+6c=86$. Kurangkan: $b=2$. Lalu $3(2)+2c=28$, $2c=22$, $c=11$.'
+      },
+      { id:'a5e7', type:'input', _displayNum:7,
+        question:'Solve: $5x - 2y = 14$ and $3x + 2y = 18$. Find $x$. (The $y$-coefficients are opposites!)',
+        correctAnswer:'4',
+        explanation:'Adding: $8x = 32$, so $x = 4$. Then $3(4)+2y=18$, $2y=6$, $y=3$. Verify: $5(4)-2(3)=14$ ✓<br>Menjumlahkan: $8x = 32$, jadi $x = 4$. Lalu $3(4)+2y=18$, $2y=6$, $y=3$. Verifikasi: $5(4)-2(3)=14$ ✓'
+      },
+      { id:'a5e8', type:'input', _displayNum:8,
+        question:'Solve: $3x + 2y = 26$ and $5x - 4y = 14$. Find $y$. (Multiply Eq1 by $2$, then add to Eq2.)',
+        correctAnswer:'4',
+        explanation:'Eq1$\\times 2$: $6x+4y=52$. Add to Eq2: $11x=66$, $x=6$. Then $3(6)+2y=26$, $18+2y=26$, $2y=8$, $y=4$. Verify: $5(6)-4(4)=14$ ✓<br>Pers1$\\times 2$: $6x+4y=52$. Jumlahkan dg Pers2: $11x=66$, $x=6$. Lalu $3(6)+2y=26$, $18+2y=26$, $2y=8$, $y=4$. Verifikasi: $5(6)-4(4)=14$ ✓'
+      },
+      { id:'a5e9', type:'mcq', _displayNum:9,
+        question:'"The sum of two numbers is 50. Three times the first number minus the second number is 34." What is the larger number?',
+        options:['$21$','$25$','$27$','$29$'],
+        correctIndex:3,
+        explanation:'$x+y=50$, $3x-y=34$. Adding: $4x=84$, $x=21$. Then $y=50-21=29$. The larger number is $29$. Verify: $3(21)-29=34$ ✓<br>$x+y=50$, $3x-y=34$. Menjumlahkan: $4x=84$, $x=21$. Lalu $y=50-21=29$. Bilangan lebih besar $29$. Verifikasi: $3(21)-29=34$ ✓'
+      },
+      { id:'a5e10', type:'mcq', _displayNum:10,
+        question:'Solve: $2x + 5y = 30$ and $3x - 5y = -5$. What is the value of $x + y$?',
+        options:['$7$','$8$','$9$','$10$'],
+        correctIndex:2,
+        explanation:'Adding (opposites on $y$): $5x=25$, $x=5$. Then $2(5)+5y=30$, $5y=20$, $y=4$. So $x+y=5+4=9$. Verify: $3(5)-5(4)=-5$ ✓<br>Menjumlahkan (lawan tanda pada $y$): $5x=25$, $x=5$. Lalu $2(5)+5y=30$, $5y=20$, $y=4$. Jadi $x+y=5+4=9$. Verifikasi: $3(5)-5(4)=-5$ ✓'
+      }
+    ]}
+  ]
+};
+</script>
+
+<!-- INSERT_SECTION_12 -->
+<div id="node-reflection" class="node-content">
+  <div id="reflection-content"></div>
+</div>
+<!-- END INSERT_SECTION_12 -->
+
+<script>
+/* ============================================================
+   CONSOLIDATION & REFLECTION
+   Ringkasan 3 langkah eliminasi, refleksi diri,
+   tombol menuju learn.algonova.id
+   ============================================================ */
+(function(){
+
+  const container = document.getElementById('reflection-content');
+
+  container.innerHTML = `
+    <!-- Summary Card -->
+    <div class="reflect-card">
+      <h3 style="font-family:Outfit;font-weight:800;font-size:20px;color:var(--accent);margin-bottom:6px;position:relative;z-index:1">
+        3 Steps of Elimination
+      </h3>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:20px;position:relative;z-index:1">
+        3 Langkah Eliminasi
+      </p>
+
+      <div class="summary-step">
+        <div class="step-num">1</div>
+        <div>
+          <p class="step-en">Match the coefficients of one variable by multiplying one or both equations.</p>
+          <p class="step-id">Samakan koefisien salah satu variabel dengan mengalikan satu atau kedua persamaan.</p>
+        </div>
+      </div>
+
+      <div class="summary-step">
+        <div class="step-num">2</div>
+        <div>
+          <p class="step-en">Add or subtract the equations to eliminate that variable, then solve for the remaining variable.</p>
+          <p class="step-id">Jumlahkan atau kurangkan persamaan untuk mengeliminasi variabel tersebut, lalu selesaikan variabel yang tersisa.</p>
+        </div>
+      </div>
+
+      <div class="summary-step">
+        <div class="step-num">3</div>
+        <div>
+          <p class="step-en">Substitute the value back into either original equation to find the second variable. Always verify!</p>
+          <p class="step-id">Substitusikan nilainya kembali ke salah satu persamaan awal untuk menemukan variabel kedua. Selalu verifikasi!</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Visual Recap SVG -->
+    <div class="theory-svg" style="margin-bottom:20px">
+      <svg width="380" height="180" viewBox="0 0 380 180" fill="none">
+        <!-- Step 1 box -->
+        <rect x="10" y="10" width="110" height="70" rx="12" fill="var(--bg-raised)" stroke="var(--border)" stroke-width="1"/>
+        <text x="65" y="32" text-anchor="middle" fill="var(--accent)" font-family="DM Sans" font-weight="700" font-size="10">MATCH</text>
+        <text x="65" y="52" text-anchor="middle" fill="var(--text)" font-family="Outfit" font-weight="600" font-size="13">3x + 2y = 16</text>
+        <text x="65" y="70" text-anchor="middle" fill="var(--text)" font-family="Outfit" font-weight="600" font-size="13">×2 → 4x+2y=18</text>
+        <!-- Arrow 1 -->
+        <line x1="122" y1="45" x2="140" y2="45" stroke="var(--accent)" stroke-width="2"/>
+        <polygon points="138,39 150,45 138,51" fill="var(--accent)"/>
+        <!-- Step 2 box -->
+        <rect x="152" y="10" width="76" height="70" rx="12" fill="var(--bg-raised)" stroke="var(--border)" stroke-width="1"/>
+        <text x="190" y="32" text-anchor="middle" fill="var(--gold)" font-family="DM Sans" font-weight="700" font-size="10">ELIMINATE</text>
+        <text x="190" y="52" text-anchor="middle" fill="var(--text)" font-family="Outfit" font-weight="600" font-size="13">− →</text>
+        <text x="190" y="70" text-anchor="middle" fill="var(--accent)" font-family="Outfit" font-weight="800" font-size="14">x = 2</text>
+        <!-- Arrow 2 -->
+        <line x1="230" y1="45" x2="248" y2="45" stroke="var(--gold)" stroke-width="2"/>
+        <polygon points="246,39 258,45 246,51" fill="var(--gold)"/>
+        <!-- Step 3 box -->
+        <rect x="260" y="10" width="110" height="70" rx="12" fill="var(--bg-raised)" stroke="var(--border)" stroke-width="1"/>
+        <text x="315" y="32" text-anchor="middle" fill="#60a5fa" font-family="DM Sans" font-weight="700" font-size="10">SUBSTITUTE</text>
+        <text x="315" y="52" text-anchor="middle" fill="var(--text)" font-family="Outfit" font-weight="600" font-size="13">2(2)+y=9</text>
+        <text x="315" y="70" text-anchor="middle" fill="var(--gold)" font-family="Outfit" font-weight="800" font-size="14">y = 5</text>
+        <!-- Verify banner -->
+        <rect x="80" y="96" width="220" height="32" rx="10" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.2"/>
+        <text x="190" y="117" text-anchor="middle" fill="var(--accent)" font-family="Outfit" font-weight="700" font-size="13">VERIFY: 3(2) + 2(5) = 16 ✓</text>
+        <!-- Decorative dots -->
+        <circle cx="30" cy="155" r="4" fill="var(--accent)" opacity=".3"/>
+        <circle cx="50" cy="165" r="3" fill="var(--gold)" opacity=".3"/>
+        <circle cx="330" cy="155" r="4" fill="var(--gold)" opacity=".3"/>
+        <circle cx="350" cy="165" r="3" fill="var(--accent)" opacity=".3"/>
+        <!-- Bottom label -->
+        <text x="190" y="160" text-anchor="middle" fill="var(--text-muted)" font-family="DM Sans" font-weight="500" font-size="11" opacity=".6">Match → Eliminate → Substitute → Verify</text>
+      </svg>
+    </div>
+
+    <!-- When to Add vs Subtract -->
+    <div class="theory-block">
+      <p class="theory-en" style="font-size:16px;font-weight:700;color:var(--gold);margin-bottom:8px">Quick Reference: Add or Subtract?</p>
+      <p class="theory-id" style="font-size:13px;color:var(--text-muted);margin-bottom:14px">Referensi Cepat: Jumlah atau Kurang?</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <div style="flex:1;min-width:140px;padding:14px;border-radius:10px;background:var(--accent-soft);border:1px solid rgba(74,222,128,.2)">
+          <p style="font-size:13px;font-weight:700;color:var(--accent);margin-bottom:4px">ADD when...</p>
+          <p style="font-size:12.5px;color:var(--text);line-height:1.6">Coefficients are <strong>opposites</strong> (like $+3y$ and $-3y$). They cancel to $0$.</p>
+          <p style="font-size:11.5px;color:var(--text-muted);margin-top:4px">JUMLAHKAN saat koefisien <strong>berlawanan tanda</strong>.</p>
+        </div>
+        <div style="flex:1;min-width:140px;padding:14px;border-radius:10px;background:var(--gold-soft);border:1px solid rgba(251,191,36,.2)">
+          <p style="font-size:13px;font-weight:700;color:var(--gold);margin-bottom:4px">SUBTRACT when...</p>
+          <p style="font-size:12.5px;color:var(--text);line-height:1.6">Coefficients are the <strong>same</strong> (like $+5x$ and $+5x$). Same minus same = $0$.</p>
+          <p style="font-size:11.5px;color:var(--text-muted);margin-top:4px">KURANGKAN saat koefisien <strong>sama</strong>.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Self Reflection -->
+    <div class="theory-block">
+      <p class="theory-en" style="font-size:16px;font-weight:700;color:var(--accent);margin-bottom:8px">Self Reflection</p>
+      <p class="theory-id" style="font-size:13px;color:var(--text-muted);margin-bottom:14px">Refleksi Diri</p>
+      <div style="padding:16px;border-radius:10px;background:var(--bg);border:1px solid var(--border)">
+        <p style="font-size:13.5px;color:var(--text);line-height:1.7;margin-bottom:12px">What was the most challenging part for you today?</p>
+        <p style="font-size:12.5px;color:var(--text-muted);line-height:1.6;margin-bottom:16px">Bagian mana yang paling menantang bagimu hari ini?</p>
+        <textarea id="reflect-input" rows="3" placeholder="Type your reflection here... / Tulis refleksimu di sini..." style="width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:8px;background:var(--card);color:var(--text);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;resize:vertical;line-height:1.6;transition:border-color .2s" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+        <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+          <button onclick="setReflect('Choosing the right multiplier')" style="padding:8px 14px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--text-muted);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">Choosing the right multiplier</button>
+          <button onclick="setReflect('Substituting back correctly')" style="padding:8px 14px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--text-muted);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">Substituting back correctly</button>
+          <button onclick="setReflect('Translating word problems')" style="padding:8px 14px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--text-muted);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">Translating word problems</button>
+          <button onclick="setReflect('Nothing, it was clear!')" style="padding:8px 14px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--text-muted);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">Nothing, it was clear!</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Progress Summary -->
+    <div class="theory-block">
+      <p class="theory-en" style="font-size:16px;font-weight:700;color:var(--gold);margin-bottom:8px">Your Progress Summary</p>
+      <p class="theory-id" style="font-size:13px;color:var(--text-muted);margin-bottom:14px">Ringkasan Progresmu</p>
+      <div id="progress-summary" style="display:flex;flex-direction:column;gap:8px"></div>
+    </div>
+
+    <!-- Algonova CTA -->
+    <div style="text-align:center;padding:20px 0 10px">
+      <p style="font-size:14px;color:var(--text);margin-bottom:6px;line-height:1.6">
+        Great job completing the lesson! Continue your practice on the Algonova platform.
+      </p>
+      <p style="font-size:12.5px;color:var(--text-muted);margin-bottom:18px;line-height:1.6">
+        Kerja bagus menyelesaikan pelajaran ini! Lanjutkan latihanmu di platform Algonova.
+      </p>
+      <a href="https://learn.algonova.id/login" target="_blank" rel="noopener noreferrer" class="algonova-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        Continue on Algonova
+      </a>
+    </div>
+  `;
+
+  /* Render progress summary */
+  renderProgressSummary();
+
+})();
+
+/* Set reflection text from quick buttons */
+function setReflect(text){
+  const ta = document.getElementById('reflect-input');
+  if(ta) ta.value = text;
+}
+
+/* Render progress summary across all sections and assignments */
+function renderProgressSummary(){
+  const wrap = document.getElementById('progress-summary');
+  if(!wrap) return;
+
+  const sectionIds = ['section1','section2','section3','section4','section5','section6'];
+  const assignIds = ['assignment1','assignment2','assignment3','assignment4','assignment5'];
+
+  let html = '';
+
+  sectionIds.forEach(id => {
+    const data = window.sectionData[id];
+    if(!data) return;
+    const exs = getAllExercises(data);
+    const answered = exs.filter(e => state.answers[e.id]).length;
+    const correct = exs.filter(e => state.answers[e.id] && state.answers[e.id].isCorrect).length;
+    const total = exs.length;
+    const pct = total > 0 ? Math.round((correct/total)*100) : 0;
+    const color = pct >= 80 ? 'var(--accent)' : pct >= 50 ? 'var(--gold)' : 'var(--danger)';
+
+    const nodeDef = NODES.find(n => n.id === id);
+    const label = nodeDef ? nodeDef.label : id;
+
+    html += `<div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:8px;background:var(--bg);border:1px solid var(--border)">
+      <div style="width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;background:${pct>=80?'var(--accent-soft)':pct>=50?'var(--gold-soft)':'var(--danger-soft)'};color:${color};flex-shrink:0">${pct}%</div>
+      <div style="flex:1;min-width:0">
+        <p style="font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${label}</p>
+        <p style="font-size:11px;color:var(--text-muted)">${correct}/${total} correct</p>
+      </div>
+      <div style="width:80px;height:6px;border-radius:3px;background:var(--border);overflow:hidden;flex-shrink:0">
+        <div style="width:${pct}%;height:100%;border-radius:3px;background:${color};transition:width .5s"></div>
+      </div>
+    </div>`;
+  });
+
+  assignIds.forEach(id => {
+    const data = window.assignmentData[id];
+    if(!data) return;
+    const exs = getAllExercises(data);
+    const answered = exs.filter(e => state.answers[e.id]).length;
+    const correct = exs.filter(e => state.answers[e.id] && state.answers[e.id].isCorrect).length;
+    const total = exs.length;
+    const pct = total > 0 ? Math.round((correct/total)*100) : 0;
+    const color = pct >= 80 ? 'var(--accent)' : pct >= 50 ? 'var(--gold)' : 'var(--danger)';
+
+    const nodeDef = NODES.find(n => n.id === id);
+    const label = nodeDef ? nodeDef.label : id;
+
+    html += `<div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:8px;background:var(--bg);border:1px solid var(--border)">
+      <div style="width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;background:${pct>=80?'var(--accent-soft)':pct>=50?'var(--gold-soft)':'var(--danger-soft)'};color:${color};flex-shrink:0">${pct}%</div>
+      <div style="flex:1;min-width:0">
+        <p style="font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${label}</p>
+        <p style="font-size:11px;color:var(--text-muted)">${correct}/${total} correct</p>
+      </div>
+      <div style="width:80px;height:6px;border-radius:3px;background:var(--border);overflow:hidden;flex-shrink:0">
+        <div style="width:${pct}%;height:100%;border-radius:3px;background:${color};transition:width .5s"></div>
+      </div>
+    </div>`;
+  });
+
+  wrap.innerHTML = html;
+}
+</script>
+
+  </div><!-- /content-scroll -->
+
+  <!-- BOTTOM NAV -->
+  <footer id="bottom-nav">
+    <button class="nav-btn danger" id="btn-reset" onclick="resetCurrentSection()">Reset</button>
+    <button class="nav-btn" id="btn-prev" onclick="goPrev()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      Previous
+    </button>
+    <button class="nav-btn primary" id="btn-next" onclick="goNext()">
+      Next
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+  </footer>
+</main>
+
+<!-- KATEX -->
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+<!-- ===== MAIN ENGINE ===== -->
+<script>
+/* ============================================================
+   1. NODE DEFINITIONS
+   ============================================================ */
+const NODES = [
+  { id:'home',       label:'Home',                            sub:'',                              type:'home' },
+  { id:'section1',   label:'Spiral Review Warm-up',           sub:'00:00 – 00:10',                 type:'section' },
+  { id:'section2',   label:'Intro & Real-World Connection',   sub:'00:10 – 00:15',                 type:'section' },
+  { id:'section3',   label:'Review of Prior Knowledge',       sub:'00:15 – 00:20',                 type:'section' },
+  { id:'section4',   label:'Problem Introduction',            sub:'00:20 – 00:30',                 type:'section' },
+  { id:'section5',   label:'Guided Practice',                 sub:'00:30 – 00:45',                 type:'section' },
+  { id:'section6',   label:'Independent Practice',            sub:'00:50 – 01:00',                 type:'section' },
+  { id:'assignment1',label:'Assignment 1',                    sub:'',                              type:'assignment' },
+  { id:'assignment2',label:'Assignment 2',                    sub:'',                              type:'assignment' },
+  { id:'assignment3',label:'Assignment 3',                    sub:'',                              type:'assignment' },
+  { id:'assignment4',label:'Assignment 4',                    sub:'',                              type:'assignment' },
+  { id:'assignment5',label:'Assignment 5',                    sub:'',                              type:'assignment' },
+  { id:'reflection', label:'Consolidation & Reflection',      sub:'01:00 – 01:05',                 type:'reflection' },
+];
+
+/* ============================================================
+   2. STATE MANAGEMENT
+   ============================================================
+   Global data containers — populated by Parts 2–8 */
+window.sectionData   = {};   // { section1: { blocks:[...] }, ... }
+window.assignmentData = {};  // { assignment1: { blocks:[...] }, ... }
+
+const STORAGE_KEY = 'deni_elimination_v1';
+let state = loadState();
+
+function defaultState(){
+  return {
+    currentNode: 'home',
+    answers: {},          // { exId: { selected:[indices], isCorrect:bool, inputText:'' } }
+    shuffled: {},         // { exId: { options:[], correctIndices:[] } }
+    completed: {},        // { nodeId: true }
+    assignResults: {},    // { assignment1: [{q,sa,ca,ok},...] }
+  };
+}
+function loadState(){
+  try{ const s=localStorage.getItem(STORAGE_KEY); return s?{...defaultState(),...JSON.parse(s)}:defaultState(); }
+  catch(e){ return defaultState(); }
+}
+function saveState(){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){}
+}
+
+/* ============================================================
+   3. TOAST NOTIFICATIONS
+   ============================================================ */
+function showToast(msg, type='info', duration=2500){
+  const c=document.getElementById('toast-container');
+  const t=document.createElement('div');
+  t.className='toast '+type;
+  t.textContent=msg;
+  c.appendChild(t);
+  setTimeout(()=>{t.style.animation='toastOut .3s ease-in forwards';setTimeout(()=>t.remove(),300)},duration);
+}
+
+/* ============================================================
+   4. SIDEBAR / PATH RENDERING
+   ============================================================ */
+function renderPath(){
+  const nav=document.getElementById('path-nav');
+  nav.innerHTML='';
+  NODES.forEach((n,i)=>{
+    const div=document.createElement('div');
+    div.className='path-node'+(state.currentNode===n.id?' active':'')+(state.completed[n.id]?' completed':'');
+    div.setAttribute('role','button');
+    div.setAttribute('tabindex','0');
+    div.setAttribute('aria-label',n.label);
+    div.onclick=()=>goToNode(n.id);
+    div.onkeydown=e=>{if(e.key==='Enter')goToNode(n.id)};
+
+    /* Circle content */
+    let circleInner='';
+    if(n.type==='home'){
+      circleInner=`<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z"/></svg>`;
+    } else if(n.type==='assignment'){
+      circleInner=`A${n.id.replace('assignment','')}`;
+    } else if(n.type==='reflection'){
+      circleInner=`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
+    } else {
+      circleInner=String(i);
+    }
+    const checkSvg=`<span class="check-overlay"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--bg)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>`;
+
+    div.innerHTML=`
+      <div class="node-circle">${circleInner}${checkSvg}</div>
+      <div><div class="node-label">${n.label}</div>${n.sub?`<div class="node-sub">${n.sub}</div>`:''}</div>
+    `;
+    nav.appendChild(div);
+  });
+}
+
+/* ============================================================
+   5. NODE SWITCHING
+   ============================================================ */
+function goToNode(id){
+  state.currentNode=id;
+  saveState();
+  /* Hide all, show target */
+  document.querySelectorAll('.node-content').forEach(el=>{el.classList.remove('active');el.style.display='none'});
+  const target=document.getElementById('node-'+id);
+  if(target){target.style.display='block';requestAnimationFrame(()=>target.classList.add('active'))}
+  /* Update path */
+  renderPath();
+  /* Update title */
+  const nodeDef=NODES.find(n=>n.id===id);
+  document.getElementById('current-title').textContent=nodeDef?nodeDef.label:'';
+  /* Update progress pill */
+  updateProgressPill(id);
+  /* Render dynamic content if section/assignment/reflection */
+  if(nodeDef && (nodeDef.type==='section'||nodeDef.type==='assignment'||nodeDef.type==='reflection')){
+    renderDynamicNode(id);
+  }
+  /* Scroll to top */
+  document.getElementById('content-scroll').scrollTop=0;
+  /* Close sidebar on mobile */
+  closeSidebar();
+}
+
+function updateProgressPill(id){
+  const pill=document.getElementById('progress-pill');
+  const data=window.sectionData[id]||window.assignmentData[id];
+  if(!data){pill.textContent='';return}
+  const exs=getAllExercises(data);
+  const answered=exs.filter(e=>state.answers[e.id]).length;
+  const correct=exs.filter(e=>state.answers[e.id]&&state.answers[e.id].isCorrect).length;
+  if(data._isAssignment){
+    pill.textContent=correct+'/'+exs.length+' correct';
+  } else {
+    pill.textContent=answered+'/'+exs.length+' done';
+  }
+}
+
+function getAllExercises(data){
+  const arr=[];
+  data.blocks.forEach(b=>{if(b.type==='exercises')b.items.forEach(e=>arr.push(e))});
+  return arr;
+}
+
+/* ============================================================
+   6. DYNAMIC NODE RENDERER (Sections & Assignments)
+   ============================================================ */
+function renderDynamicNode(nodeId){
+  const data=window.sectionData[nodeId]||window.assignmentData[nodeId];
+  if(!data) return;
+  const container=document.getElementById(nodeId+'-content');
+  if(!container) return;
+
+  let html='';
+
+  /* Assignment: name/date header */
+  if(data._isAssignment){
+    html+=`<div class="assign-header">
+      <div class="assign-field"><label>Name / Nama</label><input type="text" id="inp-name-${nodeId}" placeholder="Student name..."></div>
+      <div class="assign-field"><label>Date / Tanggal</label><input type="date" id="inp-date-${nodeId}"></div>
+    </div>`;
+  }
+
+  data.blocks.forEach((block,bi)=>{
+    if(block.type==='theory'){
+      html+=`<div class="theory-block" style="animation-delay:${bi*0.05}s">${block.html}</div>`;
+    } else if(block.type==='exercises'){
+      block.items.forEach(ex=>{
+        html+=renderExerciseHTML(ex, data._isAssignment);
+      });
+    }
+  });
+
+  /* Assignment: print button */
+  if(data._isAssignment){
+    html+=`<button class="print-btn" id="print-btn-${nodeId}" onclick="printAssignment('${nodeId}')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Print Result
+    </button>`;
+  }
+
+  container.innerHTML=html;
+
+  /* Render KaTeX in new content */
+  renderMathInElement(container, {
+    delimiters:[
+      {left:'$$',right:'$$',display:true},
+      {left:'$',right:'$',display:false},
+      {left:'\\(',right:'\\)',display:false},
+      {left:'\\[',right:'\\]',display:true}
+    ],
+    throwOnError:false
+  });
+
+  /* Restore answered states */
+  restoreStates(nodeId, data);
+
+  /* Check if print button should show */
+  if(data._isAssignment) checkPrintReady(nodeId, data);
+
+  /* Bind MCQ/checkbox clicks */
+  container.querySelectorAll('.option-label[data-exid]').forEach(lbl=>{
+    lbl.addEventListener('click', function(e){
+      const exId=this.dataset.exid;
+      if(state.answers[exId]) return; // already answered
+      const input=this.querySelector('input');
+      if(input.type==='radio'){
+        this.closest('.options-list').querySelectorAll('.option-label').forEach(l=>l.classList.remove('selected'));
+        this.classList.add('selected');
+        input.checked=true;
+        checkAnswer(exId);
+      } else if(input.type==='checkbox'){
+        input.checked=!input.checked;
+        this.classList.toggle('selected', input.checked);
+      }
+    });
+  });
+
+  /* Bind checkbox check buttons */
+  container.querySelectorAll('.check-cb-btn').forEach(btn=>{
+    btn.addEventListener('click', function(){
+      const exId=this.dataset.exid;
+      if(state.answers[exId]) return;
+      checkAnswer(exId);
+    });
+  });
+
+  /* Bind input check buttons */
+  container.querySelectorAll('.check-input-btn').forEach(btn=>{
+    btn.addEventListener('click', function(){
+      const exId=this.dataset.exid;
+      if(state.answers[exId]) return;
+      checkInputAnswer(exId);
+    });
+  });
+
+  /* Bind input enter key */
+  container.querySelectorAll('.answer-input').forEach(inp=>{
+    inp.addEventListener('keydown', function(e){
+      if(e.key==='Enter'){
+        const exId=this.id.replace('input-','');
+        if(!state.answers[exId]) checkInputAnswer(exId);
+      }
+    });
+  });
+}
+
+/* ============================================================
+   7. EXERCISE HTML RENDERER
+   ============================================================ */
+function renderExerciseHTML(ex, isAssignment){
+  const num = ex._displayNum || '?';
+  const typeLabel = ex.type==='mcq'?'Multiple Choice':ex.type==='checkbox'?'Multiple Select':'Fill in the Blank';
+  let body='';
+
+  if(ex.type==='mcq'){
+    const sh=getShuffled(ex);
+    body=`<div class="options-list">
+      ${sh.options.map((opt,i)=>`
+        <label class="option-label" data-exid="${ex.id}" data-idx="${i}">
+          <input type="radio" name="${ex.id}" value="${i}" class="option-input">
+          <span class="option-marker">${String.fromCharCode(65+i)}</span>
+          <span class="option-text">${opt}</span>
+        </label>`).join('')}
+    </div>`;
+  } else if(ex.type==='checkbox'){
+    const sh=getShuffled(ex);
+    body=`<div class="options-list">
+      ${sh.options.map((opt,i)=>`
+        <label class="option-label" data-exid="${ex.id}" data-idx="${i}">
+          <input type="checkbox" name="${ex.id}" value="${i}" class="option-input">
+          <span class="option-marker">${String.fromCharCode(65+i)}</span>
+          <span class="option-text">${opt}</span>
+        </label>`).join('')}
+      <button class="check-btn check-cb-btn" data-exid="${ex.id}" style="margin-top:10px">Check</button>
+    </div>`;
+  } else {
+    body=`<div class="input-row">
+      <input type="text" class="answer-input" id="input-${ex.id}" placeholder="Type your answer..." autocomplete="off">
+      <button class="check-btn check-input-btn" data-exid="${ex.id}">Check</button>
+    </div>`;
+  }
+
+  return `<div class="exercise-block" id="exblock-${ex.id}">
+    <div class="ex-header">
+      <span class="ex-num">${num}</span>
+      <span class="ex-badge">${typeLabel}</span>
+    </div>
+    <div class="ex-question">${ex.question}</div>
+    ${body}
+    <div class="result-banner" id="result-${ex.id}"></div>
+    <div class="explanation-wrap" id="explain-${ex.id}">
+      <button class="explain-toggle" onclick="toggleExplain('${ex.id}')">
+        <span>View Explanation / Lihat Penjelasan</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="explain-content" id="explain-c-${ex.id}"><p>${ex.explanation}</p></div>
+    </div>
+  </div>`;
+}
+
+/* ============================================================
+   8. OPTION SHUFFLING
+   ============================================================ */
+function getShuffled(ex){
+  if(state.shuffled[ex.id]) return state.shuffled[ex.id];
+  const options=[...ex.options];
+  /* Track where correct indices land */
+  let correctMap;
+  if(ex.type==='checkbox'){
+    correctMap=ex.correctIndices.map(ci=>({orig:ci, cur:ci}));
+  } else {
+    correctMap=[{orig:ex.correctIndex, cur:ex.correctIndex}];
+  }
+  /* Fisher-Yates */
+  for(let i=options.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [options[i],options[j]]=[options[j],options[i]];
+    correctMap.forEach(m=>{
+      if(m.cur===i) m.cur=j;
+      else if(m.cur===j) m.cur=i;
+    });
+  }
+  const correctIndices=correctMap.map(m=>m.cur).sort((a,b)=>a-b);
+  const result={options, correctIndices};
+  state.shuffled[ex.id]=result;
+  saveState();
+  return result;
+}
+
+/* ============================================================
+   9. ANSWER CHECKING
+   ============================================================ */
+function checkAnswer(exId){
+  if(state.answers[exId]) return;
+  const ex=findEx(exId);
+  if(!ex) return;
+  const sh=state.shuffled[exId];
+  if(!sh) return;
+
+  let selected=[];
+  const block=document.getElementById('exblock-'+exId);
+  const labels=block.querySelectorAll('.option-label');
+
+  if(ex.type==='mcq'){
+    const checked=block.querySelector('input[type="radio"]:checked');
+    if(!checked){showToast('Please select an answer','error');return}
+    selected=[parseInt(checked.value)];
+  } else {
+    labels.forEach(l=>{
+      const inp=l.querySelector('input[type="checkbox"]');
+      if(inp&&inp.checked) selected.push(parseInt(inp.value));
+    });
+    if(selected.length===0){showToast('Please select at least one answer','error');return}
+  }
+
+  const isCorrect=sh.correctIndices.length===selected.length && sh.correctIndices.every(ci=>selected.includes(ci));
+
+  /* Disable & highlight */
+  labels.forEach(l=>{
+    const idx=parseInt(l.dataset.idx);
+    l.classList.add('disabled');
+    l.querySelector('input').disabled=true;
+    if(sh.correctIndices.includes(idx)) l.classList.add('correct');
+    if(selected.includes(idx)&&!sh.correctIndices.includes(idx)) l.classList.add('wrong');
+  });
+
+  /* Disable checkbox check button */
+  const cbBtn=block.querySelector('.check-cb-btn');
+  if(cbBtn) cbBtn.disabled=true;
+
+  saveAnswerResult(exId, ex, selected, isCorrect, labels);
+}
+
+function checkInputAnswer(exId){
+  if(state.answers[exId]) return;
+  const ex=findEx(exId);
+  if(!ex) return;
+  const inp=document.getElementById('input-'+exId);
+  if(!inp) return;
+  const val=inp.value.trim();
+  if(!val){showToast('Please type your answer','error');return}
+
+  const isCorrect=val===ex.correctAnswer;
+  inp.disabled=true;
+  const btn=inp.parentElement.querySelector('.check-input-btn');
+  if(btn) btn.disabled=true;
+
+  saveAnswerResult(exId, ex, [val], isCorrect, null);
+}
+
+function saveAnswerResult(exId, ex, selected, isCorrect, labels){
+  const sh=state.shuffled[exId];
+  let studentAnswerStr='';
+  let correctAnswerStr='';
+
+  if(ex.type==='input'){
+    studentAnswerStr=selected[0];
+    correctAnswerStr=ex.correctAnswer;
+  } else {
+    studentAnswerStr=selected.map(i=>String.fromCharCode(65+i)).join(', ');
+    correctAnswerStr=sh.correctIndices.map(i=>String.fromCharCode(65+i)).join(', ');
+  }
+
+  state.answers[exId]={selected, isCorrect, studentAnswer:studentAnswerStr, correctAnswer:correctAnswerStr};
+
+  /* Result banner */
+  const rb=document.getElementById('result-'+exId);
+  rb.className='result-banner show '+(isCorrect?'correct':'wrong');
+  rb.innerHTML=isCorrect
+    ?`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Correct! / Benar!`
+    :`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Incorrect. / Salah.`;
+
+  /* Block border */
+  const block=document.getElementById('exblock-'+exId);
+  block.classList.add(isCorrect?'answered-correct':'answered-wrong');
+
+  /* Show explanation (auto-open) */
+  const ew=document.getElementById('explain-'+exId);
+  ew.classList.add('show');
+  const toggle=ew.querySelector('.explain-toggle');
+  const content=ew.querySelector('.explain-content');
+  toggle.classList.add('open');
+  content.classList.add('open');
+
+  /* Render KaTeX inside explanation */
+  renderMathInElement(content, {
+    delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false},{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}],
+    throwOnError:false
+  });
+
+  saveState();
+  updateProgressPill(state.currentNode);
+  checkSectionCompletion();
+
+  /* If assignment, update print readiness */
+  const nodeDef=NODES.find(n=>n.id===state.currentNode);
+  if(nodeDef&&nodeDef.type==='assignment'){
+    const data=window.assignmentData[state.currentNode];
+    if(data) checkPrintReady(state.currentNode, data);
+  }
+}
+
+function findEx(exId){
+  for(const key of Object.keys(window.sectionData)){
+    const exs=getAllExercises(window.sectionData[key]);
+    const found=exs.find(e=>e.id===exId);
+    if(found) return found;
+  }
+  for(const key of Object.keys(window.assignmentData)){
+    const exs=getAllExercises(window.assignmentData[key]);
+    const found=exs.find(e=>e.id===exId);
+    if(found) return found;
+  }
+  return null;
+}
+
+/* ============================================================
+   10. RESTORE STATES ON RE-RENDER
+   ============================================================ */
+function restoreStates(nodeId, data){
+  const exs=getAllExercises(data);
+  exs.forEach(ex=>{
+    const a=state.answers[ex.id];
+    if(!a) return;
+    const sh=state.shuffled[ex.id];
+    const block=document.getElementById('exblock-'+ex.id);
+    if(!block) return;
+
+    block.classList.add(a.isCorrect?'answered-correct':'answered-wrong');
+
+    if(ex.type==='input'){
+      const inp=document.getElementById('input-'+ex.id);
+      if(inp){inp.value=a.studentAnswer;inp.disabled=true}
+      const btn=block.querySelector('.check-input-btn');
+      if(btn) btn.disabled=true;
+    } else {
+      const labels=block.querySelectorAll('.option-label');
+      labels.forEach(l=>{
+        const idx=parseInt(l.dataset.idx);
+        l.classList.add('disabled');
+        const input=l.querySelector('input');
+        input.disabled=true;
+        if(sh&&sh.correctIndices.includes(idx)){
+          l.classList.add('correct');
+        }
+        if(a.selected.includes(idx)){
+          input.checked=true;
+          l.classList.add('selected');
+          if(sh&&!sh.correctIndices.includes(idx)) l.classList.add('wrong');
+        }
+      });
+      const cbBtn=block.querySelector('.check-cb-btn');
+      if(cbBtn) cbBtn.disabled=true;
+    }
+
+    /* Result banner */
+    const rb=document.getElementById('result-'+ex.id);
+    rb.className='result-banner show '+(a.isCorrect?'correct':'wrong');
+    rb.innerHTML=a.isCorrect
+      ?`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Correct! / Benar!`
+      :`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Incorrect. / Salah.`;
+
+    /* Show explanation */
+    const ew=document.getElementById('explain-'+ex.id);
+    ew.classList.add('show');
+    const toggle=ew.querySelector('.explain-toggle');
+    const content=ew.querySelector('.explain-content');
+    toggle.classList.add('open');
+    content.classList.add('open');
+  });
+}
+
+/* ============================================================
+   11. EXPLANATION TOGGLE
+   ============================================================ */
+function toggleExplain(exId){
+  const ew=document.getElementById('explain-'+exId);
+  const toggle=ew.querySelector('.explain-toggle');
+  const content=ew.querySelector('.explain-content');
+  toggle.classList.toggle('open');
+  content.classList.toggle('open');
+}
+
+/* ============================================================
+   12. SECTION COMPLETION CHECK
+   ============================================================ */
+function checkSectionCompletion(){
+  const nodeId=state.currentNode;
+  const data=window.sectionData[nodeId]||window.assignmentData[nodeId];
+  if(!data) return;
+  const exs=getAllExercises(data);
+  const allAnswered=exs.every(e=>state.answers[e.id]);
+  if(allAnswered) state.completed[nodeId]=true;
+  saveState();
+  renderPath();
+}
+
+/* ============================================================
+   13. PRINT SYSTEM (Assignments only)
+   ============================================================ */
+function checkPrintReady(nodeId, data){
+  const exs=getAllExercises(data);
+  const allAnswered=exs.every(e=>state.answers[e.id]);
+  const btn=document.getElementById('print-btn-'+nodeId);
+  if(btn) btn.classList.toggle('show', allAnswered);
+}
+
+function printAssignment(nodeId){
+  const data=window.assignmentData[nodeId];
+  if(!data) return;
+  const exs=getAllExercises(data);
+  const nameInp=document.getElementById('inp-name-'+nodeId);
+  const dateInp=document.getElementById('inp-date-'+nodeId);
+  const studentName=nameInp?nameInp.value:'';
+  const studentDate=dateInp?dateInp.value:'';
+  const correctCount=exs.filter(e=>state.answers[e.id]&&state.answers[e.id].isCorrect).length;
+
+  /* Build table rows */
+  let rows='';
+  exs.forEach((ex,i)=>{
+    const a=state.answers[ex.id]||{};
+    const qPlain=ex.question.replace(/\$[^$]+\$/g,'[math]').replace(/\\[\(\[][^\\\[\)]]*\\[\)\]]/g,'[math]').replace(/<[^>]+>/g,'').trim();
+    const note=a.isCorrect
+      ?'<span style="color:#16a34a;font-size:16px">&#10003;</span>'
+      :'<span style="color:#dc2626;font-size:16px">&#10007;</span>';
+    rows+=`<tr>
+      <td style="text-align:center;padding:4px 6px;font-size:11px;border:1px solid #333">${i+1}</td>
+      <td style="padding:4px 8px;font-size:10.5px;border:1px solid #333;max-width:200px">${qPlain}</td>
+      <td style="text-align:center;padding:4px 6px;font-size:11px;border:1px solid #333">${a.studentAnswer||'-'}</td>
+      <td style="text-align:center;padding:4px 6px;font-size:11px;border:1px solid #333">${a.correctAnswer||'-'}</td>
+      <td style="text-align:center;padding:4px 6px;border:1px solid #333">${note}</td>
+    </tr>`;
+  });
+
+  const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Assignment Result</title>
+  <style>
+    @page{size:A4;margin:15mm}
+    body{font-family:Arial,sans-serif;font-size:12px;color:#111;margin:0;padding:0}
+    .header{text-align:center;margin-bottom:14px}
+    .header h1{font-size:16px;margin:0 0 4px}
+    .header p{margin:2px 0;font-size:11px;color:#555}
+    table{width:100%;border-collapse:collapse;margin-top:10px}
+    th{background:#e5e7eb;padding:5px 8px;font-size:11px;text-align:center;border:1px solid #333}
+    .score{font-size:13px;font-weight:bold;margin-top:10px}
+    .sign{text-align:right;margin-top:30px;font-size:12px}
+    .sign-line{border-top:1px solid #111;display:inline-block;width:150px;margin-top:4px}
+  </style></head><body>
+  <div class="header">
+    <h1>MATH TUTORING by Deni</h1>
+    <p>Name: ${studentName||'____________________'}</p>
+    <p>Date: ${studentDate||'____________________'}</p>
+    <p>Topic: Elimination Method for Systems of Equations</p>
+    <p>Assignment Group: ${nodeId.replace('assignment','Assignment ')}</p>
+    <p class="score">Score: ${correctCount} / ${exs.length}</p>
+  </div>
+  <table>
+    <thead><tr><th>No.</th><th>Question</th><th>Student Answer</th><th>Correct Answer</th><th>Note</th></tr></thead>
+    <tbody>${rows}</tbody>
+  </table>
+  <div class="sign">Checked by,<br><br><span class="sign-line"></span><br>Deni</div>
+  </body></html>`;
+
+  const w=window.open('','_blank');
+  w.document.write(html);
+  w.document.close();
+  w.focus();
+  setTimeout(()=>w.print(),400);
+}
+
+/* ============================================================
+   14. NAVIGATION
+   ============================================================ */
+function goNext(){
+  const idx=NODES.findIndex(n=>n.id===state.currentNode);
+  if(idx<NODES.length-1) goToNode(NODES[idx+1].id);
+  else showToast('You have reached the end','info');
+}
+function goPrev(){
+  const idx=NODES.findIndex(n=>n.id===state.currentNode);
+  if(idx>0) goToNode(NODES[idx-1].id);
+  else showToast('You are at the beginning','info');
+}
+
+function resetCurrentSection(){
+  const nodeId=state.currentNode;
+  if(nodeId==='home'){showToast('Use "Reset All Progress" on this page','info');return}
+  const data=window.sectionData[nodeId]||window.assignmentData[nodeId];
+  if(!data){showToast('Nothing to reset','info');return}
+  const exs=getAllExercises(data);
+  exs.forEach(e=>{
+    delete state.answers[e.id];
+    delete state.shuffled[e.id];
+  });
+  delete state.completed[nodeId];
+  if(state.assignResults[nodeId]) delete state.assignResults[nodeId];
+  saveState();
+  goToNode(nodeId);
+  showToast('Section reset','success');
+}
+
+function resetAllProgress(){
+  /* Custom inline confirm */
+  const existing=document.getElementById('confirm-modal');
+  if(existing) existing.remove();
+  const modal=document.createElement('div');
+  modal.id='confirm-modal';
+  modal.style.cssText='position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.6);backdrop-filter:blur(4px)';
+  modal.innerHTML=`<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;max-width:360px;width:90%;text-align:center">
+    <p style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px">Reset All Progress?</p>
+    <p style="font-size:13px;color:var(--text-muted);margin-bottom:20px">This will clear all your answers and progress. This action cannot be undone.</p>
+    <div style="display:flex;gap:10px;justify-content:center">
+      <button class="nav-btn" onclick="document.getElementById('confirm-modal').remove()" style="flex:1">Cancel</button>
+      <button class="nav-btn danger" onclick="confirmResetAll()" style="flex:1">Reset</button>
+    </div>
+  </div>`;
+  document.body.appendChild(modal);
+}
+function confirmResetAll(){
+  document.getElementById('confirm-modal').remove();
+  state=defaultState();
+  saveState();
+  goToNode('home');
+  showToast('All progress has been reset','success');
+}
+
+/* ============================================================
+   15. SIDEBAR MOBILE
+   ============================================================ */
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebar-overlay').classList.toggle('show');
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('show');
+}
+
+/* ============================================================
+   16. KEYBOARD NAVIGATION
+   ============================================================ */
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA') return;
+  if(e.key==='ArrowRight') goNext();
+  if(e.key==='ArrowLeft') goPrev();
+});
+
+/* ============================================================
+   17. INITIALIZATION
+   ============================================================ */
+(function init(){
+  renderPath();
+  goToNode(state.currentNode||'home');
+})();
+</script>
+</body>
+</html>
