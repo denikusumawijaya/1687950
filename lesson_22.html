@@ -1,0 +1,1574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Tutoring by Deni - Phase 2 Assessment</title>
+    <!-- KaTeX CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #58cc02;
+            --primary-dark: #46a302;
+            --secondary: #1cb0f6;
+            --danger: #ff4b4b;
+            --warning: #ffc800;
+            --bg-color: #fff;
+            --text-color: #3c3c3c;
+            --border-color: #e5e5e5;
+            --card-bg: #ffffff;
+            --shadow: 0 4px 0 rgba(0,0,0,0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Nunito', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f7f7f7;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* Header & Navigation */
+        header {
+            background: var(--card-bg);
+            padding: 15px 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+
+        .main-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-nav {
+            background: #e5e5e5;
+            color: #777;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-nav:hover {
+            filter: brightness(0.95);
+        }
+
+        .btn-nav.active {
+            background: var(--secondary);
+            color: white;
+        }
+
+        /* Duolingo Path Layout */
+        #path-container {
+            position: relative;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .path-node {
+            background: var(--card-bg);
+            border: none;
+            border-bottom: 4px solid #e5e5e5;
+            padding: 15px 30px;
+            border-radius: 16px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: transform 0.2s, border-bottom-width 0.1s;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            width: 100%;
+            max-width: 400px;
+            text-align: left;
+            position: relative;
+        }
+
+        .path-node:hover {
+            transform: translateY(-2px);
+        }
+
+        .path-node:active {
+            transform: translateY(2px);
+            border-bottom-width: 2px;
+        }
+
+        .path-node.completed {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .path-node.locked {
+            background: #e5e5e5;
+            color: #afafaf;
+            cursor: not-allowed;
+        }
+
+        .node-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .path-connector {
+            width: 4px;
+            height: 30px;
+            background: #e5e5e5;
+        }
+
+        /* Lesson Content Area */
+        #content-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            display: none;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            animation: slideUp 0.4s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .bilingual {
+            margin-bottom: 15px;
+        }
+
+        .bilingual p {
+            margin-bottom: 2px;
+        }
+
+        .indo-text {
+            color: #888;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+
+        /* Exercises & Inputs */
+        .exercise-box {
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 15px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .option-btn {
+            background: white;
+            border: 2px solid var(--border-color);
+            padding: 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            color: var(--text-color);
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .option-btn:hover {
+            border-color: var(--secondary);
+            color: var(--secondary);
+        }
+
+        .option-btn.selected {
+            border-color: var(--secondary);
+            background: #e7f7ff;
+            color: var(--secondary);
+        }
+
+        .option-btn.correct {
+            border-color: var(--primary);
+            background: #e7ffe0;
+            color: var(--primary);
+        }
+
+        .option-btn.incorrect {
+            border-color: var(--danger);
+            background: #ffe0e0;
+            color: var(--danger);
+        }
+
+        .text-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 1rem;
+            margin-top: 10px;
+        }
+
+        .submit-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-bottom: 4px solid var(--primary-dark);
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .submit-btn:disabled {
+            background: #e5e5e5;
+            border-bottom-color: #d4d4d4;
+            color: #afafaf;
+            cursor: not-allowed;
+        }
+
+        .explanation-collapse {
+            margin-top: 15px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 15px;
+            display: none;
+        }
+
+        .explanation-toggle {
+            color: var(--secondary);
+            cursor: pointer;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* SVG Illustrations */
+        .svg-illustration {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+            display: block;
+        }
+
+        /* Footer Action Buttons */
+        .action-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.1s;
+        }
+
+        .btn:active { transform: translateY(2px); }
+        .btn-secondary { background: #e5e5e5; color: #777; }
+        .btn-primary { background: var(--secondary); color: white; border-bottom: 4px solid #1899d6; }
+        .btn-danger { background: var(--danger); color: white; border-bottom: 4px solid #cc3333; }
+
+        /* Print Styles for Assignment */
+        @media print {
+            body * { visibility: hidden; }
+            #print-area, #print-area * { visibility: visible; }
+            #print-area {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 210mm; /* A4 width */
+                min-height: 297mm; /* A4 height */
+                padding: 15mm;
+                font-family: Arial, sans-serif;
+                color: #000;
+            }
+            .print-header {
+                text-align: center;
+                border-bottom: 2px solid #000;
+                padding-bottom: 10px;
+                margin-bottom: 20px;
+            }
+            .print-info {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+                margin-bottom: 20px;
+                font-size: 12pt;
+            }
+            .print-table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 10pt;
+            }
+            .print-table th, .print-table td {
+                border: 1px solid #000;
+                padding: 5px;
+                text-align: left;
+            }
+            .print-footer {
+                margin-top: 30px;
+                text-align: right;
+                font-size: 12pt;
+            }
+            @page { size: A4; margin: 0; }
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .options-grid { grid-template-columns: 1fr; }
+            header { flex-direction: column; gap: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo"><i class="fas fa-square-root-variable"></i> MATH TUTORING by Deni</div>
+        <div class="main-nav">
+            <button class="btn-nav" onclick="resetAllProgress()"><i class="fas fa-redo"></i> Reset All</button>
+            <button class="btn-nav" onclick="prevSection()"><i class="fas fa-arrow-left"></i> Prev</button>
+            <button class="btn-nav" onclick="nextSection()"><i class="fas fa-arrow-right"></i> Next</button>
+        </div>
+    </header>
+
+    <!-- Duolingo Style Path -->
+    <div id="path-container"></div>
+
+    <!-- Dynamic Content Area -->
+    <div id="content-container"></div>
+
+    <!-- Print Area (Hidden on screen) -->
+    <div id="print-area" style="display: none;"></div>
+
+    <!-- KaTeX & Scripts -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    
+    <script>
+        // ==========================================
+        // LESSON DATA & CONTENT
+        // ==========================================
+        const lessonData = [
+            {
+                id: "home",
+                title: "Home",
+                icon: "fa-house",
+                type: "home",
+                content: {
+                    title: "Phase 2 Assessment",
+                    title_indo: "Evaluasi Fase 2",
+                    rules: [
+                        { en: "Take turns speaking.", indo: "Berbicara secara bergantian." },
+                        { en: "Ask permission if you need to leave the class.", indo: "Meminta izin jika ingin meninggalkan kelas." },
+                        { en: "Turn on camera and microphone if needed.", indo: "Menyalakan kamera dan microphone jika diperlukan." }
+                    ]
+                }
+            },
+            {
+                id: "warmup",
+                title: "Spiral Review Warm-up",
+                time: "00:00-00:10",
+                icon: "fa-fire-flame-curved",
+                type: "lesson",
+                modules: [
+                    {
+                        type: "theory",
+                        svg: `<svg class="svg-illustration" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="#FFC800"/><text x="50" y="60" font-size="40" text-anchor="middle" fill="white" font-weight="bold">3x</text></svg>`,
+                        title: "Variables, Constants, and Coefficients",
+                        title_indo: "Variabel, Konstanta, dan Koefisien",
+                        body: "In algebra, a <b>variable</b> is a symbol (like x or y) representing an unknown number. A <b>constant</b> is a fixed number. A <b>coefficient</b> is the number multiplied by the variable.",
+                        body_indo: "Dalam aljabar, <b>variabel</b> adalah simbol (seperti x atau y) yang mewakili angka yang tidak diketahui. <b>Konstanta</b> adalah angka tetap. <b>Koefisien</b> adalah angka yang dikalikan dengan variabel."
+                    },
+                    {
+                        type: "exercise",
+                        question: "Identify the constant in the expression: \\( 3x^2 - 5x + 7 \\)",
+                        options: ["3", "-5", "7", "2"],
+                        correct: "7",
+                        explanation: "The constant is the term without any variables. Here, it is 7. / Konstanta adalah suku tanpa variabel. Di sini, nilainya 7."
+                    },
+                    {
+                        type: "exercise",
+                        question: "What is the coefficient of y in: \\( 4x - 2y + 9 \\)?",
+                        options: ["4", "2", "-2", "9"],
+                        correct: "-2",
+                        explanation: "The number directly multiplying 'y' is -2. / Angka yang langsung mengalikan 'y' adalah -2."
+                    },
+                    {
+                        type: "exercise",
+                        question: "Which of the following is a variable in \\( ax^2 + bx + c \\)?",
+                        options: ["a", "b", "c", "x"],
+                        correct: "x",
+                        explanation: "'x' is the unknown variable, while a, b, and c are constants in this general form. / 'x' adalah variabel yang tidak diketahui, sementara a, b, dan c adalah konstanta."
+                    },
+                    {
+                        type: "theory",
+                        svg: `<svg class="svg-illustration" viewBox="0 0 100 100"><rect x="20" y="30" width="60" height="40" rx="5" fill="#1CB0F6"/><text x="50" y="55" font-size="14" text-anchor="middle" fill="white">Translate</text></svg>`,
+                        title: "Translating Words to Algebra",
+                        title_indo: "Menerjemahkan Kalimat ke Aljabar",
+                        body: "We can translate sentences into mathematical expressions. 'A number' usually becomes 'x' or 'n'. 'Times' means multiplication. 'Minus' or 'decreased by' means subtraction.",
+                        body_indo: "Kita bisa menerjemahkan kalimat menjadi ekspresi matematika. 'Sebuah angka' biasanya menjadi 'x' atau 'n'. 'Kali' berarti perkalian. 'Kurang' atau 'berkurang' berarti pengurangan."
+                    },
+                    {
+                        type: "exercise",
+                        question: "Translate: 'Three times a number minus 10'",
+                        options: ["3x + 10", "3(x - 10)", "3x - 10", "10 - 3x"],
+                        correct: "3x - 10",
+                        explanation: "Three times a number is 3x, minus 10 makes it 3x - 10. / Tiga kali sebuah angka adalah 3x, dikurangi 10 menjadi 3x - 10."
+                    },
+                    {
+                        type: "exercise",
+                        question: "Translate: 'A number squared increased by 4'",
+                        options: ["x^2 + 4", "2x + 4", "x + 4^2", "(x+4)^2"],
+                        correct: "x^2 + 4",
+                        explanation: "A number squared is x^2. Increased by 4 means +4. / Sebuah angka dikuadratkan adalah x^2. Ditambah 4 berarti +4."
+                    },
+                    {
+                        type: "exercise",
+                        question: "Translate: 'Half of a number'",
+                        options: ["2x", "x/2", "x - 2", "x + 2"],
+                        correct: "x/2",
+                        explanation: "Half of x is written as x/2 or 0.5x. / Setengah dari x ditulis sebagai x/2 atau 0.5x."
+                    },
+                    {
+                        type: "theory",
+                        svg: `<svg class="svg-illustration" viewBox="0 0 100 100"><path d="M20,80 L50,20 L80,80 Z" fill="#FF4B4B"/><text x="50" y="70" font-size="14" text-anchor="middle" fill="white">EQ</text></svg>`,
+                        title: "Building Equations",
+                        title_indo: "Menyusun Persamaan",
+                        body: "An equation has an equals sign (=). It shows that two expressions are equal. For example, 'The price of 2 burgers and 3 drinks is 50,000' becomes \\( 2b + 3m = 50000 \\).",
+                        body_indo: "Persamaan memiliki tanda sama dengan (=). Ini menunjukkan bahwa dua ekspresi adalah sama. Contohnya, 'Harga 2 burger dan 3 minuman adalah 50.000' menjadi \\( 2b + 3m = 50000 \\)."
+                    },
+                    {
+                        type: "exercise",
+                        question: "Write the equation for: 'Price of 2 burgers (b) and 3 drinks (m) is 50,000'",
+                        options: ["2b + 3m = 50000", "b + m = 50000", "3b + 2m = 50000", "2b * 3m = 50000"],
+                        correct: "2b + 3m = 50000",
+                        explanation: "2 burgers means 2b, 3 drinks means 3m. Together they cost 50000. / 2 burger berarti 2b, 3 minuman berarti 3m. Total harganya 50000."
+                    },
+                    {
+                        type: "exercise",
+                        question: "Write the equation for: 'Total age of 4 brothers (a) is 40'",
+                        options: ["a/4 = 40", "a - 4 = 40", "4a = 40", "a + 4 = 40"],
+                        correct: "4a = 40",
+                        explanation: "4 brothers each with age 'a' means 4 multiplied by a. / 4 saudara masing-masing berusia 'a' berarti 4 dikalikan a."
+                    },
+                    {
+                        type: "exercise",
+                        question: "Write the equation for: 'Area of rectangle with length l and width w'",
+                        options: ["lw", "2(l+w)", "l+w", "l^2"],
+                        correct: "lw",
+                        explanation: "Area of a rectangle is length times width. / Luas persegi panjang adalah panjang kali lebar."
+                    },
+                    {
+                        type: "exercise",
+                        question: "Write the equation for: 'Perimeter of a triangle with sides a, b, c'",
+                        options: ["abc", "a+b+c", "2(a+b+c)", "a*b*c"],
+                        correct: "a+b+c",
+                        explanation: "Perimeter is the sum of all sides. / Keliling adalah jumlah semua sisi."
+                    }
+                ]
+            },
+            {
+                id: "intro",
+                title: "Introduction & Real-World",
+                time: "00:10-00:15",
+                icon: "fa-gamepad",
+                type: "lesson",
+                modules: [
+                    {
+                        type: "theory",
+                        svg: `<svg class="svg-illustration" viewBox="0 0 100 100"><rect x="20" y="20" width="60" height="60" rx="10" fill="#1CB0F6"/><path d="M35,50 L45,60 L65,40" stroke="white" stroke-width="5" fill="none"/></svg>`,
+                        title: "Algebra as Backend Code",
+                        title_indo: "Aljabar sebagai Kode Backend",
+                        body: "Imagine you are coding a game engine. You must ensure all variables are calculated precisely so the game doesn't lag. Algebra is the 'backend code' that we test today!",
+                        body_indo: "Bayangkan kamu sedang mengoding sebuah game engine. Kamu harus memastikan semua variabel terhitung dengan tepat agar game tidak lag. Aljabar adalah 'backend code' yang akan kita uji hari ini!"
+                    },
+                    {
+                        type: "exercise",
+                        question: "In a game, a player's health (H) decreases by 5 when hit. If initial health is 100, what is the expression for current health?",
+                        options: ["H = 100 - 5", "H = 100 + 5", "H = 100 * 5", "H = 5 - 100"],
+                        correct: "H = 100 - 5",
+                        explanation: "Decreased by 5 means subtract 5 from the initial 100. / Berkurang 5 berarti kurangi 5 dari 100 awal."
+                    },
+                    {
+                        type: "exercise",
+                        question: "A game requires 10 coins (c) to buy 1 life (l). Which equation represents this?",
+                        options: ["c = 10l", "l = 10c", "c + l = 10", "c = l + 10"],
+                        correct: "c = 10l",
+                        explanation: "1 life costs 10 coins, so total coins c equals 10 times lives l. / 1 nyawa butuh 10 koin, jadi total koin c sama dengan 10 kali nyawa l."
+                    },
+                    {
+                        type: "exercise",
+                        question: "If a game level requires x points to pass, and you have y points, what expression shows if you can pass?",
+                        options: ["y >= x", "x >= y", "y = x", "x + y = 0"],
+                        correct: "y >= x",
+                        explanation: "You can pass if your points (y) are greater than or equal to the required points (x). / Kamu bisa lolos jika poinmu (y) lebih besar atau sama dengan dari poin yang dibutuhkan (x)."
+                    },
+                    {
+                        type: "theory",
+                        svg: `<svg class="svg-illustration" viewBox="0 0 100 100"><path d="M50,10 L90,90 L10,90 Z" fill="#FFC800"/><text x="50" y="80" font-size="30" text-anchor="middle" fill="white" font-weight="bold">!</text></svg>`,
+                        title: "Efficiency in Calculations",
+                        title_indo: "Efisiensi dalam Kalkulasi",
+                        body: "In programming and math, efficiency matters. Choosing the right method (like factoring out a common term first) makes solving problems faster and cleaner.",
+                        body_indo: "Dalam pemrograman dan matematika, efisiensi itu penting. Memilih metode yang tepat (seperti memfaktorkan suku yang sama lebih dulu) membuat penyelesaian masalah lebih cepat dan bersih."
+                    },
+                    {
+                        type: "exercise",
+                        question: "Which is the most efficient first step to solve \\( 2x + 6 = 14 \\)?",
+                        options: ["Divide by 2", "Subtract 6", "Multiply by 2", "Add 14"],
+                        correct: "Divide by 2",
+                        explanation: "Dividing by 2 first gives x + 3 = 7, which is simpler. / Membagi dengan 2 lebih dulu menghasilkan x + 3 = 7, yang lebih sederhana."
+                    },
+                    {
+                        type: "exercise",
+                        question: "To simplify \\( 3x + 9 \\), what is the best first step?",
+                        options: ["Factor out 3 to get 3(x+3)", "Subtract 9", "Multiply by x", "Divide by x"],
+                        correct: "Factor out 3 to get 3(x+3)",
+                        explanation: "Factoring out the common term 3 simplifies the expression. / Memfaktorkan suku yang sama yaitu 3 akan menyederhanakan ekspresi."
+                    },
+                    {
+                        type: "exercise",
+                        question: "Why optimize calculations in a game loop?",
+                        options: ["To reduce lag", "To increase lag", "To change colors", "To add sound"],
+                        correct: "To reduce lag",
+                        explanation: "Efficient calculations run faster, reducing lag. / Kalkulasi yang efisien berjalan lebih cepat, mengurangi lag."
+                    },
+                    {
+                        type: "theory",
+                        svg: `<svg class="svg-illustration" viewBox="0 0 100 100"><circle cx="30" cy="50" r="20" fill="#1CB0F6"/><circle cx="70" cy="50" r="20" fill="#58CC02"/></svg>`,
+                        title: "System Optimization",
+                        title_indo: "Optimasi Sistem",
+                        body: "Sometimes, variables depend on each other. We use systems of equations to find the exact values that make all conditions true simultaneously.",
+                        body_indo: "Terkadang, variabel bergantung satu sama lain. Kita menggunakan sistem persamaan untuk mencari nilai pasti yang membuat semua kondisi terpenuhi secara bersamaan."
+                    },
+                    {
+                        type: "exercise",
+                        question: "If x = 5 and y = x + 2, what is y?",
+                        options: ["3", "5", "7", "10"],
+                        correct: "7",
+                        explanation: "Substitute x: y = 5 + 2 = 7. / Substitusi x: y = 5 + 2 = 7."
+                    },
+                    {
+                        type: "exercise",
+                        question: "If a game economy has 2 swords (s) = 1 shield (h), and you have 4 swords, how many shields?",
+                        options: ["1", "2", "4", "8"],
+                        correct: "2",
+                        explanation: "4s / 2s per h = 2h. / 4 pedang dibagi 2 pedang per perisai = 2 perisai."
+                    },
+                    {
+                        type: "exercise",
+                        question: "Which represents a system of equations?",
+                        options: ["x + y = 5, x - y = 1", "x = 5", "x + y", "5 + 5 = 10"],
+                        correct: "x + y = 5, x - y = 1",
+                        explanation: "A system has two or more equations with the same variables. / Sistem memiliki dua atau lebih persamaan dengan variabel yang sama."
+                    },
+                    {
+                        type: "exercise",
+                        question: "If \\( 2x + y = 10 \\) and \\( x = 4 \\), find y.",
+                        options: ["2", "4", "6", "8"],
+                        correct: "2",
+                        explanation: "2(4) + y = 10 -> 8 + y = 10 -> y = 2. / 2(4) + y = 10 -> 8 + y = 10 -> y = 2."
+                    }
+                ]
+            },
+            {
+                id: "review",
+                title: "Review of Prior Knowledge",
+                time: "00:15-00:20",
+                icon: "fa-magnifying-glass",
+                type: "lesson",
+                modules: [
+                    {
+                        type: "theory",
+                        svg: `<svg class="svg-illustration" viewBox="0 0 100 100"><rect x="10" y="10" width="80" height="80" rx="5" fill="#E5E5E5"/><text x="50" y="60" font-size="24" text-anchor="middle" fill="#777" font-weight="bold">x^2-a^2</text></svg>`,
+                        title: "Difference of Two Squares",
+                        title_indo: "Selisih Dua Kuadrat",
+                        body: "The expression \\( x^2 - a^2 \\) is a special pattern. It factors perfectly into \\( (x - a)(x + a) \\). Notice it's just subtraction (difference) of two squared terms.",
+                        body_indo: "Ekspresi \\( x^2 - a^2 \\) adalah pola khusus. Faktornya menjadi \\( (x - a)(x + a) \\). Perhatikan bahwa ini hanya pengurangan (selisih) dari dua suku kuadrat."
+                    },
+                    {
+                        type: "exercise",
+                        question: "Factor completely: \\( x^2 - 9 \\)",
+                        options: ["(x-3)(x+3)", "(x-3)(x-3)", "(x+3)(x+3)", "(x-9)(x+1)"],
+                        correct: "(x-3)(x+3)",
+                        explanation: "9 is 3^2. So x^2 - 3^2 = (x-3)(x+3). / 9 adalah 3^2. Jadi x^2 - 3^2 = (x-3)(x+3)."
+                    },
+                    {
+                        type: "exercise",
+                        question: "Factor completely: \\( x^2 - 25 \\)",
+                        options: ["(x-5)(x+5)", "(x-25)(x+1)", "(x+5)^2", "(x-5)^2"],
+                        correct: "(x-5)(x+5)",
+                        explanation: "25 is 5^2. So x^2 - 5^2 = (x-5)(x+5). / 25 adalah 5^2. Jadi x^2 - 5^2 = (x-5)(x+5)."
+                    },
+                    {
+                        type: "exercise",
+                        question: "Factor completely: \\( y^2 - 1 \\)",
+                        options: ["(y-1)(y+1)", "(y-1)^2", "(y+1)^2", "y(y-1)"],
+                        correct: "(y-1)(y+1)",
+                        explanation: "1 is 1^2. So y^2 - 1^2 = (y-1)(y+1). / 1 adalah 1^2. Jadi y^2 - 1^2 = (y-1)(y+1)."
+                    },
+                    {
+                        type: "theory",
+                        svg: `<svg class="svg-illustration" viewBox="0 0 100 100"><path d="M10,50 H90 M50,10 V90" stroke="#58CC02" stroke-width="8" stroke-linecap="round"/></svg>`,
+                        title: "Substitution vs Elimination",
+                        title_indo: "Substitusi vs Eliminasi",
+                        body: "To solve systems of equations, we use <b>Substitution</b> (replacing a variable with its value) or <b>Elimination</b> (adding/subtracting equations to cancel a variable). Choose the fastest one!",
+                        body_indo: "Untuk menyelesaikan sistem persamaan, kita gunakan <b>Substitusi</b> (mengganti variabel dengan nilainya) atau <b>Eliminasi</b> (menjumlahkan/mengurangi persamaan untuk menghilangkan variabel). Pilih yang tercepat!"
+                    },
+                    {
+                        type: "exercise",
+                        question: "Given \\( y = 2x \\) and \\( x + y = 6 \\), which method is fastest?",
+                        options: ["Substitution", "Elimination", "Graphing", "Guessing"],
+                        correct: "Substitution",
+                        explanation: "Since y is already isolated, substitute 2x for y in the second equation. / Karena y sudah terpisah, substitusikan 2x untuk y di persamaan kedua."
+                    },
+                    {
+                        type: "exercise",
+                        question: "Given \\( 2x + y = 10 \\) and \\( 2x - y = 2 \\), which method is fastest?",
+                        options: ["Elimination", "Substitution", "Graphing", "Guessing"],
+                        correct: "Elimination",
+                        explanation: "The y terms have opposite signs (+y and -y), so adding them eliminates y. / Suku y memiliki tanda berlawanan (+y dan -y), jadi menjumlahkannya akan menghilangkan y."
+                    },
+                    {
+                        type: "exercise",
+                        question: "What is the first step in Elimination if equations are \\( x + y = 5 \\) and \\( 2x + y = 8 \\)?",
+                        options: ["Subtract eq 1 from eq 2", "Add the equations", "Multiply eq 1 by 2", "Substitute x=5"],
+                        correct: "Subtract eq 1 from eq 2",
+                        explanation: "Subtracting eliminates y and gives x directly. / Mengurangi akan menghilangkan y dan langsung memberikan x."
+                    },
+                    {
+                        type: "theory",
+                        svg: `<svg class="svg-illustration" viewBox="0 0 100 100"><rect x="20" y="20" width="60" height="60" rx="10" fill="#FFC800"/><path d="M30,50 H70 M50,30 V70" stroke="white" stroke-width="5"/></svg>`,
+                        title: "Quick Elimination Technique",
+                        title_indo: "Teknik Eliminasi Cepat",
+                        body: "If coefficients are opposites (like +y and -y), just add the equations. If they are the same (like +y and +y), subtract them. Always align variables vertically!",
+                        body_indo: "Jika koefisiennya berlawanan (seperti +y dan -y), jumlahkan persamaannya. Jika sama (seperti +y dan +y), kurangi. Selalu sejajarkan variabelnya secara vertikal!"
+                    },
+                    {
+                        type: "exercise",
+                        question: "Solve by quick elimination: \\( x + y = 8 \\) and \\( x - y = 2 \\)",
+                        options: ["x=5, y=3", "x=4, y=4", "x=3, y=5", "x=10, y=0"],
+                        correct: "x=5, y=3",
+                        explanation: "Add them: 2x = 10 -> x=5. Then 5+y=8 -> y=3. / Jumlahkan: 2x = 10 -> x=5. Lalu 5+y=8 -> y=3."
+                    },
+                    {
+                        type: "exercise",
+                        question: "Solve by quick elimination: \\( 3x + 2y = 12 \\) and \\( 3x - 2y = 0 \\)",
+                        options: ["x=2, y=3", "x=3, y=2", "x=1, y=4", "x=4, y=0"],
+                        correct: "x=2, y=3",
+                        explanation: "Add them: 6x = 12 -> x=2. Then 6 + 2y = 12 -> y=3. / Jumlahkan: 6x = 12 -> x=2. Lalu 6 + 2y = 12 -> y=3."
+                    },
+                    {
+                        type: "exercise",
+                        question: "If you add \\( 2x + 3y = 10 \\) and \\( x - 3y = 5 \\), what is the result?",
+                        options: ["3x = 15", "3x = 5", "x = 15", "y = 1.5"],
+                        correct: "3x = 15",
+                        explanation: "3y cancels out (-3y + 3y = 0). 2x + x = 3x. 10 + 5 = 15. / 3y hilang. 2x + x = 3x. 10 + 5 = 15."
+                    },
+                    {
+                        type: "exercise",
+                        question: "Solve: \\( 4x + y = 15 \\) and \\( 4x - y = 5 \\)",
+                        options: ["x=2.5, y=5", "x=5, y=2.5", "x=2, y=7", "x=10, y=5"],
+                        correct: "x=2.5, y=5",
+                        explanation: "Add: 8x = 20 -> x = 2.5. Then 10 + y = 15 -> y = 5. / Jumlahkan: 8x = 20 -> x = 2.5. Lalu 10 + y = 15 -> y = 5."
+                    }
+                ]
+            },
+
+            {
+                id: "problem_intro",
+                title: "Problem Introduction",
+                time: "00:20-00:30",
+                icon: "fa-flag",
+                type: "lesson",
+                modules: [
+                    {
+                        type: "theory",
+                        svg: `<svg class="svg-illustration" viewBox="0 0 100 100"><rect x="20" y="20" width="60" height="60" rx="5" fill="#1CB0F6"/><text x="50" y="60" font-size="20" text-anchor="middle" fill="white" font-weight="bold">4x²</text></svg>`,
+                        title: "Factoring with Coefficient > 1",
+                        title_indo: "Faktorisasi dengan Koefisien > 1",
+                        body: "When factoring expressions like \\( 4x^2 - 16 \\), always look for the Greatest Common Factor (GCF) first. Here, the GCF is 4. Factoring it out gives \\( 4(x^2 - 4) \\), which is a difference of two squares!",
+                        body_indo: "Saat memfaktorkan ekspresi seperti \\( 4x^2 - 16 \\), selalu cari Faktor Persekutuan Terbesar (FPB) lebih dulu. Di sini, FPB-nya adalah 4. Memfaktorkannya menghasilkan \\( 4(x^2 - 4) \\), yang merupakan selisih dua kuadrat!"
+                    },
+                    {
+                        type: "exercise",
+                        question: "What is the GCF of \\( 4x^2 - 16 \\)?",
+                        options: ["2", "4", "x", "16"],
+                        correct: "4",
+                        explanation: "4 is the largest number that divides both 4x^2 and 16. / 4 adalah angka terbesar yang membagi 4x^2 dan 16."
+                    },
+                    {
+                        type: "exercise",
+                        question: "Factor out the GCF from \\( 6x^2 + 9x \\).",
+                        options: ["3(2x^2 + 3x)", "2(3x^2 + 4x)", "x(6x + 9)", "6(x^2 + 3)"],
+                        correct: "3(2x^2 + 3x)",
+                        explanation: "The GCF is 3. Dividing both terms by 3 gives 3(2x^2 + 3x). / FPB-nya adalah 3. Membagi kedua suku dengan 3 menghasilkan 3(2x^2 + 3x)."
+                    },
+                    {
+                        type: "exercise",
+                        question: "After factoring out 4 from \\( 4x^2 - 16 \\), what is left inside the parentheses?",
+                        options: ["x^2 - 4", "x^2 - 12", "4x^2 - 4", "x - 4"],
+                        correct: "x^2 - 4",
+                        explanation: "4x^2 / 4 = x^2, and -16 / 4 = -4. So we get 4(x^2 - 4). / 4x^2 / 4 = x^2, dan -16 / 4 = -4. Jadi kita dapat 4(x^2 - 4)."
+                    },
+                    {
+                        type: "theory",
+                        svg: `<svg class="svg-illustration" viewBox="0 0 100 100"><path d="M20,80 L50,20 L80,80 Z" fill="#FFC800"/><text x="50" y="70" font-size="14" text-anchor="middle" fill="white">1/2 x</text></svg>`,
+                        title: "Systems with Fractions",
+                        title_indo: "Sistem Persamaan dengan Pecahan",
+                        body: "Systems like \\( \\frac{1}{2}x + \\frac{1}{3}y = 4 \\) look scary. The trick is to multiply the ENTIRE equation by the Least Common Multiple (LCM) of the denominators to clear the fractions.",
+                        body_indo: "Sistem seperti \\( \\frac{1}{2}x + \\frac{1}{3}y = 4 \\) terlihat menakutkan. Triknya adalah dengan mengalikan SELURUH persamaan dengan Kelipatan Persekutuan Terkecil (KPK) dari penyebutnya untuk menghilangkan pecahan."
+                    },
+                    {
+                        type: "exercise",
+                        question: "What is the LCM of the denominators in \\( \\frac{1}{2}x + \\frac{1}{3}y = 4 \\)?",
+                        options: ["2", "3", "5", "6"],
+                        correct: "6",
+                        explanation: "The smallest number divisible by both 2 and 3 is 6. / Angka terkecil yang bisa dibagi 2 dan 3 adalah 6."
+                    },
+                    {
+                        type: "exercise",
+                        question: "If you multiply \\( \\frac{1}{2}x + \\frac{1}{3}y = 4 \\) by 6, what is the first term?",
+                        options: ["3x", "2x", "6x", "1/2 x"],
+                        correct: "3x",
+                        explanation: "6 * (1/2)x = 3x. This clears the fraction! / 6 * (1/2)x = 3x. Ini menghilangkan pecahan!"
+                    },
+                    {
+                        type: "exercise",
+                        question: "Convert \\( \\frac{1}{2}x + \\frac{1}{3}y = 4 \\) to an equation without fractions.",
+                        options: ["3x + 2y = 24", "3x + 2y = 4", "6x + 6y = 24", "x + y = 4"],
+                        correct: "3x + 2y = 24",
+                        explanation: "Multiply all terms by 6: 3x + 2y = 24. / Kalikan semua suku dengan 6: 3x + 2y = 24."
+                    },
+                    {
+                        type: "theory",
+                        svg: `<svg class="svg-illustration" viewBox="0 0 100 100"><rect x="10" y="10" width="35" height="35" fill="#58CC02"/><rect x="55" y="55" width="35" height="35" fill="#FF4B4B"/></svg>`,
+                        title: "Breaking Down Problems",
+                        title_indo: "Memecah Masalah",
+                        body: "When facing a huge problem, break it into modules. Step 1: Clear fractions. Step 2: Rearrange. Step 3: Eliminate or Substitute. Step 4: Verify.",
+                        body_indo: "Saat menghadapi masalah besar, pecah menjadi modul-modul. Langkah 1: Hilangkan pecahan. Langkah 2: Susun ulang. Langkah 3: Eliminasi atau Substitusi. Langkah 4: Verifikasi."
+                    },
+                    {
+                        type: "exercise",
+                        question: "What is the best first step to solve: \\( \\frac{x}{4} + y = 5 \\) and \\( x - y = 0 \\)?",
+                        options: ["Multiply eq 1 by 4", "Substitute y=0", "Add the equations", "Divide eq 2 by 4"],
+                        correct: "Multiply eq 1 by 4",
+                        explanation: "Clearing the fraction in equation 1 makes it easier to work with. / Menghilangkan pecahan di persamaan 1 membuatnya lebih mudah dikerjakan."
+                    },
+                    {
+                        type: "exercise",
+                        question: "After clearing fractions, how do you solve \\( x + 4y = 20 \\) and \\( x - y = 0 \\)?",
+                        options: ["Subtract eq 2 from eq 1", "Add the equations", "Substitute x=y into eq 1", "Both A and C work"],
+                        correct: "Both A and C work",
+                        explanation: "You can subtract to eliminate x, or substitute x=y since x is isolated in eq 2. / Kamu bisa mengurangi untuk menghilangkan x, atau substitusi x=y karena x sudah terpisah di persamaan 2."
+                    },
+                    {
+                        type: "exercise",
+                        question: "Solve the system: \\( x + 4y = 20 \\) and \\( x - y = 0 \\).",
+                        options: ["x=4, y=4", "x=5, y=5", "x=20, y=0", "x=0, y=5"],
+                        correct: "x=4, y=4",
+                        explanation: "Since x=y, put y in eq 1: y + 4y = 20 -> 5y = 20 -> y=4. So x=4. / Karena x=y, masukkan y ke pers 1: y + 4y = 20 -> 5y = 20 -> y=4. Jadi x=4."
+                    },
+                    {
+                        type: "exercise",
+                        question: "Factor completely: \\( 9x^2 - 25 \\)",
+                        options: ["(3x-5)(3x+5)", "(3x-5)^2", "9(x-5)(x+5)", "(9x-25)(9x+1)"],
+                        correct: "(3x-5)(3x+5)",
+                        explanation: "9x^2 is (3x)^2 and 25 is 5^2. Difference of squares applies directly. / 9x^2 adalah (3x)^2 dan 25 adalah 5^2. Selisih kuadrat berlaku langsung."
+                    }
+                ]
+            },
+            {
+                id: "guided_practice",
+                title: "Guided Practice",
+                time: "00:30-00:45",
+                icon: "fa-hand-holding",
+                type: "lesson",
+                modules: [
+                    {
+                        type: "theory",
+                        svg: `<svg class="svg-illustration" viewBox="0 0 100 100"><rect x="20" y="20" width="60" height="60" rx="10" fill="#58CC02"/><text x="50" y="60" font-size="20" text-anchor="middle" fill="white">2(x+2)</text></svg>`,
+                        title: "Step-by-Step Factoring",
+                        title_indo: "Faktorisasi Langkah demi Langkah",
+                        body: "Let's factor \\( 2x^2 + 10x + 12 \\). Step 1: Pull out GCF (2) to get \\( 2(x^2 + 5x + 6) \\). Step 2: Factor the trinomial inside. Find two numbers that multiply to 6 and add to 5. That's 2 and 3!",
+                        body_indo: "Mari kita faktorkan \\( 2x^2 + 10x + 12 \\). Langkah 1: Keluarkan FPB (2) untuk mendapat \\( 2(x^2 + 5x + 6) \\). Langkah 2: Faktorkan trinomial di dalamnya. Cari dua angka yang dikali hasilnya 6 dan dijumlahkan hasilnya 5. Itu adalah 2 dan 3!"
+                    },
+                    {
+                        type: "exercise",
+                        question: "What is the GCF of \\( 2x^2 + 10x + 12 \\)?",
+                        options: ["1", "2", "x", "6"],
+                        correct: "2",
+                        explanation: "2 is the largest number dividing 2, 10, and 12. / 2 adalah angka terbesar yang membagi 2, 10, dan 12."
+                    },
+                    {
+                        type: "exercise",
+                        question: "After pulling out the GCF from \\( 2x^2 + 10x + 12 \\), what trinomial is left?",
+                        options: ["x^2 + 5x + 6", "2x^2 + 5x + 6", "x^2 + 10x + 12", "x^2 + 8x + 6"],
+                        correct: "x^2 + 5x + 6",
+                        explanation: "Divide each term by 2: 2x^2/2=x^2, 10x/2=5x, 12/2=6. / Bagi tiap suku dengan 2: 2x^2/2=x^2, 10x/2=5x, 12/2=6."
+                    },
+                    {
+                        type: "exercise",
+                        question: "What two numbers multiply to 6 and add to 5?",
+                        options: ["1 and 6", "2 and 3", "-2 and -3", "5 and 1"],
+                        correct: "2 and 3",
+                        explanation: "2 * 3 = 6, and 2 + 3 = 5. Perfect for factoring x^2 + 5x + 6. / 2 * 3 = 6, dan 2 + 3 = 5. Sempurna untuk memfaktorkan x^2 + 5x + 6."
+                    },
+                    {
+                        type: "theory",
+                        svg: `<svg class="svg-illustration" viewBox="0 0 100 100"><line x1="10" y1="50" x2="90" y2="50" stroke="#1CB0F6" stroke-width="8" stroke-linecap="round"/><line x1="50" y1="10" x2="50" y2="90" stroke="#FF4B4B" stroke-width="8" stroke-linecap="round"/></svg>`,
+                        title: "Solving Systems Step-by-Step",
+                        title_indo: "Menyelesaikan Sistem Langkah demi Langkah",
+                        body: "System: \\( 2x + y = 10 \\) and \\( x - y = 2 \\). Notice the +y and -y. We can add the equations together to eliminate y! \\( 3x = 12 \\) means \\( x = 4 \\). Substitute back to find y.",
+                        body_indo: "Sistem: \\( 2x + y = 10 \\) dan \\( x - y = 2 \\). Perhatikan +y dan -y. Kita bisa menjumlahkan kedua persamaan untuk menghilangkan y! \\( 3x = 12 \\) berarti \\( x = 4 \\). Substitusi kembali untuk mencari y."
+                    },
+                    {
+                        type: "exercise",
+                        question: "In the system \\( 2x + y = 10 \\) and \\( x - y = 2 \\), if we add them, what equation do we get?",
+                        options: ["3x = 12", "3x = 8", "2x = 12", "3y = 12"],
+                        correct: "3x = 12",
+                        explanation: "2x + x = 3x. y - y = 0. 10 + 2 = 12. So 3x = 12. / 2x + x = 3x. y - y = 0. 10 + 2 = 12. Jadi 3x = 12."
+                    },
+                    {
+                        type: "exercise",
+                        question: "From \\( 3x = 12 \\), what is the value of x?",
+                        options: ["2", "3", "4", "6"],
+                        correct: "4",
+                        explanation: "Divide both sides by 3: x = 12 / 3 = 4. / Bagi kedua sisi dengan 3: x = 12 / 3 = 4."
+                    },
+                    {
+                        type: "exercise",
+                        question: "Using x=4 in \\( 2x + y = 10 \\), find y.",
+                        options: ["2", "4", "6", "8"],
+                        correct: "2",
+                        explanation: "2(4) + y = 10 -> 8 + y = 10 -> y = 2. / 2(4) + y = 10 -> 8 + y = 10 -> y = 2."
+                    },
+                    {
+                        type: "theory",
+                        svg: `<svg class="svg-illustration" viewBox="0 0 100 100"><circle cx="50" cy="50" r="30" fill="#FFC800"/><text x="50" y="60" font-size="30" text-anchor="middle" fill="white" font-weight="bold">?</text></svg>`,
+                        title: "Finding the Right Hint",
+                        title_indo: "Mencari Petunjuk yang Tepat",
+                        body: "If you get stuck, look for hints. Is there a variable I can isolate easily? Are there coefficients that match? In guided practice, we look for these structural hints together.",
+                        body_indo: "Jika kamu bingung, cari petunjuk. Apakah ada variabel yang mudah saya pisahkan? Apakah ada koefisien yang sama? Dalam latihan terbimbing, kita mencari petunjuk struktural ini bersama-sama."
+                    },
+                    {
+                        type: "exercise",
+                        question: "Factor completely: \\( 3x^2 + 12x + 12 \\)",
+                        options: ["3(x+2)^2", "3(x+2)(x-2)", "(3x+6)(x+2)", "3(x+4)(x+1)"],
+                        correct: "3(x+2)^2",
+                        explanation: "GCF is 3. Inside: x^2 + 4x + 4 = (x+2)(x+2). So 3(x+2)^2. / FPB adalah 3. Di dalam: x^2 + 4x + 4 = (x+2)(x+2). Jadi 3(x+2)^2."
+                    },
+                    {
+                        type: "exercise",
+                        question: "Solve: \\( x + 2y = 7 \\) and \\( x - 2y = -1 \\).",
+                        options: ["x=3, y=2", "x=2, y=3", "x=6, y=1", "x=4, y=1.5"],
+                        correct: "x=3, y=2",
+                        explanation: "Add them: 2x = 6 -> x=3. Then 3 + 2y = 7 -> 2y = 4 -> y=2. / Jumlahkan: 2x = 6 -> x=3. Lalu 3 + 2y = 7 -> 2y = 4 -> y=2."
+                    },
+                    {
+                        type: "exercise",
+                        question: "What is the first step to factor \\( 5x^2 - 15x \\)?",
+                        options: ["Pull out 5x", "Pull out 5", "Pull out x", "Find roots of 5 and -15"],
+                        correct: "Pull out 5x",
+                        explanation: "Both terms have 5 and x. GCF is 5x. / Kedua suku memiliki 5 dan x. FPB-nya adalah 5x."
+                    },
+                    {
+                        type: "exercise",
+                        question: "Factor: \\( 5x^2 - 15x \\)",
+                        options: ["5x(x - 3)", "5(x^2 - 3x)", "x(5x - 15)", "5x(x + 3)"],
+                        correct: "5x(x - 3)",
+                        explanation: "5x^2 / 5x = x. -15x / 5x = -3. Result: 5x(x-3). / 5x^2 / 5x = x. -15x / 5x = -3. Hasilnya: 5x(x-3)."
+                    }
+                ]
+            },
+            {
+                id: "independent_practice",
+                title: "Independent Practice",
+                time: "00:50-01:00",
+                icon: "fa-user-graduate",
+                type: "lesson",
+                modules: [
+                    {
+                        type: "theory",
+                        svg: `<svg class="svg-illustration" viewBox="0 0 100 100"><path d="M20,80 L50,20 L80,80 Z" fill="#1CB0F6"/><text x="50" y="70" font-size="14" text-anchor="middle" fill="white">9x²-25y²</text></svg>`,
+                        title: "Complex Factoring",
+                        title_indo: "Faktorisasi Kompleks",
+                        body: "Let's factor \\( 9x^2 - 25y^2 \\). Both terms are perfect squares: \\( (3x)^2 - (5y)^2 \\). This is a difference of two squares! It factors to \\( (3x - 5y)(3x + 5y) \\).",
+                        body_indo: "Mari kita faktorkan \\( 9x^2 - 25y^2 \\). Kedua suku adalah kuadrat sempurna: \\( (3x)^2 - (5y)^2 \\). Ini adalah selisih dua kuadrat! Faktornya menjadi \\( (3x - 5y)(3x + 5y) \\)."
+                    },
+                    {
+                        type: "exercise",
+                        question: "What is the square root of \\( 9x^2 \\)?",
+                        options: ["3x", "9x", "3", "4.5x"],
+                        correct: "3x",
+                        explanation: "The square root of 9 is 3, and the square root of x^2 is x. / Akar kuadrat dari 9 adalah 3, dan akar kuadrat dari x^2 adalah x."
+                    },
+                    {
+                        type: "exercise",
+                        question: "What is the square root of \\( 25y^2 \\)?",
+                        options: ["25y", "5", "5y", "12.5y"],
+                        correct: "5y",
+                        explanation: "The square root of 25 is 5, and the square root of y^2 is y. / Akar kuadrat dari 25 adalah 5, dan akar kuadrat dari y^2 adalah y."
+                    },
+                    {
+                        type: "exercise",
+                        question: "Factor completely: \\( 16a^2 - 9b^2 \\)",
+                        options: ["(4a-3b)(4a+3b)", "(4a-3b)^2", "4(a-3b)(a+3b)", "(16a-9b)(a+b)"],
+                        correct: "(4a-3b)(4a+3b)",
+                        explanation: "16a^2 is (4a)^2, 9b^2 is (3b)^2. Difference of squares: (4a-3b)(4a+3b). / 16a^2 adalah (4a)^2, 9b^2 adalah (3b)^2. Selisih kuadrat: (4a-3b)(4a+3b)."
+                    },
+                    {
+                        type: "theory",
+                        svg: `<svg class="svg-illustration" viewBox="0 0 100 100"><rect x="10" y="40" width="30" height="20" fill="#FF4B4B"/><rect x="60" y="30" width="30" height="20" fill="#1CB0F6"/></svg>`,
+                        title: "Solving Story Systems",
+                        title_indo: "Menyelesaikan Sistem Cerita",
+                        body: "System: \\( 3x + 2y = 12 \\) and \\( 2x - y = 1 \\). We can multiply the second equation by 2 to make y-coefficients opposites: \\( 4x - 2y = 2 \\). Then add them up!",
+                        body_indo: "Sistem: \\( 3x + 2y = 12 \\) dan \\( 2x - y = 1 \\). Kita bisa mengalikan persamaan kedua dengan 2 untuk membuat koefisien y berlawanan: \\( 4x - 2y = 2 \\). Lalu jumlahkan!"
+                    },
+                    {
+                        type: "exercise",
+                        question: "To eliminate y in \\( 3x + 2y = 12 \\) and \\( 2x - y = 1 \\), what should you multiply the second equation by?",
+                        options: ["1", "2", "3", "-2"],
+                        correct: "2",
+                        explanation: "Multiplying by 2 gives 4x - 2y = 2. Now the y terms (2y and -2y) cancel. / Mengalikan dengan 2 menghasilkan 4x - 2y = 2. Sekarang suku y (2y dan -2y) saling menghilangkan."
+                    },
+                    {
+                        type: "exercise",
+                        question: "After making the y terms opposites, add the equations \\( 3x + 2y = 12 \\) and \\( 4x - 2y = 2 \\). What is the result?",
+                        options: ["7x = 14", "x = 10", "7x = 10", "12x = 14"],
+                        correct: "7x = 14",
+                        explanation: "3x + 4x = 7x. 2y - 2y = 0. 12 + 2 = 14. So 7x = 14. / 3x + 4x = 7x. 2y - 2y = 0. 12 + 2 = 14. Jadi 7x = 14."
+                    },
+                    {
+                        type: "exercise",
+                        question: "Find y if x = 2 in the equation \\( 2x - y = 1 \\).",
+                        options: ["1", "3", "2", "5"],
+                        correct: "3",
+                        explanation: "2(2) - y = 1 -> 4 - y = 1 -> y = 3. / 2(2) - y = 1 -> 4 - y = 1 -> y = 3."
+                    },
+                    {
+                        type: "theory",
+                        svg: `<svg class="svg-illustration" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="#FF4B4B"/><text x="50" y="60" font-size="30" text-anchor="middle" fill="white" font-weight="bold">!</text></svg>`,
+                        title: "Error Analysis",
+                        title_indo: "Analisis Kesalahan",
+                        body: "Someone factored \\( x^2 + 6x + 9 \\) as \\( (x+3)(x-3) \\). This is WRONG! \\( (x+3)(x-3) = x^2 - 9 \\). The correct factoring of \\( x^2 + 6x + 9 \\) is \\( (x+3)^2 \\), a perfect square trinomial.",
+                        body_indo: "Seseorang memfaktorkan \\( x^2 + 6x + 9 \\) menjadi \\( (x+3)(x-3) \\). Ini SALAH! \\( (x+3)(x-3) = x^2 - 9 \\). Faktorisasi yang benar dari \\( x^2 + 6x + 9 \\) adalah \\( (x+3)^2 \\), sebuah trinomial kuadrat sempurna."
+                    },
+                    {
+                        type: "exercise",
+                        question: "Why is \\( x^2 + 6x + 9 \\neq (x+3)(x-3) \\)?",
+                        options: ["Because (x+3)(x-3) = x^2 - 9", "Because 6x is wrong", "Because 9 is not a square", "It is actually correct"],
+                        correct: "Because (x+3)(x-3) = x^2 - 9",
+                        explanation: "(x+3)(x-3) results in a minus 9, not a plus 9, and the middle term cancels out. / (x+3)(x-3) menghasilkan minus 9, bukan plus 9, dan suku tengahnya hilang."
+                    },
+                    {
+                        type: "exercise",
+                        question: "What is the correct factorization of \\( x^2 + 6x + 9 \\)?",
+                        options: ["(x+3)^2", "(x-3)^2", "(x+9)(x+1)", "Cannot be factored"],
+                        correct: "(x+3)^2",
+                        explanation: "3 * 3 = 9, and 3 + 3 = 6. So (x+3)(x+3) = (x+3)^2. / 3 * 3 = 9, dan 3 + 3 = 6. Jadi (x+3)(x+3) = (x+3)^2."
+                    },
+                    {
+                        type: "exercise",
+                        question: "Identify the error in: Factor \\( x^2 - 10x + 25 \\) as \\( (x-5)(x+5) \\).",
+                        options: ["Confused perfect square with difference of squares", "Forgot the negative sign", "25 is not a perfect square", "10x should be 5x"],
+                        correct: "Confused perfect square with difference of squares",
+                        explanation: "x^2 - 10x + 25 is a perfect square (x-5)^2, while (x-5)(x+5) is difference of squares x^2 - 25. / x^2 - 10x + 25 adalah kuadrat sempurna (x-5)^2, sedangkan (x-5)(x+5) adalah selisih kuadrat x^2 - 25."
+                    },
+                    {
+                        type: "exercise",
+                        question: "Correct the factorization: \\( x^2 - 10x + 25 \\)",
+                        options: ["(x-5)^2", "(x+5)^2", "(x-25)(x-1)", "(x-5)(x+5)"],
+                        correct: "(x-5)^2",
+                        explanation: "-5 * -5 = 25, and -5 + -5 = -10. So it is (x-5)(x-5) = (x-5)^2. / -5 * -5 = 25, dan -5 + -5 = -10. Jadi ini (x-5)(x-5) = (x-5)^2."
+                    }
+                ]
+            },
+            {
+                id: "assignment_1",
+                title: "Assignment 1",
+                time: "10 Exercises",
+                icon: "fa-clipboard-list",
+                type: "assignment",
+                questions: [
+                    { q: "Factor: \\( x^2 + 7x + 10 \\)", opts: ["(x+2)(x+5)", "(x+1)(x+10)", "(x-2)(x-5)", "(x+7)(x+3)"], correct: "(x+2)(x+5)" },
+                    { q: "Solve: \\( x + y = 8 \\) and \\( x - y = 2 \\)", opts: ["x=5, y=3", "x=4, y=4", "x=6, y=2", "x=3, y=5"], correct: "x=5, y=3" },
+                    { q: "Factor: \\( 4x^2 - 49 \\)", opts: ["(2x-7)(2x+7)", "(2x-7)^2", "(4x-49)(4x+1)", "4(x-7)(x+7)"], correct: "(2x-7)(2x+7)" },
+                    { q: "Find x: \\( 2(x + 3) = 14 \\)", opts: ["4", "7", "11", "8"], correct: "4" },
+                    { q: "Factor completely: \\( 3x^2 - 12 \\)", opts: ["3(x-2)(x+2)", "3(x-4)(x+1)", "(3x-6)(x+2)", "3(x-12)(x+1)"], correct: "3(x-2)(x+2)" },
+                    { q: "Solve using substitution: \\( 2x + 3y = 13 \\) and \\( y = x + 1 \\)", opts: ["x=2, y=3", "x=3, y=4", "x=1, y=2", "x=4, y=5"], correct: "x=2, y=3" },
+                    { q: "Factor: \\( 6x^2 + 11x + 3 \\)", opts: ["(2x+3)(3x+1)", "(6x+1)(x+3)", "(2x+1)(3x+3)", "(3x+1)(2x+3)"], correct: "(2x+3)(3x+1)" },
+                    { q: "Clear fractions: \\( \\frac{1}{2}x + \\frac{1}{3}y = 4 \\)", opts: ["3x + 2y = 24", "3x + 2y = 4", "x + y = 24", "6x + 6y = 4"], correct: "3x + 2y = 24" },
+                    { q: "Solve: \\( \\frac{1}{2}x + \\frac{1}{3}y = 4 \\) and \\( x - y = 3 \\)", opts: ["x=6, y=3", "x=5, y=2", "x=4, y=1", "x=3, y=0"], correct: "x=6, y=3" },
+                    { q: "Factor: \\( x^2 - 10x + 25 \\)", opts: ["(x-5)^2", "(x+5)^2", "(x-5)(x+5)", "(x-25)(x-1)"], correct: "(x-5)^2" }
+                ]
+            },
+            {
+                id: "assignment_2",
+                title: "Assignment 2",
+                time: "10 Exercises",
+                icon: "fa-clipboard-list",
+                type: "assignment",
+                questions: [
+                    { q: "What is the GCF of \\( 12x^2 + 18x \\)?", opts: ["6x", "12x", "3x", "2x"], correct: "6x" },
+                    { q: "Factor: \\( 5y^2 - 20 \\)", opts: ["5(y-2)(y+2)", "5(y-4)(y+1)", "(5y-10)(y+2)", "5(y^2 - 4)"], correct: "5(y-2)(y+2)" },
+                    { q: "Solve: \\( 3x + 2y = 12 \\) and \\( 2x - y = 1 \\)", opts: ["x=2, y=3", "x=3, y=2", "x=1, y=4", "x=4, y=1"], correct: "x=2, y=3" },
+                    { q: "Factor: \\( 9x^2 - 25y^2 \\)", opts: ["(3x-5y)(3x+5y)", "(3x-5y)^2", "9(x-y)(x+y)", "(9x-25y)(x+y)"], correct: "(3x-5y)(3x+5y)" },
+                    { q: "What is the coefficient of y in \\( 4x - 2y + 9 \\)?", opts: ["-2", "2", "4", "9"], correct: "-2" },
+                    { q: "Translate: 'A number squared increased by 4'", opts: ["x^2 + 4", "2x + 4", "x + 4^2", "(x+4)^2"], correct: "x^2 + 4" },
+                    { q: "Solve: \\( x + y = 7 \\) and \\( x - y = -1 \\)", opts: ["x=3, y=4", "x=4, y=3", "x=2, y=5", "x=6, y=1"], correct: "x=3, y=4" },
+                    { q: "Identify the constant in \\( 3x^2 - 5x + 7 \\)", opts: ["7", "3", "-5", "2"], correct: "7" },
+                    { q: "Factor: \\( 2x^2 + 10x + 12 \\)", opts: ["2(x+2)(x+3)", "2(x-2)(x-3)", "(2x+6)(x+2)", "2(x+5)(x+1)"], correct: "2(x+2)(x+3)" },
+                    { q: "If \\( 2(x + 3) = 14 \\), what is x?", opts: ["4", "7", "11", "8"], correct: "4" }
+                ]
+            },
+            {
+                id: "assignment_3",
+                title: "Assignment 3",
+                time: "10 Exercises",
+                icon: "fa-clipboard-list",
+                type: "assignment",
+                questions: [
+                    { q: "A store sells 2 shirts and 1 hat for 100k. 1 shirt and 3 hats for 125k. Price of 1 shirt?", opts: ["35k", "40k", "30k", "25k"], correct: "35k" },
+                    { q: "Correct the error: \\( x^2 + 6x + 9 = (x+3)(x-3) \\)", opts: ["(x+3)^2", "(x-3)^2", "(x+9)(x+1)", "It is correct"], correct: "(x+3)^2" },
+                    { q: "Factor: \\( 4x^2 - 49 \\)", opts: ["(2x-7)(2x+7)", "(4x-7)(4x+7)", "(2x-7)^2", "4(x-7)(x+7)"], correct: "(2x-7)(2x+7)" },
+                    { q: "Solve: \\( 1/2x + 1/3y = 4 \\) and \\( x - y = 3 \\)", opts: ["x=6, y=3", "x=4, y=1", "x=5, y=2", "x=3, y=0"], correct: "x=6, y=3" },
+                    { q: "What is the GCF of \\( 2x^2 + 10x + 12 \\)?", opts: ["2", "x", "6", "4"], correct: "2" },
+                    { q: "Translate: 'Price of 2 burgers (b) and 3 drinks (m) is 50,000'", opts: ["2b + 3m = 50000", "b + m = 50000", "3b + 2m = 50000", "2b * 3m = 50000"], correct: "2b + 3m = 50000" },
+                    { q: "Factor: \\( 6x^2 + 11x + 3 \\)", opts: ["(2x+3)(3x+1)", "(3x+1)(2x+3)", "(6x+3)(x+1)", "2(3x+1)(x+3)"], correct: "(2x+3)(3x+1)" },
+                    { q: "Solve: \\( 2x + y = 10 \\) and \\( x - y = 2 \\)", opts: ["x=4, y=2", "x=5, y=3", "x=3, y=4", "x=6, y=2"], correct: "x=4, y=2" },
+                    { q: "Factor completely: \\( 3x^2 - 12 \\)", opts: ["3(x-2)(x+2)", "3(x^2 - 4)", "(3x-6)(x+2)", "3(x-12)(x+1)"], correct: "3(x-2)(x+2)" },
+                    { q: "Solve: \\( 3x + 2y = 12 \\) and \\( 2x - y = 1 \\)", opts: ["x=2, y=3", "x=3, y=2", "x=1, y=4", "x=4, y=1"], correct: "x=2, y=3" }
+                ]
+            },
+
+            {
+                id: "assignment_4",
+                title: "Assignment 4",
+                time: "10 Exercises",
+                icon: "fa-clipboard-list",
+                type: "assignment",
+                questions: [
+                    { q: "Factor completely: \\( 3x^2 - 12 \\)", opts: ["3(x-2)(x+2)", "3(x-4)(x+1)", "(3x-6)(x+2)", "3(x-12)(x+1)"], correct: "3(x-2)(x+2)" },
+                    { q: "Solve by substitution: \\( 2x + 3y = 13 \\) and \\( y = x + 1 \\)", opts: ["x=2, y=3", "x=3, y=4", "x=1, y=2", "x=4, y=5"], correct: "x=2, y=3" },
+                    { q: "Error Analysis: Someone factored \\( x^2 - 10x + 25 \\) as \\( (x-5)(x+5) \\). Why is it wrong?", opts: ["It's a perfect square, should be (x-5)^2", "It's a perfect square, should be (x+5)^2", "25 is not a perfect square", "The sign is wrong"], correct: "It's a perfect square, should be (x-5)^2" },
+                    { q: "Factor: \\( 6x^2 + 11x + 3 \\)", opts: ["(2x+3)(3x+1)", "(6x+1)(x+3)", "(2x+1)(3x+3)", "(3x+1)(2x+3)"], correct: "(2x+3)(3x+1)" },
+                    { q: "Solve system with fractions: \\( \\frac{1}{2}x + \\frac{1}{3}y = 4 \\) and \\( x - y = 3 \\)", opts: ["x=6, y=3", "x=5, y=2", "x=4, y=1", "x=3, y=0"], correct: "x=6, y=3" },
+                    { q: "Factor: \\( x^2 + 7x + 10 \\)", opts: ["(x+2)(x+5)", "(x+1)(x+10)", "(x-2)(x-5)", "(x+7)(x+3)"], correct: "(x+2)(x+5)" },
+                    { q: "Solve: \\( x + y = 8 \\) and \\( x - y = 2 \\)", opts: ["x=5, y=3", "x=4, y=4", "x=6, y=2", "x=3, y=5"], correct: "x=5, y=3" },
+                    { q: "Factor: \\( 4x^2 - 49 \\)", opts: ["(2x-7)(2x+7)", "(2x-7)^2", "(4x-49)(4x+1)", "4(x-7)(x+7)"], correct: "(2x-7)(2x+7)" },
+                    { q: "Find x: \\( 2(x + 3) = 14 \\)", opts: ["4", "7", "11", "8"], correct: "4" },
+                    { q: "A store sells 2 shirts & 1 hat for 100k. 1 shirt & 3 hats for 125k. Price of 1 shirt?", opts: ["35k", "40k", "30k", "25k"], correct: "35k" }
+                ]
+            },
+            {
+                id: "assignment_5",
+                title: "Assignment 5",
+                time: "10 Exercises",
+                icon: "fa-clipboard-list",
+                type: "assignment",
+                questions: [
+                    { q: "What is the coefficient of y in \\( 4x - 2y + 9 \\)?", opts: ["-2", "2", "4", "9"], correct: "-2" },
+                    { q: "Translate: 'A number squared increased by 4'", opts: ["x^2 + 4", "2x + 4", "x + 4^2", "(x+4)^2"], correct: "x^2 + 4" },
+                    { q: "Solve: \\( x + y = 7 \\) and \\( x - y = -1 \\)", opts: ["x=3, y=4", "x=4, y=3", "x=2, y=5", "x=6, y=1"], correct: "x=3, y=4" },
+                    { q: "Identify the constant in \\( 3x^2 - 5x + 7 \\)", opts: ["7", "3", "-5", "2"], correct: "7" },
+                    { q: "Factor: \\( 2x^2 + 10x + 12 \\)", opts: ["2(x+2)(x+3)", "2(x-2)(x-3)", "(2x+6)(x+2)", "2(x+5)(x+1)"], correct: "2(x+2)(x+3)" },
+                    { q: "If \\( 2(x + 3) = 14 \\), what is x?", opts: ["4", "7", "11", "8"], correct: "4" },
+                    { q: "What is the GCF of \\( 12x^2 + 18x \\)?", opts: ["6x", "12x", "3x", "2x"], correct: "6x" },
+                    { q: "Factor: \\( 5y^2 - 20 \\)", opts: ["5(y-2)(y+2)", "5(y-4)(y+1)", "(5y-10)(y+2)", "5(y^2 - 4)"], correct: "5(y-2)(y+2)" },
+                    { q: "Solve: \\( 3x + 2y = 12 \\) and \\( 2x - y = 1 \\)", opts: ["x=2, y=3", "x=3, y=2", "x=1, y=4", "x=4, y=1"], correct: "x=2, y=3" },
+                    { q: "Factor: \\( 9x^2 - 25y^2 \\)", opts: ["(3x-5y)(3x+5y)", "(3x-5y)^2", "9(x-y)(x+y)", "(9x-25y)(x+y)"], correct: "(3x-5y)(3x+5y)" }
+                ]
+            },
+            {
+                id: "consolidation",
+                title: "Consolidation & Reflection",
+                time: "01:00-01:05",
+                icon: "fa-flag-checkered",
+                type: "consolidation",
+                content: {
+                    title: "Class Summary & Next Steps",
+                    title_indo: "Ringkasan Kelas & Langkah Selanjutnya",
+                    body: "Excellent job today! You've successfully completed the Phase 2 Assessment. Remember, attention to positive and negative signs is the key to mastering algebra and systems of equations. Don't forget to do your self-reflection: what was the easiest and hardest part for you today?",
+                    body_indo: "Kerja yang luar biasa hari ini! Kamu telah berhasil menyelesaikan Evaluasi Fase 2. Ingat, ketelitian terhadap tanda positif dan negatif adalah kunci untuk menguasai aljabar dan sistem persamaan. Jangan lupa untuk melakukan refleksi diri: apa bagian termudah dan tersulit untukmu hari ini?",
+                    link: "https://learn.algonova.id/login",
+                    link_text: "Access LMS & Recordings",
+                    link_text_indo: "Akses LMS & Rekaman"
+                }
+            }
+        ];
+
+        // ==========================================
+        // STATE & NAVIGATION LOGIC
+        // ==========================================
+        let currentIndex = 0;
+        let userProgress = JSON.parse(localStorage.getItem('mathProgress')) || {};
+        let assignmentAnswers = {};
+
+        function saveProgress() {
+            localStorage.setItem('mathProgress', JSON.stringify(userProgress));
+        }
+
+        function resetAllProgress() {
+            if(confirm("Are you sure you want to reset all progress? This cannot be undone.")) {
+                userProgress = {};
+                assignmentAnswers = {};
+                localStorage.removeItem('mathProgress');
+                currentIndex = 0;
+                renderPath();
+                renderContent(currentIndex);
+            }
+        }
+
+        function selectSection(index) {
+            currentIndex = index;
+            renderContent(index);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function nextSection() {
+            if (currentIndex < lessonData.length - 1) {
+                currentIndex++;
+                renderContent(currentIndex);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function prevSection() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                renderContent(currentIndex);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // ==========================================
+        // RENDER FUNCTIONS
+        // ==========================================
+        function renderPath() {
+            const container = document.getElementById('path-container');
+            container.innerHTML = '';
+            lessonData.forEach((section, index) => {
+                const isCompleted = userProgress[section.id];
+                const isCurrent = index === currentIndex;
+
+                const node = document.createElement('button');
+                node.className = `path-node ${isCompleted ? 'completed' : ''} ${isCurrent ? 'current' : ''}`;
+                node.onclick = () => selectSection(index);
+                
+                node.innerHTML = `
+                    <div class="node-icon" style="background: ${isCompleted ? '#e7ffe0' : '#f7f7f7'}; color: ${isCompleted ? 'var(--primary)' : '#777'};">
+                        <i class="fas ${section.icon}"></i>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.9rem; color: #777;">${section.time || 'Start'}</div>
+                        ${section.title}
+                    </div>
+                    ${isCompleted ? '<i class="fas fa-check-circle" style="color: var(--primary); margin-left: auto;"></i>' : ''}
+                `;
+                container.appendChild(node);
+
+                if (index < lessonData.length - 1) {
+                    const connector = document.createElement('div');
+                    connector.className = 'path-connector';
+                    container.appendChild(connector);
+                }
+            });
+        }
+
+        function renderContent(index) {
+            const section = lessonData[index];
+            const container = document.getElementById('content-container');
+            const pathContainer = document.getElementById('path-container');
+            
+            pathContainer.style.display = 'none';
+            container.style.display = 'block';
+            
+            let html = `<div class="card">`;
+            
+            // Header
+            html += `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 style="color: var(--text-color);"><i class="fas ${section.icon}"></i> ${section.title}</h2>
+                    <span style="background: #e5e5e5; padding: 5px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 700;">${section.time || ''}</span>
+                </div>
+            `;
+
+            if (section.type === 'home') {
+                html += renderHome(section.content);
+            } else if (section.type === 'lesson') {
+                html += renderLesson(section.modules, section.id);
+            } else if (section.type === 'assignment') {
+                html += renderAssignment(section, index);
+            } else if (section.type === 'consolidation') {
+                html += renderConsolidation(section.content);
+            }
+
+            // Footer Nav
+            html += `
+                <div class="action-footer">
+                    <button class="btn btn-secondary" onclick="prevSection()" ${index === 0 ? 'disabled' : ''}>
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    ${section.type === 'lesson' ? `<button class="btn btn-primary" onclick="markComplete('${section.id}')">Mark Complete <i class="fas fa-check"></i></button>` : ''}
+                    <button class="btn btn-primary" onclick="nextSection()" ${index === lessonData.length - 1 ? 'disabled' : ''}>
+                        Next <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            `;
+
+            html += `</div>`;
+            container.innerHTML = html;
+            renderMath(container);
+        }
+
+        function renderHome(content) {
+            let html = `
+                <div class="bilingual">
+                    <h3>Topic: ${content.title}</h3>
+                    <p class="indo-text">Topik: ${content.title_indo}</p>
+                </div>
+                <div style="background: #fff4e5; padding: 15px; border-radius: 12px; border-left: 5px solid var(--warning);">
+                    <h4 style="margin-bottom: 10px; color: var(--warning);"><i class="fas fa-gavel"></i> Class Rules</h4>
+                    <ul>
+            `;
+            content.rules.forEach(rule => {
+                html += `<li class="bilingual"><p>${rule.en}</p><p class="indo-text">${rule.indo}</p></li>`;
+            });
+            html += `</ul></div>`;
+            return html;
+        }
+
+        function renderLesson(modules, sectionId) {
+            let html = '';
+            modules.forEach((mod, idx) => {
+                if (mod.type === 'theory') {
+                    html += `
+                        <div class="exercise-box" style="border-color: var(--secondary); background: #f0faff;">
+                            ${mod.svg}
+                            <div class="bilingual">
+                                <h3 style="color: var(--secondary);">${mod.title}</h3>
+                                <p class="indo-text">${mod.title_indo}</p>
+                            </div>
+                            <div class="bilingual">
+                                <p>${mod.body}</p>
+                                <p class="indo-text">${mod.body_indo}</p>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    const options = shuffleArray([...mod.options]);
+                    html += `
+                        <div class="exercise-box" id="ex-${sectionId}-${idx}">
+                            <p><strong>Exercise ${idx + 1}:</strong> ${mod.question}</p>
+                            <div class="options-grid">
+                                ${options.map(opt => `
+                                    <button class="option-btn" onclick="selectOption(this, '${sectionId}-${idx}', '${opt.replace(/'/g, "\\'")}')">${opt}</button>
+                                `).join('')}
+                            </div>
+                            <div style="display: flex; gap: 10px; margin-top: 15px;">
+                                <button class="submit-btn" style="flex: 2;" onclick="checkAnswer('${sectionId}-${idx}', '${mod.correct.replace(/'/g, "\\'")}')">Check Answer</button>
+                                <button class="submit-btn" style="flex: 1; background: #e5e5e5; color: #777; border-bottom-color: #d4d4d4;" onclick="resetExercise('${sectionId}-${idx}')"><i class="fas fa-redo"></i> Reset</button>
+                            </div>
+                            <div class="explanation-collapse" id="collapse-${sectionId}-${idx}">
+                                <div class="explanation-toggle" onclick="toggleExplanation('${sectionId}-${idx}')">
+                                    <i class="fas fa-lightbulb"></i> Show Explanation
+                                </div>
+                                <p id="text-${sectionId}-${idx}" style="display: none; margin-top: 10px; padding: 10px; background: #fff; border-radius: 8px;">${mod.explanation}</p>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+            return html;
+        }
+
+        function renderAssignment(section, secIndex) {
+            let html = `
+                <div class="bilingual" style="background: #f0faff; padding: 10px; border-radius: 8px; margin-bottom: 20px;">
+                    <p><strong>Instructions:</strong> Answer all 10 questions. Options are randomized. Click "Print Result" when done.</p>
+                    <p class="indo-text"><strong>Instruksi:</strong> Jawab semua 10 soal. Opsi diacak. Klik "Print Result" setelah selesai.</p>
+                </div>
+            `;
+            
+            if(!assignmentAnswers[section.id]) {
+                assignmentAnswers[section.id] = {};
+            }
+
+            section.questions.forEach((q, qIdx) => {
+                const options = shuffleArray([...q.opts]);
+                html += `
+                    <div class="exercise-box" id="assign-${section.id}-${qIdx}">
+                        <p><strong>Q${qIdx + 1}.</strong> ${q.q}</p>
+                        <div class="options-grid">
+                            ${options.map(opt => `
+                                <button class="option-btn" onclick="selectAssignmentOption('${section.id}', ${qIdx}, '${opt.replace(/'/g, "\\'")}', this)">${opt}</button>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `
+                <button class="submit-btn" style="background: var(--secondary); border-bottom-color: #1899d6;" onclick="preparePrint('${section.id}', '${section.title}')">
+                    <i class="fas fa-print"></i> Print Result
+                </button>
+            `;
+            return html;
+        }
+
+        function renderConsolidation(content) {
+            let html = `
+                <div class="bilingual">
+                    <h3>${content.title}</h3>
+                    <p class="indo-text">${content.title_indo}</p>
+                </div>
+                <div class="bilingual">
+                    <p>${content.body}</p>
+                    <p class="indo-text">${content.body_indo}</p>
+                </div>
+                <div style="text-align: center; margin: 30px 0;">
+                    <a href="${content.link}" target="_blank" class="btn btn-primary" style="text-decoration: none; display: inline-block;">
+                        <i class="fas fa-external-link-alt"></i> ${content.link_text}
+                    </a>
+                    <p class="indo-text" style="margin-top: 5px;">${content.link_text_indo}</p>
+                </div>
+            `;
+            return html;
+        }
+
+        // ==========================================
+        // EXERCISE INTERACTION LOGIC
+        // ==========================================
+        function selectOption(btn, exId, selectedVal) {
+            const box = document.getElementById(`ex-${exId}`);
+            box.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            btn.dataset.value = selectedVal;
+        }
+
+        function checkAnswer(exId, correctVal) {
+            const box = document.getElementById(`ex-${exId}`);
+            const selected = box.querySelector('.option-btn.selected');
+            const collapse = document.getElementById(`collapse-${exId}`);
+            
+            if (!selected) {
+                alert("Please select an answer first! / Silakan pilih jawaban dulu!");
+                return;
+            }
+
+            const userVal = selected.dataset.value;
+            
+            if (userVal === correctVal) {
+                selected.classList.add('correct');
+            } else {
+                selected.classList.add('incorrect');
+                // Highlight correct one
+                box.querySelectorAll('.option-btn').forEach(b => {
+                    if (b.dataset.value === correctVal) b.classList.add('correct');
+                });
+            }
+
+            // Disable buttons
+            box.querySelectorAll('.option-btn').forEach(b => b.style.pointerEvents = 'none');
+            
+            // Show explanation
+            collapse.style.display = 'block';
+        }
+
+        function resetExercise(exId) {
+            const box = document.getElementById(`ex-${exId}`);
+            if (!box) return;
+            
+            // Hapus semua class (selected, correct, incorrect) dan aktifkan kembali tombol
+            box.querySelectorAll('.option-btn').forEach(b => {
+                b.classList.remove('selected', 'correct', 'incorrect');
+                b.style.pointerEvents = 'auto'; 
+                delete b.dataset.value;
+            });
+            
+            // Sembunyikan box penjelasan
+            const collapse = document.getElementById(`collapse-${exId}`);
+            if (collapse) {
+                collapse.style.display = 'none';
+                const text = document.getElementById(`text-${exId}`);
+                if (text) text.style.display = 'none';
+                const toggle = box.querySelector('.explanation-toggle');
+                if (toggle) toggle.innerHTML = '<i class="fas fa-lightbulb"></i> Show Explanation';
+            }
+        }
+
+        function toggleExplanation(exId) {
+            const text = document.getElementById(`text-${exId}`);
+            const toggle = event.currentTarget;
+            if(text.style.display === 'none') {
+                text.style.display = 'block';
+                toggle.innerHTML = '<i class="fas fa-eye-slash"></i> Hide Explanation';
+            } else {
+                text.style.display = 'none';
+                toggle.innerHTML = '<i class="fas fa-lightbulb"></i> Show Explanation';
+            }
+        }
+
+        function selectAssignmentOption(secId, qIdx, val, btn) {
+            const box = document.getElementById(`assign-${secId}-${qIdx}`);
+            box.querySelectorAll('.option-btn').forEach(b => {
+                b.classList.remove('selected', 'correct', 'incorrect');
+            });
+            btn.classList.add('selected');
+            assignmentAnswers[secId][qIdx] = val;
+        }
+
+        function markComplete(secId) {
+            userProgress[secId] = true;
+            saveProgress();
+            renderPath();
+            // Visual feedback
+            event.target.innerHTML = '<i class="fas fa-check-double"></i> Completed!';
+            event.target.style.background = 'var(--primary)';
+            event.target.style.color = 'white';
+        }
+
+        // ==========================================
+        // PRINT LOGIC (A4 Format)
+        // ==========================================
+        function preparePrint(secId, secTitle) {
+            const section = lessonData.find(s => s.id === secId);
+            let score = 0;
+            let tableRows = '';
+
+            section.questions.forEach((q, idx) => {
+                const userAns = assignmentAnswers[secId]?.[idx] || "-";
+                const isCorrect = userAns === q.correct;
+                if (isCorrect) score++;
+                
+                tableRows += `
+                    <tr>
+                        <td style="text-align: center;">${idx + 1}</td>
+                        <td>${q.q.replace(/\\\(|\\\)/g, '').replace(/\\/g, '')}</td>
+                        <td style="text-align: center;">${userAns}</td>
+                        <td style="text-align: center;">${q.correct}</td>
+                        <td style="text-align: center; font-size: 14pt; color: ${isCorrect ? 'green' : 'red'};">${isCorrect ? '&#10003;' : '&#10007;'}</td>
+                    </tr>
+                `;
+            });
+
+            const printArea = document.getElementById('print-area');
+            printArea.style.display = 'block';
+            printArea.innerHTML = `
+                <div class="print-header">
+                    <h2>MATH TUTORING by Deni</h2>
+                </div>
+                <div class="print-info">
+                    <div><strong>Name:</strong> _______________________</div>
+                    <div><strong>Date:</strong> _______________________</div>
+                    <div><strong>Topic:</strong> Phase 2 Assessment</div>
+                    <div><strong>Assignment Group:</strong> ${secTitle}</div>
+                    <div><strong>Score:</strong> ____ / 10</div>
+                </div>
+                <table class="print-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 5%;">No.</th>
+                            <th style="width: 45%;">Question</th>
+                            <th style="width: 20%;">Student Answer</th>
+                            <th style="width: 20%;">Correct Answer</th>
+                            <th style="width: 10%;">Note</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${tableRows}
+                    </tbody>
+                </table>
+                <div class="print-footer">
+                    <p>Checked by,</p>
+                    <br><br>
+                    <p><strong>Deni</strong></p>
+                </div>
+            `;
+
+            window.print();
+            setTimeout(() => {
+                printArea.style.display = 'none';
+            }, 500);
+        }
+
+        // ==========================================
+        // UTILITY FUNCTIONS
+        // ==========================================
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function renderMath(element) {
+            if (typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(element, {
+                    delimiters: [
+                        {left: '\\(', right: '\\)', display: false},
+                        {left: '$$', right: '$$', display: true}
+                    ]
+                });
+            }
+        }
+
+        // INIT
+        window.onload = () => {
+            renderPath();
+            renderContent(0);
+        };
+    </script>
+</body>
+</html>
