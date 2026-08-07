@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pythagorean Theorem - Interactive Lesson</title>
+    <!-- KaTeX CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <!-- KaTeX JS -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <!-- KaTeX Auto-render -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <style>
+        :root {
+            --primary: #58cc02;
+            --primary-dark: #58a700;
+            --secondary: #1cb0f6;
+            --danger: #ff4b4b;
+            --warning: #ffc800;
+            --bg-color: #fff;
+            --text-color: #3c3c3c;
+            --border-color: #e5e5e5;
+            --card-bg: #ffffff;
+            --sidebar-bg: #ffffff;
+            --hover-bg: #f7f7f7;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Nunito', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f0f0f0;
+            color: var(--text-color);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            border-right: 2px solid var(--border-color);
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            margin-bottom: 5px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            color: #afafaf;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+
+        .nav-item:hover {
+            background-color: var(--hover-bg);
+            color: var(--text-color);
+        }
+
+        .nav-item.active {
+            background-color: #e5f7ff;
+            color: var(--secondary);
+            border-color: var(--secondary);
+        }
+
+        .nav-item.completed {
+            color: var(--primary);
+        }
+
+        .nav-item .icon {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+            display: flex;
+            justify-content: center;
+        }
+
+        .content-container {
+            max-width: 800px;
+            width: 100%;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Theory & Typography */
+        h1, h2, h3 {
+            color: var(--text-color);
+            margin-bottom: 15px;
+        }
+
+        p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .translation {
+            display: block;
+            font-size: 0.9rem;
+            color: #777;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+
+        .theory-box {
+            background-color: #fff9e5;
+            border-left: 5px solid var(--warning);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        /* Exercises */
+        .exercise-card {
+            border: 2px solid var(--border-color);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: border-color 0.3s;
+        }
+
+        .exercise-card.answered {
+            border-color: var(--secondary);
+        }
+
+        .question-text {
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .option-btn {
+            padding: 15px;
+            border: 2px solid var(--border-color);
+            background: white;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            color: var(--text-color);
+            transition: all 0.2s;
+            text-align: left;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            border-color: #b0b0b0;
+            transform: translateY(-2px);
+        }
+
+        .option-btn.selected {
+            background-color: #e5f7ff;
+            border-color: var(--secondary);
+            color: var(--secondary);
+        }
+
+        .option-btn.selected:hover {
+            transform: translateY(0);
+        }
+
+        .option-btn.correct {
+            background-color: #d7ffb8;
+            border-color: var(--primary);
+            color: var(--primary-dark);
+        }
+
+        .option-btn.incorrect {
+            background-color: #ffdfe0;
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+
+        .option-btn:disabled {
+            cursor: not-allowed;
+        }
+
+        /* Controls */
+        .exercise-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+        }
+
+        .btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 rgba(0,0,0,0.1);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        .btn:disabled {
+            background-color: #e5e5e5;
+            color: #afafaf;
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+
+        /* Collapsible Explanation */
+        .explanation {
+            margin-top: 15px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 15px;
+            display: none;
+        }
+
+        .explanation.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; max-height: 0; }
+            to { opacity: 1; max-height: 500px; }
+        }
+
+        /* Print Styles */
+        @media print {
+            body * { visibility: hidden; }
+            #printArea, #printArea * { visibility: visible; }
+            #printArea {
+                display: block !important;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                padding: 0;
+            }
+            @page {
+                size: A4;
+                margin: 10mm;
+            }
+        }
+
+        #printArea { display: none; }
+
+        #printArea { display: none; }
+
+        /* Input text for answers */
+        .text-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        /* Badges */
+        .section-badge {
+            display: inline-block;
+            background: var(--secondary);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+        }
+        
+        .svg-illustration {
+            display: block;
+            margin: 20px auto;
+            max-width: 200px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">MATH TUTORING by Deni</div>
+        <div id="navMenu"></div>
+        <button class="btn btn-danger" style="margin-top: 20px; width: 100%;" onclick="resetAllProgress()">Reset All Progress</button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="content-container" id="contentContainer">
+            <!-- Dynamic content goes here -->
+        </div>
+    </div>
+
+    <!-- Hidden Print Area -->
+    <div id="printArea"></div>
+
+    <script>
+        // ==========================================
+        // GLOBAL STATE & DATA STRUCTURE
+        // ==========================================
+        const AppData = {
+            sections: [
+                { id: 'home', title: 'Home', icon: '🏠' },
+                { id: 'sec1', title: 'Spiral Review Warm-up', time: '00:00-00:10', icon: '🔥' },
+                { id: 'sec2', title: 'Intro & Real-World', time: '00:10-00:15', icon: '🌍' },
+                { id: 'sec3', title: 'Prior Knowledge', time: '00:15-00:20', icon: '📚' },
+                { id: 'sec4', title: 'Problem Introduction', time: '00:20-00:30', icon: '💡' },
+                { id: 'sec5', title: 'Guided Practice', time: '00:30-00:45', icon: '🧭' },
+                { id: 'sec6', title: 'Independent Practice', time: '00:50-01:00', icon: '✍️' },
+                { id: 'assign1', title: 'Assignment 1', icon: '📝' },
+                { id: 'assign2', title: 'Assignment 2', icon: '📝' },
+                { id: 'assign3', title: 'Assignment 3', icon: '📝' },
+                { id: 'assign4', title: 'Assignment 4', icon: '📝' },
+                { id: 'assign5', title: 'Assignment 5', icon: '📝' },
+                { id: 'consolidation', title: 'Consolidation', time: '01:00-01:05', icon: '🎓' }
+            ],
+            progress: {} 
+        };
+
+        // Initialize progress tracking
+        AppData.sections.forEach(s => {
+            AppData.progress[s.id] = { completed: false, answers: {} };
+        });
+
+        let currentSection = 'home';
+
+        // ==========================================
+        // RENDER ENGINE
+        // ==========================================
+        function renderNav() {
+            const nav = document.getElementById('navMenu');
+            nav.innerHTML = '';
+            AppData.sections.forEach(sec => {
+                const div = document.createElement('div');
+                div.className = `nav-item ${currentSection === sec.id ? 'active' : ''} ${AppData.progress[sec.id].completed ? 'completed' : ''}`;
+                div.innerHTML = `<span class="icon">${sec.icon}</span> ${sec.title}`;
+                if (sec.time) div.innerHTML += `<br><small style="font-size:0.7rem; margin-left:30px;">${sec.time}</small>`;
+                div.onclick = () => loadSection(sec.id);
+                nav.appendChild(div);
+            });
+        }
+
+        function loadSection(id) {
+            currentSection = id;
+            renderNav();
+            const container = document.getElementById('contentContainer');
+            container.innerHTML = '';
+            
+            switch(id) {
+                case 'home': renderHome(container); break;
+                case 'sec1': renderSection1(container); break;
+                case 'sec2': renderSection2(container); break;
+                case 'sec3': renderSection3(container); break;
+                case 'sec4': renderSection4(container); break;
+                case 'sec5': renderSection5(container); break; // TAMBAHAN PART 3
+                case 'sec6': renderSection6(container); break; // TAMBAHAN PART 3
+                case 'assign1': renderAssignment(container, 'assign1', 1); break; // TAMBAHAN PART 3
+                case 'assign2': renderAssignment(container, 'assign2', 2); break; // TAMBAHAN PART 3
+                case 'assign3': renderAssignment(container, 'assign3', 3); break; // TAMBAHAN PART 3
+                case 'assign4': renderAssignment(container, 'assign4', 4); break; // TAMBAHAN PART 3
+                case 'assign5': renderAssignment(container, 'assign5', 5); break; // TAMBAHAN PART 3
+                case 'consolidation': renderConsolidation(container); break; // TAMBAHAN PART 3
+                default: container.innerHTML = `<h2>Coming Soon...</h2><p>This section is under development.</p>`;
+            }
+
+            if (typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(container, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false}
+                    ]
+                });
+            }
+        }
+
+        // ==========================================
+        // REUSABLE COMPONENTS
+        // ==========================================
+        function createExerciseCard(sectionId, exData, index, totalExercises, nextSectionId) {
+            const card = document.createElement('div');
+            card.className = 'exercise-card';
+            card.id = `${sectionId}-ex-${exData.id}`;
+            
+            let optionsHTML = '';
+            if (exData.type === 'mcq') {
+                const shuffled = [...exData.options].sort(() => 0.5 - Math.random());
+                optionsHTML = '<div class="options-grid">';
+                shuffled.forEach(opt => {
+                    optionsHTML += `<button class="option-btn" data-opt-id="${opt.id}" onclick="handleMCQ('${sectionId}', '${exData.id}', '${opt.id}', this)">${opt.text}</button>`;
+                });
+                optionsHTML += '</div>';
+            } else if (exData.type === 'input') {
+                optionsHTML = `<input type="text" class="text-input" id="${sectionId}-input-${exData.id}" placeholder="Type your answer here...">`;
+            }
+
+            const isLast = index === totalExercises - 1;
+            const isFirst = index === 0;
+
+            card.innerHTML = `
+                <div class="section-badge">Exercise ${exData.id} of ${totalExercises}</div>
+                <div class="question-text">${exData.q}</div>
+                <div class="translation">${exData.q_id}</div>
+                ${optionsHTML}
+                <div class="exercise-controls">
+                    <button class="btn btn-secondary" onclick="resetExercise('${sectionId}', '${exData.id}')">Reset</button>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn btn-secondary" onclick="navigateExercise(${index - 1}, '${sectionId}')" ${isFirst ? 'disabled' : ''}>Previous</button>
+                        <button class="btn btn-primary" onclick="checkAnswer('${sectionId}', '${exData.id}')">Check</button>
+                        <button class="btn btn-primary" onclick="navigateExercise(${index + 1}, '${sectionId}', '${isLast ? nextSectionId : ''}')" ${isLast && !nextSectionId ? 'disabled' : ''}>${isLast && nextSectionId ? 'Next Section' : 'Next'}</button>
+                    </div>
+                </div>
+                <div class="explanation" id="exp-${sectionId}-${exData.id}">
+                    <strong>Explanation:</strong> <span id="exp-text-${sectionId}-${exData.id}"></span><br>
+                    <small class="translation">Penjelasan: <span id="exp-text-id-${sectionId}-${exData.id}"></span></small>
+                </div>
+            `;
+            return card;
+        }
+
+        function navigateExercise(nextIndex, secId, nextSectionId = '') {
+            if (nextIndex < 0) return;
+            
+            const exercises = SectionData[secId].exercises;
+            if (nextIndex < exercises.length) {
+                document.getElementById(`${secId}-ex-${exercises[nextIndex].id}`).scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } else if (nextSectionId) {
+                loadSection(nextSectionId);
+            }
+        }
+
+        function handleMCQ(secId, exId, optId, btn) {
+            const card = document.getElementById(`${secId}-ex-${exId}`);
+            const buttons = card.querySelectorAll('.option-btn');
+            
+            // Reset semua tombol ke kondisi normal (belum dicek)
+            buttons.forEach(b => {
+                b.classList.remove('correct', 'incorrect', 'selected');
+                b.disabled = false;
+            });
+            
+            // Tandai tombol yang diklik sebagai 'selected'
+            btn.classList.add('selected');
+            AppData.progress[secId].answers[exId] = optId;
+        }
+
+        function checkAnswer(secId, exId) {
+            const ex = getExerciseData(secId, exId);
+            if (!ex) return;
+            
+            let userAnswer = '';
+            let isCorrect = false;
+            const card = document.getElementById(`${secId}-ex-${exId}`);
+            
+            if (ex.type === 'mcq') {
+                userAnswer = AppData.progress[secId].answers[exId];
+                if (!userAnswer) { alert('Please select an option!'); return; }
+                isCorrect = userAnswer === ex.correct;
+                
+                card.querySelectorAll('.option-btn').forEach(btn => {
+                    btn.disabled = true; 
+                    btn.classList.remove('selected'); 
+                    const optId = btn.getAttribute('data-opt-id');
+                    if (optId === ex.correct) btn.classList.add('correct');
+                    if (optId === userAnswer && !isCorrect) btn.classList.add('incorrect');
+                });
+            } else if (ex.type === 'input') {
+                const input = document.getElementById(`${secId}-input-${exId}`);
+                userAnswer = input.value.trim().toLowerCase();
+                if (!userAnswer) { alert('Please type your answer!'); return; }
+                
+                // PERBAIKAN: Simpan jawaban asli siswa ke AppData
+                AppData.progress[secId].answers[exId] = input.value;
+                
+                isCorrect = userAnswer === ex.correct.toLowerCase();
+                input.disabled = true;
+                input.style.borderColor = isCorrect ? 'var(--primary)' : 'var(--danger)';
+                input.style.color = isCorrect ? 'var(--primary-dark)' : 'var(--danger)';
+            }
+
+            AppData.progress[secId].answers[exId + '_correct'] = isCorrect;
+            card.classList.add('answered');
+            
+            const expDiv = document.getElementById(`exp-${secId}-${exId}`);
+            document.getElementById(`exp-text-${secId}-${exId}`).innerHTML = isCorrect ? ex.exp_en : ex.exp_en + " (Incorrect)";
+            document.getElementById(`exp-text-id-${secId}-${exId}`).innerHTML = isCorrect ? ex.exp_id : ex.exp_id + " (Salah)";
+            expDiv.classList.add('show');
+            
+            if (typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(expDiv, {delimiters: [{left: '$', right: '$', display: false}]});
+            }
+        }
+
+        function resetExercise(secId, exId) {
+            const ex = getExerciseData(secId, exId);
+            const card = document.getElementById(`${secId}-ex-${exId}`);
+            card.classList.remove('answered');
+            
+            if (ex.type === 'mcq') {
+                card.querySelectorAll('.option-btn').forEach(btn => {
+                    btn.classList.remove('correct', 'incorrect', 'selected');
+                    btn.disabled = false;
+                    btn.style.opacity = '1';
+                });
+            } else if (ex.type === 'input') {
+                const input = document.getElementById(`${secId}-input-${exId}`);
+                input.value = '';
+                input.disabled = false;
+                input.style.borderColor = '';
+                input.style.color = '';
+            }
+            
+            document.getElementById(`exp-${secId}-${exId}`).classList.remove('show');
+            delete AppData.progress[secId].answers[exId];
+            delete AppData.progress[secId].answers[exId + '_correct'];
+        }
+
+        function resetAllProgress() {
+            if(confirm('Are you sure you want to reset ALL progress? This cannot be undone.')) {
+                AppData.sections.forEach(s => {
+                    AppData.progress[s.id] = { completed: false, answers: {} };
+                });
+                loadSection(currentSection);
+                renderNav();
+            }
+        }
+
+        // Temporary mock function until Part 2 data structure is injected
+        function getExerciseData(secId, exId) {
+            // This will be properly implemented with full data in subsequent parts
+            const data = SectionData[secId]?.exercises?.find(e => e.id == exId);
+            return data;
+        }
+
+        // ==========================================
+        // CONTENT: HOME
+        // ==========================================
+        function renderHome(container) {
+            container.innerHTML = `
+                <h1>MATH TUTORING by Deni</h1>
+                <p><strong>Topic: Pythagorean Theorem (Basics)</strong></p>
+                <p class="translation"><strong>Topik: Teorema Pythagoras (Konsep Dasar)</strong></p>
+                
+                <div class="theory-box">
+                    <h3>Class Rules <span class="translation">Aturan Kelas</span></h3>
+                    <ol>
+                        <li>Take turns speaking. <span class="translation">Berbicara secara bergantian.</span></li>
+                        <li>Ask for permission if you need to leave the class. <span class="translation">Meminta izin jika ingin meninggalkan kelas.</span></li>
+                        <li>Turn on your camera and microphone if needed. <span class="translation">Menyalakan kamera dan microphone jika diperlukan.</span></li>
+                    </ol>
+                </div>
+                <button class="btn btn-primary" onclick="loadSection('sec1')">Start Lesson <span class="translation">Mulai Pelajaran</span></button>
+            `;
+        }
+
+        // ==========================================
+        // CONTENT: SECTION 1 (Spiral Review)
+        // ==========================================
+        const SectionData = {
+            sec1: {
+                exercises: [
+                    { id: 1, type: 'mcq', q: "Write the algebraic expression for: '7 more than 3 times x'", q_id: "Tuliskan ekspresi aljabar untuk: '7 lebihnya dari 3 kali x'", options: [ {id:'a', text:'3x - 7'}, {id:'b', text:'3x + 7'}, {id:'c', text:'7x + 3'}, {id:'d', text:'3(x + 7)'} ], correct: 'b', exp_en: "3 times x is 3x. '7 more' means we add 7. So, 3x + 7.", exp_id: "3 kali x adalah 3x. '7 lebihnya' berarti kita tambah 7. Jadi, 3x + 7." },
+                    { id: 2, type: 'mcq', q: "In the expression $5p + 10$, which is the variable and which is the constant?", q_id: "Pada ekspresi $5p + 10$, mana yang merupakan variabel dan mana yang konstanta?", options: [ {id:'a', text:'Var: 5, Const: p'}, {id:'b', text:'Var: p, Const: 10'}, {id:'c', text:'Var: 10, Const: 5p'}, {id:'d', text:'Var: 5p, Const: 10'} ], correct: 'b', exp_en: "The variable is the letter (p), and the constant is the number without a variable (10).", exp_id: "Variabel adalah hurufnya (p), dan konstanta adalah angka tanpa variabel (10)." },
+                    { id: 3, type: 'input', q: "Write the expression for: 'Half of y decreased by 4'", q_id: "Tulis ekspresi untuk: 'Setengah dari y dikurangi 4'", correct: '0.5y - 4', exp_en: "Half of y is (1/2)y or 0.5y. Decreased by 4 means -4. Answer: 0.5y - 4 or y/2 - 4.", exp_id: "Setengah dari y adalah (1/2)y atau 0.5y. Dikurangi 4 berarti -4. Jawaban: 0.5y - 4." },
+                    { id: 4, type: 'mcq', q: "What are the coefficients in $2a + 3b - 5$?", q_id: "Sebutkan semua koefisien pada $2a + 3b - 5$", options: [ {id:'a', text:'2 and 3'}, {id:'b', text:'2, 3, and -5'}, {id:'c', text:'a and b'}, {id:'d', text:'2a and 3b'} ], correct: 'a', exp_en: "Coefficients are numbers multiplying variables. Here, 2 (for a) and 3 (for b). -5 is a constant.", exp_id: "Koefisien adalah angka yang dikalikan dengan variabel. Di sini, 2 (untuk a) dan 3 (untuk b). -5 adalah konstanta." },
+                    { id: 5, type: 'mcq', q: "Simplify: $2(x + 3) - 5$", q_id: "Sederhanakan: $2(x + 3) - 5$", options: [ {id:'a', text:'2x + 1'}, {id:'b', text:'2x - 2'}, {id:'c', text:'2x + 6'}, {id:'d', text:'2x + 11'} ], correct: 'a', exp_en: "Distribute 2: $2x + 6$. Then subtract 5: $2x + 1$.", exp_id: "Bagikan 2: $2x + 6$. Lalu kurang 5: $2x + 1$." },
+                    { id: 6, type: 'mcq', q: "Write an expression: 'The difference between the square of a and the square of b'", q_id: "Tulis ekspresi: 'Selisih antara kuadrat a dan kuadrat b'", options: [ {id:'a', text:'a^2 - b^2'}, {id:'b', text:'(a - b)^2'}, {id:'c', text:'a^2 + b^2'}, {id:'d', text:'2a - 2b'} ], correct: 'a', exp_en: "Square of a is $a^2$, square of b is $b^2$. Difference means subtract: $a^2 - b^2$.", exp_id: "Kuadrat a adalah $a^2$, kuadrat b adalah $b^2$. Selisih berarti kurang: $a^2 - b^2$." },
+                    { id: 7, type: 'input', q: "If one book costs 5000 and there is a discount of 2000, what is the expression for $n$ books?", q_id: "Jika satu buku seharga 5000 dan ada diskon 2000, berapakah ekspresi untuk $n$ buku?", correct: '5000n - 2000', exp_en: "n books cost 5000n. Minus the discount: 5000n - 2000.", exp_id: "n buku harganya 5000n. Dikurangi diskon: 5000n - 2000." },
+                    { id: 8, type: 'mcq', q: "Identify the like terms in: $3a + 2b - 5a + 7$", q_id: "Sebutkan suku-suku sejenis dari: $3a + 2b - 5a + 7$", options: [ {id:'a', text:'3a and 2b'}, {id:'b', text:'3a and -5a'}, {id:'c', text:'2b and 7'}, {id:'d', text:'3a and 7'} ], correct: 'b', exp_en: "Like terms have the same variable. $3a$ and $-5a$ both have the variable 'a'.", exp_id: "Suku sejenis memiliki variabel yang sama. $3a$ dan $-5a$ sama-sama memiliki variabel 'a'." },
+                    { id: 9, type: 'input', q: "Write the expression for '4 less than the square of m'", q_id: "Tulis ekspresi untuk '4 kurangnya dari kuadrat m'", correct: 'm^2 - 4', exp_en: "Square of m is $m^2$. 4 less means subtract 4: $m^2 - 4$.", exp_id: "Kuadrat m adalah $m^2$. 4 kurang berarti kurang 4: $m^2 - 4$." },
+                    { id: 10, type: 'mcq', q: "Write an expression for 'Three times the sum of x and 5'", q_id: "Tulis ekspresi untuk 'Tiga kali jumlah x dan 5'", options: [ {id:'a', text:'3x + 5'}, {id:'b', text:'3x + 15'}, {id:'c', text:'3(x + 5)'}, {id:'d', text:'x + 15'} ], correct: 'c', exp_en: "Sum of x and 5 is $(x + 5)$. Three times that is $3(x + 5)$.", exp_id: "Jumlah x dan 5 adalah $(x + 5)$. Tiga kali itu adalah $3(x + 5)$." }
+                ]
+            }
+        };
+
+        function renderSection1(container) {
+            container.innerHTML = `
+                <h2>Spiral Review Warm-up <span class="translation">Ulasan Putaran Pemanasan</span></h2>
+                <div id="exercises-sec1"></div>
+            `;
+            const exContainer = document.getElementById('exercises-sec1');
+            const exercises = SectionData.sec1.exercises;
+            const appendTheory = (t1, t2, d1, d2) => {
+                const div = document.createElement('div');
+                div.className = 'theory-box';
+                div.innerHTML = `<p><strong>${t1}</strong></p><p class="translation">${t2}</p><p>${d1}</p><p class="translation">${d2}</p>`;
+                exContainer.appendChild(div);
+            };
+
+            appendTheory("Algebraic Expressions", "Ekspresi Aljabar", "Let's warm up our brains! An expression combines numbers and variables using operations.", "Mari kita panaskan otak! Ekspresi mengkombinasikan angka dan variabel menggunakan operasi.");
+            exercises.slice(0, 3).forEach((ex, i) => exContainer.appendChild(createExerciseCard('sec1', ex, i, exercises.length, 'sec2')));
+
+            appendTheory("Variables, Constants, & Coefficients", "Variabel, Konstanta, & Koefisien", "Variables are letters (x, y). Constants are numbers alone (5, -2). Coefficients are numbers multiplying variables (in 3x, 3 is the coefficient).", "Variabel adalah huruf. Konstanta adalah angka sendirian. Koefisien adalah angka yang mengalikan variabel.");
+            exercises.slice(3, 6).forEach((ex, i) => exContainer.appendChild(createExerciseCard('sec1', ex, i + 3, exercises.length, 'sec2')));
+
+            appendTheory("Simplifying & Writing Expressions", "Menyederhanakan & Menulis Ekspresi", "We can translate words into math and simplify expressions by combining like terms.", "Kita bisa mengubah kata-kata menjadi matematika dan menyederhanakan ekspresi dengan menggabungkan suku sejenis.");
+            exercises.slice(6, 10).forEach((ex, i) => exContainer.appendChild(createExerciseCard('sec1', ex, i + 6, exercises.length, 'sec2')));
+
+            if (typeof renderMathInElement !== 'undefined') renderMathInElement(exContainer, {delimiters: [{left: '$', right: '$', display: false}]});
+        }
+
+        // ==========================================
+        // CONTENT: SECTION 2 (Intro & Real-World)
+        // ==========================================
+        SectionData.sec2 = {
+            exercises: [
+                // Block 1: Theory + 3 Exercises
+                { id: 1, type: 'mcq', q: "In game development and architecture, what shape is essential for ensuring structures stand perpendicular?", q_id: "Dalam pengembangan game dan arsitektur, bentuk apa yang penting untuk memastikan struktur berdiri tegak lurus?", options: [ {id:'a', text:'Circle'}, {id:'b', text:'Square'}, {id:'c', text:'Right Triangle'}, {id:'d', text:'Rectangle'} ], correct: 'c', exp_en: "Right triangles are used to calculate perpendicular distances and heights.", exp_id: "Segitiga siku-siku digunakan untuk menghitung jarak dan tinggi tegak lurus." },
+                { id: 2, type: 'mcq', q: "If you walk 3 meters East, then 4 meters North, what concept is used to find the straight-line distance back to start?", q_id: "Jika kamu berjalan 3 meter ke Timur, lalu 4 meter ke Utara, konsep apa yang dipakai untuk mencari jarak garis lurus kembali ke awal?", options: [ {id:'a', text:'Algebra'}, {id:'b', text:'Pythagorean Theorem'}, {id:'c', text:'Calculus'}, {id:'d', text:'Geometry of Circles'} ], correct: 'b', exp_en: "The path forms a right triangle, so Pythagorean Theorem applies.", exp_id: "Jalur tersebut membentuk segitiga siku-siku, sehingga Teorema Pythagoras berlaku." },
+                { id: 3, type: 'input', q: "What degree angle is formed at the corner of a perfectly straight building?", q_id: "Sudut berapa derajat yang terbentuk di sudut bangunan yang tegak lurus sempurna?", correct: '90', exp_en: "A perpendicular structure forms a 90-degree (right) angle.", exp_id: "Struktur tegak lurus membentuk sudut 90 derajat (siku-siku)." },
+                
+                // Block 2: Theory + 3 Exercises
+                { id: 4, type: 'mcq', q: "In a 2D grid (like Minecraft), finding the shortest distance between two points relies on what?", q_id: "Dalam grid 2D (seperti Minecraft), mencari jarak terpendek antara dua titik bergantung pada apa?", options: [ {id:'a', text:'Adding x and y coordinates'}, {id:'b', text:'Multiplying x and y coordinates'}, {id:'c', text:'Creating a right triangle with grid lines'}, {id:'d', text:'Drawing a circle'} ], correct: 'c', exp_en: "Grid lines form the legs (a and b) of a right triangle, and the distance is the hypotenuse (c).", exp_id: "Garis grid membentuk sisi tegak (a dan b) segitiga siku-siku, dan jaraknya adalah hipotenusa (c)." },
+                { id: 5, type: 'mcq', q: "What do we call the longest side of a right triangle?", q_id: "Apa yang kita sebut sisi terpanjang dari segitiga siku-siku?", options: [ {id:'a', text:'Adjacent'}, {id:'b', text:'Opposite'}, {id:'c', text:'Hypotenuse'}, {id:'d', text:'Tangent'} ], correct: 'c', exp_en: "The hypotenuse is always the longest side, opposite the 90° angle.", exp_id: "Hipotenusa selalu merupakan sisi terpanjang, di depan sudut 90°." },
+                { id: 6, type: 'mcq', q: "Where is the hypotenuse located in a right triangle?", q_id: "Di mana letak hipotenusa pada segitiga siku-siku?", options: [ {id:'a', text:'Next to the right angle'}, {id:'b', text:'Opposite the right angle'}, {id:'c', text:'It is the shortest side'}, {id:'d', text:'It doesn\'t exist'} ], correct: 'b', exp_en: "It is directly across from (opposite) the 90-degree angle.", exp_id: "Ia berada tepat di seberang (depan) sudut 90 derajat." },
+                
+                // Block 3: Theory + 4 Exercises
+                { id: 7, type: 'mcq', q: "Who is the ancient mathematician credited with the theorem about right triangles?", q_id: "Siapa ahli matematika kuno yang dikreditkan dengan teorema tentang segitiga siku-siku?", options: [ {id:'a', text:'Albert Einstein'}, {id:'b', text:'Isaac Newton'}, {id:'c', text:'Pythagoras'}, {id:'d', text:'Euclid'} ], correct: 'c', exp_en: "Pythagoras of Samos is credited with this theorem.", exp_id: "Pythagoras dari Samos dikreditkan dengan teorema ini." },
+                { id: 8, type: 'input', q: "If a ladder is placed against a wall, what part of the right triangle does the ladder represent?", q_id: "Jika sebuah tangga disandarkan ke dinding, bagian segitiga siku-siku apa yang diwakili oleh tangga?", correct: 'hypotenuse', exp_en: "The ladder is the longest side leaning across, which is the hypotenuse.", exp_id: "Tangga adalah sisi terpanjang yang menyilang, yaitu hipotenusa." },
+                { id: 9, type: 'mcq', q: "Does the Pythagorean Theorem work on triangles without a 90° angle?", q_id: "Apakah Teorema Pythagoras berlaku pada segitiga tanpa sudut 90°?", options: [ {id:'a', text:'Yes, always'}, {id:'b', text:'No, only right triangles'}, {id:'c', text:'Only if it\'s an equilateral triangle'}, {id:'d', text:'Only if it\'s an isosceles triangle'} ], correct: 'b', exp_en: "The theorem $a^2 + b^2 = c^2$ strictly requires a right angle (90°).", exp_id: "Teorema $a^2 + b^2 = c^2$ secara ketat membutuhkan sudut siku-siku (90°)." },
+                { id: 10, type: 'mcq', q: "If you know the height of a wall and the distance of the ladder's base from the wall, what can you calculate?", q_id: "Jika kamu tahu tinggi dinding dan jarak dasar tangga dari dinding, apa yang bisa dihitung?", options: [ {id:'a', text:'The length of the ladder'}, {id:'b', text:'The weight of the ladder'}, {id:'c', text:'The color of the wall'}, {id:'d', text:'The angle of the ground'} ], correct: 'a', exp_en: "Using height (a) and distance (b), you can find the ladder's length (c).", exp_id: "Menggunakan tinggi (a) dan jarak (b), kamu bisa mencari panjang tangga (c)." }
+            ]
+        };
+
+        function renderSection2(container) {
+            container.innerHTML = `
+                <h2>Introduction & Real-World Connection <span class="translation">Pengantar & Koneksi Dunia Nyata</span></h2>
+                <div id="exercises-sec2"></div>
+            `;
+            const exContainer = document.getElementById('exercises-sec2');
+            const exercises = SectionData.sec2.exercises;
+            const appendTheory = (t1, t2, d1, d2) => {
+                const div = document.createElement('div');
+                div.className = 'theory-box';
+                div.innerHTML = `<p><strong>${t1}</strong></p><p class="translation">${t2}</p><p>${d1}</p><p class="translation">${d2}</p>`;
+                exContainer.appendChild(div);
+            };
+
+            appendTheory("Real-World Right Triangles", "Segitiga Siku-siku di Dunia Nyata", "Architects and game developers use right triangles to calculate perpendicular distances and shortest paths.", "Arsitek dan pengembang game menggunakan segitiga siku-siku untuk menghitung jarak tegak lurus dan jalur terpendek.");
+            exercises.slice(0, 3).forEach((ex, i) => exContainer.appendChild(createExerciseCard('sec2', ex, i, exercises.length, 'sec3')));
+
+            appendTheory("The Hypotenuse", "Hipotenusa", "The longest side of a right triangle, always located directly opposite the 90-degree angle.", "Sisi terpanjang dari segitiga siku-siku, selalu berada tepat di seberang sudut 90 derajat.");
+            exercises.slice(3, 6).forEach((ex, i) => exContainer.appendChild(createExerciseCard('sec2', ex, i + 3, exercises.length, 'sec3')));
+
+            appendTheory("The Pythagorean Legacy", "Warisan Pythagoras", "Pythagoras proved that this theorem strictly works for triangles with one 90-degree angle.", "Pythagoras membuktikan bahwa teorema ini hanya berlaku untuk segitiga dengan satu sudut 90 derajat.");
+            exercises.slice(6, 10).forEach((ex, i) => exContainer.appendChild(createExerciseCard('sec2', ex, i + 6, exercises.length, 'sec3')));
+
+            if (typeof renderMathInElement !== 'undefined') renderMathInElement(exContainer, {delimiters: [{left: '$', right: '$', display: false}]});
+        }
+
+        // ==========================================
+        // CONTENT: SECTION 3 (Review of Prior Knowledge)
+        // ==========================================
+        SectionData.sec3 = {
+            exercises: [
+                // Block 1
+                { id: 1, type: 'input', q: "Calculate $12^2$.", q_id: "Hitunglah $12^2$.", correct: '144', exp_en: "$12 \\times 12 = 144$.", exp_id: "$12 \\times 12 = 144$." },
+                { id: 2, type: 'input', q: "Calculate $15^2$.", q_id: "Hitunglah $15^2$.", correct: '225', exp_en: "$15 \\times 15 = 225$.", exp_id: "$15 \\times 15 = 225$." },
+                { id: 3, type: 'mcq', q: "What is $20^2$?", q_id: "Berapakah $20^2$?", options: [ {id:'a', text:'40'}, {id:'b', text:'200'}, {id:'c', text:'400'}, {id:'d', text:'4000'} ], correct: 'c', exp_en: "$20 \\times 20 = 400$.", exp_id: "$20 \\times 20 = 400$." },
+                
+                // Block 2
+                { id: 4, type: 'input', q: "What is the square root of 144? ($\\sqrt{144}$)", q_id: "Berapakah akar kuadrat dari 144? ($\\sqrt{144}$)", correct: '12', exp_en: "Because $12 \\times 12 = 144$.", exp_id: "Karena $12 \\times 12 = 144$." },
+                { id: 5, type: 'input', q: "What is $\\sqrt{225}$?", q_id: "Berapakah $\\sqrt{225}$?", correct: '15', exp_en: "Because $15 \\times 15 = 225$.", exp_id: "Karena $15 \\times 15 = 225$." },
+                { id: 6, type: 'mcq', q: "What is $\\sqrt{400}$?", q_id: "Berapakah $\\sqrt{400}$?", options: [ {id:'a', text:'20'}, {id:'b', text:'40'}, {id:'c', text:'100'}, {id:'d', text:'200'} ], correct: 'a', exp_en: "Because $20 \\times 20 = 400$.", exp_id: "Karena $20 \\times 20 = 400$." },
+                
+                // Block 3
+                { id: 7, type: 'mcq', q: "Given a right triangle with sides 3, 4, and 5. Which side is the hypotenuse?", q_id: "Diberikan segitiga siku-siku dengan sisi 3, 4, dan 5. Sisi manakah yang merupakan hipotenusa?", options: [ {id:'a', text:'3'}, {id:'b', text:'4'}, {id:'c', text:'5'}, {id:'d', text:'None'} ], correct: 'c', exp_en: "The hypotenuse is the longest side. Here, it is 5.", exp_id: "Hipotenusa adalah sisi terpanjang. Di sini, yaitu 5." },
+                { id: 8, type: 'mcq', q: "Given sides 6, 8, and 10. Which is the hypotenuse?", q_id: "Diberikan sisi 6, 8, dan 10. Manakah hipotenusanya?", options: [ {id:'a', text:'6'}, {id:'b', text:'8'}, {id:'c', text:'10'}, {id:'d', text:'They are all the same'} ], correct: 'c', exp_en: "The largest number is 10, so it is the hypotenuse.", exp_id: "Angka terbesar adalah 10, jadi itu hipotenusanya." },
+                { id: 9, type: 'mcq', q: "The hypotenuse is always...", q_id: "Hipotenusa selalu...", options: [ {id:'a', text:'The shortest side'}, {id:'b', text:'Next to the right angle'}, {id:'c', text:'The longest side'}, {id:'d', text:'A horizontal line'} ], correct: 'c', exp_en: "It is always the longest side of a right triangle.", exp_id: "Ia selalu merupakan sisi terpanjang dari segitiga siku-siku." },
+                { id: 10, type: 'mcq', q: "The two shorter sides that form the right angle are called...", q_id: "Dua sisi lebih pendek yang membentuk sudut siku-siku disebut...", options: [ {id:'a', text:'Hypotenuses'}, {id:'b', text:'Legs'}, {id:'c', text:'Arms'}, {id:'d', text:'Variables'} ], correct: 'b', exp_en: "They are commonly referred to as 'legs' (or cathetus).", exp_id: "Mereka biasanya disebut 'sisi tegak' (atau cathetus)." }
+            ]
+        };
+
+        function renderSection3(container) {
+            container.innerHTML = `
+                <h2>Review of Prior Knowledge <span class="translation">Tinjauan Pengetahuan Sebelumnya</span></h2>
+                <div id="exercises-sec3"></div>
+            `;
+            const exContainer = document.getElementById('exercises-sec3');
+            const exercises = SectionData.sec3.exercises;
+            const appendTheory = (t1, t2, d1, d2) => {
+                const div = document.createElement('div');
+                div.className = 'theory-box';
+                div.innerHTML = `<p><strong>${t1}</strong></p><p class="translation">${t2}</p><p>${d1}</p><p class="translation">${d2}</p>`;
+                exContainer.appendChild(div);
+            };
+
+            appendTheory("Squaring Numbers", "Mengkuadratkan Angka", "Squaring a number means multiplying it by itself (e.g., $12^2 = 12 \\times 12 = 144$).", "Mengkuadratkan berarti mengalikan angka dengan dirinya sendiri.");
+            exercises.slice(0, 3).forEach((ex, i) => exContainer.appendChild(createExerciseCard('sec3', ex, i, exercises.length, 'sec4')));
+
+            appendTheory("Square Roots", "Akar Kuadrat", "The inverse of squaring. $\\sqrt{144} = 12$.", "Kebalikan dari kuadrat. $\\sqrt{144} = 12$.");
+            exercises.slice(3, 6).forEach((ex, i) => exContainer.appendChild(createExerciseCard('sec3', ex, i + 3, exercises.length, 'sec4')));
+
+            appendTheory("Anatomy of a Right Triangle", "Anatomi Segitiga Siku-siku", "The hypotenuse is the longest side. The two shorter sides forming the right angle are called 'legs'.", "Hipotenusa adalah sisi terpanjang. Dua sisi pendek yang membentuk sudut siku-siku disebut 'sisi tegak'.");
+            exercises.slice(6, 10).forEach((ex, i) => exContainer.appendChild(createExerciseCard('sec3', ex, i + 6, exercises.length, 'sec4')));
+
+            if (typeof renderMathInElement !== 'undefined') renderMathInElement(exContainer, {delimiters: [{left: '$', right: '$', display: false}]});
+        }
+
+        // ==========================================
+        // CONTENT: SECTION 4 (Problem Introduction)
+        // ==========================================
+        SectionData.sec4 = {
+            exercises: [
+                // Block 1
+                { id: 1, type: 'mcq', q: "In the formula $a^2 + b^2 = c^2$, what does '$c$' represent?", q_id: "Pada rumus $a^2 + b^2 = c^2$, apa yang diwakili oleh '$c$'?", options: [ {id:'a', text:'A leg'}, {id:'b', text:'The hypotenuse'}, {id:'c', text:'The right angle'}, {id:'d', text:'The area'} ], correct: 'b', exp_en: "'$c$' is always the hypotenuse.", exp_id: "'$c$' selalu merupakan hipotenusa." },
+                { id: 2, type: 'input', q: "If $a = 3$ and $b = 4$, calculate $c^2$ (do not find $c$ yet, just $c^2$).", q_id: "Jika $a = 3$ dan $b = 4$, hitunglah $c^2$ (jangan cari $c$ nya, hanya $c^2$).", correct: '25', exp_en: "$3^2 + 4^2 = 9 + 16 = 25$. So $c^2 = 25$.", exp_id: "$3^2 + 4^2 = 9 + 16 = 25$. Jadi $c^2 = 25$." },
+                { id: 3, type: 'input', q: "If $a = 6$ and $b = 8$, calculate $c^2$.", q_id: "Jika $a = 6$ dan $b = 8$, hitunglah $c^2$.", correct: '100', exp_en: "$6^2 + 8^2 = 36 + 64 = 100$.", exp_id: "$6^2 + 8^2 = 36 + 64 = 100$." },
+                
+                // Block 2
+                { id: 4, type: 'input', q: "If a right triangle has a leg $a=3$, what is the area of the square drawn on side $a$?", q_id: "Jika segitiga siku-siku memiliki sisi tegak $a=3$, berapakah luas persegi yang digambar pada sisi $a$?", correct: '9', exp_en: "Area of square = $side^2 = 3^2 = 9$.", exp_id: "Luas persegi = $sisi^2 = 3^2 = 9$." },
+                { id: 5, type: 'input', q: "If the other leg $b=4$, what is the area of the square on side $b$?", q_id: "Jika sisi tegak lainnya $b=4$, berapakah luas persegi pada sisi $b$?", correct: '16', exp_en: "Area = $4^2 = 16$.", exp_id: "Luas = $4^2 = 16$." },
+                { id: 6, type: 'mcq', q: "According to the theorem, the area of the square on the hypotenuse ($c^2$) is equal to...", q_id: "Menurut teorema, luas persegi pada hipotenusa ($c^2$) sama dengan...", options: [ {id:'a', text:'$a - b$'}, {id:'b', text:'$a \\times b$'}, {id:'c', text:'$a^2 + b^2$'}, {id:'d', text:'$a^2 - b^2$'} ], correct: 'c', exp_en: "The sum of the areas of the squares on the two legs ($a^2 + b^2$).", exp_id: "Jumlah luas persegi pada dua sisi tegak ($a^2 + b^2$)." },
+                
+                // Block 3
+                { id: 7, type: 'mcq', q: "A set of three integers that satisfy $a^2 + b^2 = c^2$ is called a...", q_id: "Himpunan tiga bilangan bulat yang memenuhi $a^2 + b^2 = c^2$ disebut...", options: [ {id:'a', text:'Pythagorean Triple'}, {id:'b', text:'Right Angle Set'}, {id:'c', text:'Square Root'}, {id:'d', text:'Variable Group'} ], correct: 'a', exp_en: "e.g., (3, 4, 5) is a Pythagorean Triple.", exp_id: "Misalnya, (3, 4, 5) adalah Tripel Pythagoras." },
+                { id: 8, type: 'input', q: "Given (5, 12, ?). Find the missing number to complete the triple.", q_id: "Diketahui (5, 12, ?). Cari angka yang hilang untuk melengkapi tripel tersebut.", correct: '13', exp_en: "$5^2 + 12^2 = 25 + 144 = 169$. $\\sqrt{169} = 13$.", exp_id: "$5^2 + 12^2 = 25 + 144 = 169$. $\\sqrt{169} = 13$." },
+                { id: 9, type: 'input', q: "Given (8, ?, 17). Find the missing number.", q_id: "Diketahui (8, ?, 17). Cari angka yang hilang.", correct: '15', exp_en: "$17^2 - 8^2 = 289 - 64 = 225$. $\\sqrt{225} = 15$.", exp_id: "$17^2 - 8^2 = 289 - 64 = 225$. $\\sqrt{225} = 15$." },
+                { id: 10, type: 'mcq', q: "Does a triangle with sides 1, 2, and 3 satisfy the Pythagorean Theorem?", q_id: "Apakah segitiga dengan sisi 1, 2, dan 3 memenuhi Teorema Pythagoras?", options: [ {id:'a', text:'Yes, because 1+2=3'}, {id:'b', text:'No, because $1^2 + 2^2 \\neq 3^2$'}, {id:'c', text:'Yes, because $3^2 - 2^2 = 1^2$'}, {id:'d', text:'Cannot be determined'} ], correct: 'b', exp_en: "$1^2 + 2^2 = 1 + 4 = 5$, but $3^2 = 9$. $5 \\neq 9$.", exp_id: "$1^2 + 2^2 = 1 + 4 = 5$, tapi $3^2 = 9$. $5 \\neq 9$." }
+            ]
+        };
+
+        function renderSection4(container) {
+            container.innerHTML = `
+                <h2>Problem Introduction <span class="translation">Pengenalan Masalah</span></h2>
+                <div id="exercises-sec4"></div>
+            `;
+            const exContainer = document.getElementById('exercises-sec4');
+            const exercises = SectionData.sec4.exercises;
+            const appendTheory = (t1, t2, d1, d2) => {
+                const div = document.createElement('div');
+                div.className = 'theory-box';
+                div.innerHTML = `<p><strong>${t1}</strong></p><p class="translation">${t2}</p><p>${d1}</p><p class="translation">${d2}</p>`;
+                exContainer.appendChild(div);
+            };
+
+            appendTheory("The Formula: $a^2 + b^2 = c^2$", "Rumus: $a^2 + b^2 = c^2$", "If we draw squares on the sides of a right triangle, the area of the largest square equals the sum of the two smaller squares.", "Jika kita menggambar persegi di sisi segitiga siku-siku, luas persegi terbesar sama dengan jumlah dua persegi kecil.");
+            exercises.slice(0, 3).forEach((ex, i) => exContainer.appendChild(createExerciseCard('sec4', ex, i, exercises.length, 'sec5')));
+
+            appendTheory("Visualizing the Area", "Memvisualisasikan Luas", "The area of the square on side 'a' plus the area of the square on side 'b' equals the area of the square on the hypotenuse 'c'.", "Luas persegi pada sisi 'a' ditambah luas persegi pada sisi 'b' sama dengan luas persegi pada hipotenusa 'c'.");
+            exercises.slice(3, 6).forEach((ex, i) => exContainer.appendChild(createExerciseCard('sec4', ex, i + 3, exercises.length, 'sec5')));
+
+            appendTheory("Pythagorean Triples", "Tripel Pythagoras", "A set of three integers that satisfy $a^2 + b^2 = c^2$ (like 3, 4, 5) is called a Pythagorean Triple.", "Himpunan tiga bilangan bulat yang memenuhi $a^2 + b^2 = c^2$ (seperti 3, 4, 5) disebut Tripel Pythagoras.");
+            exercises.slice(6, 10).forEach((ex, i) => exContainer.appendChild(createExerciseCard('sec4', ex, i + 6, exercises.length, 'sec5')));
+
+            if (typeof renderMathInElement !== 'undefined') renderMathInElement(exContainer, {delimiters: [{left: '$', right: '$', display: false}]});
+        }
+
+        // ==========================================
+        // CONTENT: SECTION 5 (Guided Practice)
+        // ==========================================
+        SectionData.sec5 = {
+            exercises: [
+                // Block 1
+                { id: 1, type: 'mcq', q: "A 5m ladder leans against a wall. Its base is 3m from the wall. What represents the hypotenuse?", q_id: "Tangga 5m bersandar di dinding. Basanya 3m dari dinding. Apa yang mewakili hipotenusa?", options: [ {id:'a', text:'Wall height'}, {id:'b', text:'Distance on ground'}, {id:'c', text:'The ladder'}, {id:'d', text:'The wall thickness'} ], correct: 'c', exp_en: "The ladder is the longest side leaning across, so it's the hypotenuse (c).", exp_id: "Tangga adalah sisi terpanjang yang menyilang, jadi itu hipotenusa (c)." },
+                { id: 2, type: 'input', q: "Using the ladder problem (c=5, a=3), calculate $b^2$.", q_id: "Menggunakan masalah tangga (c=5, a=3), hitunglah $b^2$.", correct: '16', exp_en: "$3^2 + b^2 = 5^2 \\rightarrow 9 + b^2 = 25 \\rightarrow b^2 = 16$.", exp_id: "$3^2 + b^2 = 5^2 \\rightarrow 9 + b^2 = 25 \\rightarrow b^2 = 16$." },
+                { id: 3, type: 'input', q: "Find the height of the wall ($b$) reached by the ladder.", q_id: "Cari tinggi dinding ($b$) yang dicapai tangga.", correct: '4', exp_en: "$\\sqrt{16} = 4$ meters.", exp_id: "$\\sqrt{16} = 4$ meter." },
+                
+                // Block 2
+                { id: 4, type: 'mcq', q: "To check if (5, 12, 13) is a right triangle, which side should you use as '$c$'?", q_id: "Untuk memeriksa apakah (5, 12, 13) segitiga siku-siku, sisi mana yang harus dijadikan '$c$'?", options: [ {id:'a', text:'5'}, {id:'b', text:'12'}, {id:'c', text:'13'}, {id:'d', text:'Any of them'} ], correct: 'c', exp_en: "The longest side must be the hypotenuse. 13 is the largest number.", exp_id: "Sisi terpanjang harus menjadi hipotenusa. 13 adalah angka terbesar." },
+                { id: 5, type: 'input', q: "Calculate $5^2 + 12^2$.", q_id: "Hitunglah $5^2 + 12^2$.", correct: '169', exp_en: "$25 + 144 = 169$.", exp_id: "$25 + 144 = 169$." },
+                { id: 6, type: 'input', q: "Calculate $13^2$.", q_id: "Hitunglah $13^2$.", correct: '169', exp_en: "$13 \\times 13 = 169$.", exp_id: "$13 \\times 13 = 169$." },
+                
+                // Block 3
+                { id: 7, type: 'mcq', q: "Since $5^2 + 12^2 = 13^2$, what type of triangle is it?", q_id: "Karena $5^2 + 12^2 = 13^2$, jenis segitiga apakah ini?", options: [ {id:'a', text:'Acute'}, {id:'b', text:'Right (Siku-siku)'}, {id:'c', text:'Obtuse'}, {id:'d', text:'Not a triangle'} ], correct: 'b', exp_en: "If $a^2 + b^2 = c^2$, it is exactly a right triangle.", exp_id: "Jika $a^2 + b^2 = c^2$, itu tepat segitiga siku-siku." },
+                { id: 8, type: 'mcq', q: "If $a^2 + b^2 > c^2$, the triangle is...", q_id: "Jika $a^2 + b^2 > c^2$, segitiga tersebut adalah...", options: [ {id:'a', text:'Acute (Lancip)'}, {id:'b', text:'Right'}, {id:'c', text:'Obtuse (Tumpul)'}, {id:'d', text:'Flat'} ], correct: 'a', exp_en: "If the sum of squares is greater than the hypotenuse squared, it's acute.", exp_id: "Jika jumlah kuadrat lebih besar dari kuadrat hipotenusa, itu lancip." },
+                { id: 9, type: 'mcq', q: "If $a^2 + b^2 < c^2$, the triangle is...", q_id: "Jika $a^2 + b^2 < c^2$, segitiga tersebut adalah...", options: [ {id:'a', text:'Acute'}, {id:'b', text:'Right'}, {id:'c', text:'Obtuse (Tumpul)'}, {id:'d', text:'Flat'} ], correct: 'c', exp_en: "If the sum of squares is less, it's obtuse.", exp_id: "Jika jumlah kuadrat lebih kecil, itu tumpul." },
+                { id: 10, type: 'input', q: "A triangle has sides 6, 8, 9. Is $6^2 + 8^2$ greater than, less than, or equal to $9^2$? (Type 'greater', 'less', or 'equal')", q_id: "Segitiga memiliki sisi 6, 8, 9. Apakah $6^2 + 8^2$ lebih besar, lebih kecil, atau sama dengan $9^2$? (Ketik 'greater', 'less', atau 'equal')", correct: 'greater', exp_en: "$36 + 64 = 100$. $9^2 = 81$. 100 is greater than 81, so it's acute.", exp_id: "$36 + 64 = 100$. $9^2 = 81$. 100 lebih besar dari 81, jadi lancip." }
+            ]
+        };
+
+        function renderSection5(container) {
+            container.innerHTML = `
+                <h2>Guided Practice <span class="translation">Latihan Terbimbing</span></h2>
+                <div id="exercises-sec5"></div>
+            `;
+            const exContainer = document.getElementById('exercises-sec5');
+            const exercises = SectionData.sec5.exercises;
+            const appendTheory = (t1, t2, d1, d2) => {
+                const div = document.createElement('div');
+                div.className = 'theory-box';
+                div.innerHTML = `<p><strong>${t1}</strong></p><p class="translation">${t2}</p><p>${d1}</p><p class="translation">${d2}</p>`;
+                exContainer.appendChild(div);
+            };
+
+            appendTheory("The Ladder Problem", "Masalah Tangga", "A classic real-world application. The wall and ground form the legs, while the ladder itself is the hypotenuse.", "Aplikasi dunia nyata klasik. Dinding dan tanah membentuk sisi tegak, sedangkan tangga adalah hipotenusanya.");
+            exercises.slice(0, 3).forEach((ex, i) => exContainer.appendChild(createExerciseCard('sec5', ex, i, exercises.length, 'sec6')));
+
+            appendTheory("Checking for Right Triangles", "Memeriksa Segitiga Siku-siku", "The Converse of the Pythagorean Theorem: if $a^2 + b^2 = c^2$, the triangle is a right triangle.", "Kebalikan Teorema Pythagoras: jika $a^2 + b^2 = c^2$, segitiga tersebut adalah segitiga siku-siku.");
+            exercises.slice(3, 6).forEach((ex, i) => exContainer.appendChild(createExerciseCard('sec5', ex, i + 3, exercises.length, 'sec6')));
+
+            appendTheory("Acute vs. Obtuse Triangles", "Segitiga Lancip vs Tumpul", "If $a^2 + b^2 > c^2$, it's acute. If $a^2 + b^2 < c^2$, it's obtuse.", "Jika $a^2 + b^2 > c^2$, lancip. Jika $a^2 + b^2 < c^2$, tumpul.");
+            exercises.slice(6, 10).forEach((ex, i) => exContainer.appendChild(createExerciseCard('sec5', ex, i + 6, exercises.length, 'sec6')));
+
+            if (typeof renderMathInElement !== 'undefined') renderMathInElement(exContainer, {delimiters: [{left: '$', right: '$', display: false}]});
+        }
+
+
+        // ==========================================
+        // CONTENT: SECTION 6 (Independent Practice)
+        // ==========================================
+        SectionData.sec6 = {
+            exercises: [
+                // Block 1
+                { id: 1, type: 'input', q: "Calculate the hypotenuse if $a=9$ and $b=12$.", q_id: "Hitunglah hipotenusa jika $a=9$ dan $b=12$.", correct: '15', exp_en: "$9^2 + 12^2 = 81 + 144 = 225$. $\\sqrt{225} = 15$.", exp_id: "$9^2 + 12^2 = 81 + 144 = 225$. $\\sqrt{225} = 15$." },
+                { id: 2, type: 'input', q: "Calculate the hypotenuse if $a=12$ and $b=16$.", q_id: "Hitunglah hipotenusa jika $a=12$ dan $b=16$.", correct: '20', exp_en: "$144 + 256 = 400$. $\\sqrt{400} = 20$.", exp_id: "$144 + 256 = 400$. $\\sqrt{400} = 20$." },
+                { id: 3, type: 'input', q: "Calculate the missing leg if $c=25$ and $b=7$.", q_id: "Hitunglah sisi tegak yang hilang jika $c=25$ dan $b=7$.", correct: '24', exp_en: "$a^2 + 7^2 = 25^2 \\rightarrow a^2 + 49 = 625 \\rightarrow a^2 = 576$. $\\sqrt{576} = 24$.", exp_id: "$a^2 + 7^2 = 25^2 \\rightarrow a^2 + 49 = 625 \\rightarrow a^2 = 576$. $\\sqrt{576} = 24$." },
+                
+                // Block 2
+                { id: 4, type: 'mcq', q: "Determine the type of triangle with sides 7, 8, 10.", q_id: "Tentukan jenis segitiga dengan sisi 7, 8, 10.", options: [ {id:'a', text:'Acute (Lancip)'}, {id:'b', text:'Right (Siku-siku)'}, {id:'c', text:'Obtuse (Tumpul)'}, {id:'d', text:'Not a triangle'} ], correct: 'a', exp_en: "$7^2 + 8^2 = 49 + 64 = 113$. $10^2 = 100$. Since $113 > 100$, it is acute.", exp_id: "$7^2 + 8^2 = 49 + 64 = 113$. $10^2 = 100$. Karena $113 > 100$, ini lancip." },
+                { id: 5, type: 'mcq', q: "Determine the type of triangle with sides 8, 15, 18.", q_id: "Tentukan jenis segitiga dengan sisi 8, 15, 18.", options: [ {id:'a', text:'Acute'}, {id:'b', text:'Right'}, {id:'c', text:'Obtuse'}, {id:'d', text:'Not a triangle'} ], correct: 'c', exp_en: "$8^2 + 15^2 = 64 + 225 = 289$. $18^2 = 324$. Since $289 < 324$, it is obtuse.", exp_id: "$8^2 + 15^2 = 64 + 225 = 289$. $18^2 = 324$. Karena $289 < 324$, ini tumpul." },
+                { id: 6, type: 'mcq', q: "Determine the type of triangle with sides 9, 12, 15.", q_id: "Tentukan jenis segitiga dengan sisi 9, 12, 15.", options: [ {id:'a', text:'Acute'}, {id:'b', text:'Right'}, {id:'c', text:'Obtuse'}, {id:'d', text:'Not a triangle'} ], correct: 'b', exp_en: "$9^2 + 12^2 = 81 + 144 = 225$. $15^2 = 225$. Since $225 = 225$, it is a right triangle.", exp_id: "$9^2 + 12^2 = 81 + 144 = 225$. $15^2 = 225$. Karena $225 = 225$, ini segitiga siku-siku." },
+                
+                // Block 3
+                { id: 7, type: 'input', q: "Calculate the hypotenuse if $a=10$ and $b=24$.", q_id: "Hitunglah hipotenusa jika $a=10$ dan $b=24$.", correct: '26', exp_en: "$100 + 576 = 676$. $\\sqrt{676} = 26$.", exp_id: "$100 + 576 = 676$. $\\sqrt{676} = 26$." },
+                { id: 8, type: 'input', q: "Calculate the missing leg if $c=13$ and $a=5$.", q_id: "Hitunglah sisi tegak yang hilang jika $c=13$ dan $a=5$.", correct: '12', exp_en: "$25 + b^2 = 169 \\rightarrow b^2 = 144$. $\\sqrt{144} = 12$.", exp_id: "$25 + b^2 = 169 \\rightarrow b^2 = 144$. $\\sqrt{144} = 12$." },
+                { id: 9, type: 'input', q: "Find the distance between points A(0,0) and B(8,15) on a Cartesian plane.", q_id: "Cari jarak antara titik A(0,0) dan B(8,15) pada bidang Kartesius.", correct: '17', exp_en: "Distance = $\\sqrt{(8-0)^2 + (15-0)^2} = \\sqrt{64 + 225} = \\sqrt{289} = 17$.", exp_id: "Jarak = $\\sqrt{(8-0)^2 + (15-0)^2} = \\sqrt{64 + 225} = \\sqrt{289} = 17$." },
+                { id: 10, type: 'input', q: "Calculate the diagonal of a rectangular floor measuring 20 cm by 21 cm.", q_id: "Hitunglah diagonal ruang lantai persegi panjang berukuran 20 cm x 21 cm.", correct: '29', exp_en: "Diagonal acts as hypotenuse. $20^2 + 21^2 = 400 + 441 = 841$. $\\sqrt{841} = 29$.", exp_id: "Diagonal bertindak sebagai hipotenusa. $20^2 + 21^2 = 400 + 441 = 841$. $\\sqrt{841} = 29$." }
+            ]
+        };
+
+        function renderSection6(container) {
+            container.innerHTML = `
+                <h2>Independent Practice <span class="translation">Latihan Mandiri</span></h2>
+                <div id="exercises-sec6"></div>
+            `;
+            const exContainer = document.getElementById('exercises-sec6');
+            const exercises = SectionData.sec6.exercises;
+            const appendTheory = (t1, t2, d1, d2) => {
+                const div = document.createElement('div');
+                div.className = 'theory-box';
+                div.innerHTML = `<p><strong>${t1}</strong></p><p class="translation">${t2}</p><p>${d1}</p><p class="translation">${d2}</p>`;
+                exContainer.appendChild(div);
+            };
+
+            appendTheory("Finding Missing Sides", "Mencari Sisi yang Hilang", "Use algebra to isolate the missing side. If finding 'c', use $c = \\sqrt{a^2 + b^2}$. If finding a leg, subtract first.", "Gunakan aljabar untuk mengisolasi sisi yang hilang.");
+            exercises.slice(0, 3).forEach((ex, i) => exContainer.appendChild(createExerciseCard('sec6', ex, i, exercises.length, 'assign1')));
+
+            appendTheory("Classifying Triangles", "Mengklasifikasikan Segitiga", "Put it all together. Calculate $a^2 + b^2$ and compare it to $c^2$ to determine if it's acute, right, or obtuse.", "Gabungkan semua. Hitung $a^2 + b^2$ dan bandingkan dengan $c^2$.");
+            exercises.slice(3, 6).forEach((ex, i) => exContainer.appendChild(createExerciseCard('sec6', ex, i + 3, exercises.length, 'assign1')));
+
+            appendTheory("Coordinate Geometry", "Geometri Koordinat", "The distance between two points $(x_1, y_1)$ and $(x_2, y_2)$ is found using $d = \\sqrt{(x_2-x_1)^2 + (y_2-y_1)^2}$.", "Jarak antara dua titik dapat dicari menggunakan rumus akar dari kuadrat selisih x ditambah kuadrat selisih y.");
+            exercises.slice(6, 10).forEach((ex, i) => exContainer.appendChild(createExerciseCard('sec6', ex, i + 6, exercises.length, 'assign1')));
+
+            if (typeof renderMathInElement !== 'undefined') renderMathInElement(exContainer, {delimiters: [{left: '$', right: '$', display: false}]});
+        }
+
+        // ==========================================
+        // CONTENT: ASSIGNMENTS 1-5
+        // ==========================================
+        // Assignment Data Generator (Using the provided HW and expanding to make 5 sets of 10)
+        const AssignmentData = {
+            assign1: [ // Medium Questions Set
+                { id: 1, type: 'input', q: "Legs are 12 cm and 16 cm. Find the hypotenuse.", q_id: "Sisi tegak 12 cm dan 16 cm. Cari hipotenusa.", correct: '20', exp_en: "$144+256=400$, $\\sqrt{400}=20$.", exp_id: "$144+256=400$, $\\sqrt{400}=20$." },
+                { id: 2, type: 'input', q: "Legs are 10 cm and 24 cm. Find the hypotenuse.", q_id: "Sisi tegak 10 cm dan 24 cm. Cari hipotenusa.", correct: '26', exp_en: "$100+576=676$, $\\sqrt{676}=26$.", exp_id: "$100+576=676$, $\\sqrt{676}=26$." },
+                { id: 3, type: 'mcq', q: "Is a triangle with sides 9, 12, 15 a right triangle?", q_id: "Apakah segitiga dengan sisi 9, 12, 15 adalah segitiga siku-siku?", options: [ {id:'a', text:'Yes'}, {id:'b', text:'No'} ], correct: 'a', exp_en: "$81+144=225=15^2$.", exp_id: "$81+144=225=15^2$." },
+                { id: 4, type: 'input', q: "Hypotenuse is 13 cm, one leg is 5 cm. Find the other leg.", q_id: "Hipotenusa 13 cm, satu sisi 5 cm. Cari sisi lainnya.", correct: '12', exp_en: "$169-25=144$, $\\sqrt{144}=12$.", exp_id: "$169-25=144$, $\\sqrt{144}=12$." },
+                { id: 5, type: 'input', q: "Legs are 8 and 15. Find the hypotenuse.", q_id: "Sisi tegak 8 dan 15. Cari hipotenusa.", correct: '17', exp_en: "$64+225=289$, $\\sqrt{289}=17$.", exp_id: "$64+225=289$, $\\sqrt{289}=17$." },
+                { id: 6, type: 'mcq', q: "Is a triangle with sides 7, 8, 10 a right triangle?", q_id: "Apakah segitiga dengan sisi 7, 8, 10 segitiga siku-siku?", options: [ {id:'a', text:'Yes'}, {id:'b', text:'No'} ], correct: 'b', exp_en: "$49+64=113 \\neq 100$.", exp_id: "$49+64=113 \\neq 100$." },
+                { id: 7, type: 'input', q: "Hypotenuse is 25, one leg is 7. Find the other leg.", q_id: "Hipotenusa 25, satu sisi 7. Cari sisi lainnya.", correct: '24', exp_en: "$625-49=576$, $\\sqrt{576}=24$.", exp_id: "$625-49=576$, $\\sqrt{576}=24$." },
+                { id: 8, type: 'input', q: "Legs are 20 and 21. Find the hypotenuse.", q_id: "Sisi tegak 20 dan 21. Cari hipotenusa.", correct: '29', exp_en: "$400+441=841$, $\\sqrt{841}=29$.", exp_id: "$400+441=841$, $\\sqrt{841}=29$." },
+                { id: 9, type: 'mcq', q: "Is a triangle with sides 5, 12, 13 a right triangle?", q_id: "Apakah segitiga dengan sisi 5, 12, 13 segitiga siku-siku?", options: [ {id:'a', text:'Yes'}, {id:'b', text:'No'} ], correct: 'a', exp_en: "$25+144=169=13^2$.", exp_id: "$25+144=169=13^2$." },
+                { id: 10, type: 'input', q: "Hypotenuse is 17, one leg is 8. Find the other leg.", q_id: "Hipotenusa 17, satu sisi 8. Cari sisi lainnya.", correct: '15', exp_en: "$289-64=225$, $\\sqrt{225}=15$.", exp_id: "$289-64=225$, $\\sqrt{225}=15$." }
+            ],
+            assign2: [ // Hard Word Problems Set
+                { id: 1, type: 'input', q: "Kite string is 100m. Ground distance is 60m. Find height.", q_id: "Benang layang-layang 100m. Jarak tanah 60m. Cari tinggi.", correct: '80', exp_en: "$10000-3600=6400$, $\\sqrt{6400}=80$.", exp_id: "$10000-3600=6400$, $\\sqrt{6400}=80$." },
+                { id: 2, type: 'input', q: "Sail 11km North, then 60km West. Shortest distance from start?", q_id: "Berlayar 11km Utara, lalu 60km Barat. Jarak terpendek dari awal?", correct: '61', exp_en: "$121+3600=3721$, $\\sqrt{3721}=61$.", exp_id: "$121+3600=3721$, $\\sqrt{3721}=61$." },
+                { id: 3, type: 'input', q: "Ladder is 5m, base is 3m from wall. Height reached?", q_id: "Tangga 5m, dasar 3m dari dinding. Tinggi yang dicapai?", correct: '4', exp_en: "$25-9=16$, $\\sqrt{16}=4$.", exp_id: "$25-9=16$, $\\sqrt{16}=4$." },
+                { id: 4, type: 'input', q: "TV screen diagonal is 50 inches. Height is 30 inches. Width?", q_id: "Diagonal TV 50 inci. Tinggi 30 inci. Lebar?", correct: '40', exp_en: "$2500-900=1600$, $\\sqrt{1600}=40$.", exp_id: "$2500-900=1600$, $\\sqrt{1600}=40$." },
+                { id: 5, type: 'input', q: "Isosceles triangle base 10, sides 13. Find height to base.", q_id: "Segitiga sama kaki alas 10, sisi 13. Cari tinggi ke alas.", correct: '12', exp_en: "Half base is 5. $13^2-5^2 = 169-25=144$. $\\sqrt{144}=12$.", exp_id: "Setengah alas 5. $13^2-5^2 = 169-25=144$. $\\sqrt{144}=12$." },
+                { id: 6, type: 'input', q: "Rectangle 20x21. Find diagonal.", q_id: "Persegi panjang 20x21. Cari diagonal.", correct: '29', exp_en: "$400+441=841$, $\\sqrt{841}=29$.", exp_id: "$400+441=841$, $\\sqrt{841}=29$." },
+                { id: 7, type: 'input', q: "Rectangle 9x12. Find diagonal.", q_id: "Persegi panjang 9x12. Cari diagonal.", correct: '15', exp_en: "$81+144=225$, $\\sqrt{225}=15$.", exp_id: "$81+144=225$, $\\sqrt{225}=15$." },
+                { id: 8, type: 'input', q: "Distance from (0,0) to (8,15).", q_id: "Jarak dari (0,0) ke (8,15).", correct: '17', exp_en: "$64+225=289$, $\\sqrt{289}=17$.", exp_id: "$64+225=289$, $\\sqrt{289}=17$." },
+                { id: 9, type: 'input', q: "Distance from (0,0) to (3,4).", q_id: "Jarak dari (0,0) ke (3,4).", correct: '5', exp_en: "$9+16=25$, $\\sqrt{25}=5$.", exp_id: "$9+16=25$, $\\sqrt{25}=5$." },
+                { id: 10, type: 'input', q: "Distance from (0,0) to (6,8).", q_id: "Jarak dari (0,0) ke (6,8).", correct: '10', exp_en: "$36+64=100$, $\\sqrt{100}=10$.", exp_id: "$36+64=100$, $\\sqrt{100}=10$." }
+            ],
+            assign3: [ // Algebraic Pythagoras Set
+                { id: 1, type: 'input', q: "Sides are x, x+7, x+8. Find x (it's a Pythagorean triple).", q_id: "Sisi x, x+7, x+8. Cari x (ini tripel Pythagoras).", correct: '5', exp_en: "$x^2+(x+7)^2=(x+8)^2 \\rightarrow x^2+x^2+14x+49=x^2+16x+64 \\rightarrow x^2-2x-15=0$. Roots: 5, -3. x=5.", exp_id: "$x^2+(x+7)^2=(x+8)^2 \\rightarrow x^2+x^2+14x+49=x^2+16x+64 \\rightarrow x^2-2x-15=0$. Akar: 5, -3. x=5." },
+                { id: 2, type: 'input', q: "Sides are x, 40, 41. Find x.", q_id: "Sisi x, 40, 41. Cari x.", correct: '9', exp_en: "$41^2-40^2 = 1681-1600=81$. $\\sqrt{81}=9$.", exp_id: "$41^2-40^2 = 1681-1600=81$. $\\sqrt{81}=9$." },
+                { id: 3, type: 'input', q: "Legs are 3x and 4x. Hypotenuse is 10. Find x.", q_id: "Sisi 3x dan 4x. Hipotenusa 10. Cari x.", correct: '2', exp_en: "$(3x)^2+(4x)^2=10^2 \\rightarrow 9x^2+16x^2=100 \\rightarrow 25x^2=100 \\rightarrow x^2=4 \\rightarrow x=2$.", exp_id: "$(3x)^2+(4x)^2=10^2 \\rightarrow 9x^2+16x^2=100 \\rightarrow 25x^2=100 \\rightarrow x^2=4 \\rightarrow x=2$." },
+                { id: 4, type: 'input', q: "Leg is 6, hypotenuse is 2x. Leg is 8. Find x.", q_id: "Sisi 6, hipotenusa 2x. Sisi 8. Cari x.", correct: '5', exp_en: "Hypotenuse = 10. $2x=10 \\rightarrow x=5$.", exp_id: "Hipotenusa = 10. $2x=10 \\rightarrow x=5$." },
+                { id: 5, type: 'input', q: "Find x: $x^2 + 12^2 = 13^2$.", q_id: "Cari x: $x^2 + 12^2 = 13^2$.", correct: '5', exp_en: "$169-144=25$, $\\sqrt{25}=5$.", exp_id: "$169-144=25$, $\\sqrt{25}=5$." },
+                { id: 6, type: 'input', q: "Find x: $8^2 + x^2 = 17^2$.", q_id: "Cari x: $8^2 + x^2 = 17^2$.", correct: '15', exp_en: "$289-64=225$, $\\sqrt{225}=15$.", exp_id: "$289-64=225$, $\\sqrt{225}=15$." },
+                { id: 7, type: 'input', q: "Find x: $7^2 + 24^2 = x^2$.", q_id: "Cari x: $7^2 + 24^2 = x^2$.", correct: '25', exp_en: "$49+576=625$, $\\sqrt{625}=25$.", exp_id: "$49+576=625$, $\\sqrt{625}=25$." },
+                { id: 8, type: 'input', q: "Find x: $20^2 + 21^2 = x^2$.", q_id: "Cari x: $20^2 + 21^2 = x^2$.", correct: '29', exp_en: "$400+441=841$, $\\sqrt{841}=29$.", exp_id: "$400+441=841$, $\\sqrt{841}=29$." },
+                { id: 9, type: 'input', q: "Find x: $11^2 + 60^2 = x^2$.", q_id: "Cari x: $11^2 + 60^2 = x^2$.", correct: '61', exp_en: "$121+3600=3721$, $\\sqrt{3721}=61$.", exp_id: "$121+3600=3721$, $\\sqrt{3721}=61$." },
+                { id: 10, type: 'input', q: "Find x: $12^2 + 35^2 = x^2$.", q_id: "Cari x: $12^2 + 35^2 = x^2$.", correct: '37', exp_en: "$144+1225=1369$, $\\sqrt{1369}=37$.", exp_id: "$144+1225=1369$, $\\sqrt{1369}=37$." }
+            ],
+            assign4: [ // Triangle Types Set
+                { id: 1, type: 'mcq', q: "Type of triangle with sides 8, 15, 18?", q_id: "Jenis segitiga dengan sisi 8, 15, 18?", options: [ {id:'a', text:'Acute'}, {id:'b', text:'Right'}, {id:'c', text:'Obtuse'} ], correct: 'c', exp_en: "$64+225=289 < 324$", exp_id: "$64+225=289 < 324$" },
+                { id: 2, type: 'mcq', q: "Type of triangle with sides 7, 8, 10?", q_id: "Jenis segitiga dengan sisi 7, 8, 10?", options: [ {id:'a', text:'Acute'}, {id:'b', text:'Right'}, {id:'c', text:'Obtuse'} ], correct: 'a', exp_en: "$49+64=113 > 100$", exp_id: "$49+64=113 > 100$" },
+                { id: 3, type: 'mcq', q: "Type of triangle with sides 9, 12, 15?", q_id: "Jenis segitiga dengan sisi 9, 12, 15?", options: [ {id:'a', text:'Acute'}, {id:'b', text:'Right'}, {id:'c', text:'Obtuse'} ], correct: 'b', exp_en: "$81+144=225 = 225$", exp_id: "$81+144=225 = 225$" },
+                { id: 4, type: 'mcq', q: "Type of triangle with sides 5, 12, 13?", q_id: "Jenis segitiga dengan sisi 5, 12, 13?", options: [ {id:'a', text:'Acute'}, {id:'b', text:'Right'}, {id:'c', text:'Obtuse'} ], correct: 'b', exp_en: "$25+144=169 = 169$", exp_id: "$25+144=169 = 169$" },
+                { id: 5, type: 'mcq', q: "Type of triangle with sides 10, 10, 10?", q_id: "Jenis segitiga dengan sisi 10, 10, 10?", options: [ {id:'a', text:'Acute'}, {id:'b', text:'Right'}, {id:'c', text:'Obtuse'} ], correct: 'a', exp_en: "$100+100=200 > 100$", exp_id: "$100+100=200 > 100$" },
+                { id: 6, type: 'mcq', q: "Type of triangle with sides 10, 10, 15?", q_id: "Jenis segitiga dengan sisi 10, 10, 15?", options: [ {id:'a', text:'Acute'}, {id:'b', text:'Right'}, {id:'c', text:'Obtuse'} ], correct: 'c', exp_en: "$100+100=200 < 225$", exp_id: "$100+100=200 < 225$" },
+                { id: 7, type: 'mcq', q: "Type of triangle with sides 6, 7, 8?", q_id: "Jenis segitiga dengan sisi 6, 7, 8?", options: [ {id:'a', text:'Acute'}, {id:'b', text:'Right'}, {id:'c', text:'Obtuse'} ], correct: 'a', exp_en: "$36+49=85 > 64$", exp_id: "$36+49=85 > 64$" },
+                { id: 8, type: 'mcq', q: "Type of triangle with sides 5, 6, 9?", q_id: "Jenis segitiga dengan sisi 5, 6, 9?", options: [ {id:'a', text:'Acute'}, {id:'b', text:'Right'}, {id:'c', text:'Obtuse'} ], correct: 'c', exp_en: "$25+36=61 < 81$", exp_id: "$25+36=61 < 81$" },
+                { id: 9, type: 'mcq', q: "Type of triangle with sides 8, 8, 10?", q_id: "Jenis segitiga dengan sisi 8, 8, 10?", options: [ {id:'a', text:'Acute'}, {id:'b', text:'Right'}, {id:'c', text:'Obtuse'} ], correct: 'a', exp_en: "$64+64=128 > 100$", exp_id: "$64+64=128 > 100$" },
+                { id: 10, type: 'mcq', q: "Type of triangle with sides 3, 4, 6?", q_id: "Jenis segitiga dengan sisi 3, 4, 6?", options: [ {id:'a', text:'Acute'}, {id:'b', text:'Right'}, {id:'c', text:'Obtuse'} ], correct: 'c', exp_en: "$9+16=25 < 36$", exp_id: "$9+16=25 < 36$" }
+            ],
+            assign5: [ // Mixed Review Set
+                { id: 1, type: 'input', q: "Distance (0,0) to (6,8).", q_id: "Jarak (0,0) ke (6,8).", correct: '10', exp_en: "$36+64=100$, $\\sqrt{100}=10$.", exp_id: "$36+64=100$, $\\sqrt{100}=10$." },
+                { id: 2, type: 'input', q: "Distance (0,0) to (8,15).", q_id: "Jarak (0,0) ke (8,15).", correct: '17', exp_en: "$64+225=289$, $\\sqrt{289}=17$.", exp_id: "$64+225=289$, $\\sqrt{289}=17$." },
+                { id: 3, type: 'input', q: "Distance (1,1) to (4,5).", q_id: "Jarak (1,1) ke (4,5).", correct: '5', exp_en: "$(4-1)^2+(5-1)^2=9+16=25$, $\\sqrt{25}=5$.", exp_id: "$(4-1)^2+(5-1)^2=9+16=25$, $\\sqrt{25}=5$." },
+                { id: 4, type: 'input', q: "Distance (-3,0) to (0,4).", q_id: "Jarak (-3,0) ke (0,4).", correct: '5', exp_en: "$(0 - -3)^2+(4-0)^2=9+16=25$, $\\sqrt{25}=5$.", exp_id: "$(0 - -3)^2+(4-0)^2=9+16=25$, $\\sqrt{25}=5$." },
+                { id: 5, type: 'input', q: "Legs are 12, 16. Find Hypotenuse.", q_id: "Sisi 12, 16. Cari Hipotenusa.", correct: '20', exp_en: "$144+256=400$, $\\sqrt{400}=20$.", exp_id: "$144+256=400$, $\\sqrt{400}=20$." },
+                { id: 6, type: 'input', q: "Hypotenuse 13, leg 5. Find other leg.", q_id: "Hipotenusa 13, sisi 5. Cari sisi lain.", correct: '12', exp_en: "$169-25=144$, $\\sqrt{144}=12$.", exp_id: "$169-25=144$, $\\sqrt{144}=12$." },
+                { id: 7, type: 'input', q: "Kite height (string 100, ground 60).", q_id: "Tinggi layang-layang (benang 100, tanah 60).", correct: '80', exp_en: "$10000-3600=6400$, $\\sqrt{6400}=80$.", exp_id: "$10000-3600=6400$, $\\sqrt{6400}=80$." },
+                { id: 8, type: 'input', q: "Ship distance (11 North, 60 West).", q_id: "Jarak kapal (11 Utara, 60 Barat).", correct: '61', exp_en: "$121+3600=3721$, $\\sqrt{3721}=61$.", exp_id: "$121+3600=3721$, $\\sqrt{3721}=61$." },
+                { id: 9, type: 'input', q: "Find x: x, x+7, x+8 is a triple.", q_id: "Cari x: x, x+7, x+8 adalah tripel.", correct: '5', exp_en: "$x=5$ makes sides 5, 12, 13.", exp_id: "$x=5$ menghasilkan sisi 5, 12, 13." },
+                { id: 10, type: 'mcq', q: "Type of triangle: 8, 15, 18.", q_id: "Jenis segitiga: 8, 15, 18.", options: [ {id:'a', text:'Acute'}, {id:'b', text:'Right'}, {id:'c', text:'Obtuse'} ], correct: 'c', exp_en: "$64+225=289 < 324$", exp_id: "$64+225=289 < 324$" }
+            ]
+        };
+
+        function renderAssignment(container, assignId, assignNum) {
+            container.innerHTML = `
+                <h2>Assignment ${assignNum} <span class="translation">Tugas ${assignNum}</span></h2>
+                <div class="theory-box">
+                    <p><strong>Test your skills!</strong> Complete all 10 exercises. You can print your result at the end.</p>
+                    <p class="translation">Uji kemampuanmu! Selesaikan 10 soal. Kamu bisa mencetak hasilnya di akhir.</p>
+                </div>
+                <div id="exercises-${assignId}"></div>
+                <div style="text-align: center; margin-top: 30px;">
+                    <button class="btn btn-primary" style="font-size: 1.2rem; padding: 15px 30px;" onclick="printResult('${assignId}', ${assignNum})">Print Result (A4)</button>
+                </div>
+            `;
+            
+            // Temporarily put assignment data into SectionData format for the renderer
+            SectionData[assignId] = { exercises: AssignmentData[assignId] };
+            
+            const exContainer = document.getElementById(`exercises-${assignId}`);
+            const nextSec = assignNum < 5 ? `assign${assignNum + 1}` : 'consolidation';
+            
+            SectionData[assignId].exercises.forEach((ex, i) => {
+                exContainer.appendChild(createExerciseCard(assignId, ex, i, SectionData[assignId].exercises.length, nextSec));
+            });
+        }
+
+        // ==========================================
+        // PRINT ENGINE (A4 FORMAT)
+        // ==========================================
+        function printResult(assignId, assignNum) {
+            const answers = AppData.progress[assignId].answers;
+            const exercises = AssignmentData[assignId];
+            let score = 0;
+            
+            let tableRows = '';
+            exercises.forEach((ex, i) => {
+                // Ambil jawaban siswa. Jika tidak ada, tampilkan '-'
+                const userAnsRaw = answers[ex.id] || '-';
+                let userAnsText = userAnsRaw;
+                let correctAnsText = ex.correct;
+                
+                if (ex.type === 'mcq') {
+                    const opt = ex.options.find(o => o.id === userAnsRaw);
+                    if(opt) userAnsText = opt.text;
+                    
+                    const corrOpt = ex.options.find(o => o.id === ex.correct);
+                    if(corrOpt) correctAnsText = corrOpt.text;
+                }
+                
+                const isCorrect = answers[ex.id + '_correct'];
+                if (isCorrect) score++;
+                
+                const qText = ex.q.replace(/\$/g, '');
+                
+                tableRows += `
+                    <tr>
+                        <td style="text-align: center; vertical-align: top;">${i + 1}</td>
+                        <td style="vertical-align: top;">${qText}</td>
+                        <td style="vertical-align: top;">${userAnsText}</td>
+                        <td style="vertical-align: top;">${correctAnsText}</td>
+                        <td style="text-align: center; vertical-align: top; font-size: 1.2rem;">${isCorrect ? '✓' : '✗'}</td>
+                    </tr>
+                `;
+            });
+
+            const printContent = `
+                <div style="font-family: 'Arial', sans-serif; color: #000;">
+                    <h1 style="text-align: center; margin-bottom: 5px;">MATH TUTORING by Deni</h1>
+                    <hr style="border: 1px solid #000; margin-bottom: 20px;">
+                    <table style="width: 100%; font-size: 14px; margin-bottom: 20px;">
+                        <tr>
+                            <td style="padding: 5px 0;"><strong>Name:</strong> .........................................</td>
+                            <td style="padding: 5px 0;"><strong>Date:</strong> .........................................</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 5px 0;"><strong>Topic:</strong> Pythagorean Theorem (Basics)</td>
+                            <td style="padding: 5px 0;"><strong>Assignment Group:</strong> Assignment ${assignNum}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="padding: 5px 0;"><strong>Score:</strong> ${score} / 10</td>
+                        </tr>
+                    </table>
+                    
+                    <table border="1" style="width: 100%; border-collapse: collapse; font-size: 12px;">
+                        <thead>
+                            <tr style="background-color: #f0f0f0;">
+                                <th style="padding: 8px; width: 5%;">No.</th>
+                                <th style="padding: 8px; width: 45%;">Question</th>
+                                <th style="padding: 8px; width: 20%;">Student Answer</th>
+                                <th style="padding: 8px; width: 20%;">Correct Answer</th>
+                                <th style="padding: 8px; width: 10%;">Note</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${tableRows}
+                        </tbody>
+                    </table>
+                    
+                    <div style="margin-top: 40px; text-align: right; padding-right: 50px;">
+                        <p>Checked by,</p>
+                        <br><br><br>
+                        <p><strong>Deni</strong></p>
+                    </div>
+                </div>
+            `;
+
+            const printArea = document.getElementById('printArea');
+            printArea.innerHTML = printContent;
+            window.print();
+        }
+
+        // ==========================================
+        // CONTENT: CONSOLIDATION & REFLECTION
+        // ==========================================
+        function renderConsolidation(container) {
+            container.innerHTML = `
+                <h2>Consolidation & Reflection <span class="translation">Konsolidasi & Refleksi</span></h2>
+                <div class="theory-box">
+                    <p><strong>Congratulations on completing the lesson!</strong></p>
+                    <p class="translation">Selamat telah menyelesaikan pelajaran!</p>
+                    <p><strong>Key Takeaways:</strong></p>
+                    <ul>
+                        <li>$c^2$ is always the largest. If $c^2 = a^2 + b^2$, it's a Right Triangle.</li>
+                        <li>If $c^2 > a^2 + b^2$, it's an Obtuse Triangle.</li>
+                        <li>If $c^2 < a^2 + b^2$, it's an Acute Triangle.</li>
+                    </ul>
+                    <p class="translation"><strong>Poin Penting:</strong> $c^2$ selalu terbesar. Jika sama, Siku-siku. Jika lebih besar, Tumpul. Jika lebih kecil, Lancip.</p>
+                </div>
+
+                <div style="text-align: center; margin: 40px 0;">
+                    <p>What was the most interesting thing you learned today?</p>
+                    <p class="translation">Apa hal paling menarik yang kamu pelajari hari ini?</p>
+                    <textarea class="text-input" rows="4" placeholder="Type your reflection here..."></textarea>
+                </div>
+
+                <div style="background: #e5f7ff; padding: 20px; border-radius: 15px; text-align: center; border: 2px solid var(--secondary);">
+                    <h3>Ready for the next level?</h3>
+                    <p class="translation">Siap untuk level selanjutnya?</p>
+                    <a href="https://learn.algonova.id/login" target="_blank" class="btn btn-primary" style="display: inline-block; margin-top: 15px; text-decoration: none; font-size: 1.1rem; padding: 15px 30px;">
+                        Go to Algonova Platform &rarr;
+                    </a>
+                </div>
+            `;
+        }
+
+        // ==========================================
+        // INIT
+        // ==========================================
+        document.addEventListener("DOMContentLoaded", function() {
+            renderNav();
+            loadSection('home');
+        });
+
+        // Pastikan KaTeX merender ulang setelah semua script defer selesai dimuat
+        window.addEventListener('load', function() {
+            if (typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false}
+                    ]
+                });
+            }
+        });
+
+    </script>
+</body>
+</html>
