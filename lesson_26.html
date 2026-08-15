@@ -1,0 +1,2307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Area of a Circle and Applications</title>
+    <!-- KaTeX CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+    <!-- KaTeX JS -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+    <style>
+        :root {
+            --primary: #58cc02;
+            --primary-dark: #46a302;
+            --secondary: #1cb0f6;
+            --warning: #ffc800;
+            --danger: #ff4b4b;
+            --bg-color: #fff;
+            --text-color: #3c3c3c;
+            --border-color: #e5e5e5;
+            --sidebar-bg: #ffffff;
+            --hover-bg: #f7f7f7;
+            --shadow: 0 2px 4px rgba(0,0,0,0.05);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Nunito', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f0f0f0;
+            color: var(--text-color);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Navbar */
+        .sidebar {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            border-right: 2px solid var(--border-color);
+            padding: 20px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 100;
+            transition: var(--transition);
+        }
+
+        .sidebar-header {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--secondary);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            margin-bottom: 5px;
+            font-weight: 700;
+            color: #afafaf;
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+
+        .nav-item:hover {
+            background-color: var(--hover-bg);
+            color: var(--text-color);
+        }
+
+        .nav-item.active {
+            background-color: #e5f6ff;
+            color: var(--secondary);
+            border-color: var(--secondary);
+        }
+
+        .nav-item.completed {
+            color: var(--primary);
+        }
+
+        .nav-item.completed::before {
+            content: '✓';
+            margin-right: 10px;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .nav-icon {
+            margin-right: 12px;
+            font-size: 1.2rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+            width: calc(100% - 280px);
+        }
+
+        .lesson-container {
+            max-width: 800px;
+            width: 100%;
+            background: var(--bg-color);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            border: 2px solid var(--border-color);
+            min-height: 600px;
+            position: relative;
+        }
+
+        /* Sections & Steps */
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            color: var(--secondary);
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .translation {
+            color: #777;
+            font-style: italic;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            display: block;
+        }
+
+        .content-block {
+            margin-bottom: 30px;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 20px;
+        }
+
+        .theory-box {
+            background: #f8f9fa;
+            border-left: 5px solid var(--secondary);
+            padding: 20px;
+            border-radius: 0 12px 12px 0;
+            margin-bottom: 20px;
+        }
+
+        .theory-box h3 {
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+
+        p {
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        /* Exercise & Buttons */
+        .exercise-box {
+            background: #fff;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .question-text {
+            font-weight: 700;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .option-btn {
+            padding: 12px;
+            border: 2px solid var(--border-color);
+            background: #fff;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            color: #777;
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .option-btn:hover {
+            border-color: #b0b0b0;
+            color: var(--text-color);
+        }
+
+        .option-btn.selected {
+            border-color: var(--secondary);
+            background: #e5f6ff;
+            color: var(--secondary);
+        }
+
+        .option-btn.correct {
+            border-color: var(--primary);
+            background: #e7ffc7;
+            color: var(--primary-dark);
+        }
+
+        .option-btn.wrong {
+            border-color: var(--danger);
+            background: #ffe5e5;
+            color: var(--danger);
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 4px 0 var(--primary-dark);
+        }
+        .btn-primary:hover { background: var(--primary-dark); }
+        .btn-primary:active { transform: translateY(4px); box-shadow: none; }
+
+        .btn-secondary {
+            background: #e5e5e5;
+            color: #777;
+            box-shadow: 0 4px 0 #b0b0b0;
+        }
+        .btn-secondary:hover { background: #d4d4d4; }
+        .btn-secondary:active { transform: translateY(4px); box-shadow: none; }
+
+        .btn-danger {
+            background: var(--danger);
+            color: #fff;
+            box-shadow: 0 4px 0 #cc3333;
+        }
+        .btn-danger:hover { background: #cc3333; }
+
+        .collapse-btn {
+            background: #fff;
+            border: 2px dashed var(--warning);
+            color: var(--warning);
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .explanation-content {
+            display: none;
+            margin-top: 10px;
+            padding: 15px;
+            background: #fff8e1;
+            border-radius: 8px;
+            border-left: 4px solid var(--warning);
+        }
+        
+        .explanation-content.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: #e5e5e5;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 10px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+        .input-field:focus {
+            outline: none;
+            border-color: var(--secondary);
+        }
+
+        .svg-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .rules-list {
+            list-style: none;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+        .rules-list li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+        .rules-list li::before {
+            content: '•';
+            color: var(--secondary);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                display: none;
+            }
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                padding: 20px;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            body * { visibility: hidden; }
+            #printArea, #printArea * { visibility: visible; }
+            #printArea {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                padding: 20px;
+                font-family: Arial, sans-serif;
+            }
+            .sidebar, .action-buttons, .collapse-btn, .option-btn { display: none !important; }
+            @page { size: A4; margin: 1cm; }
+        }
+        
+        #printArea { display: none; }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="sidebar-header">MATH TUTORING<br><span style="font-size: 0.8rem; color: #777; font-weight: 400;">by Deni</span></div>
+        <div class="nav-item active" onclick="goToSection('home')">
+            <span class="nav-icon">🏠</span> Home
+        </div>
+        <div class="nav-item" onclick="goToSection('s1')">
+            <span class="nav-icon">🔥</span> Spiral Review (00:00-00:10)
+        </div>
+        <div class="nav-item" onclick="goToSection('s2')">
+            <span class="nav-icon">🌍</span> Intro & Real-World (00:10-00:15)
+        </div>
+        <div class="nav-item" onclick="goToSection('s3')">
+            <span class="nav-icon">🔄</span> Prior Knowledge (00:15-00:20)
+        </div>
+        <div class="nav-item" onclick="goToSection('s4')">
+            <span class="nav-icon">🧩</span> Problem Intro (00:20-00:30)
+        </div>
+        <div class="nav-item" onclick="goToSection('s5')">
+            <span class="nav-icon">📐</span> Guided Practice (00:30-00:45)
+        </div>
+        <div class="nav-item" onclick="goToSection('s6')">
+            <span class="nav-icon">✏️</span> Independent Prac. (00:50-01:00)
+        </div>
+        <hr style="margin: 20px 0; border: 1px solid #eee;">
+        <div class="nav-item" onclick="goToSection('a1')"><span class="nav-icon">📝</span> Assignment 1</div>
+        <div class="nav-item" onclick="goToSection('a2')"><span class="nav-icon">📝</span> Assignment 2</div>
+        <div class="nav-item" onclick="goToSection('a3')"><span class="nav-icon">📝</span> Assignment 3</div>
+        <div class="nav-item" onclick="goToSection('a4')"><span class="nav-icon">📝</span> Assignment 4</div>
+        <div class="nav-item" onclick="goToSection('a5')"><span class="nav-icon">📝</span> Assignment 5</div>
+        <hr style="margin: 20px 0; border: 1px solid #eee;">
+        <div class="nav-item" onclick="goToSection('end')">
+            <span class="nav-icon">🏁</span> Consolidation (01:00-01:05)
+        </div>
+        <button class="btn btn-danger" style="width: 100%; margin-top: 20px;" onclick="resetAllProgress()">Reset All Progress</button>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <div class="lesson-container">
+            
+            <!-- HOME SECTION -->
+            <div id="home" class="section active">
+                <h1 class="section-title">MATH TUTORING by Deni</h1>
+                <p><strong>Topic:</strong> Area of a Circle and Applications</p>
+                <p class="translation"><strong>Topik:</strong> Luas Lingkaran dan Aplikasinya</p>
+                
+                <div class="theory-box">
+                    <h3>🎯 Student Goal</h3>
+                    <p>Improve grades at school.</p>
+                    <p class="translation">Memperbaiki nilai di sekolah.</p>
+                </div>
+
+                <h3>Class Rules</h3>
+                <p class="translation">Aturan Kelas</p>
+                <ul class="rules-list">
+                    <li>Take turns speaking.</li>
+                    <p class="translation" style="margin-left: 20px;">Berbicara secara bergantian.</p>
+                    <li>Ask for permission if you want to leave the class.</li>
+                    <p class="translation" style="margin-left: 20px;">Meminta izin jika ingin meninggalkan kelas.</p>
+                    <li>Turn on camera and microphone when needed.</li>
+                    <p class="translation" style="margin-left: 20px;">Menyalakan kamera dan microphone jika diperlukan.</p>
+                </ul>
+
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" style="visibility: hidden;">Previous</button>
+                    <button class="btn btn-primary" onclick="goToSection('s1')">Start Lesson <span>→</span></button>
+                </div>
+            </div>
+
+            <!-- SECTION 1: SPIRAL REVIEW -->
+            <div id="s1" class="section">
+                <div class="progress-bar"><div class="progress-fill" id="prog-s1"></div></div>
+                <h2 class="section-title">🔥 Spiral Review Warm-up (00:00-00:10)</h2>
+                <p class="translation">Tinjauan Spiral Pemanasan</p>
+
+                <!-- Step 1: Theory 1 + 3 Exercises -->
+                <div class="content-block" id="s1-step1">
+                    <div class="theory-box">
+                        <h3>Theory 1: Algebraic Expressions</h3>
+                        <p>An algebraic expression consists of variables (letters), constants (fixed numbers), and coefficients (numbers multiplying variables).</p>
+                        <p class="translation">Ekspresi aljabar terdiri dari variabel (huruf), konstanta (angka tetap), dan koefisien (angka yang mengalikan variabel).</p>
+                        <p>Example: In \( 5x^2 - 3x + 8 \), \( x \) is the variable, 5 and -3 are coefficients, and 8 is the constant.</p>
+                        <p class="translation">Contoh: Pada \( 5x^2 - 3x + 8 \), \( x \) adalah variabel, 5 dan -3 adalah koefisien, dan 8 adalah konstanta.</p>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">1. Identify the constant in the expression: \( 5x^2 - 3x + 8 \)</p>
+                        <p class="translation" style="font-size: 0.8rem;">Identifikasi konstanta pada ekspresi: \( 5x^2 - 3x + 8 \)</p>
+                        <div class="options-grid" id="s1-ex1"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s1-ex1-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s1-ex1')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s1-ex1-exp">
+                            <p>The constant is the term without a variable. Thus, the answer is 8.</p>
+                            <p class="translation">Konstanta adalah suku tanpa variabel. Jadi, jawabannya adalah 8.</p>
+                        </div>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">2. List the variables in the expression: \( 4a + 7b - 12 \)</p>
+                        <p class="translation" style="font-size: 0.8rem;">Sebutkan variabel-variabel pada ekspresi: \( 4a + 7b - 12 \)</p>
+                        <div class="options-grid" id="s1-ex2"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s1-ex2-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s1-ex2')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s1-ex2-exp">
+                            <p>Variables are the letters. Here, they are 'a' and 'b'.</p>
+                            <p class="translation">Variabel adalah huruf-hurufnya. Di sini, yaitu 'a' dan 'b'.</p>
+                        </div>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">3. Translate into an algebraic expression: "The price of 3 books after a 5000 discount".</p>
+                        <p class="translation" style="font-size: 0.8rem;">Ubah menjadi ekspresi aljabar: "Harga 3 buku setelah diskon 5000".</p>
+                        <div class="options-grid" id="s1-ex3"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s1-ex3-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s1-ex3')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s1-ex3-exp">
+                            <p>If 'b' is the price of a book, 3 books is \( 3b \). A discount means subtraction. So, it is \( 3b - 5000 \).</p>
+                            <p class="translation">Jika 'b' adalah harga buku, 3 buku adalah \( 3b \). Diskon berarti pengurangan. Jadi, ekspresinya \( 3b - 5000 \).</p>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-secondary" onclick="prevStep('s1')">Previous</button>
+                        <button class="btn btn-primary" onclick="checkAndNext('s1', 1, 3)">Next</button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Theory 2 + 3 Exercises -->
+                <div class="content-block" id="s1-step2" style="display:none;">
+                    <div class="theory-box">
+                        <h3>Theory 2: Coefficients</h3>
+                        <p>A coefficient is the number multiplied by a variable. In \( 5x^2 \), the coefficient is 5.</p>
+                        <p class="translation">Koefisien adalah angka yang dikalikan dengan variabel. Pada \( 5x^2 \), koefisiennya adalah 5.</p>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">4. What is the coefficient of \( x \) in \( 3x - 7 \)?</p>
+                        <p class="translation" style="font-size: 0.8rem;">Berapakah koefisien dari \( x \) pada \( 3x - 7 \)?</p>
+                        <div class="options-grid" id="s1-ex4"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s1-ex4-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s1-ex4')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s1-ex4-exp">
+                            <p>The number multiplying \( x \) is 3.</p>
+                            <p class="translation">Angka yang mengalikan \( x \) adalah 3.</p>
+                        </div>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">5. How many terms are in \( 2a + 3b - 4c + 5 \)?</p>
+                        <p class="translation" style="font-size: 0.8rem;">Ada berapa suku pada \( 2a + 3b - 4c + 5 \)?</p>
+                        <div class="options-grid" id="s1-ex5"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s1-ex5-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s1-ex5')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s1-ex5-exp">
+                            <p>Terms are separated by + or - signs. There are 4 terms.</p>
+                            <p class="translation">Suku dipisahkan oleh tanda + atau -. Ada 4 suku.</p>
+                        </div>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">6. Simplify: \( 2x + 5x \)</p>
+                        <p class="translation" style="font-size: 0.8rem;">Sederhanakan: \( 2x + 5x \)</p>
+                        <div class="options-grid" id="s1-ex6"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s1-ex6-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s1-ex6')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s1-ex6-exp">
+                            <p>Add the coefficients: \( 2 + 5 = 7 \). So, \( 7x \).</p>
+                            <p class="translation">Jumlahkan koefisien: \( 2 + 5 = 7 \). Jadi, \( 7x \).</p>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-secondary" onclick="prevStep('s1')">Previous</button>
+                        <button class="btn btn-primary" onclick="checkAndNext('s1', 2, 3)">Next</button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Theory 3 + 4 Exercises -->
+                <div class="content-block" id="s1-step3" style="display:none;">
+                    <div class="theory-box">
+                        <h3>Theory 3: Modeling with Algebra</h3>
+                        <p>We can use variables to model real-life situations. If a student's age is \( x \), then "twice the student's age" is \( 2x \).</p>
+                        <p class="translation">Kita bisa menggunakan variabel untuk memodelkan situasi kehidupan nyata. Jika umur seorang siswa adalah \( x \), maka "dua kali umur siswa" adalah \( 2x \).</p>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">7. If \( x \) is a student's age, write an expression for "three times the student's age".</p>
+                        <p class="translation" style="font-size: 0.8rem;">Jika \( x \) adalah umur siswa, tulis ekspresi untuk "tiga kali umur siswa".</p>
+                        <div class="options-grid" id="s1-ex7"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s1-ex7-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s1-ex7')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s1-ex7-exp">
+                            <p>Three times \( x \) is \( 3x \).</p>
+                            <p class="translation">Tiga kali \( x \) adalah \( 3x \).</p>
+                        </div>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">8. If \( x \) is a student's age, write an expression for "the student's age in 2 years".</p>
+                        <p class="translation" style="font-size: 0.8rem;">Jika \( x \) adalah umur siswa, tulis ekspresi untuk "umur siswa 2 tahun yang akan datang".</p>
+                        <div class="options-grid" id="s1-ex8"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s1-ex8-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s1-ex8')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s1-ex8-exp">
+                            <p>Add 2 to the current age: \( x + 2 \).</p>
+                            <p class="translation">Tambahkan 2 ke umur sekarang: \( x + 2 \).</p>
+                        </div>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">9. What does \( 4x \) mean in a word problem?</p>
+                        <p class="translation" style="font-size: 0.8rem;">Apa arti dari \( 4x \) dalam soal cerita?</p>
+                        <div class="options-grid" id="s1-ex9"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s1-ex9-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s1-ex9')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s1-ex9-exp">
+                            <p>It means 4 times a number \( x \).</p>
+                            <p class="translation">Artinya 4 kali sebuah bilangan \( x \).</p>
+                        </div>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">10. If \( x = 10 \), what is the value of \( 3x - 5 \)?</p>
+                        <p class="translation" style="font-size: 0.8rem;">Jika \( x = 10 \), berapakah nilai dari \( 3x - 5 \)?</p>
+                        <div class="options-grid" id="s1-ex10"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s1-ex10-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s1-ex10')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s1-ex10-exp">
+                            <p>Substitute \( x=10 \): \( 3(10) - 5 = 30 - 5 = 25 \).</p>
+                            <p class="translation">Substitusi \( x=10 \): \( 3(10) - 5 = 30 - 5 = 25 \).</p>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-secondary" onclick="prevStep('s1')">Previous</button>
+                        <button class="btn btn-primary" onclick="checkAndNext('s1', 3, 3)">Next Section</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 2: INTRO & REAL-WORLD -->
+            <div id="s2" class="section">
+                <div class="progress-bar"><div class="progress-fill" id="prog-s2"></div></div>
+                <h2 class="section-title">🌍 Introduction & Real-World Connection (00:10-00:15)</h2>
+                <p class="translation">Pengantar & Koneksi Dunia Nyata</p>
+
+                <!-- Step 1: Theory 1 + 3 Exercises -->
+                <div class="content-block" id="s2-step1">
+                    <div class="theory-box">
+                        <h3>Theory 1: Sectors in Architecture</h3>
+                        <div class="svg-container">
+                            <svg width="150" height="150" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="40" fill="#e5f6ff" stroke="#1cb0f6" stroke-width="2"/>
+                                <path d="M 50 50 L 90 50 A 40 40 0 0 1 50 90 Z" fill="#ffc800" opacity="0.8"/>
+                                <text x="55" y="40" font-size="8" fill="#3c3c3c">Sector</text>
+                                <text x="55" y="45" font-size="6" fill="#777">Juring</text>
+                            </svg>
+                        </div>
+                        <p>Architects use circle properties to design precise structures. A stadium roof often uses a "Sector" (juring) shape.</p>
+                        <p class="translation">Arsitek menggunakan sifat-sifat lingkaran untuk merancang struktur yang presisi. Atap stadion seringkali menggunakan bentuk "Juring".</p>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">1. Which real-world object looks like a sector?</p>
+                        <p class="translation" style="font-size: 0.8rem;">Objek dunia nyata mana yang terlihat seperti juring?</p>
+                        <div class="options-grid" id="s2-ex1"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s2-ex1-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s2-ex1')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s2-ex1-exp">
+                            <p>A slice of pizza is a common example of a sector.</p>
+                            <p class="translation">Potongan pizza adalah contoh umum dari juring.</p>
+                        </div>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">2. A sector is bounded by two radii and a...?</p>
+                        <p class="translation" style="font-size: 0.8rem;">Sebuah juring dibatasi oleh dua jari-jari dan sebuah...?</p>
+                        <div class="options-grid" id="s2-ex2"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s2-ex2-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s2-ex2')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s2-ex2-exp">
+                            <p>It is bounded by two radii and an arc.</p>
+                            <p class="translation">Dibatasi oleh dua jari-jari dan satu busur.</p>
+                        </div>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">3. The angle forming a sector is called the...?</p>
+                        <p class="translation" style="font-size: 0.8rem;">Sudut yang membentuk juring disebut...?</p>
+                        <div class="options-grid" id="s2-ex3"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s2-ex3-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s2-ex3')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s2-ex3-exp">
+                            <p>It is called the central angle.</p>
+                            <p class="translation">Disebut sudut pusat.</p>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-secondary" onclick="prevStep('s2')">Previous</button>
+                        <button class="btn btn-primary" onclick="checkAndNext('s2', 1, 3)">Next</button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Theory 2 + 3 Exercises -->
+                <div class="content-block" id="s2-step2" style="display:none;">
+                    <div class="theory-box">
+                        <h3>Theory 2: The Running Track (Annulus)</h3>
+                        <div class="svg-container">
+                            <svg width="150" height="150" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="40" fill="#e7ffc7" stroke="#58cc02" stroke-width="2"/>
+                                <circle cx="50" cy="50" r="25" fill="#fff" stroke="#58cc02" stroke-width="2"/>
+                                <text x="30" y="50" font-size="6" fill="#3c3c3c">Annulus</text>
+                                <text x="30" y="55" font-size="5" fill="#777">(Track area)</text>
+                            </svg>
+                        </div>
+                        <p>A running track consists of two straight lines and two semicircles. The curved area is an Annulus, the region between two concentric circles.</p>
+                        <p class="translation">Lintasan lari terdiri dari dua garis lurus dan dua setengah lingkaran. Daerah melengkung adalah Anulus, yaitu area di antara dua lingkaran sepusat.</p>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">4. What is an Annulus?</p>
+                        <p class="translation" style="font-size: 0.8rem;">Apa itu Anulus?</p>
+                        <div class="options-grid" id="s2-ex4"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s2-ex4-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s2-ex4')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s2-ex4-exp">
+                            <p>It is the region between two concentric circles, like a ring.</p>
+                            <p class="translation">Merupakan daerah di antara dua lingkaran sepusat, seperti cincin.</p>
+                        </div>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">5. Concentric circles have the same...?</p>
+                        <p class="translation" style="font-size: 0.8rem;">Lingkaran sepusat memiliki... yang sama?</p>
+                        <div class="options-grid" id="s2-ex5"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s2-ex5-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s2-ex5')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s2-ex5-exp">
+                            <p>They share the same center point.</p>
+                            <p class="translation">Mereka memiliki titik pusat yang sama.</p>
+                        </div>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">6. If a running track has outer radius 50m and inner 40m, the width is...?</p>
+                        <p class="translation" style="font-size: 0.8rem;">Jika lintasan jari-jari luar 50m dan dalam 40m, lebarnya adalah...?</p>
+                        <div class="options-grid" id="s2-ex6"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s2-ex6-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s2-ex6')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s2-ex6-exp">
+                            <p>Width = Outer radius - Inner radius = \( 50 - 40 = 10 \) m.</p>
+                            <p class="translation">Lebar = Jari-jari luar - Jari-jari dalam = 10 m.</p>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-secondary" onclick="prevStep('s2')">Previous</button>
+                        <button class="btn btn-primary" onclick="checkAndNext('s2', 2, 3)">Next</button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Theory 3 + 4 Exercises -->
+                <div class="content-block" id="s2-step3" style="display:none;">
+                    <div class="theory-box">
+                        <h3>Theory 3: Precision in Design</h3>
+                        <p>Using exact circle formulas ensures materials fit perfectly. A slight miscalculation in a curved roof can cause structural issues.</p>
+                        <p class="translation">Menggunakan rumus lingkaran yang presisi memastikan material pas sempurna. Kesalahan kecil pada atap lengkung dapat menyebabkan masalah struktural.</p>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">7. Why do architects use exact calculations?</p>
+                        <p class="translation" style="font-size: 0.8rem;">Mengapa arsitek menggunakan perhitungan yang presisi?</p>
+                        <div class="options-grid" id="s2-ex7"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s2-ex7-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s2-ex7')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s2-ex7-exp">
+                            <p>To ensure structural integrity and perfect fitting.</p>
+                            <p class="translation">Untuk memastikan kekuatan struktur dan kesesuaian yang sempurna.</p>
+                        </div>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">8. Two semicircles of the same radius form a...?</p>
+                        <p class="translation" style="font-size: 0.8rem;">Dua setengah lingkaran dengan jari-jari sama membentuk...?</p>
+                        <div class="options-grid" id="s2-ex8"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s2-ex8-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s2-ex8')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s2-ex8-exp">
+                            <p>They form one full circle.</p>
+                            <p class="translation">Mereka membentuk satu lingkaran utuh.</p>
+                        </div>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">9. A half-annulus is half of a...?</p>
+                        <p class="translation" style="font-size: 0.8rem;">Setengah anulus adalah setengah dari...?</p>
+                        <div class="options-grid" id="s2-ex9"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s2-ex9-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s2-ex9')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s2-ex9-exp">
+                            <p>It is half of a full annulus (ring shape).</p>
+                            <p class="translation">Setengah dari anulus utuh (bentuk cincin).</p>
+                        </div>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">10. If a track has straights and semicircular ends, the total curved area is a...?</p>
+                        <p class="translation" style="font-size: 0.8rem;">Jika lintasan punya lurus dan ujung setengah lingkaran, total luas melengkungnya adalah...?</p>
+                        <div class="options-grid" id="s2-ex10"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s2-ex10-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s2-ex10')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s2-ex10-exp">
+                            <p>The two semicircular ends make one full annulus.</p>
+                            <p class="translation">Dua ujung setengah lingkaran membentuk satu anulus utuh.</p>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-secondary" onclick="prevStep('s2')">Previous</button>
+                        <button class="btn btn-primary" onclick="checkAndNext('s2', 3, 3)">Next Section</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 3: REVIEW OF PRIOR KNOWLEDGE -->
+            <div id="s3" class="section">
+                <div class="progress-bar"><div class="progress-fill" id="prog-s3"></div></div>
+                <h2 class="section-title">🔄 Review of Prior Knowledge (00:15-00:20)</h2>
+                <p class="translation">Tinjauan Pengetahuan Sebelumnya</p>
+
+                <!-- Step 1: Theory 1 + 3 Exercises -->
+                <div class="content-block" id="s3-step1">
+                    <div class="theory-box">
+                        <h3>Theory 1: Area of a Circle</h3>
+                        <div class="svg-container">
+                            <svg width="120" height="120" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="40" fill="#e5f6ff" stroke="#1cb0f6" stroke-width="2"/>
+                                <line x1="50" y1="50" x2="90" y2="50" stroke="#ff4b4b" stroke-width="2" stroke-dasharray="4"/>
+                                <text x="65" y="45" font-size="8" fill="#ff4b4b">r</text>
+                            </svg>
+                        </div>
+                        <p>The basic formula for the area of a circle is \( L = \pi \times r^2 \), where \( r \) is the radius.</p>
+                        <p class="translation">Rumus dasar luas lingkaran adalah \( L = \pi \times r^2 \), di mana \( r \) adalah jari-jari.</p>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">1. What is the formula for the area of a circle?</p>
+                        <p class="translation" style="font-size: 0.8rem;">Apa rumus luas lingkaran?</p>
+                        <div class="options-grid" id="s3-ex1"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s3-ex1-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s3-ex1')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s3-ex1-exp">
+                            <p>The area is \( \pi r^2 \).</p>
+                            <p class="translation">Luasnya adalah \( \pi r^2 \).</p>
+                        </div>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">2. Calculate the area of a circle with \( r = 7 \) cm. (Use \( \pi = \frac{22}{7} \))</p>
+                        <p class="translation" style="font-size: 0.8rem;">Hitung luas lingkaran dengan \( r = 7 \) cm.</p>
+                        <div class="options-grid" id="s3-ex2"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s3-ex2-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s3-ex2')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s3-ex2-exp">
+                            <p>\( \frac{22}{7} \times 7^2 = 154 \) cm².</p>
+                            <p class="translation">\(\frac{22}{7} \times 49 = 154 \) cm².</p>
+                        </div>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">3. If \( r = 10 \) cm, what is the area? (Use \( \pi = 3.14 \))</p>
+                        <p class="translation" style="font-size: 0.8rem;">Jika \( r = 10 \) cm, berapakah luasnya?</p>
+                        <div class="options-grid" id="s3-ex3"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s3-ex3-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s3-ex3')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s3-ex3-exp">
+                            <p>\( 3.14 \times 10^2 = 314 \) cm².</p>
+                            <p class="translation">314 cm².</p>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-secondary" onclick="prevStep('s3')">Previous</button>
+                        <button class="btn btn-primary" onclick="checkAndNext('s3', 1, 3)">Next</button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Theory 2 + 3 Exercises -->
+                <div class="content-block" id="s3-step2" style="display:none;">
+                    <div class="theory-box">
+                        <h3>Theory 2: Radius and Diameter</h3>
+                        <p>The radius (\( r \)) is half of the diameter (\( d \)). So, \( r = \frac{d}{2} \).</p>
+                        <p class="translation">Jari-jari (\( r \)) adalah setengah dari diameter (\( d \)). Jadi, \( r = \frac{d}{2} \).</p>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">4. If the diameter is 14 cm, what is the radius?</p>
+                        <p class="translation" style="font-size: 0.8rem;">Jika diameter 14 cm, berapakah jari-jarinya?</p>
+                        <div class="options-grid" id="s3-ex4"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s3-ex4-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s3-ex4')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s3-ex4-exp">
+                            <p>Radius is half of diameter: \( 14 / 2 = 7 \) cm.</p>
+                            <p class="translation">7 cm.</p>
+                        </div>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">5. If the diameter is 20 cm, what is the area? (Use \( \pi = 3.14 \))</p>
+                        <p class="translation" style="font-size: 0.8rem;">Jika diameter 20 cm, berapakah luasnya?</p>
+                        <div class="options-grid" id="s3-ex5"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s3-ex5-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s3-ex5')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s3-ex5-exp">
+                            <p>Radius is 10. Area = \( 3.14 \times 10^2 = 314 \) cm².</p>
+                            <p class="translation">314 cm².</p>
+                        </div>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">6. The distance across a circle through its center is called the...?</p>
+                        <p class="translation" style="font-size: 0.8rem;">Jarak melintasi lingkaran melalui pusatnya disebut...?</p>
+                        <div class="options-grid" id="s3-ex6"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s3-ex6-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s3-ex6')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s3-ex6-exp">
+                            <p>It is the diameter.</p>
+                            <p class="translation">Disebut diameter.</p>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-secondary" onclick="prevStep('s3')">Previous</button>
+                        <button class="btn btn-primary" onclick="checkAndNext('s3', 2, 3)">Next</button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Theory 3 + 4 Exercises -->
+                <div class="content-block" id="s3-step3" style="display:none;">
+                    <div class="theory-box">
+                        <h3>Theory 3: Using \(\pi = \frac{22}{7}\)</h3>
+                        <p>When the radius is a multiple of 7 (like 7, 14, 21), it is easier to use \(\pi = \frac{22}{7}\) for exact calculations without decimals.</p>
+                        <p class="translation">Ketika jari-jari kelipatan 7, lebih mudah menggunakan \(\pi = \frac{22}{7}\).</p>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">7. Why use \( \frac{22}{7} \) when \( r = 14 \)?</p>
+                        <p class="translation" style="font-size: 0.8rem;">Mengapa menggunakan \( \frac{22}{7} \) saat \( r = 14 \)?</p>
+                        <div class="options-grid" id="s3-ex7"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s3-ex7-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s3-ex7')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s3-ex7-exp">
+                            <p>Because 14 is divisible by 7, making calculation exact and easy.</p>
+                            <p class="translation">Karena 14 habis dibagi 7, membuat perhitungan tepat dan mudah.</p>
+                        </div>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">8. Calculate area if \( r = 14 \) m. (Use \( \pi = \frac{22}{7} \))</p>
+                        <p class="translation" style="font-size: 0.8rem;">Hitung luas jika \( r = 14 \) m.</p>
+                        <div class="options-grid" id="s3-ex8"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s3-ex8-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s3-ex8')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s3-ex8-exp">
+                            <p>\( \frac{22}{7} \times 14^2 = 616 \) m².</p>
+                            <p class="translation">616 m².</p>
+                        </div>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">9. If area is \( 154 \) cm² and \( \pi = \frac{22}{7} \), what is \( r \)?</p>
+                        <p class="translation" style="font-size: 0.8rem;">Jika luas 154 cm², berapakah \( r \)?</p>
+                        <div class="options-grid" id="s3-ex9"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s3-ex9-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s3-ex9')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s3-ex9-exp">
+                            <p>\( \frac{22}{7} \times r^2 = 154 \Rightarrow r^2 = 49 \Rightarrow r = 7 \) cm.</p>
+                            <p class="translation">7 cm.</p>
+                        </div>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">10. What is \( \frac{22}{7} \times 21 \)?</p>
+                        <p class="translation" style="font-size: 0.8rem;">Berapakah \( \frac{22}{7} \times 21 \)?</p>
+                        <div class="options-grid" id="s3-ex10"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s3-ex10-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s3-ex10')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s3-ex10-exp">
+                            <p>22 divides by 7 gives \( 22/7 \times 21 = 22 \times 3 = 66 \).</p>
+                            <p class="translation">66.</p>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-secondary" onclick="prevStep('s3')">Previous</button>
+                        <button class="btn btn-primary" onclick="checkAndNext('s3', 3, 3)">Next Section</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 4: PROBLEM INTRODUCTION -->
+            <div id="s4" class="section">
+                <div class="progress-bar"><div class="progress-fill" id="prog-s4"></div></div>
+                <h2 class="section-title">🧩 Problem Introduction (00:20-00:30)</h2>
+                <p class="translation">Pengenalan Masalah</p>
+
+                <!-- Step 1: Theory 1 + 3 Exercises -->
+                <div class="content-block" id="s4-step1">
+                    <div class="theory-box">
+                        <h3>Theory 1: Area of a Sector (Juring)</h3>
+                        <div class="svg-container">
+                            <svg width="120" height="120" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="40" fill="#f8f9fa" stroke="#ccc" stroke-width="1"/>
+                                <path d="M 50 50 L 90 50 A 40 40 0 0 0 50 10 Z" fill="#ffc800" opacity="0.8"/>
+                                <text x="55" y="40" font-size="10" fill="#3c3c3c">θ</text>
+                            </svg>
+                        </div>
+                        <p>A sector is a "pizza slice" of a circle. Its area is proportional to the central angle (\( \theta \)). Formula: \( L = \frac{\theta}{360} \times \pi r^2 \).</p>
+                        <p class="translation">Juring adalah "potongan pizza". Luasnya sebanding dengan sudut pusat. Rumus: \( \frac{\theta}{360} \times \pi r^2 \).</p>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">1. What is the formula for the area of a sector?</p>
+                        <p class="translation" style="font-size: 0.8rem;">Apa rumus luas juring?</p>
+                        <div class="options-grid" id="s4-ex1"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s4-ex1-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s4-ex1')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s4-ex1-exp">
+                            <p>Formula: \( \frac{\theta}{360} \times \pi r^2 \).</p>
+                            <p class="translation">Rumus: \( \frac{\theta}{360} \times \pi r^2 \).</p>
+                        </div>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">2. What fraction of a circle is a \( 90^\circ \) sector?</p>
+                        <p class="translation" style="font-size: 0.8rem;">Berapakah pecahan lingkaran untuk juring \( 90^\circ \)?</p>
+                        <div class="options-grid" id="s4-ex2"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s4-ex2-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s4-ex2')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s4-ex2-exp">
+                            <p>\( 90/360 = 1/4 \).</p>
+                            <p class="translation">1/4.</p>
+                        </div>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">3. Find the area of a \( 60^\circ \) sector with \( r = 21 \) cm. (Use \( \pi = \frac{22}{7} \))</p>
+                        <p class="translation" style="font-size: 0.8rem;">Cari luas juring \( 60^\circ \) dengan \( r = 21 \) cm.</p>
+                        <div class="options-grid" id="s4-ex3"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s4-ex3-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s4-ex3')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s4-ex3-exp">
+                            <p>\( \frac{60}{360} \times \frac{22}{7} \times 441 = \frac{1}{6} \times 1386 = 231 \) cm².</p>
+                            <p class="translation">231 cm².</p>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-secondary" onclick="prevStep('s4')">Previous</button>
+                        <button class="btn btn-primary" onclick="checkAndNext('s4', 1, 3)">Next</button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Theory 2 + 3 Exercises -->
+                <div class="content-block" id="s4-step2" style="display:none;">
+                    <div class="theory-box">
+                        <h3>Theory 2: Area of an Annulus (Cincin)</h3>
+                        <div class="svg-container">
+                            <svg width="120" height="120" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="40" fill="#e7ffc7" stroke="#58cc02" stroke-width="2"/>
+                                <circle cx="50" cy="50" r="20" fill="#fff" stroke="#58cc02" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <p>An annulus is the region between two concentric circles. Area = \( \pi R^2 - \pi r^2 \).</p>
+                        <p class="translation">Anulus adalah daerah antara dua lingkaran sepusat. Luas = \( \pi R^2 - \pi r^2 \).</p>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">4. What is the formula for annulus area?</p>
+                        <p class="translation" style="font-size: 0.8rem;">Apa rumus luas anulus?</p>
+                        <div class="options-grid" id="s4-ex4"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s4-ex4-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s4-ex4')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s4-ex4-exp">
+                            <p>\( \pi R^2 - \pi r^2 \).</p>
+                            <p class="translation">\( \pi R^2 - \pi r^2 \).</p>
+                        </div>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">5. Calculate \( 35^2 - 30^2 \).</p>
+                        <p class="translation" style="font-size: 0.8rem;">Hitung \( 35^2 - 30^2 \).</p>
+                        <div class="options-grid" id="s4-ex5"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s4-ex5-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s4-ex5')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s4-ex5-exp">
+                            <p>\( 1225 - 900 = 325 \).</p>
+                            <p class="translation">325.</p>
+                        </div>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">6. If \( R = 5 \) and \( r = 3 \), what is the annulus area? (Use \( \pi = 3.14 \))</p>
+                        <p class="translation" style="font-size: 0.8rem;">Jika \( R=5 \) dan \( r=3 \), hitung luas anulus.</p>
+                        <div class="options-grid" id="s4-ex6"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s4-ex6-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s4-ex6')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s4-ex6-exp">
+                            <p>\( 3.14(25 - 9) = 3.14(16) = 50.24 \).</p>
+                            <p class="translation">50.24.</p>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-secondary" onclick="prevStep('s4')">Previous</button>
+                        <button class="btn btn-primary" onclick="checkAndNext('s4', 2, 3)">Next</button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Theory 3 + 4 Exercises -->
+                <div class="content-block" id="s4-step3" style="display:none;">
+                    <div class="theory-box">
+                        <h3>Theory 3: Area of a Segment (Tembereng)</h3>
+                        <div class="svg-container">
+                            <svg width="150" height="120" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="40" fill="#f8f9fa" stroke="#ccc" stroke-width="1"/>
+                                <path d="M 50 50 L 90 50 A 40 40 0 0 1 50 90 Z" fill="#ffc800" opacity="0.4"/>
+                                <path d="M 50 50 L 90 50 L 50 90 Z" fill="#fff" stroke="#ff4b4b" stroke-width="1"/>
+                                <path d="M 90 50 A 40 40 0 0 1 50 90 L 50 50 Z" fill="#1cb0f6" opacity="0.5"/>
+                                <text x="55" y="40" font-size="8" fill="#3c3c3c">Sector</text>
+                                <text x="20" y="60" font-size="8" fill="#ff4b4b">Triangle</text>
+                                <text x="60" y="75" font-size="6" fill="#1cb0f6">Segment</text>
+                            </svg>
+                        </div>
+                        <p>A segment is the area between a chord and an arc. Area = Sector Area - Triangle Area.</p>
+                        <p class="translation">Tembereng adalah daerah antara tali busur dan busur. Luas = Luas Juring - Luas Segitiga.</p>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">7. What is the formula for segment area?</p>
+                        <p class="translation" style="font-size: 0.8rem;">Apa rumus luas tembereng?</p>
+                        <div class="options-grid" id="s4-ex7"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s4-ex7-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s4-ex7')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s4-ex7-exp">
+                            <p>Sector Area - Triangle Area.</p>
+                            <p class="translation">Luas Juring - Luas Segitiga.</p>
+                        </div>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">8. If a sector area is 100 and triangle is 40, what is the segment area?</p>
+                        <p class="translation" style="font-size: 0.8rem;">Jika luas juring 100 dan segitiga 40, berapakah luas tembereng?</p>
+                        <div class="options-grid" id="s4-ex8"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s4-ex8-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s4-ex8')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s4-ex8-exp">
+                            <p>\( 100 - 40 = 60 \).</p>
+                            <p class="translation">60.</p>
+                        </div>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">9. In a \( 90^\circ \) sector, what triangle is formed by the radii?</p>
+                        <p class="translation" style="font-size: 0.8rem;">Pada juring \( 90^\circ \), segitiga apa yang terbentuk?</p>
+                        <div class="options-grid" id="s4-ex9"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s4-ex9-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s4-ex9')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s4-ex9-exp">
+                            <p>A right-angled triangle.</p>
+                            <p class="translation">Segitiga siku-siku.</p>
+                        </div>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">10. If segment area is negative, it means...?</p>
+                        <p class="translation" style="font-size: 0.8rem;">Jika luas tembereng negatif, itu berarti...?</p>
+                        <div class="options-grid" id="s4-ex10"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s4-ex10-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s4-ex10')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s4-ex10-exp">
+                            <p>Impossible; you subtracted in the wrong order.</p>
+                            <p class="translation">Tidak mungkin; Anda salah urutan pengurangan.</p>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-secondary" onclick="prevStep('s4')">Previous</button>
+                        <button class="btn btn-primary" onclick="checkAndNext('s4', 3, 3)">Next Section</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 5: GUIDED PRACTICE -->
+            <div id="s5" class="section">
+                <div class="progress-bar"><div class="progress-fill" id="prog-s5"></div></div>
+                <h2 class="section-title">📐 Guided Practice (00:30-00:45)</h2>
+                <p class="translation">Latihan Terbimbing</p>
+
+                <!-- Step 1: Theory 1 + 3 Exercises -->
+                <div class="content-block" id="s5-step1">
+                    <div class="theory-box">
+                        <h3>Theory 1: Designing a Running Track (Annulus)</h3>
+                        <p>Let's design a running track. The inner radius (\( r \)) is 30 m, and the track width is 5 m. This means the outer radius (\( R \)) is \( 30 + 5 = 35 \) m. The area of the track is an Annulus: \( L = \pi R^2 - \pi r^2 \).</p>
+                        <p class="translation">Mari kita rancang lintasan lari. Jari-jari dalam (\( r \)) adalah 30 m, dan lebar lintasan adalah 5 m. Ini berarti jari-jari luar (\( R \)) adalah \( 30 + 5 = 35 \) m. Luas lintasan tersebut adalah Anulus: \( L = \pi R^2 - \pi r^2 \).</p>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">1. What is the outer radius (\( R \)) of the track?</p>
+                        <p class="translation" style="font-size: 0.8rem;">Berapakah jari-jari luar (\( R \)) lintasan tersebut?</p>
+                        <div class="options-grid" id="s5-ex1"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s5-ex1-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s5-ex1')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s5-ex1-exp">
+                            <p>Outer radius = Inner radius + width = \( 30 + 5 = 35 \) m.</p>
+                            <p class="translation">Jari-jari luar = Jari-jari dalam + lebar = \( 30 + 5 = 35 \) m.</p>
+                        </div>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">2. What is the correct formula for the area of this track?</p>
+                        <p class="translation" style="font-size: 0.8rem;">Manakah rumus yang benar untuk luas lintasan ini?</p>
+                        <div class="options-grid" id="s5-ex2"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s5-ex2-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s5-ex2')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s5-ex2-exp">
+                            <p>It is the outer circle area minus the inner circle area: \( \pi(35^2) - \pi(30^2) \).</p>
+                            <p class="translation">Yaitu luas lingkaran luar dikurangi luas lingkaran dalam: \( \pi(35^2) - \pi(30^2) \).</p>
+                        </div>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">3. Calculate \( 35^2 - 30^2 \) as the first step.</p>
+                        <p class="translation" style="font-size: 0.8rem;">Hitung \( 35^2 - 30^2 \) sebagai langkah pertama.</p>
+                        <div class="options-grid" id="s5-ex3"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s5-ex3-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s5-ex3')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s5-ex3-exp">
+                            <p>\( 35^2 = 1225 \) and \( 30^2 = 900 \). So, \( 1225 - 900 = 325 \).</p>
+                            <p class="translation">\( 35^2 = 1225 \) dan \( 30^2 = 900 \). Jadi, \( 1225 - 900 = 325 \).</p>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-secondary" onclick="prevStep('s5')">Previous</button>
+                        <button class="btn btn-primary" onclick="checkAndNext('s5', 1, 3)">Next</button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Theory 2 + 3 Exercises -->
+                <div class="content-block" id="s5-step2" style="display:none;">
+                    <div class="theory-box">
+                        <h3>Theory 2: Calculating a Sector's Area</h3>
+                        <p>Now, let's calculate the area of a sector with a central angle of \( 60^\circ \) and a radius (\( r \)) of 21 cm. We use the formula: \( L = \frac{\theta}{360} \times \pi r^2 \). Using \( \pi = \frac{22}{7} \) makes it easier since 21 is a multiple of 7.</p>
+                        <p class="translation">Sekarang, mari kita hitung luas juring dengan sudut pusat \( 60^\circ \) dan jari-jari (\( r \)) 21 cm. Kita gunakan rumus: \( L = \frac{\theta}{360} \times \pi r^2 \). Menggunakan \( \pi = \frac{22}{7} \) akan lebih mudah karena 21 adalah kelipatan 7.</p>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">4. What fraction of the full circle is a \( 60^\circ \) sector?</p>
+                        <p class="translation" style="font-size: 0.8rem;">Berapakah pecahan dari lingkaran utuh untuk juring \( 60^\circ \)?</p>
+                        <div class="options-grid" id="s5-ex4"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s5-ex4-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s5-ex4')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s5-ex4-exp">
+                            <p>The fraction is \( \frac{60}{360} \), which simplifies to \( \frac{1}{6} \).</p>
+                            <p class="translation">Pecahannya adalah \( \frac{60}{360} \), yang disederhanakan menjadi \( \frac{1}{6} \).</p>
+                        </div>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">5. What is the area of the full circle with \( r = 21 \) cm? (Use \( \pi = \frac{22}{7} \))</p>
+                        <p class="translation" style="font-size: 0.8rem;">Berapakah luas lingkaran utuh dengan \( r = 21 \) cm? (Gunakan \( \pi = \frac{22}{7} \))</p>
+                        <div class="options-grid" id="s5-ex5"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s5-ex5-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s5-ex5')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s5-ex5-exp">
+                            <p>\( L = \frac{22}{7} \times 21^2 = \frac{22}{7} \times 441 = 22 \times 63 = 1386 \) cm².</p>
+                            <p class="translation">\( L = \frac{22}{7} \times 21^2 = \frac{22}{7} \times 441 = 22 \times 63 = 1386 \) cm².</p>
+                        </div>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">6. Calculate the final area of the \( 60^\circ \) sector.</p>
+                        <p class="translation" style="font-size: 0.8rem;">Hitung luas akhir dari juring \( 60^\circ \) tersebut.</p>
+                        <div class="options-grid" id="s5-ex6"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s5-ex6-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s5-ex6')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s5-ex6-exp">
+                            <p>It is \( \frac{1}{6} \) of 1386 cm². So, \( 1386 / 6 = 231 \) cm².</p>
+                            <p class="translation">Yaitu \( \frac{1}{6} \) dari 1386 cm². Jadi, \( 1386 / 6 = 231 \) cm².</p>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-secondary" onclick="prevStep('s5')">Previous</button>
+                        <button class="btn btn-primary" onclick="checkAndNext('s5', 2, 3)">Next</button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Theory 3 + 4 Exercises -->
+                <div class="content-block" id="s5-step3" style="display:none;">
+                    <div class="theory-box">
+                        <h3>Theory 3: Finding a Segment (Tembereng)</h3>
+                        <p>A segment is the area between a chord and the arc. To find it, we calculate the Sector Area and subtract the Triangle Area inside it: \( L_{segment} = L_{sector} - L_{triangle} \).</p>
+                        <p class="translation">Tembereng adalah daerah di antara tali busur dan busur. Untuk mencarinya, kita hitung Luas Juring lalu kurangi Luas Segitiga di dalamnya: \( L_{tembereng} = L_{juring} - L_{segitiga} \).</p>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">7. What is the formula for the area of a segment?</p>
+                        <p class="translation" style="font-size: 0.8rem;">Apa rumus luas tembereng?</p>
+                        <div class="options-grid" id="s5-ex7"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s5-ex7-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s5-ex7')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s5-ex7-exp">
+                            <p>Segment Area = Sector Area - Triangle Area.</p>
+                            <p class="translation">Luas Tembereng = Luas Juring - Luas Segitiga.</p>
+                        </div>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">8. If a sector area is 100 cm² and the triangle inside is 40 cm², what is the segment area?</p>
+                        <p class="translation" style="font-size: 0.8rem;">Jika luas juring 100 cm² dan segitiga di dalamnya 40 cm², berapakah luas temberengnya?</p>
+                        <div class="options-grid" id="s5-ex8"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s5-ex8-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s5-ex8')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s5-ex8-exp">
+                            <p>\( 100 - 40 = 60 \) cm².</p>
+                            <p class="translation">\( 100 - 40 = 60 \) cm².</p>
+                        </div>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">9. In a \( 90^\circ \) sector, what type of triangle is formed by the two radii?</p>
+                        <p class="translation" style="font-size: 0.8rem;">Pada juring \( 90^\circ \), jenis segitiga apa yang dibentuk oleh dua jari-jari?</p>
+                        <div class="options-grid" id="s5-ex9"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s5-ex9-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s5-ex9')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s5-ex9-exp">
+                            <p>It forms a right-angled triangle.</p>
+                            <p class="translation">Ia membentuk segitiga siku-siku.</p>
+                        </div>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">10. If the segment area is negative, what does it mean?</p>
+                        <p class="translation" style="font-size: 0.8rem;">Jika luas tembereng negatif, apa artinya?</p>
+                        <div class="options-grid" id="s5-ex10"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s5-ex10-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s5-ex10')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s5-ex10-exp">
+                            <p>It's impossible. It means you subtracted in the wrong order (triangle was larger than sector, which cannot happen).</p>
+                            <p class="translation">Itu tidak mungkin. Berarti Anda salah mengurangkan (segitiga lebih besar dari juring, yang tidak bisa terjadi).</p>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-secondary" onclick="prevStep('s5')">Previous</button>
+                        <button class="btn btn-primary" onclick="checkAndNext('s5', 3, 3)">Next Section</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 6: INDEPENDENT PRACTICE -->
+            <div id="s6" class="section">
+                <div class="progress-bar"><div class="progress-fill" id="prog-s6"></div></div>
+                <h2 class="section-title">✏️ Independent Practice (00:50-01:00)</h2>
+                <p class="translation">Latihan Mandiri</p>
+
+                <!-- Step 1: Theory 1 + 3 Exercises -->
+                <div class="content-block" id="s6-step1">
+                    <div class="theory-box">
+                        <h3>Theory 1: The Half-Circle Window</h3>
+                        <p>A window is in the shape of a semicircle with a diameter of 140 cm. Therefore, the radius (\( R \)) is 70 cm. There is a wooden frame 10 cm thick along the curve. The inner radius (\( r \)) is \( 70 - 10 = 60 \) cm. We need to find the area of the remaining glass, which is a half-annulus.</p>
+                        <p class="translation">Sebuah jendela berbentuk setengah lingkaran dengan diameter 140 cm. Oleh karena itu, jari-jari (\( R \)) adalah 70 cm. Terdapat bingkai kayu setebal 10 cm di sepanjang lengkungan. Jari-jari dalam (\( r \)) adalah \( 70 - 10 = 60 \) cm. Kita perlu mencari luas kaca yang tersisa, yaitu setengah anulus.</p>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">1. What is the outer radius (\( R \)) of the window?</p>
+                        <p class="translation" style="font-size: 0.8rem;">Berapakah jari-jari luar (\( R \)) jendela tersebut?</p>
+                        <div class="options-grid" id="s6-ex1"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s6-ex1-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s6-ex1')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s6-ex1-exp">
+                            <p>Radius is half of diameter: \( 140 / 2 = 70 \) cm.</p>
+                            <p class="translation">Jari-jari adalah setengah diameter: \( 140 / 2 = 70 \) cm.</p>
+                        </div>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">2. What is the inner radius (\( r \)) after accounting for the 10 cm frame?</p>
+                        <p class="translation" style="font-size: 0.8rem;">Berapakah jari-jari dalam (\( r \)) setelah memperhitungkan bingkai 10 cm?</p>
+                        <div class="options-grid" id="s6-ex2"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s6-ex2-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s6-ex2')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s6-ex2-exp">
+                            <p>Inner radius = Outer radius - thickness = \( 70 - 10 = 60 \) cm.</p>
+                            <p class="translation">Jari-jari dalam = Jari-jari luar - ketebalan = \( 70 - 10 = 60 \) cm.</p>
+                        </div>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">3. What shape is the remaining glass area?</p>
+                        <p class="translation" style="font-size: 0.8rem;">Bangun apakah bentuk luas kaca yang tersisa?</p>
+                        <div class="options-grid" id="s6-ex3"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s6-ex3-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s6-ex3')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s6-ex3-exp">
+                            <p>Because it's a semicircle with an inner semicircle removed, it is a Half-Annulus.</p>
+                            <p class="translation">Karena ini adalah setengah lingkaran dengan setengah lingkaran di dalamnya yang dihapus, ini adalah Setengah Anulus.</p>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-secondary" onclick="prevStep('s6')">Previous</button>
+                        <button class="btn btn-primary" onclick="checkAndNext('s6', 1, 3)">Next</button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Theory 2 + 3 Exercises -->
+                <div class="content-block" id="s6-step2" style="display:none;">
+                    <div class="theory-box">
+                        <h3>Theory 2: Calculating Full Annulus First</h3>
+                        <p>It is easier to calculate the full annulus area first, then divide it by 2. Full Annulus Area = \( \pi R^2 - \pi r^2 \). Let's use \( \pi = 3.14 \).</p>
+                        <p class="translation">Lebih mudah menghitung luas anulus utuh terlebih dahulu, lalu membaginya dengan 2. Luas Anulus Utuh = \( \pi R^2 - \pi r^2 \). Mari gunakan \( \pi = 3.14 \).</p>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">4. Calculate the area of the full outer circle (\( R = 70 \)).</p>
+                        <p class="translation" style="font-size: 0.8rem;">Hitung luas lingkaran luar utuh (\( R = 70 \)).</p>
+                        <div class="options-grid" id="s6-ex4"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s6-ex4-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s6-ex4')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s6-ex4-exp">
+                            <p>\( 3.14 \times 70^2 = 3.14 \times 4900 = 15386 \) cm².</p>
+                            <p class="translation">\( 3.14 \times 70^2 = 3.14 \times 4900 = 15386 \) cm².</p>
+                        </div>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">5. Calculate the area of the full inner circle (\( r = 60 \)).</p>
+                        <p class="translation" style="font-size: 0.8rem;">Hitung luas lingkaran dalam utuh (\( r = 60 \)).</p>
+                        <div class="options-grid" id="s6-ex5"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s6-ex5-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s6-ex5')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s6-ex5-exp">
+                            <p>\( 3.14 \times 60^2 = 3.14 \times 3600 = 11304 \) cm².</p>
+                            <p class="translation">\( 3.14 \times 60^2 = 3.14 \times 3600 = 11304 \) cm².</p>
+                        </div>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">6. What is the area of the full annulus?</p>
+                        <p class="translation" style="font-size: 0.8rem;">Berapakah luas anulus utuh?</p>
+                        <div class="options-grid" id="s6-ex6"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s6-ex6-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s6-ex6')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s6-ex6-exp">
+                            <p>Outer Area - Inner Area = \( 15386 - 11304 = 4082 \) cm².</p>
+                            <p class="translation">Luas Luar - Luas Dalam = \( 15386 - 11304 = 4082 \) cm².</p>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-secondary" onclick="prevStep('s6')">Previous</button>
+                        <button class="btn btn-primary" onclick="checkAndNext('s6', 2, 3)">Next</button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Theory 3 + 4 Exercises -->
+                <div class="content-block" id="s6-step3" style="display:none;">
+                    <div class="theory-box">
+                        <h3>Theory 3: Final Calculation for the Semicircle</h3>
+                        <p>Since the window is a semicircle (half of a full circle), we must divide the full annulus area by 2 to get the final glass area.</p>
+                        <p class="translation">Karena jendela berbentuk setengah lingkaran (setengah dari lingkaran utuh), kita harus membagi luas anulus utuh dengan 2 untuk mendapatkan luas kaca akhir.</p>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">7. Why do we divide the annulus area by 2?</p>
+                        <p class="translation" style="font-size: 0.8rem;">Mengapa kita membagi luas anulus dengan 2?</p>
+                        <div class="options-grid" id="s6-ex7"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s6-ex7-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s6-ex7')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s6-ex7-exp">
+                            <p>Because the window is a semicircle, which is exactly half of a full circle.</p>
+                            <p class="translation">Karena jendela tersebut adalah setengah lingkaran, yang mana persis setengah dari lingkaran utuh.</p>
+                        </div>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">8. Calculate the final area of the remaining glass.</p>
+                        <p class="translation" style="font-size: 0.8rem;">Hitung luas akhir kaca yang tersisa.</p>
+                        <div class="options-grid" id="s6-ex8"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s6-ex8-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s6-ex8')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s6-ex8-exp">
+                            <p>\( 4082 / 2 = 2041 \) cm².</p>
+                            <p class="translation">\( 4082 / 2 = 2041 \) cm².</p>
+                        </div>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">9. If the window was a quarter-circle instead, what would you divide by?</p>
+                        <p class="translation" style="font-size: 0.8rem;">Jika jendela tersebut berbentuk seperempat lingkaran, dengan berapa Anda akan membaginya?</p>
+                        <div class="options-grid" id="s6-ex9"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s6-ex9-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s6-ex9')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s6-ex9-exp">
+                            <p>A quarter-circle is \( \frac{1}{4} \) of a circle, so you divide by 4.</p>
+                            <p class="translation">Seperempat lingkaran adalah \( \frac{1}{4} \) lingkaran, jadi dibagi 4.</p>
+                        </div>
+                    </div>
+                    <div class="exercise-box">
+                        <p class="question-text">10. What happens to the area if the wooden frame becomes thicker?</p>
+                        <p class="translation" style="font-size: 0.8rem;">Apa yang terjadi pada luasnya jika bingkai kayu menjadi lebih tebal?</p>
+                        <div class="options-grid" id="s6-ex10"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('s6-ex10-exp')">Show Explanation</button>
+                            <button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetExercise('s6-ex10')">Reset 🔄</button>
+                        </div>
+                        <div class="explanation-content" id="s6-ex10-exp">
+                            <p>The inner radius (\( r \)) becomes smaller, so the remaining glass area decreases.</p>
+                            <p class="translation">Jari-jari dalam (\( r \)) menjadi lebih kecil, sehingga luas kaca yang tersisa berkurang.</p>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-secondary" onclick="prevStep('s6')">Previous</button>
+                        <button class="btn btn-primary" onclick="checkAndNext('s6', 3, 3)">Next Section</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ASSIGNMENT 1 -->
+            <div id="a1" class="section"></div>
+            
+            <!-- ASSIGNMENT 2 -->
+            <div id="a2" class="section"></div>
+            
+            <!-- ASSIGNMENT 3 -->
+            <div id="a3" class="section"></div>
+
+            <!-- ASSIGNMENT 4 -->
+            <div id="a4" class="section"></div>
+            
+            <!-- ASSIGNMENT 5 -->
+            <div id="a5" class="section"></div>
+
+            <!-- CONSOLIDATION & REFLECTION -->
+            <div id="end" class="section">
+                <div class="progress-bar"><div class="progress-fill" style="width: 100%; background: var(--secondary);"></div></div>
+                <h2 class="section-title">🏁 Consolidation & Reflection (01:00-01:05)</h2>
+                <p class="translation">Konsolidasi & Refleksi</p>
+                
+                <div class="content-block">
+                    <div class="theory-box">
+                        <h3>📚 Summary of Formulas</h3>
+                        <ul class="rules-list">
+                            <li><strong>Area of Circle:</strong> \( L = \pi r^2 \)</li>
+                            <li><strong>Area of Sector:</strong> \( L = \frac{\theta}{360} \times \pi r^2 \)</li>
+                            <li><strong>Area of Annulus:</strong> \( L = \pi R^2 - \pi r^2 \)</li>
+                            <li><strong>Area of Segment:</strong> \( L = L_{sector} - L_{triangle} \)</li>
+                        </ul>
+                        <p class="translation">Ringkasan rumus utama untuk Luas Lingkaran, Juring, Anulus, dan Tembereng.</p>
+                    </div>
+
+                    <div class="theory-box" style="border-left-color: var(--warning);">
+                        <h3>🤔 Self Reflection</h3>
+                        <p>What part of today's lesson did you find most challenging?</p>
+                        <p class="translation">Bagian mana dari pelajaran hari ini yang menurutmu paling menantang?</p>
+                        <textarea class="input-field" rows="4" placeholder="Write your reflection here... (Tulis refleksimu di sini...)"></textarea>
+                        
+                        <p>Remember, practice is the key to mastering math!</p>
+                        <p class="translation">Ingat, latihan adalah kunci untuk menguasai matematika!</p>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 30px;">
+                        <p><strong>Don't forget to check your notes and assignments on the portal!</strong></p>
+                        <p class="translation">Jangan lupa cek catatan dan tugasmu di portal!</p>
+                        <a href="https://learn.algonova.id/login" target="_blank" class="btn btn-primary" style="text-decoration: none; display: inline-flex; margin-top: 15px;">
+                            Go to Algolabs Portal <span>🚀</span>
+                        </a>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn btn-secondary" onclick="goToSection('a5')">Previous</button>
+                        <button class="btn btn-primary" onclick="goToSection('home')">Back to Home</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Placeholder for Assignments Print Area -->
+            <div id="printArea"></div>
+
+        </div>
+    </div>
+
+    <script>
+        // --- State Management ---
+        let progress = JSON.parse(localStorage.getItem('mathProgress')) || {};
+
+        // --- Initialization ---
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMath(document.body);
+            // Initialize Exercises for Section 1
+            setupExercise('s1-ex1', [
+                { text: '\\( 5 \\)', correct: false },
+                { text: '\\( -3 \\)', correct: false },
+                { text: '\\( 8 \\)', correct: true },
+                { text: '\\( x \\)', correct: false }
+            ]);
+            setupExercise('s1-ex2', [
+                { text: '\\( 4 \\) and \\( 7 \\)', correct: false },
+                { text: '\\( a \\) and \\( b \\)', correct: true },
+                { text: '\\( 12 \\)', correct: false },
+                { text: 'None', correct: false }
+            ]);
+            setupExercise('s1-ex3', [
+                { text: '\\( 3b + 5000 \\)', correct: false },
+                { text: '\\( 3(b - 5000) \\)', correct: false },
+                { text: '\\( 3b - 5000 \\)', correct: true },
+                { text: '\\( b - 15000 \\)', correct: false }
+            ]);
+			
+            setupExercise('s1-ex4', [
+                { text: '\\( 3 \\)', correct: true },
+                { text: '\\( -7 \\)', correct: false },
+                { text: '\\( 0 \\)', correct: false },
+                { text: '\\( -3 \\)', correct: false }
+            ]);
+            setupExercise('s1-ex5', [
+                { text: '4', correct: true },
+                { text: '3', correct: false },
+                { text: '2', correct: false },
+                { text: '5', correct: false }
+            ]);
+            setupExercise('s1-ex6', [
+                { text: '\\( 7x \\)', correct: true },
+                { text: '\\( 10x \\)', correct: false },
+                { text: '\\( 7x^2 \\)', correct: false },
+                { text: '\\( 2x + 5x \\)', correct: false }
+            ]);
+            setupExercise('s1-ex7', [
+                { text: '\\( 3x \\)', correct: true },
+                { text: '\\( x + 3 \\)', correct: false },
+                { text: '\\( x - 3 \\)', correct: false },
+                { text: '\\( 3 - x \\)', correct: false }
+            ]);
+            setupExercise('s1-ex8', [
+                { text: '\\( x + 2 \\)', correct: true },
+                { text: '\\( 2x \\)', correct: false },
+                { text: '\\( x - 2 \\)', correct: false },
+                { text: '\\( 2 \\)', correct: false }
+            ]);
+            setupExercise('s1-ex9', [
+                { text: '4 times a number \\( x \\)', correct: true },
+                { text: '4 plus a number \\( x \\)', correct: false },
+                { text: '4 divided by \\( x \\)', correct: false },
+                { text: 'Number \\( x \\) to the power of 4', correct: false }
+            ]);
+            setupExercise('s1-ex10', [
+                { text: '25', correct: true },
+                { text: '15', correct: false },
+                { text: '35', correct: false },
+                { text: '5', correct: false }
+            ]);
+			
+            updateNavStates();
+			
+            // Init Section 2
+            setupExercise('s2-ex1', [{ text: 'A slice of pizza', correct: true }, { text: 'A donut', correct: false }, { text: 'A full circle', correct: false }, { text: 'A straight line', correct: false }]);
+            setupExercise('s2-ex2', [{ text: 'Arc', correct: true }, { text: 'Chord', correct: false }, { text: 'Diameter', correct: false }, { text: 'Tangent', correct: false }]);
+            setupExercise('s2-ex3', [{ text: 'Central angle', correct: true }, { text: 'Interior angle', correct: false }, { text: 'Exterior angle', correct: false }, { text: 'Right angle', correct: false }]);
+            setupExercise('s2-ex4', [{ text: 'The area between two concentric circles', correct: true }, { text: 'A half circle', correct: false }, { text: 'A sector', correct: false }, { text: 'A triangle', correct: false }]);
+            setupExercise('s2-ex5', [{ text: 'Center point', correct: true }, { text: 'Radius', correct: false }, { text: 'Area', correct: false }, { text: 'Circumference', correct: false }]);
+            setupExercise('s2-ex6', [{ text: '10 m', correct: true }, { text: '90 m', correct: false }, { text: '2000 m', correct: false }, { text: '50 m', correct: false }]);
+            setupExercise('s2-ex7', [{ text: 'To ensure structural integrity and perfect fitting', correct: true }, { text: 'To make it look pretty', correct: false }, { text: 'To use more materials', correct: false }, { text: 'Because it is easier', correct: false }]);
+            setupExercise('s2-ex8', [{ text: 'One full circle', correct: true }, { text: 'An oval', correct: false }, { text: 'A square', correct: false }, { text: 'A triangle', correct: false }]);
+            setupExercise('s2-ex9', [{ text: 'Full annulus', correct: true }, { text: 'Full circle', correct: false }, { text: 'Sector', correct: false }, { text: 'Segment', correct: false }]);
+            setupExercise('s2-ex10', [{ text: 'Full annulus', correct: true }, { text: 'Half annulus', correct: false }, { text: 'Two full circles', correct: false }, { text: 'Square', correct: false }]);
+
+            // Init Section 3
+            setupExercise('s3-ex1', [{ text: '\\( \\pi r^2 \\)', correct: true }, { text: '\\( 2\\pi r \\)', correct: false }, { text: '\\( \\pi d \\)', correct: false }, { text: '\\( r^2 \\)', correct: false }]);
+            setupExercise('s3-ex2', [{ text: '154 cm²', correct: true }, { text: '44 cm²', correct: false }, { text: '49 cm²', correct: false }, { text: '22 cm²', correct: false }]);
+            setupExercise('s3-ex3', [{ text: '314 cm²', correct: true }, { text: '31.4 cm²', correct: false }, { text: '100 cm²', correct: false }, { text: '62.8 cm²', correct: false }]);
+            setupExercise('s3-ex4', [{ text: '7 cm', correct: true }, { text: '14 cm', correct: false }, { text: '28 cm', correct: false }, { text: '3.5 cm', correct: false }]);
+            setupExercise('s3-ex5', [{ text: '314 cm²', correct: true }, { text: '628 cm²', correct: false }, { text: '1256 cm²', correct: false }, { text: '157 cm²', correct: false }]);
+            setupExercise('s3-ex6', [{ text: 'Diameter', correct: true }, { text: 'Radius', correct: false }, { text: 'Chord', correct: false }, { text: 'Arc', correct: false }]);
+            setupExercise('s3-ex7', [{ text: 'Because 14 is divisible by 7', correct: true }, { text: 'Because it is a prime number', correct: false }, { text: 'To make it harder', correct: false }, { text: 'No reason', correct: false }]);
+            setupExercise('s3-ex8', [{ text: '616 m²', correct: true }, { text: '154 m²', correct: false }, { text: '308 m²', correct: false }, { text: '88 m²', correct: false }]);
+            setupExercise('s3-ex9', [{ text: '7 cm', correct: true }, { text: '14 cm', correct: false }, { text: '49 cm', correct: false }, { text: '3.5 cm', correct: false }]);
+            setupExercise('s3-ex10', [{ text: '66', correct: true }, { text: '22', correct: false }, { text: '21', correct: false }, { text: '33', correct: false }]);
+
+            // Init Section 4
+            setupExercise('s4-ex1', [{ text: '\\( \\frac{\\theta}{360} \\times \\pi r^2 \\)', correct: true }, { text: '\\( \\frac{360}{\\theta} \\times \\pi r^2 \\)', correct: false }, { text: '\\( \\theta \\times \\pi r^2 \\)', correct: false }, { text: '\\( \\frac{1}{2} \\times \\theta \\times r^2 \\)', correct: false }]);
+            setupExercise('s4-ex2', [{ text: '\\( \\frac{1}{4} \\)', correct: true }, { text: '\\( \\frac{1}{2} \\)', correct: false }, { text: '\\( \\frac{1}{3} \\)', correct: false }, { text: '\\( \\frac{3}{4} \\)', correct: false }]);
+            setupExercise('s4-ex3', [{ text: '231 cm²', correct: true }, { text: '1386 cm²', correct: false }, { text: '462 cm²', correct: false }, { text: '66 cm²', correct: false }]);
+            setupExercise('s4-ex4', [{ text: '\\( \\pi R^2 - \\pi r^2 \\)', correct: true }, { text: '\\( \\pi R + \\pi r \\)', correct: false }, { text: '\\( \\pi (R - r)^2 \\)', correct: false }, { text: '\\( \\pi R^2 + \\pi r^2 \\)', correct: false }]);
+            setupExercise('s4-ex5', [{ text: '325', correct: true }, { text: '5', correct: false }, { text: '1225', correct: false }, { text: '900', correct: false }]);
+            setupExercise('s4-ex6', [{ text: '50.24', correct: true }, { text: '25.12', correct: false }, { text: '15.7', correct: false }, { text: '62.8', correct: false }]);
+            setupExercise('s4-ex7', [{ text: 'Sector Area - Triangle Area', correct: true }, { text: 'Sector Area + Triangle Area', correct: false }, { text: 'Circle Area - Sector Area', correct: false }, { text: 'Triangle Area - Sector Area', correct: false }]);
+            setupExercise('s4-ex8', [{ text: '60', correct: true }, { text: '140', correct: false }, { text: '4000', correct: false }, { text: '2.5', correct: false }]);
+            setupExercise('s4-ex9', [{ text: 'Right-angled triangle', correct: true }, { text: 'Equilateral triangle', correct: false }, { text: 'Isosceles triangle', correct: false }, { text: 'No triangle', correct: false }]);
+            setupExercise('s4-ex10', [{ text: 'You subtracted in the wrong order', correct: true }, { text: 'The triangle was outside', correct: false }, { text: 'The angle was > 360', correct: false }, { text: 'It is a normal property', correct: false }]);
+
+            // Init Section 5
+            setupExercise('s5-ex1', [
+                { text: '35 m', correct: true },
+                { text: '30 m', correct: false },
+                { text: '5 m', correct: false },
+                { text: '65 m', correct: false }
+            ]);
+            setupExercise('s5-ex2', [
+                { text: '\\( \\pi(35) - \\pi(30) \\)', correct: false },
+                { text: '\\( \\pi(35^2) - \\pi(30^2) \\)', correct: true },
+                { text: '\\( \\pi(35^2) + \\pi(30^2) \\)', correct: false },
+                { text: '\\( 2\\pi(35) - 2\\pi(30) \\)', correct: false }
+            ]);
+            setupExercise('s5-ex3', [
+                { text: '325', correct: true },
+                { text: '5', correct: false },
+                { text: '1225', correct: false },
+                { text: '900', correct: false }
+            ]);
+            setupExercise('s5-ex4', [
+                { text: '\\( \\frac{1}{4} \\)', correct: false },
+                { text: '\\( \\frac{1}{6} \\)', correct: true },
+                { text: '\\( \\frac{1}{3} \\)', correct: false },
+                { text: '\\( \\frac{1}{2} \\)', correct: false }
+            ]);
+            setupExercise('s5-ex5', [
+                { text: '1386 cm²', correct: true },
+                { text: '66 cm²', correct: false },
+                { text: '462 cm²', correct: false },
+                { text: '693 cm²', correct: false }
+            ]);
+            setupExercise('s5-ex6', [
+                { text: '231 cm²', correct: true },
+                { text: '1386 cm²', correct: false },
+                { text: '462 cm²', correct: false },
+                { text: '66 cm²', correct: false }
+            ]);
+            setupExercise('s5-ex7', [
+                { text: '\\( L_{sector} + L_{triangle} \\)', correct: false },
+                { text: '\\( L_{sector} - L_{triangle} \\)', correct: true },
+                { text: '\\( L_{circle} - L_{sector} \\)', correct: false },
+                { text: '\\( L_{triangle} - L_{sector} \\)', correct: false }
+            ]);
+            setupExercise('s5-ex8', [
+                { text: '140 cm²', correct: false },
+                { text: '60 cm²', correct: true },
+                { text: '4000 cm²', correct: false },
+                { text: 'It cannot be calculated', correct: false }
+            ]);
+            setupExercise('s5-ex9', [
+                { text: 'Equilateral triangle', correct: false },
+                { text: 'Right-angled triangle', correct: true },
+                { text: 'Isosceles triangle', correct: false },
+                { text: 'No triangle is formed', correct: false }
+            ]);
+            setupExercise('s5-ex10', [
+                { text: 'The triangle was outside the sector', correct: false },
+                { text: 'You subtracted in the wrong order', correct: true },
+                { text: 'The angle was greater than 360', correct: false },
+                { text: 'It is a normal mathematical property', correct: false }
+            ]);
+
+            // Init Section 6
+            setupExercise('s6-ex1', [
+                { text: '70 cm', correct: true },
+                { text: '140 cm', correct: false },
+                { text: '10 cm', correct: false },
+                { text: '35 cm', correct: false }
+            ]);
+            setupExercise('s6-ex2', [
+                { text: '60 cm', correct: true },
+                { text: '70 cm', correct: false },
+                { text: '50 cm', correct: false },
+                { text: '80 cm', correct: false }
+            ]);
+            setupExercise('s6-ex3', [
+                { text: 'A full annulus', correct: false },
+                { text: 'A half-annulus', correct: true },
+                { text: 'A sector', correct: false },
+                { text: 'A segment', correct: false }
+            ]);
+            setupExercise('s6-ex4', [
+                { text: '15386 cm²', correct: true },
+                { text: '4900 cm²', correct: false },
+                { text: '219.8 cm²', correct: false },
+                { text: '7693 cm²', correct: false }
+            ]);
+            setupExercise('s6-ex5', [
+                { text: '11304 cm²', correct: true },
+                { text: '3600 cm²', correct: false },
+                { text: '188.4 cm²', correct: false },
+                { text: '5652 cm²', correct: false }
+            ]);
+            setupExercise('s6-ex6', [
+                { text: '4082 cm²', correct: true },
+                { text: '26686 cm²', correct: false },
+                { text: '1300 cm²', correct: false },
+                { text: '8164 cm²', correct: false }
+            ]);
+            setupExercise('s6-ex7', [
+                { text: 'Because the radius is halved', correct: false },
+                { text: 'Because the window is a semicircle', correct: true },
+                { text: 'Because we use \\( \\pi = 3.14 \\)', correct: false },
+                { text: 'Because the frame is 10 cm thick', correct: false }
+            ]);
+            setupExercise('s6-ex8', [
+                { text: '2041 cm²', correct: true },
+                { text: '4082 cm²', correct: false },
+                { text: '7693 cm²', correct: false },
+                { text: '1020.5 cm²', correct: false }
+            ]);
+            setupExercise('s6-ex9', [
+                { text: '2', correct: false },
+                { text: '4', correct: true },
+                { text: '3', correct: false },
+                { text: '8', correct: false }
+            ]);
+            setupExercise('s6-ex10', [
+                { text: 'The glass area increases', correct: false },
+                { text: 'The glass area decreases', correct: true },
+                { text: 'The glass area stays the same', correct: false },
+                { text: 'The outer radius changes', correct: false }
+            ]);
+
+            // ==========================================
+            // ASSIGNMENT DATA & LOGIC
+            // ==========================================
+            let studentAnswers = {};
+            
+            const assignmentsData = {
+                a1: {
+                    title: "Assignment 1: Fundamentals",
+                    questions: [
+                        { q: "What is the area of a circle with \\( r = 7 \\) cm? (Use \\( \\pi = \\frac{22}{7} \\))", t: "Berapakah luas lingkaran dengan r = 7 cm?", opts: [{text: "154 cm²", correct: true}, {text: "44 cm²", correct: false}, {text: "49 cm²", correct: false}, {text: "22 cm²", correct: false}], exp: "\\( \\frac{22}{7} \\times 7^2 = 154 \\) cm².", exp_t: "Luas = 154 cm²." },
+                        { q: "A circle has a diameter of 42 cm. What is its radius?", t: "Lingkaran berdiameter 42 cm. Berapakah jari-jarinya?", opts: [{text: "21 cm", correct: true}, {text: "84 cm", correct: false}, {text: "14 cm", correct: false}, {text: "42 cm", correct: false}], exp: "Radius is half of diameter: \\( 42 / 2 = 21 \\) cm.", exp_t: "Jari-jari adalah setengah diameter: 21 cm." },
+                        { q: "Which formula represents the area of a circle?", t: "Rumus mana yang merepresentasikan luas lingkaran?", opts: [{text: "\\( \\pi r^2 \\)", correct: true}, {text: "\\( 2\\pi r \\)", correct: false}, {text: "\\( \\pi d \\)", correct: false}, {text: "\\( 2r^2 \\)", correct: false}], exp: "Area is \\( \\pi \\times r^2 \\).", exp_t: "Luas adalah \\( \\pi r^2 \\)." },
+                        { q: "What fraction of a full circle is a \\( 180^\\circ \\) sector?", t: "Berapakah pecahan lingkaran utuh untuk juring 180°?", opts: [{text: "\\( \\frac{1}{2} \\)", correct: true}, {text: "\\( \\frac{1}{4} \\)", correct: false}, {text: "\\( \\frac{1}{3} \\)", correct: false}, {text: "\\( \\frac{3}{4} \\)", correct: false}], exp: "\\( 180/360 = 1/2 \\).", exp_t: "180/360 = 1/2." },
+                        { q: "Calculate the area of a \\( 90^\\circ \\) sector with \\( r = 14 \\) cm. (Use \\( \\pi = \\frac{22}{7} \\))", t: "Hitung luas juring 90° dengan r = 14 cm.", opts: [{text: "154 cm²", correct: true}, {text: "616 cm²", correct: false}, {text: "44 cm²", correct: false}, {text: "308 cm²", correct: false}], exp: "\\( \\frac{90}{360} \\times \\frac{22}{7} \\times 14^2 = \\frac{1}{4} \\times 616 = 154 \\) cm².", exp_t: "1/4 x 616 = 154 cm²." },
+                        { q: "If \\( r = 10 \\) cm, what is the area? (Use \\( \\pi = 3.14 \\))", t: "Jika r = 10 cm, berapakah luasnya?", opts: [{text: "314 cm²", correct: true}, {text: "62.8 cm²", correct: false}, {text: "100 cm²", correct: false}, {text: "31.4 cm²", correct: false}], exp: "\\( 3.14 \\times 10^2 = 314 \\) cm².", exp_t: "3.14 x 100 = 314 cm²." },
+                        { q: "A sector is bounded by...", t: "Juring dibatasi oleh...", opts: [{text: "Two radii and an arc", correct: true}, {text: "A chord and an arc", correct: false}, {text: "Three straight lines", correct: false}, {text: "Two diameters", correct: false}], exp: "A sector is a pie-shaped part of a circle bounded by two radii and an arc.", exp_t: "Juring dibatasi dua jari-jari dan satu busur." },
+                        { q: "A sector with a \\( 360^\\circ \\) angle is simply a...", t: "Juring dengan sudut 360° hanyalah sebuah...", opts: [{text: "Full circle", correct: true}, {text: "Half circle", correct: false}, {text: "Quarter circle", correct: false}, {text: "Line segment", correct: false}], exp: "360° represents the entire circle.", exp_t: "360° mewakili seluruh lingkaran." },
+                        { q: "Find the area of a \\( 60^\\circ \\) sector with \\( r = 6 \\) cm. (Use \\( \\pi = 3.14 \\))", t: "Cari luas juring 60° dengan r = 6 cm.", opts: [{text: "18.84 cm²", correct: true}, {text: "37.68 cm²", correct: false}, {text: "113.04 cm²", correct: false}, {text: "9.42 cm²", correct: false}], exp: "\\( \\frac{60}{360} \\times 3.14 \\times 36 = \\frac{1}{6} \\times 113.04 = 18.84 \\) cm².", exp_t: "1/6 x 113.04 = 18.84 cm²." },
+                        { q: "If the central angle of a sector doubles, its area will...", t: "Jika sudut pusat juring berlipat ganda, luasnya akan...", opts: [{text: "Double", correct: true}, {text: "Halve", correct: false}, {text: "Quadruple", correct: false}, {text: "Stay the same", correct: false}], exp: "Area is directly proportional to the central angle.", exp_t: "Luas sebanding dengan sudut pusat." }
+                    ]
+                },
+                a2: {
+                    title: "Assignment 2: Annulus & Concentric",
+                    questions: [
+                        { q: "What is the formula for the area of an annulus?", t: "Apa rumus luas anulus?", opts: [{text: "\\( \\pi R^2 - \\pi r^2 \\)", correct: true}, {text: "\\( \\pi R + \\pi r \\)", correct: false}, {text: "\\( \\pi (R - r)^2 \\)", correct: false}, {text: "\\( 2\\pi R - 2\\pi r \\)", correct: false}], exp: "Large circle area minus small circle area.", exp_t: "Luas lingkaran besar dikurangi luas lingkaran kecil." },
+                        { q: "Concentric circles share the same...", t: "Lingkaran sepusat memiliki... yang sama.", opts: [{text: "Center point", correct: true}, {text: "Radius", correct: false}, {text: "Area", correct: false}, {text: "Circumference", correct: false}], exp: "Concentric circles have the same center.", exp_t: "Lingkaran sepusat memiliki titik pusat yang sama." },
+                        { q: "Calculate the annulus area if \\( R = 5 \\) and \\( r = 3 \\). (Use \\( \\pi = 3.14 \\))", t: "Hitung luas anulus jika R = 5 dan r = 3.", opts: [{text: "50.24", correct: true}, {text: "25.12", correct: false}, {text: "15.7", correct: false}, {text: "62.8", correct: false}], exp: "\\( 3.14(25 - 9) = 3.14(16) = 50.24 \\).", exp_t: "3.14 x 16 = 50.24." },
+                        { q: "If the inner radius \\( r = 0 \\), the annulus becomes a...", t: "Jika jari-jari dalam r = 0, anulus menjadi...", opts: [{text: "Full circle", correct: true}, {text: "Sector", correct: false}, {text: "Segment", correct: false}, {text: "Point", correct: false}], exp: "If inner radius is 0, there is no hole, so it's a full circle.", exp_t: "Jika r=0, tidak ada lubang, jadi itu lingkaran utuh." },
+                        { q: "A running track has an inner radius of 40m and a width of 10m. What is the outer radius \\( R \\)?", t: "Lintasan lari memiliki jari-jari dalam 40m dan lebar 10m. Berapakah jari-jari luarnya?", opts: [{text: "50 m", correct: true}, {text: "30 m", correct: false}, {text: "400 m", correct: false}, {text: "10 m", correct: false}], exp: "\\( R = r + width = 40 + 10 = 50 \\) m.", exp_t: "R = 40 + 10 = 50 m." },
+                        { q: "Find the annulus area for \\( R = 14 \\) cm and \\( r = 7 \\) cm. (Use \\( \\pi = \\frac{22}{7} \\))", t: "Cari luas anulus untuk R=14 cm dan r=7 cm.", opts: [{text: "462 cm²", correct: true}, {text: "154 cm²", correct: false}, {text: "616 cm²", correct: false}, {text: "308 cm²", correct: false}], exp: "\\( \\frac{22}{7}(196 - 49) = \\frac{22}{7}(147) = 22 \\times 21 = 462 \\) cm².", exp_t: "22/7 x 147 = 462 cm²." },
+                        { q: "Two concentric circles have radii ratio 2:1. If the large area is 400, what is the small area?", t: "Dua lingkaran sepusat berbandingan 2:1. Jika luas besar 400, berapakah luas kecil?", opts: [{text: "100", correct: true}, {text: "200", correct: false}, {text: "50", correct: false}, {text: "800", correct: false}], exp: "Area ratio is \\( 2^2 : 1^2 = 4:1 \\). So \\( 400 / 4 = 100 \\).", exp_t: "Rasio luas 4:1. Jadi 400/4 = 100." },
+                        { q: "Calculate the annulus area if \\( R = 10 \\) cm and \\( r = 8 \\) cm. (Use \\( \\pi = 3.14 \\))", t: "Hitung luas anulus jika R=10 cm dan r=8 cm.", opts: [{text: "113.04 cm²", correct: true}, {text: "56.52 cm²", correct: false}, {text: "28.26 cm²", correct: false}, {text: "200.96 cm²", correct: false}], exp: "\\( 3.14(100 - 64) = 3.14(36) = 113.04 \\) cm².", exp_t: "3.14 x 36 = 113.04 cm²." },
+                        { q: "An annulus is also commonly referred to as a...", t: "Anulus juga sering disebut sebagai...", opts: [{text: "Ring", correct: true}, {text: "Pie", correct: false}, {text: "Slice", correct: false}, {text: "Crescent", correct: false}], exp: "It resembles the shape of a ring or donut.", exp_t: "Bentuknya menyerupai cincin atau donat." },
+                        { q: "If \\( R = r \\), the area of the annulus is...", t: "Jika R = r, luas anulus adalah...", opts: [{text: "0", correct: true}, {text: "\\( \\pi r^2 \\)", correct: false}, {text: "Infinite", correct: false}, {text: "\\( 2\\pi r \\)", correct: false}], exp: "If both radii are equal, there is no area between them.", exp_t: "Jika jari-jari sama, tidak ada luas di antaranya." }
+                    ]
+                },
+                a3: {
+                    title: "Assignment 3: Segments & Shapes",
+                    questions: [
+                        { q: "What is the formula for the area of a segment?", t: "Apa rumus luas tembereng?", opts: [{text: "Sector Area - Triangle Area", correct: true}, {text: "Sector Area + Triangle Area", correct: false}, {text: "Circle Area - Sector Area", correct: false}, {text: "Triangle Area - Sector Area", correct: false}], exp: "A segment is the sector minus the triangle inside it.", exp_t: "Tembereng = Juring - Segitiga." },
+                        { q: "In a \\( 90^\\circ \\) sector, what type of triangle is formed by the two radii?", t: "Pada juring 90°, jenis segitiga apa yang terbentuk?", opts: [{text: "Right-angled triangle", correct: true}, {text: "Equilateral triangle", correct: false}, {text: "Obtuse triangle", correct: false}, {text: "No triangle", correct: false}], exp: "A 90° angle forms a right-angled triangle.", exp_t: "Sudut 90° membentuk segitiga siku-siku." },
+                        { q: "If a sector area is 50 and the triangle inside is 30, what is the segment area?", t: "Jika luas juring 50 dan segitiga di dalamnya 30, berapakah luas tembereng?", opts: [{text: "20", correct: true}, {text: "80", correct: false}, {text: "1500", correct: false}, {text: "15", correct: false}], exp: "\\( 50 - 30 = 20 \\).", exp_t: "50 - 30 = 20." },
+                        { q: "Calculate the sector area for \\( r = 14 \\) cm, \\( \\theta = 90^\\circ \\). (Use \\( \\pi = \\frac{22}{7} \\))", t: "Hitung luas juring untuk r=14 cm, sudut 90°.", opts: [{text: "154 cm²", correct: true}, {text: "616 cm²", correct: false}, {text: "49 cm²", correct: false}, {text: "196 cm²", correct: false}], exp: "\\( \\frac{1}{4} \\times \\frac{22}{7} \\times 196 = 154 \\) cm².", exp_t: "1/4 x 616 = 154 cm²." },
+                        { q: "From previous question, what is the triangle area?", t: "Dari soal sebelumnya, berapakah luas segitiganya?", opts: [{text: "98 cm²", correct: true}, {text: "154 cm²", correct: false}, {text: "49 cm²", correct: false}, {text: "196 cm²", correct: false}], exp: "\\( \\frac{1}{2} \\times 14 \\times 14 = 98 \\) cm².", exp_t: "1/2 x 14 x 14 = 98 cm²." },
+                        { q: "What is the segment area from the previous two questions?", t: "Berapakah luas tembereng dari dua soal sebelumnya?", opts: [{text: "56 cm²", correct: true}, {text: "252 cm²", correct: false}, {text: "105 cm²", correct: false}, {text: "42 cm²", correct: false}], exp: "Sector (154) - Triangle (98) = 56 cm².", exp_t: "Juring (154) - Segitiga (98) = 56 cm²." },
+                        { q: "A half-annulus glass window has \\( R = 10 \\) cm, \\( r = 8 \\) cm. What is the full annulus area? (Use \\( \\pi = 3.14 \\))", t: "Jendela kaca setengah anulus memiliki R=10 cm, r=8 cm. Berapakah luas anulus utuh?", opts: [{text: "113.04 cm²", correct: true}, {text: "56.52 cm²", correct: false}, {text: "200.96 cm²", correct: false}, {text: "28.26 cm²", correct: false}], exp: "\\( 3.14(100 - 64) = 113.04 \\) cm².", exp_t: "3.14 x 36 = 113.04 cm²." },
+                        { q: "What is the area of the half-annulus glass window?", t: "Berapakah luas jendela kaca setengah anulus tersebut?", opts: [{text: "56.52 cm²", correct: true}, {text: "113.04 cm²", correct: false}, {text: "28.26 cm²", correct: false}, {text: "100.48 cm²", correct: false}], exp: "Half of 113.04 is 56.52 cm².", exp_t: "Setengah dari 113.04 adalah 56.52 cm²." },
+                        { q: "A square with side 14 cm has 4 identical quarter-circles inside. What is the area of the 4 quarter-circles combined? (Use \\( \\pi = \\frac{22}{7} \\))", t: "Persegi sisi 14 cm memiliki 4 seperempat lingkaran. Berapakah gabungan luasnya?", opts: [{text: "154 cm²", correct: true}, {text: "196 cm²", correct: false}, {text: "42 cm²", correct: false}, {text: "616 cm²", correct: false}], exp: "4 quarter-circles make 1 full circle. \\( \\frac{22}{7} \\times 7^2 = 154 \\) cm².", exp_t: "4 seperempat lingkaran = 1 lingkaran utuh. 22/7 x 49 = 154 cm²." },
+                        { q: "From previous question, what is the remaining shaded area outside the circles?", t: "Dari soal sebelumnya, berapakah luas area arsir di luar lingkaran?", opts: [{text: "42 cm²", correct: true}, {text: "154 cm²", correct: false}, {text: "196 cm²", correct: false}, {text: "350 cm²", correct: false}], exp: "Square Area (196) - Circle Area (154) = 42 cm².", exp_t: "Luas Persegi (196) - Luas Lingkaran (154) = 42 cm²." }
+                    ]
+                },
+                a4: {
+                    title: "Assignment 4: Real-World Context",
+                    questions: [
+                        { q: "A circular garden has a diameter of 40m. What is its radius?", t: "Taman berdiameter 40m. Berapakah jari-jarinya?", opts: [{text: "20 m", correct: true}, {text: "40 m", correct: false}, {text: "10 m", correct: false}, {text: "80 m", correct: false}], exp: "Radius is half of diameter: \\( 40/2 = 20 \\) m.", exp_t: "Jari-jari adalah setengah diameter: 20 m." },
+                        { q: "In the center of the garden is a circular pond with diameter 10m. What is the pond's radius?", t: "Di tengah taman ada kolam diameter 10m. Berapakah jari-jari kolam?", opts: [{text: "5 m", correct: true}, {text: "10 m", correct: false}, {text: "15 m", correct: false}, {text: "2.5 m", correct: false}], exp: "\\( 10/2 = 5 \\) m.", exp_t: "10/2 = 5 m." },
+                        { q: "What is the area of the entire garden? (Use \\( \\pi = 3.14 \\))", t: "Berapakah luas seluruh taman?", opts: [{text: "1256 m²", correct: true}, {text: "314 m²", correct: false}, {text: "628 m²", correct: false}, {text: "125.6 m²", correct: false}], exp: "\\( 3.14 \\times 20^2 = 3.14 \\times 400 = 1256 \\) m².", exp_t: "3.14 x 400 = 1256 m²." },
+                        { q: "What is the area of the pond?", t: "Berapakah luas kolam tersebut?", opts: [{text: "78.5 m²", correct: true}, {text: "31.4 m²", correct: false}, {text: "25 m²", correct: false}, {text: "157 m²", correct: false}], exp: "\\( 3.14 \\times 5^2 = 3.14 \\times 25 = 78.5 \\) m².", exp_t: "3.14 x 25 = 78.5 m²." },
+                        { q: "What is the area of the grass remaining in the garden?", t: "Berapakah luas area rumput yang tersisa di taman?", opts: [{text: "1177.5 m²", correct: true}, {text: "1334.5 m²", correct: false}, {text: "628 m²", correct: false}, {text: "1256 m²", correct: false}], exp: "Garden Area (1256) - Pond Area (78.5) = 1177.5 m².", exp_t: "Luas Taman (1256) - Luas Kolam (78.5) = 1177.5 m²." },
+                        { q: "Two concentric circles have a radius ratio of 2:3. If the small area is 50.24, what is the area ratio?", t: "Dua lingkaran sepusat berbandingan 2:3. Jika luas kecil 50.24, berapakah rasio luasnya?", opts: [{text: "4:9", correct: true}, {text: "2:3", correct: false}, {text: "8:27", correct: false}, {text: "1:1.5", correct: false}], exp: "Area ratio is the square of the radius ratio: \\( 2^2 : 3^2 = 4:9 \\).", exp_t: "Rasio luas adalah kuadrat rasio jari-jari: 4:9." },
+                        { q: "From previous question, what is the area of the large circle?", t: "Dari soal sebelumnya, berapakah luas lingkaran besar?", opts: [{text: "113.04", correct: true}, {text: "75.36", correct: false}, {text: "100.48", correct: false}, {text: "150.72", correct: false}], exp: "\\( 50.24 \\times \\frac{9}{4} = 12.56 \\times 9 = 113.04 \\).", exp_t: "50.24 x (9/4) = 113.04." },
+                        { q: "What is the annulus area between these two circles?", t: "Berapakah luas anulus di antara kedua lingkaran tersebut?", opts: [{text: "62.8", correct: true}, {text: "50.24", correct: false}, {text: "113.04", correct: false}, {text: "25.12", correct: false}], exp: "Large (113.04) - Small (50.24) = 62.8.", exp_t: "Besar (113.04) - Kecil (50.24) = 62.8." },
+                        { q: "A roof design consists of 6 identical sectors, each with a 60° angle and r=5m. What is the total angle of the roof?", t: "Atap terdiri dari 6 juring identik, masing-masing 60° dan r=5m. Berapakah total sudut atap?", opts: [{text: "360°", correct: true}, {text: "60°", correct: false}, {text: "180°", correct: false}, {text: "300°", correct: false}], exp: "\\( 6 \\times 60^\\circ = 360^\\circ \\), which forms a full circle.", exp_t: "6 x 60° = 360°, yang membentuk lingkaran utuh." },
+                        { q: "What is the total area of the roof? (Use \\( \\pi = 3.14 \\))", t: "Berapakah total luas atap tersebut?", opts: [{text: "78.5 m²", correct: true}, {text: "15.7 m²", correct: false}, {text: "31.4 m²", correct: false}, {text: "157 m²", correct: false}], exp: "Since total angle is 360°, it's a full circle. \\( 3.14 \\times 5^2 = 78.5 \\) m².", exp_t: "Karena 360°, ini lingkaran utuh. 3.14 x 25 = 78.5 m²." }
+                    ]
+                },
+                a5: {
+                    title: "Assignment 5: Advanced Shapes",
+                    questions: [
+                        { q: "A running track has two straights of 100m and two semicircles. Inner radius is 30m, width is 7m. What is the outer radius?", t: "Lintasan lari memiliki dua lintasan lurus 100m dan dua setengah lingkaran. Jari-jari dalam 30m, lebar 7m. Berapakah jari-jari luar?", opts: [{text: "37 m", correct: true}, {text: "23 m", correct: false}, {text: "30 m", correct: false}, {text: "44 m", correct: false}], exp: "Outer radius \\( R = 30 + 7 = 37 \\) m.", exp_t: "Jari-jari luar R = 30 + 7 = 37 m." },
+                        { q: "The two semicircular ends form what shape?", t: "Dua bagian ujung setengah lingkaran membentuk bangun apa?", opts: [{text: "A full annulus", correct: true}, {text: "A sector", correct: false}, {text: "A segment", correct: false}, {text: "Two full circles", correct: false}], exp: "Two semicircles of the same radius form one full circle. The track area between them forms a full annulus.", exp_t: "Dua setengah lingkaran membentuk satu lingkaran utuh. Area lintasan di antaranya membentuk anulus utuh." },
+                        { q: "Calculate the area of the full annulus for the curved parts. (Use \\( \\pi = \\frac{22}{7} \\))", t: "Hitung luas anulus utuh untuk bagian melengkung.", opts: [{text: "1472.66 m²", correct: true}, {text: "736.33 m²", correct: false}, {text: "2826 m²", correct: false}, {text: "4298.66 m²", correct: false}], exp: "\\( \\frac{22}{7}(37^2 - 30^2) = \\frac{22}{7}(1369 - 900) = \\frac{22}{7}(469) = 1472.66 \\) m².", exp_t: "22/7 x (1369 - 900) = 22/7 x 469 = 1472.66 m²." },
+                        { q: "What is the area of the two straight parts of the track?", t: "Berapakah luas dua bagian lintasan lurus?", opts: [{text: "1400 m²", correct: true}, {text: "700 m²", correct: false}, {text: "200 m²", correct: false}, {text: "100 m²", correct: false}], exp: "Each straight is a rectangle: \\( 100 \\times 7 = 700 \\) m². Two straights = \\( 1400 \\) m².", exp_t: "Lurus = 100 x 7 = 700 m². Dua lurus = 1400 m²." },
+                        { q: "What is the total area of the running track?", t: "Berapakah total luas lintasan lari tersebut?", opts: [{text: "2872.66 m²", correct: true}, {text: "1472.66 m²", correct: false}, {text: "2100 m²", correct: false}, {text: "4298.66 m²", correct: false}], exp: "Curved Area (1472.66) + Straight Area (1400) = 2872.66 m².", exp_t: "Luas Lengkung (1472.66) + Luas Lurus (1400) = 2872.66 m²." },
+                        { q: "A square has a side of 14 cm. Inside it are 4 identical quarter-circles at the corners. What is the radius of each quarter-circle?", t: "Persegi sisi 14 cm. Di dalamnya ada 4 seperempat lingkaran. Berapakah jari-jarinya?", opts: [{text: "7 cm", correct: true}, {text: "14 cm", correct: false}, {text: "3.5 cm", correct: false}, {text: "28 cm", correct: false}], exp: "The radius is half the side of the square to make them touch: \\( 14/2 = 7 \\) cm.", exp_t: "Jari-jarinya setengah sisi persegi: 7 cm." },
+                        { q: "What is the total area of the 4 quarter-circles combined? (Use \\( \\pi = \\frac{22}{7} \\))", t: "Berapakah total luas gabungan 4 seperempat lingkaran?", opts: [{text: "154 cm²", correct: true}, {text: "38.5 cm²", correct: false}, {text: "196 cm²", correct: false}, {text: "616 cm²", correct: false}], exp: "4 quarter-circles make 1 full circle. \\( \\frac{22}{7} \\times 7^2 = 154 \\) cm².", exp_t: "4 seperempat lingkaran = 1 lingkaran. 22/7 x 49 = 154 cm²." },
+                        { q: "What is the area of the square?", t: "Berapakah luas persegi tersebut?", opts: [{text: "196 cm²", correct: true}, {text: "14 cm²", correct: false}, {text: "56 cm²", correct: false}, {text: "28 cm²", correct: false}], exp: "\\( 14 \\times 14 = 196 \\) cm².", exp_t: "14 x 14 = 196 cm²." },
+                        { q: "What is the remaining shaded area outside the circles but inside the square?", t: "Berapakah luas area arsir di luar lingkaran namun di dalam persegi?", opts: [{text: "42 cm²", correct: true}, {text: "154 cm²", correct: false}, {text: "196 cm²", correct: false}, {text: "350 cm²", correct: false}], exp: "Square Area (196) - Circle Area (154) = 42 cm².", exp_t: "Luas Persegi (196) - Luas Lingkaran (154) = 42 cm²." },
+                        { q: "If the central angle of a sector is \\( 180^\\circ \\), what is the area of the segment if the triangle inside is 50 cm² and the circle radius is 10 cm? (Use \\( \\pi = 3.14 \\))", t: "Jika sudut juring 180°, berapakah luas tembereng jika segitiga di dalamnya 50 cm² dan r=10 cm?", opts: [{text: "107 cm²", correct: true}, {text: "157 cm²", correct: false}, {text: "50 cm²", correct: false}, {text: "314 cm²", correct: false}], exp: "Sector area (half circle) = \\( \\frac{1}{2} \\times 3.14 \\times 100 = 157 \\). Segment = \\( 157 - 50 = 107 \\) cm².", exp_t: "Luas Juring = 157. Tembereng = 157 - 50 = 107 cm²." }
+                    ]
+                }
+            };
+
+
+
+            function buildAssignment(id, title, data) {
+                const container = document.getElementById(id);
+                if(!container) return;
+                let html = `<div class="progress-bar"><div class="progress-fill" id="prog-${id}"></div></div>`;
+                html += `<h2 class="section-title">📝 ${title}</h2>`;
+                
+                html += `<div style="margin-bottom:20px; padding:15px; background:#f8f9fa; border-radius:12px; border: 2px solid #e5e5e5;">
+                    <label style="font-weight:800; margin-right:10px;">Student Name / Nama Siswa:</label>
+                    <input type="text" id="${id}-studentName" class="input-field" style="width: 60%; margin-bottom: 10px; padding: 8px; display:inline-block;" placeholder="Type name here...">
+                    <br>
+                    <label style="font-weight:800; margin-right:10px;">Date / Tanggal:</label>
+                    <input type="date" id="${id}-date" class="input-field" style="width: auto; padding: 8px; display:inline-block;">
+                </div>`;
+                
+                data.forEach((q, idx) => {
+                    const stepNum = idx + 1;
+                    const totalSteps = data.length;
+                    html += `<div class="content-block" id="${id}-step${stepNum}" style="display: ${idx===0?'block':'none'};">`;
+                    html += `<div class="exercise-box"><p class="question-text">${stepNum}. ${q.q}</p><p class="translation" style="font-size: 0.8rem;">${q.t}</p>`;
+                    html += `<div class="options-grid" id="${id}-ex${stepNum}"></div>`;
+					html += `<div style="display: flex; gap: 10px; margin-top: 10px;">`;
+                    html += `<button class="collapse-btn" style="margin-top: 0;" onclick="toggleExplanation('${id}-ex${stepNum}-exp')">Show Explanation</button>`;
+                    html += `<button class="btn btn-secondary" style="padding: 10px 15px; font-size: 0.8rem; margin-top: 0; box-shadow: 0 2px 0 #b0b0b0;" onclick="resetAssignmentExercise('${id}-ex${stepNum}', '${id}-q${idx}')">Reset 🔄</button>`;
+                    html += `</div>`;
+                    html += `<div class="explanation-content" id="${id}-ex${stepNum}-exp"><p>${q.exp}</p><p class="translation">${q.exp_t}</p></div></div>`;
+                    
+                    html += `<div class="action-buttons"><button class="btn btn-secondary" onclick="prevStep('${id}')">Previous</button>`;
+                    if(stepNum === totalSteps) {
+                        html += `<button class="btn btn-primary" onclick="printResult('${id}', '${title}')">Print Result 🖨️</button>`;
+                    } else {
+                        html += `<button class="btn btn-primary" onclick="checkAndNext('${id}', ${stepNum}, ${totalSteps})">Next</button>`;
+                    }
+                    html += `</div></div>`;
+                });
+                container.innerHTML = html;
+                
+                // Initialize options
+                data.forEach((q, idx) => {
+                    const stepNum = idx + 1;
+                    setupAssignmentExercise(`${id}-ex${stepNum}`, q.opts, `${id}-q${idx}`);
+                });
+                renderMath(container);
+            }
+
+            function setupAssignmentExercise(exId, options, qId) {
+                const container = document.getElementById(exId);
+                if(!container) return;
+                options.sort(() => Math.random() - 0.5);
+                container.innerHTML = '';
+                options.forEach((opt, index) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'option-btn';
+                    btn.innerHTML = opt.text;
+                    btn.onclick = function() { 
+                        selectAssignmentOption(this, opt.text, opt.correct, exId, qId); 
+                    };
+                    container.appendChild(btn);
+                });
+                renderMath(container);
+            }
+
+            function selectAssignmentOption(btn, text, isCorrect, exId, qId) {
+                const container = document.getElementById(exId);
+                container.querySelectorAll('.option-btn').forEach(b => b.style.pointerEvents = 'none');
+                studentAnswers[qId] = text;
+                
+                if(isCorrect) {
+                    btn.classList.add('correct');
+                } else {
+                    btn.classList.add('wrong');
+                }
+                document.getElementById(exId + '-exp').classList.add('show');
+            }
+
+        window.printResult = function(id, title) {
+            const name = document.getElementById(id + '-studentName').value || '';
+            const date = document.getElementById(id + '-date').value || '';
+            const data = assignmentsData[id];
+            let score = 0;
+            let rows = '';
+            
+            data.questions.forEach((q, idx) => {
+                const qId = id + '-q' + idx;
+                const studentAns = studentAnswers[qId] || 'Not Answered';
+                const correctOpt = q.opts.find(o => o.correct);
+                const correctAns = correctOpt.text;
+                const isCorrect = studentAns === correctAns;
+                if(isCorrect) score++;
+                
+                rows += `<tr>
+                    <td style="text-align:center;">${idx+1}</td>
+                    <td>${q.q}</td>
+                    <td>${studentAns}</td>
+                    <td>${correctAns}</td>
+                    <td style="text-align:center; font-size: 18px;">${isCorrect ? '✔️' : '❌'}</td>
+                </tr>`;
+            });
+            
+            const printContent = `
+                <h1>MATH TUTORING by Deni</h1>
+                <div class="info">
+                    <b>Name / Nama:</b> ${name}<br>
+                    <b>Date / Tanggal:</b> ${date}<br>
+                    <b>Topic / Topik:</b> Area of a Circle and Applications<br>
+                    <b>Assignment Group / Grup Tugas:</b> ${title}<br>
+                    <b>Score / Nilai:</b> <span style="font-size: 18px; color: #58cc02; font-weight: bold;">${score} / 10</b>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width:5%;">No.</th>
+                            <th style="width:45%;">Question</th>
+                            <th style="width:20%;">Student Answer</th>
+                            <th style="width:20%;">Correct Answer</th>
+                            <th style="width:10%;">Note</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${rows}
+                    </tbody>
+                </table>
+                <div class="sign">
+                    Checked by,<br><br><br>
+                    <b>Deni</b>
+                </div>
+            `;
+
+            // Inject content to printArea div
+            const printArea = document.getElementById('printArea');
+            printArea.innerHTML = printContent;
+            printArea.style.display = 'block';
+            
+            // Add styles specifically for printArea if not already in CSS
+            const styleId = 'print-style-inline';
+            if(!document.getElementById(styleId)) {
+                const style = document.createElement('style');
+                style.id = styleId;
+                style.innerHTML = `
+                    #printArea h1 { text-align: center; margin-bottom: 5px; color: #1cb0f6; font-size: 24px; }
+                    #printArea .info { margin-bottom: 20px; font-size: 14px; line-height: 1.5; color: #333; }
+                    #printArea table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 12px; }
+                    #printArea th, #printArea td { border: 1px solid #999; padding: 8px; text-align: left; vertical-align: top; color: #333; }
+                    #printArea th { background-color: #f2f2f2; }
+                    #printArea .sign { margin-top: 50px; text-align: right; color: #333; }
+                `;
+                document.head.appendChild(style);
+            }
+
+            // Render KaTeX inside printArea before printing
+            if (typeof renderMathInElement === 'function') {
+                renderMathInElement(printArea, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '\\[', right: '\\]', display: true},
+                        {left: '\\(', right: '\\)', display: false}
+                    ]
+                });
+            }
+
+            // Trigger print
+            window.print();
+
+            // Hide printArea after printing dialog
+            setTimeout(function() {
+                printArea.style.display = 'none';
+            }, 500);
+        };
+
+            // Build all assignments
+            buildAssignment('a1', 'Assignment 1', assignmentsData.a1.questions);
+            buildAssignment('a2', 'Assignment 2', assignmentsData.a2.questions);
+            buildAssignment('a3', 'Assignment 3', assignmentsData.a3.questions);
+            buildAssignment('a4', 'Assignment 4', assignmentsData.a4.questions);
+            buildAssignment('a5', 'Assignment 5', assignmentsData.a5.questions);
+
+        });
+
+        // --- Navigation ---
+        function goToSection(id) {
+            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            
+            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+            // Find the corresponding nav item
+            const navItems = document.querySelectorAll('.sidebar .nav-item');
+            navItems.forEach(item => {
+                if(item.getAttribute('onclick') && item.getAttribute('onclick').includes(id)) {
+                    item.classList.add('active');
+                }
+            });
+            
+            // Reset steps to show only the first one when entering a section
+            showStep(id, 1);
+            window.scrollTo(0, 0);
+        }
+
+        function showStep(sectionId, stepNum) {
+            const section = document.getElementById(sectionId);
+            const blocks = section.querySelectorAll('.content-block');
+            blocks.forEach((block, index) => {
+                if((index + 1) === stepNum) {
+                    block.style.display = 'block';
+                    block.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+                } else {
+                    block.style.display = 'none';
+                }
+            });
+        }
+
+        function checkAndNext(sectionId, currentStep, totalSteps) {
+            // Mark exercise as completed in local storage
+            progress[sectionId + '-step' + currentStep] = true;
+            localStorage.setItem('mathProgress', JSON.stringify(progress));
+            updateNavStates();
+            
+            if(currentStep < totalSteps) {
+                showStep(sectionId, currentStep + 1);
+            } else {
+                // Go to next section based on current
+                const sections = ['home', 's1', 's2', 's3', 's4', 's5', 's6', 'a1', 'a2', 'a3', 'a4', 'a5', 'end'];
+                const currentIndex = sections.indexOf(sectionId);
+                if(currentIndex < sections.length - 1) {
+                    goToSection(sections[currentIndex + 1]);
+                }
+            }
+        }
+
+        function prevStep(sectionId) {
+            const section = document.getElementById(sectionId);
+            const blocks = section.querySelectorAll('.content-block');
+            for(let i = 0; i < blocks.length; i++) {
+                if(blocks[i].style.display === 'block' && i > 0) {
+                    blocks[i].style.display = 'none';
+                    blocks[i-1].style.display = 'block';
+                    blocks[i-1].scrollIntoView({behavior: 'smooth', block: 'nearest'});
+                    break;
+                }
+            }
+        }
+
+        function updateNavStates() {
+            const navItems = document.querySelectorAll('.sidebar .nav-item');
+            navItems.forEach(item => {
+                const onclickAttr = item.getAttribute('onclick');
+                if(onclickAttr) {
+                    const id = onclickAttr.match(/'([^']+)'/)[1];
+                    if(progress[id + '-step1'] === true) {
+                        item.classList.add('completed');
+                    }
+                }
+            });
+        }
+
+        function resetAllProgress() {
+            if(confirm("Are you sure you want to reset all progress? (Apakah Anda yakin ingin mereset semua progres?)")) {
+                localStorage.removeItem('mathProgress');
+                progress = {};
+                location.reload();
+            }
+        }
+
+        // --- Exercises Logic ---
+        function setupExercise(exId, options) {
+            const container = document.getElementById(exId);
+            if(!container) return;
+            
+            // Shuffle options
+            options.sort(() => Math.random() - 0.5);
+
+            container.innerHTML = '';
+            options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerHTML = opt.text; // Use innerHTML for KaTeX
+                btn.onclick = function() { selectOption(this, opt.correct, exId); };
+                container.appendChild(btn);
+            });
+            renderMath(container);
+        }
+
+        function selectOption(btn, isCorrect, exId) {
+            const container = document.getElementById(exId);
+            // Disable further clicks
+            container.querySelectorAll('.option-btn').forEach(b => b.style.pointerEvents = 'none');
+            
+            if(isCorrect) {
+                btn.classList.add('correct');
+            } else {
+                btn.classList.add('wrong');
+                // Highlight the correct one
+                container.querySelectorAll('.option-btn').forEach(b => {
+                    // This is a simplified check; in actual dynamic creation, we'd track the correct button.
+                });
+            }
+            // Auto show explanation
+            const expId = exId + '-exp';
+            document.getElementById(expId).classList.add('show');
+        }
+
+        function resetAssignmentExercise(exId, qId) {
+            const container = document.getElementById(exId);
+            if(!container) return;
+            
+            // Reset tampilan tombol
+            container.querySelectorAll('.option-btn').forEach(b => {
+                b.classList.remove('correct', 'wrong');
+                b.style.pointerEvents = 'auto';
+            });
+            
+            // Sembunyikan penjelasan
+            const expId = exId + '-exp';
+            const expEl = document.getElementById(expId);
+            if(expEl) expEl.classList.remove('show');
+            
+            // Hapus jawaban yang tersimpan agar dianggap "Not Answered" saat dicetak
+            if(qId) {
+                delete studentAnswers[qId];
+            }
+        }
+
+        function resetExercise(exId) {
+            const container = document.getElementById(exId);
+            if(!container) return;
+            container.querySelectorAll('.option-btn').forEach(b => {
+                b.classList.remove('correct', 'wrong');
+                b.style.pointerEvents = 'auto';
+            });
+            const expId = exId + '-exp';
+            const expEl = document.getElementById(expId);
+            if(expEl) expEl.classList.remove('show');
+        }
+
+        function toggleExplanation(id) {
+            const el = document.getElementById(id);
+            if(el.classList.contains('show')) {
+                el.classList.remove('show');
+            } else {
+                el.classList.add('show');
+            }
+        }
+
+        // KaTeX render helper
+        function renderMath(element) {
+            if (typeof renderMathInElement === 'function') {
+                renderMathInElement(element, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '\\[', right: '\\]', display: true},
+                        {left: '$', right: '$', display: false},
+                        {left: '\\(', right: '\\)', display: false}
+                    ]
+                });
+            }
+        }
+    </script>
+</body>
+</html>
