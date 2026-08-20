@@ -1,0 +1,1479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Tutoring - Angles in a Circle</title>
+    <!-- KaTeX CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <!-- KaTeX JS -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <style>
+        :root {
+            --primary: #58cc02;
+            --primary-dark: #58a700;
+            --secondary: #1cb0f6;
+            --error: #ff4b4b;
+            --error-light: #ffdfdf;
+            --success-light: #e5fce5;
+            --bg: #fff;
+            --text: #4b4b4b;
+            --border: #e5e5e5;
+            --shadow: 0 4px 0 rgba(0,0,0,0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Nunito', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f7f7f7;
+            color: var(--text);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Navbar */
+        .navbar {
+            width: 280px;
+            background: #fff;
+            border-right: 1px solid var(--border);
+            padding: 20px;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        .navbar-header {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            margin-bottom: 5px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            font-weight: 700;
+            color: #afafaf;
+        }
+
+        .nav-item:hover {
+            background: #f0f0f0;
+        }
+
+        .nav-item.active {
+            background: var(--success-light);
+            color: var(--primary-dark);
+        }
+
+        .nav-icon {
+            margin-right: 10px;
+            width: 24px;
+            text-align: center;
+        }
+
+        /* Main Content */
+        .main {
+            flex-grow: 1;
+            padding: 40px;
+            overflow-y: auto;
+            display: flex;
+            justify-content: center;
+			align-items: flex-start;
+        }
+
+        .content-container {
+            max-width: 800px;
+            width: 100%;
+            background: #fff;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .section { display: none; animation: fadeIn 0.5s ease; }
+        .section.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1, h2, h3 { color: var(--text); margin-bottom: 15px; }
+        p { line-height: 1.6; margin-bottom: 10px; }
+
+        .id-translate {
+            display: block;
+            font-size: 0.9em;
+            color: #777;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+
+        /* Theory & Exercise Blocks */
+        .block {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: #fff;
+            transition: border 0.3s;
+        }
+
+        .block-theory { border-left: 5px solid var(--secondary); background: #f0fcff; }
+        .block-exercise { border-left: 5px solid var(--primary); }
+
+        .options { margin-top: 15px; }
+        .option {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: #fff;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            color: var(--text);
+            transition: all 0.2s;
+            box-shadow: var(--shadow);
+        }
+        .option:hover { border-color: var(--secondary); background: #f8fdff; }
+        .option.selected { border-color: var(--secondary); background: #e8f9ff; color: var(--secondary); }
+        .option.correct { border-color: var(--primary); background: var(--success-light); color: var(--primary-dark); }
+        .option.wrong { border-color: var(--error); background: var(--error-light); color: var(--error); }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: transform 0.1s, filter 0.2s;
+            box-shadow: var(--shadow);
+            margin-right: 10px;
+            margin-top: 15px;
+        }
+        .btn:active { transform: translateY(4px); box-shadow: none; }
+        .btn-primary { background: var(--primary); color: #fff; }
+        .btn-secondary { background: var(--secondary); color: #fff; }
+        .btn-tertiary { background: #e5e5e5; color: #777; }
+        .btn-reset { background: var(--error); color: #fff; float: right; }
+        
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .feedback { display: none; margin-top: 15px; padding: 15px; border-radius: 8px; }
+        .feedback.show { display: block; animation: slideDown 0.3s ease; }
+        @keyframes slideDown { from { opacity:0; max-height:0; } to { opacity:1; max-height:500px; } }
+        .feedback.correct { background: var(--success-light); border: 1px solid var(--primary); }
+        .feedback.wrong { background: var(--error-light); border: 1px solid var(--error); }
+        
+        .math-block { margin: 15px 0; padding: 15px; background: #fff; border-radius: 8px; border: 1px solid var(--border); text-align: center; }
+
+        .input-field {
+            padding: 12px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            width: 100px;
+            margin-right: 10px;
+        }
+
+        /* SVGs */
+        svg { max-width: 100%; height: auto; display:block; margin: 10px auto; }
+        
+        /* Hilangkan tombol Reset All Progress di sidebar */
+        .btn-reset { display: none !important; }
+
+        /* Perbaiki proporsi section Final agar outer dan inner box sejajar di tengah */
+        #final { 
+            text-align: center; 
+        }
+        #final .block { 
+            max-width: 500px; 
+            margin: 20px auto; 
+            text-align: center; 
+        }
+        #final .btn { 
+            display: inline-block; 
+        }
+		
+        /* Print Styles */
+        @media print {
+            body { margin: 0; padding: 0; }
+            .navbar, .main { display: none !important; }
+            #printArea { display: block !important; position: absolute; top: 0; left: 0; width: 100%; }
+            @page { size: A4; margin: 5mm; }
+        }
+        
+        /* Tambahan: sembunyikan printArea di layar normal */
+        #printArea { display: none; }
+		
+		/* Memaksa semua kotak (theory & exercise) tampil untuk scroll */
+		.section .block { display: block !important; }
+
+		/* Menyembunyikan tombol Previous dan Next */
+		.block button[onclick*="prevBlock"], 
+		.block button[onclick*="nextBlock"] { 
+			display: none !important; 
+		}
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <div class="navbar">
+        <div class="navbar-header">Math Tutoring by Deni</div>
+        <div class="nav-item active" onclick="showSection('home')">
+            <div class="nav-icon">🏠</div> Home
+        </div>
+        <div class="nav-item" onclick="showSection('sec1')">
+            <div class="nav-icon">1️⃣</div> Spiral Review Warm-up
+        </div>
+        <div class="nav-item" onclick="showSection('sec2')">
+            <div class="nav-icon">2️⃣</div> Real-World Connection
+        </div>
+        <div class="nav-item" onclick="showSection('sec3')">
+            <div class="nav-icon">3️⃣</div> Review of Prior Knowledge
+        </div>
+        <div class="nav-item" onclick="showSection('sec4')">
+            <div class="nav-icon">4️⃣</div> Problem Introduction
+        </div>
+        <div class="nav-item" onclick="showSection('sec5')">
+            <div class="nav-icon">5️⃣</div> Guided Practice
+        </div>
+        <div class="nav-item" onclick="showSection('sec6')">
+            <div class="nav-icon">6️⃣</div> Independent Practice
+        </div>
+        <div class="nav-item" onclick="showSection('assign1')">
+            <div class="nav-icon">📝</div> Assignment 1
+        </div>
+        <div class="nav-item" onclick="showSection('assign2')">
+            <div class="nav-icon">📝</div> Assignment 2
+        </div>
+        <div class="nav-item" onclick="showSection('assign3')">
+            <div class="nav-icon">📝</div> Assignment 3
+        </div>
+        <div class="nav-item" onclick="showSection('assign4')">
+            <div class="nav-icon">📝</div> Assignment 4
+        </div>
+        <div class="nav-item" onclick="showSection('assign5')">
+            <div class="nav-icon">📝</div> Assignment 5
+        </div>
+        <div class="nav-item" onclick="showSection('final')">
+            <div class="nav-icon">🏁</div> Consolidation
+        </div>
+        <button class="btn btn-reset" onclick="resetAllProgress()" style="width: 100%; margin-top: 20px;">Reset All Progress</button>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main">
+        <div class="content-container">
+            <div id="printArea"></div>
+
+            <!-- HOME SECTION -->
+            <div id="home" class="section active">
+                <h1>Math Tutoring by Deni</h1>
+                <p><strong>Topic:</strong> Angles in a Circle</p>
+                <span class="id-translate"><strong>Topik:</strong> Sudut-sudut dalam Lingkaran</span>
+                <br>
+                <h3>Class Rules</h3>
+                <span class="id-translate">Aturan Kelas</span>
+                <ol>
+                    <li>Take turns speaking.<br><span class="id-translate">Berbicara secara bergantian.</span></li>
+                    <li>Ask permission if you need to leave.<br><span class="id-translate">Meminta izin jika ingin meninggalkan kelas.</span></li>
+                    <li>Turn on camera and microphone when needed.<br><span class="id-translate">Menyalakan kamera dan mikrofon jika diperlukan.</span></li>
+                </ol>
+                <br>
+                <button class="btn btn-primary" onclick="showSection('sec1')">Start Lesson</button>
+            </div>
+
+            <!-- SECTION 1: SPIRAL REVIEW -->
+            <div id="sec1" class="section">
+                <h2>Section 1: Spiral Review Warm-up (00:00 - 00:10)</h2>
+                <span class="id-translate">Bagian 1: Pemanasan Tinjauan Spiral</span>
+                <p>Before we start, let's sharpen our algebra skills. Think of this like collecting items in a game.<br><span class="id-translate">Sebelum mulai, mari asah kemampuan aljabar kita. Anggap saja ini seperti mengumpulkan item dalam game.</span></p>
+                
+                <!-- Theory 1 -->
+                <div class="block block-theory">
+                    <h3>Theory: Variables and Constants</h3>
+                    <p>A variable is a letter that represents an unknown number (like a player's level). A constant is a fixed number that does not change.<br><span class="id-translate">Variabel adalah huruf yang mewakili angka yang tidak diketahui (seperti level pemain). Konstanta adalah angka tetap yang tidak berubah.</span></p>
+                </div>
+
+                <!-- Exercise 1.1 -->
+                <div class="block block-exercise">
+                    <p><strong>Question 1:</strong> In the expression \(4x + 7\), which one is the variable?<br><span class="id-translate">Pada ekspresi \(4x + 7\), mana yang merupakan variabel?</span></p>
+                    <div class="options" id="ex1_1"></div>
+                    <div class="feedback" id="fb1_1"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec1', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec1', this)">Next</button>
+                </div>
+
+                <!-- Exercise 1.2 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 2:</strong> In the expression \(15 - y\), what is the constant?<br><span class="id-translate">Pada ekspresi \(15 - y\), apa yang merupakan konstanta?</span></p>
+                    <div class="options" id="ex1_2"></div>
+                    <div class="feedback" id="fb1_2"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec1', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec1', this)">Next</button>
+                </div>
+
+                <!-- Exercise 1.3 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 3:</strong> You have \(x\) gems and get 10 bonus. What is the expression for the total?<br><span class="id-translate">Kamu punya \(x\) permata dan dapat bonus 10. Berapakah ekspresinya?</span></p>
+                    <div class="options" id="ex1_3"></div>
+                    <div class="feedback" id="fb1_3"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec1', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec1', this)">Next</button>
+                </div>
+
+                <!-- Theory 2 -->
+                <div class="block block-theory" style="display:none;">
+                    <h3>Theory: Coefficients</h3>
+                    <p>A coefficient is a number multiplied by a variable. If you have \(3g\), the number 3 is the coefficient. It means 3 times the gold (\(g\)).<br><span class="id-translate">Koefisien adalah angka yang dikalikan dengan variabel. Jika kamu punya \(3g\), angka 3 adalah koefisien. Artinya 3 kali lipat emas (\(g\)).</span></p>
+                </div>
+
+                <!-- Exercise 1.4 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 4:</strong> What is the coefficient of \(y\) in \(12 - 5y\)?<br><span class="id-translate">Berapakah koefisien dari \(y\) pada \(12 - 5y\)?</span></p>
+                    <div class="options" id="ex1_4"></div>
+                    <div class="feedback" id="fb1_4"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec1', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec1', this)">Next</button>
+                </div>
+
+                <!-- Exercise 1.5 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 5:</strong> Write an expression for "Three times the sum of gold (\(g\)) minus 5".<br><span class="id-translate">Tulis ekspresi untuk "Tiga kali jumlah emas (\(g\)) dikurangi 5".</span></p>
+                    <div class="options" id="ex1_5"></div>
+                    <div class="feedback" id="fb1_5"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec1', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec1', this)">Next</button>
+                </div>
+
+                <!-- Exercise 1.6 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 6:</strong> Simplify: \(3(g + 4) - 2\).<br><span class="id-translate">Sederhanakan: \(3(g + 4) - 2\).</span></p>
+                    <div class="options" id="ex1_6"></div>
+                    <div class="feedback" id="fb1_6"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec1', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec1', this)">Next</button>
+                </div>
+
+                <!-- Theory 3 -->
+                <div class="block block-theory" style="display:none;">
+                    <h3>Theory: Algebra in Geometry</h3>
+                    <p>In geometry, angles can also be represented by variables. If an angle is \(x\), double that angle is \(2x\).<br><span class="id-translate">Dalam geometri, sudut juga bisa diwakili oleh variabel. Jika sebuah sudut adalah \(x\), dua kali sudut itu adalah \(2x\).</span></p>
+                </div>
+
+                <!-- Exercise 1.7 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 7:</strong> If an angle is \(x\), what is twice that angle?<br><span class="id-translate">Jika sebuah sudut adalah \(x\), berapakah dua kali sudut tersebut?</span></p>
+                    <div class="options" id="ex1_7"></div>
+                    <div class="feedback" id="fb1_7"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec1', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec1', this)">Next</button>
+                </div>
+
+                <!-- Exercise 1.8 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 8:</strong> If an angle is \(2x\), what is half of that angle?<br><span class="id-translate">Jika sebuah sudut adalah \(2x\), berapakah setengah dari sudut tersebut?</span></p>
+                    <div class="options" id="ex1_8"></div>
+                    <div class="feedback" id="fb1_8"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec1', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec1', this)">Next</button>
+                </div>
+
+                <!-- Exercise 1.9 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 9:</strong> Two angles add up to 180 degrees. If one is \(x\), what is the other?<br><span class="id-translate">Dua sudut dijumlahkan menjadi 180 derajat. Jika satuannya \(x\), berapakah sudut lainnya?</span></p>
+                    <div class="options" id="ex1_9"></div>
+                    <div class="feedback" id="fb1_9"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec1', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec1', this)">Next</button>
+                </div>
+
+                <!-- Exercise 1.10 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 10:</strong> If \(x = 50\), what is \(2x + 10\)?<br><span class="id-translate">Jika \(x = 50\), berapakah \(2x + 10\)?</span></p>
+                    <div class="options" id="ex1_10"></div>
+                    <div class="feedback" id="fb1_10"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec1', this)">Previous</button>
+                    <button class="btn btn-secondary" onclick="showSection('sec2')">Next Section</button>
+                </div>
+            </div>
+			
+            <!-- SECTION 2: REAL-WORLD CONNECTION -->
+            <div id="sec2" class="section">
+                <h2>Section 2: Introduction & Real-World Connection (00:10 - 00:15)</h2>
+                <span class="id-translate">Bagian 2: Pengantar & Koneksi Dunia Nyata</span>
+                
+                <!-- Theory 1 -->
+                <div class="block block-theory">
+                    <h3>Theory: Circles in Games</h3>
+                    <p>Have you ever looked at a mini-map or a radar in your favorite game? Developers use circle angles to determine the character's field of view.<br><span class="id-translate">Pernahkah kamu melihat mini-map atau radar di game favoritmu? Developer game menggunakan sudut lingkaran untuk menentukan sudut pandang karakter.</span></p>
+                    <svg width="200" height="200" viewBox="0 0 200 200" style="background:#e8f9ff; border-radius:50%;">
+                        <circle cx="100" cy="100" r="80" fill="none" stroke="#1cb0f6" stroke-width="2"/>
+                        <path d="M 100 100 L 180 100 A 80 80 0 0 0 142 42 Z" fill="#58cc02" opacity="0.5"/>
+                        <circle cx="100" cy="100" r="5" fill="#4b4b4b"/>
+                        <path d="M 100 100 L 180 100" stroke="#ff4b4b" stroke-width="2"/>
+                        <path d="M 100 100 L 142 42" stroke="#ff4b4b" stroke-width="2"/>
+                        <path d="M 180 100 A 80 80 0 0 0 142 42" fill="none" stroke="#000" stroke-width="1" stroke-dasharray="5,5"/>
+                    </svg>
+                </div>
+
+                <!-- Exercise 2.1 -->
+                <div class="block block-exercise">
+                    <p><strong>Question 1:</strong> Where do we often see circles in games?<br><span class="id-translate">Di mana kita sering melihat lingkaran di dalam game?</span></p>
+                    <div class="options" id="ex2_1"></div>
+                    <div class="feedback" id="fb2_1"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec2', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec2', this)">Next</button>
+                </div>
+
+                <!-- Exercise 2.2 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 2:</strong> What is the middle point of a radar called?<br><span class="id-translate">Apa nama titik tengah dari sebuah radar?</span></p>
+                    <div class="options" id="ex2_2"></div>
+                    <div class="feedback" id="fb2_2"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec2', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec2', this)">Next</button>
+                </div>
+
+                <!-- Exercise 2.3 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 3:</strong> Why do developers use circle angles?<br><span class="id-translate">Mengapa developer menggunakan sudut lingkaran?</span></p>
+                    <div class="options" id="ex2_3"></div>
+                    <div class="feedback" id="fb2_3"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec2', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec2', this)">Next</button>
+                </div>
+
+                <!-- Theory 2 -->
+                <div class="block block-theory" style="display:none;">
+                    <h3>Theory: Central vs Inscribed Angle</h3>
+                    <p>If you draw two lines from the center, you make a <strong>Central Angle</strong>. If you draw two lines from the edge, you make an <strong>Inscribed Angle</strong>.<br><span class="id-translate">Jika kamu menggambar dua garis dari pusat, kamu membuat <strong>Sudut Pusat</strong>. Jika dari tepi, kamu membuat <strong>Sudut Keliling</strong>.</span></p>
+                </div>
+
+                <!-- Exercise 2.4 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 4:</strong> An angle with its vertex (point) at the center of the circle is called...<br><span class="id-translate">Sudut dengan titik puncaknya di pusat lingkaran disebut...</span></p>
+                    <div class="options" id="ex2_4"></div>
+                    <div class="feedback" id="fb2_4"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec2', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec2', this)">Next</button>
+                </div>
+
+                <!-- Exercise 2.5 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 5:</strong> An angle with its vertex on the edge of the circle is called...<br><span class="id-translate">Sudut dengan titik puncaknya di tepi lingkaran disebut...</span></p>
+                    <div class="options" id="ex2_5"></div>
+                    <div class="feedback" id="fb2_5"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec2', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec2', this)">Next</button>
+                </div>
+
+                <!-- Exercise 2.6 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 6:</strong> Look at the radar. The red lines meet at the center. What kind of angle is this?<br><span class="id-translate">Lihat radar. Garis merah bertemu di pusat. Sudut apakah ini?</span></p>
+                    <div class="options" id="ex2_6"></div>
+                    <div class="feedback" id="fb2_6"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec2', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec2', this)">Next</button>
+                </div>
+
+                <!-- Theory 3 -->
+                <div class="block block-theory" style="display:none;">
+                    <h3>Theory: The Arc (Busur)</h3>
+                    <p>An arc is a part of the circle's edge. Both Central and Inscribed angles "look" at an arc.<br><span class="id-translate">Busur adalah bagian dari tepi lingkaran. Baik sudut pusat maupun sudut keliling sama-sama "melihat" sebuah busur.</span></p>
+                    <svg width="200" height="150" viewBox="0 0 200 150">
+                        <path d="M 40 100 A 60 60 0 0 1 160 100" fill="none" stroke="#1cb0f6" stroke-width="3"/>
+                        <path d="M 40 100 L 160 100" stroke="#e5e5e5" stroke-width="1" stroke-dasharray="4"/>
+                        <text x="85" y="80" font-size="14" fill="#58cc02" font-weight="bold">Arc</text>
+                    </svg>
+                </div>
+
+                <!-- Exercise 2.7 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 7:</strong> What do we call the curved line on the edge of a circle?<br><span class="id-translate">Apa yang kita sebut untuk garis lengkung di tepi lingkaran?</span></p>
+                    <div class="options" id="ex2_7"></div>
+                    <div class="feedback" id="fb2_7"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec2', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec2', this)">Next</button>
+                </div>
+
+                <!-- Exercise 2.8 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 8:</strong> If a Central Angle and an Inscribed Angle look at the SAME arc, are they related?<br><span class="id-translate">Jika Sudut Pusat dan Sudut Keliling melihat busur yang SAMA, apakah mereka berhubungan?</span></p>
+                    <div class="options" id="ex2_8"></div>
+                    <div class="feedback" id="fb2_8"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec2', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec2', this)">Next</button>
+                </div>
+
+                <!-- Exercise 2.9 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 9:</strong> In a game, if the radar scans a certain arc, the central angle sees it from the...<br><span class="id-translate">Dalam game, jika radar memindai busur tertentu, sudut pusat melihatnya dari...</span></p>
+                    <div class="options" id="ex2_9"></div>
+                    <div class="feedback" id="fb2_9"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec2', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec2', this)">Next</button>
+                </div>
+
+                <!-- Exercise 2.10 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 10:</strong> The inscribed angle sees the arc from the...<br><span class="id-translate">Sudut keliling melihat busur dari...</span></p>
+                    <div class="options" id="ex2_10"></div>
+                    <div class="feedback" id="fb2_10"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec2', this)">Previous</button>
+                    <button class="btn btn-secondary" onclick="showSection('sec3')">Next Section</button>
+                </div>
+            </div>
+
+            <!-- SECTION 3: REVIEW OF PRIOR KNOWLEDGE -->
+            <div id="sec3" class="section">
+                <h2>Section 3: Review of Prior Knowledge (00:15 - 00:20)</h2>
+                <span class="id-translate">Bagian 3: Tinjauan Pengetahuan Sebelumnya</span>
+
+                <!-- Theory 1 -->
+                <div class="block block-theory">
+                    <h3>Theory: Radius and Diameter</h3>
+                    <p><strong>Radius (r)</strong> is the distance from the center to the edge. <strong>Diameter (d)</strong> is the distance from edge to edge, passing through the center. \( d = 2 \times r \)<br><span class="id-translate"><strong>Jari-jari (r)</strong> adalah jarak dari pusat ke tepi. <strong>Diameter (d)</strong> adalah jarak dari tepi ke tepi melalui pusat. \( d = 2 \times r \)</span></p>
+                    <svg width="200" height="150" viewBox="0 0 200 150">
+                        <circle cx="100" cy="75" r="60" fill="#f0fcff" stroke="#1cb0f6" stroke-width="2"/>
+                        <circle cx="100" cy="75" r="3" fill="#000"/>
+                        <line x1="100" y1="75" x2="160" y2="75" stroke="#ff4b4b" stroke-width="2"/>
+                        <text x="120" y="65" font-size="12" fill="#ff4b4b">r</text>
+                        <line x1="40" y1="75" x2="160" y2="75" stroke="#58cc02" stroke-width="2" stroke-dasharray="4"/>
+                        <text x="90" y="95" font-size="12" fill="#58cc02">d</text>
+                    </svg>
+                </div>
+
+                <!-- Exercise 3.1 -->
+                <div class="block block-exercise">
+                    <p><strong>Question 1:</strong> What is the line from the center to the edge called?<br><span class="id-translate">Apa nama garis dari pusat ke tepi?</span></p>
+                    <div class="options" id="ex3_1"></div>
+                    <div class="feedback" id="fb3_1"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec3', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec3', this)">Next</button>
+                </div>
+
+                <!-- Exercise 3.2 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 2:</strong> What is the line from edge to edge through the center called?<br><span class="id-translate">Apa nama garis dari tepi ke tepi melalui pusat?</span></p>
+                    <div class="options" id="ex3_2"></div>
+                    <div class="feedback" id="fb3_2"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec3', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec3', this)">Next</button>
+                </div>
+
+                <!-- Exercise 3.3 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 3:</strong> If the radius \( r = 5 \), what is the diameter \( d \)?<br><span class="id-translate">Jika jari-jari \( r = 5 \), berapakah diameter \( d \)?</span></p>
+                    <div class="options" id="ex3_3"></div>
+                    <div class="feedback" id="fb3_3"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec3', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec3', this)">Next</button>
+                </div>
+
+                <!-- Theory 2 -->
+                <div class="block block-theory" style="display:none;">
+                    <h3>Theory: The Center Point</h3>
+                    <p>The center is the "boss" of the circle. All points on the edge are the same distance from the center.<br><span class="id-translate">Pusat adalah "bos" dari lingkaran. Semua titik di tepi memiliki jarak yang sama dari pusat.</span></p>
+                </div>
+
+                <!-- Exercise 3.4 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 4:</strong> What is the middle point of a circle called?<br><span class="id-translate">Apa nama titik tengah lingkaran?</span></p>
+                    <div class="options" id="ex3_4"></div>
+                    <div class="feedback" id="fb3_4"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec3', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec3', this)">Next</button>
+                </div>
+
+                <!-- Exercise 3.5 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 5:</strong> If point A is 10 cm from the center, and point B is on the edge, how far is B from the center?<br><span class="id-translate">Jika titik A berjarak 10 cm dari pusat, dan titik B ada di tepi, berapakah jarak B dari pusat?</span></p>
+                    <div class="options" id="ex3_5"></div>
+                    <div class="feedback" id="fb3_5"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec3', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec3', this)">Next</button>
+                </div>
+
+                <!-- Exercise 3.6 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 6:</strong> If diameter is 20, what is the radius?<br><span class="id-translate">Jika diameter adalah 20, berapakah jari-jarinya?</span></p>
+                    <div class="options" id="ex3_6"></div>
+                    <div class="feedback" id="fb3_6"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec3', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec3', this)">Next</button>
+                </div>
+
+                <!-- Theory 3 -->
+                <div class="block block-theory" style="display:none;">
+                    <h3>Theory: Angles</h3>
+                    <p>An angle is formed when two lines meet at a point. We measure angles in degrees (\(^\circ\)). A full circle is \(360^\circ\), and a half circle is \(180^\circ\).<br><span class="id-translate">Sudut terbentuk saat dua garis bertemu di satu titik. Kita mengukur sudut dalam derajat (\(^\circ\)). Satu lingkaran penuh adalah \(360^\circ\), dan setengah lingkaran adalah \(180^\circ\).</span></p>
+                </div>
+
+                <!-- Exercise 3.7 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 7:</strong> What unit do we use to measure angles?<br><span class="id-translate">Satuan apa yang digunakan untuk mengukur sudut?</span></p>
+                    <div class="options" id="ex3_7"></div>
+                    <div class="feedback" id="fb3_7"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec3', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec3', this)">Next</button>
+                </div>
+
+                <!-- Exercise 3.8 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 8:</strong> How many degrees is a full circle?<br><span class="id-translate">Berapa derajat satu lingkaran penuh?</span></p>
+                    <div class="options" id="ex3_8"></div>
+                    <div class="feedback" id="fb3_8"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec3', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec3', this)">Next</button>
+                </div>
+
+                <!-- Exercise 3.9 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 9:</strong> How many degrees is a half circle (straight line)?<br><span class="id-translate">Berapa derajat setengah lingkaran (garis lurus)?</span></p>
+                    <div class="options" id="ex3_9"></div>
+                    <div class="feedback" id="fb3_9"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec3', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec3', this)">Next</button>
+                </div>
+
+                <!-- Exercise 3.10 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 10:</strong> If an angle is \(90^\circ\), it is called a...<br><span class="id-translate">Jika sebuah sudut adalah \(90^\circ\), itu disebut sudut...</span></p>
+                    <div class="options" id="ex3_10"></div>
+                    <div class="feedback" id="fb3_10"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec3', this)">Previous</button>
+                    <button class="btn btn-secondary" onclick="showSection('sec4')">Next Section</button>
+                </div>
+            </div>
+
+            <!-- SECTION 4: PROBLEM INTRODUCTION -->
+            <div id="sec4" class="section">
+                <h2>Section 4: Problem Introduction (00:20 - 00:30)</h2>
+                <span class="id-translate">Bagian 4: Pengantar Masalah</span>
+
+                <!-- Theory 1 -->
+                <div class="block block-theory">
+                    <h3>Theory: The 2:1 Rule (The Golden Rule)</h3>
+                    <p>If a Central Angle and an Inscribed Angle look at the SAME arc, the Central Angle is always <strong>twice (2x)</strong> the Inscribed Angle.<br><span class="id-translate">Jika Sudut Pusat dan Sudut Keliling menghadap busur yang SAMA, Sudut Pusat selalu <strong>dua kali (2x)</strong> Sudut Keliling.</span></p>
+                    <div class="math-block">
+                        <p>\(\text{Central Angle} = 2 \times \text{Inscribed Angle}\)</p>
+                        <p>\(\text{Sudut Pusat} = 2 \times \text{Sudut Keliling}\)</p>
+                    </div>
+                </div>
+
+                <!-- Exercise 4.1 -->
+                <div class="block block-exercise">
+                    <p><strong>Question 1:</strong> If the inscribed angle is \(50^\circ\), what is the central angle?<br><span class="id-translate">Jika sudut keliling adalah \(50^\circ\), berapakah sudut pusatnya?</span></p>
+                    <div class="options" id="ex4_1"></div>
+                    <div class="feedback" id="fb4_1"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec4', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec4', this)">Next</button>
+                </div>
+
+                <!-- Exercise 4.2 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 2:</strong> If the central angle is \(100^\circ\), what is the inscribed angle?<br><span class="id-translate">Jika sudut pusat adalah \(100^\circ\), berapakah sudut kelilingnya?</span></p>
+                    <div class="options" id="ex4_2"></div>
+                    <div class="feedback" id="fb4_2"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec4', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec4', this)">Next</button>
+                </div>
+
+                <!-- Exercise 4.3 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 3:</strong> Which angle is bigger if they look at the same arc?<br><span class="id-translate">Sudut mana yang lebih besar jika menghadap busur yang sama?</span></p>
+                    <div class="options" id="ex4_3"></div>
+                    <div class="feedback" id="fb4_3"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec4', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec4', this)">Next</button>
+                </div>
+
+                <!-- Theory 2 -->
+                <div class="block block-theory" style="display:none;">
+                    <h3>Theory: Why 2:1? (For Critical Thinkers)</h3>
+                    <p>Imagine the arc is a pizza crust. The center angle "sees" the whole crust from the center. The edge angle "sees" it from the side. Because the center is the "boss", it sees it twice as wide!<br><span class="id-translate">Bayangkan busur adalah pinggiran pizza. Sudut pusat "melihat" seluruh pinggiran dari pusat. Sudut tepi "melihat"nya dari pinggir. Karena pusat adalah "bos", dia melihatnya dua kali lebih lebar!</span></p>
+                </div>
+
+                <!-- Exercise 4.4 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 4:</strong> If central angle \(= 2 \times\) inscribed angle, then inscribed angle \(=\) ? central angle.<br><span class="id-translate">Jika sudut pusat \(= 2 \times\) sudut keliling, maka sudut keliling \(=\) ? sudut pusat.</span></p>
+                    <div class="options" id="ex4_4"></div>
+                    <div class="feedback" id="fb4_4"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec4', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec4', this)">Next</button>
+                </div>
+
+                <!-- Exercise 4.5 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 5:</strong> If the central angle is \(80^\circ\), and an inscribed angle looks at the same arc. What is the inscribed angle?<br><span class="id-translate">Jika sudut pusat \(80^\circ\), dan sudut keliling menghadap busur yang sama. Berapakah sudut kelilingnya?</span></p>
+                    <div class="options" id="ex4_5"></div>
+                    <div class="feedback" id="fb4_5"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec4', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec4', this)">Next</button>
+                </div>
+
+                <!-- Exercise 4.6 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 6:</strong> If the central angle is \(x\), the inscribed angle is...<br><span class="id-translate">Jika sudut pusat adalah \(x\), sudut keliling adalah...</span></p>
+                    <div class="options" id="ex4_6"></div>
+                    <div class="feedback" id="fb4_6"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec4', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec4', this)">Next</button>
+                </div>
+
+                <!-- Theory 3 -->
+                <div class="block block-theory" style="display:none;">
+                    <h3>Theory: Cyclic Quadrilateral (Segi Empat Tali Busur)</h3>
+                    <p>If a 4-sided shape is inside a circle, the opposite angles add up to \(180^\circ\). Like two puzzle pieces making a straight line.<br><span class="id-translate">Jika bangun 4-sisi ada di dalam lingkaran, sudut yang berhadapan dijumlahkan menjadi \(180^\circ\). Seperti dua keping puzzle membentuk garis lurus.</span></p>
+                    <div class="math-block">
+                        <p>\(\angle A + \angle C = 180^\circ\)</p>
+                        <p>\(\angle B + \angle D = 180^\circ\)</p>
+                    </div>
+                </div>
+
+                <!-- Exercise 4.7 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 7:</strong> In a cyclic quadrilateral, if \(\angle A = 80^\circ\), what is \(\angle C\)?<br><span class="id-translate">Pada segi empat tali busur, jika \(\angle A = 80^\circ\), berapakah \(\angle C\)?</span></p>
+                    <div class="options" id="ex4_7"></div>
+                    <div class="feedback" id="fb4_7"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec4', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec4', this)">Next</button>
+                </div>
+
+                <!-- Exercise 4.8 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 8:</strong> If \(\angle B = 100^\circ\), what is \(\angle D\)?<br><span class="id-translate">Jika \(\angle B = 100^\circ\), berapakah \(\angle D\)?</span></p>
+                    <div class="options" id="ex4_8"></div>
+                    <div class="feedback" id="fb4_8"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec4', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec4', this)">Next</button>
+                </div>
+
+                <!-- Exercise 4.9 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 9:</strong> What do opposite angles in a cyclic quadrilateral add up to?<br><span class="id-translate">Berapa jumlah sudut yang berhadapan dalam segi empat tali busur?</span></p>
+                    <div class="options" id="ex4_9"></div>
+                    <div class="feedback" id="fb4_9"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec4', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec4', this)">Next</button>
+                </div>
+
+                <!-- Exercise 4.10 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 10:</strong> If \(\angle A + \angle C = 180^\circ\), and \(\angle A = x\), what is \(\angle C\)?<br><span class="id-translate">Jika \(\angle A + \angle C = 180^\circ\), dan \(\angle A = x\), berapakah \(\angle C\)?</span></p>
+                    <div class="options" id="ex4_10"></div>
+                    <div class="feedback" id="fb4_10"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec4', this)">Previous</button>
+                    <button class="btn btn-secondary" onclick="showSection('sec5')">Next Section</button>
+                </div>
+            </div>
+			
+            <!-- SECTION 5: GUIDED PRACTICE -->
+            <div id="sec5" class="section">
+                <h2>Section 5: Guided Practice (00:30 - 00:45)</h2>
+                <span class="id-translate">Bagian 5: Latihan Terbimbing</span>
+
+                <!-- Theory 1 -->
+                <div class="block block-theory">
+                    <h3>Theory: Calculating Inscribed Angles</h3>
+                    <p>If you know the Central Angle, just divide it by 2 to find the Inscribed Angle. Let's look at the mini-map. The center is \(O\). The edge point is \(C\).<br><span class="id-translate">Jika kamu tahu Sudut Pusat, bagi dengan 2 untuk mencari Sudut Keliling. Mari lihat mini-map. Pusatnya \(O\). Titik tepinya \(C\).</span></p>
+                    <svg width="200" height="150" viewBox="0 0 200 150">
+                        <circle cx="100" cy="75" r="60" fill="#f0fcff" stroke="#1cb0f6" stroke-width="2"/>
+                        <circle cx="100" cy="75" r="3" fill="#000"/>
+                        <line x1="100" y1="75" x2="160" y2="75" stroke="#ff4b4b" stroke-width="2"/>
+                        <line x1="100" y1="75" x2="130" y2="23" stroke="#ff4b4b" stroke-width="2"/>
+                        <line x1="160" y1="75" x2="130" y2="23" stroke="#58cc02" stroke-width="2"/>
+                        <text x="100" y="95" font-size="12" fill="#ff4b4b">O</text>
+                        <text x="130" y="18" font-size="12" fill="#58cc02">C</text>
+                    </svg>
+                </div>
+
+                <!-- Exercise 5.1 -->
+                <div class="block block-exercise">
+                    <p><strong>Question 1:</strong> If the central angle is \(120^\circ\), what is the inscribed angle?<br><span class="id-translate">Jika sudut pusat \(120^\circ\), berapakah sudut kelilingnya?</span></p>
+                    <div class="options" id="ex5_1"></div>
+                    <div class="feedback" id="fb5_1"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec5', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec5', this)">Next</button>
+                </div>
+
+                <!-- Exercise 5.2 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 2:</strong> If the inscribed angle is \(30^\circ\), what is the central angle?<br><span class="id-translate">Jika sudut keliling \(30^\circ\), berapakah sudut pusatnya?</span></p>
+                    <div class="options" id="ex5_2"></div>
+                    <div class="feedback" id="fb5_2"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec5', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec5', this)">Next</button>
+                </div>
+
+                <!-- Exercise 5.3 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 3:</strong> If central angle is \(90^\circ\), what is the inscribed angle facing the same arc?<br><span class="id-translate">Jika sudut pusat \(90^\circ\), berapakah sudut keliling yang menghadap busur sama?</span></p>
+                    <div class="options" id="ex5_3"></div>
+                    <div class="feedback" id="fb5_3"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec5', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec5', this)">Next</button>
+                </div>
+
+                <!-- Theory 2 -->
+                <div class="block block-theory" style="display:none;">
+                    <h3>Theory: Inscribed Angle Facing Diameter (Thales' Theorem)</h3>
+                    <p>If an inscribed angle looks at the diameter (half the circle), it is ALWAYS \(90^\circ\) (a right angle). Like a perfect corner!<br><span class="id-translate">Jika sudut keliling menghadap diameter (setengah lingkaran), itu SELALU \(90^\circ\) (sudut siku-siku). Seperti sudut yang sempurna!</span></p>
+                    <div class="math-block">
+                        <p>\(\text{Inscribed Angle facing Diameter} = 90^\circ\)</p>
+                    </div>
+                </div>
+
+                <!-- Exercise 5.4 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 4:</strong> If an inscribed angle faces the diameter, what is its size?<br><span class="id-translate">Jika sudut keliling menghadap diameter, berapakah besarnya?</span></p>
+                    <div class="options" id="ex5_4"></div>
+                    <div class="feedback" id="fb5_4"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec5', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec5', this)">Next</button>
+                </div>
+
+                <!-- Exercise 5.5 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 5:</strong> If a triangle is inside a circle and its base is the diameter, the angle opposite the base is...<br><span class="id-translate">Jika segitiga ada di dalam lingkaran dan alasnya diameter, sudut di hadapan alasnya adalah...</span></p>
+                    <div class="options" id="ex5_5"></div>
+                    <div class="feedback" id="fb5_5"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec5', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec5', this)">Next</button>
+                </div>
+
+                <!-- Exercise 5.6 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 6:</strong> If the central angle is \(180^\circ\) (diameter), the inscribed angle facing it is...<br><span class="id-translate">Jika sudut pusat \(180^\circ\) (diameter), sudut keliling yang menghadapnya adalah...</span></p>
+                    <div class="options" id="ex5_6"></div>
+                    <div class="feedback" id="fb5_6"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec5', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec5', this)">Next</button>
+                </div>
+
+                <!-- Theory 3 -->
+                <div class="block block-theory" style="display:none;">
+                    <h3>Theory: Finding Missing Angles in Cyclic Quadrilaterals</h3>
+                    <p>Remember the puzzle? Opposite angles add to \(180^\circ\). If you know one, subtract from 180 to find the other.<br><span class="id-translate">Ingat puzzle-nya? Sudut berhadapan dijumlah jadi \(180^\circ\). Jika tahu satu, kurangi dari 180 untuk mencari yang lain.</span></p>
+                </div>
+
+                <!-- Exercise 5.7 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 7:</strong> In a cyclic quadrilateral, \(\angle A = 70^\circ\). What is \(\angle C\)?<br><span class="id-translate">Pada segi empat tali busur, \(\angle A = 70^\circ\). Berapakah \(\angle C\)?</span></p>
+                    <div class="options" id="ex5_7"></div>
+                    <div class="feedback" id="fb5_7"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec5', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec5', this)">Next</button>
+                </div>
+
+                <!-- Exercise 5.8 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 8:</strong> If \(\angle B = 110^\circ\), what is \(\angle D\)?<br><span class="id-translate">Jika \(\angle B = 110^\circ\), berapakah \(\angle D\)?</span></p>
+                    <div class="options" id="ex5_8"></div>
+                    <div class="feedback" id="fb5_8"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec5', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec5', this)">Next</button>
+                </div>
+
+                <!-- Exercise 5.9 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 9:</strong> If \(\angle A = x\) and \(\angle C = 2x\), what is \(x\)? (Hint: \(x + 2x = 180\))<br><span class="id-translate">Jika \(\angle A = x\) dan \(\angle C = 2x\), berapakah \(x\)? (Petunjuk: \(x + 2x = 180\))</span></p>
+                    <div class="options" id="ex5_9"></div>
+                    <div class="feedback" id="fb5_9"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec5', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec5', this)">Next</button>
+                </div>
+
+                <!-- Exercise 5.10 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 10:</strong> If \(\angle A = 3x\) and \(\angle C = x\), what is \(\angle C\)?<br><span class="id-translate">Jika \(\angle A = 3x\) dan \(\angle C = x\), berapakah \(\angle C\)?</span></p>
+                    <div class="options" id="ex5_10"></div>
+                    <div class="feedback" id="fb5_10"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec5', this)">Previous</button>
+                    <button class="btn btn-secondary" onclick="showSection('sec6')">Next Section</button>
+                </div>
+            </div>
+
+            <!-- SECTION 6: INDEPENDENT PRACTICE -->
+            <div id="sec6" class="section">
+                <h2>Section 6: Independent Practice (00:45 - 01:00)</h2>
+                <span class="id-translate">Bagian 6: Latihan Mandiri</span>
+                <p>Your turn, Champion! Try these challenges by yourself.<br><span class="id-translate">Giliranmu, Juara! Coba tantangan ini sendirian.</span></p>
+
+                <!-- Theory 1 -->
+                <div class="block block-theory">
+                    <h3>Theory: Algebra in Circles</h3>
+                    <p>Sometimes angles use variables like \(x\). If Central Angle \(= 4x\) and Inscribed Angle \(= 60^\circ\), we know \(4x = 2 \times 60^\circ\).<br><span class="id-translate">Terkadang sudut menggunakan variabel seperti \(x\). Jika Sudut Pusat \(= 4x\) dan Sudut Keliling \(= 60^\circ\), kita tahu \(4x = 2 \times 60^\circ\).</span></p>
+                </div>
+
+                <!-- Exercise 6.1 -->
+                <div class="block block-exercise">
+                    <p><strong>Question 1:</strong> If central angle is \(4x\) and inscribed angle is \(40^\circ\). What is \(x\)?<br><span class="id-translate">Jika sudut pusat \(4x\) dan sudut keliling \(40^\circ\). Berapakah \(x\)?</span></p>
+                    <div class="options" id="ex6_1"></div>
+                    <div class="feedback" id="fb6_1"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec6', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec6', this)">Next</button>
+                </div>
+
+                <!-- Exercise 6.2 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 2:</strong> If central angle is \(2x\) and inscribed angle is \(x\), and the inscribed angle is \(50^\circ\). What is the central angle?<br><span class="id-translate">Jika sudut pusat \(2x\) dan sudut keliling \(x\), dan sudut kelilingnya \(50^\circ\). Berapakah sudut pusatnya?</span></p>
+                    <div class="options" id="ex6_2"></div>
+                    <div class="feedback" id="fb6_2"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec6', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec6', this)">Next</button>
+                </div>
+
+                <!-- Exercise 6.3 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 3:</strong> If central angle is \((x + 20)^\circ\) and inscribed angle is \(50^\circ\). Find \(x\).<br><span class="id-translate">Jika sudut pusat \((x + 20)^\circ\) dan sudut keliling \(50^\circ\). Carilah \(x\).</span></p>
+                    <div class="options" id="ex6_3"></div>
+                    <div class="feedback" id="fb6_3"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec6', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec6', this)">Next</button>
+                </div>
+
+                <!-- Theory 2 -->
+                <div class="block block-theory" style="display:none;">
+                    <h3>Theory: Same Arc, Same Angle</h3>
+                    <p>If two inscribed angles look at the exact same arc, they are twins! They have the same size.<br><span class="id-translate">Jika dua sudut keliling melihat busur yang sama persis, mereka adalah kembar! Mereka memiliki ukuran yang sama.</span></p>
+                </div>
+
+                <!-- Exercise 6.4 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 4:</strong> Angle \(P\) and Angle \(Q\) face the same arc. If \(P = 55^\circ\), what is \(Q\)?<br><span class="id-translate">Sudut \(P\) dan Sudut \(Q\) menghadap busur yang sama. Jika \(P = 55^\circ\), berapakah \(Q\)?</span></p>
+                    <div class="options" id="ex6_4"></div>
+                    <div class="feedback" id="fb6_4"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec6', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec6', this)">Next</button>
+                </div>
+
+                <!-- Exercise 6.5 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 5:</strong> If angle \(P = 2x\) and angle \(Q = 40^\circ\) face the same arc. Find \(x\).<br><span class="id-translate">Jika sudut \(P = 2x\) dan sudut \(Q = 40^\circ\) menghadap busur yang sama. Carilah \(x\).</span></p>
+                    <div class="options" id="ex6_5"></div>
+                    <div class="feedback" id="fb6_5"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec6', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec6', this)">Next</button>
+                </div>
+
+                <!-- Exercise 6.6 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 6:</strong> If \(P\) and \(Q\) face the same arc, and \(P\) is twice \(Q\). If \(Q = 35^\circ\), what is \(P\)?<br><span class="id-translate">Jika \(P\) dan \(Q\) menghadap busur yang sama, dan \(P\) dua kali \(Q\). Jika \(Q = 35^\circ\), berapakah \(P\)?</span></p>
+                    <div class="options" id="ex6_6"></div>
+                    <div class="feedback" id="fb6_6"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec6', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec6', this)">Next</button>
+                </div>
+
+                <!-- Theory 3 -->
+                <div class="block block-theory" style="display:none;">
+                    <h3>Theory: Harder Cyclic Quadrilaterals</h3>
+                    <p>Opposite angles add to \(180^\circ\). We can use ratios like 2:3. If angles are \(2x\) and \(3x\), then \(2x + 3x = 180^\circ\).<br><span class="id-translate">Sudut berhadapan dijumlah jadi \(180^\circ\). Kita bisa pakai perbandingan seperti 2:3. Jika sudutnya \(2x\) dan \(3x\), maka \(2x + 3x = 180^\circ\).</span></p>
+                </div>
+
+                <!-- Exercise 6.7 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 7:</strong> In cyclic quadrilateral, \(\angle A = 3x+10\) and \(\angle C = 2x+20\). What is \(x\)?<br><span class="id-translate">Pada segi empat tali busur, \(\angle A = 3x+10\) dan \(\angle C = 2x+20\). Berapakah \(x\)?</span></p>
+                    <div class="options" id="ex6_7"></div>
+                    <div class="feedback" id="fb6_7"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec6', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec6', this)">Next</button>
+                </div>
+
+                <!-- Exercise 6.8 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 8:</strong> Using the previous question, what is the size of \(\angle A\)?<br><span class="id-translate">Menggunakan soal sebelumnya, berapakah ukuran \(\angle A\)?</span></p>
+                    <div class="options" id="ex6_8"></div>
+                    <div class="feedback" id="fb6_8"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec6', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec6', this)">Next</button>
+                </div>
+
+                <!-- Exercise 6.9 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 9:</strong> If \(\angle A : \angle C = 2 : 3\), what is \(\angle A\)?<br><span class="id-translate">Jika \(\angle A : \angle C = 2 : 3\), berapakah \(\angle A\)?</span></p>
+                    <div class="options" id="ex6_9"></div>
+                    <div class="feedback" id="fb6_9"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec6', this)">Previous</button>
+                    <button class="btn btn-primary" onclick="nextBlock('sec6', this)">Next</button>
+                </div>
+
+                <!-- Exercise 6.10 -->
+                <div class="block block-exercise" style="display:none;">
+                    <p><strong>Question 10:</strong> If \(\angle B : \angle D = 1 : 2\), what is \(\angle D\)?<br><span class="id-translate">Jika \(\angle B : \angle D = 1 : 2\), berapakah \(\angle D\)?</span></p>
+                    <div class="options" id="ex6_10"></div>
+                    <div class="feedback" id="fb6_10"></div>
+                    <button class="btn btn-tertiary" onclick="prevBlock('sec6', this)">Previous</button>
+                    <button class="btn btn-secondary" onclick="showSection('assign1')">Start Assignments</button>
+                </div>
+            </div>
+			
+            <!-- ASSIGNMENT 1 -->
+            <div id="assign1" class="section">
+                <h2>Assignment 1</h2>
+                <span class="id-translate">Tugas 1</span>
+                
+                <div class="block block-exercise"><p><strong>Q1:</strong> If central angle AOB is \(150^\circ\), what is the inscribed angle ACB facing the same arc?<br><span class="id-translate">Jika sudut pusat AOB \(150^\circ\), berapakah sudut keliling ACB yang menghadap busur yang sama?</span></p><div class="options" id="a1_1"></div><div class="feedback" id="fa1_1"></div><button class="btn btn-tertiary" onclick="prevBlock('assign1', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign1', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q2:</strong> What is the inscribed angle facing a half-circle (diameter)?<br><span class="id-translate">Berapakah sudut keliling yang menghadap setengah lingkaran (diameter)?</span></p><div class="options" id="a1_2"></div><div class="feedback" id="fa1_2"></div><button class="btn btn-tertiary" onclick="prevBlock('assign1', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign1', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q3:</strong> Two inscribed angles, P and Q, face the same arc. If P = \(55^\circ\), what is Q?<br><span class="id-translate">Dua sudut keliling, P dan Q, menghadap busur yang sama. Jika P = \(55^\circ\), berapakah Q?</span></p><div class="options" id="a1_3"></div><div class="feedback" id="fa1_3"></div><button class="btn btn-tertiary" onclick="prevBlock('assign1', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign1', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q4:</strong> Central angle is \(4x\) and inscribed angle is \(60^\circ\). Find \(x\).<br><span class="id-translate">Sudut pusat \(4x\) dan sudut keliling \(60^\circ\). Carilah \(x\).</span></p><div class="options" id="a1_4"></div><div class="feedback" id="fa1_4"></div><button class="btn btn-tertiary" onclick="prevBlock('assign1', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign1', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q5:</strong> In a cyclic quadrilateral ABCD, \(\angle A = 80^\circ\). What is \(\angle C\)?<br><span class="id-translate">Pada segi empat tali busur ABCD, \(\angle A = 80^\circ\). Berapakah \(\angle C\)?</span></p><div class="options" id="a1_5"></div><div class="feedback" id="fa1_5"></div><button class="btn btn-tertiary" onclick="prevBlock('assign1', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign1', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q6:</strong> An arc has a central angle of \(110^\circ\). An inscribed angle faces the major arc. What is its size?<br><span class="id-translate">Sebuah busur memiliki sudut pusat \(110^\circ\). Sudut keliling menghadap busur mayor. Berapakah besarnya?</span></p><div class="options" id="a1_6"></div><div class="feedback" id="fa1_6"></div><button class="btn btn-tertiary" onclick="prevBlock('assign1', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign1', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q7:</strong> Central angle is \((5x - 10)^\circ\) and inscribed angle is \((2x + 5)^\circ\). Find \(x\).<br><span class="id-translate">Sudut pusat \((5x - 10)^\circ\) dan sudut keliling \((2x + 5)^\circ\). Carilah \(x\).</span></p><div class="options" id="a1_7"></div><div class="feedback" id="fa1_7"></div><button class="btn btn-tertiary" onclick="prevBlock('assign1', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign1', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q8:</strong> A triangle is inside a circle with diameter as its base. One acute angle is \(35^\circ\). What is the other acute angle?<br><span class="id-translate">Segitiga di dalam lingkaran dengan diameter sebagai alas. Salah satu sudut lancip \(35^\circ\). Berapakah sudut lancip lainnya?</span></p><div class="options" id="a1_8"></div><div class="feedback" id="fa1_8"></div><button class="btn btn-tertiary" onclick="prevBlock('assign1', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign1', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q9:</strong> In a cyclic quadrilateral, the ratio of opposite angles A and C is 2:3. What is \(\angle A\)?<br><span class="id-translate">Pada segi empat tali busur, perbandingan sudut berhadapan A dan C adalah 2:3. Berapakah \(\angle A\)?</span></p><div class="options" id="a1_9"></div><div class="feedback" id="fa1_9"></div><button class="btn btn-tertiary" onclick="prevBlock('assign1', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign1', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q10:</strong> Why are inscribed angles facing the same arc always equal? (Analysis)<br><span class="id-translate">Mengapa sudut keliling yang menghadap busur yang sama selalu sama besar? (Analisis)</span></p><div class="options" id="a1_10"></div><div class="feedback" id="fa1_10"></div><button class="btn btn-tertiary" onclick="prevBlock('assign1', this)">Previous</button>
+                <button class="btn btn-secondary" onclick="printResult('Assignment 1', 'a1')">Print Result</button>
+                <button class="btn btn-primary" onclick="showSection('assign2')">Next Assignment</button></div>
+            </div>
+
+            <!-- ASSIGNMENT 2 -->
+            <div id="assign2" class="section">
+                <h2>Assignment 2</h2>
+                <span class="id-translate">Tugas 2</span>
+                
+                <div class="block block-exercise"><p><strong>Q1:</strong> If central angle is \(80^\circ\), what is the inscribed angle facing the same arc?<br><span class="id-translate">Jika sudut pusat \(80^\circ\), berapakah sudut keliling yang menghadap busur yang sama?</span></p><div class="options" id="a2_1"></div><div class="feedback" id="fa2_1"></div><button class="btn btn-tertiary" onclick="prevBlock('assign2', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign2', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q2:</strong> An inscribed angle is \(45^\circ\). What is the central angle?<br><span class="id-translate">Sudut keliling \(45^\circ\). Berapakah sudut pusatnya?</span></p><div class="options" id="a2_2"></div><div class="feedback" id="fa2_2"></div><button class="btn btn-tertiary" onclick="prevBlock('assign2', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign2', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q3:</strong> If a cyclic quadrilateral has angles \(110^\circ, 70^\circ, x^\circ, y^\circ\). What is \(x + y\)?<br><span class="id-translate">Jika segi empat tali busur memiliki sudut \(110^\circ, 70^\circ, x^\circ, y^\circ\). Berapakah \(x + y\)?</span></p><div class="options" id="a2_3"></div><div class="feedback" id="fa2_3"></div><button class="btn btn-tertiary" onclick="prevBlock('assign2', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign2', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q4:</strong> Central angle is \((3x)^\circ\) and inscribed is \((x + 20)^\circ\). Find \(x\).<br><span class="id-translate">Sudut pusat \((3x)^\circ\) dan sudut keliling \((x + 20)^\circ\). Carilah \(x\).</span></p><div class="options" id="a2_4"></div><div class="feedback" id="fa2_4"></div><button class="btn btn-tertiary" onclick="prevBlock('assign2', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign2', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q5:</strong> A triangle in a circle has diameter as base. If the angle at the top is \(90^\circ\), what is the arc it faces?<br><span class="id-translate">Segitiga dalam lingkaran memiliki diameter sebagai alas. Jika sudut di atas \(90^\circ\), busur apa yang dihadapinya?</span></p><div class="options" id="a2_5"></div><div class="feedback" id="fa2_5"></div><button class="btn btn-tertiary" onclick="prevBlock('assign2', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign2', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q6:</strong> If \(\angle A = 95^\circ\) in cyclic quad ABCD, find \(\angle C\).<br><span class="id-translate">Jika \(\angle A = 95^\circ\) pada segi empat tali busur ABCD, carilah \(\angle C\).</span></p><div class="options" id="a2_6"></div><div class="feedback" id="fa2_6"></div><button class="btn btn-tertiary" onclick="prevBlock('assign2', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign2', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q7:</strong> Two inscribed angles face the same arc. One is \((2y)^\circ\), the other is \(50^\circ\). Find \(y\).<br><span class="id-translate">Dua sudut keliling menghadap busur yang sama. Satunya \((2y)^\circ\), yang lain \(50^\circ\). Carilah \(y\).</span></p><div class="options" id="a2_7"></div><div class="feedback" id="fa2_7"></div><button class="btn btn-tertiary" onclick="prevBlock('assign2', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign2', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q8:</strong> If an arc is \(180^\circ\), the inscribed angle facing it is...<br><span class="id-translate">Jika busur \(180^\circ\), sudut keliling yang menghadapinya adalah...</span></p><div class="options" id="a2_8"></div><div class="feedback" id="fa2_8"></div><button class="btn btn-tertiary" onclick="prevBlock('assign2', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign2', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q9:</strong> Ratio of \(\angle B\) and \(\angle D\) is 4:5. Find \(\angle D\).<br><span class="id-translate">Perbandingan \(\angle B\) dan \(\angle D\) adalah 4:5. Carilah \(\angle D\).</span></p><div class="options" id="a2_9"></div><div class="feedback" id="fa2_9"></div><button class="btn btn-tertiary" onclick="prevBlock('assign2', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign2', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q10:</strong> If the central angle is \(0^\circ\), what happens to the inscribed angle?<br><span class="id-translate">Jika sudut pusat \(0^\circ\), apa yang terjadi pada sudut keliling?</span></p><div class="options" id="a2_10"></div><div class="feedback" id="fa2_10"></div><button class="btn btn-tertiary" onclick="prevBlock('assign2', this)">Previous</button>
+                <button class="btn btn-secondary" onclick="printResult('Assignment 2', 'a2')">Print Result</button>
+                <button class="btn btn-primary" onclick="showSection('assign3')">Next Assignment</button></div>
+            </div>
+
+            <!-- ASSIGNMENT 3 -->
+            <div id="assign3" class="section">
+                <h2>Assignment 3</h2>
+                <span class="id-translate">Tugas 3</span>
+                
+                <div class="block block-exercise"><p><strong>Q1:</strong> Inscribed angle is \(60^\circ\). What is the central angle facing the same arc?<br><span class="id-translate">Sudut keliling \(60^\circ\). Berapakah sudut pusat yang menghadap busur yang sama?</span></p><div class="options" id="a3_1"></div><div class="feedback" id="fa3_1"></div><button class="btn btn-tertiary" onclick="prevBlock('assign3', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign3', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q2:</strong> In a cyclic quad, \(\angle A + \angle C = 200^\circ\). Is this possible?<br><span class="id-translate">Pada segi empat tali busur, \(\angle A + \angle C = 200^\circ\). Apakah ini mungkin?</span></p><div class="options" id="a3_2"></div><div class="feedback" id="fa3_3"></div><button class="btn btn-tertiary" onclick="prevBlock('assign3', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign3', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q3:</strong> Central angle \(= 10x\), Inscribed \(= 5x\). If \(x=4\), what is the central angle?<br><span class="id-translate">Sudut pusat \(= 10x\), Sudut keliling \(= 5x\). Jika \(x=4\), berapakah sudut pusat?</span></p><div class="options" id="a3_3"></div><div class="feedback" id="fa3_3"></div><button class="btn btn-tertiary" onclick="prevBlock('assign3', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign3', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q4:</strong> Diameter AB, point C on edge. \(\angle C = 90^\circ\). If \(\angle A = 40^\circ\), find \(\angle B\).<br><span class="id-translate">Diameter AB, titik C di tepi. \(\angle C = 90^\circ\). Jika \(\angle A = 40^\circ\), carilah \(\angle B\).</span></p><div class="options" id="a3_4"></div><div class="feedback" id="fa3_4"></div><button class="btn btn-tertiary" onclick="prevBlock('assign3', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign3', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q5:</strong> If central angle is \((2x+10)^\circ\) and inscribed is \((x+5)^\circ\). Find \(x\).<br><span class="id-translate">Jika sudut pusat \((2x+10)^\circ\) dan sudut keliling \((x+5)^\circ\). Carilah \(x\).</span></p><div class="options" id="a3_5"></div><div class="feedback" id="fa3_5"></div><button class="btn btn-tertiary" onclick="prevBlock('assign3', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign3', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q6:</strong> If \(\angle A = 2x\) and \(\angle C = 3x\) in cyclic quad. Find \(\angle A\).<br><span class="id-translate">Jika \(\angle A = 2x\) dan \(\angle C = 3x\) pada segi empat tali busur. Carilah \(\angle A\).</span></p><div class="options" id="a3_6"></div><div class="feedback" id="fa3_6"></div><button class="btn btn-tertiary" onclick="prevBlock('assign3', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign3', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q7:</strong> Inscribed angle is \(x\), central angle is \(4x\). What is the relationship?<br><span class="id-translate">Sudut keliling \(x\), sudut pusat \(4x\). Apa hubungannya?</span></p><div class="options" id="a3_7"></div><div class="feedback" id="fa3_7"></div><button class="btn btn-tertiary" onclick="prevBlock('assign3', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign3', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q8:</strong> A reflex central angle is \(250^\circ\). What is the inscribed angle facing the minor arc?<br><span class="id-translate">Sudut pusat refleks \(250^\circ\). Berapakah sudut keliling yang menghadap busur minor?</span></p><div class="options" id="a3_8"></div><div class="feedback" id="fa3_8"></div><button class="btn btn-tertiary" onclick="prevBlock('assign3', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign3', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q9:</strong> If \(\angle B = 89^\circ\), what is \(\angle D\)?<br><span class="id-translate">Jika \(\angle B = 89^\circ\), berapakah \(\angle D\)?</span></p><div class="options" id="a3_9"></div><div class="feedback" id="fa3_9"></div><button class="btn btn-tertiary" onclick="prevBlock('assign3', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign3', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q10:</strong> Why does the central angle equal \(360^\circ\) in a full circle?<br><span class="id-translate">Mengapa sudut pusat sama dengan \(360^\circ\) dalam satu lingkaran penuh?</span></p><div class="options" id="a3_10"></div><div class="feedback" id="fa3_10"></div><button class="btn btn-tertiary" onclick="prevBlock('assign3', this)">Previous</button>
+                <button class="btn btn-secondary" onclick="printResult('Assignment 3', 'a3')">Print Result</button>
+                <button class="btn btn-primary" onclick="showSection('assign4')">Next Assignment</button></div>
+            </div>
+
+            <!-- ASSIGNMENT 4 -->
+            <div id="assign4" class="section">
+                <h2>Assignment 4</h2>
+                <span class="id-translate">Tugas 4</span>
+                
+                <div class="block block-exercise"><p><strong>Q1:</strong> If inscribed angle is \(10^\circ\), what is the central angle?<br><span class="id-translate">Jika sudut keliling \(10^\circ\), berapakah sudut pusat?</span></p><div class="options" id="a4_1"></div><div class="feedback" id="fa4_1"></div><button class="btn btn-tertiary" onclick="prevBlock('assign4', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign4', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q2:</strong> \(\angle A + \angle C = 180^\circ\). If \(\angle A = x+10\) and \(\angle C = 2x-20\). Find \(x\).<br><span class="id-translate">\(\angle A + \angle C = 180^\circ\). Jika \(\angle A = x+10\) dan \(\angle C = 2x-20\). Carilah \(x\).</span></p><div class="options" id="a4_2"></div><div class="feedback" id="fa4_2"></div><button class="btn btn-tertiary" onclick="prevBlock('assign4', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign4', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q3:</strong> An angle facing diameter is \(x\). What is \(x\)?<br><span class="id-translate">Sudut yang menghadap diameter adalah \(x\). Berapakah \(x\)?</span></p><div class="options" id="a4_3"></div><div class="feedback" id="fa4_3"></div><button class="btn btn-tertiary" onclick="prevBlock('assign4', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign4', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q4:</strong> Central \(= 5x\), Inscribed \(= 2x + 30\). Find \(x\).<br><span class="id-translate">Pusat \(= 5x\), Keliling \(= 2x + 30\). Carilah \(x\).</span></p><div class="options" id="a4_4"></div><div class="feedback" id="fa4_4"></div><button class="btn btn-tertiary" onclick="prevBlock('assign4', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign4', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q5:</strong> If two inscribed angles face the same arc, they are...<br><span class="id-translate">Jika dua sudut keliling menghadap busur yang sama, mereka...</span></p><div class="options" id="a4_5"></div><div class="feedback" id="fa4_5"></div><button class="btn btn-tertiary" onclick="prevBlock('assign4', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign4', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q6:</strong> In triangle ABC inscribed in a circle with diameter AB. \(\angle A = 30^\circ\). Find \(\angle B\).<br><span class="id-translate">Pada segitiga ABC tertulis dalam lingkaran dengan diameter AB. \(\angle A = 30^\circ\). Carilah \(\angle B\).</span></p><div class="options" id="a4_6"></div><div class="feedback" id="fa4_6"></div><button class="btn btn-tertiary" onclick="prevBlock('assign4', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign4', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q7:</strong> Ratio of opposite angles in cyclic quad is 1:1. What are the angles?<br><span class="id-translate">Perbandingan sudut berhadapan pada segi empat tali busur adalah 1:1. Berapakah sudutnya?</span></p><div class="options" id="a4_7"></div><div class="feedback" id="fa4_7"></div><button class="btn btn-tertiary" onclick="prevBlock('assign4', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign4', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q8:</strong> Central angle is \(90^\circ\). What is the arc it cuts?<br><span class="id-translate">Sudut pusat \(90^\circ\). Berapakah busur yang dipotongnya?</span></p><div class="options" id="a4_8"></div><div class="feedback" id="fa4_8"></div><button class="btn btn-tertiary" onclick="prevBlock('assign4', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign4', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q9:</strong> Reflex central angle is \(300^\circ\). What is the inscribed angle facing the minor arc?<br><span class="id-translate">Sudut pusat refleks \(300^\circ\). Berapakah sudut keliling yang menghadap busur minor?</span></p><div class="options" id="a4_9"></div><div class="feedback" id="fa4_9"></div><button class="btn btn-tertiary" onclick="prevBlock('assign4', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign4', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q10:</strong> Why do opposite angles in cyclic quad add up to \(180^\circ\)?<br><span class="id-translate">Mengapa sudut berhadapan pada segi empat tali busur dijumlah menjadi \(180^\circ\)?</span></p><div class="options" id="a4_10"></div><div class="feedback" id="fa4_10"></div><button class="btn btn-tertiary" onclick="prevBlock('assign4', this)">Previous</button>
+                <button class="btn btn-secondary" onclick="printResult('Assignment 4', 'a4')">Print Result</button>
+                <button class="btn btn-primary" onclick="showSection('assign5')">Next Assignment</button></div>
+            </div>
+
+            <!-- ASSIGNMENT 5 -->
+            <div id="assign5" class="section">
+                <h2>Assignment 5</h2>
+                <span class="id-translate">Tugas 5</span>
+                
+                <div class="block block-exercise"><p><strong>Q1:</strong> Central angle is \(x\), inscribed is \(x/2\). If \(x=140\), what is the inscribed angle?<br><span class="id-translate">Sudut pusat \(x\), sudut keliling \(x/2\). Jika \(x=140\), berapakah sudut keliling?</span></p><div class="options" id="a5_1"></div><div class="feedback" id="fa5_1"></div><button class="btn btn-tertiary" onclick="prevBlock('assign5', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign5', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q2:</strong> \(\angle A = 3x\), \(\angle C = 6x\) in cyclic quad. Find \(x\).<br><span class="id-translate">\(\angle A = 3x\), \(\angle C = 6x\) pada segi empat tali busur. Carilah \(x\).</span></p><div class="options" id="a5_2"></div><div class="feedback" id="fa5_2"></div><button class="btn btn-tertiary" onclick="prevBlock('assign5', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign5', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q3:</strong> Inscribed angle facing diameter is \(90^\circ\). The other two angles in the triangle add up to...<br><span class="id-translate">Sudut keliling menghadap diameter \(90^\circ\). Dua sudut lainnya dalam segitiga dijumlah menjadi...</span></p><div class="options" id="a5_3"></div><div class="feedback" id="fa5_3"></div><button class="btn btn-tertiary" onclick="prevBlock('assign5', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign5', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q4:</strong> Central angle is \((4x+10)^\circ\), inscribed is \((2x-5)^\circ\). Find \(x\).<br><span class="id-translate">Sudut pusat \((4x+10)^\circ\), sudut keliling \((2x-5)^\circ\). Carilah \(x\).</span></p><div class="options" id="a5_4"></div><div class="feedback" id="fa5_4"></div><button class="btn btn-tertiary" onclick="prevBlock('assign5', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign5', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q5:</strong> In cyclic quad, \(\angle A = 100^\circ, \angle B = 80^\circ\). What is \(\angle A + \angle B + \angle C + \angle D\)?<br><span class="id-translate">Pada segi empat tali busur, \(\angle A = 100^\circ, \angle B = 80^\circ\). Berapakah \(\angle A + \angle B + \angle C + \angle D\)?</span></p><div class="options" id="a5_5"></div><div class="feedback" id="fa5_5"></div><button class="btn btn-tertiary" onclick="prevBlock('assign5', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign5', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q6:</strong> Two inscribed angles face arcs that add up to \(360^\circ\). The angles themselves add up to...<br><span class="id-translate">Dua sudut keliling menghadap busur yang jika dijumlah \(360^\circ\). Sudutnya sendiri jika dijumlah menjadi...</span></p><div class="options" id="a5_6"></div><div class="feedback" id="fa5_6"></div><button class="btn btn-tertiary" onclick="prevBlock('assign5', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign5', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q7:</strong> If \(\angle A = x\) and \(\angle C = 180-x\), this is a...<br><span class="id-translate">Jika \(\angle A = x\) dan \(\angle C = 180-x\), ini adalah...</span></p><div class="options" id="a5_7"></div><div class="feedback" id="fa5_7"></div><button class="btn btn-tertiary" onclick="prevBlock('assign5', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign5', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q8:</strong> Central angle is \(180^\circ\). What is the inscribed angle facing the SAME arc?<br><span class="id-translate">Sudut pusat \(180^\circ\). Berapakah sudut keliling yang menghadap busur SAMA?</span></p><div class="options" id="a5_8"></div><div class="feedback" id="fa5_8"></div><button class="btn btn-tertiary" onclick="prevBlock('assign5', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign5', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q9:</strong> Ratio of opposite angles is 5:4. Find the larger angle.<br><span class="id-translate">Perbandingan sudut berhadapan adalah 5:4. Carilah sudut yang lebih besar.</span></p><div class="options" id="a5_9"></div><div class="feedback" id="fa5_9"></div><button class="btn btn-tertiary" onclick="prevBlock('assign5', this)">Previous</button><button class="btn btn-primary" onclick="nextBlock('assign5', this)">Next</button></div>
+                <div class="block block-exercise" style="display:none;"><p><strong>Q10:</strong> Why is the central angle twice the inscribed angle? (Logical proof)<br><span class="id-translate">Mengapa sudut pusat dua kali sudut keliling? (Bukti logis)</span></p><div class="options" id="a5_10"></div><div class="feedback" id="fa5_10"></div><button class="btn btn-tertiary" onclick="prevBlock('assign5', this)">Previous</button>
+                <button class="btn btn-secondary" onclick="printResult('Assignment 5', 'a5')">Print Result</button>
+                <button class="btn btn-primary" onclick="showSection('final')">Finish</button></div>
+            </div>
+		
+            <!-- SECTION 7: CONSOLIDATION & REFLECTION -->
+            <div id="final" class="section">
+                <h2>Consolidation & Reflection (01:00 - 01:05)</h2>
+                <span class="id-translate">Konsolidasi & Refleksi</span>
+                
+                <div class="block block-theory">
+                    <h3>Summary</h3>
+                    <p>Today we learned about angles in a circle. Remember the "Boss" (Central Angle) is always 2x the "Worker" (Inscribed Angle) if they look at the same arc. Also, in a cyclic quadrilateral, opposite angles are best friends that add up to 180 degrees!<br><span class="id-translate">Hari ini kita belajar sudut lingkaran. Ingat "Bos" (Sudut Pusat) selalu 2x "Pekerja" (Sudut Keliling) jika menghadap busur sama. Juga, di segi empat tali busur, sudut berhadapan adalah sahabat yang jika dijumlah jadi 180 derajat!</span></p>
+                </div>
+                
+                <div class="block block-exercise">
+                    <p>Great job! You have completed the lesson. For more practice, click the button below to go to Algonova.<br><span class="id-translate">Kerja bagus! Kamu telah menyelesaikan pelajaran. Untuk latihan lebih lanjut, klik tombol di bawah untuk pergi ke Algonova.</span></p>
+                    <br>
+                    <a href="https://learn.algonova.id/login" target="_blank" class="btn btn-primary" style="text-decoration:none; display:inline-block;">Go to Algonova</a>
+                </div>
+            </div>
+
+        </div> <!-- End content-container -->
+    </div> <!-- End main -->
+
+    <!-- SCRIPTS -->
+    <script>
+        // KaTeX Rendering Configuration
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: "$$", right: "$$", display: true},
+                    {left: "$", right: "$", display: false},
+                    {left: "\\(", right: "\\)", display: false},
+                    {left: "\\[", right: "\\]", display: true}
+                ]
+            });
+            renderQuestions();
+			
+            // Sembunyikan tombol Next Section, Start Assignment, Next Assignment, Start Lesson, Finish
+            document.querySelectorAll('.content-container button, .content-container a.btn').forEach(btn => {
+                let t = btn.textContent.toLowerCase();
+                if (t.includes('start lesson') || t.includes('next section') || t.includes('start assignment') || t.includes('next assignment') || t.includes('finish')) {
+                    btn.style.display = 'none';
+                }
+            });
+        });
+
+        let userAnswers = {};
+        let Q = {
+            'ex1_1': { o: ['4', 'x', '7', '+'], c: 'x', e: 'Variable is a letter representing an unknown number.' },
+            'ex1_2': { o: ['15', 'y', '-', '12'], c: '15', e: 'Constant is a fixed number (15).' },
+            'ex1_3': { o: ['x + 10', '10x', 'x - 10', '10 - x'], c: 'x + 10', e: 'Total is x plus bonus 10.' },
+            'ex1_4': { o: ['12', '-5', '5', 'y'], c: '-5', e: 'Coefficient is -5.' },
+            'ex1_5': { o: ['3g - 5', '3(g - 5)', '3g + 5', '5 - 3g'], c: '3(g - 5)', e: 'Sum of g minus 5, times 3.' },
+            'ex1_6': { o: ['3g + 12', '3g + 10', '3g + 2', '3g - 2'], c: '3g + 10', e: '3*g + 3*4 - 2 = 3g + 10.' },
+            'ex1_7': { o: ['x', '2x', 'x/2', 'x + 2'], c: '2x', e: 'Twice x is 2x.' },
+            'ex1_8': { o: ['x', '2x', 'x/2', 'x - 2'], c: 'x', e: 'Half of 2x is x.' },
+            'ex1_9': { o: ['180 - x', 'x/2', '2x', '90 - x'], c: '180 - x', e: 'If x + y = 180, y = 180 - x.' },
+            'ex1_10': { o: ['60', '110', '100', '120'], c: '110', e: '2(50) + 10 = 110.' },
+            'ex2_1': { o: ['Mini-map', 'Square', 'Triangle', 'Line'], c: 'Mini-map', e: 'Radar uses circles.' },
+            'ex2_2': { o: ['Edge', 'Center', 'Outside', 'Vertex'], c: 'Center', e: 'Middle point is center.' },
+            'ex2_3': { o: ['To make it look accurate', 'To use colors', 'To make it slow', 'No reason'], c: 'To make it look accurate', e: 'Angles determine field of view accurately.' },
+            'ex2_4': { o: ['Inscribed Angle', 'Central Angle', 'Reflex Angle', 'Right Angle'], c: 'Central Angle', e: 'Vertex at center.' },
+            'ex2_5': { o: ['Inscribed Angle', 'Central Angle', 'Reflex Angle', 'Right Angle'], c: 'Inscribed Angle', e: 'Vertex on edge.' },
+            'ex2_6': { o: ['Central Angle', 'Inscribed Angle', 'Diameter', 'Radius'], c: 'Central Angle', e: 'Lines meet at center.' },
+            'ex2_7': { o: ['Arc', 'Chord', 'Tangent', 'Radius'], c: 'Arc', e: 'Curved line on edge.' },
+            'ex2_8': { o: ['Yes, they are related', 'No, they are independent', 'Yes, they are the same', 'No, they never match'], c: 'Yes, they are related', e: 'They share the same arc.' },
+            'ex2_9': { o: ['Center', 'Edge', 'Outside', 'Top'], c: 'Center', e: 'Central angle is at center.' },
+            'ex2_10': { o: ['Center', 'Edge', 'Outside', 'Bottom'], c: 'Edge', e: 'Inscribed angle is on edge.' },
+            'ex3_1': { o: ['Diameter', 'Radius', 'Arc', 'Chord'], c: 'Radius', e: 'Center to edge.' },
+            'ex3_2': { o: ['Radius', 'Diameter', 'Arc', 'Tangent'], c: 'Diameter', e: 'Edge to edge through center.' },
+            'ex3_3': { o: ['10', '5', '2.5', '15'], c: '10', e: 'd = 2*r = 2*5 = 10.' },
+            'ex3_4': { o: ['Vertex', 'Origin', 'Center', 'Point'], c: 'Center', e: 'Middle of circle.' },
+            'ex3_5': { o: ['5 cm', '10 cm', '20 cm', 'Cannot be determined'], c: '10 cm', e: 'All points on edge are same distance from center.' },
+            'ex3_6': { o: ['40', '10', '20', '5'], c: '10', e: 'r = d/2 = 20/2 = 10.' },
+            'ex3_7': { o: ['cm', 'degrees', 'inches', 'meters'], c: 'degrees', e: 'Angles use degrees.' },
+            'ex3_8': { o: ['180', '360', '90', '270'], c: '360', e: 'Full circle is 360.' },
+            'ex3_9': { o: ['360', '90', '180', '45'], c: '180', e: 'Half circle is 180.' },
+            'ex3_10': { o: ['Acute', 'Right', 'Obtuse', 'Straight'], c: 'Right', e: '90 is right angle.' },
+            'ex4_1': { o: ['50', '100', '25', '90'], c: '100', e: 'Central = 2*50 = 100.' },
+            'ex4_2': { o: ['50', '100', '200', '90'], c: '50', e: 'Inscribed = 100/2 = 50.' },
+            'ex4_3': { o: ['Inscribed Angle', 'Central Angle', 'They are equal', 'Cannot be determined'], c: 'Central Angle', e: 'Central is twice inscribed.' },
+            'ex4_4': { o: ['Half (1/2)', 'Double (2x)', 'Same', 'Zero'], c: 'Half (1/2)', e: 'Inscribed is half central.' },
+            'ex4_5': { o: ['40', '80', '160', '20'], c: '40', e: '80/2 = 40.' },
+            'ex4_6': { o: ['2x', 'x/2', 'x', 'x+2'], c: 'x/2', e: 'Half of central x.' },
+            'ex4_7': { o: ['80', '100', '180', '260'], c: '100', e: '180-80=100.' },
+            'ex4_8': { o: ['100', '80', '180', '90'], c: '80', e: '180-100=80.' },
+            'ex4_9': { o: ['90', '180', '360', '270'], c: '180', e: 'Opposite angles add to 180.' },
+            'ex4_10': { o: ['180-x', 'x/2', '2x', '90-x'], c: '180-x', e: 'Sum is 180.' },
+            'ex5_1': { o: ['60', '120', '240', '30'], c: '60', e: '120/2=60.' },
+            'ex5_2': { o: ['60', '30', '15', '90'], c: '60', e: '30*2=60.' },
+            'ex5_3': { o: ['45', '90', '180', '30'], c: '45', e: '90/2=45.' },
+            'ex5_4': { o: ['45', '90', '180', '60'], c: '90', e: 'Always 90 (Thales).' },
+            'ex5_5': { o: ['Acute', 'Right', 'Obtuse', 'Reflex'], c: 'Right', e: 'It is 90 degrees.' },
+            'ex5_6': { o: ['45', '90', '180', '60'], c: '90', e: '180/2=90.' },
+            'ex5_7': { o: ['70', '110', '180', '90'], c: '110', e: '180-70=110.' },
+            'ex5_8': { o: ['110', '70', '180', '90'], c: '70', e: '180-110=70.' },
+            'ex5_9': { o: ['60', '30', '90', '120'], c: '60', e: '3x=180 => x=60.' },
+            'ex5_10': { o: ['45', '90', '135', '180'], c: '45', e: '4x=180 => x=45.' },
+            'ex6_1': { o: ['20', '40', '10', '80'], c: '20', e: '4x=80 => x=20.' },
+            'ex6_2': { o: ['50', '100', '25', '75'], c: '100', e: '2(50)=100.' },
+            'ex6_3': { o: ['30', '80', '50', '100'], c: '80', e: 'x+20=100 => x=80.' },
+            'ex6_4': { o: ['55', '110', '35', '180'], c: '55', e: 'Same arc = same angle.' },
+            'ex6_5': { o: ['20', '40', '10', '50'], c: '20', e: '2x=40 => x=20.' },
+            'ex6_6': { o: ['35', '70', '17.5', '105'], c: '70', e: '2*35=70.' },
+            'ex6_7': { o: ['30', '20', '10', '40'], c: '30', e: '5x+30=180 => x=30.' },
+            'ex6_8': { o: ['100', '80', '90', '70'], c: '100', e: '3(30)+10=100.' },
+            'ex6_9': { o: ['72', '108', '36', '144'], c: '72', e: '2x+3x=180 => x=36. 2(36)=72.' },
+            'ex6_10': { o: ['60', '120', '90', '180'], c: '120', e: 'x+2x=180 => x=60. 2(60)=120.' },
+            'a1_1': { o: ['75', '150', '300', '50'], c: '75', e: '150/2=75.' },
+            'a1_2': { o: ['90', '180', '45', '360'], c: '90', e: 'Diameter gives 90.' },
+            'a1_3': { o: ['55', '110', '35', '90'], c: '55', e: 'Same arc = same angle.' },
+            'a1_4': { o: ['30', '60', '15', '120'], c: '30', e: '4x=120 => x=30.' },
+            'a1_5': { o: ['80', '100', '180', '90'], c: '100', e: '180-80=100.' },
+            'a1_6': { o: ['125', '55', '250', '110'], c: '125', e: 'Reflex=250. 250/2=125.' },
+            'a1_7': { o: ['20', '30', '10', '40'], c: '20', e: '5x-10=4x+10 => x=20.' },
+            'a1_8': { o: ['55', '35', '90', '65'], c: '55', e: '180-90-35=55.' },
+            'a1_9': { o: ['72', '108', '36', '144'], c: '72', e: '5n=180 => n=36. 2n=72.' },
+            'a1_10': { o: ['They are half the same central angle', 'They are central angles', 'They face diameter', 'They are 90 degrees'], c: 'They are half the same central angle', e: 'Both share same central angle, so they are equal.' },
+            'a2_1': { o: ['40', '80', '160', '20'], c: '40', e: '80/2=40.' },
+            'a2_2': { o: ['90', '45', '22.5', '180'], c: '90', e: '45*2=90.' },
+            'a2_3': { o: ['180', '360', '90', '270'], c: '180', e: 'Opposite pairs add to 180.' },
+            'a2_4': { o: ['40', '20', '30', '10'], c: '40', e: '3x=2x+40 => x=40.' },
+            'a2_5': { o: ['Diameter', 'Radius', 'Minor arc', 'Major arc'], c: 'Diameter', e: '90 degree angle faces diameter.' },
+            'a2_6': { o: ['85', '95', '180', '105'], c: '85', e: '180-95=85.' },
+            'a2_7': { o: ['25', '50', '10', '100'], c: '25', e: '2y=50 => y=25.' },
+            'a2_8': { o: ['90', '180', '45', '60'], c: '90', e: '180/2=90.' },
+            'a2_9': { o: ['100', '80', '90', '120'], c: '100', e: '9n=180 => n=20. 5(20)=100.' },
+            'a2_10': { o: ['It is 0', 'It is 360', 'It is 90', 'It is 180'], c: 'It is 0', e: '0/2=0.' },
+            'a3_1': { o: ['120', '60', '30', '90'], c: '120', e: '60*2=120.' },
+            'a3_2': { o: ['No', 'Yes', 'Only if A=C', 'Only if circle is small'], c: 'No', e: 'Sum must be exactly 180.' },
+            'a3_3': { o: ['40', '20', '10', '4'], c: '40', e: '10(4)=40.' },
+            'a3_4': { o: ['50', '40', '60', '90'], c: '50', e: '180-90-40=50.' },
+            'a3_5': { o: ['30', '20', '10', '40'], c: '30', e: '2x+10=70 => 2x=60 => x=30.' },
+            'a3_6': { o: ['72', '36', '108', '144'], c: '72', e: '5x=180 => x=36. 2(36)=72.' },
+            'a3_7': { o: ['Wrong, should be 2:1', 'Correct', 'Only if facing diameter', 'Depends on circle size'], c: 'Wrong, should be 2:1', e: 'Must be 2:1.' },
+            'a3_8': { o: ['55', '125', '110', '250'], c: '55', e: 'Minor central = 360-250=110. 110/2=55.' },
+            'a3_9': { o: ['91', '89', '180', '90'], c: '91', e: '180-89=91.' },
+            'a3_10': { o: ['Because it goes all the way around', 'Because it is a circle', 'It is 180', 'It is 90'], c: 'Because it goes all the way around', e: 'A full turn is 360 degrees.' },
+            'a4_1': { o: ['20', '10', '5', '40'], c: '20', e: '10*2=20.' },
+            'a4_2': { o: ['50', '30', '20', '40'], c: '50', e: '3x+30=180 => x=50.' },
+            'a4_3': { o: ['90', '180', '45', '60'], c: '90', e: 'Thales theorem.' },
+            'a4_4': { o: ['60', '30', '20', '10'], c: '60', e: '5x=4x+60 => x=60.' },
+            'a4_5': { o: ['Equal', 'Different', 'Add to 180', 'Add to 90'], c: 'Equal', e: 'Same arc = equal angles.' },
+            'a4_6': { o: ['60', '30', '90', '45'], c: '60', e: '180-90-30=60.' },
+            'a4_7': { o: ['90, 90', '45, 135', '60, 120', '180, 0'], c: '90, 90', e: '1n+1n=180 => n=90.' },
+            'a4_8': { o: ['90', '180', '45', '360'], c: '90', e: 'Central angle equals arc.' },
+            'a4_9': { o: ['30', '60', '150', '120'], c: '30', e: 'Minor=360-300=60. 60/2=30.' },
+            'a4_10': { o: ['Because they face arcs that add to 360', 'Because they are 90 degrees', 'Because of Thales', 'No reason'], c: 'Because they face arcs that add to 360', e: 'Opposite arcs sum to 360, angles sum to 360/2=180.' },
+            'a5_1': { o: ['70', '140', '35', '280'], c: '70', e: '140/2=70.' },
+            'a5_2': { o: ['20', '30', '10', '40'], c: '20', e: '9x=180 => x=20.' },
+            'a5_3': { o: ['90', '180', '45', '270'], c: '90', e: 'Triangle angles sum to 180. 180-90=90.' },
+            'a5_4': { o: ['20', '10', '30', '40'], c: '20', e: '4x+10=90 => 4x=80 => x=20.' },
+            'a5_5': { o: ['360', '180', '90', '280'], c: '360', e: 'Quadrilateral angles sum to 360.' },
+            'a5_6': { o: ['180', '360', '90', '270'], c: '180', e: '360/2=180.' },
+            'a5_7': { o: ['Cyclic Quadrilateral', 'Triangle', 'Square', 'Pentagon'], c: 'Cyclic Quadrilateral', e: 'Opposite angles sum to 180.' },
+            'a5_8': { o: ['90', '180', '45', '60'], c: '90', e: '180/2=90.' },
+            'a5_9': { o: ['100', '80', '90', '120'], c: '100', e: '9n=180 => n=20. 5(20)=100.' },
+            'a5_10': { o: ['Diameter of circle divides it into two isosceles triangles', 'The distance from center is same', 'Thales theorem', 'It is a rule'], c: 'Diameter of circle divides it into two isosceles triangles', e: 'Proof uses radius to form isosceles triangles.' }
+        };
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function renderQuestions() {
+            for (let qId in Q) {
+                let container = document.getElementById(qId);
+                if (!container) continue;
+                let options = shuffleArray([...Q[qId].o]);
+                container.innerHTML = '';
+                options.forEach(opt => {
+                    let btn = document.createElement('button');
+                    btn.className = 'option';
+                    btn.innerHTML = opt;
+                    btn.onclick = function() { selectOption(this, qId, opt); };
+                    container.appendChild(btn);
+                });
+            }
+        }
+
+        function resetExercise(qId) {
+            let container = document.getElementById(qId);
+            let opts = container.querySelectorAll('.option');
+            opts.forEach(o => { o.classList.remove('selected', 'correct', 'wrong'); });
+            
+            let fbId = qId.startsWith('a') ? 'f' + qId : 'fb' + qId.substring(2);
+            let fbEl = document.getElementById(fbId);
+            if(fbEl) {
+                fbEl.classList.remove('show');
+                fbEl.innerHTML = '';
+            }
+            
+            delete userAnswers[qId];
+        }
+
+        function selectOption(btn, qId, val) {
+            let parent = document.getElementById(qId);
+            let opts = parent.querySelectorAll('.option');
+            opts.forEach(o => { o.classList.remove('selected', 'correct', 'wrong'); });
+            
+            btn.classList.add('selected');
+            userAnswers[qId] = val;
+            
+            let fbId = qId.startsWith('a') ? 'f' + qId : 'fb' + qId.substring(2);
+            let fbEl = document.getElementById(fbId);
+            
+            if (val === Q[qId].c) {
+                btn.classList.remove('selected');
+                btn.classList.add('correct');
+                fbEl.className = 'feedback show correct';
+                fbEl.innerHTML = '<strong>Correct!</strong><br>' + Q[qId].e;
+            } else {
+                btn.classList.add('wrong');
+                fbEl.className = 'feedback show wrong';
+                fbEl.innerHTML = '<strong>Wrong.</strong><br>Correct answer: ' + Q[qId].c + '<br>' + Q[qId].e;
+            }
+        }
+
+        function showSection(id) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            
+            document.querySelectorAll('.nav-item').forEach(n => {
+                if(n.getAttribute('onclick') && n.getAttribute('onclick').includes(id)) n.classList.add('active');
+                else n.classList.remove('active');
+            });
+            
+            // Scroll halaman ke atas saat pindah section
+            const mainContent = document.querySelector('.main');
+            if (mainContent) mainContent.scrollTop = 0;
+        }
+
+        function nextBlock(secId, btn) {
+            let parent = btn.closest('.section');
+            let blocks = parent.querySelectorAll('.block');
+            for(let i=0; i<blocks.length; i++) {
+                if(blocks[i].style.display !== 'none' && getComputedStyle(blocks[i]).display !== 'none') {
+                    for(let j=i+1; j<blocks.length; j++) {
+                        if(blocks[j].style.display === 'none') {
+                            blocks[i].style.display = 'none';
+                            blocks[j].style.display = 'block';
+                            blocks[j].scrollIntoView({behavior:'smooth', block:'start'});
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+
+        function prevBlock(secId, btn) {
+            let parent = btn.closest('.section');
+            let blocks = parent.querySelectorAll('.block');
+            for(let i=0; i<blocks.length; i++) {
+                if(blocks[i].style.display !== 'none' && getComputedStyle(blocks[i]).display !== 'none') {
+                    for(let j=i-1; j>=0; j--) {
+                        if(blocks[j].style.display === 'none') {
+                            blocks[i].style.display = 'none';
+                            blocks[j].style.display = 'block';
+                            blocks[j].scrollIntoView({behavior:'smooth', block:'start'});
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+
+        function resetAllProgress() {
+            if(confirm('Are you sure you want to reset all progress?')) {
+                userAnswers = {};
+                document.querySelectorAll('.option').forEach(o => { o.classList.remove('selected', 'correct', 'wrong'); });
+                document.querySelectorAll('.feedback').forEach(f => { f.classList.remove('show'); f.innerHTML = ''; });
+                document.querySelectorAll('.section').forEach(s => {
+                    if(s.id !== 'home') {
+                        s.querySelectorAll('.block').forEach((b, i) => { 
+                            b.style.display = i === 0 ? 'block' : 'none'; 
+                        });
+                    }
+                });
+                showSection('home');
+            }
+        }
+
+        function printResult(assignName, prefix) {
+            let score = 0;
+            let html = `<h1 style="text-align:center; margin-bottom: 10px;">MATH TUTORING by Deni</h1>`;
+            html += `<div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 10px;">`;
+            html += `<div><strong>Name:</strong> ____________________</div>`;
+            html += `<div><strong>Date:</strong> ____________________</div>`;
+            html += `<div><strong>Score:</strong> ______ / 10</div>`;
+            html += `</div>`;
+            html += `<p style="font-size: 12px; margin-bottom: 10px;"><strong>Topic:</strong> Angles in a Circle | <strong>Assignment:</strong> ${assignName}</p>`;
+            html += `<table style="width:100%; border-collapse: collapse; font-size: 9px;">`;
+            html += `<tr style="background:#f0f0f0;"><th style="border:1px solid #ccc; padding:3px; width:4%;">No.</th><th style="border:1px solid #ccc; padding:3px; width:52%;">Question</th><th style="border:1px solid #ccc; padding:3px; width:15%;">Student</th><th style="border:1px solid #ccc; padding:3px; width:15%;">Correct</th><th style="border:1px solid #ccc; padding:3px; width:6%;">Note</th></tr>`;
+            
+            for(let i=1; i<=10; i++) {
+                let key = prefix + '_' + i;
+                let userAns = userAnswers[key] || 'N-A'; 
+                let correctAns = Q[key].c;
+                let note = (userAns === correctAns) ? '✔️' : '❌';
+                if(note === '✔️') score++;
+                
+                // Ambil teks soal (hanya bagian bahasa Inggris sebelum <br>)
+                let qContainer = document.getElementById(key);
+                let qBlock = qContainer ? qContainer.closest('.block-exercise') : null;
+                let qHTML = 'Question not found';
+                if (qBlock) {
+                    let pTag = qBlock.querySelector('p');
+                    if (pTag) {
+                        qHTML = pTag.innerHTML.split('<br>')[0]; // Ambil sebelum <br> (bahasa Inggris)
+                        qHTML = qHTML.replace('<strong>', '<b>').replace('</strong>', '</b>');
+                    }
+                }
+                
+                html += `<tr><td style="border:1px solid #ccc; padding:3px; text-align:center;">${i}</td><td style="border:1px solid #ccc; padding:3px;">${qHTML}</td><td style="border:1px solid #ccc; padding:3px;">${userAns}</td><td style="border:1px solid #ccc; padding:3px;">${correctAns}</td><td style="border:1px solid #ccc; padding:3px; text-align:center;">${note}</td></tr>`;
+            }
+            html += `</table>`;
+            html += `<p style="margin-top:20px; text-align:right;">Checked by,</p>`;
+            html += `<p style="margin-top:30px; text-align:right; font-weight:bold;">Deni</p>`;
+            
+            let printArea = document.getElementById('printArea');
+            printArea.innerHTML = html;
+            document.body.appendChild(printArea);
+            printArea.style.display = 'block';
+            
+            if (typeof renderMathInElement !== 'undefined') {
+                try {
+                    renderMathInElement(printArea, {
+                        delimiters: [
+                            {left: "$$", right: "$$", display: true},
+                            {left: "$", right: "$", display: false},
+                            {left: "\\(", right: "\\)", display: false},
+                            {left: "\\[", right: "\\]", display: true}
+                        ]
+                    });
+                } catch(e) {
+                    console.error("KaTeX rendering error:", e);
+                }
+            }
+            
+            window.print();
+            
+            setTimeout(() => {
+                printArea.style.display = 'none';
+            }, 500);
+        }
+    </script>
+</body>
+</html>
