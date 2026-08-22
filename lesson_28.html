@@ -1,0 +1,2316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Tutoring - Tangent to a Circle</title>
+    <!-- KaTeX CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #58cc02;
+            --primary-dark: #58a700;
+            --secondary: #1cb0f6;
+            --danger: #ff4b4b;
+            --warning: #ffc800;
+            --bg-color: #fff;
+            --text-color: #3c3c3c;
+            --border-color: #e5e5e5;
+            --shadow: 0 2px 0 rgba(0,0,0,0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Nunito', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f7f7f7;
+            color: var(--text-color);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Navbar Left */
+        .navbar {
+            width: 280px;
+            background-color: #fff;
+            border-right: 2px solid var(--border-color);
+            padding: 20px;
+            overflow-y: auto;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar-header {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--text-color);
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            background-color: #fff;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            color: #afafaf;
+            transition: all 0.2s;
+            text-align: left;
+        }
+
+        .nav-btn:hover {
+            background-color: #f7f7f7;
+        }
+
+        .nav-btn.active {
+            border-color: var(--secondary);
+            background-color: #e7f7ff;
+            color: var(--secondary);
+        }
+
+        .nav-btn.completed {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .nav-btn i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .reset-all-btn {
+            margin-top: auto;
+            background-color: #fff;
+            border: 2px solid var(--danger);
+            color: var(--danger);
+            padding: 10px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .reset-all-btn:hover { background-color: #fff0f0; }
+
+        /* Main Content */
+        .main-content {
+            flex-grow: 1;
+            padding: 40px;
+            overflow-y: auto !important;
+            display: block !important;
+            justify-content: center;
+        }
+
+        .lesson-container {
+            max-width: 800px;
+            width: 100%;
+            background: #fff;
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            animation: fadeIn 0.5s ease;
+			margin: 0 auto !important;
+			height: auto !important;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-header {
+            font-size: 1.5rem;
+            color: var(--text-color);
+            margin-bottom: 5px;
+            font-weight: 800;
+        }
+        .section-time {
+            font-size: 0.9rem;
+            color: #afafaf;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .content-block {
+            margin-bottom: 30px;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 20px;
+        }
+        .content-block:last-child { border-bottom: none; }
+
+        .theory-box {
+            background-color: #f7f7f7;
+            border-left: 5px solid var(--secondary);
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .translation {
+            color: #777;
+            font-style: italic;
+            font-size: 0.95rem;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .exercise-box {
+            background-color: #fff;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .question-text {
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .option-btn {
+            padding: 10px;
+            border: 2px solid var(--border-color);
+            background: #fff;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        .option-btn:hover { border-color: var(--secondary); background: #e7f7ff; }
+        .option-btn.selected { border-color: var(--secondary); background: #ddf4ff; color: var(--secondary); }
+        .option-btn.correct { border-color: var(--primary); background: #e7ffe0; color: var(--primary-dark); }
+        .option-btn.incorrect { border-color: var(--danger); background: #ffe5e5; color: var(--danger); }
+
+        .input-answer {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 1rem;
+        }
+        .input-answer:focus { outline: none; border-color: var(--secondary); }
+
+        .check-btn {
+            background-color: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow: 0 3px 0 var(--primary-dark);
+            transition: transform 0.1s;
+        }
+        .check-btn:hover { transform: translateY(-1px); }
+        .check-btn:active { transform: translateY(2px); box-shadow: none; }
+        .check-btn:disabled { background-color: #e5e5e5; color: #afafaf; box-shadow: none; cursor: not-allowed; transform: none;}
+
+        .explanation {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f0f8ff;
+            display: none;
+        }
+        .explanation.show { display: block; animation: fadeIn 0.3s; }
+        .explanation.correct { border-left: 5px solid var(--primary); }
+        .explanation.incorrect { border-left: 5px solid var(--danger); }
+
+        .nav-controls {
+            display: flex;
+            justify-content: center !important;
+            margin-top: 10px !important;
+            padding-top: 0 !important;
+            border-top: none !important;
+        }
+
+        .action-btn {
+            padding: 12px 24px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+        .prev-btn { background: #e5e5e5; color: #777; }
+        .prev-btn:hover { background: #dcdcdc; }
+        .next-btn { background: var(--secondary); color: #fff; box-shadow: 0 3px 0 #0a9fdb; margin-left: auto;}
+        .next-btn:hover { transform: translateY(-1px); }
+        .reset-btn { background: #fff; border: 2px solid var(--border-color); color: #777; margin-right: 10px;}
+        .reset-btn:hover { background: #f7f7f7; }
+		
+		/* Styling untuk tombol Reset di tiap exercise */
+		.reset-ex-btn {
+			background: #fff !important;
+			border: 2px solid #e5e5e5 !important;
+			color: #777 !important;
+			box-shadow: none !important;
+			margin-left: 10px !important;
+			cursor: pointer !important;
+		}
+		.reset-ex-btn:hover {
+			background: #f7f7f7 !important;
+		}
+
+        /* SVG Illustrations */
+        .illustration {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        /* Home Specific */
+        .rule-card {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: #fff;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            margin-bottom: 10px;
+        }
+        .rule-icon {
+            width: 40px;
+            height: 40px;
+            background: #ddf4ff;
+            color: var(--secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .hidden { display: none; }
+		
+		.check-btn, .reset-ex-btn { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR LEFT -->
+    <div class="navbar">
+        <div class="navbar-header">Math Tutoring by Deni</div>
+        <button class="nav-btn active" onclick="showSection('home', this)"><i class="fas fa-home"></i> Home</button>
+        <button class="nav-btn" onclick="showSection('sec1', this)"><i class="fas fa-bolt"></i> Spiral Review</button>
+        <button class="nav-btn" onclick="showSection('sec2', this)"><i class="fas fa-globe"></i> Introduction</button>
+        <button class="nav-btn" onclick="showSection('sec3', this)"><i class="fas fa-history"></i> Prior Knowledge</button>
+        <button class="nav-btn" onclick="showSection('sec4', this)"><i class="fas fa-calculator"></i> Problem Intro</button>
+        <button class="nav-btn" onclick="showSection('sec5', this)"><i class="fas fa-chalkboard-teacher"></i> Guided Practice</button>
+        <button class="nav-btn" onclick="showSection('sec6', this)"><i class="fas fa-user-graduate"></i> Indep. Practice</button>
+        <button class="nav-btn" onclick="showSection('asg1', this)"><i class="fas fa-file-alt"></i> Assignment 1</button>
+        <button class="nav-btn" onclick="showSection('asg2', this)"><i class="fas fa-file-alt"></i> Assignment 2</button>
+        <button class="nav-btn" onclick="showSection('asg3', this)"><i class="fas fa-file-alt"></i> Assignment 3</button>
+        <button class="nav-btn" onclick="showSection('asg4', this)"><i class="fas fa-file-alt"></i> Assignment 4</button>
+        <button class="nav-btn" onclick="showSection('asg5', this)"><i class="fas fa-file-alt"></i> Assignment 5</button>
+        <button class="nav-btn" onclick="showSection('end', this)"><i class="fas fa-flag-checkered"></i> Consolidation</button>
+        
+        <button class="reset-all-btn" onclick="resetAllProgress()"><i class="fas fa-trash-alt"></i> Reset All Progress</button>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+        
+        <!-- HOME SECTION -->
+        <div id="home" class="lesson-container">
+            <h1 class="section-header">Math Tutoring by Deni</h1>
+            <p style="margin-bottom: 20px;">Topic: Tangent to a Circle <span class="translation">Topik: Garis Singgung Lingkaran</span></p>
+            
+            <div class="content-block">
+                <h3>Class Rules <span class="translation">Aturan Kelas</span></h3>
+                <div class="rule-card">
+                    <div class="rule-icon"><i class="fas fa-comments"></i></div>
+                    <div>
+                        <strong>Take turns speaking.</strong>
+                        <span class="translation">Berbicara secara bergantian.</span>
+                    </div>
+                </div>
+                <div class="rule-card">
+                    <div class="rule-icon"><i class="fas fa-door-open"></i></div>
+                    <div>
+                        <strong>Ask for permission if you want to leave the class.</strong>
+                        <span class="translation">Meminta izin jika ingin meninggalkan kelas.</span>
+                    </div>
+                </div>
+                <div class="rule-card">
+                    <div class="rule-icon"><i class="fas fa-video"></i></div>
+                    <div>
+                        <strong>Turn on your camera and microphone if needed.</strong>
+                        <span class="translation">Menyalakan kamera dan mikrofon jika diperlukan.</span>
+                    </div>
+                </div>
+            </div>
+            <button class="action-btn next-btn" onclick="showSection('sec1', document.getElementsByClassName('nav-btn')[1])">Start Lesson <i class="fas fa-arrow-right"></i></button>
+        </div>
+
+        <!-- SECTION 1: Spiral Review -->
+        <div id="sec1" class="lesson-container hidden">
+            <h2 class="section-header">Spiral Review Warm-up</h2>
+            <p class="section-time">Time: 00:00 - 00:10</p>
+            
+            <!-- Theory 1 -->
+            <div class="content-block">
+                <div class="theory-box">
+                    <p>Before we learn about circles, we need to sharpen our algebra skills. Algebra uses letters to represent unknown numbers.</p>
+                    <p class="translation">Sebelum kita belajar tentang lingkaran, kita harus menajamkan kemampuan aljabar kita. Aljabar menggunakan huruf untuk mewakili angka yang tidak diketahui.</p>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li><strong>Variable:</strong> A letter representing an unknown number. <span class="translation">Variabel: Huruf yang mewakili angka tidak diketahui.</span></li>
+                        <li><strong>Constant:</strong> A fixed number. <span class="translation">Konstanta: Angka tetap.</span></li>
+                        <li><strong>Coefficient:</strong> The number multiplied by the variable. <span class="translation">Koefisien: Angka dikalikan dengan variabel.</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Exercise 1.1, 1.2, 1.3 -->
+            <div class="content-block">
+                <div class="exercise-box" id="ex1_1">
+                    <p class="question-text">1. Identify the variable in the expression: \(5x + 12\)</p>
+                    <div class="options-grid" id="opt1_1"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex1_1', 'x')">Check</button>
+                    <div class="explanation" id="exp1_1">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        The variable is 'x'. <br>
+                        <span class="translation">Variabelnya adalah 'x'.</span>
+                    </div>
+                </div>
+                <div class="exercise-box" id="ex1_2">
+                    <p class="question-text">2. What is the coefficient of \(y\) in the expression \(8 - 3y\)?</p>
+                    <div class="options-grid" id="opt1_2"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex1_2', '-3')">Check</button>
+                    <div class="explanation" id="exp1_2">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        The coefficient is the number directly in front of the variable \(y\). Here, it is \(-3\). <br>
+                        <span class="translation">Koefisien adalah angka tepat di depan variabel \(y\). Di sini, angkanya \(-3\).</span>
+                    </div>
+                </div>
+                <div class="exercise-box" id="ex1_3">
+                    <p class="question-text">3. Identify the constant in the expression: \(5x + 12\)</p>
+                    <div class="options-grid" id="opt1_3"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex1_3', '12')">Check</button>
+                    <div class="explanation" id="exp1_3">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        The constant is the number without a variable, which is 12.<br>
+                        <span class="translation">Konstanta adalah angka tanpa variabel, yaitu 12.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Theory 2 -->
+            <div class="content-block">
+                <div class="theory-box">
+                    <p>We can translate sentences into algebraic expressions.</p>
+                    <p class="translation">Kita dapat menerjemahkan kalimat menjadi ekspresi aljabar.</p>
+                    <p><strong>Example:</strong> "Seven more than three times a number (n)".<br> \(3 \times n + 7 = 3n + 7\)</p>
+                </div>
+            </div>
+
+            <!-- Exercise 2.1, 2.2, 2.3 -->
+            <div class="content-block">
+                <div class="exercise-box" id="ex2_1">
+                    <p class="question-text">1. Translate: "Seven more than three times a number (n)".</p>
+                    <input type="text" class="input-answer" id="input2_1" placeholder="Type your answer...">
+                    <button class="check-btn" onclick="checkInput('input2_1', '3n+7', 'exp2_1')">Check</button>
+                    <div class="explanation" id="exp2_1">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        Three times a number \(n\) is \(3n\). Seven more means we add 7: \(3n + 7\). <br>
+                        <span class="translation">Tiga kali nomor \(n\) adalah \(3n\). Tujuh lebihnya berarti kita tambah 7: \(3n + 7\).</span>
+                    </div>
+                </div>
+                <div class="exercise-box" id="ex2_2">
+                    <p class="question-text">2. Translate: "Total price of 5 apples if one apple costs \(a\) rupiah, minus a 2000 rupiah discount".</p>
+                    <div class="options-grid" id="opt2_2"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex2_2', '5a - 2000')">Check</button>
+                    <div class="explanation" id="exp2_2">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        5 apples cost \(5a\). Subtracting the discount gives \(5a - 2000\). <br>
+                        <span class="translation">5 apel harganya \(5a\). Dikurangi diskon menjadi \(5a - 2000\).</span>
+                    </div>
+                </div>
+                <div class="exercise-box" id="ex2_3">
+                    <p class="question-text">3. If a number is \(y\), what is "Twice the number decreased by 4"?</p>
+                    <div class="options-grid" id="opt2_3"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex2_3', '2y - 4')">Check</button>
+                    <div class="explanation" id="exp2_3">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        Twice \(y\) is \(2y\). Decreased by 4 means subtract 4: \(2y - 4\). <br>
+                        <span class="translation">Dua kali \(y\) adalah \(2y\). Dikurangi 4 berarti kurangi 4: \(2y - 4\).</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Theory 3 -->
+            <div class="content-block">
+                <div class="theory-box">
+                    <p>Remember the Pythagorean Theorem! For a right-angled triangle: \(a^2 + b^2 = c^2\), where \(c\) is the longest side (hypotenuse).</p>
+                    <p class="translation">Ingat Teorema Pythagoras! Untuk segitiga siku-siku: \(a^2 + b^2 = c^2\), di mana \(c\) adalah sisi terpanjang (hipotenusa).</p>
+                    <div class="illustration">
+                        <svg width="150" height="120">
+                            <polygon points="20,100 120,100 20,20" fill="#ddf4ff" stroke="#1cb0f6" stroke-width="3"/>
+                            <rect x="20" y="88" width="12" height="12" fill="none" stroke="#1cb0f6" stroke-width="2"/>
+                            <text x="10" y="60" font-size="14" fill="#3c3c3c" font-weight="bold">a</text>
+                            <text x="70" y="115" font-size="14" fill="#3c3c3c" font-weight="bold">b</text>
+                            <text x="80" y="50" font-size="14" fill="#3c3c3c" font-weight="bold">c</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exercise 3.1, 3.2, 3.3, 3.4 -->
+            <div class="content-block">
+                <div class="exercise-box" id="ex3_1">
+                    <p class="question-text">1. If \(a = 3\) and \(b = 4\), find \(c\) using Pythagoras.</p>
+                    <div class="options-grid" id="opt3_1"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex3_1', '5')">Check</button>
+                    <div class="explanation" id="exp3_1">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        \(3^2 + 4^2 = 9 + 16 = 25\). \(\sqrt{25} = 5\). <br>
+                        <span class="translation">\(3^2 + 4^2 = 9 + 16 = 25\). \(\sqrt{25} = 5\).</span>
+                    </div>
+                </div>
+                <div class="exercise-box" id="ex3_2">
+                    <p class="question-text">2. If \(a = 6\) and \(c = 10\), find \(b\).</p>
+                    <div class="options-grid" id="opt3_2"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex3_2', '8')">Check</button>
+                    <div class="explanation" id="exp3_2">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        \(b^2 = c^2 - a^2 = 100 - 36 = 64\). \(\sqrt{64} = 8\). <br>
+                        <span class="translation">\(b^2 = c^2 - a^2 = 100 - 36 = 64\). \(\sqrt{64} = 8\).</span>
+                    </div>
+                </div>
+                <div class="exercise-box" id="ex3_3">
+                    <p class="question-text">3. A right triangle has sides 5 cm and 12 cm. What is the hypotenuse?</p>
+                    <div class="options-grid" id="opt3_3"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex3_3', '13')">Check</button>
+                    <div class="explanation" id="exp3_3">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        \(5^2 + 12^2 = 25 + 144 = 169\). \(\sqrt{169} = 13\). <br>
+                        <span class="translation">\(5^2 + 12^2 = 25 + 144 = 169\). \(\sqrt{169} = 13\).</span>
+                    </div>
+                </div>
+                <div class="exercise-box" id="ex3_4">
+                    <p class="question-text">4. What is the square root of 225?</p>
+                    <input type="text" class="input-answer" id="input3_4" placeholder="Type number">
+                    <button class="check-btn" onclick="checkInput('input3_4', '15', 'exp3_4')">Check</button>
+                    <div class="explanation" id="exp3_4">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        \(15 \times 15 = 225\). <br>
+                        <span class="translation">\(15 \times 15 = 225\).</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-controls">
+                <button class="action-btn prev-btn" onclick="showSection('home', document.getElementsByClassName('nav-btn')[0])"><i class="fas fa-arrow-left"></i> Prev</button>
+                <button class="action-btn reset-btn" onclick="resetSection('sec1')"><i class="fas fa-redo"></i> Reset</button>
+                <button class="action-btn next-btn" onclick="showSection('sec2', document.getElementsByClassName('nav-btn')[2])">Next <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+
+        <!-- SECTION 2: Introduction -->
+        <div id="sec2" class="lesson-container hidden">
+            <h2 class="section-header">Introduction & Real-World Connection</h2>
+            <p class="section-time">Time: 00:10 - 00:15</p>
+
+            <!-- Theory 1 -->
+            <div class="content-block">
+                <div class="theory-box">
+                    <p>Imagine you are a NASA engineer designing a satellite path. The path must only "touch" the Earth's atmosphere at exactly ONE point before flying into space. This line is called a <strong>Tangent</strong>.</p>
+                    <p class="translation">Bayangkan kamu adalah insinyur NASA yang merancang jalur satelit. Jalur tersebut harus "menyentuh" atmosfer Bumi tepat di SATU titik sebelum terbang ke luar angkasa. Garis ini disebut <strong>Garis Singgung</strong>.</p>
+                    <div class="illustration">
+                        <svg width="200" height="150">
+                            <circle cx="100" cy="100" r="40" fill="#ddf4ff" stroke="#1cb0f6" stroke-width="3"/>
+                            <line x1="40" y1="60" x2="160" y2="60" stroke="#58cc02" stroke-width="4" stroke-linecap="round"/>
+                            <circle cx="100" cy="60" r="4" fill="#ff4b4b"/>
+                            <text x="80" y="50" font-size="12" fill="#3c3c3c">Touch Point</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exercise 1.1, 1.2, 1.3 -->
+            <div class="content-block">
+                <div class="exercise-box" id="ex2_1_1">
+                    <p class="question-text">1. How many points does a tangent line touch on a circle?</p>
+                    <div class="options-grid" id="opt2_1_1"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex2_1_1', '1')">Check</button>
+                    <div class="explanation" id="exp2_1_1">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        A tangent touches exactly one point. <br>
+                        <span class="translation">Garis singgung menyentuh tepat satu titik.</span>
+                    </div>
+                </div>
+                <div class="exercise-box" id="ex2_1_2">
+                    <p class="question-text">2. Look at a bicycle chain. The straight part of the chain is a tangent to the gear (circle). True or False?</p>
+                    <div class="options-grid" id="opt2_1_2"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex2_1_2', 'True')">Check</button>
+                    <div class="explanation" id="exp2_1_2">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        True! It touches the gear at one point. <br>
+                        <span class="translation">Benar! Rantai menyentuh gir di satu titik.</span>
+                    </div>
+                </div>
+                <div class="exercise-box" id="ex2_1_3">
+                    <p class="question-text">3. A line that cuts through a circle at two points is called a <strong>Secant</strong>, not a tangent.</p>
+                    <div class="options-grid" id="opt2_1_3"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex2_1_3', 'True')">Check</button>
+                    <div class="explanation" id="exp2_1_3">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        True. A secant crosses the circle twice. <br>
+                        <span class="translation">Benar. Garis sekan memotong lingkaran dua kali.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Theory 2 -->
+            <div class="content-block">
+                <div class="theory-box">
+                    <p>Let's visualize it. If you have a circle and you draw a line that only touches the edge, that's the tangent. The point where it touches is the <strong>Point of Tangency</strong>.</p>
+                    <p class="translation">Mari kita visualisasikan. Jika kamu memiliki lingkaran dan menggambar garis yang hanya menyentuh tepinya, itu adalah garis singgung. Titik di mana ia menyentuh adalah <strong>Titik Singgung</strong>.</p>
+                </div>
+            </div>
+
+            <!-- Exercise 2.1, 2.2, 2.3 -->
+            <div class="content-block">
+                <div class="exercise-box" id="ex2_2_1">
+                    <p class="question-text">1. What do we call the point where the tangent touches the circle?</p>
+                    <div class="options-grid" id="opt2_2_1"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex2_2_1', 'Point of Tangency')">Check</button>
+                    <div class="explanation" id="exp2_2_1">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        Point of Tangency. <br>
+                        <span class="translation">Titik Singgung.</span>
+                    </div>
+                </div>
+                <div class="exercise-box" id="ex2_2_2">
+                    <p class="question-text">2. Can a tangent line pass through the inside of a circle?</p>
+                    <div class="options-grid" id="opt2_2_2"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex2_2_2', 'No')">Check</button>
+                    <div class="explanation" id="exp2_2_2">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        No. If it went inside, it would intersect at two points. <br>
+                        <span class="translation">Tidak. Jika masuk ke dalam, ia akan memotong di dua titik.</span>
+                    </div>
+                </div>
+                <div class="exercise-box" id="ex2_2_3">
+                    <p class="question-text">3. Which of these is an example of a tangent in real life?</p>
+                    <div class="options-grid" id="opt2_2_3"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex2_2_3', 'A straight road touching a roundabout')">Check</button>
+                    <div class="explanation" id="exp2_2_3">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        A road touching a roundabout touches it at one point. <br>
+                        <span class="translation">Jalan yang menyentuh bundaran menyentuhnya di satu titik.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Theory 3 -->
+            <div class="content-block">
+                <div class="theory-box">
+                    <p>The most important property of a tangent is the direction it touches the circle. It doesn't just touch it randomly; it touches it precisely at a 90-degree angle (perpendicular) to the radius. We will prove this in the next section.</p>
+                    <p class="translation">Sifat terpenting dari garis singgung adalah arah saat ia menyentuh lingkaran. Ia tidak menyentuhnya secara acak; ia menyentuhnya tepat pada sudut 90 derajat (tegak lurus) terhadap jari-jari. Kita akan membuktikan ini di bagian selanjutnya.</p>
+                </div>
+            </div>
+
+            <!-- Exercise 3.1, 3.2, 3.3, 3.4 -->
+            <div class="content-block">
+                <div class="exercise-box" id="ex2_3_1">
+                    <p class="question-text">1. What angle should a tangent make with the radius at the point of tangency?</p>
+                    <div class="options-grid" id="opt2_3_1"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex2_3_1', '90 degrees')">Check</button>
+                    <div class="explanation" id="exp2_3_1">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        90 degrees (perpendicular). <br>
+                        <span class="translation">90 derajat (tegak lurus).</span>
+                    </div>
+                </div>
+                <div class="exercise-box" id="ex2_3_2">
+                    <p class="question-text">2. The line from the center of the circle to the point of tangency is called the...</p>
+                    <div class="options-grid" id="opt2_3_2"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex2_3_2', 'Radius')">Check</button>
+                    <div class="explanation" id="exp2_3_2">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        Radius. <br>
+                        <span class="translation">Jari-jari.</span>
+                    </div>
+                </div>
+                <div class="exercise-box" id="ex2_3_3">
+                    <p class="question-text">3. If the radius is perpendicular to a line at a point on the circle, that line must be a...</p>
+                    <div class="options-grid" id="opt2_3_3"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex2_3_3', 'Tangent')">Check</button>
+                    <div class="explanation" id="exp2_3_3">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        Tangent. <br>
+                        <span class="translation">Garis Singgung.</span>
+                    </div>
+                </div>
+                <div class="exercise-box" id="ex2_3_4">
+                    <p class="question-text">4. Tangent comes from the Latin word "tangere". What does it mean?</p>
+                    <div class="options-grid" id="opt2_3_4"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex2_3_4', 'To touch')">Check</button>
+                    <div class="explanation" id="exp2_3_4">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        "Tangere" means "to touch". <br>
+                        <span class="translation">"Tangere" berarti "menyentuh".</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-controls">
+                <button class="action-btn prev-btn" onclick="showSection('sec1', document.getElementsByClassName('nav-btn')[1])"><i class="fas fa-arrow-left"></i> Prev</button>
+                <button class="action-btn reset-btn" onclick="resetSection('sec2')"><i class="fas fa-redo"></i> Reset</button>
+                <button class="action-btn next-btn" onclick="showSection('sec3', document.getElementsByClassName('nav-btn')[3])">Next <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+
+        <!-- SECTION 3: Review of Prior Knowledge -->
+        <div id="sec3" class="lesson-container hidden">
+            <h2 class="section-header">Review of Prior Knowledge</h2>
+            <p class="section-time">Time: 00:15 - 00:20</p>
+
+            <!-- Theory 1 -->
+            <div class="content-block">
+                <div class="theory-box">
+                    <p>Remember the Pythagorean Theorem! For a right-angled triangle, the square of the hypotenuse (the longest side, \(c\)) is equal to the sum of the squares of the other two sides (\(a\) and \(b\)).</p>
+                    <p class="translation">Ingat Teorema Pythagoras! Untuk segitiga siku-siku, kuadrat dari hipotenusa (sisi terpanjang, \(c\)) sama dengan jumlah kuadrat dari dua sisi lainnya (\(a\) dan \(b\)).</p>
+                    <p style="text-align: center; margin-top: 10px; font-size: 1.2rem; font-weight: bold;">\(a^2 + b^2 = c^2\)</p>
+                    <div class="illustration">
+                        <svg width="160" height="130">
+                            <polygon points="30,110 130,110 30,30" fill="#fff0d4" stroke="#ffc800" stroke-width="3"/>
+                            <rect x="30" y="98" width="12" height="12" fill="none" stroke="#ffc800" stroke-width="2"/>
+                            <text x="10" y="70" font-size="14" fill="#3c3c3c" font-weight="bold">a</text>
+                            <text x="80" y="125" font-size="14" fill="#3c3c3c" font-weight="bold">b</text>
+                            <text x="90" y="60" font-size="14" fill="#3c3c3c" font-weight="bold">c</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exercise 1.1, 1.2, 1.3 -->
+            <div class="content-block">
+                <div class="exercise-box" id="ex3_1_1">
+                    <p class="question-text">1. If \(a = 9\) and \(b = 12\), what is the length of \(c\)?</p>
+                    <div class="options-grid" id="opt3_1_1"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex3_1_1', '15')">Check</button>
+                    <div class="explanation" id="exp3_1_1">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        \(9^2 + 12^2 = 81 + 144 = 225\). \(\sqrt{225} = 15\). <br>
+                        <span class="translation">\(9^2 + 12^2 = 81 + 144 = 225\). \(\sqrt{225} = 15\).</span>
+                    </div>
+                </div>
+                <div class="exercise-box" id="ex3_1_2">
+                    <p class="question-text">2. What do we call the longest side of a right-angled triangle?</p>
+                    <div class="options-grid" id="opt3_1_2"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex3_1_2', 'Hypotenuse')">Check</button>
+                    <div class="explanation" id="exp3_1_2">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        The longest side is called the Hypotenuse. <br>
+                        <span class="translation">Sisi terpanjang disebut Hipotenusa.</span>
+                    </div>
+                </div>
+                <div class="exercise-box" id="ex3_1_3">
+                    <p class="question-text">3. If \(c = 15\) and \(a = 9\), find \(b\).</p>
+                    <div class="options-grid" id="opt3_1_3"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex3_1_3', '12')">Check</button>
+                    <div class="explanation" id="exp3_1_3">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        \(b^2 = c^2 - a^2 = 225 - 81 = 144\). \(\sqrt{144} = 12\). <br>
+                        <span class="translation">\(b^2 = c^2 - a^2 = 225 - 81 = 144\). \(\sqrt{144} = 12\).</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Theory 2 -->
+            <div class="content-block">
+                <div class="theory-box">
+                    <p>Perpendicular lines intersect at exactly 90 degrees. The key rule for tangents: A tangent line is ALWAYS perpendicular (90 degrees) to the radius of the circle at the point of tangency.</p>
+                    <p class="translation">Garis tegak lurus berpotongan tepat di 90 derajat. Aturan kunci untuk garis singgung: Garis singgung SELALU tegak lurus (90 derajat) dengan jari-jari lingkaran pada titik singgungnya.</p>
+                    <div class="illustration">
+                        <svg width="160" height="130">
+                            <circle cx="40" cy="90" r="30" fill="#ddf4ff" stroke="#1cb0f6" stroke-width="3"/>
+                            <line x1="40" y1="90" x2="40" y2="60" stroke="#3c3c3c" stroke-width="2" stroke-dasharray="4"/>
+                            <line x1="10" y1="60" x2="120" y2="60" stroke="#58cc02" stroke-width="4" stroke-linecap="round"/>
+                            <rect x="32" y="50" width="12" height="10" fill="none" stroke="#ff4b4b" stroke-width="2"/>
+                            <text x="15" y="50" font-size="12" fill="#ff4b4b" font-weight="bold">90°</text>
+                            <text x="45" y="55" font-size="12" fill="#3c3c3c">r</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exercise 2.1, 2.2, 2.3 -->
+            <div class="content-block">
+                <div class="exercise-box" id="ex3_2_1">
+                    <p class="question-text">1. What angle does a tangent make with the radius?</p>
+                    <div class="options-grid" id="opt3_2_1"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex3_2_1', '90 degrees')">Check</button>
+                    <div class="explanation" id="exp3_2_1">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        90 degrees (perpendicular). <br>
+                        <span class="translation">90 derajat (tegak lurus).</span>
+                    </div>
+                </div>
+                <div class="exercise-box" id="ex3_2_2">
+                    <p class="question-text">2. If the radius is 5 cm and a line touches the circle at exactly one point, what is the angle between them?</p>
+                    <div class="options-grid" id="opt3_2_2"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex3_2_2', '90 degrees')">Check</button>
+                    <div class="explanation" id="exp3_2_2">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        90 degrees, because the line is a tangent. <br>
+                        <span class="translation">90 derajat, karena garis tersebut adalah garis singgung.</span>
+                    </div>
+                </div>
+                <div class="exercise-box" id="ex3_2_3">
+                    <p class="question-text">3. Can a tangent ever make a 45-degree angle with the radius?</p>
+                    <div class="options-grid" id="opt3_2_3"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex3_2_3', 'No')">Check</button>
+                    <div class="explanation" id="exp3_2_3">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        No. It must always be 90 degrees. <br>
+                        <span class="translation">Tidak. Harus selalu 90 derajat.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Theory 3 -->
+            <div class="content-block">
+                <div class="theory-box">
+                    <p>When we draw a tangent from an external point \(P\) to a circle with center \(O\), it touches the circle at point \(A\). This creates Triangle \(OAP\), which is a right-angled triangle at \(A\)! The radius \(OA\) is one leg, the tangent \(PA\) is another leg, and the distance \(OP\) is the hypotenuse.</p>
+                    <p class="translation">Ketika kita menggambar garis singgung dari titik luar \(P\) ke lingkaran dengan pusat \(O\), ia menyentuh lingkaran di titik \(A\). Ini membentuk Segitiga \(OAP\), yang merupakan segitiga siku-siku di \(A\)! Jari-jari \(OA\) adalah satu sisi, garis singgung \(PA\) adalah sisi lainnya, dan jarak \(OP\) adalah hipotenusa.</p>
+                    <div class="illustration">
+                        <svg width="200" height="150">
+                            <circle cx="40" cy="100" r="30" fill="#ddf4ff" stroke="#1cb0f6" stroke-width="3"/>
+                            <circle cx="40" cy="100" r="2" fill="#3c3c3c"/>
+                            <circle cx="40" cy="70" r="3" fill="#3c3c3c"/>
+                            <circle cx="160" cy="30" r="3" fill="#3c3c3c"/>
+                            <line x1="40" y1="100" x2="40" y2="70" stroke="#3c3c3c" stroke-width="2" stroke-dasharray="4"/>
+                            <line x1="40" y1="100" x2="160" y2="30" stroke="#3c3c3c" stroke-width="2"/>
+                            <line x1="40" y1="70" x2="160" y2="30" stroke="#58cc02" stroke-width="4"/>
+                            <rect x="32" y="60" width="10" height="10" fill="none" stroke="#ff4b4b" stroke-width="2"/>
+                            <text x="15" y="105" font-size="12" fill="#3c3c3c" font-weight="bold">O</text>
+                            <text x="25" y="65" font-size="12" fill="#3c3c3c" font-weight="bold">A</text>
+                            <text x="165" y="25" font-size="12" fill="#3c3c3c" font-weight="bold">P</text>
+                            <text x="90" y="55" font-size="12" fill="#58cc02" font-weight="bold">PA</text>
+                            <text x="95" y="75" font-size="12" fill="#3c3c3c">OP</text>
+                            <text x="10" y="90" font-size="12" fill="#3c3c3c">OA</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exercise 3.1, 3.2, 3.3, 3.4 -->
+            <div class="content-block">
+                <div class="exercise-box" id="ex3_3_1">
+                    <p class="question-text">1. In Triangle \(OAP\), where is the right angle located?</p>
+                    <div class="options-grid" id="opt3_3_1"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex3_3_1', 'At point A')">Check</button>
+                    <div class="explanation" id="exp3_3_1">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        The right angle is at the point of tangency, point A. <br>
+                        <span class="translation">Sudut siku-siku berada di titik singgung, yaitu titik A.</span>
+                    </div>
+                </div>
+                <div class="exercise-box" id="ex3_3_2">
+                    <p class="question-text">2. In Triangle \(OAP\), which side is the hypotenuse?</p>
+                    <div class="options-grid" id="opt3_3_2"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex3_3_2', 'OP')">Check</button>
+                    <div class="explanation" id="exp3_3_2">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        \(OP\) is the hypotenuse because it is opposite the 90-degree angle at \(A\). <br>
+                        <span class="translation">\(OP\) adalah hipotenusa karena berhadapan dengan sudut 90 derajat di \(A\).</span>
+                    </div>
+                </div>
+                <div class="exercise-box" id="ex3_3_3">
+                    <p class="question-text">3. If \(OA = 6\) cm and \(PA = 8\) cm, what is \(OP\)?</p>
+                    <div class="options-grid" id="opt3_3_3"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex3_3_3', '10')">Check</button>
+                    <div class="explanation" id="exp3_3_3">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        \(OP^2 = 6^2 + 8^2 = 36 + 64 = 100\). \(\sqrt{100} = 10\). <br>
+                        <span class="translation">\(OP^2 = 6^2 + 8^2 = 36 + 64 = 100\). \(\sqrt{100} = 10\).</span>
+                    </div>
+                </div>
+                <div class="exercise-box" id="ex3_3_4">
+                    <p class="question-text">4. Why is \(OA\) perpendicular to \(PA\)?</p>
+                    <div class="options-grid" id="opt3_3_4"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex3_3_4', 'Because PA is a tangent')">Check</button>
+                    <div class="explanation" id="exp3_3_4">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        A tangent is always perpendicular to the radius. <br>
+                        <span class="translation">Garis singgung selalu tegak lurus dengan jari-jari.</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-controls">
+                <button class="action-btn prev-btn" onclick="showSection('sec2', document.getElementsByClassName('nav-btn')[2])"><i class="fas fa-arrow-left"></i> Prev</button>
+                <button class="action-btn reset-btn" onclick="resetSection('sec3')"><i class="fas fa-redo"></i> Reset</button>
+                <button class="action-btn next-btn" onclick="showSection('sec4', document.getElementsByClassName('nav-btn')[4])">Next <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+
+        <!-- SECTION 4: Problem Introduction -->
+        <div id="sec4" class="lesson-container hidden">
+            <h2 class="section-header">Problem Introduction</h2>
+            <p class="section-time">Time: 00:20 - 00:30</p>
+
+            <!-- Theory 1 -->
+            <div class="content-block">
+                <div class="theory-box">
+                    <p>Let's calculate the length of a tangent! We have point \(P\) outside the circle. The distance from center \(O\) to \(P\) is 13 cm. The radius \(OA\) is 5 cm. We need to find the tangent length \(PA\).</p>
+                    <p class="translation">Mari kita hitung panjang garis singgung! Kita memiliki titik \(P\) di luar lingkaran. Jarak dari pusat \(O\) ke \(P\) adalah 13 cm. Jari-jari \(OA\) adalah 5 cm. Kita perlu mencari panjang garis singgung \(PA\).</p>
+                    <div class="illustration">
+                        <svg width="200" height="150">
+                            <circle cx="40" cy="100" r="30" fill="#ddf4ff" stroke="#1cb0f6" stroke-width="3"/>
+                            <circle cx="40" cy="100" r="2" fill="#3c3c3c"/>
+                            <circle cx="40" cy="70" r="3" fill="#3c3c3c"/>
+                            <circle cx="160" cy="30" r="3" fill="#3c3c3c"/>
+                            <line x1="40" y1="100" x2="40" y2="70" stroke="#3c3c3c" stroke-width="2" stroke-dasharray="4"/>
+                            <line x1="40" y1="100" x2="160" y2="30" stroke="#3c3c3c" stroke-width="2"/>
+                            <line x1="40" y1="70" x2="160" y2="30" stroke="#58cc02" stroke-width="4"/>
+                            <rect x="32" y="60" width="10" height="10" fill="none" stroke="#ff4b4b" stroke-width="2"/>
+                            <text x="15" y="105" font-size="12" fill="#3c3c3c" font-weight="bold">O</text>
+                            <text x="25" y="65" font-size="12" fill="#3c3c3c" font-weight="bold">A</text>
+                            <text x="165" y="25" font-size="12" fill="#3c3c3c" font-weight="bold">P</text>
+                            <text x="100" y="50" font-size="12" fill="#58cc02" font-weight="bold">PA = ?</text>
+                            <text x="105" y="80" font-size="12" fill="#3c3c3c">OP = 13</text>
+                            <text x="0" y="90" font-size="12" fill="#3c3c3c">OA = 5</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exercise 1.1, 1.2, 1.3 -->
+            <div class="content-block">
+                <div class="exercise-box" id="ex4_1_1">
+                    <p class="question-text">1. In Triangle \(OAP\), what is the formula for \(PA\) using Pythagoras?</p>
+                    <div class="options-grid" id="opt4_1_1"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex4_1_1', 'PA^2 = OP^2 - OA^2')">Check</button>
+                    <div class="explanation" id="exp4_1_1">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        Since \(OP\) is the hypotenuse, \(PA^2 = OP^2 - OA^2\). <br>
+                        <span class="translation">Karena \(OP\) adalah hipotenusa, maka \(PA^2 = OP^2 - OA^2\).</span>
+                    </div>
+                </div>
+                <div class="exercise-box" id="ex4_1_2">
+                    <p class="question-text">2. Calculate \(PA\) if \(OP = 13\) and \(OA = 5\).</p>
+                    <div class="options-grid" id="opt4_1_2"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex4_1_2', '12')">Check</button>
+                    <div class="explanation" id="exp4_1_2">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        \(PA^2 = 13^2 - 5^2 = 169 - 25 = 144\). \(\sqrt{144} = 12\). <br>
+                        <span class="translation">\(PA^2 = 13^2 - 5^2 = 169 - 25 = 144\). \(\sqrt{144} = 12\).</span>
+                    </div>
+                </div>
+                <div class="exercise-box" id="ex4_1_3">
+                    <p class="question-text">3. If \(OP = 10\) and \(OA = 8\), find \(PA\).</p>
+                    <div class="options-grid" id="opt4_1_3"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex4_1_3', '6')">Check</button>
+                    <div class="explanation" id="exp4_1_3">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        \(PA^2 = 10^2 - 8^2 = 100 - 64 = 36\). \(\sqrt{36} = 6\). <br>
+                        <span class="translation">\(PA^2 = 10^2 - 8^2 = 100 - 64 = 36\). \(\sqrt{36} = 6\).</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Theory 2 -->
+            <div class="content-block">
+                <div class="theory-box">
+                    <p>Let's do it step-by-step with algebra! Substitute the values into the formula: \(PA^2 = 13^2 - 5^2\). Calculate the squares: \(PA^2 = 169 - 25\). Subtract: \(PA^2 = 144\). Find the square root: \(PA = 12\) cm.</p>
+                    <p class="translation">Mari kita lakukan langkah demi langkah dengan aljabar! Substitusikan nilai ke dalam rumus: \(PA^2 = 13^2 - 5^2\). Hitung kuadratnya: \(PA^2 = 169 - 25\). Kurangkan: \(PA^2 = 144\). Cari akar kuadratnya: \(PA = 12\) cm.</p>
+                </div>
+            </div>
+
+            <!-- Exercise 2.1, 2.2, 2.3 -->
+            <div class="content-block">
+                <div class="exercise-box" id="ex4_2_1">
+                    <p class="question-text">1. What is \(15^2\)?</p>
+                    <input type="text" class="input-answer" id="input4_2_1" placeholder="Type number">
+                    <button class="check-btn" onclick="checkInput('input4_2_1', '225', 'exp4_2_1')">Check</button>
+                    <div class="explanation" id="exp4_2_1">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        \(15 \times 15 = 225\). <br>
+                        <span class="translation">\(15 \times 15 = 225\).</span>
+                    </div>
+                </div>
+                <div class="exercise-box" id="ex4_2_2">
+                    <p class="question-text">2. What is \(\sqrt{144}\)?</p>
+                    <input type="text" class="input-answer" id="input4_2_2" placeholder="Type number">
+                    <button class="check-btn" onclick="checkInput('input4_2_2', '12', 'exp4_2_2')">Check</button>
+                    <div class="explanation" id="exp4_2_2">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        \(12 \times 12 = 144\). <br>
+                        <span class="translation">\(12 \times 12 = 144\).</span>
+                    </div>
+                </div>
+                <div class="exercise-box" id="ex4_2_3">
+                    <p class="question-text">3. If \(PA^2 = 400\), what is \(PA\)?</p>
+                    <input type="text" class="input-answer" id="input4_2_3" placeholder="Type number">
+                    <button class="check-btn" onclick="checkInput('input4_2_3', '20', 'exp4_2_3')">Check</button>
+                    <div class="explanation" id="exp4_2_3">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        \(\sqrt{400} = 20\). <br>
+                        <span class="translation">\(\sqrt{400} = 20\).</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Theory 3 -->
+            <div class="content-block">
+                <div class="theory-box">
+                    <p>What if we know the tangent and radius, and want to find the distance to the center? We just change the formula! \(OP^2 = OA^2 + PA^2\). This means we add the squares instead of subtracting.</p>
+                    <p class="translation">Bagaimana jika kita tahu garis singgung dan jari-jari, dan ingin mencari jarak ke pusat? Kita cukup mengubah rumusnya! \(OP^2 = OA^2 + PA^2\). Ini berarti kita menjumlahkan kuadratnya alih-alih menguranginya.</p>
+                </div>
+            </div>
+
+            <!-- Exercise 3.1, 3.2, 3.3, 3.4 -->
+            <div class="content-block">
+                <div class="exercise-box" id="ex4_3_1">
+                    <p class="question-text">1. If \(PA = 8\) and \(OA = 6\), find \(OP\).</p>
+                    <div class="options-grid" id="opt4_3_1"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex4_3_1', '10')">Check</button>
+                    <div class="explanation" id="exp4_3_1">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        \(OP^2 = 6^2 + 8^2 = 36 + 64 = 100\). \(\sqrt{100} = 10\). <br>
+                        <span class="translation">\(OP^2 = 6^2 + 8^2 = 36 + 64 = 100\). \(\sqrt{100} = 10\).</span>
+                    </div>
+                </div>
+                <div class="exercise-box" id="ex4_3_2">
+                    <p class="question-text">2. If \(PA = 12\) and \(OP = 13\), find \(OA\) (the radius).</p>
+                    <div class="options-grid" id="opt4_3_2"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex4_3_2', '5')">Check</button>
+                    <div class="explanation" id="exp4_3_2">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        \(OA^2 = 13^2 - 12^2 = 169 - 144 = 25\). \(\sqrt{25} = 5\). <br>
+                        <span class="translation">\(OA^2 = 13^2 - 12^2 = 169 - 144 = 25\). \(\sqrt{25} = 5\).</span>
+                    </div>
+                </div>
+                <div class="exercise-box" id="ex4_3_3">
+                    <p class="question-text">3. If \(OA = 8\) and \(PA = 15\), find \(OP\).</p>
+                    <div class="options-grid" id="opt4_3_3"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex4_3_3', '17')">Check</button>
+                    <div class="explanation" id="exp4_3_3">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        \(OP^2 = 8^2 + 15^2 = 64 + 225 = 289\). \(\sqrt{289} = 17\). <br>
+                        <span class="translation">\(OP^2 = 8^2 + 15^2 = 64 + 225 = 289\). \(\sqrt{289} = 17\).</span>
+                    </div>
+                </div>
+                <div class="exercise-box" id="ex4_3_4">
+                    <p class="question-text">4. Which side in Triangle \(OAP\) is always the hypotenuse?</p>
+                    <div class="options-grid" id="opt4_3_4"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex4_3_4', 'OP')">Check</button>
+                    <div class="explanation" id="exp4_3_4">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        \(OP\), the line from the center to the external point, is always the longest side. <br>
+                        <span class="translation">\(OP\), garis dari pusat ke titik luar, selalu menjadi sisi terpanjang.</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-controls">
+                <button class="action-btn prev-btn" onclick="showSection('sec3', document.getElementsByClassName('nav-btn')[3])"><i class="fas fa-arrow-left"></i> Prev</button>
+                <button class="action-btn reset-btn" onclick="resetSection('sec4')"><i class="fas fa-redo"></i> Reset</button>
+                <button class="action-btn next-btn" onclick="showSection('sec5', document.getElementsByClassName('nav-btn')[5])">Next <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+
+        <!-- SECTION 5: Guided Practice -->
+        <div id="sec5" class="lesson-container hidden">
+            <h2 class="section-header">Guided Practice</h2>
+            <p class="section-time">Time: 00:30 - 00:45</p>
+
+            <!-- Theory 1 -->
+            <div class="content-block">
+                <div class="theory-box">
+                    <p>Let's explore a special property! If we draw TWO tangents from the SAME external point \(P\) to the circle, touching at points \(A\) and \(B\), the lengths are ALWAYS equal. \(PA = PB\).</p>
+                    <p class="translation">Mari kita jelajahi sifat spesial! Jika kita menarik DUA garis singgung dari titik luar yang SAMA \(P\) ke lingkaran, menyentuh di titik \(A\) dan \(B\), panjangnya SELALU sama. \(PA = PB\).</p>
+                    <div class="illustration">
+                        <svg width="160" height="140">
+                            <circle cx="80" cy="90" r="30" fill="#ddf4ff" stroke="#1cb0f6" stroke-width="3"/>
+                            <circle cx="80" cy="90" r="2" fill="#3c3c3c"/>
+                            <circle cx="54" cy="65" r="3" fill="#3c3c3c"/>
+                            <circle cx="106" cy="65" r="3" fill="#3c3c3c"/>
+                            <circle cx="80" cy="20" r="3" fill="#3c3c3c"/>
+                            <line x1="80" y1="90" x2="54" y2="65" stroke="#3c3c3c" stroke-width="2" stroke-dasharray="4"/>
+                            <line x1="80" y1="90" x2="106" y2="65" stroke="#3c3c3c" stroke-width="2" stroke-dasharray="4"/>
+                            <line x1="54" y1="65" x2="80" y2="20" stroke="#58cc02" stroke-width="4"/>
+                            <line x1="106" y1="65" x2="80" y2="20" stroke="#58cc02" stroke-width="4"/>
+                            <text x="75" y="100" font-size="12" fill="#3c3c3c" font-weight="bold">O</text>
+                            <text x="40" y="65" font-size="12" fill="#3c3c3c" font-weight="bold">A</text>
+                            <text x="110" y="65" font-size="12" fill="#3c3c3c" font-weight="bold">B</text>
+                            <text x="85" y="15" font-size="12" fill="#3c3c3c" font-weight="bold">P</text>
+                            <text x="55" y="45" font-size="11" fill="#58cc02" font-weight="bold">PA</text>
+                            <text x="95" y="45" font-size="11" fill="#58cc02" font-weight="bold">PB</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exercise 1.1, 1.2, 1.3 -->
+            <div class="content-block">
+                <div class="exercise-box" id="ex5_1_1">
+                    <p class="question-text">1. If \(PA = 10\) cm, what is the length of \(PB\)?</p>
+                    <div class="options-grid" id="opt5_1_1"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex5_1_1', '10 cm')">Check</button>
+                    <div class="explanation" id="exp5_1_1">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        Because they are tangents from the same external point, \(PA = PB = 10\) cm. <br>
+                        <span class="translation">Karena merupakan garis singgung dari titik luar yang sama, \(PA = PB = 10\) cm.</span>
+                    </div>
+                </div>
+                <div class="exercise-box" id="ex5_1_2">
+                    <p class="question-text">2. The shape formed by connecting \(O, A, P, B\) is called a...</p>
+                    <div class="options-grid" id="opt5_1_2"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex5_1_2', 'Kite')">Check</button>
+                    <div class="explanation" id="exp5_1_2">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        It is a Kite (Layang-layang) because \(OA = OB\) (radii) and \(PA = PB\) (tangents). <br>
+                        <span class="translation">Ini adalah Layang-layang karena \(OA = OB\) (jari-jari) dan \(PA = PB\) (garis singgung).</span>
+                    </div>
+                </div>
+                <div class="exercise-box" id="ex5_1_3">
+                    <p class="question-text">3. If \(PA = 2x + 5\) and \(PB = 15\), what is the first algebraic equation you should write?</p>
+                    <div class="options-grid" id="opt5_1_3"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex5_1_3', '2x + 5 = 15')">Check</button>
+                    <div class="explanation" id="exp5_1_3">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        Since \(PA = PB\), set them equal: \(2x + 5 = 15\). <br>
+                        <span class="translation">Karena \(PA = PB\), samakan keduanya: \(2x + 5 = 15\).</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Theory 2 -->
+            <div class="content-block">
+                <div class="theory-box">
+                    <p>Let's solve the equation \(2x + 5 = 15\). Subtract 5 from both sides: \(2x = 10\). Divide by 2: \(x = 5\). The value of \(x\) is 5! And the length of the tangent is 15.</p>
+                    <p class="translation">Mari kita selesaikan persamaan \(2x + 5 = 15\). Kurangi 5 dari kedua sisi: \(2x = 10\). Bagi dengan 2: \(x = 5\). Nilai \(x\) adalah 5! Dan panjang garis singgungnya adalah 15.</p>
+                </div>
+            </div>
+
+            <!-- Exercise 2.1, 2.2, 2.3 -->
+            <div class="content-block">
+                <div class="exercise-box" id="ex5_2_1">
+                    <p class="question-text">1. Solve for \(x\): \(3x - 4 = 11\)</p>
+                    <input type="text" class="input-answer" id="input5_2_1" placeholder="Type number">
+                    <button class="check-btn" onclick="checkInput('input5_2_1', '5', 'exp5_2_1')">Check</button>
+                    <div class="explanation" id="exp5_2_1">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        \(3x = 11 + 4 \rightarrow 3x = 15 \rightarrow x = 5\). <br>
+                        <span class="translation">\(3x = 11 + 4 \rightarrow 3x = 15 \rightarrow x = 5\).</span>
+                    </div>
+                </div>
+                <div class="exercise-box" id="ex5_2_2">
+                    <p class="question-text">2. If \(PA = x + 7\) and \(PB = 22\), find \(x\).</p>
+                    <input type="text" class="input-answer" id="input5_2_2" placeholder="Type number">
+                    <button class="check-btn" onclick="checkInput('input5_2_2', '15', 'exp5_2_2')">Check</button>
+                    <div class="explanation" id="exp5_2_2">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        \(x + 7 = 22 \rightarrow x = 22 - 7 = 15\). <br>
+                        <span class="translation">\(x + 7 = 22 \rightarrow x = 22 - 7 = 15\).</span>
+                    </div>
+                </div>
+                <div class="exercise-box" id="ex5_2_3">
+                    <p class="question-text">3. If \(PA = 4x\) and \(PB = 20\), find the length of \(PA\).</p>
+                    <div class="options-grid" id="opt5_2_3"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex5_2_3', '20')">Check</button>
+                    <div class="explanation" id="exp5_2_3">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        Since \(PA = PB\), \(PA\) must be 20 (and \(x=5\)). <br>
+                        <span class="translation">Karena \(PA = PB\), \(PA\) pasti 20 (dan \(x=5\)).</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Theory 3 -->
+            <div class="content-block">
+                <div class="theory-box">
+                    <p>Look at the Kite \(OAPB\). It consists of two identical right-angled triangles: \(\triangle OAP\) and \(\triangle OBP\). The angles at \(A\) and \(B\) are both 90 degrees. The line \(OP\) splits the kite perfectly in half!</p>
+                    <p class="translation">Lihat Layang-layang \(OAPB\). Ini terdiri dari dua segitiga siku-siku yang identik: \(\triangle OAP\) dan \(\triangle OBP\). Sudut di \(A\) dan \(B\) keduanya 90 derajat. Garis \(OP\) membelah layang-layang menjadi dua bagian sama persis!</p>
+                </div>
+            </div>
+
+            <!-- Exercise 3.1, 3.2, 3.3, 3.4 -->
+            <div class="content-block">
+                <div class="exercise-box" id="ex5_3_1">
+                    <p class="question-text">1. In Kite \(OAPB\), if angle \(OAP\) is 90°, what is angle \(OBP\)?</p>
+                    <div class="options-grid" id="opt5_3_1"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex5_3_1', '90 degrees')">Check</button>
+                    <div class="explanation" id="exp5_3_1">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        Both are points of tangency, so both are 90°. <br>
+                        <span class="translation">Keduanya adalah titik singgung, jadi keduanya 90°.</span>
+                    </div>
+                </div>
+                <div class="exercise-box" id="ex5_3_2">
+                    <p class="question-text">2. Which line divides the Kite \(OAPB\) into two identical right triangles?</p>
+                    <div class="options-grid" id="opt5_3_2"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex5_3_2', 'OP')">Check</button>
+                    <div class="explanation" id="exp5_3_2">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        The line from the center to the external point (\(OP\)) divides the kite. <br>
+                        <span class="translation">Garis dari pusat ke titik luar (\(OP\)) membelah layang-layang.</span>
+                    </div>
+                </div>
+                <div class="exercise-box" id="ex5_3_3">
+                    <p class="question-text">3. If \(OA = 5\) and \(PA = 12\), what is the perimeter of Kite \(OAPB\)?</p>
+                    <div class="options-grid" id="opt5_3_3"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex5_3_3', '34')">Check</button>
+                    <div class="explanation" id="exp5_3_3">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        Perimeter = \(OA + OB + PA + PB = 5 + 5 + 12 + 12 = 34\). <br>
+                        <span class="translation">Keliling = \(OA + OB + PA + PB = 5 + 5 + 12 + 12 = 34\).</span>
+                    </div>
+                </div>
+                <div class="exercise-box" id="ex5_3_4">
+                    <p class="question-text">4. In \(\triangle OAP\), angle \(OAP = 90^\circ\). What is the relationship between \(\triangle OAP\) and \(\triangle OBP\)?</p>
+                    <div class="options-grid" id="opt5_3_4"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex5_3_4', 'They are identical')">Check</button>
+                    <div class="explanation" id="exp5_3_4">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        They are identical (congruent) because \(OA=OB\), \(PA=PB\), and \(OP\) is shared. <br>
+                        <span class="translation">Mereka identik (kongruen) karena \(OA=OB\), \(PA=PB\), dan \(OP\) dimiliki bersama.</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-controls">
+                <button class="action-btn prev-btn" onclick="showSection('sec4', document.getElementsByClassName('nav-btn')[4])"><i class="fas fa-arrow-left"></i> Prev</button>
+                <button class="action-btn reset-btn" onclick="resetSection('sec5')"><i class="fas fa-redo"></i> Reset</button>
+                <button class="action-btn next-btn" onclick="showSection('sec6', document.getElementsByClassName('nav-btn')[6])">Next <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+
+        <!-- SECTION 6: Independent Practice -->
+        <div id="sec6" class="lesson-container hidden">
+            <h2 class="section-header">Independent Practice</h2>
+            <p class="section-time">Time: 00:50 - 01:00</p>
+
+            <!-- Theory 1 -->
+            <div class="content-block">
+                <div class="theory-box">
+                    <p>Boss Level! You have a circle with radius \(r = 7\) cm. Point \(Q\) is outside the circle, \(OQ = 25\) cm. Two tangents are drawn from \(Q\). First, we find the tangent length using Pythagoras: \(QA^2 = OQ^2 - OA^2 = 25^2 - 7^2\).</p>
+                    <p class="translation">Level Bos! Kamu memiliki lingkaran dengan jari-jari \(r = 7\) cm. Titik \(Q\) di luar lingkaran, \(OQ = 25\) cm. Dua garis singgung ditarik dari \(Q\). Pertama, kita cari panjang garis singgung menggunakan Pythagoras: \(QA^2 = OQ^2 - OA^2 = 25^2 - 7^2\).</p>
+                </div>
+            </div>
+
+            <!-- Exercise 1.1, 1.2, 1.3 -->
+            <div class="content-block">
+                <div class="exercise-box" id="ex6_1_1">
+                    <p class="question-text">1. Calculate \(25^2\).</p>
+                    <input type="text" class="input-answer" id="input6_1_1" placeholder="Type number">
+                    <button class="check-btn" onclick="checkInput('input6_1_1', '625', 'exp6_1_1')">Check</button>
+                    <div class="explanation" id="exp6_1_1">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        \(25 \times 25 = 625\). <br>
+                        <span class="translation">\(25 \times 25 = 625\).</span>
+                    </div>
+                </div>
+                <div class="exercise-box" id="ex6_1_2">
+                    <p class="question-text">2. Calculate \(7^2\).</p>
+                    <input type="text" class="input-answer" id="input6_1_2" placeholder="Type number">
+                    <button class="check-btn" onclick="checkInput('input6_1_2', '49', 'exp6_1_2')">Check</button>
+                    <div class="explanation" id="exp6_1_2">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        \(7 \times 7 = 49\). <br>
+                        <span class="translation">\(7 \times 7 = 49\).</span>
+                    </div>
+                </div>
+                <div class="exercise-box" id="ex6_1_3">
+                    <p class="question-text">3. What is the length of the tangent \(QA\)? (\(\sqrt{625 - 49}\))</p>
+                    <div class="options-grid" id="opt6_1_3"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex6_1_3', '24 cm')">Check</button>
+                    <div class="explanation" id="exp6_1_3">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        \(625 - 49 = 576\). \(\sqrt{576} = 24\). <br>
+                        <span class="translation">\(625 - 49 = 576\). \(\sqrt{576} = 24\).</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Theory 2 -->
+            <div class="content-block">
+                <div class="theory-box">
+                    <p>Now, calculate the Area of the Kite \(OAQB\). The kite is made of two identical right triangles (\(\triangle OAQ\) and \(\triangle OBQ\)). Area of one triangle = \(\frac{1}{2} \times \text{base} \times \text{height} = \frac{1}{2} \times OA \times QA\). Total Area = \(2 \times (\frac{1}{2} \times 7 \times 24) = 7 \times 24 = 168\) cm².</p>
+                    <p class="translation">Sekarang, hitung Luas Layang-layang \(OAQB\). Layang-layang terdiri dari dua segitiga siku-siku yang identik (\(\triangle OAQ\) dan \(\triangle OBQ\)). Luas satu segitiga = \(\frac{1}{2} \times \text{alas} \times \text{tinggi} = \frac{1}{2} \times OA \times QA\). Total Luas = \(2 \times (\frac{1}{2} \times 7 \times 24) = 7 \times 24 = 168\) cm².</p>
+                </div>
+            </div>
+
+            <!-- Exercise 2.1, 2.2, 2.3 -->
+            <div class="content-block">
+                <div class="exercise-box" id="ex6_2_1">
+                    <p class="question-text">1. What is the formula for the area of ONE right triangle \(\triangle OAQ\)?</p>
+                    <div class="options-grid" id="opt6_2_1"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex6_2_1', '1/2 * OA * QA')">Check</button>
+                    <div class="explanation" id="exp6_2_1">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        Area = \(\frac{1}{2} \times \text{base} \times \text{height}\). Here base is \(OA\), height is \(QA\). <br>
+                        <span class="translation">Luas = \(\frac{1}{2} \times \text{alas} \times \text{tinggi}\). Di sini alasnya \(OA\), tingginya \(QA\).</span>
+                    </div>
+                </div>
+                <div class="exercise-box" id="ex6_2_2">
+                    <p class="question-text">2. Calculate the area of ONE triangle if \(OA = 7\) and \(QA = 24\).</p>
+                    <div class="options-grid" id="opt6_2_2"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex6_2_2', '84 cm^2')">Check</button>
+                    <div class="explanation" id="exp6_2_2">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        \(\frac{1}{2} \times 7 \times 24 = 7 \times 12 = 84\). <br>
+                        <span class="translation">\(\frac{1}{2} \times 7 \times 24 = 7 \times 12 = 84\).</span>
+                    </div>
+                </div>
+                <div class="exercise-box" id="ex6_2_3">
+                    <p class="question-text">3. What is the total area of the Kite \(OAQB\)?</p>
+                    <div class="options-grid" id="opt6_2_3"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex6_2_3', '168 cm^2')">Check</button>
+                    <div class="explanation" id="exp6_2_3">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        \(84 \times 2 = 168\) cm². (Or simply \(OA \times QA = 7 \times 24 = 168\)). <br>
+                        <span class="translation">\(84 \times 2 = 168\) cm². (Atau cukup \(OA \times QA = 7 \times 24 = 168\)).</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Theory 3 -->
+            <div class="content-block">
+                <div class="theory-box">
+                    <p>Key takeaway: To solve complex tangent problems, always visualize the shape, identify the right angles (90°), use Pythagoras to find missing lengths, and use Algebra if variables (\(x, y\)) are involved. You've got this!</p>
+                    <p class="translation">Kesimpulan kunci: Untuk menyelesaikan masalah garis singgung yang kompleks, selalu visualisasikan bentuknya, identifikasi sudut siku-siku (90°), gunakan Pythagoras untuk mencari panjang yang hilang, dan gunakan Aljabar jika ada variabel (\(x, y\)) yang terlibat. Kamu pasti bisa!</p>
+                </div>
+            </div>
+
+            <!-- Exercise 3.1, 3.2, 3.3, 3.4 -->
+            <div class="content-block">
+                <div class="exercise-box" id="ex6_3_1">
+                    <p class="question-text">1. A circle has radius 6 cm. Point \(P\) is 10 cm from center. Find tangent length.</p>
+                    <div class="options-grid" id="opt6_3_1"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex6_3_1', '8 cm')">Check</button>
+                    <div class="explanation" id="exp6_3_1">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        \(PA^2 = 10^2 - 6^2 = 100 - 36 = 64\). \(\sqrt{64} = 8\). <br>
+                        <span class="translation">\(PA^2 = 10^2 - 6^2 = 100 - 36 = 64\). \(\sqrt{64} = 8\).</span>
+                    </div>
+                </div>
+                <div class="exercise-box" id="ex6_3_2">
+                    <p class="question-text">2. If the radius is 6 and tangent is 8, what is the area of the kite formed by two tangents?</p>
+                    <div class="options-grid" id="opt6_3_2"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex6_3_2', '48 cm^2')">Check</button>
+                    <div class="explanation" id="exp6_3_2">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        Area = \(r \times t = 6 \times 8 = 48\). <br>
+                        <span class="translation">Luas = \(r \times t = 6 \times 8 = 48\).</span>
+                    </div>
+                </div>
+                <div class="exercise-box" id="ex6_3_3">
+                    <p class="question-text">3. If tangent length is 15 and radius is 8, what is the distance from center to external point?</p>
+                    <div class="options-grid" id="opt6_3_3"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex6_3_3', '17 cm')">Check</button>
+                    <div class="explanation" id="exp6_3_3">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        \(OP^2 = 8^2 + 15^2 = 64 + 225 = 289\). \(\sqrt{289} = 17\). <br>
+                        <span class="translation">\(OP^2 = 8^2 + 15^2 = 64 + 225 = 289\). \(\sqrt{289} = 17\).</span>
+                    </div>
+                </div>
+                <div class="exercise-box" id="ex6_3_4">
+                    <p class="question-text">4. If the area of the kite is 60 and the radius is 6, what is the tangent length?</p>
+                    <div class="options-grid" id="opt6_3_4"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex6_3_4', '10 cm')">Check</button>
+                    <div class="explanation" id="exp6_3_4">
+                        <strong>Explanation / Penjelasan:</strong><br>
+                        Area = \(r \times t \rightarrow 60 = 6 \times t \rightarrow t = 10\). <br>
+                        <span class="translation">Luas = \(r \times t \rightarrow 60 = 6 \times t \rightarrow t = 10\).</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-controls">
+                <button class="action-btn prev-btn" onclick="showSection('sec5', document.getElementsByClassName('nav-btn')[5])"><i class="fas fa-arrow-left"></i> Prev</button>
+                <button class="action-btn reset-btn" onclick="resetSection('sec6')"><i class="fas fa-redo"></i> Reset</button>
+                <button class="action-btn next-btn" onclick="showSection('asg1', document.getElementsByClassName('nav-btn')[7])">Next <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+
+        <!-- ASSIGNMENT 1 -->
+        <div id="asg1" class="lesson-container hidden">
+            <h2 class="section-header">Assignment 1: Basic Tangent Concepts</h2>
+            <p class="section-time">Time: 10 Minutes</p>
+            
+            <div class="content-block">
+                <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                    <input type="text" class="input-answer" id="asg1_name" placeholder="Student Name" style="flex: 2;">
+                    <input type="text" class="input-answer" id="asg1_date" placeholder="Date" style="flex: 1;">
+                </div>
+            </div>
+
+            <!-- 10 Exercises -->
+            <div class="content-block">
+                <div class="exercise-box" id="ex_asg1_1">
+                    <p class="question-text">1. What is the angle between the radius and the tangent line at the point of tangency?</p>
+                    <div class="options-grid" id="opt_asg1_1"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg1_1', '90 degrees')">Check</button>
+                    <div class="explanation" id="exp_asg1_1"><strong>Explanation:</strong> 90 degrees.<span class="translation">90 derajat.</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg1_2">
+                    <p class="question-text">2. A circle has radius 8 cm. Point P is 17 cm from center. Find the tangent length.</p>
+                    <div class="options-grid" id="opt_asg1_2"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg1_2', '15 cm')">Check</button>
+                    <div class="explanation" id="exp_asg1_2"><strong>Explanation:</strong> \(17^2 - 8^2 = 289 - 64 = 225\). \(\sqrt{225} = 15\).<span class="translation">\(17^2 - 8^2 = 289 - 64 = 225\). \(\sqrt{225} = 15\).</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg1_3">
+                    <p class="question-text">3. Two tangents \(PA\) and \(PB\) are drawn from point \(P\). If \(PA = 3x - 4\) and \(PB = 11\), find \(x\).</p>
+                    <div class="options-grid" id="opt_asg1_3"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg1_3', '5')">Check</button>
+                    <div class="explanation" id="exp_asg1_3"><strong>Explanation:</strong> \(3x - 4 = 11 \rightarrow 3x = 15 \rightarrow x = 5\).<span class="translation">\(3x - 4 = 11 \rightarrow 3x = 15 \rightarrow x = 5\).</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg1_4">
+                    <p class="question-text">4. Given radius \(OA = 9\) cm and tangent \(AB = 12\) cm. Find the distance \(OB\).</p>
+                    <div class="options-grid" id="opt_asg1_4"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg1_4', '15 cm')">Check</button>
+                    <div class="explanation" id="exp_asg1_4"><strong>Explanation:</strong> \(OB^2 = 9^2 + 12^2 = 81 + 144 = 225\). \(\sqrt{225} = 15\).<span class="translation">\(OB^2 = 9^2 + 12^2 = 81 + 144 = 225\). \(\sqrt{225} = 15\).</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg1_5">
+                    <p class="question-text">5. If a tangent is 24 cm and the radius is 10 cm, what is the distance from the center to the external point?</p>
+                    <div class="options-grid" id="opt_asg1_5"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg1_5', '26 cm')">Check</button>
+                    <div class="explanation" id="exp_asg1_5"><strong>Explanation:</strong> \(OP^2 = 10^2 + 24^2 = 100 + 576 = 676\). \(\sqrt{676} = 26\).<span class="translation">\(OP^2 = 10^2 + 24^2 = 100 + 576 = 676\). \(\sqrt{676} = 26\).</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg1_6">
+                    <p class="question-text">6. Two tangents drawn from the same external point are always...</p>
+                    <div class="options-grid" id="opt_asg1_6"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg1_6', 'Equal in length')">Check</button>
+                    <div class="explanation" id="exp_asg1_6"><strong>Explanation:</strong> Equal in length (\(PA = PB\)).<span class="translation">Sama panjang (\(PA = PB\)).</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg1_7">
+                    <p class="question-text">7. What geometric shape is formed by points \(O, A, P, B\) (where \(PA\) and \(PB\) are tangents)?</p>
+                    <div class="options-grid" id="opt_asg1_7"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg1_7', 'Kite')">Check</button>
+                    <div class="explanation" id="exp_asg1_7"><strong>Explanation:</strong> Kite (Layang-layang).<span class="translation">Layang-layang.</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg1_8">
+                    <p class="question-text">8. In a right triangle, if \(a = 6\) and \(b = 8\), what is \(c\)?</p>
+                    <div class="options-grid" id="opt_asg1_8"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg1_8', '10')">Check</button>
+                    <div class="explanation" id="exp_asg1_8"><strong>Explanation:</strong> \(6^2 + 8^2 = 36 + 64 = 100\). \(\sqrt{100} = 10\).<span class="translation">\(6^2 + 8^2 = 36 + 64 = 100\). \(\sqrt{100} = 10\).</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg1_9">
+                    <p class="question-text">9. If \(PA = x + 3\) and \(PB = 12\), find \(x\).</p>
+                    <div class="options-grid" id="opt_asg1_9"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg1_9', '9')">Check</button>
+                    <div class="explanation" id="exp_asg1_9"><strong>Explanation:</strong> \(x + 3 = 12 \rightarrow x = 9\).<span class="translation">\(x + 3 = 12 \rightarrow x = 9\).</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg1_10">
+                    <p class="question-text">10. If the radius is 5 cm and the distance \(OP\) is 13 cm, find the tangent length.</p>
+                    <div class="options-grid" id="opt_asg1_10"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg1_10', '12 cm')">Check</button>
+                    <div class="explanation" id="exp_asg1_10"><strong>Explanation:</strong> \(13^2 - 5^2 = 169 - 25 = 144\). \(\sqrt{144} = 12\).<span class="translation">\(13^2 - 5^2 = 169 - 25 = 144\). \(\sqrt{144} = 12\).</span></div>
+                </div>
+            </div>
+
+            <div class="nav-controls">
+                <button class="action-btn prev-btn" onclick="showSection('sec6', document.getElementsByClassName('nav-btn')[6])"><i class="fas fa-arrow-left"></i> Prev</button>
+                <button class="action-btn reset-btn" onclick="resetSection('asg1')"><i class="fas fa-redo"></i> Reset</button>
+                <button class="action-btn next-btn" style="background: var(--warning); box-shadow: 0 3px 0 #e6b800;" onclick="printAssignment('asg1')"><i class="fas fa-print"></i> Print Result</button>
+                <button class="action-btn next-btn" onclick="showSection('asg2', document.getElementsByClassName('nav-btn')[8])">Next <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+
+        <!-- ASSIGNMENT 2 -->
+        <div id="asg2" class="lesson-container hidden">
+            <h2 class="section-header">Assignment 2: Tangent Length Calculations</h2>
+            <p class="section-time">Time: 10 Minutes</p>
+
+            <div class="content-block">
+                <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                    <input type="text" class="input-answer" id="asg2_name" placeholder="Student Name" style="flex: 2;">
+                    <input type="text" class="input-answer" id="asg2_date" placeholder="Date" style="flex: 1;">
+                </div>
+            </div>
+
+            <!-- 10 Exercises -->
+            <div class="content-block">
+                <div class="exercise-box" id="ex_asg2_1">
+                    <p class="question-text">1. A tangent line touches a circle at how many points?</p>
+                    <div class="options-grid" id="opt_asg2_1"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg2_1', '1')">Check</button>
+                    <div class="explanation" id="exp_asg2_1"><strong>Explanation:</strong> 1 point.<span class="translation">1 titik.</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg2_2">
+                    <p class="question-text">2. Radius = 7 cm, Distance OP = 25 cm. Find the tangent length.</p>
+                    <div class="options-grid" id="opt_asg2_2"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg2_2', '24 cm')">Check</button>
+                    <div class="explanation" id="exp_asg2_2"><strong>Explanation:</strong> \(25^2 - 7^2 = 625 - 49 = 576\). \(\sqrt{576} = 24\).<span class="translation">\(25^2 - 7^2 = 625 - 49 = 576\). \(\sqrt{576} = 24\).</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg2_3">
+                    <p class="question-text">3. What is the formula for the area of a kite formed by two tangents and two radii?</p>
+                    <div class="options-grid" id="opt_asg2_3"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg2_3', 'r * t')">Check</button>
+                    <div class="explanation" id="exp_asg2_3"><strong>Explanation:</strong> Area = \(r \times t\) (radius times tangent).<span class="translation">Luas = \(r \times t\) (jari-jari dikali garis singgung).</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg2_4">
+                    <p class="question-text">4. If radius = 6 cm and tangent = 8 cm, what is the area of the kite?</p>
+                    <div class="options-grid" id="opt_asg2_4"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg2_4', '48 cm^2')">Check</button>
+                    <div class="explanation" id="exp_asg2_4"><strong>Explanation:</strong> Area = \(6 \times 8 = 48\).<span class="translation">Luas = \(6 \times 8 = 48\).</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg2_5">
+                    <p class="question-text">5. If \(PA^2 = 400\), what is the length of \(PA\)?</p>
+                    <div class="options-grid" id="opt_asg2_5"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg2_5', '20')">Check</button>
+                    <div class="explanation" id="exp_asg2_5"><strong>Explanation:</strong> \(\sqrt{400} = 20\).<span class="translation">\(\sqrt{400} = 20\).</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg2_6">
+                    <p class="question-text">6. The tangent and the radius at the point of tangency are...</p>
+                    <div class="options-grid" id="opt_asg2_6"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg2_6', 'Perpendicular')">Check</button>
+                    <div class="explanation" id="exp_asg2_6"><strong>Explanation:</strong> Perpendicular (90 degrees).<span class="translation">Tegak lurus (90 derajat).</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg2_7">
+                    <p class="question-text">7. Distance OP = 15 cm, radius = 9 cm. Find the tangent length.</p>
+                    <div class="options-grid" id="opt_asg2_7"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg2_7', '12 cm')">Check</button>
+                    <div class="explanation" id="exp_asg2_7"><strong>Explanation:</strong> \(15^2 - 9^2 = 225 - 81 = 144\). \(\sqrt{144} = 12\).<span class="translation">\(15^2 - 9^2 = 225 - 81 = 144\). \(\sqrt{144} = 12\).</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg2_8">
+                    <p class="question-text">8. If \(PA = 2x\) and \(PB = 14\), find \(x\).</p>
+                    <div class="options-grid" id="opt_asg2_8"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg2_8', '7')">Check</button>
+                    <div class="explanation" id="exp_asg2_8"><strong>Explanation:</strong> \(2x = 14 \rightarrow x = 7\).<span class="translation">\(2x = 14 \rightarrow x = 7\).</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg2_9">
+                    <p class="question-text">9. Diameter = 20 cm, Tangent = 24 cm. Find the distance from center to external point.</p>
+                    <div class="options-grid" id="opt_asg2_9"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg2_9', '26 cm')">Check</button>
+                    <div class="explanation" id="exp_asg2_9"><strong>Explanation:</strong> Radius = 10. \(OP^2 = 10^2 + 24^2 = 100 + 576 = 676\). \(\sqrt{676} = 26\).<span class="translation">Jari-jari = 10. \(OP^2 = 10^2 + 24^2 = 100 + 576 = 676\). \(\sqrt{676} = 26\).</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg2_10">
+                    <p class="question-text">10. What do we call the point where the tangent touches the circle?</p>
+                    <div class="options-grid" id="opt_asg2_10"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg2_10', 'Point of Tangency')">Check</button>
+                    <div class="explanation" id="exp_asg2_10"><strong>Explanation:</strong> Point of Tangency.<span class="translation">Titik Singgung.</span></div>
+                </div>
+            </div>
+
+            <div class="nav-controls">
+                <button class="action-btn prev-btn" onclick="showSection('asg1', document.getElementsByClassName('nav-btn')[7])"><i class="fas fa-arrow-left"></i> Prev</button>
+                <button class="action-btn reset-btn" onclick="resetSection('asg2')"><i class="fas fa-redo"></i> Reset</button>
+                <button class="action-btn next-btn" style="background: var(--warning); box-shadow: 0 3px 0 #e6b800;" onclick="printAssignment('asg2')"><i class="fas fa-print"></i> Print Result</button>
+                <button class="action-btn next-btn" onclick="showSection('asg3', document.getElementsByClassName('nav-btn')[9])">Next <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+
+        <!-- ASSIGNMENT 3 -->
+        <div id="asg3" class="lesson-container hidden">
+            <h2 class="section-header">Assignment 3: Algebra & Tangents</h2>
+            <p class="section-time">Time: 10 Minutes</p>
+
+            <div class="content-block">
+                <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                    <input type="text" class="input-answer" id="asg3_name" placeholder="Student Name" style="flex: 2;">
+                    <input type="text" class="input-answer" id="asg3_date" placeholder="Date" style="flex: 1;">
+                </div>
+            </div>
+
+            <!-- 10 Exercises -->
+            <div class="content-block">
+                <div class="exercise-box" id="ex_asg3_1">
+                    <p class="question-text">1. If \(PA = 4x - 1\) and \(PB = 15\), find \(x\).</p>
+                    <div class="options-grid" id="opt_asg3_1"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg3_1', '4')">Check</button>
+                    <div class="explanation" id="exp_asg3_1"><strong>Explanation:</strong> \(4x - 1 = 15 \rightarrow 4x = 16 \rightarrow x = 4\).<span class="translation">\(4x - 1 = 15 \rightarrow 4x = 16 \rightarrow x = 4\).</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg3_2">
+                    <p class="question-text">2. If \(PA = x + 5\) and \(PB = 2x - 4\), find \(x\).</p>
+                    <div class="options-grid" id="opt_asg3_2"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg3_2', '9')">Check</button>
+                    <div class="explanation" id="exp_asg3_2"><strong>Explanation:</strong> \(x + 5 = 2x - 4 \rightarrow x = 9\).<span class="translation">\(x + 5 = 2x - 4 \rightarrow x = 9\).</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg3_3">
+                    <p class="question-text">3. If two tangents form a kite with a perimeter of 40 cm, what is the length of one tangent? (Assume radius is 5 cm).</p>
+                    <div class="options-grid" id="opt_asg3_3"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg3_3', '15 cm')">Check</button>
+                    <div class="explanation" id="exp_asg3_3"><strong>Explanation:</strong> Perimeter = \(5 + 5 + PA + PB = 40 \rightarrow 2PA = 30 \rightarrow PA = 15\).<span class="translation">Keliling = \(5 + 5 + PA + PB = 40 \rightarrow 2PA = 30 \rightarrow PA = 15\).</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg3_4">
+                    <p class="question-text">4. If \(PA = 3x\) and \(PB = 18\), find \(x\).</p>
+                    <div class="options-grid" id="opt_asg3_4"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg3_4', '6')">Check</button>
+                    <div class="explanation" id="exp_asg3_4"><strong>Explanation:</strong> \(3x = 18 \rightarrow x = 6\).<span class="translation">\(3x = 18 \rightarrow x = 6\).</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg3_5">
+                    <p class="question-text">5. \(PA = 2x + 3\), \(PB = 17\). Find the length of \(PA\).</p>
+                    <div class="options-grid" id="opt_asg3_5"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg3_5', '17')">Check</button>
+                    <div class="explanation" id="exp_asg3_5"><strong>Explanation:</strong> Because \(PA = PB\), \(PA\) must be 17. (And \(x=7\)).<span class="translation">Karena \(PA = PB\), \(PA\) pasti 17. (Dan \(x=7\)).</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg3_6">
+                    <p class="question-text">6. Solve for \(x\): \(5x - 2 = 18\).</p>
+                    <div class="options-grid" id="opt_asg3_6"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg3_6', '4')">Check</button>
+                    <div class="explanation" id="exp_asg3_6"><strong>Explanation:</strong> \(5x = 20 \rightarrow x = 4\).<span class="translation">\(5x = 20 \rightarrow x = 4\).</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg3_7">
+                    <p class="question-text">7. What is the coefficient of \(x\) in \(7x - 3\)?</p>
+                    <div class="options-grid" id="opt_asg3_7"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg3_7', '7')">Check</button>
+                    <div class="explanation" id="exp_asg3_7"><strong>Explanation:</strong> The number multiplying \(x\) is 7.<span class="translation">Angka yang mengalikan \(x\) adalah 7.</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg3_8">
+                    <p class="question-text">8. Translate into algebra: "Twice the length of tangent \(t\)".</p>
+                    <div class="options-grid" id="opt_asg3_8"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg3_8', '2t')">Check</button>
+                    <div class="explanation" id="exp_asg3_8"><strong>Explanation:</strong> Twice \(t\) is \(2t\).<span class="translation">Dua kali \(t\) adalah \(2t\).</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg3_9">
+                    <p class="question-text">9. If \(PA = 10\) and \(PB = y\), find \(y\).</p>
+                    <div class="options-grid" id="opt_asg3_9"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg3_9', '10')">Check</button>
+                    <div class="explanation" id="exp_asg3_9"><strong>Explanation:</strong> \(y = 10\) because tangents from same point are equal.<span class="translation">\(y = 10\) karena garis singgung dari titik yang sama panjangnya sama.</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg3_10">
+                    <p class="question-text">10. If \(x = 5\), evaluate \(3x - 4\).</p>
+                    <div class="options-grid" id="opt_asg3_10"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg3_10', '11')">Check</button>
+                    <div class="explanation" id="exp_asg3_10"><strong>Explanation:</strong> \(3(5) - 4 = 15 - 4 = 11\).<span class="translation">\(3(5) - 4 = 15 - 4 = 11\).</span></div>
+                </div>
+            </div>
+
+            <div class="nav-controls">
+                <button class="action-btn prev-btn" onclick="showSection('asg2', document.getElementsByClassName('nav-btn')[8])"><i class="fas fa-arrow-left"></i> Prev</button>
+                <button class="action-btn reset-btn" onclick="resetSection('asg3')"><i class="fas fa-redo"></i> Reset</button>
+                <button class="action-btn next-btn" style="background: var(--warning); box-shadow: 0 3px 0 #e6b800;" onclick="printAssignment('asg3')"><i class="fas fa-print"></i> Print Result</button>
+                <button class="action-btn next-btn" onclick="showSection('asg4', document.getElementsByClassName('nav-btn')[10])">Next <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+
+        <!-- ASSIGNMENT 4 -->
+        <div id="asg4" class="lesson-container hidden">
+            <h2 class="section-header">Assignment 4: Pythagoras & Tangents</h2>
+            <p class="section-time">Time: 10 Minutes</p>
+
+            <div class="content-block">
+                <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                    <input type="text" class="input-answer" id="asg4_name" placeholder="Student Name" style="flex: 2;">
+                    <input type="text" class="input-answer" id="asg4_date" placeholder="Date" style="flex: 1;">
+                </div>
+            </div>
+
+            <!-- 10 Exercises -->
+            <div class="content-block">
+                <div class="exercise-box" id="ex_asg4_1">
+                    <p class="question-text">1. Radius = 3 cm, OP = 5 cm. Find the tangent length.</p>
+                    <div class="options-grid" id="opt_asg4_1"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg4_1', '4 cm')">Check</button>
+                    <div class="explanation" id="exp_asg4_1"><strong>Explanation:</strong> \(5^2 - 3^2 = 25 - 9 = 16\). \(\sqrt{16} = 4\).<span class="translation">\(5^2 - 3^2 = 25 - 9 = 16\). \(\sqrt{16} = 4\).</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg4_2">
+                    <p class="question-text">2. Radius = 8 cm, Tangent = 15 cm. Find OP.</p>
+                    <div class="options-grid" id="opt_asg4_2"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg4_2', '17 cm')">Check</button>
+                    <div class="explanation" id="exp_asg4_2"><strong>Explanation:</strong> \(OP^2 = 8^2 + 15^2 = 64 + 225 = 289\). \(\sqrt{289} = 17\).<span class="translation">\(OP^2 = 8^2 + 15^2 = 64 + 225 = 289\). \(\sqrt{289} = 17\).</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg4_3">
+                    <p class="question-text">3. Tangent = 12 cm, OP = 13 cm. Find the radius.</p>
+                    <div class="options-grid" id="opt_asg4_3"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg4_3', '5 cm')">Check</button>
+                    <div class="explanation" id="exp_asg4_3"><strong>Explanation:</strong> \(r^2 = 13^2 - 12^2 = 169 - 144 = 25\). \(\sqrt{25} = 5\).<span class="translation">\(r^2 = 13^2 - 12^2 = 169 - 144 = 25\). \(\sqrt{25} = 5\).</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg4_4">
+                    <p class="question-text">4. The formula \(OA^2 + PA^2 = OP^2\) is known as...</p>
+                    <div class="options-grid" id="opt_asg4_4"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg4_4', 'Pythagorean Theorem')">Check</button>
+                    <div class="explanation" id="exp_asg4_4"><strong>Explanation:</strong> Pythagorean Theorem.<span class="translation">Teorema Pythagoras.</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg4_5">
+                    <p class="question-text">5. Radius = 9 cm, Tangent = 12 cm. Find OP.</p>
+                    <div class="options-grid" id="opt_asg4_5"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg4_5', '15 cm')">Check</button>
+                    <div class="explanation" id="exp_asg4_5"><strong>Explanation:</strong> \(OP^2 = 9^2 + 12^2 = 81 + 144 = 225\). \(\sqrt{225} = 15\).<span class="translation">\(OP^2 = 9^2 + 12^2 = 81 + 144 = 225\). \(\sqrt{225} = 15\).</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg4_6">
+                    <p class="question-text">6. Radius = 12 cm, OP = 13 cm. Find the tangent.</p>
+                    <div class="options-grid" id="opt_asg4_6"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg4_6', '5 cm')">Check</button>
+                    <div class="explanation" id="exp_asg4_6"><strong>Explanation:</strong> \(t^2 = 13^2 - 12^2 = 169 - 144 = 25\). \(\sqrt{25} = 5\).<span class="translation">\(t^2 = 13^2 - 12^2 = 169 - 144 = 25\). \(\sqrt{25} = 5\).</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg4_7">
+                    <p class="question-text">7. Calculate \(\sqrt{169}\).</p>
+                    <div class="options-grid" id="opt_asg4_7"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg4_7', '13')">Check</button>
+                    <div class="explanation" id="exp_asg4_7"><strong>Explanation:</strong> \(13 \times 13 = 169\).<span class="translation">\(13 \times 13 = 169\).</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg4_8">
+                    <p class="question-text">8. Calculate \(\sqrt{625}\).</p>
+                    <div class="options-grid" id="opt_asg4_8"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg4_8', '25')">Check</button>
+                    <div class="explanation" id="exp_asg4_8"><strong>Explanation:</strong> \(25 \times 25 = 625\).<span class="translation">\(25 \times 25 = 625\).</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg4_9">
+                    <p class="question-text">9. Calculate \(15^2\).</p>
+                    <div class="options-grid" id="opt_asg4_9"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg4_9', '225')">Check</button>
+                    <div class="explanation" id="exp_asg4_9"><strong>Explanation:</strong> \(15 \times 15 = 225\).<span class="translation">\(15 \times 15 = 225\).</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg4_10">
+                    <p class="question-text">10. If OP is the hypotenuse, the right angle is located at...</p>
+                    <div class="options-grid" id="opt_asg4_10"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg4_10', 'Point of Tangency')">Check</button>
+                    <div class="explanation" id="exp_asg4_10"><strong>Explanation:</strong> Point of Tangency.<span class="translation">Titik Singgung.</span></div>
+                </div>
+            </div>
+
+            <div class="nav-controls">
+                <button class="action-btn prev-btn" onclick="showSection('asg3', document.getElementsByClassName('nav-btn')[9])"><i class="fas fa-arrow-left"></i> Prev</button>
+                <button class="action-btn reset-btn" onclick="resetSection('asg4')"><i class="fas fa-redo"></i> Reset</button>
+                <button class="action-btn next-btn" style="background: var(--warning); box-shadow: 0 3px 0 #e6b800;" onclick="printAssignment('asg4')"><i class="fas fa-print"></i> Print Result</button>
+                <button class="action-btn next-btn" onclick="showSection('asg5', document.getElementsByClassName('nav-btn')[11])">Next <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+
+        <!-- ASSIGNMENT 5 -->
+        <div id="asg5" class="lesson-container hidden">
+            <h2 class="section-header">Assignment 5: Area of Kite & Mixed</h2>
+            <p class="section-time">Time: 10 Minutes</p>
+
+            <div class="content-block">
+                <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                    <input type="text" class="input-answer" id="asg5_name" placeholder="Student Name" style="flex: 2;">
+                    <input type="text" class="input-answer" id="asg5_date" placeholder="Date" style="flex: 1;">
+                </div>
+            </div>
+
+            <!-- 10 Exercises -->
+            <div class="content-block">
+                <div class="exercise-box" id="ex_asg5_1">
+                    <p class="question-text">1. What is the formula for the area of a kite formed by two tangents and two radii?</p>
+                    <div class="options-grid" id="opt_asg5_1"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg5_1', 'r * t')">Check</button>
+                    <div class="explanation" id="exp_asg5_1"><strong>Explanation:</strong> Area = \(r \times t\) (radius times tangent).<span class="translation">Luas = \(r \times t\) (jari-jari dikali garis singgung).</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg5_2">
+                    <p class="question-text">2. Radius = 7 cm, Tangent = 24 cm. Find the area of the kite.</p>
+                    <div class="options-grid" id="opt_asg5_2"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg5_2', '168 cm^2')">Check</button>
+                    <div class="explanation" id="exp_asg5_2"><strong>Explanation:</strong> Area = \(7 \times 24 = 168\).<span class="translation">Luas = \(7 \times 24 = 168\).</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg5_3">
+                    <p class="question-text">3. Radius = 3 cm, Tangent = 4 cm. Find the area of the kite.</p>
+                    <div class="options-grid" id="opt_asg5_3"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg5_3', '12 cm^2')">Check</button>
+                    <div class="explanation" id="exp_asg5_3"><strong>Explanation:</strong> Area = \(3 \times 4 = 12\).<span class="translation">Luas = \(3 \times 4 = 12\).</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg5_4">
+                    <p class="question-text">4. Area = 60 cm², Radius = 6 cm. Find the tangent length.</p>
+                    <div class="options-grid" id="opt_asg5_4"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg5_4', '10 cm')">Check</button>
+                    <div class="explanation" id="exp_asg5_4"><strong>Explanation:</strong> \(60 = 6 \times t \rightarrow t = 10\).<span class="translation">\(60 = 6 \times t \rightarrow t = 10\).</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg5_5">
+                    <p class="question-text">5. Area = 48 cm², Tangent = 8 cm. Find the radius.</p>
+                    <div class="options-grid" id="opt_asg5_5"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg5_5', '6 cm')">Check</button>
+                    <div class="explanation" id="exp_asg5_5"><strong>Explanation:</strong> \(48 = r \times 8 \rightarrow r = 6\).<span class="translation">\(48 = r \times 8 \rightarrow r = 6\).</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg5_6">
+                    <p class="question-text">6. The kite is made of two identical ______ triangles.</p>
+                    <div class="options-grid" id="opt_asg5_6"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg5_6', 'Right-angled')">Check</button>
+                    <div class="explanation" id="exp_asg5_6"><strong>Explanation:</strong> Right-angled (siku-siku) triangles.<span class="translation">Segitiga siku-siku.</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg5_7">
+                    <p class="question-text">7. Radius = 5 cm, Tangent = 12 cm. Find the Area.</p>
+                    <div class="options-grid" id="opt_asg5_7"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg5_7', '60 cm^2')">Check</button>
+                    <div class="explanation" id="exp_asg5_7"><strong>Explanation:</strong> Area = \(5 \times 12 = 60\).<span class="translation">Luas = \(5 \times 12 = 60\).</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg5_8">
+                    <p class="question-text">8. Tangent = 15 cm, Radius = 8 cm. Find the Area.</p>
+                    <div class="options-grid" id="opt_asg5_8"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg5_8', '120 cm^2')">Check</button>
+                    <div class="explanation" id="exp_asg5_8"><strong>Explanation:</strong> Area = \(8 \times 15 = 120\).<span class="translation">Luas = \(8 \times 15 = 120\).</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg5_9">
+                    <p class="question-text">9. If Area = 84 cm² and Radius = 7 cm, find the tangent.</p>
+                    <div class="options-grid" id="opt_asg5_9"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg5_9', '12 cm')">Check</button>
+                    <div class="explanation" id="exp_asg5_9"><strong>Explanation:</strong> \(84 = 7 \times t \rightarrow t = 12\).<span class="translation">\(84 = 7 \times t \rightarrow t = 12\).</span></div>
+                </div>
+                <div class="exercise-box" id="ex_asg5_10">
+                    <p class="question-text">10. What is the unit for the area of a kite?</p>
+                    <div class="options-grid" id="opt_asg5_10"></div>
+                    <button class="check-btn" onclick="checkAnswer('ex_asg5_10', 'cm^2')">Check</button>
+                    <div class="explanation" id="exp_asg5_10"><strong>Explanation:</strong> Area is always in square units, like cm².<span class="translation">Luas selalu dalam unit persegi, seperti cm².</span></div>
+                </div>
+            </div>
+
+            <div class="nav-controls">
+                <button class="action-btn prev-btn" onclick="showSection('asg4', document.getElementsByClassName('nav-btn')[10])"><i class="fas fa-arrow-left"></i> Prev</button>
+                <button class="action-btn reset-btn" onclick="resetSection('asg5')"><i class="fas fa-redo"></i> Reset</button>
+                <button class="action-btn next-btn" style="background: var(--warning); box-shadow: 0 3px 0 #e6b800;" onclick="printAssignment('asg5')"><i class="fas fa-print"></i> Print Result</button>
+                <button class="action-btn next-btn" onclick="showSection('end', document.getElementsByClassName('nav-btn')[12])">Next <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+
+        <!-- CONSOLIDATION & REFLECTION -->
+        <div id="end" class="lesson-container hidden">
+            <h2 class="section-header">Consolidation & Reflection</h2>
+            <p class="section-time">Time: 01:00 - 01:05</p>
+
+            <div class="content-block">
+                <div class="theory-box" style="text-align: center;">
+                    <i class="fas fa-trophy" style="font-size: 3rem; color: var(--warning); margin-bottom: 15px;"></i>
+                    <h3>Amazing Job! You did it!</h3>
+                    <p class="translation">Kerja Luar Biasa! Kamu berhasil!</p>
+                </div>
+            </div>
+
+            <div class="content-block">
+                <h3>Key Takeaways <span class="translation">Poin Kunci</span></h3>
+                <ul style="margin-left: 20px; line-height: 1.8;">
+                    <li><strong>90 Degrees:</strong> A tangent is always perpendicular to the radius at the point of tangency. <span class="translation">90 Derajat: Garis singgung selalu tegak lurus dengan jari-jari pada titik singgung.</span></li>
+                    <li><strong>Pythagoras:</strong> Use \(a^2 + b^2 = c^2\) to find missing lengths. <span class="translation">Pythagoras: Gunakan \(a^2 + b^2 = c^2\) untuk mencari panjang yang hilang.</span></li>
+                    <li><strong>Equal Lengths:</strong> Two tangents from the same external point are always equal (\(PA = PB\)). <span class="translation">Panjang Sama: Dua garis singgung dari titik luar yang sama selalu sama panjang (\(PA = PB\)).</span></li>
+                    <li><strong>Kite Area:</strong> The shape formed is a kite, and its area is \(r \times t\). <span class="translation">Luas Layang-layang: Bentuk yang terbentuk adalah layang-layang, dan luasnya adalah \(r \times t\).</span></li>
+                </ul>
+            </div>
+
+            <div class="content-block" style="text-align: center;">
+                <p>Ready for more practice? Click the button below to go to Algonova!</p>
+                <p class="translation">Siap untuk latihan lagi? Klik tombol di bawah untuk pergi ke Algonova!</p>
+                <a href="https://learn.algonova.id/login" target="_blank" style="text-decoration: none;">
+                    <button class="action-btn next-btn" style="padding: 15px 30px; font-size: 1.1rem; margin-top: 15px;">
+                        Go to Algonova <i class="fas fa-external-link-alt"></i>
+                    </button>
+                </a>
+            </div>
+
+            <div class="nav-controls">
+                <button class="action-btn prev-btn" onclick="showSection('asg5', document.getElementsByClassName('nav-btn')[11])"><i class="fas fa-arrow-left"></i> Prev</button>
+                <button class="action-btn reset-btn" onclick="resetSection('end')"><i class="fas fa-redo"></i> Reset</button>
+                <button class="action-btn next-btn" onclick="showSection('home', document.getElementsByClassName('nav-btn')[0])">Back to Home <i class="fas fa-home"></i></button>
+            </div>
+        </div>
+
+        <!-- KaTeX JS -->
+        <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+        <script>
+            // Basic Navigation
+            function showSection(id, btn) {
+                document.querySelectorAll('.lesson-container').forEach(el => el.classList.add('hidden'));
+                document.getElementById(id).classList.remove('hidden');
+                
+                document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+                if(btn) btn.classList.add('active');
+                
+                // Render KaTeX on section change
+                if (typeof renderMathInElement !== 'undefined') {
+                    renderMathInElement(document.getElementById(id), {
+                        delimiters: [
+                            {left: '$$', right: '$$', display: true},
+                            {left: '\\(', right: '\\)', display: false}
+                        ]
+                    });
+                }
+                window.scrollTo(0, 0);
+                document.querySelector('.main-content').scrollTop = 0;
+            }
+
+            // Randomize Options
+            function shuffle(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            }
+
+			function createOptions(exId, correctAnswer, wrongAnswers) {
+				const container = document.getElementById('opt_' + exId) || document.getElementById('opt' + exId);
+				if (!container) return;
+                container.innerHTML = '';
+                let options = [{val: correctAnswer, text: correctAnswer}].concat(wrongAnswers.map(w => ({val: w, text: w})));
+                options = shuffle(options);
+                
+                options.forEach(opt => {
+                    const btn = document.createElement('button');
+                    btn.className = 'option-btn';
+                    btn.innerText = opt.text;
+                    btn.onclick = function() { selectOption(this, exId, correctAnswer); };
+                    container.appendChild(btn);
+                });
+            }
+
+			function selectOption(btn, exId, correctAnswer) {
+				const parent = btn.parentElement;
+				parent.querySelectorAll('.option-btn').forEach(b => {
+					b.classList.remove('selected', 'correct', 'incorrect');
+					b.dataset.selected = "";
+				});
+				
+				btn.classList.add('selected');
+				btn.dataset.selected = "true";
+
+				const expId = 'exp' + exId.replace('ex', '');
+				const expDiv = document.getElementById(expId);
+				if (!expDiv) return;
+
+				if (btn.innerText.trim() === correctAnswer) {
+					btn.classList.add('correct');
+					expDiv.classList.remove('incorrect');
+					expDiv.classList.add('show', 'correct');
+				} else {
+					btn.classList.add('incorrect');
+					parent.querySelectorAll('.option-btn').forEach(b => {
+						if (b.innerText.trim() === correctAnswer) b.classList.add('correct');
+					});
+					expDiv.classList.remove('correct');
+					expDiv.classList.add('show', 'incorrect');
+				}
+			}
+
+			function checkAnswer(exId, correctAnswer) {
+				const baseId = exId.replace('ex', '');
+				const optId = 'opt' + baseId;
+				const expId = 'exp' + baseId;
+				
+				const selected = document.querySelector(`#${optId} .option-btn.selected`);
+				const expDiv = document.getElementById(expId);
+				
+				if (!selected) { 
+					alert("Please select an answer! / Silakan pilih jawaban!"); 
+					return; 
+				}
+
+				if (selected.innerText.trim() === correctAnswer) {
+					selected.classList.add('correct');
+					expDiv.classList.add('show', 'correct');
+				} else {
+					selected.classList.add('incorrect');
+					document.querySelectorAll(`#${optId} .option-btn`).forEach(b => {
+						if (b.innerText.trim() === correctAnswer) b.classList.add('correct');
+					});
+					expDiv.classList.add('show', 'incorrect');
+				}
+				event.target.disabled = true;
+			}
+			
+			function resetExercise(exId) {
+				const box = document.getElementById(exId);
+				if (!box) return;
+				
+				box.querySelectorAll('.option-btn').forEach(btn => {
+					btn.classList.remove('selected', 'correct', 'incorrect');
+					btn.dataset.selected = "";
+				});
+				
+				box.querySelectorAll('.input-answer').forEach(inp => {
+					if (inp.placeholder && (inp.placeholder.includes('Name') || inp.placeholder.includes('Date'))) return;
+					inp.value = '';
+					inp.style = '';
+				});
+				
+				box.querySelectorAll('.explanation').forEach(exp => {
+					exp.classList.remove('show', 'correct', 'incorrect');
+				});
+				
+				box.querySelectorAll('.check-btn').forEach(btn => btn.disabled = false);
+			}
+
+			function checkInput(inputId, correctAnswer, expId) {
+				const input = document.getElementById(inputId);
+				const expDiv = document.getElementById(expId);
+				const userAns = input.value.replace(/\s/g, '').toLowerCase();
+				const correctAns = correctAnswer.replace(/\s/g, '').toLowerCase();
+
+				if (userAns === correctAns) {
+					input.style.borderColor = 'var(--primary)';
+					input.style.backgroundColor = '#e7ffe0';
+					expDiv.classList.remove('incorrect');
+					expDiv.classList.add('show', 'correct');
+				} else {
+					input.style.borderColor = 'var(--danger)';
+					input.style.backgroundColor = '#ffe5e5';
+					expDiv.classList.remove('correct');
+					expDiv.classList.add('show', 'incorrect');
+				}
+			}
+
+			function setupInputAutoCheck() {
+				document.querySelectorAll('.input-answer').forEach(input => {
+					if (input.placeholder && (input.placeholder.includes('Name') || input.placeholder.includes('Date'))) return;
+					const box = input.closest('.exercise-box');
+					const checkBtn = box.querySelector('.check-btn');
+					if (checkBtn) {
+						const onclickStr = checkBtn.getAttribute('onclick') || '';
+						const match = onclickStr.match(/checkInput\('([^']+)',\s*'([^']+)',\s*'([^']+)'\)/);
+						if (match) {
+							const inputId = match[1];
+							const correctAnswer = match[2];
+							const expId = match[3];
+							input.addEventListener('keypress', function(e) {
+								if (e.key === 'Enter') {
+									e.preventDefault();
+									checkInput(inputId, correctAnswer, expId);
+								}
+							});
+							input.addEventListener('blur', function(e) {
+								if (input.value.trim() !== '') {
+									checkInput(inputId, correctAnswer, expId);
+								}
+							});
+						}
+					}
+				});
+			}
+			window.addEventListener('DOMContentLoaded', () => {
+				setupInputAutoCheck();
+			});
+
+            function resetSection(secId) {
+                // Simple reset logic for current section (can be expanded)
+                const section = document.getElementById(secId);
+                section.querySelectorAll('.option-btn').forEach(btn => {
+                    btn.classList.remove('selected', 'correct', 'incorrect');
+                    btn.dataset.selected = "";
+                });
+                section.querySelectorAll('.input-answer').forEach(inp => {
+                    inp.value = '';
+                    inp.style = '';
+                });
+                section.querySelectorAll('.explanation').forEach(exp => {
+                    exp.classList.remove('show', 'correct', 'incorrect');
+                });
+                section.querySelectorAll('.check-btn').forEach(btn => btn.disabled = false);
+                alert('Section reset! / Bagian direset!');
+            }
+
+			// Print Assignment Function
+			function printAssignment(asgId) {
+				const section = document.getElementById(asgId);
+				const name = document.getElementById(asgId + '_name').value || '...';
+				const date = document.getElementById(asgId + '_date').value || '...';
+				
+				let score = 0;
+				let tableRows = '';
+				const exercises = section.querySelectorAll('.exercise-box');
+				
+				exercises.forEach((ex, index) => {
+					const qHTML = ex.querySelector('.question-text').innerHTML;
+					let studentAns = 'No Answer';
+					let correctAnsHTML = '';
+					let note = '❌';
+					
+					const selected = ex.querySelector('.option-btn.selected');
+					const input = ex.querySelector('.input-answer');
+					
+					if (input && !input.placeholder.includes('Name') && !input.placeholder.includes('Date')) {
+						if(input.value) studentAns = input.value;
+					} else if (selected) {
+						studentAns = selected.innerText;
+					}
+					
+					const exp = ex.querySelector('.explanation');
+					
+					// PERBAIKAN UTAMA: Cek jawaban dengan membandingkan teks siswa dan kunci jawaban
+					const checkBtn = ex.querySelector('.check-btn');
+					let correctAnsText = '';
+					if (checkBtn) {
+						const onclickStr = checkBtn.getAttribute('onclick') || '';
+						const match = onclickStr.match(/'([^']+)',\s*'([^']+)'/);
+						if (match && match.length > 2) {
+							correctAnsText = match[2]; // Ini kunci jawaban asli dari sistem
+						}
+					}
+					
+					// Normalisasi teks (hilangkan spasi dan ubah jadi huruf kecil) agar bisa dibandingkan
+					const normalize = (str) => str.replace(/\s/g, '').toLowerCase();
+					const isCorrect = normalize(studentAns) === normalize(correctAnsText);
+					
+					if (isCorrect) {
+						score++;
+						note = '✔️';
+					}
+					
+					// Ambil rumus matematika menggunakan innerHTML
+					if (exp) {
+						const cloneExp = exp.cloneNode(true);
+						cloneExp.querySelector('.translation')?.remove(); 
+						cloneExp.querySelector('strong')?.remove(); 
+						correctAnsHTML = cloneExp.innerHTML.trim();
+					}
+					
+					tableRows += `<tr><td>${index + 1}</td><td>${qHTML}</td><td>${studentAns}</td><td>${correctAnsHTML}</td><td style="text-align: center;">${note}</td></tr>`;
+				});
+
+				// Kompres CSS agar muat dalam 1 halaman A4
+				const printContent = `
+					<!DOCTYPE html><html><head><title>Print Assignment - ${asgId}</title>
+					<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+					<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"><\/script>
+					<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"><\/script>
+					<style>
+						@page { size: A4; margin: 0.5in; }
+						body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; font-size: 10px; }
+						h2 { margin-bottom: 0; color: #1cb0f6; font-size: 16px; }
+						.header-table { width: 100%; margin-bottom: 10px; border-collapse: collapse; }
+						.header-table td { padding: 3px; font-size: 11px; }
+						table { width: 100%; border-collapse: collapse; margin-top: 5px; table-layout: fixed; }
+						th, td { border: 1px solid #ccc; padding: 4px; text-align: left; vertical-align: top; word-wrap: break-word; }
+						th { background-color: #f7f7f7; }
+						.footer { margin-top: 20px; text-align: right; font-size: 11px; }
+						.katex { font-size: 1em !important; }
+					</style></head><body>
+						<h2>MATH TUTORING by Deni</h2>
+						<hr style="border: 0; border-top: 2px solid #333; margin: 5px 0;">
+						<table class="header-table">
+							<tr>
+								<td><strong>Name:</strong> ${name}</td>
+								<td><strong>Date:</strong> ${date}</td>
+							</tr>
+							<tr>
+								<td><strong>Topic:</strong> Tangent to a Circle</td>
+								<td><strong>Assignment Group:</strong> ${asgId.toUpperCase()}</td>
+							</tr>
+							<tr>
+								<td colspan="2"><strong>Score:</strong> <span style="font-size: 1.2rem; color: #58cc02;">${score} / 10</span></td>
+							</tr>
+						</table>
+						
+						<table>
+							<thead>
+								<tr>
+									<th style="width: 4%;">No.</th>
+									<th style="width: 38%;">Question</th>
+									<th style="width: 16%;">Student Answer</th>
+									<th style="width: 34%;">Correct Answer</th>
+									<th style="width: 8%;">Note</th>
+								</tr>
+							</thead>
+							<tbody>${tableRows}</tbody>
+						</table>
+						
+						<div class="footer">
+							<p>Checked by,</p>
+							<br>
+							<p><strong>Deni</strong></p>
+						</div>
+						<script>
+							document.addEventListener("DOMContentLoaded", function() {
+								renderMathInElement(document.body, {
+									delimiters: [
+										{left: "$$", right: "$$", display: true},
+										{left: "\\\\(", right: "\\\\)", display: false}
+									]
+								});
+							});
+						<\/script>
+					</body></html>
+				`;
+				
+				const printWindow = window.open('', '_blank');
+				printWindow.document.write(printContent);
+				printWindow.document.close();
+				
+				printWindow.onload = function() {
+					setTimeout(() => {
+						printWindow.focus();
+						printWindow.print();
+					}, 800);
+				};
+			}
+
+            function resetAllProgress() {
+                if(confirm('Are you sure you want to reset ALL progress? / Yakin ingin mereset SEMUA kemajuan?')) {
+                    document.querySelectorAll('.lesson-container').forEach(sec => {
+                        resetSection(sec.id);
+                    });
+                    showSection('home', document.getElementsByClassName('nav-btn')[0]);
+                }
+            }
+
+            // Initialize options on load
+            document.addEventListener('DOMContentLoaded', () => {
+                // Render Math globally first
+                if (typeof renderMathInElement !== 'undefined') {
+                    renderMathInElement(document.body, {
+                        delimiters: [
+                            {left: '$$', right: '$$', display: true},
+                            {left: '\\(', right: '\\)', display: false}
+                        ]
+                    });
+                }
+                
+                // Section 1 Options
+                createOptions('1_1', 'x', ['5', '12', '+']);
+                createOptions('1_2', '-3', ['3', '8', 'y']);
+                createOptions('1_3', '12', ['5', 'x', '17']);
+                createOptions('2_2', '5a - 2000', ['5a + 2000', 'a - 2000', '2000 - 5a']);
+                createOptions('2_3', '2y - 4', ['2y + 4', '4 - 2y', '2(y - 4)']);
+                createOptions('3_1', '5', ['7', '12', '25']);
+                createOptions('3_2', '8', ['4', '16', '136']);
+                createOptions('3_3', '13', ['17', '7', '60']);
+                
+                // Section 2 Options
+                createOptions('2_1_1', '1', ['2', '0', 'Infinite']);
+                createOptions('2_1_2', 'True', ['False']);
+                createOptions('2_1_3', 'True', ['False']);
+                createOptions('2_2_1', 'Point of Tangency', ['Center Point', 'Radius Point', 'Edge Point']);
+                createOptions('2_2_2', 'No', ['Yes']);
+                createOptions('2_2_3', 'A straight road touching a roundabout', ['A diameter of a circle', 'A slice of pizza', 'A circle inside a square']);
+                createOptions('2_3_1', '90 degrees', ['45 degrees', '180 degrees', '360 degrees']);
+                createOptions('2_3_2', 'Radius', ['Diameter', 'Tangent', 'Chord']);
+                createOptions('2_3_3', 'Tangent', ['Secant', 'Diameter', 'Arc']);
+                createOptions('2_3_4', 'To touch', ['To cut', 'To cross', 'To draw']);
+				
+                // Section 3 Options
+                createOptions('3_1_1', '15', ['21', '108', '225']);
+                createOptions('3_1_2', 'Hypotenuse', ['Tangent', 'Radius', 'Cathetus']);
+                createOptions('3_1_3', '12', ['6', '144', '24']);
+                createOptions('3_2_1', '90 degrees', ['45 degrees', '180 degrees', '60 degrees']);
+                createOptions('3_2_2', '90 degrees', ['45 degrees', '5 cm', '180 degrees']);
+                createOptions('3_2_3', 'No', ['Yes']);
+                createOptions('3_3_1', 'At point A', ['At point O', 'At point P', 'In the center']);
+                createOptions('3_3_2', 'OP', ['OA', 'PA', 'AP']);
+                createOptions('3_3_3', '10', ['14', '100', '8']);
+                createOptions('3_3_4', 'Because PA is a tangent', ['Because OP is long', 'Because O is the center', 'Because A is outside']);
+                
+                // Section 4 Options
+                createOptions('4_1_1', 'PA^2 = OP^2 - OA^2', ['PA^2 = OP^2 + OA^2', 'PA^2 = OA^2 - OP^2', 'PA = OP + OA']);
+                createOptions('4_1_2', '12', ['18', '144', '8']);
+                createOptions('4_1_3', '6', ['2', '36', '18']);
+                createOptions('4_3_1', '10', ['14', '100', '8']);
+                createOptions('4_3_2', '5', ['1', '25', '5 cm']);
+                createOptions('4_3_3', '17', ['23', '289', '7']);
+                createOptions('4_3_4', 'OP', ['OA', 'PA', 'None']);
+				
+                // Section 5 Options
+                createOptions('5_1_1', '10 cm', ['20 cm', '5 cm', '100 cm']);
+                createOptions('5_1_2', 'Kite', ['Square', 'Rectangle', 'Triangle']);
+                createOptions('5_1_3', '2x + 5 = 15', ['2x - 5 = 15', '2x = 15', 'x = 15']);
+                createOptions('5_2_3', '20', ['5', '80', '4']);
+                createOptions('5_3_1', '90 degrees', ['45 degrees', '180 degrees', 'Cannot be determined']);
+                createOptions('5_3_2', 'OP', ['AB', 'AP', 'OB']);
+                createOptions('5_3_3', '34', ['24', '29', '17']);
+                createOptions('5_3_4', 'They are identical', ['They are different sizes', 'One is bigger', 'Cannot be determined']);
+                
+                // Section 6 Options
+                createOptions('6_1_3', '24 cm', ['576 cm', '32 cm', '7 cm']);
+                createOptions('6_2_1', '1/2 * OA * QA', ['OA * QA', '1/2 * OP * OA', 'OP * QA']);
+                createOptions('6_2_2', '84 cm^2', ['168 cm^2', '31.5 cm^2', '42 cm^2']);
+                createOptions('6_2_3', '168 cm^2', ['84 cm^2', '336 cm^2', '100 cm^2']);
+                createOptions('6_3_1', '8 cm', ['4 cm', '10 cm', '16 cm']);
+                createOptions('6_3_2', '48 cm^2', ['24 cm^2', '14 cm^2', '96 cm^2']);
+                createOptions('6_3_3', '17 cm', ['23 cm', '289 cm', '7 cm']);
+                createOptions('6_3_4', '10 cm', ['6 cm', '60 cm', '5 cm']);
+				
+                // Assignment 1 Options
+                createOptions('asg1_1', '90 degrees', ['45 degrees', '180 degrees', '60 degrees']);
+                createOptions('asg1_2', '15 cm', ['25 cm', '9 cm', '225 cm']);
+                createOptions('asg1_3', '5', ['15', '7', '3']);
+                createOptions('asg1_4', '15 cm', ['21 cm', '3 cm', '108 cm']);
+                createOptions('asg1_5', '26 cm', ['34 cm', '676 cm', '14 cm']);
+                createOptions('asg1_6', 'Equal in length', ['Perpendicular', 'Parallel', 'Different lengths']);
+                createOptions('asg1_7', 'Kite', ['Square', 'Rectangle', 'Circle']);
+                createOptions('asg1_8', '10', ['14', '100', '48']);
+                createOptions('asg1_9', '9', ['15', '12', '4']);
+                createOptions('asg1_10', '12 cm', ['18 cm', '8 cm', '144 cm']);
+                
+                // Assignment 2 Options
+                createOptions('asg2_1', '1', ['2', '0', 'Infinite']);
+                createOptions('asg2_2', '24 cm', ['32 cm', '576 cm', '18 cm']);
+                createOptions('asg2_3', 'r * t', ['1/2 * r * t', 'r + t', '2 * r * t']);
+                createOptions('asg2_4', '48 cm^2', ['14 cm^2', '24 cm^2', '96 cm^2']);
+                createOptions('asg2_5', '20', ['200', '10', '400']);
+                createOptions('asg2_6', 'Perpendicular', ['Parallel', 'Intersecting', 'Tangent']);
+                createOptions('asg2_7', '12 cm', ['6 cm', '144 cm', '24 cm']);
+                createOptions('asg2_8', '7', ['28', '14', '12']);
+                createOptions('asg2_9', '26 cm', ['44 cm', '34 cm', '676 cm']);
+                createOptions('asg2_10', 'Point of Tangency', ['Center Point', 'Radius Point', 'External Point']);
+				
+                // Assignment 3 Options
+                createOptions('asg3_1', '4', ['16', '15', '3']);
+                createOptions('asg3_2', '9', ['1', '14', '4.5']);
+                createOptions('asg3_3', '15 cm', ['10 cm', '20 cm', '35 cm']);
+                createOptions('asg3_4', '6', ['18', '54', '3']);
+                createOptions('asg3_5', '17', ['7', '37', '14']);
+                createOptions('asg3_6', '4', ['20', '2', '5']);
+                createOptions('asg3_7', '7', ['-3', '4', '10']);
+                createOptions('asg3_8', '2t', ['t + 2', 't^2', '2 + t']);
+                createOptions('asg3_9', '10', ['y', '0', '20']);
+                createOptions('asg3_10', '11', ['19', '1', '15']);
+                
+                // Assignment 4 Options
+                createOptions('asg4_1', '4 cm', ['2 cm', '8 cm', '16 cm']);
+                createOptions('asg4_2', '17 cm', ['23 cm', '7 cm', '289 cm']);
+                createOptions('asg4_3', '5 cm', ['1 cm', '25 cm', '5 cm']);
+                createOptions('asg4_4', 'Pythagorean Theorem', ['Tangent Theorem', 'Algebra Theorem', 'Circle Theorem']);
+                createOptions('asg4_5', '15 cm', ['21 cm', '3 cm', '225 cm']);
+                createOptions('asg4_6', '5 cm', ['1 cm', '25 cm', '5 cm']);
+                createOptions('asg4_7', '13', ['169', '14', '12']);
+                createOptions('asg4_8', '25', ['625', '5', '24']);
+                createOptions('asg4_9', '225', ['30', '15', '45']);
+                createOptions('asg4_10', 'Point of Tangency', ['Center', 'External Point', 'Radius']);
+                
+                // Assignment 5 Options
+                createOptions('asg5_1', 'r * t', ['1/2 * r * t', 'r + t', '2 * r * t']);
+                createOptions('asg5_2', '168 cm^2', ['31 cm^2', '84 cm^2', '336 cm^2']);
+                createOptions('asg5_3', '12 cm^2', ['7 cm^2', '24 cm^2', '6 cm^2']);
+                createOptions('asg5_4', '10 cm', ['60 cm', '5 cm', '16 cm']);
+                createOptions('asg5_5', '6 cm', ['8 cm', '48 cm', '4 cm']);
+                createOptions('asg5_6', 'Right-angled', ['Equilateral', 'Isosceles', 'Scalene']);
+                createOptions('asg5_7', '60 cm^2', ['17 cm^2', '120 cm^2', '30 cm^2']);
+                createOptions('asg5_8', '120 cm^2', ['23 cm^2', '60 cm^2', '240 cm^2']);
+                createOptions('asg5_9', '12 cm', ['7 cm', '84 cm', '6 cm']);
+                createOptions('asg5_10', 'cm^2', ['cm', 'cm^3', 'cm^4']);
+
+			document.querySelectorAll('.nav-controls .prev-btn').forEach(b => b.style.display = 'none');
+			document.querySelectorAll('.nav-controls .reset-btn').forEach(b => b.style.display = 'none');
+			document.querySelectorAll('.nav-controls .next-btn').forEach(b => {
+				const onclickVal = b.getAttribute('onclick') || '';
+				if (!onclickVal.includes('printAssignment')) {
+					b.style.display = 'none';
+				}
+			});
+			
+			document.querySelectorAll('.exercise-box').forEach(box => {
+				const checkBtn = box.querySelector('.check-btn');
+				if (checkBtn && !box.querySelector('.reset-ex-btn')) {
+					const btn = document.createElement('button');
+					btn.className = 'check-btn reset-ex-btn';
+					btn.innerText = 'Reset';
+					btn.onclick = function() { resetExercise(box.id); };
+					checkBtn.insertAdjacentElement('afterend', btn);
+				}
+			});			
+            });
+        </script>
+    </div>
+</body>
+</html>
