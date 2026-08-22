@@ -1,0 +1,1189 @@
+%PDF-1.3
+%ºß¬à
+3 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 4 0 R
+>>
+endobj
+4 0 obj
+<<
+/Length 4268
+>>
+stream
+0.5670000000000001 w
+0 G
+BT
+/F2 20 Tf
+23. TL
+0 g
+56.6929133858267775 785.1970866141732586 Td
+(Tangent to a Circle - Nicholas) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+56.6929133858267775 742.6774015748030706 Td
+(Created: 8/21/2026) Tj
+ET
+56.6929133858267775 714.3309448818897636 m
+538.5826771653544256 714.3309448818897636 l
+S
+BT
+/F2 14 Tf
+16.0999999999999979 TL
+0 g
+56.6929133858267775 685.9844881889763428 Td
+(Student) Tj
+ET
+BT
+/F1 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 657.6380314960629221 Td
+(Student: Nicholas) Tj
+ET
+BT
+/F1 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 634.9608661417322537 Td
+(Topic: Tangent to a Circle) Tj
+ET
+BT
+/F1 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 612.2837007874015853 Td
+(Status: completed) Tj
+ET
+BT
+/F2 16 Tf
+18.3999999999999986 TL
+0 g
+56.6929133858267775 569.7640157480313974 Td
+(Lesson Plan) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 527.2443307086614368 Td
+(Learning Objectives) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 504.5671653543306547 Td
+(• Membuktikan sifat tegak lurus antara garis singgung dengan jari-jari lingkaran pada titik singgung.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 481.8899999999999295 Td
+(• Menghitung panjang garis singgung lingkaran dari satu titik di luar lingkaran menggunakan) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 464.8821259842518998 Td
+(teorema Pythagoras.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 442.2049606299212314 Td
+(• Menganalisis kesamaan panjang dua garis singgung yang ditarik dari titik luar yang sama) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 425.1970866141731449 Td
+(terhadap satu lingkaran.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 402.5199212598424765 Td
+(• Memecahkan masalah kompleks yang menggabungkan konsep aljabar dengan geometri garis) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 385.5120472440944468 Td
+(singgung lingkaran.) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 340.1577165354329964 Td
+(Lesson Information) Tj
+ET
+BT
+/F2 14 Tf
+16.0999999999999979 TL
+0 g
+56.6929133858267775 294.8033858267715459 Td
+(Lesson Sections) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 266.4569291338582389 Td
+(1. Spiral Review Warm-up \(10 minutes\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 243.7797637795274568 Td
+(Teacher Script:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 226.7718897637794271 Td
+(Halo Nicholas! Senang bertemu lagi. Sebelum kita masuk ke misi baru tentang lingkaran, mari kita) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 212.5986614173227736 Td
+(asah dulu 'pedang aljabar' milikmu. Lihat di layar, ada 4 tantangan cepat. Tuliskan jawabanmu di) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 198.4254330708660063 Td
+(chatbox ya! 1. REVIEW Aljabar: Variabel dan Konstanta - Tentukan variabel dan konstanta dari 5x +) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 184.2522047244093528 Td
+(12. 2. REVIEW Aljabar: Variabel dan Konstanta - Sebutkan koefisien dari y pada ekspresi 8 - 3y. 3.) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 170.0789763779526993 Td
+(REVIEW Menyusun Ekspresi Aljabar - Ubah kalimat ini menjadi aljabar: 'Tujuh lebihnya dari tiga kali) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 155.9057480314959321 Td
+(umur Nicholas \(n\)'. 4. REVIEW Menyusun Ekspresi Aljabar - 'Harga total 5 apel jika satu apel harganya) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 141.7325196850392786 Td
+(a rupiah, kemudian mendapat diskon 2000 rupiah'. Bagaimana?) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 116.220708661417234 Td
+(Activities:) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 99.2128346456692043 Td
+(• Identifikasi komponen aljabar \(variabel, konstanta, koefisien\).) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 82.2049606299211746 Td
+(• Penyusunan ekspresi aljabar dari kalimat verbal.) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+56.6929133858267775 34.0159842519684616 Td
+(Generated on: 8/21/2026, 4:54:52 AM) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+523.0626771653543301 34.0159842519684616 Td
+(1 / 4) Tj
+ET
+endstream
+endobj
+5 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 6 0 R
+>>
+endobj
+6 0 obj
+<<
+/Length 5198
+>>
+stream
+0.5670000000000001 w
+0 G
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 785.1970866141732586 Td
+(2. Introduction & Real-World Connection \(5 minutes\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 762.5199212598424765 Td
+(Teacher Script:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 745.5120472440944468 Td
+(Bagus sekali aljabarmu! Sekarang, bayangkan kamu adalah seorang insinyur NASA yang sedang) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 731.3388188976377933 Td
+(merancang jalur satelit agar hanya 'menyentuh' atmosfer Bumi tepat di satu titik sebelum meluncur ke) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 717.1655905511811397 Td
+(ruang angkasa. Garis yang hanya menyentuh satu titik di lingkaran ini disebut 'Garis Singgung'.) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 702.9923622047243725 Td
+(Pernahkah kamu melihat rantai sepeda? Bagian rantai yang lurus itu adalah garis singgung bagi gir) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 688.819133858267719 Td
+(sepedamu!) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 663.3073228346456744 Td
+(Activities:) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 646.2994488188976447 Td
+(• Diskusi visual gambar satelit dan rantai sepeda.) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 600.9451181102361943 Td
+(3. Review of Prior Knowledge \(5 minutes\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 578.2679527559055259 Td
+(Teacher Script:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 561.2600787401574962 Td
+(Sebelum kita menghitung, ingatkah kamu dengan Teorema Pythagoras? Jika kita punya segitiga) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 547.086850393700729 Td
+(siku-siku, a^2 + b^2 = c^2. Mengapa ini penting? Karena sifat utama garis singgung adalah: dia) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 532.9136220472440755 Td
+(SELALU tegak lurus \(90 derajat\) dengan jari-jari di titik singgungnya. Coba gambar sebuah lingkaran) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 518.7403937007873083 Td
+(dan tarik garis yang tegak lurus dengan jari-jarinya di papan tulis virtual ini.) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 493.2285826771653205 Td
+(Activities:) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 476.2207086614172908 Td
+(• Menggambar lingkaran dan garis tegak lurus pada whiteboard.) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 459.2128346456692611 Td
+(• Review singkat rumus Pythagoras.) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 413.8585039370078107 Td
+(4. Problem Introduction \(10 minutes\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 391.1813385826770855 Td
+(Teacher Script:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 374.1734645669290558 Td
+(Mari kita lihat tantangan ini. Ada titik P di luar lingkaran. Kita tarik garis singgung dari P ke titik A di) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 360.0002362204724022 Td
+(lingkaran. Jika pusat lingkaran adalah O, maka segitiga OAP adalah segitiga siku-siku di A. Jika) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 345.8270078740156919 Td
+(jari-jari OA = 5 cm dan jarak dari pusat ke titik luar OP = 13 cm, berapakah panjang garis singgung) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 331.6537795275589815 Td
+(AP? Kita gunakan aljabar dan Pythagoras di sini!) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 306.1419685039369369 Td
+(Activities:) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 289.1340944881889072 Td
+(• Visualisasi segitiga siku-siku dalam lingkaran.) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 272.1262204724408775 Td
+(• Penurunan rumus: AP^2 = OP^2 - OA^2.) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 226.7718897637794271 Td
+(5. Guided Practice \(15 minutes\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 204.0947244094487587 Td
+(Teacher Script:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 187.086850393700729 Td
+(Sekarang, mari kita coba yang lebih menantang. Jika ada dua garis singgung dari titik P yang sama ke) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 172.9136220472439618 Td
+(titik A dan B pada lingkaran, tahukah kamu bahwa panjang PA = PB? Mari kita buktikan dengan) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 158.7403937007873083 Td
+(aljabar. Misalkan PA = 2x + 5 dan PB = 15. Coba kamu cari nilai x dan tentukan panjang garis) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 144.5671653543306547 Td
+(singgungnya. Aku akan membantumu langkah demi langkah di whiteboard.) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 119.0553543307086102 Td
+(Activities:) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 102.0474803149605805 Td
+(• Menyelesaikan persamaan aljabar untuk mencari panjang garis singgung.) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 85.0396062992125508 Td
+(• Menganalisis sifat layang-layang garis singgung \(OAPB\).) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+56.6929133858267775 34.0159842519684616 Td
+(Generated on: 8/21/2026, 4:54:52 AM) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+523.0626771653543301 34.0159842519684616 Td
+(2 / 4) Tj
+ET
+endstream
+endobj
+7 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 8 0 R
+>>
+endobj
+8 0 obj
+<<
+/Length 5630
+>>
+stream
+0.5670000000000001 w
+0 G
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 785.1970866141732586 Td
+(6. Independent Practice \(15 minutes\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 762.5199212598424765 Td
+(Teacher Script:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 745.5120472440944468 Td
+(Nicholas, ini adalah 'Boss Level'. Di layar ada gambar lingkaran dengan jari-jari 7 cm. Titik Q berada) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 731.3388188976377933 Td
+(25 cm dari pusat lingkaran. Ada dua garis singgung dari Q. Hitunglah: 1. Panjang satu garis singgung.) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 717.1655905511811397 Td
+(2. Luas layang-layang yang terbentuk oleh dua jari-jari dan dua garis singgung tersebut. Kamu punya) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 702.9923622047243725 Td
+(10 menit, kerjakan di kertasmu dan tunjukkan hasilnya di kamera atau ketik di chat ya!) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 677.480551181102328 Td
+(Activities:) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 660.4726771653542983 Td
+(• Menghitung panjang garis singgung \(Tripel Pythagoras\).) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 643.4648031496062686 Td
+(• Menghitung luas gabungan dua segitiga siku-siku.) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 598.1104724409448181 Td
+(7. Consolidation & Reflection \(5 minutes\)) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 575.4333070866141497 Td
+(Teacher Script:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 558.42543307086612 Td
+(Luar biasa, Nicholas! Kamu sudah menguasai konsep bahwa garis singgung itu tegak lurus dengan) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 544.2522047244094665 Td
+(jari-jari dan bisa menggunakan aljabar untuk mencari panjangnya. Jangan lupa, kunci geometri adalah) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 530.0789763779526993 Td
+(visualisasi. Sebelum kita selesai, ingat untuk masuk ke https://learn.algonova.id/login untuk) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 515.9057480314959321 Td
+(mengerjakan latihan tambahan agar skill-mu semakin tajam. Ada pertanyaan sebelum kita tutup?) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+70.8661417322834666 490.3939370078739444 Td
+(Activities:) Tj
+ET
+BT
+/F3 10 Tf
+11.5 TL
+0 g
+85.0393700787401627 473.3860629921259147 Td
+(• Ringkasan poin kunci: 90 derajat, Pythagoras, dan kesamaan panjang dua garis singgung.) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 428.0317322834645211 Td
+(Homework) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 399.6852755905511003 Td
+(Medium Questions:) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 382.6774015748030706 Td
+(1. Sebuah lingkaran memiliki jari-jari 8 cm. Jika jarak titik P ke pusat lingkaran adalah 17 cm,) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 368.5041732283464171 Td
+(hitunglah panjang garis singgung dari P ke lingkaran.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 345.8270078740156919 Td
+(2. Dua garis singgung ditarik dari titik luar K ke lingkaran. Jika panjang garis singgung) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 331.6537795275589815 Td
+(pertama adalah 3x - 4 dan yang kedua adalah 11 cm, tentukan nilai x.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 308.9766141732283131 Td
+(3. Pada lingkaran dengan pusat O, jari-jari OA = 9 cm dan garis singgung AB = 12 cm.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 294.8033858267715459 Td
+(Hitunglah jarak OB.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 272.1262204724408775 Td
+(4. Jelaskan mengapa sudut antara jari-jari dan garis singgung pada titik singgung selalu 90) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 257.952992125984224 Td
+(derajat.) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 218.2679527559054122 Td
+(Hard Questions:) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 201.2600787401573825 Td
+(1. Titik M berada di luar lingkaran berdiameter 20 cm. Jika panjang garis singgung dari M) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 187.086850393700729 Td
+(adalah 24 cm, hitunglah jarak terdekat titik M ke tepi lingkaran.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 164.4096850393699469 Td
+(2. Dua garis singgung PA dan PB membentuk sudut 60 derajat di titik P. Jika jari-jari lingkaran) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 150.2364566929132934 Td
+(adalah 10 cm, hitunglah panjang PA \(Gunakan bantuan trigonometri atau segitiga istimewa\).) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 127.559291338582625 Td
+(3. Layang-layang garis singgung OAPB memiliki luas 120 cm persegi. Jika jari-jari lingkaran 8) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 113.3860629921258578 Td
+(cm, hitunglah panjang garis singgung AP.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 90.7088976377951894 Td
+(4. Jika panjang garis singgung AP = x + 7 dan jarak pusat ke titik luar OP = 25 cm dengan) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 76.5356692913385359 Td
+(jari-jari 7 cm, tentukan nilai x menggunakan persamaan Pythagoras.) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+56.6929133858267775 34.0159842519684616 Td
+(Generated on: 8/21/2026, 4:54:52 AM) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+523.0626771653543301 34.0159842519684616 Td
+(3 / 4) Tj
+ET
+endstream
+endobj
+9 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 10 0 R
+>>
+endobj
+10 0 obj
+<<
+/Length 3133
+>>
+stream
+0.5670000000000001 w
+0 G
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 785.1970866141732586 Td
+(5. Diberikan dua lingkaran konsentris \(pusat sama\) dengan jari-jari 7 cm dan 25 cm.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 771.0238582677164914 Td
+(Hitunglah panjang tali busur lingkaran besar yang menyinggung lingkaran kecil.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 748.346692913385823 Td
+(6. Sebuah satelit berada pada ketinggian h di atas permukaan bumi \(jari-jari R\). Tunjukkan) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 734.1734645669291695 Td
+(bahwa jarak pandang terjauh satelit ke cakrawala bumi \(garis singgung\) adalah d = sqrt\(2Rh) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 720.0002362204724022 Td
+(+ h^2\).) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 680.3151968503937042 Td
+(Answer Key:) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 663.3073228346456744 Td
+(1. 15 cm \(17^2 - 8^2 = 225\).) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 649.1340944881889072 Td
+(2. x = 5 \(3x - 4 = 11 -> 3x = 15\).) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 634.9608661417322537 Td
+(3. 15 cm \(9^2 + 12^2 = 225\).) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 620.7876377952754865 Td
+(4. Definisi geometris: garis singgung adalah limit dari garis sekan.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 606.614409448818833 Td
+(REVIEW: Menyusun Ekspresi Aljabar - 1. 2n + 10; 2. 50000 - 3x.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+85.0393700787401627 592.4411811023621794 Td
+(REVIEW: Aljabar: Variabel dan Konstanta - 1. Var: a,b; Konst: -7; 2. Koef k: -4.) Tj
+ET
+BT
+/F2 12 Tf
+13.7999999999999989 TL
+0 g
+56.6929133858267775 555.5907874015747439 Td
+(Parent Reminder) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 532.9136220472440755 Td
+(Update Belajar Nicholas: Geometri & Aljabar) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 515.9057480314959321 Td
+(Hari ini Nicholas belajar topik yang cukup menantang: Garis Singgung Lingkaran. Ia belajar) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 501.7325196850393354 Td
+(menggabungkan konsep Pythagoras dengan Aljabar untuk menghitung jarak satelit dan) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 487.559291338582625 Td
+(rantai sepeda. Nicholas menunjukkan progres yang baik dalam visualisasi geometri. Mohon) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 473.3860629921259147 Td
+(bantuannya untuk memastikan Nicholas menyelesaikan latihan di) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0 g
+70.8661417322834666 459.2128346456692611 Td
+(https://learn.algonova.id/login untuk memperkuat konsep ini. Terima kasih!) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+56.6929133858267775 34.0159842519684616 Td
+(Generated on: 8/21/2026, 4:54:52 AM) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0 g
+523.0626771653543301 34.0159842519684616 Td
+(4 / 4) Tj
+ET
+endstream
+endobj
+1 0 obj
+<</Type /Pages
+/Kids [3 0 R 5 0 R 7 0 R 9 0 R ]
+/Count 4
+>>
+endobj
+11 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+12 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+13 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-Oblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+14 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-BoldOblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+15 0 obj
+<<
+/Type /Font
+/BaseFont /Courier
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+16 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+17 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-Oblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+18 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-BoldOblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+19 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Roman
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+20 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+21 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Italic
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+22 0 obj
+<<
+/Type /Font
+/BaseFont /Times-BoldItalic
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+23 0 obj
+<<
+/Type /Font
+/BaseFont /ZapfDingbats
+/Subtype /Type1
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+24 0 obj
+<<
+/Type /Font
+/BaseFont /Symbol
+/Subtype /Type1
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+2 0 obj
+<<
+/ProcSet [/PDF /Text /ImageB /ImageC /ImageI]
+/Font <<
+/F1 11 0 R
+/F2 12 0 R
+/F3 13 0 R
+/F4 14 0 R
+/F5 15 0 R
+/F6 16 0 R
+/F7 17 0 R
+/F8 18 0 R
+/F9 19 0 R
+/F10 20 0 R
+/F11 21 0 R
+/F12 22 0 R
+/F13 23 0 R
+/F14 24 0 R
+>>
+/XObject <<
+>>
+>>
+endobj
+25 0 obj
+<<
+/Producer (jsPDF 3.0.2)
+/CreationDate (D:20260821045452+07'00')
+>>
+endobj
+26 0 obj
+<<
+/Type /Catalog
+/Pages 1 0 R
+/OpenAction [3 0 R /FitH null]
+/PageLayout /OneColumn
+>>
+endobj
+xref
+0 27
+0000000000 65535 f 
+0000019002 00000 n 
+0000020842 00000 n 
+0000000015 00000 n 
+0000000152 00000 n 
+0000004472 00000 n 
+0000004609 00000 n 
+0000009859 00000 n 
+0000009996 00000 n 
+0000015678 00000 n 
+0000015816 00000 n 
+0000019077 00000 n 
+0000019203 00000 n 
+0000019334 00000 n 
+0000019468 00000 n 
+0000019606 00000 n 
+0000019730 00000 n 
+0000019859 00000 n 
+0000019991 00000 n 
+0000020127 00000 n 
+0000020255 00000 n 
+0000020382 00000 n 
+0000020511 00000 n 
+0000020644 00000 n 
+0000020746 00000 n 
+0000021095 00000 n 
+0000021181 00000 n 
+trailer
+<<
+/Size 27
+/Root 26 0 R
+/Info 25 0 R
+/ID [ <EF074C9BE591190D448C63594436557A> <EF074C9BE591190D448C63594436557A> ]
+>>
+startxref
+21285
+%%EOF
