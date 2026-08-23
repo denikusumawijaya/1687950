@@ -1,0 +1,1962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Tutoring by Deni - Exponents</title>
+    <!-- KaTeX Integration -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+    
+    <style>
+        :root {
+            --primary-color: #58cc02;
+            --primary-hover: #61e002;
+            --secondary-color: #1cb0f6;
+            --danger-color: #ff4b4b;
+            --warning-color: #ffc800;
+            --bg-color: #fff;
+            --text-color: #4b4b4b;
+            --light-gray: #e5e5e5;
+            --sidebar-bg: #f7f7f7;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Nunito', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f0f0f0;
+            color: var(--text-color);
+        }
+
+        /* Header */
+        header {
+            background-color: white;
+            padding: 15px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-title h1 {
+            color: var(--secondary-color);
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .header-title p {
+            font-size: 14px;
+            color: #777;
+        }
+
+        .header-btn {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #1899d6;
+            transition: transform 0.1s;
+        }
+
+        .header-btn:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        .modal-content h2 {
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .modal-content ul {
+            list-style: none;
+        }
+
+        .modal-content li {
+            margin-bottom: 15px;
+            padding-left: 10px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .modal-content button {
+            background: var(--primary-color);
+            color: white;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 0 4px 0 #58a700;
+        }
+
+        /* Layout Container */
+        .app-container {
+            display: flex;
+            min-height: calc(100vh - 80px);
+        }
+
+        /* Duolingo Map */
+        .map-container {
+            flex: 1;
+            padding: 40px 20px;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-y: auto;
+        }
+
+        .map-path {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            padding-bottom: 50px;
+        }
+
+        .map-node {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 12px;
+            cursor: pointer;
+            border: 4px solid white;
+            box-shadow: 0 6px 0 #58a700;
+            position: relative;
+            text-align: center;
+            line-height: 1.2;
+            transition: transform 0.2s;
+        }
+
+        .map-node:hover {
+            transform: scale(1.1);
+        }
+
+        .map-node.shift-left {
+            margin-right: 100px;
+        }
+
+        .map-node.shift-right {
+            margin-left: 100px;
+        }
+
+        .map-node.assignment {
+            background-color: var(--warning-color);
+            box-shadow: 0 6px 0 #e6b800;
+        }
+
+        .map-node.consolidation {
+            background-color: var(--secondary-color);
+            box-shadow: 0 6px 0 #1899d6;
+        }
+
+        .map-node .duration {
+            font-size: 8px;
+            margin-top: 2px;
+            opacity: 0.9;
+        }
+
+        .map-node .tooltip {
+            visibility: hidden;
+            width: 120px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 100%;
+            left: 50%;
+            margin-left: -60px;
+            font-size: 10px;
+            white-space: nowrap;
+        }
+
+        .map-node:hover .tooltip {
+            visibility: visible;
+        }
+
+        /* Sidebar & Main Content */
+        .content-container {
+            display: none;
+            width: 100%;
+            flex-direction: row;
+        }
+
+        .content-container.active {
+            display: flex;
+        }
+
+        .sidebar {
+            width: 300px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--light-gray);
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .sidebar h3 {
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+
+        .sidebar-item {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            border: 2px solid var(--light-gray);
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sidebar-item.active {
+            border-color: var(--secondary-color);
+            background: #e7f5ff;
+        }
+
+        .sidebar-item.completed {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .main-header {
+            width: 100%;
+            max-width: 850px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--light-gray);
+            padding-bottom: 15px;
+        }
+
+        .main-header h2 {
+            color: var(--secondary-color);
+        }
+
+        .duration-badge {
+            background: var(--light-gray);
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        /* Theory & Exercise Styles */
+        .theory-box {
+            width: 100%;
+            max-width: 850px;
+            background: #fffbe6;
+            border-left: 5px solid var(--warning-color);
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        .theory-box h3 {
+            margin-bottom: 10px;
+            color: #d4a017;
+        }
+
+        .theory-box p {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .translation {
+            color: #666;
+            font-style: italic;
+            font-size: 0.95em;
+            display: block;
+            margin-top: 5px;
+        }
+
+        .figure-container {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .figure-container img {
+            max-width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .question-box {
+            width: 100%;
+            max-width: 850px;
+            border: 2px solid var(--light-gray);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 30px;
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        .question-box h4 {
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .option-btn {
+            background: white;
+            border: 2px solid var(--light-gray);
+            padding: 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: left;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+        }
+
+        .option-btn:hover {
+            border-color: var(--secondary-color);
+            background: #e7f5ff;
+        }
+
+        .option-btn.selected {
+            border-color: var(--secondary-color);
+            background: #e7f5ff;
+            color: var(--secondary-color);
+        }
+
+        .option-btn.correct {
+            border-color: var(--primary-color);
+            background: #d7ffb8;
+            color: var(--primary-color);
+        }
+
+        .option-btn.wrong {
+            border-color: var(--danger-color);
+            background: #ffd6d6;
+            color: var(--danger-color);
+        }
+
+        .check-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 15px;
+            box-shadow: 0 4px 0 #58a700;
+            display: block;
+            margin-left: auto;
+        }
+
+        .check-btn:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+
+        .check-btn:disabled {
+            background: #aaa;
+            box-shadow: none;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .feedback-box {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .feedback-box.show {
+            display: block;
+        }
+
+        .feedback-box.correct {
+            background: #d7ffb8;
+            color: #58a700;
+        }
+
+        .feedback-box.wrong {
+            background: #ffd6d6;
+            color: #ff4b4b;
+        }
+
+        .retry-btn {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow: 0 3px 0 #1899d6;
+        }
+
+        .btn-nav {
+            width: 100%;
+            max-width: 850px;
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+
+        .btn-nav button {
+            padding: 12px 24px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn-prev {
+            background: #e5e5e5;
+            color: #777;
+        }
+
+        .btn-next {
+            background: var(--secondary-color);
+            color: white;
+            box-shadow: 0 4px 0 #1899d6;
+        }
+
+        /* Print Styles */
+        @media print {
+            body * { visibility: hidden; }
+            #printArea, #printArea * { visibility: visible; }
+            #printArea { position: absolute; left: 0; top: 0; width: 100%; padding: 20px; display: block !important; }
+            .no-print { display: none !important; }
+        }
+
+        #printArea {
+            display: none;
+        }
+
+        .print-btn {
+            width: 100%;
+            max-width: 850px;
+            background: var(--danger-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #cc0000;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="header-title">
+            <h1>Math Tutoring by Deni</h1>
+            <p>Topic: Exponents (Bilangan Berpangkat)</p>
+        </div>
+        <button class="header-btn" onclick="toggleModal()">Class Rules</button>
+    </header>
+
+    <!-- Class Rules Modal -->
+    <div id="classRulesModal" class="modal-overlay">
+        <div class="modal-content">
+            <h2>Class Rules <br><span style="font-size: 0.8em; color: #777;">(Aturan Kelas)</span></h2>
+            <ul>
+                <li>
+                    <strong>Take turns speaking.</strong><br>
+                    <span class="translation">Berbicara secara bergantian.</span>
+                </li>
+                <li>
+                    <strong>Ask permission if you need to leave the class.</strong><br>
+                    <span class="translation">Meminta izin jika ingin meninggalkan kelas.</span>
+                </li>
+                <li>
+                    <strong>Turn on your camera and microphone when needed.</strong><br>
+                    <span class="translation">Menyalakan kamera dan mikrofon jika diperlukan.</span>
+                </li>
+            </ul>
+            <button onclick="toggleModal()">Got it! (Mengerti!)</button>
+        </div>
+    </div>
+
+    <!-- App Container -->
+    <div class="app-container">
+        
+        <!-- Duolingo Map -->
+        <div id="mapContainer" class="map-container">
+            <div class="map-path">
+                <!-- Nodes will be generated here, but let's hardcode for static reliability -->
+                <div class="map-node shift-left" onclick="openNode('node1')">
+                    Spiral Review
+                    <div class="duration">(00:00-00:10)</div>
+                    <span class="tooltip">Spiral Review Warm-up</span>
+                </div>
+                <div class="map-node shift-right" onclick="openNode('node2')">
+                    Intro & RW
+                    <div class="duration">(00:10-00:15)</div>
+                    <span class="tooltip">Introduction & Real-World Connection</span>
+                </div>
+                <div class="map-node shift-left" onclick="openNode('node3')">
+                    Review
+                    <div class="duration">(00:15-00:20)</div>
+                    <span class="tooltip">Review of Prior Knowledge</span>
+                </div>
+                <div class="map-node shift-right" onclick="openNode('node4')">
+                    Problem Intro
+                    <div class="duration">(00:20-00:30)</div>
+                    <span class="tooltip">Problem Introduction</span>
+                </div>
+                <div class="map-node shift-left" onclick="openNode('node5')">
+                    Guided
+                    <div class="duration">(00:30-00:45)</div>
+                    <span class="tooltip">Guided Practice</span>
+                </div>
+                <div class="map-node shift-right" onclick="openNode('node6')">
+                    Independent
+                    <div class="duration">(00:45-00:55)</div>
+                    <span class="tooltip">Independent Practice</span>
+                </div>
+                <div class="map-node consolidation shift-left" onclick="openNode('node7')">
+                    Consolidate
+                    <div class="duration">(00:55-01:00)</div>
+                    <span class="tooltip">Consolidation & Reflection</span>
+                </div>
+                <div class="map-node assignment shift-right" onclick="openNode('assign1')">
+                    Assign 1
+                    <span class="tooltip">Assignment 1</span>
+                </div>
+                <div class="map-node assignment shift-left" onclick="openNode('assign2')">
+                    Assign 2
+                    <span class="tooltip">Assignment 2</span>
+                </div>
+                <div class="map-node assignment shift-right" onclick="openNode('assign3')">
+                    Assign 3
+                    <span class="tooltip">Assignment 3</span>
+                </div>
+                <div class="map-node assignment shift-left" onclick="openNode('assign4')">
+                    Assign 4
+                    <span class="tooltip">Assignment 4</span>
+                </div>
+                <div class="map-node assignment shift-right" onclick="openNode('assign5')">
+                    Assign 5
+                    <span class="tooltip">Assignment 5</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Area (Hidden by default) -->
+        <div id="contentArea" class="content-container" style="display: none; flex: 1;">
+            <!-- Sidebar -->
+            <div class="sidebar" id="sidebarContent">
+                <!-- Sidebar items injected by JS -->
+            </div>
+
+            <!-- Main Content -->
+            <div class="main-content" id="mainContent">
+                <!-- Main content injected by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Print Area -->
+    <div id="printArea"></div>
+
+    <script>
+        // Data structure for all nodes
+        // Note: Full content for Nodes 2-12 will be added in subsequent parts.
+        // We use a placeholder object for now to setup the architecture.
+        
+        const courseData = {
+            node1: {
+                title: "Spiral Review Warm-up",
+                duration: "00:00-00:10",
+                slides: [
+                    {
+                        type: 'theory',
+                        title: 'What is an Exponent? (Apa itu Bilangan Berpangkat?)',
+                        content: `
+                            <p>An exponent refers to the number of times a number is multiplied by itself. For example, in $2^3$, 2 is the base and 3 is the exponent. It means $2 \\times 2 \\times 2 = 8$.</p>
+                            <span class="translation">Bilangan berpangkat mengacu pada berapa kali sebuah bilangan dikalikan dengan dirinya sendiri. Misalnya, pada $2^3$, 2 adalah basis dan 3 adalah pangkat. Artinya $2 \\times 2 \\times 2 = 8$.</span>
+                            <div class="figure-container">
+                                <svg width="300" height="200" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" style="background:#e7f5ff; border-radius:12px;">
+									<text x="150" y="130" font-family="Arial" font-size="80" fill="#1cb0f6" text-anchor="middle" font-weight="bold">2</text>
+									<text x="195" y="80" font-family="Arial" font-size="50" fill="#ff4b4b" font-weight="bold">3</text>
+									<text x="150" y="175" font-family="Arial" font-size="16" fill="#777" text-anchor="middle">Base = 2, Exponent = 3</text>
+								</svg>
+                            </div>
+                        `
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'What is the value of $3^2$? <br><span class="translation">Berapakah nilai dari $3^2$?</span>',
+                        options: ['6', '9', '12', '8', '5'],
+                        correct: 1,
+                        explanation: 'Exponent means multiplying the base by itself. So, $3^2 = 3 \\times 3 = 9$. <br><span class="translation">Pangkat berarti mengalikan basis dengan dirinya sendiri. Jadi, $3^2 = 3 \\times 3 = 9$.</span>'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'In the expression $5^4$, which number is the exponent? <br><span class="translation">Pada bentuk $5^4$, bilangan manakah yang merupakan pangkat?</span>',
+                        options: ['5', '4', '20', '1', 'None of the above'],
+                        correct: 1,
+                        explanation: 'The exponent is the small number written at the top right of the base. Here, it is 4. <br><span class="translation">Pangkat adalah angka kecil di kanan atas basis. Di sini, yaitu 4.</span>'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Which of the following represents $4^3$? <br><span class="translation">Manakah dari berikut ini yang mewakili $4^3$?</span>',
+                        options: ['$4 + 4 + 4$', '$4 \\times 3$', '$4 \\times 4 \\times 4$', '$3 \\times 3 \\times 3 \\times 3$', '$4 \\div 3$'],
+                        correct: 2,
+                        explanation: '$4^3$ means the base 4 is multiplied by itself 3 times: $4 \\times 4 \\times 4$. <br><span class="translation">$4^3$ berarti basis 4 dikalikan dengan dirinya sendiri 3 kali: $4 \\times 4 \\times 4$.</span>'
+                    },
+                    {
+                        type: 'theory',
+                        title: 'Multiplying Exponents with Same Base (Perkalian Pangkat dengan Basis Sama)',
+                        content: `
+                            <p>When multiplying numbers with the same base, keep the base and add the exponents: $a^m \\times a^n = a^{m+n}$.</p>
+                            <span class="translation">Saat mengalikan bilangan dengan basis yang sama, pertahankan basisnya dan tambahkan pangkatnya: $a^m \\times a^n = a^{m+n}$.</span>
+                            <p>Example: $2^3 \\times 2^2 = 2^{3+2} = 2^5 = 32$</p>
+                        `
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Simplify $2^2 \\times 2^3$. <br><span class="translation">Sederhanakan $2^2 \\times 2^3$.</span>',
+                        options: ['$2^5$', '$2^6$', '$4^5$', '$2^1$', '$4^6$'],
+                        correct: 0,
+                        explanation: 'Keep the base (2) and add the exponents (2+3=5). So, $2^2 \\times 2^3 = 2^5$. <br><span class="translation">Pertahankan basis (2) dan tambahkan pangkat (2+3=5). Jadi, $2^2 \\times 2^3 = 2^5$.</span>'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'A bacterium divides into 2 every hour. If there are $2^3$ bacteria now, and they multiply by $2^2$ times more, how many bacteria will there be? <br><span class="translation">Sebuah bakteri membelah menjadi 2 setiap jam. Jika ada $2^3$ bakteri sekarang, dan mereka berkembang biak $2^2$ kali lagi, berapa banyak bakteri yang akan ada?</span>',
+                        options: ['$2^5$', '$2^6$', '$4^5$', '$2^1$', '$4^6$'],
+                        correct: 0,
+                        explanation: 'This is a multiplication of same bases: $2^3 \\times 2^2 = 2^5$. <br><span class="translation">Ini adalah perkalian dengan basis sama: $2^3 \\times 2^2 = 2^5$.</span>'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Simplify $a^4 \\times a^5$. <br><span class="translation">Sederhanakan $a^4 \\times a^5$.</span>',
+                        options: ['$a^{20}$', '$a^9$', '$2a^9$', '$a^1$', '$2a^{20}$'],
+                        correct: 1,
+                        explanation: 'Keep the base (a) and add the exponents (4+5=9). So, $a^4 \\times a^5 = a^9$. <br><span class="translation">Pertahankan basis (a) dan tambahkan pangkat (4+5=9). Jadi, $a^4 \\times a^5 = a^9$.</span>'
+                    },
+                    {
+                        type: 'theory',
+                        title: 'Dividing Exponents with Same Base (Pembagian Pangkat dengan Basis Sama)',
+                        content: `
+                            <p>When dividing numbers with the same base, keep the base and subtract the exponents: $a^m \\div a^n = a^{m-n}$.</p>
+                            <span class="translation">Saat membagi bilangan dengan basis yang sama, pertahankan basisnya dan kurangi pangkatnya: $a^m \\div a^n = a^{m-n}$.</span>
+                            <p>Example: $3^5 \\div 3^2 = 3^{5-2} = 3^3 = 27$</p>
+                        `
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Simplify $5^7 \\div 5^3$. <br><span class="translation">Sederhanakan $5^7 \\div 5^3$.</span>',
+                        options: ['$5^4$', '$5^{10}$', '$25^4$', '$5^{21}$', '$1^4$'],
+                        correct: 0,
+                        explanation: 'Keep the base (5) and subtract the exponents (7-3=4). So, $5^7 \\div 5^3 = 5^4$. <br><span class="translation">Pertahankan basis (5) dan kurangi pangkatnya (7-3=4). Jadi, $5^7 \\div 5^3 = 5^4$.</span>'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'A factory produces $10^6$ toys and packs them into boxes of $10^2$. How many boxes are there? <br><span class="translation">Sebuah pabrik memproduksi $10^6$ mainan dan mengemasnya dalam kotak berisi $10^2$. Berapa banyak kotak yang ada?</span>',
+                        options: ['$10^3$ boxes', '$10^4$ boxes', '$10^{12}$ boxes', '$10^8$ boxes', '$10^2$ boxes'],
+                        correct: 0,
+                        explanation: 'Divide the total toys by the box capacity: $10^6 \\div 10^2 = 10^{6-2} = 10^4$ boxes. <br><span class="translation">Bagi total mainan dengan kapasitas kotak: $10^6 \\div 10^2 = 10^{6-2} = 10^4$ kotak.</span>'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'What is $x^8 \\div x^2$? <br><span class="translation">Berapakah $x^8 \\div x^2$?</span>',
+                        options: ['$x^4$', '$x^{16}$', '$x^6$', '$x^{10}$', '$x^2$'],
+                        correct: 2,
+                        explanation: 'Keep the base (x) and subtract the exponents (8-2=6). So, $x^8 \\div x^2 = x^6$. <br><span class="translation">Pertahankan basis (x) dan kurangi pangkatnya (8-2=6). Jadi, $x^8 \\div x^2 = x^6$.</span>'
+                    }
+                ]
+            },
+            node2: {
+                title: "Introduction & Real-World Connection",
+                duration: "00:10-00:15",
+                slides: [
+                    {
+                        type: 'theory',
+                        title: 'Exponents in Technology (Pangkat dalam Teknologi)',
+                        content: `
+                            <p>Exponents are not just abstract math; they are fundamental in technology. Computer storage is measured in bytes, where 1 Kilobyte (KB) is technically $2^{10}$ bytes, and 1 Megabyte (MB) is $2^{20}$ bytes!</p>
+                            <span class="translation">Bilangan berpangkat bukan hanya matematika abstrak; itu mendasari teknologi. Penyimpanan komputer diukur dalam byte, di mana 1 Kilobyte (KB) sebenarnya adalah $2^{10}$ byte, dan 1 Megabyte (MB) adalah $2^{20}$ byte!</span>
+                            <div class="figure-container">
+								<svg width="300" height="200" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" style="background:#fffbe6; border-radius:12px;">
+									<rect x="80" y="40" width="140" height="120" rx="10" fill="#1cb0f6" />
+									<rect x="90" y="50" width="120" height="25" rx="5" fill="#fff" />
+									<circle cx="105" cy="62" r="6" fill="#58cc02" />
+									<rect x="90" y="85" width="120" height="25" rx="5" fill="#fff" />
+									<circle cx="105" cy="97" r="6" fill="#58cc02" />
+									<rect x="90" y="120" width="120" height="25" rx="5" fill="#fff" />
+									<circle cx="105" cy="132" r="6" fill="#ff4b4b" />
+									<text x="150" y="180" font-family="Arial" font-size="14" fill="#4b4b4b" text-anchor="middle" font-weight="bold">2^10 bytes = 1 KB</text>
+								</svg>
+                            </div>
+                        `
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'A computer scientist is calculating the exact number of bytes in 1 GB (Gigabyte), which is $2^{30}$ bytes. If she wants to find out how many Megabytes ($2^{20}$ bytes) are in 1 GB, what operation should she perform? <br><span class="translation">Seorang ilmuwan komputer menghitung jumlah pasti byte dalam 1 GB (Gigabyte), yaitu $2^{30}$ byte. Jika ia ingin mencari tahu berapa banyak Megabyte ($2^{20}$ byte) dalam 1 GB, operasi apa yang harus dilakukannya?</span>',
+                        options: ['$2^{30} \\times 2^{20}$', '$2^{30} \\div 2^{20}$', '$2^{30} + 2^{20}$', '$2^{30} - 2^{20}$', '$2^{30} \\times 2^{30}$'],
+                        correct: 1,
+                        explanation: 'To find how many MB are in a GB, you divide the total bytes of GB by the bytes of MB: $2^{30} \\div 2^{20} = 2^{10}$ MB. <br><span class="translation">Untuk mencari berapa MB dalam GB, bagi total byte GB dengan byte MB: $2^{30} \\div 2^{20} = 2^{10}$ MB.</span>'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Based on the previous question, how many Megabytes (MB) are in 1 Gigabyte (GB)? <br><span class="translation">Berdasarkan pertanyaan sebelumnya, berapa banyak Megabyte (MB) dalam 1 Gigabyte (GB)?</span>',
+                        options: ['$2^{10}$ MB', '$2^{50}$ MB', '$2^{600}$ MB', '$2^{10}$ KB', '$2^{2}$ MB'],
+                        correct: 0,
+                        explanation: '$2^{30} \\div 2^{20} = 2^{30-20} = 2^{10}$ MB. <br><span class="translation">$2^{30} \\div 2^{20} = 2^{30-20} = 2^{10}$ MB.</span>'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'If a new storage unit "Terabyte" (TB) is $2^{40}$ bytes, how many Kilobytes ($2^{10}$ bytes) are in 1 TB? <br><span class="translation">Jika unit penyimpanan baru "Terabyte" (TB) adalah $2^{40}$ byte, berapa banyak Kilobyte ($2^{10}$ byte) dalam 1 TB?</span>',
+                        options: ['$2^{30}$ KB', '$2^{50}$ KB', '$2^{4}$ KB', '$2^{400}$ KB', '$2^{10}$ KB'],
+                        correct: 0,
+                        explanation: 'Divide TB by KB: $2^{40} \\div 2^{10} = 2^{40-10} = 2^{30}$ KB. <br><span class="translation">Bagi TB dengan KB: $2^{40} \\div 2^{10} = 2^{40-10} = 2^{30}$ KB.</span>'
+                    },
+                    {
+                        type: 'theory',
+                        title: 'Zero Exponent Rule (Aturan Pangkat Nol)',
+                        content: `
+                            <p>Any non-zero number raised to the power of 0 is equal to 1. Mathematically: $a^0 = 1$ (where $a \\neq 0$).</p>
+                            <span class="translation">Setiap bilangan bukan nol yang dipangkatkan dengan 0 sama dengan 1. Secara matematis: $a^0 = 1$ (di mana $a \\neq 0$).</span>
+                            <p>Why? Think about division: $a^m \\div a^m = a^{m-m} = a^0$. But anything divided by itself is 1, so $a^0 = 1$.</p>
+                        `
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'What is the value of $99^0$? <br><span class="translation">Berapakah nilai dari $99^0$?</span>',
+                        options: ['0', '99', '1', 'Undefined', '100'],
+                        correct: 2,
+                        explanation: 'Any non-zero number to the power of 0 is 1. So, $99^0 = 1$. <br><span class="translation">Setiap bilangan bukan nol pangkat nol adalah 1. Jadi, $99^0 = 1$.</span>'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'A scientist has a petri dish with bacteria that stops growing and stabilizes at $N^0$. If $N$ represents the initial count of 500, what is the current number of bacteria? <br><span class="translation">Seorang ilmuwan memiliki cawan petri dengan bakteri yang berhenti tumbuh dan stabil di $N^0$. Jika $N$ mewakili jumlah awal 500, berapakah jumlah bakteri saat ini?</span>',
+                        options: ['500', '0', '1', '501', 'Cannot be determined'],
+                        correct: 2,
+                        explanation: 'Even though $N = 500$, $500^0 = 1$. The bacteria count mathematically simplifies to 1 based on the zero exponent rule. <br><span class="translation">Meskipun $N = 500$, $500^0 = 1$. Jumlah bakteri secara matematis disederhanakan menjadi 1 berdasarkan aturan pangkat nol.</span>'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Simplify $x^5 \\div x^5$. <br><span class="translation">Sederhanakan $x^5 \\div x^5$.</span>',
+                        options: ['$x^0$', '$x^{10}$', '$x^1$', '$0$', '$x^{25}$'],
+                        correct: 0,
+                        explanation: 'When dividing same bases, subtract exponents: $5 - 5 = 0$. So, $x^5 \\div x^5 = x^0$, which equals 1. <br><span class="translation">Saat membagi basis yang sama, kurangi pangkatnya: $5 - 5 = 0$. Jadi, $x^5 \\div x^5 = x^0$, yang sama dengan 1.</span>'
+                    },
+                    {
+                        type: 'theory',
+                        title: 'Powers of 10 (Pangkat dari 10)',
+                        content: `
+                            <p>Powers of 10 are used constantly in science to write very large numbers easily. $10^1 = 10$, $10^2 = 100$, $10^3 = 1,000$, and so on. The exponent tells you exactly how many zeros to write after the 1.</p>
+                            <span class="translation">Pangkat dari 10 sering digunakan dalam sains untuk menulis angka yang sangat besar dengan mudah. $10^1 = 10$, $10^2 = 100$, $10^3 = 1,000$, dan seterusnya. Pangkatnya memberitahu Anda berapa banyak nol yang harus ditulis setelah angka 1.</span>
+                        `
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'The speed of light is approximately 300,000,000 meters per second. How can this be written using a power of 10? <br><span class="translation">Kecepatan cahaya kira-kira 300.000.000 meter per detik. Bagaimana cara menulis ini menggunakan pangkat dari 10?</span>',
+                        options: ['$3 \\times 10^6$', '$3 \\times 10^7$', '$3 \\times 10^8$', '$3 \\times 10^9$', '$30 \\times 10^8$'],
+                        correct: 2,
+                        explanation: '300,000,000 is 3 followed by 8 zeros, so it is $3 \\times 10^8$. <br><span class="translation">300.000.000 adalah 3 diikuti oleh 8 nol, jadi itu adalah $3 \\times 10^8$.</span>'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Write $10^4$ in standard form. <br><span class="translation">Tulis $10^4$ dalam bentuk standar.</span>',
+                        options: ['100', '1,000', '10,000', '100,000', '1,000,000'],
+                        correct: 2,
+                        explanation: 'The exponent 4 means you write 1 followed by 4 zeros, which is 10,000. <br><span class="translation">Pangkat 4 berarti Anda menulis 1 diikuti 4 nol, yaitu 10.000.</span>'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'If a country\'s debt is $5 \\times 10^{12}$ dollars, how much is that in standard form? <br><span class="translation">Jika utang sebuah negara adalah $5 \\times 10^{12}$ dolar, berapakah itu dalam bentuk standar?</span>',
+                        options: ['$5,000,000,000', '$50,000,000,000', '$500,000,000,000', '$5,000,000,000,000', '$50,000,000,000,000'],
+                        correct: 3,
+                        explanation: '$10^{12}$ is 1 followed by 12 zeros. Multiply by 5 means 5 followed by 12 zeros, which is 5,000,000,000,000 (5 trillion). <br><span class="translation">$10^{12}$ adalah 1 diikuti 12 nol. Dikalikan dengan 5 berarti 5 diikuti 12 nol, yaitu 5.000.000.000.000 (5 triliun).</span>'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Simplify $10^5 \\times 10^3$. <br><span class="translation">Sederhanakan $10^5 \\times 10^3$.</span>',
+                        options: ['$10^2$', '$10^8$', '$10^{15}$', '$100^8$', '$20^3$'],
+                        correct: 1,
+                        explanation: 'Keep base 10, add exponents: $5 + 3 = 8$. So, $10^8$. <br><span class="translation">Pertahankan basis 10, tambahkan pangkat: $5 + 3 = 8$. Jadi, $10^8$.</span>'
+                    }
+                ]
+            },
+            node3: {
+                title: "Review of Prior Knowledge",
+                duration: "00:15-00:20",
+                slides: [
+                    {
+                        type: 'theory',
+                        title: 'Repeated Multiplication (Perkalian Berulang)',
+                        content: `
+                            <p>Before diving deeper, let's remember that exponents are simply shorthand for repeated multiplication. Instead of writing $4 \\times 4 \\times 4 \\times 4 \\times 4$, we write $4^5$. This is crucial for understanding algebraic exponents later.</p>
+                            <span class="translation">Sebelum mendalami lebih jauh, mari kita ingat bahwa pangkat adalah singkatan dari perkalian berulang. Alih-alih menulis $4 \\times 4 \\times 4 \\times 4 \\times 4$, kita menulis $4^5$. Ini sangat penting untuk memahami pangkat aljabar nantinya.</span>
+                        `
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Express $7 \\times 7 \\times 7 \\times 7$ in exponential form. <br><span class="translation">Tulis $7 \\times 7 \\times 7 \\times 7$ dalam bentuk pangkat.</span>',
+                        options: ['$7^4$', '$4^7$', '$28^1$', '$7^{28}$', '$7^3$'],
+                        correct: 0,
+                        explanation: 'The base is 7, and it is multiplied by itself 4 times, so the exponent is 4. Thus, $7^4$. <br><span class="translation">Basisnya adalah 7, dan dikalikan dengan dirinya sendiri 4 kali, jadi pangkatnya 4. Maka, $7^4$.</span>'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Which expression is equal to $3^4$? <br><span class="translation">Manakah persamaan yang sama dengan $3^4$?</span>',
+                        options: ['$3 + 3 + 3 + 3$', '$4 \\times 4 \\times 4$', '$3 \\times 3 \\times 3 \\times 3$', '$3 \\times 4$', '$4^3$'],
+                        correct: 2,
+                        explanation: '$3^4$ means base 3 multiplied 4 times: $3 \\times 3 \\times 3 \\times 3$. <br><span class="translation">$3^4$ berarti basis 3 dikalikan 4 kali: $3 \\times 3 \\times 3 \\times 3$.</span>'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Evaluate $2^5$. <br><span class="translation">Hitunglah $2^5$.</span>',
+                        options: ['10', '25', '32', '16', '64'],
+                        correct: 2,
+                        explanation: '$2 \\times 2 \\times 2 \\times 2 \\times 2 = 32$. <br><span class="translation">$2 \\times 2 \\times 2 \\times 2 \\times 2 = 32$.</span>'
+                    },
+                    {
+                        type: 'theory',
+                        title: 'Order of Operations (Urutan Operasi)',
+                        content: `
+                            <p>Remember PEMDAS (Parentheses, Exponents, Multiplication/Division, Addition/Subtraction). Exponents must be calculated <strong>before</strong> multiplication or addition!</p>
+                            <span class="translation">Ingat urutan operasi (Kurung, Pangkat, Kali/Bagi, Tambah/Kurang). Pangkat harus dihitung <strong>sebelum</strong> perkalian atau penjumlahan!</span>
+                            <p>Example: $3 \\times 2^2 = 3 \\times 4 = 12$. (Not $(3 \\times 2)^2$, which would be $6^2 = 36$).</p>
+                        `
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Calculate $5 + 2^3$. <br><span class="translation">Hitunglah $5 + 2^3$.</span>',
+                        options: ['21', '13', '11', '7', '33'],
+                        correct: 1,
+                        explanation: 'First calculate the exponent: $2^3 = 8$. Then add: $5 + 8 = 13$. <br><span class="translation">Pertama hitung pangkat: $2^3 = 8$. Lalu tambahkan: $5 + 8 = 13$.</span>'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Calculate $4 \\times 3^2$. <br><span class="translation">Hitunglah $4 \\times 3^2$.</span>',
+                        options: ['144', '36', '24', '12', '81'],
+                        correct: 1,
+                        explanation: 'First calculate the exponent: $3^2 = 9$. Then multiply: $4 \\times 9 = 36$. <br><span class="translation">Pertama hitung pangkat: $3^2 = 9$. Lalu kalikan: $4 \\times 9 = 36$.</span>'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'A contractor is buying tiles. Each box contains $2^3$ tiles. If he buys 3 boxes, how many tiles does he have? <br><span class="translation">Seorang kontraktor membeli ubin. Setiap kotak berisi $2^3$ ubin. Jika ia membeli 3 kotak, berapa banyak ubin yang ia miliki?</span>',
+                        options: ['$8$ tiles', '$16$ tiles', '$24$ tiles', '$12$ tiles', '$64$ tiles'],
+                        correct: 2,
+                        explanation: 'First find the tiles per box: $2^3 = 8$. Then multiply by the number of boxes: $8 \\times 3 = 24$. <br><span class="translation">Pertama cari ubin per kotak: $2^3 = 8$. Lalu kalikan dengan jumlah kotak: $8 \\times 3 = 24$.</span>'
+                    },
+                    {
+                        type: 'theory',
+                        title: 'Parentheses and Exponents (Kurung dan Pangkat)',
+                        content: `
+                            <p>If an exponent is outside a parenthesis, it applies to everything inside it. $(ab)^n = a^n \\times b^n$. For example, $(2x)^3 = 2^3 \\times x^3 = 8x^3$.</p>
+                            <span class="translation">Jika pangkat berada di luar kurung, ia berlaku untuk semua yang ada di dalamnya. $(ab)^n = a^n \\times b^n$. Misalnya, $(2x)^3 = 2^3 \\times x^3 = 8x^3$.</span>
+                        `
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Expand $(2y)^3$. <br><span class="translation">Ekspansikan $(2y)^3$.</span>',
+                        options: ['$2y^3$', '$6y$', '$8y^3$', '$2y^6$', '$8y$'],
+                        correct: 2,
+                        explanation: 'The exponent 3 applies to both 2 and y: $2^3 \\times y^3 = 8y^3$. <br><span class="translation">Pangkat 3 berlaku untuk 2 dan y: $2^3 \\times y^3 = 8y^3$.</span>'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Simplify $(3 \\times 4)^2$. <br><span class="translation">Sederhanakan $(3 \\times 4)^2$.</span>',
+                        options: ['$3 \\times 4^2$', '$3^2 \\times 4$', '$3^2 \\times 4^2$', '$12^2$', '$7^2$'],
+                        correct: 2,
+                        explanation: 'The exponent applies to both numbers inside the parentheses: $3^2 \\times 4^2$. (Note: $12^2$ is the evaluated value, but $3^2 \\times 4^2$ is the expanded form). <br><span class="translation">Pangkat berlaku untuk kedua angka di dalam kurung: $3^2 \\times 4^2$. (Catatan: $12^2$ adalah nilai hitungan, tapi $3^2 \\times 4^2$ adalah bentuk ekspansi).</span>'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Expand $(-2a)^2$. <br><span class="translation">Ekspansikan $(-2a)^2$.</span>',
+                        options: ['$-4a^2$', '$4a$', '$4a^2$', '$-2a^2$', '$2a^2$'],
+                        correct: 2,
+                        explanation: 'Square both terms: $(-2)^2 \\times a^2 = 4a^2$. (Negative times negative is positive). <br><span class="translation">Kuadratkan kedua suku: $(-2)^2 \\times a^2 = 4a^2$. (Negatif dikali negatif adalah positif).</span>'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'A square garden has a side length of $(x+2)$ meters. What expression represents its area? <br><span class="translation">Sebuah kebun berbentuk persegi memiliki panjang sisi $(x+2)$ meter. Persamaan apa yang mewakili luasnya?</span>',
+                        options: ['$x^2 + 4$', '$(x+2)^2$', '$2x + 4$', '$x^2 + 2x$', '$x + 4$'],
+                        correct: 1,
+                        explanation: 'Area of a square is side squared. So it is $(x+2)^2$. (We will expand this in algebra later!). <br><span class="translation">Luas persegi adalah sisi kuadrat. Jadi itu adalah $(x+2)^2$. (Kita akan mengembangkan ini di aljabar nanti!).</span>'
+                    }
+                ]
+            },
+            node4: {
+                title: "Problem Introduction",
+                duration: "00:20-00:30",
+                slides: [
+                    {
+                        type: 'theory',
+                        title: 'Negative Exponents (Pangkat Negatif)',
+                        content: `
+                            <p>A negative exponent means "divide" instead of "multiply". It is the reciprocal of the base. $a^{-n} = \\frac{1}{a^n}$. For example, $2^{-3} = \\frac{1}{2^3} = \\frac{1}{8}$.</p>
+                            <span class="translation">Pangkat negatif berarti "membagi" bukan "mengalikan". Itu adalah kebalikan dari basis. $a^{-n} = \\frac{1}{a^n}$. Misalnya, $2^{-3} = \\frac{1}{2^3} = \\frac{1}{8}$.</span>
+                            <div class="figure-container">
+								<svg width="300" height="200" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" style="background:#333; border-radius:12px;">
+									<rect x="10" y="10" width="280" height="180" rx="10" fill="none" stroke="#777" stroke-width="4"/>
+									<text x="150" y="110" font-family="Arial" font-size="40" fill="#fff" text-anchor="middle" font-weight="bold">a^-n = 1 / a^n</text>
+									<line x1="100" y1="125" x2="200" y2="125" stroke="#fff" stroke-width="3"/>
+									<text x="150" y="160" font-family="Arial" font-size="14" fill="#ffc800" text-anchor="middle">Negative Exponent Rule</text>
+								</svg>
+                            </div>
+                        `
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'What is the value of $5^{-2}$? <br><span class="translation">Berapakah nilai dari $5^{-2}$?</span>',
+                        options: ['$-25$', '$-10$', '$\\frac{1}{25}$', '$\\frac{1}{10}$', '$25$'],
+                        correct: 2,
+                        explanation: '$5^{-2} = \\frac{1}{5^2} = \\frac{1}{25}$. <br><span class="translation">$5^{-2} = \\frac{1}{5^2} = \\frac{1}{25}$.</span>'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Which of the following is equal to $\\frac{1}{3^4}$? <br><span class="translation">Manakah dari berikut ini yang sama dengan $\\frac{1}{3^4}$?</span>',
+                        options: ['$3^{-4}$', '$-3^4$', '$3^4$', '$(-3)^4$', '$-3^{-4}$'],
+                        correct: 0,
+                        explanation: 'A negative exponent represents the reciprocal. So $\\frac{1}{3^4} = 3^{-4}$. <br><span class="translation">Pangkat negatif mewakili kebalikan. Jadi $\\frac{1}{3^4} = 3^{-4}$.</span>'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'A certain virus decreases in population by a factor of $10^{-3}$. If the initial population was 10,000, what is the new population? <br><span class="translation">Sebuah virus menurun populasinya dengan faktor $10^{-3}$. Jika populasi awalnya 10.000, berapakah populasi baru?</span>',
+                        options: ['$10$', '$0.1$', '$1$', '$100$', '$1000$'],
+                        correct: 0,
+                        explanation: 'A decrease by $10^{-3}$ means dividing by $10^3$ (1000). So, $10,000 \\div 1000 = 10$. Alternatively, $10^4 \\times 10^{-3} = 10^1 = 10$. <br><span class="translation">Penurunan sebesar $10^{-3}$ berarti dibagi dengan $10^3$ (1000). Jadi, $10.000 \\div 1000 = 10$. Atau, $10^4 \\times 10^{-3} = 10^1 = 10$.</span>'
+                    },
+                    {
+                        type: 'theory',
+                        title: 'Power of a Power Rule (Pangkat dari Pangkat)',
+                        content: `
+                            <p>When a power is raised to another power, you multiply the exponents. $(a^m)^n = a^{m \\times n}$. For example, $(x^2)^3 = x^{2 \\times 3} = x^6$.</p>
+                            <span class="translation">Ketika sebuah pangkat dipangkatkan dengan pangkat lain, Anda mengalikan pangkatnya. $(a^m)^n = a^{m \\times n}$. Misalnya, $(x^2)^3 = x^{2 \\times 3} = x^6$.</span>
+                        `
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Simplify $(x^4)^3$. <br><span class="translation">Sederhanakan $(x^4)^3$.</span>',
+                        options: ['$x^7$', '$x^{12}$', '$x^{81}$', '$x^1$', '$3x^4$'],
+                        correct: 1,
+                        explanation: 'Multiply the exponents: $4 \\times 3 = 12$. So, $x^{12}$. <br><span class="translation">Kalikan pangkatnya: $4 \\times 3 = 12$. Jadi, $x^{12}$.</span>'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Simplify $(2^3)^2$. <br><span class="translation">Sederhanakan $(2^3)^2$.</span>',
+                        options: ['$2^5$', '$2^6$', '$4^3$', '$8^3$', '$2^9$'],
+                        correct: 1,
+                        explanation: 'Multiply the exponents: $3 \\times 2 = 6$. So, $2^6$. (Which is 64). <br><span class="translation">Kalikan pangkatnya: $3 \\times 2 = 6$. Jadi, $2^6$. (Yaitu 64).</span>'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'A square has an area of $A = x^2$. If the side length itself is squared to form a new square, what is the area in terms of $x$? <br><span class="translation">Sebuah persegi memiliki luas $A = x^2$. Jika panjang sisinya sendiri dikuadratkan untuk membentuk persegi baru, berapakah luasnya dalam bentuk $x$?</span>',
+                        options: ['$x^4$', '$x^2$', '$x^8$', '$2x^2$', '$x^6$'],
+                        correct: 0,
+                        explanation: 'The new side length is $(x^2)^2$. Using the power of a power rule, multiply exponents: $2 \\times 2 = 4$. So the area is $x^4$. <br><span class="translation">Panjang sisi baru adalah $(x^2)^2$. Menggunakan aturan pangkat dari pangkat, kalikan pangkatnya: $2 \\times 2 = 4$. Jadi luasnya adalah $x^4$.</span>'
+                    },
+                    {
+                        type: 'theory',
+                        title: 'Combining the Rules (Menggabungkan Aturan)',
+                        content: `
+                            <p>Now, let's combine multiple rules into one problem. Remember to follow the order of operations and apply the rules step-by-step.</p>
+                            <span class="translation">Sekarang, mari kita gabungkan beberapa aturan menjadi satu soal. Ingat untuk mengikuti urutan operasi dan terapkan aturan langkah demi langkah.</span>
+                            <p>Example: Simplify $\\frac{x^5 \\times x^3}{x^4}$. <br>Step 1 (Multiply top): $x^{5+3} = x^8$. <br>Step 2 (Divide): $x^{8-4} = x^4$.</p>
+                        `
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Simplify $\\frac{y^7 \\times y^2}{y^5}$. <br><span class="translation">Sederhanakan $\\frac{y^7 \\times y^2}{y^5}$.</span>',
+                        options: ['$y^4$', '$y^{14}$', '$y^5$', '$y^3$', '$y^2$'],
+                        correct: 0,
+                        explanation: 'Numerator: $y^{7+2} = y^9$. Then divide: $y^{9-5} = y^4$. <br><span class="translation">Pembilang: $y^{7+2} = y^9$. Lalu bagi: $y^{9-5} = y^4$.</span>'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Simplify $(a^2 b^3)^4$. <br><span class="translation">Sederhanakan $(a^2 b^3)^4$.</span>',
+                        options: ['$a^6 b^7$', '$a^8 b^{12}$', '$a^2 b^{12}$', '$a^{16} b^3$', '$(ab)^5$'],
+                        correct: 1,
+                        explanation: 'The outside exponent 4 applies to both $a^2$ and $b^3$. So, $a^{2 \\times 4} = a^8$ and $b^{3 \\times 4} = b^{12}$. Result: $a^8 b^{12}$. <br><span class="translation">Pangkat luar 4 berlaku untuk $a^2$ dan $b^3$. Jadi, $a^{2 \\times 4} = a^8$ dan $b^{3 \\times 4} = b^{12}$. Hasil: $a^8 b^{12}$.</span>'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'A population of insects triples every month ($P = 3^m$). If the initial population is $3^2$, what is the population after 4 months? <br><span class="translation">Populasi serangga berlipat tiga setiap bulan ($P = 3^m$). Jika populasi awal adalah $3^2$, berapakah populasi setelah 4 bulan?</span>',
+                        options: ['$3^6$', '$3^8$', '$3^5$', '$3^{24}$', '$12^2$'],
+                        correct: 0,
+                        explanation: 'Initial is $3^2$. After 4 months of tripling, it multiplies by $3^4$. So, $3^2 \\times 3^4 = 3^{2+4} = 3^6$. <br><span class="translation">Awal $3^2$. Dikalikan $3^4$ untuk 4 bulan: $3^2 \\times 3^4 = 3^6$.</span>',
+                    }
+                ]
+            },
+			            node5: {
+                title: "Guided Practice",
+                duration: "00:30-00:45",
+                slides: [
+                    {
+                        type: 'theory',
+                        title: 'Scientific Notation (Notasi Ilmiah)',
+                        content: `
+                            <p>Scientists use scientific notation to handle extremely large or small numbers. It is written as $a \\times 10^n$, where $1 \\le a < 10$ and $n$ is an integer.</p>
+                            <span class="translation">Ilmuwan menggunakan notasi ilmiah untuk menangani bilangan yang sangat besar atau kecil. Ditulis sebagai $a \\times 10^n$, di mana $1 \\le a < 10$ dan $n$ adalah bilangan bulat.</span>
+                            <div class="figure-container">
+								<svg width="300" height="200" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" style="background:#e7f5ff; border-radius:12px;">
+									<circle cx="150" cy="70" r="35" fill="none" stroke="#58cc02" stroke-width="4"/>
+									<text x="150" y="80" font-family="Arial" font-size="24" fill="#58cc02" text-anchor="middle" font-weight="bold">10</text>
+									<text x="150" y="140" font-family="Arial" font-size="30" fill="#1cb0f6" text-anchor="middle" font-weight="bold">a × 10^n</text>
+									<text x="150" y="175" font-family="Arial" font-size="16" fill="#777" text-anchor="middle">1 ≤ a < 10</text>
+								</svg>
+                            </div>
+                        `
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Which of the following is written in correct scientific notation? <br><span class="translation">Manakah dari berikut ini yang ditulis dalam notasi ilmiah yang benar?</span>',
+                        options: ['$0.5 \\times 10^3$', '$12 \\times 10^{-4}$', '$4.7 \\times 10^5$', '$3 \\times 5^4$', '$-9 \\times 10^2$'],
+                        correct: 2,
+                        explanation: 'In scientific notation, the coefficient $a$ must be between 1 and 10 (including 1, but not 10). $4.7$ fits this criteria. <br><span class="translation">Dalam notasi ilmiah, koefisien $a$ harus antara 1 dan 10 (termasuk 1, tapi tidak termasuk 10). $4.7$ memenuhi kriteria ini.</span>'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Convert $0.000035$ to scientific notation. <br><span class="translation">Ubah $0.000035$ ke notasi ilmiah.</span>',
+                        options: ['$3.5 \\times 10^4$', '$3.5 \\times 10^{-4}$', '$3.5 \\times 10^5$', '$3.5 \\times 10^{-5}$', '$35 \\times 10^{-6}$'],
+                        correct: 3,
+                        explanation: 'Move the decimal 5 places to the right to get 3.5. Since we move right, the exponent is negative: $3.5 \\times 10^{-5}$. <br><span class="translation">Pindahkan koma 5 tempat ke kanan untuk mendapatkan 3.5. Karena kita pindah ke kanan, pangkatnya negatif: $3.5 \\times 10^{-5}$.</span>'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'A red blood cell is approximately $8 \\times 10^{-6}$ meters wide. How is this written in standard decimal form? <br><span class="translation">Sel darah merah berukuran kira-kira $8 \\times 10^{-6}$ meter. Bagaimana cara menulisnya dalam bentuk desimal standar?</span>',
+                        options: ['$0.000008$', '$0.00008$', '$8,000,000$', '$0.0000008$', '$800,000$'],
+                        correct: 0,
+                        explanation: 'A negative exponent of 6 means moving the decimal 6 places to the left: $0.000008$. <br><span class="translation">Pangkat negatif 6 berarti memindahkan koma 6 tempat ke kiri: $0.000008$.</span>'
+                    },
+                    {
+                        type: 'theory',
+                        title: 'Fractional Exponents & Roots (Pangkat Pecahan dan Akar)',
+                        content: `
+                            <p>Exponents don\'t have to be whole numbers! A fractional exponent represents a root. The rule is: $x^{1/n} = \\sqrt[n]{x}$. For example, $9^{1/2} = \\sqrt{9} = 3$.</p>
+                            <span class="translation">Pangkat tidak harus berupa bilangan bulat! Pangkat pecahan mewakili akar. Aturannya: $x^{1/n} = \\sqrt[n]{x}$. Misalnya, $9^{1/2} = \\sqrt{9} = 3$.</span>
+                        `
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Rewrite $16^{1/2}$ in radical form and find its value. <br><span class="translation">Tulis ulang $16^{1/2}$ dalam bentuk akar dan cari nilainya.</span>',
+                        options: ['$\\sqrt[2]{16} = 4$', '$\\sqrt[2]{16} = 8$', '$\\sqrt{16} = 2$', '$\\frac{1}{16^2}$', '$16^2 = 256$'],
+                        correct: 0,
+                        explanation: 'The denominator of the fraction becomes the index of the root. $16^{1/2} = \\sqrt{16} = 4$. <br><span class="translation">Penyebut pecahan menjadi indeks akar. $16^{1/2} = \\sqrt{16} = 4$.</span>'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'What is the value of $27^{1/3}$? <br><span class="translation">Berapakah nilai dari $27^{1/3}$?</span>',
+                        options: ['$9$', '$3$', '$\\frac{1}{9}$', '$\\frac{1}{3}$', '$81$'],
+                        correct: 1,
+                        explanation: 'An exponent of $1/3$ means the cube root. $\\sqrt[3]{27} = 3$ because $3 \\times 3 \\times 3 = 27$. <br><span class="translation">Pangkat $1/3$ berarti akar pangkat tiga. $\\sqrt[3]{27} = 3$ karena $3 \\times 3 \\times 3 = 27$.</span>'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'A square garden has an area of $49$ square meters. Using fractional exponents, what is the length of one side? <br><span class="translation">Sebuah taman berbentuk persegi memiliki luas $49$ meter persegi. Menggunakan pangkat pecahan, berapakah panjang satu sisinya?</span>',
+                        options: ['$49^2$ meters', '$49^{1/2}$ meters', '$49^{-2}$ meters', '$49^{3}$ meters', '$\\frac{1}{49}$ meters'],
+                        correct: 1,
+                        explanation: 'The side length is the square root of the area, which is $49^{1/2}$. (Which evaluates to 7 meters). <br><span class="translation">Panjang sisi adalah akar kuadrat dari luas, yaitu $49^{1/2}$. (Yang hasilnya 7 meter).</span>'
+                    },
+                    {
+                        type: 'theory',
+                        title: 'Operations with Roots (Operasi pada Bentuk Akar)',
+                        content: `
+                            <p>When multiplying roots with the same index, you can combine them under one root: $\\sqrt{a} \\times \\sqrt{b} = \\sqrt{a \\times b}$. When dividing, $\\frac{\\sqrt{a}}{\\sqrt{b}} = \\sqrt{\\frac{a}{b}}$.</p>
+                            <span class="translation">Saat mengalikan akar dengan indeks yang sama, Anda bisa menggabungkannya dalam satu akar: $\\sqrt{a} \\times \\sqrt{b} = \\sqrt{a \\times b}$. Saat membagi, $\\frac{\\sqrt{a}}{\\sqrt{b}} = \\sqrt{\\frac{a}{b}}$.</span>
+                        `
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Simplify $\\sqrt{3} \\times \\sqrt{12}$. <br><span class="translation">Sederhanakan $\\sqrt{3} \\times \\sqrt{12}$.</span>',
+                        options: ['$\\sqrt{36} = 6$', '$\\sqrt{15}$', '$6$', '$36$', '$\\sqrt{4} = 2$'],
+                        correct: 0,
+                        explanation: 'Combine under one root: $\\sqrt{3 \\times 12} = \\sqrt{36} = 6$. (Option C is numerically correct, but A shows the algebraic step). <br><span class="translation">Gabungkan dalam satu akar: $\\sqrt{3 \\times 12} = \\sqrt{36} = 6$.</span>'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Simplify $\\frac{\\sqrt{50}}{\\sqrt{2}}$. <br><span class="translation">Sederhanakan $\\frac{\\sqrt{50}}{\\sqrt{2}}$.</span>',
+                        options: ['$\\sqrt{25} = 5$', '$\\sqrt{100} = 10$', '$25$', '$\\sqrt{48}$', '$10$'],
+                        correct: 0,
+                        explanation: 'Combine under one root: $\\sqrt{\\frac{50}{2}} = \\sqrt{25} = 5$. <br><span class="translation">Gabungkan dalam satu akar: $\\sqrt{\\frac{50}{2}} = \\sqrt{25} = 5$.</span>'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'A rectangular room has an area of $\\sqrt{20}$ square meters and a width of $\\sqrt{2}$ meters. What is its length? <br><span class="translation">Sebuah ruangan persegi panjang memiliki luas $\\sqrt{20}$ meter persegi dan lebar $\\sqrt{2}$ meter. Berapakah panjangnya?</span>',
+                        options: ['$\\sqrt{10}$ meters', '$5$ meters', '$\\sqrt{18}$ meters', '$10$ meters', '$\\sqrt{22}$ meters'],
+                        correct: 0,
+                        explanation: 'Length = Area / Width = $\\frac{\\sqrt{20}}{\\sqrt{2}} = \\sqrt{\\frac{20}{2}} = \\sqrt{10}$ meters. <br><span class="translation">Panjang = Luas / Lebar = $\\frac{\\sqrt{20}}{\\sqrt{2}} = \\sqrt{\\frac{20}{2}} = \\sqrt{10}$ meter.</span>'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Simplify $\\sqrt{8} \\times \\sqrt{2}$. <br><span class="translation">Sederhanakan $\\sqrt{8} \\times \\sqrt{2}$.</span>',
+                        options: ['$16$', '$4$', '$\\sqrt{10}$', '$2$', '$10$'],
+                        correct: 1,
+                        explanation: '$\\sqrt{8 \\times 2} = \\sqrt{16} = 4$. <br><span class="translation">$\\sqrt{8 \\times 2} = \\sqrt{16} = 4$.</span>'
+                    }
+                ]
+            },
+            node6: {
+                title: "Independent Practice",
+                duration: "00:45-00:55",
+                slides: [
+                    {
+                        type: 'theory',
+                        title: 'Rationalizing Denominators (Merasionalkan Penyebut)',
+                        content: `
+                            <p>In mathematics, it is standard practice not to leave a root in the denominator of a fraction. To fix this, we "rationalize" it by multiplying both top and bottom by the root. Example: $\\frac{1}{\\sqrt{3}} = \\frac{1 \\times \\sqrt{3}}{\\sqrt{3} \\times \\sqrt{3}} = \\frac{\\sqrt{3}}{3}$.</p>
+                            <span class="translation">Dalam matematika, praktik standar adalah tidak meninggalkan akar di penyebut pecahan. Untuk memperbaikinya, kita "merasionalkan" dengan mengalikan atas dan bawah dengan akar tersebut. Contoh: $\\frac{1}{\\sqrt{3}} = \\frac{1 \\times \\sqrt{3}}{\\sqrt{3} \\times \\sqrt{3}} = \\frac{\\sqrt{3}}{3}$.</span>
+                        `
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Rationalize the denominator of $\\frac{5}{\\sqrt{2}}$. <br><span class="translation">Rasionalkan penyebut dari $\\frac{5}{\\sqrt{2}}$.</span>',
+                        options: ['$\\frac{5\\sqrt{2}}{2}$', '$\\frac{5}{2}$', '$\\frac{\\sqrt{5}}{2}$', '$5\\sqrt{2}$', '$\\frac{5\\sqrt{2}}{4}$'],
+                        correct: 0,
+                        explanation: 'Multiply top and bottom by $\\sqrt{2}$: $\\frac{5 \\times \\sqrt{2}}{\\sqrt{2} \\times \\sqrt{2}} = \\frac{5\\sqrt{2}}{2}$. <br><span class="translation">Kalikan atas dan bawah dengan $\\sqrt{2}$: $\\frac{5 \\times \\sqrt{2}}{\\sqrt{2} \\times \\sqrt{2}} = \\frac{5\\sqrt{2}}{2}$.</span>'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Rationalize the denominator of $\\frac{3}{\\sqrt{7}}$. <br><span class="translation">Rasionalkan penyebut dari $\\frac{3}{\\sqrt{7}}$.</span>',
+                        options: ['$\\frac{3\\sqrt{7}}{49}$', '$\\frac{3}{7}$', '$\\frac{3\\sqrt{7}}{7}$', '$3\\sqrt{7}$', '$\\frac{21}{7}$'],
+                        correct: 2,
+                        explanation: 'Multiply top and bottom by $\\sqrt{7}$: $\\frac{3 \\times \\sqrt{7}}{\\sqrt{7} \\times \\sqrt{7}} = \\frac{3\\sqrt{7}}{7}$. <br><span class="translation">Kalikan atas dan bawah dengan $\\sqrt{7}$: $\\frac{3 \\times \\sqrt{7}}{\\sqrt{7} \\times \\sqrt{7}} = \\frac{3\\sqrt{7}}{7}$.</span>'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'An electrician needs to cut a wire that is $\\frac{4}{\\sqrt{5}}$ meters long. What is the exact length in rationalized form? <br><span class="translation">Seorang tukang listrik harus memotong kawat sepanjang $\\frac{4}{\\sqrt{5}}$ meter. Berapakah panjang pastinya dalam bentuk yang dirasionalkan?</span>',
+                        options: ['$\\frac{4\\sqrt{5}}{5}$ meters', '$\\frac{4}{5}$ meters', '$\\frac{4\\sqrt{5}}{25}$ meters', '$4\\sqrt{5}$ meters', '$\\frac{20}{5}$ meters'],
+                        correct: 0,
+                        explanation: 'Multiply top and bottom by $\\sqrt{5}$: $\\frac{4 \\times \\sqrt{5}}{\\sqrt{5} \\times \\sqrt{5}} = \\frac{4\\sqrt{5}}{5}$ meters. <br><span class="translation">Kalikan atas dan bawah dengan $\\sqrt{5}$: $\\frac{4 \\times \\sqrt{5}}{\\sqrt{5} \\times \\sqrt{5}} = \\frac{4\\sqrt{5}}{5}$ meter.</span>'
+                    },
+                    {
+                        type: 'theory',
+                        title: 'Negative Fractional Exponents (Pangkat Pecahan Negatif)',
+                        content: `
+                            <p>Combining rules: a negative fractional exponent means taking the root of the reciprocal. $x^{-1/n} = \\frac{1}{x^{1/n}} = \\frac{1}{\\sqrt[n]{x}}$. For example, $8^{-1/3} = \\frac{1}{\\sqrt[3]{8}} = \\frac{1}{2}$.</p>
+                            <span class="translation">Menggabungkan aturan: pangkat pecahan negatif berarti mengambil akar dari kebalikannya. $x^{-1/n} = \\frac{1}{x^{1/n}} = \\frac{1}{\\sqrt[n]{x}}$. Misalnya, $8^{-1/3} = \\frac{1}{\\sqrt[3]{8}} = \\frac{1}{2}$.</span>
+                        `
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'What is the value of $4^{-1/2}$? <br><span class="translation">Berapakah nilai dari $4^{-1/2}$?</span>',
+                        options: ['$-2$', '$2$', '$\\frac{1}{2}$', '$-\\frac{1}{2}$', '$\\frac{1}{16}$'],
+                        correct: 2,
+                        explanation: '$4^{-1/2} = \\frac{1}{4^{1/2}} = \\frac{1}{\\sqrt{4}} = \\frac{1}{2}$. <br><span class="translation">$4^{-1/2} = \\frac{1}{4^{1/2}} = \\frac{1}{\\sqrt{4}} = \\frac{1}{2}$.</span>'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Rewrite $27^{-1/3}$ as a fraction. <br><span class="translation">Tulis ulang $27^{-1/3}$ sebagai pecahan.</span>',
+                        options: ['$\\frac{1}{27}$', '$\\frac{1}{9}$', '$\\frac{1}{3}$', '$\\frac{1}{81}$', '$-\\frac{1}{3}$'],
+                        correct: 2,
+                        explanation: '$27^{-1/3} = \\frac{1}{\\sqrt[3]{27}} = \\frac{1}{3}$. <br><span class="translation">$27^{-1/3} = \\frac{1}{\\sqrt[3]{27}} = \\frac{1}{3}$.</span>'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'A certain chemical reduces its mass by a factor of $16^{-1/2}$ every hour. If it starts at 1 kg, what is its mass after 1 hour? <br><span class="translation">Zat kimia tertentu mengurangi massanya dengan faktor $16^{-1/2}$ setiap jam. Jika dimulai dari 1 kg, berapakah massanya setelah 1 jam?</span>',
+                        options: ['$4$ kg', '$\\frac{1}{4}$ kg', '$\\frac{1}{8}$ kg', '$8$ kg', '$\\frac{1}{16}$ kg'],
+                        correct: 1,
+                        explanation: 'The reduction factor is $\\frac{1}{16^{1/2}} = \\frac{1}{\\sqrt{16}} = \\frac{1}{4}$. So, $1 \\text{ kg} \\times \\frac{1}{4} = \\frac{1}{4}$ kg. <br><span class="translation">Faktor pengurangan adalah $\\frac{1}{16^{1/2}} = \\frac{1}{\\sqrt{16}} = \\frac{1}{4}$. Jadi, $1 \\text{ kg} \\times \\frac{1}{4} = \\frac{1}{4}$ kg.</span>'
+                    },
+                    {
+                        type: 'theory',
+                        title: 'Exponents in Algebraic Fractions (Pangkat dalam Pecahan Aljabar)',
+                        content: `
+                            <p>We can use the division rule of exponents ($a^m \\div a^n = a^{m-n}$) to simplify algebraic fractions. For example: $\\frac{x^5 y^3}{x^2 y} = x^{5-2} y^{3-1} = x^3 y^2$.</p>
+                            <span class="translation">Kita bisa menggunakan aturan pembagian pangkat ($a^m \\div a^n = a^{m-n}$) untuk menyederhanakan pecahan aljabar. Misalnya: $\\frac{x^5 y^3}{x^2 y} = x^{5-2} y^{3-1} = x^3 y^2$.</span>
+                        `
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Simplify $\\frac{a^7 b^4}{a^3 b^2}$. <br><span class="translation">Sederhanakan $\\frac{a^7 b^4}{a^3 b^2}$.</span>',
+                        options: ['$a^4 b^2$', '$a^{10} b^6$', '$a^4 b^6$', '$a^3 b^2$', '$a^{21} b^8$'],
+                        correct: 0,
+                        explanation: 'Subtract exponents for a: $7-3=4$. Subtract exponents for b: $4-2=2$. Result: $a^4 b^2$. <br><span class="translation">Kurangi pangkat a: $7-3=4$. Kurangi pangkat b: $4-2=2$. Hasil: $a^4 b^2$.</span>'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Simplify $\\frac{6 x^2 y^5}{2 x y^2}$. <br><span class="translation">Sederhanakan $\\frac{6 x^2 y^5}{2 x y^2}$.</span>',
+                        options: ['$3 x y^3$', '$4 x y^3$', '$3 x^2 y^3$', '$12 x y^3$', '$3 x y^{10}$'],
+                        correct: 0,
+                        explanation: 'Numbers: $6 \\div 2 = 3$. x: $2-1=1$ (which is just x). y: $5-2=3$. Result: $3 x y^3$. <br><span class="translation">Angka: $6 \\div 2 = 3$. x: $2-1=1$ (yaitu x). y: $5-2=3$. Hasil: $3 x y^3$.</span>'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'A rectangle has an area of $12 x^4 y^3$ and a length of $3 x y^2$. What is its width? <br><span class="translation">Sebuah persegi panjang memiliki luas $12 x^4 y^3$ dan panjang $3 x y^2$. Berapakah lebarnya?</span>',
+                        options: ['$4 x^3 y$', '$15 x^5 y^5$', '$4 x^4 y^3$', '$9 x^3 y$', '$4 x^4 y^2$'],
+                        correct: 0,
+                        explanation: 'Width = Area / Length = $\\frac{12 x^4 y^3}{3 x y^2} = 4 x^{4-1} y^{3-2} = 4 x^3 y$. <br><span class="translation">Lebar = Luas / Panjang = $\\frac{12 x^4 y^3}{3 x y^2} = 4 x^{4-1} y^{3-2} = 4 x^3 y$.</span>'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Simplify $\\frac{15 p^6 q^8}{5 p^2 q^5}$. <br><span class="translation">Sederhanakan $\\frac{15 p^6 q^8}{5 p^2 q^5}$.</span>',
+                        options: ['$3 p^4 q^3$', '$10 p^3 q^3$', '$3 p^8 q^{13}$', '$3 p^4 q^{13}$', '$3 p^3 q^3$'],
+                        correct: 0,
+                        explanation: 'Numbers: $15 \\div 5 = 3$. p: $6-2=4$. q: $8-5=3$. Result: $3 p^4 q^3$. <br><span class="translation">Angka: $15 \\div 5 = 3$. p: $6-2=4$. q: $8-5=3$. Hasil: $3 p^4 q^3$.</span>'
+                    }
+                ]
+            },
+            node7: {
+                title: "Consolidation & Reflection",
+                duration: "00:55-01:00",
+                slides: [
+                    {
+                        type: 'theory',
+                        title: 'Summary & Reflection (Ringkasan dan Refleksi)',
+                        content: `
+                            <p><strong>Great job reaching this far! (Kerja bagus sudah sampai sini!)</strong></p>
+                            <p>Today we learned about Exponents and Roots. Let\'s recap the key rules:</p>
+                            <ul>
+                                <li>Multiplication: $a^m \\times a^n = a^{m+n}$</li>
+                                <li>Division: $a^m \\div a^n = a^{m-n}$</li>
+                                <li>Power of a Power: $(a^m)^n = a^{m \\times n}$</li>
+                                <li>Zero Exponent: $a^0 = 1$</li>
+                                <li>Negative Exponent: $a^{-n} = \\frac{1}{a^n}$</li>
+                                <li>Fractional Exponent: $a^{1/n} = \\sqrt[n]{a}$</li>
+                            </ul>
+                            <span class="translation">Hari ini kita belajar tentang Bilangan Berpangkat dan Bentuk Akar. Mari kita ingat kembali aturan utamanya...</span>
+                            <p><strong>Reflection Questions (Pertanyaan Refleksi):</strong></p>
+                            <p>1. Which rule did you find the easiest to apply? (Aturan mana yang paling mudah diterapkan?)<br>
+                            2. When would you use scientific notation in real life? (Kapan Anda akan menggunakan notasi ilmiah dalam kehidupan nyata?)</p>
+                            <br>
+                            <a href="https://learn.algonova.id" target="_blank" style="background: var(--secondary-color); color: white; padding: 12px 24px; border-radius: 12px; text-decoration: none; font-weight: 700; display: inline-block; box-shadow: 0 4px 0 #1899d6;">
+                                Continue on learn.algonova.id
+                            </a>
+                            <br><br>
+                            <span class="translation">Klik tombol di atas untuk melanjutkan ke platform belajar Algonova.</span>
+                        `
+                    }
+                ]
+            },
+            assign1: {
+                title: "Assignment 1",
+                duration: "10 Questions",
+                isAssignment: true,
+                slides: [
+                    {
+                        type: 'mcq',
+                        question: 'What is $5^3$? <br><span class="translation">Berapakah $5^3$?</span>',
+                        options: ['15', '125', '25', '53', '625'],
+                        correct: 1,
+                        explanation: '$5 \\times 5 \\times 5 = 125$.'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'In $7^4$, what is the base? <br><span class="translation">Pada $7^4$, apaakah basisnya?</span>',
+                        options: ['4', '7', '28', '11', '3'],
+                        correct: 1,
+                        explanation: 'The large number is the base (7), the small upper number is the exponent (4).'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'A bacteria population triples every hour. After 4 hours, represented as $3^4$, how many bacteria are there? <br><span class="translation">Populasi bakteri berlipat tiga setiap jam. Setelah 4 jam, direpresentasikan sebagai $3^4$, berapa banyak bakteri yang ada?</span>',
+                        options: ['12', '64', '81', '243', '7'],
+                        correct: 2,
+                        explanation: '$3^4 = 3 \\times 3 \\times 3 \\times 3 = 81$.'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Write $4 \\times 4 \\times 4 \\times 4 \\times 4$ in exponential form. <br><span class="translation">Tulis $4 \\times 4 \\times 4 \\times 4 \\times 4$ dalam bentuk pangkat.</span>',
+                        options: ['$4^5$', '$5^4$', '$20^1$', '$4^{20}$', '$4^4$'],
+                        correct: 0,
+                        explanation: 'Base 4 is multiplied by itself 5 times, so $4^5$.'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Evaluate $2^4 + 3^2$. <br><span class="translation">Hitunglah $2^4 + 3^2$.</span>',
+                        options: ['$16 + 9 = 25$', '$8 + 6 = 14$', '$16 + 6 = 22$', '$8 + 9 = 17$', '$4 + 9 = 13$'],
+                        correct: 0,
+                        explanation: 'Calculate exponents first: $2^4=16$, $3^2=9$. Then add: $16+9=25$.'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Which is larger: $2^5$ or $5^2$? <br><span class="translation">Mana yang lebih besar: $2^5$ atau $5^2$?</span>',
+                        options: ['$2^5$ (32)', '$5^2$ (25)', 'They are equal', 'Cannot be determined', '$2^5$ (25)'],
+                        correct: 0,
+                        explanation: '$2^5 = 32$ and $5^2 = 25$. So $2^5$ is larger.'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'A square tile has a side length of 4 cm. What is its area expressed as an exponent? <br><span class="translation">Sebuah ubin persegi memiliki panjang sisi 4 cm. Berapakah luasnya yang dinyatakan dalam pangkat?</span>',
+                        options: ['$4^1$ cm²', '$4^2$ cm²', '$2^4$ cm²', '$8^2$ cm²', '$4^3$ cm²'],
+                        correct: 1,
+                        explanation: 'Area = side $\\times$ side = $4 \\times 4 = 4^2$ cm².'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'What is $10^3$? <br><span class="translation">Berapakah $10^3$?</span>',
+                        options: ['30', '100', '1,000', '10,000', '3'],
+                        correct: 2,
+                        explanation: '$10^3 = 10 \\times 10 \\times 10 = 1,000$.'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Simplify $(\\frac{1}{2})^3$. <br><span class="translation">Sederhanakan $(\\frac{1}{2})^3$.</span>',
+                        options: ['$\\frac{3}{2}$', '$\\frac{1}{6}$', '$\\frac{1}{8}$', '$\\frac{3}{6}$', '$\\frac{1}{5}$'],
+                        correct: 2,
+                        explanation: '$\\frac{1}{2} \\times \\frac{1}{2} \\times \\frac{1}{2} = \\frac{1}{8}$.'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'A machine prints $2^3$ pages per minute. If it runs for $2^2$ minutes, how many pages are printed in total? <br><span class="translation">Sebuah mesin mencetak $2^3$ halaman per menit. Jika berjalan selama $2^2$ menit, berapa banyak halaman yang dicetak secara total?</span>',
+                        options: ['$2^5$ pages', '$4^3$ pages', '$2^6$ pages', '$4^5$ pages', '$2^1$ pages'],
+                        correct: 0,
+                        explanation: 'Multiply the rate by the time: $2^3 \\times 2^2 = 2^{3+2} = 2^5$ pages.'
+                    }
+                ]
+            },
+            assign2: {
+                title: "Assignment 2",
+                duration: "10 Questions",
+                isAssignment: true,
+                slides: [
+                    {
+                        type: 'mcq',
+                        question: 'Simplify $x^3 \\times x^4$. <br><span class="translation">Sederhanakan $x^3 \\times x^4$.</span>',
+                        options: ['$x^7$', '$x^{12}$', '$2x^7$', '$x^1$', '$x^{34}$'],
+                        correct: 0,
+                        explanation: 'Keep base, add exponents: $3+4=7$. So, $x^7$.'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Simplify $y^8 \\div y^5$. <br><span class="translation">Sederhanakan $y^8 \\div y^5$.</span>',
+                        options: ['$y^3$', '$y^{13}$', '$y^{40}$', '$y^{-3}$', '$2y^3$'],
+                        correct: 0,
+                        explanation: 'Keep base, subtract exponents: $8-5=3$. So, $y^3$.'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'A scientist has $10^6$ cells in a petri dish. If half of them die ($\\frac{1}{2} = 2^{-1}$), how many are left? <br><span class="translation">Seorang ilmuwan memiliki $10^6$ sel dalam cawan petri. Jika separuh mati, berapa banyak yang tersisa?</span>',
+                        options: ['$10^3$', '$5 \\times 10^5$', '$10^6$', '$2 \\times 10^6$', '$10^5$'],
+                        correct: 1,
+                        explanation: 'Half of $10^6$ is $10^6 \\div 2 = 500,000 = 5 \\times 10^5$.'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Simplify $(a^2)^5$. <br><span class="translation">Sederhanakan $(a^2)^5$.</span>',
+                        options: ['$a^7$', '$a^{10}$', '$a^{25}$', '$5a^2$', '$a^3$'],
+                        correct: 1,
+                        explanation: 'Power of a power: multiply exponents. $2 \\times 5 = 10$. So, $a^{10}$.'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Simplify $\\frac{m^9 n^4}{m^2 n^3}$. <br><span class="translation">Sederhanakan $\\frac{m^9 n^4}{m^2 n^3}$.</span>',
+                        options: ['$m^7 n^1$', '$m^{11} n^7$', '$m^7 n^7$', '$m^7 n$', '$m^{18} n^{12}$'],
+                        correct: 3,
+                        explanation: 'm: $9-2=7$. n: $4-3=1$. So, $m^7 n$.'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Expand $(2x)^3$. <br><span class="translation">Ekspansikan $(2x)^3$.</span>',
+                        options: ['$2x^3$', '$6x$', '$8x^3$', '$2x^6$', '$8x$'],
+                        correct: 2,
+                        explanation: 'Exponent applies to both: $2^3 \\times x^3 = 8x^3$.'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'A rectangular field has length $3x^2$ and width $4x^3$. What is the area? <br><span class="translation">Sebuah lapangan persegi panjang memiliki panjang $3x^2$ dan lebar $4x^3$. Berapakah luasnya?</span>',
+                        options: ['$12x^5$', '$7x^5$', '$12x^6$', '$7x^6$', '$12x^1$'],
+                        correct: 0,
+                        explanation: 'Area = Length $\\times$ Width = $(3 \\times 4)(x^2 \\times x^3) = 12x^{2+3} = 12x^5$.'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'What is $2^3 \\times 2^2 \\times 2^0$? <br><span class="translation">Berapakah $2^3 \\times 2^2 \\times 2^0$?</span>',
+                        options: ['$2^5$', '$2^6$', '$2^0$', '$2^5 \\times 0$', '$2^{12}$'],
+                        correct: 0,
+                        explanation: '$2^0=1$. Add exponents: $3+2+0=5$. So $2^5$.'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Simplify $\\frac{10x^5 y^4}{2x^2 y}$. <br><span class="translation">Sederhanakan $\\frac{10x^5 y^4}{2x^2 y}$.</span>',
+                        options: ['$5x^3 y^3$', '$8x^3 y^3$', '$5x^7 y^5$', '$5x^3 y^4$', '$5x^{2.5} y^4$'],
+                        correct: 0,
+                        explanation: 'Numbers: $10 \\div 2 = 5$. x: $5-2=3$. y: $4-1=3$. So, $5x^3 y^3$.'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'If a type of algae doubles every day ($2^d$), how many algae will there be after 5 days? <br><span class="translation">Jika sejenis ganggang berlipat ganda setiap hari ($2^d$), berapa banyak ganggang setelah 5 hari?</span>',
+                        options: ['$10$', '$25$', '$32$', '$16$', '$64$'],
+                        correct: 2,
+                        explanation: 'Evaluate $2^5 = 2 \\times 2 \\times 2 \\times 2 \\times 2 = 32$.'
+                    }
+                ]
+            },
+            assign3: {
+                title: "Assignment 3",
+                duration: "10 Questions",
+                isAssignment: true,
+                slides: [
+                    {
+                        type: 'mcq',
+                        question: 'What is $7^0$? <br><span class="translation">Berapakah $7^0$?</span>',
+                        options: ['0', '7', '1', 'Undefined', '70'],
+                        correct: 2,
+                        explanation: 'Any non-zero number to the power of 0 is 1.'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Write $4^{-3}$ as a fraction. <br><span class="translation">Tulis $4^{-3}$ sebagai pecahan.</span>',
+                        options: ['$\\frac{1}{4^3}$', '$\\frac{1}{4^{-3}}$', '$-\\frac{1}{4^3}$', '$\\frac{1}{12}$', '$\\frac{1}{64}$'],
+                        correct: 0,
+                        explanation: 'Negative exponent means reciprocal: $a^{-n} = \\frac{1}{a^n}$.'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'A medicine loses half its strength every hour. If it starts at 100%, what fraction is left after 3 hours? <br><span class="translation">Sebuah obat kehilangan setengah kekuatannya setiap jam. Jika dimulai dari 100%, berapa pecahan yang tersisa setelah 3 jam?</span>',
+                        options: ['$\\frac{1}{2}$', '$\\frac{1}{4}$', '$\\frac{1}{8}$', '$\\frac{1}{3}$', '$\\frac{1}{6}$'],
+                        correct: 2,
+                        explanation: 'Every hour it multiplies by $\\frac{1}{2}$. After 3 hours: $(\\frac{1}{2})^3 = \\frac{1}{8}$.'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Convert $\\frac{1}{x^{-4}}$ to positive exponent form. <br><span class="translation">Ubah $\\frac{1}{x^{-4}}$ ke bentuk pangkat positif.</span>',
+                        options: ['$x^4$', '$x^{-4}$', '$\\frac{1}{x^4}$', '$-x^4$', '$x^0$'],
+                        correct: 0,
+                        explanation: 'Moving a negative exponent to the other side of the fraction bar makes it positive. So, $x^4$.'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Write $0.0001$ using a negative power of 10. <br><span class="translation">Tulis $0.0001$ menggunakan pangkat negatif dari 10.</span>',
+                        options: ['$10^{-3}$', '$10^{-4}$', '$10^{-5}$', '$10^{-2}$', '$10^4$'],
+                        correct: 1,
+                        explanation: 'The decimal is 4 places to the left of 1. So, $10^{-4}$.'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Calculate $5^{-2} \\times 5^3$. <br><span class="translation">Hitunglah $5^{-2} \\times 5^3$.</span>',
+                        options: ['$5^{-6}$', '$5^1$', '$5^5$', '$5^{-1}$', '$25$'],
+                        correct: 1,
+                        explanation: 'Add exponents: $-2 + 3 = 1$. So, $5^1 = 5$.'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'A cell is $10^{-5}$ meters wide. A virus inside it is $10^{-7}$ meters wide. How many times larger is the cell than the virus? <br><span class="translation">Sebuah sel berukuran $10^{-5}$ meter. Virus di dalamnya berukuran $10^{-7}$ meter. Berapa kali lebih besar sel dibandingkan virus?</span>',
+                        options: ['$10^2$ times', '$10^{-2}$ times', '$10^{12}$ times', '$10^{-12}$ times', '$10^5$ times'],
+                        correct: 0,
+                        explanation: 'Divide: $10^{-5} \\div 10^{-7} = 10^{-5 - (-7)} = 10^2 = 100$ times larger.'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Simplify $(\\frac{2}{3})^{-2}$. <br><span class="translation">Sederhanakan $(\\frac{2}{3})^{-2}$.</span>',
+                        options: ['$\\frac{4}{9}$', '$\\frac{9}{4}$', '$\\frac{2}{9}$', '$-\\frac{4}{9}$', '$\\frac{4}{6}$'],
+                        correct: 1,
+                        explanation: 'Negative exponent flips the fraction: $(\\frac{3}{2})^2 = \\frac{9}{4}$.'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'What is the value of $(-2)^{-3}$? <br><span class="translation">Berapakah nilai dari $(-2)^{-3}$?</span>',
+                        options: ['$\\frac{1}{8}$', '$-\\frac{1}{8}$', '$-8$', '$-6$', '$8$'],
+                        correct: 1,
+                        explanation: 'Reciprocal of $(-2)^3$. Since $(-2)^3 = -8$, the reciprocal is $-\\frac{1}{8}$.'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Which is greater: $3^{-2}$ or $2^{-3}$? <br><span class="translation">Mana yang lebih besar: $3^{-2}$ atau $2^{-3}$?</span>',
+                        options: ['$3^{-2}$ ($\\frac{1}{9}$)', '$2^{-3}$ ($\\frac{1}{8}$)', 'They are equal', 'Cannot be compared', '$2^{-3}$ ($\\frac{1}{9}$)'],
+                        correct: 1,
+                        explanation: '$3^{-2} = \\frac{1}{9} \\approx 0.111$. $2^{-3} = \\frac{1}{8} = 0.125$. So $2^{-3}$ is greater.'
+                    }
+                ]
+            },
+            assign4: {
+                title: "Assignment 4",
+                duration: "10 Questions",
+                isAssignment: true,
+                slides: [
+                    {
+                        type: 'mcq',
+                        question: 'Rewrite $25^{1/2}$ in radical form. <br><span class="translation">Tulis ulang $25^{1/2}$ dalam bentuk akar.</span>',
+                        options: ['$\\sqrt{25}$', '$\\sqrt[2]{25}$', '$\\frac{1}{\\sqrt{25}}$', '$25^2$', 'Both A and B'],
+                        correct: 4,
+                        explanation: 'A denominator of 2 in the exponent means square root. $\\sqrt{25}$ and $\\sqrt[2]{25}$ are the same.'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Evaluate $8^{1/3}$. <br><span class="translation">Hitunglah $8^{1/3}$.</span>',
+                        options: ['2', '4', '8', '24', '$\\frac{8}{3}$'],
+                        correct: 0,
+                        explanation: 'Cube root of 8 is 2, because $2 \\times 2 \\times 2 = 8$.'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'A square painting has an area of 64 sq inches. Using exponents, what is the side length? <br><span class="translation">Sebuah lukisan persegi memiliki luas 64 inci persegi. Menggunakan pangkat, berapakah panjang sisinya?</span>',
+                        options: ['$64^2$ in', '$64^{1/2}$ in', '$64^0$ in', '$64^{-1}$ in', '$64^3$ in'],
+                        correct: 1,
+                        explanation: 'Side = $\\sqrt{Area} = 64^{1/2}$. (Which evaluates to 8 inches).'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Simplify $\\sqrt{7} \\times \\sqrt{3}$. <br><span class="translation">Sederhanakan $\\sqrt{7} \\times \\sqrt{3}$.</span>',
+                        options: ['$\\sqrt{21}$', '$\\sqrt{10}$', '$21$', '$10$', '$\\sqrt[3]{7}$'],
+                        correct: 0,
+                        explanation: 'Multiply inside one root: $\\sqrt{7 \\times 3} = \\sqrt{21}$.'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Rationalize the denominator of $\\frac{2}{\\sqrt{5}}$. <br><span class="translation">Rasionalkan penyebut dari $\\frac{2}{\\sqrt{5}}$.</span>',
+                        options: ['$\\frac{2\\sqrt{5}}{5}$', '$\\frac{2}{5}$', '$2\\sqrt{5}$', '$\\frac{\\sqrt{5}}{2}$', '$\\frac{2\\sqrt{5}}{25}$'],
+                        correct: 0,
+                        explanation: 'Multiply top and bottom by $\\sqrt{5}$: $\\frac{2\\sqrt{5}}{\\sqrt{5}\\sqrt{5}} = \\frac{2\\sqrt{5}}{5}$.'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'What is the value of $16^{3/4}$? <br><span class="translation">Berapakah nilai dari $16^{3/4}$?</span>',
+                        options: ['8', '12', '4', '16', '64'],
+                        correct: 0,
+                        explanation: 'Denominator 4 means 4th root. $\\sqrt[4]{16} = 2$. Numerator 3 means cube it. $2^3 = 8$.'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'A cube has a volume of $27$ cm³. What is the side length expressed as a fractional exponent? <br><span class="translation">Sebuah kubus memiliki volume $27$ cm³. Berapakah panjang sisi yang dinyatakan sebagai pangkat pecahan?</span>',
+                        options: ['$27^{1/2}$ cm', '$27^{1/3}$ cm', '$27^3$ cm', '$27^{2/3}$ cm', '$27^0$ cm'],
+                        correct: 1,
+                        explanation: 'Side of a cube is cube root of volume, which is $27^{1/3}$.'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Simplify $\\frac{\\sqrt{45}}{\\sqrt{5}}$. <br><span class="translation">Sederhanakan $\\frac{\\sqrt{45}}{\\sqrt{5}}$.</span>',
+                        options: ['$\\sqrt{9} = 3$', '$\\sqrt{50}$', '$9$', '$\\sqrt{40}$', '$5$'],
+                        correct: 0,
+                        explanation: 'Combine under one root: $\\sqrt{\\frac{45}{5}} = \\sqrt{9} = 3$.'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Rewrite $\\sqrt[3]{x^2}$ using fractional exponents. <br><span class="translation">Tulis ulang $\\sqrt[3]{x^2}$ menggunakan pangkat pecahan.</span>',
+                        options: ['$x^{2/3}$', '$x^{3/2}$', '$x^{1/3}$', '$x^6$', '$x^{2/5}$'],
+                        correct: 0,
+                        explanation: 'The root is the denominator (3), the inner power is the numerator (2). So, $x^{2/3}$.'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Rationalize $\\frac{1}{\\sqrt[3]{4}}$. <br><span class="translation">Rasionalkan $\\frac{1}{\\sqrt[3]{4}}$.</span>',
+                        options: ['$\\frac{\\sqrt[3]{2}}{2}$', '$\\frac{1}{4}$', '$\\frac{\\sqrt[3]{16}}{4}$', '$\\frac{\\sqrt[3]{4}}{4}$', '$\\frac{\\sqrt[3]{2}}{4}$'],
+                        correct: 0,
+                        explanation: 'To get 4 out of the radical to become 8 ($2^3$), multiply top and bottom by $\\sqrt[3]{2}$. Result: $\\frac{\\sqrt[3]{2}}{\\sqrt[3]{8}} = \\frac{\\sqrt[3]{2}}{2}$.'
+                    }
+                ]
+            },
+            assign5: {
+                title: "Assignment 5",
+                duration: "10 Questions",
+                isAssignment: true,
+                slides: [
+                    {
+                        type: 'mcq',
+                        question: 'Simplify $\\frac{(x^3 y^2)^4}{x^5 y^3}$. <br><span class="translation">Sederhanakan $\\frac{(x^3 y^2)^4}{x^5 y^3}$.</span>',
+                        options: ['$x^7 y^5$', '$x^{12} y^8$', '$x^8 y^7$', '$x^{17} y^{11}$', '$x^{12} y^5$'],
+                        correct: 0,
+                        explanation: 'Numerator: $x^{3 \\times 4} y^{2 \\times 4} = x^{12} y^8$. Divide: $x^{12-5} y^{8-3} = x^7 y^5$.'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'A machine produces $2^4$ parts per hour. If it runs for 5 hours, how many parts are produced? <br><span class="translation">Sebuah mesin memproduksi $2^4$ bagian per jam. Jika berjalan selama 5 jam, berapa banyak bagian yang diproduksi?</span>',
+                        options: ['$2^9$', '$80$', '$64$', '$10^4$', '$2^{20}$'],
+                        correct: 1,
+                        explanation: '$2^4 = 16$. $16 \\times 5 = 80$ parts.'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Express $\\frac{a^{-2}}{b^{-3}}$ with positive exponents. <br><span class="translation">Tulis $\\frac{a^{-2}}{b^{-3}}$ dengan pangkat positif.</span>',
+                        options: ['$\\frac{b^3}{a^2}$', '$\\frac{a^2}{b^3}$', '$a^2 b^3$', '$\\frac{1}{a^2 b^3}$', '$a^{-2} b^3$'],
+                        correct: 0,
+                        explanation: 'Negative exponents flip across the fraction bar. $a^{-2}$ goes down, $b^{-3}$ goes up: $\\frac{b^3}{a^2}$.'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Write $32^{-3/5}$ in radical form. <br><span class="translation">Tulis $32^{-3/5}$ dalam bentuk akar.</span>',
+                        options: ['$-\\frac{1}{\\sqrt[5]{32^3}}$', '$\\frac{1}{\\sqrt[3]{32^5}}$', '$-\\sqrt[5]{32^3}$', '$\\sqrt[3]{32^{-5}}$', '$\\frac{1}{\\sqrt[5]{32^3}}$'],
+                        correct: 4,
+                        explanation: 'Negative means reciprocal. Denominator 5 means 5th root. Numerator 3 means cubed. So $\\frac{1}{\\sqrt[5]{32^3}}$.'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'A computer chip has $2^{10}$ transistors. If capacity is doubled 3 times, how many transistors are there? <br><span class="translation">Sebuah chip komputer memiliki $2^{10}$ transistor. Jika kapasitasnya digandakan 3 kali, berapa banyak transistor yang ada?</span>',
+                        options: ['$2^{30}$', '$2^{13}$', '$2^7$', '$6^{10}$', '$2^{10}$'],
+                        correct: 1,
+                        explanation: 'Doubling 3 times means multiplying by $2^3$. So, $2^{10} \\times 2^3 = 2^{10+3} = 2^{13}$.'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Rationalize the denominator of $\\frac{\\sqrt{6}}{\\sqrt{10}}$. <br><span class="translation">Rasionalkan penyebut dari $\\frac{\\sqrt{6}}{\\sqrt{10}}$.</span>',
+                        options: ['$\\frac{\\sqrt{15}}{5}$', '$\\frac{\\sqrt{60}}{10}$', '$\\frac{\\sqrt{3}}{5}$', '$\\frac{6}{10}$', '$\\sqrt{\\frac{3}{5}}$'],
+                        correct: 0,
+                        explanation: 'Simplify first: $\\frac{\\sqrt{6}}{\\sqrt{10}} = \\sqrt{\\frac{3}{5}} = \\frac{\\sqrt{3}}{\\sqrt{5}}$. Multiply by $\\frac{\\sqrt{5}}{\\sqrt{5}}$ to get $\\frac{\\sqrt{15}}{5}$.'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'If $\\sqrt{x} = 7$, what is $x^{3/2}$? <br><span class="translation">Jika $\\sqrt{x} = 7$, berapakah $x^{3/2}$?</span>',
+                        options: ['$49$', '$343$', '$21$', '$7$', '$14$'],
+                        correct: 1,
+                        explanation: 'If $x^{1/2} = 7$, then $x = 49$. $x^{3/2} = (\\sqrt{49})^3 = 7^3 = 343$.'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Simplify $(\\frac{3x^2 y^{-1}}{x^{-3} y^2})^2$. <br><span class="translation">Sederhanakan $(\\frac{3x^2 y^{-1}}{x^{-3} y^2})^2$.</span>',
+                        options: ['$9x^{10} y^{-6}$', '$\\frac{9x^{10}}{y^6}$', '$3x^{10} y^6$', '$\\frac{9x^{4}}{y^{-4}}$', '$\\frac{9x^{-2}}{y^{1}}$'],
+                        correct: 1,
+                        explanation: 'Inside fraction: x: $2 - (-3) = 5$. y: $-1 - 2 = -3$. So $3x^5 y^{-3}$. Square everything: $9x^{10} y^{-6} = \\frac{9x^{10}}{y^6}$.'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'An investment grows by a factor of $10^1$ (10 times) every year. If the initial investment is $10^2$, what is the value after 2 years? <br><span class="translation">Sebuah investasi tumbuh dengan faktor $10^1$ (10 kali) setiap tahun. Jika investasi awal adalah $10^2$, berapakah nilainya setelah 2 tahun?</span>',
+                        options: ['$10^4$', '$10^6$', '$10^5$', '$10^3$', '$2 \\times 10^4$'],
+                        correct: 0,
+                        explanation: 'It grows by $10^1$ each year. So after 2 years, it is $10^2 \\times 10^1 \\times 10^1 = 10^{2+1+1} = 10^4$.'
+                    },
+                    {
+                        type: 'mcq',
+                        question: 'Simplify $\\sqrt{50 x^3 y^7}$. <br><span class="translation">Sederhanakan $\\sqrt{50 x^3 y^7}$.</span>',
+                        options: ['$5xy^3 \\sqrt{2xy}$', '$5x^2 y^3 \\sqrt{2y}$', '$10xy^3 \\sqrt{xy}$', '$25xy^3 \\sqrt{2xy}$', '$5xy^2 \\sqrt{2xy}$'],
+                        correct: 0,
+                        explanation: 'Square root of 50 is $25 \\times 2 \\rightarrow 5\\sqrt{2}$. x³ is $x^2 \\times x \\rightarrow x\\sqrt{x}$. y⁷ is $y^6 \\times y \\rightarrow y^3\\sqrt{y}$. Combine: $5xy^3 \\sqrt{2xy}$.'
+                    }
+                ]
+            }
+        };
+
+        // ==========================================
+        // JAVASCRIPT LOGIC & RENDERING
+        // ==========================================
+        let currentNode = null;
+        let currentSlideIndex = 0;
+        let studentAnswers = {};
+        let selectedOption = null;
+
+        function toggleModal() {
+            document.getElementById('classRulesModal').classList.toggle('active');
+        }
+
+        function openNode(nodeId) {
+            document.getElementById('mapContainer').style.display = 'none';
+            document.getElementById('contentArea').style.display = 'flex';
+            currentNode = nodeId;
+            currentSlideIndex = 0;
+            renderSidebar();
+            renderMainContent();
+        }
+
+        function showMap() {
+            document.getElementById('contentArea').style.display = 'none';
+            document.getElementById('mapContainer').style.display = 'flex';
+        }
+
+        function renderSidebar() {
+            const node = courseData[currentNode];
+            const sidebar = document.getElementById('sidebarContent');
+            let html = `<h3>${node.title}</h3>`;
+            
+            node.slides.forEach((slide, index) => {
+                let icon = '📝';
+                if (slide.type === 'theory') icon = '📚';
+                if (slide.type === 'mcq') icon = '❓';
+                
+                html += `
+                    <div class="sidebar-item ${index === currentSlideIndex ? 'active' : ''}" onclick="goToSlide(${index})">
+                        ${icon} Slide ${index + 1}
+                    </div>
+                `;
+            });
+            
+            html += `<button class="header-btn" style="background:#ccc; color:#666; box-shadow:none; width:100%; margin-top:20px;" onclick="showMap()">Back to Map (Peta)</button>`;
+            sidebar.innerHTML = html;
+        }
+
+        function goToSlide(index) {
+            currentSlideIndex = index;
+            renderSidebar();
+            renderMainContent();
+        }
+
+        function renderMainContent() {
+            const node = courseData[currentNode];
+            const slide = node.slides[currentSlideIndex];
+            const mainContent = document.getElementById('mainContent');
+            
+            let html = `
+                <div class="main-header">
+                    <h2>${node.title}</h2>
+                    <span class="duration-badge">⏱️ ${node.duration}</span>
+                </div>
+            `;
+
+            // Add Print Button for Assignments
+            if (node.isAssignment) {
+                html += `<button class="print-btn no-print" onclick="printAssignment('${currentNode}')">Print Assignment</button>`;
+            }
+
+            if (slide.type === 'theory') {
+                html += `
+                    <div class="theory-box">
+                        <h3>${slide.title}</h3>
+                        <div>${slide.content}</div>
+                    </div>
+                `;
+            } else if (slide.type === 'mcq') {
+                const qId = `${currentNode}-${currentSlideIndex}`;
+                const prevAnswer = studentAnswers[qId];
+                const isAnswered = prevAnswer !== undefined && prevAnswer !== null;
+                
+                html += `
+                    <div class="question-box" id="qbox-${qId}">
+                        <h4>${slide.question}</h4>
+                        <div class="options-grid">
+                `;
+                
+                slide.options.forEach((opt, i) => {
+                    let optClass = 'option-btn';
+                    if (isAnswered) {
+                        if (i === slide.correct) optClass += ' correct';
+                        else if (i === prevAnswer) optClass += ' wrong';
+                    }
+                    html += `<button class="${optClass}" onclick="selectOption('${qId}', ${i}, ${slide.correct})" ${isAnswered ? 'disabled' : ''}>${opt}</button>`;
+                });
+                
+                html += `</div>`;
+                
+                if (!isAnswered) {
+                    html += `<button class="check-btn" onclick="checkAnswer('${qId}', ${slide.correct})" id="check-${qId}" disabled>Check (Periksa)</button>`;
+                } else {
+                    html += `
+                        <div class="feedback-box ${prevAnswer === slide.correct ? 'correct' : 'wrong'} show">
+                            <p><strong>${prevAnswer === slide.correct ? 'Correct! (Benar)' : 'Incorrect (Salah)'}</strong></p>
+                            <p>${slide.explanation}</p>
+                        </div>
+                    `;
+                    if (prevAnswer !== slide.correct) {
+                        html += `<button class="retry-btn" onclick="retryQuestion('${qId}')">Try Again (Coba Lagi)</button>`;
+                    }
+                }
+                
+                html += `</div>`;
+            }
+
+            // Navigation buttons
+            html += `
+                <div class="btn-nav no-print">
+                    ${currentSlideIndex > 0 ? `<button class="btn-prev" onclick="goToSlide(${currentSlideIndex - 1})">Previous</button>` : '<div></div>'}
+                    ${currentSlideIndex < node.slides.length - 1 ? `<button class="btn-next" onclick="goToSlide(${currentSlideIndex + 1})">Next</button>` : '<div></div>'}
+                </div>
+            `;
+
+            mainContent.innerHTML = html;
+            renderMath('mainContent');
+        }
+
+        function selectOption(qId, optIndex, correctIndex) {
+            const checkBtn = document.getElementById(`check-${qId}`);
+            const options = document.querySelectorAll(`#qbox-${qId} .option-btn`);
+            
+            options.forEach(opt => opt.classList.remove('selected'));
+            options[optIndex].classList.add('selected');
+            selectedOption = optIndex;
+            
+            checkBtn.disabled = false;
+        }
+
+        function checkAnswer(qId, correctIndex) {
+            if (selectedOption === null) return;
+            studentAnswers[qId] = selectedOption;
+            renderMainContent();
+        }
+
+        function retryQuestion(qId) {
+            studentAnswers[qId] = null;
+            selectedOption = null;
+            renderMainContent();
+        }
+
+        // Print Logic
+        function printAssignment(nodeId) {
+            const node = courseData[nodeId];
+            let score = 0;
+            let tableRows = '';
+            
+            node.slides.forEach((slide, index) => {
+                if(slide.type === 'mcq') {
+                    const qId = `${nodeId}-${index}`;
+                    const studentAns = studentAnswers[qId];
+                    const isCorrect = studentAns === slide.correct;
+                    if(isCorrect) score++;
+                    
+                    // Ambil teks soal, bersihkan tag <br> dan terjemahan, TAPI SIMPAN simbol KaTeX ($)
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = slide.question.replace(/<br>/g, ' ').replace(/<span class="translation">.*?<\/span>/g, '');
+                    const qText = tempDiv.innerHTML;
+                    
+                    // Ambil jawaban siswa (tetap dengan simbol KaTeX)
+                    let studentText = '(No Answer)';
+                    if(studentAns !== undefined && studentAns !== null) {
+                        studentText = slide.options[studentAns];
+                    }
+                    
+                    // Ambil jawaban benar (tetap dengan simbol KaTeX)
+                    const correctText = slide.options[slide.correct];
+                    const status = isCorrect ? 'v' : 'x';
+                    
+                    tableRows += `
+                        <tr>
+                            <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">${index+1}</td>
+                            <td style="padding: 8px; border: 1px solid #ddd;">${qText}</td>
+                            <td style="padding: 8px; border: 1px solid #ddd;">${studentText}</td>
+                            <td style="padding: 8px; border: 1px solid #ddd;">${correctText}</td>
+                            <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">${status}</td>
+                        </tr>
+                    `;
+                }
+            });
+
+            // Buat halaman HTML khusus untuk print
+            const printContent = `
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Print Assignment</title>
+                    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+                    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"><\/script>
+                    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"><\/script>
+                    <style>
+                        body { font-family: Arial, sans-serif; padding: 20px; }
+                        table { width: 100%; border-collapse: collapse; }
+                        h2 { text-align: center; margin-bottom: 20px; }
+                        .header-table { margin-bottom: 20px; }
+                        .header-table td { padding: 4px; }
+                        .main-table th, .main-table td { padding: 8px; border: 1px solid #ddd; text-align: left; }
+                        .main-table th { background: #f0f0f0; }
+                        .signature { text-align: right; margin-right: 50px; margin-top: 40px; }
+                    </style>
+                </head>
+                <body>
+                    <h2>Math Tutoring by Deni</h2>
+                    <table class="header-table">
+                        <tr><td><strong>Topic:</strong> Exponents (Bilangan Berpangkat)</td><td><strong>Name:</strong> Budi Agung</td></tr>
+                        <tr><td><strong>Date:</strong> ${new Date().toLocaleDateString()}</td><td><strong>Assignment Group:</strong> ${node.title}</td></tr>
+                        <tr><td colspan="2"><strong>Score:</strong> ${score} / 10</td></tr>
+                    </table>
+                    <table class="main-table">
+                        <tr>
+                            <th>No.</th>
+                            <th>Question</th>
+                            <th>Student Answer</th>
+                            <th>Correct Answer</th>
+                            <th>v/x</th>
+                        </tr>
+                        ${tableRows}
+                    </table>
+                    <div class="signature">
+                        <p>Checked by,</p>
+                        <br><br><br>
+                        <p><strong>Deni</strong></p>
+                    </div>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function() {
+                            renderMathInElement(document.body, {
+                                delimiters: [
+                                    {left: '$$', right: '$$', display: true},
+                                    {left: '$', right: '$', display: false},
+                                    {left: '\\\\(', right: '\\\\)', display: false},
+                                    {left: '\\\\[', right: '\\\\]', display: true}
+                                ],
+                                throwOnError: false
+                            });
+                            setTimeout(function() { window.print(); }, 800);
+                        });
+                    <\/script>
+                </body>
+                </html>
+            `;
+            
+            // Buka jendela baru dan tulis konten HTML ke sana
+            const printWindow = window.open('', '_blank');
+            printWindow.document.open();
+            printWindow.document.write(printContent);
+            printWindow.document.close();
+        }
+
+        // KaTeX Render Helper
+        function renderMath(elementId) {
+            const element = document.getElementById(elementId);
+            if (element && typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(element, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false},
+                        {left: '\\(', right: '\\)', display: false},
+                        {left: '\\[', right: '\\]', display: true}
+                    ],
+                    throwOnError: false
+                });
+            }
+        }
+    </script>
+</body>
+</html>
