@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Tutoring by Deni - Rationalization (Binomial Denominators)</title>
+    <!-- KaTeX CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- KaTeX JS -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8f9fa; }
+        .translation { font-style: italic; font-size: 0.85em; color: #6b7280; display: block; margin-top: 4px; }
+        .main-content { min-height: 70vh; }
+        .sidebar-item.active { background-color: #3b82f6; color: white; }
+        .option-btn { transition: all 0.2s; }
+        .option-btn:hover { background-color: #e0f2fe; }
+        .collapse-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
+        .collapse-content.open { max-height: 1000px; }
+        @media print {
+            body > *:not(#printArea) { display: none !important; }
+            #printArea { display: block !important; position: absolute; left: 0; top: 0; width: 100%; padding: 20px; box-sizing: border-box; }
+            .no-print { display: none !important; }
+            table { width: 100%; border-collapse: collapse; }
+            tr, td, th { page-break-inside: avoid; }
+            @page { size: A4; margin: 1cm; }
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Header -->
+    <header class="bg-white shadow-md p-4 flex justify-between items-center sticky top-0 z-50">
+        <div>
+            <h1 class="text-xl font-bold text-blue-600">Math Tutoring by Deni</h1>
+            <p class="text-sm text-gray-600">Topic: Rationalization (Binomial Denominators)</p>
+            <p class="translation">Topik: Rasionalisasi (Penyebut Binomial)</p>
+        </div>
+        <div>
+            <button onclick="openModal()" class="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-700">
+                <i class="fas fa-gavel"></i> Class Rules
+                <span class="translation" style="color: #bfdbfe;">Aturan Kelas</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Class Rules Modal -->
+    <div id="rulesModal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center z-50">
+        <div class="bg-white p-6 rounded-lg shadow-xl max-w-md w-full mx-4">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-blue-600">Class Rules</h2>
+                <button onclick="closeModal()" class="text-gray-500 hover:text-red-500"><i class="fas fa-times text-xl"></i></button>
+            </div>
+            <ul class="space-y-3">
+                <li class="flex items-start gap-2">
+                    <i class="fas fa-comments text-blue-500 mt-1"></i>
+                    <div>
+                        <p>Take turns speaking.</p>
+                        <p class="translation">Berbicara secara bergantian.</p>
+                    </div>
+                </li>
+                <li class="flex items-start gap-2">
+                    <i class="fas fa-door-open text-blue-500 mt-1"></i>
+                    <div>
+                        <p>Ask for permission if you want to leave the class.</p>
+                        <p class="translation">Meminta izin jika ingin meninggalkan kelas.</p>
+                    </div>
+                </li>
+                <li class="flex items-start gap-2">
+                    <i class="fas fa-video text-blue-500 mt-1"></i>
+                    <div>
+                        <p>Turn on camera and microphone when needed.</p>
+                        <p class="translation">Menyalakan kamera dan microphone jika diperlukan.</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white shadow-lg h-screen sticky top-0 overflow-y-auto no-print">
+            <ul class="py-4">
+                <li class="sidebar-item p-3 cursor-pointer hover:bg-blue-50" onclick="showSection('warmup', 0, event)">
+                    <i class="fas fa-fire mr-2"></i>Spiral Review Warm-up (00:00-00:10)
+                </li>
+                <li class="sidebar-item p-3 cursor-pointer hover:bg-blue-50" onclick="showSection('intro', 0, event)">
+                    <i class="fas fa-bullhorn mr-2"></i>Introduction & Real-World (00:10-00:15)
+                </li>
+                <li class="sidebar-item p-3 cursor-pointer hover:bg-blue-50" onclick="showSection('review', 0, event)">
+                    <i class="fas fa-history mr-2"></i>Review of Prior Knowledge (00:15-00:20)
+                </li>
+                <li class="sidebar-item p-3 cursor-pointer hover:bg-blue-50" onclick="showSection('problem', 0, event)">
+                    <i class="fas fa-puzzle-piece mr-2"></i>Problem Introduction (00:20-00:30)
+                </li>
+                <li class="sidebar-item p-3 cursor-pointer hover:bg-blue-50" onclick="showSection('guided', 0, event)">
+                    <i class="fas fa-hand-holding mr-2"></i>Guided Practice (00:30-00:45)
+                </li>
+                <li class="sidebar-item p-3 cursor-pointer hover:bg-blue-50" onclick="showSection('independent', 0, event)">
+                    <i class="fas fa-user-graduate mr-2"></i>Independent Practice (00:45-00:55)
+                </li>
+                <li class="sidebar-item p-3 cursor-pointer hover:bg-blue-50" onclick="showSection('consolidation', 0, event)">
+                    <i class="fas fa-book-open mr-2"></i>Consolidation & Reflection (00:55-01:00)
+                </li>
+                <li class="border-t border-gray-200 mt-2"></li>
+                <li class="sidebar-item p-3 cursor-pointer hover:bg-blue-50" onclick="showSection('task1', 0, event)">
+                    <i class="fas fa-tasks mr-2"></i>Task 1
+                </li>
+                <li class="sidebar-item p-3 cursor-pointer hover:bg-blue-50" onclick="showSection('task2', 0, event)">
+                    <i class="fas fa-tasks mr-2"></i>Task 2
+                </li>
+                <li class="sidebar-item p-3 cursor-pointer hover:bg-blue-50" onclick="showSection('task3', 0, event)">
+                    <i class="fas fa-tasks mr-2"></i>Task 3
+                </li>
+                <li class="sidebar-item p-3 cursor-pointer hover:bg-blue-50" onclick="showSection('task4', 0, event)">
+                    <i class="fas fa-tasks mr-2"></i>Task 4
+                </li>
+                <li class="sidebar-item p-3 cursor-pointer hover:bg-blue-50" onclick="showSection('task5', 0, event)">
+                    <i class="fas fa-tasks mr-2"></i>Task 5
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-8 main-content" id="mainContent">
+            <!-- Content will be injected here -->
+        </main>
+    </div>
+
+    <!-- Hidden Print Area -->
+    <div id="printArea" class="hidden"></div>
+
+    <script>
+        let contentData = {
+            warmup: {
+                title: "Spiral Review Warm-up",
+                pages: [
+                    { type: 'theory', content: `
+                        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg mb-6">
+                            <h2 class="text-2xl font-bold text-blue-700 mb-2"><i class="fas fa-sync-alt mr-2"></i>Recap: Simple Denominators</h2>
+                            <p class="translation">Tinjauan: Penyebut Sederhana</p>
+                        </div>
+                        <div class="flex gap-6 items-center mb-6">
+                            <svg width="180" height="120" viewBox="0 0 200 150" class="flex-shrink-0">
+                                <rect x="40" y="20" width="120" height="100" fill="#f3f4f6" stroke="#000" rx="10"/>
+                                <text x="100" y="60" font-size="14" text-anchor="middle">a</text>
+                                <line x1="50" y1="75" x2="150" y2="75" stroke="#000" stroke-width="2"/>
+                                <text x="100" y="100" font-size="14" text-anchor="middle">√b</text>
+                                <path d="M 160 70 L 180 70" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrow)"/>
+                                <text x="190" y="65" font-size="12" text-anchor="middle" fill="#3b82f6">×√b</text>
+                            </svg>
+                            <div>
+                                <p class="mb-2">In our last meeting, we learned how to rationalize a single square root in the denominator by multiplying the numerator and denominator by that same root.</p>
+                                <p class="translation">Pada pertemuan terakhir, kita belajar cara merasionalkan satu akar kuadrat di penyebut dengan mengalikan pembilang dan penyebut dengan akar tersebut.</p>
+                                <p class="mt-2">Example: \\( \\frac{3}{\\sqrt{5}} \\times \\frac{\\sqrt{5}}{\\sqrt{5}} = \\frac{3\\sqrt{5}}{5} \\).</p>
+                                <p class="translation">Contoh: \\( \\frac{3}{\\sqrt{5}} \\times \\frac{\\sqrt{5}}{\\sqrt{5}} = \\frac{3\\sqrt{5}}{5} \\).</p>
+                            </div>
+                        </div>
+                    `},
+                    { type: 'tasks', count: 3, tasks: [
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="14" text-anchor="middle">5/√2</text></svg>`, q: "Simplify \\( \\frac{5}{\\sqrt{2}} \\) by rationalizing the denominator.", q_trans: "Sederhanakan \\( \\frac{5}{\\sqrt{2}} \\) dengan merasionalkan penyebut.", opts: ["\\( \\frac{5\\sqrt{2}}{2} \\)", "\\( \\frac{\\sqrt{2}}{5} \\)", "\\( 5\\sqrt{2} \\)", "\\( \\frac{2}{5} \\)", "\\( \\frac{25}{2} \\)"], correct: 0, exp: "<div>Multiply top and bottom by \\( \\sqrt{2} \\): \\( \\frac{5\\sqrt{2}}{2} \\).</div><div class='translation'>Kalikan atas dan bawah dengan \\( \\sqrt{2} \\): \\( \\frac{5\\sqrt{2}}{2} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><rect x="20" y="20" width="60" height="40" fill="#fbbf24" rx="5"/><text x="50" y="45" font-size="10" text-anchor="middle">Fence</text></svg>`, q: "A fence is \\( \\frac{7}{\\sqrt{3}} \\) meters high. What is its exact height?", q_trans: "Sebuah pagar memiliki tinggi \\( \\frac{7}{\\sqrt{3}} \\) meter. Berapakah tinggi pastinya?", opts: ["\\( \\frac{7\\sqrt{3}}{3} \\) m", "\\( \\frac{21}{3} \\) m", "\\( \\sqrt{21} \\) m", "\\( 7\\sqrt{3} \\) m", "\\( \\frac{3}{7} \\) m"], correct: 0, exp: "<div>Multiply by \\( \\frac{\\sqrt{3}}{\\sqrt{3}} \\): \\( \\frac{7\\sqrt{3}}{3} \\).</div><div class='translation'>Kalikan dengan \\( \\frac{\\sqrt{3}}{\\sqrt{3}} \\): \\( \\frac{7\\sqrt{3}}{3} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><path d="M 20 60 Q 50 10 80 60" stroke="#3b82f6" stroke-width="3" fill="none"/></svg>`, q: "The speed of a wave is \\( \\frac{10}{\\sqrt{5}} \\) m/s. Find the simplified speed.", q_trans: "Kecepatan gelombang adalah \\( \\frac{10}{\\sqrt{5}} \\) m/detik. Temukan kecepatan yang disederhanakan.", opts: ["\\( 2\\sqrt{5} \\) m/s", "\\( 10\\sqrt{5} \\) m/s", "\\( \\frac{\\sqrt{5}}{2} \\) m/s", "\\( 5\\sqrt{2} \\) m/s", "\\( 50 \\) m/s"], correct: 0, exp: "<div>\\( \\frac{10\\sqrt{5}}{5} = 2\\sqrt{5} \\).</div><div class='translation'>\\( \\frac{10\\sqrt{5}}{5} = 2\\sqrt{5} \\).</div>" }
+                    ]},
+                    { type: 'theory', content: `
+                        <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg mb-6">
+                            <h2 class="text-2xl font-bold text-green-700 mb-2"><i class="fas fa-cut mr-2"></i>Simplifying First</h2>
+                            <p class="translation">Menyederhanakan Terlebih Dahulu</p>
+                        </div>
+                        <div class="flex gap-6 items-center mb-6">
+                            <svg width="180" height="120" viewBox="0 0 200 150" class="flex-shrink-0">
+                                <rect x="20" y="50" width="160" height="50" fill="#f3f4f6" stroke="#000" rx="5"/>
+                                <text x="100" y="80" font-size="14" text-anchor="middle">8 / √12</text>
+                                <path d="M 100 100 L 100 120" stroke="#10b981" stroke-width="2" marker-end="url(#arrow)"/>
+                                <text x="100" y="140" font-size="12" text-anchor="middle" fill="#10b981">4 / √3</text>
+                            </svg>
+                            <div>
+                                <p class="mb-2">Always check if the number inside the root can be simplified. It makes the rationalization step much easier!</p>
+                                <p class="translation">Selalu periksa apakah angka di dalam akar bisa disederhanakan. Ini membuat langkah rasionalisasi jauh lebih mudah!</p>
+                                <p class="mt-2">Example: \\( \\frac{8}{\\sqrt{12}} = \\frac{8}{2\\sqrt{3}} = \\frac{4}{\\sqrt{3}} = \\frac{4\\sqrt{3}}{3} \\).</p>
+                                <p class="translation">Contoh: \\( \\frac{8}{\\sqrt{12}} = \\frac{8}{2\\sqrt{3}} = \\frac{4}{\\sqrt{3}} = \\frac{4\\sqrt{3}}{3} \\).</p>
+                            </div>
+                        </div>
+                    `},
+                    { type: 'tasks', count: 3, tasks: [
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="14" text-anchor="middle">6/√8</text></svg>`, q: "Simplify \\( \\frac{6}{\\sqrt{8}} \\) completely.", q_trans: "Sederhanakan \\( \\frac{6}{\\sqrt{8}} \\) secara lengkap.", opts: ["\\( \\frac{3\\sqrt{2}}{2} \\)", "\\( 3\\sqrt{2} \\)", "\\( \\frac{6\\sqrt{2}}{8} \\)", "\\( 2\\sqrt{3} \\)", "\\( \\frac{\\sqrt{2}}{2} \\)"], correct: 0, exp: "<div>\\( \\sqrt{8}=2\\sqrt{2} \\). So \\( \\frac{6}{2\\sqrt{2}} = \\frac{3}{\\sqrt{2}} \\). Rationalize: \\( \\frac{3\\sqrt{2}}{2} \\).</div><div class='translation'>\\( \\sqrt{8}=2\\sqrt{2} \\). Jadi \\( \\frac{6}{2\\sqrt{2}} = \\frac{3}{\\sqrt{2}} \\). Rasionalkan: \\( \\frac{3\\sqrt{2}}{2} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><circle cx="50" cy="40" r="20" fill="#3b82f6"/><text x="50" y="45" font-size="10" text-anchor="middle" fill="#fff">Area</text></svg>`, q: "A circle's area formula yields \\( \\frac{15}{\\sqrt{20}} \\). Simplify this expression.", q_trans: "Rumus luas lingkaran menghasilkan \\( \\frac{15}{\\sqrt{20}} \\). Sederhanakan ekspresi ini.", opts: ["\\( \\frac{3\\sqrt{5}}{2} \\)", "\\( 3\\sqrt{5} \\)", "\\( \\frac{15\\sqrt{5}}{20} \\)", "\\( \\frac{5\\sqrt{5}}{3} \\)", "\\( 75 \\)"], correct: 0, exp: "<div>\\( \\sqrt{20}=2\\sqrt{5} \\). So \\( \\frac{15}{2\\sqrt{5}} \\). Rationalize: \\( \\frac{15\\sqrt{5}}{10} = \\frac{3\\sqrt{5}}{2} \\).</div><div class='translation'>\\( \\sqrt{20}=2\\sqrt{5} \\). Jadi \\( \\frac{15}{2\\sqrt{5}} \\). Rasionalkan: \\( \\frac{15\\sqrt{5}}{10} = \\frac{3\\sqrt{5}}{2} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><rect x="20" y="20" width="60" height="40" fill="#10b981" rx="5"/><text x="50" y="45" font-size="10" text-anchor="middle" fill="#fff">Box</text></svg>`, q: "The length of a box is \\( \\frac{12}{\\sqrt{18}} \\) cm. Find the exact length.", q_trans: "Panjang sebuah kotak adalah \\( \\frac{12}{\\sqrt{18}} \\) cm. Temukan panjang pastinya.", opts: ["\\( 2\\sqrt{2} \\) cm", "\\( 3\\sqrt{2} \\) cm", "\\( \\frac{12\\sqrt{2}}{18} \\) cm", "\\( 6\\sqrt{2} \\) cm", "\\( 4 \\) cm"], correct: 0, exp: "<div>\\( \\sqrt{18}=3\\sqrt{2} \\). So \\( \\frac{12}{3\\sqrt{2}} = \\frac{4}{\\sqrt{2}} \\). Rationalize: \\( \\frac{4\\sqrt{2}}{2} = 2\\sqrt{2} \\).</div><div class='translation'>\\( \\sqrt{18}=3\\sqrt{2} \\). Jadi \\( \\frac{12}{3\\sqrt{2}} = \\frac{4}{\\sqrt{2}} \\). Rasionalkan: \\( \\frac{4\\sqrt{2}}{2} = 2\\sqrt{2} \\).</div>" }
+                    ]},
+                    { type: 'theory', content: `
+                        <div class="bg-purple-50 border-l-4 border-purple-500 p-4 rounded-r-lg mb-6">
+                            <h2 class="text-2xl font-bold text-purple-700 mb-2"><i class="fas fa-link mr-2"></i>The Difference of Squares</h2>
+                            <p class="translation">Selisih Kuadrat</p>
+                        </div>
+                        <div class="flex gap-6 items-center mb-6">
+                            <svg width="180" height="120" viewBox="0 0 200 150" class="flex-shrink-0">
+                                <rect x="20" y="40" width="160" height="60" fill="#e0e7ff" stroke="#4f46e5" stroke-width="2" rx="5"/>
+                                <text x="100" y="75" font-size="14" text-anchor="middle" fill="#4f46e5">(a + b)(a - b)</text>
+                                <path d="M 100 100 L 100 120" stroke="#000" stroke-width="2" marker-end="url(#arrow)"/>
+                                <text x="100" y="140" font-size="14" text-anchor="middle">a² - b²</text>
+                            </svg>
+                            <div>
+                                <p class="mb-2">To prepare for today's lesson, recall the difference of squares formula: \\( (a+b)(a-b) = a^2 - b^2 \\).</p>
+                                <p class="translation">Untuk mempersiapkan pelajaran hari ini, ingat rumus selisih kuadrat: \\( (a+b)(a-b) = a^2 - b^2 \\).</p>
+                                <p class="mt-2">Notice how the middle terms cancel out! This is the magic we will use for binomial denominators.</p>
+                                <p class="translation">Perhatikan bagaimana suku tengah saling menghilang! Inilah keajaiban yang akan kita gunakan untuk penyebut binomial.</p>
+                            </div>
+                        </div>
+                    `},
+                    { type: 'tasks', count: 4, tasks: [
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="12" text-anchor="middle">(x+2)(x-2)</text></svg>`, q: "Expand \\( (x+2)(x-2) \\).", q_trans: "Jabarkan \\( (x+2)(x-2) \\).", opts: ["\\( x^2 - 4 \\)", "\\( x^2 + 4 \\)", "\\( x^2 - 2 \\)", "\\( 2x^2 - 4 \\)", "\\( x^2 - 8 \\)"], correct: 0, exp: "<div>Using \\( (a+b)(a-b) = a^2 - b^2 \\): \\( x^2 - 2^2 = x^2 - 4 \\).</div><div class='translation'>Menggunakan \\( (a+b)(a-b) = a^2 - b^2 \\): \\( x^2 - 2^2 = x^2 - 4 \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="12" text-anchor="middle">(5-y)(5+y)</text></svg>`, q: "Expand \\( (5-y)(5+y) \\).", q_trans: "Jabarkan \\( (5-y)(5+y) \\).", opts: ["\\( 25 - y^2 \\)", "\\( y^2 - 25 \\)", "\\( 25 + y^2 \\)", "\\( 10 - 2y \\)", "\\( 25 - y \\)"], correct: 0, exp: "<div>\\( 5^2 - y^2 = 25 - y^2 \\).</div><div class='translation'>\\( 5^2 - y^2 = 25 - y^2 \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><rect x="20" y="30" width="60" height="30" fill="#e0e7ff" stroke="#3b82f6" stroke-width="2"/><text x="50" y="50" font-size="12" text-anchor="middle">(√3+2)(√3-2)</text></svg>`, q: "Evaluate \\( (\\sqrt{3}+2)(\\sqrt{3}-2) \\).", q_trans: "Hitunglah \\( (\\sqrt{3}+2)(\\sqrt{3}-2) \\).", opts: ["\\( -1 \\)", "\\( 1 \\)", "\\( 3 \\)", "\\( 7 \\)", "\\( 5 \\)"], correct: 0, exp: "<div>\\( (\\sqrt{3})^2 - 2^2 = 3 - 4 = -1 \\).</div><div class='translation'>\\( (\\sqrt{3})^2 - 2^2 = 3 - 4 = -1 \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><circle cx="50" cy="40" r="20" fill="#8b5cf6"/><text x="50" y="45" font-size="10" text-anchor="middle" fill="#fff">Math</text></svg>`, q: "If \\( (\\sqrt{5}+a)(\\sqrt{5}-a) = 1 \\), what is the value of \\( a \\)?", q_trans: "Jika \\( (\\sqrt{5}+a)(\\sqrt{5}-a) = 1 \\), berapakah nilai \\( a \\)?", opts: ["\\( 2 \\)", "\\( \\sqrt{5} \\)", "\\( 1 \\)", "\\( 4 \\)", "\\( \\sqrt{6} \\)"], correct: 0, exp: "<div>\\( 5 - a^2 = 1 \\implies a^2 = 4 \\implies a = 2 \\).</div><div class='translation'>\\( 5 - a^2 = 1 \\implies a^2 = 4 \\implies a = 2 \\).</div>" }
+                    ]}
+                ]
+            },
+            
+            intro: {
+                title: "Introduction & Real-World Connection",
+                pages: [
+                    { type: 'theory', content: `
+                        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg mb-6">
+                            <h2 class="text-2xl font-bold text-blue-700 mb-2"><i class="fas fa-bolt mr-2"></i>When Roots Have Partners</h2>
+                            <p class="translation">Ketika Akar Memiliki Pasangan</p>
+                        </div>
+                        <div class="flex gap-6 items-center mb-6">
+                            <svg width="180" height="120" viewBox="0 0 200 150" class="flex-shrink-0">
+                                <path d="M 40 120 L 100 30 L 160 120" stroke="#3b82f6" stroke-width="3" fill="none"/>
+                                <circle cx="100" cy="30" r="5" fill="#ef4444"/>
+                                <text x="110" y="30" font-size="12">1 / (1 + √2)</text>
+                            </svg>
+                            <div>
+                                <p class="mb-2">In engineering and physics, formulas sometimes produce fractions like \\( \\frac{1}{1+\\sqrt{2}} \\).</p>
+                                <p class="translation">Dalam teknik dan fisika, rumus terkadang menghasilkan pecahan seperti \\( \\frac{1}{1+\\sqrt{2}} \\).</p>
+                                <p class="mt-2">Multiplying by just \\( \\sqrt{2} \\) won't work anymore because it creates another root in the denominator! We need a new strategy.</p>
+                                <p class="translation">Mengalikan hanya dengan \\( \\sqrt{2} \\) tidak lagi berhasil karena itu membuat akar baru di penyebut! Kita butuh strategi baru.</p>
+                            </div>
+                        </div>
+                    `},
+                    { type: 'tasks', count: 3, tasks: [
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="12" text-anchor="middle">3 / (1+√5)</text></svg>`, q: "Why can't we just multiply \\( \\frac{3}{1+\\sqrt{5}} \\) by \\( \\frac{\\sqrt{5}}{\\sqrt{5}} \\)?", q_trans: "Mengapa kita tidak bisa hanya mengalikan \\( \\frac{3}{1+\\sqrt{5}} \\) dengan \\( \\frac{\\sqrt{5}}{\\sqrt{5}} \\)?", opts: ["Because \\( \\sqrt{5} \\) is negative", "Because it results in \\( \\sqrt{5} + 5 \\), leaving a root in the denominator", "Because the numerator becomes too large", "It actually works perfectly fine", "Because 1 cannot be multiplied by \\( \\sqrt{5} \\)"], correct: 1, exp: "<div>Multiplying gives \\( \\frac{3\\sqrt{5}}{\\sqrt{5}+5} \\). The denominator still has a root!</div><div class='translation'>Mengalikan menghasilkan \\( \\frac{3\\sqrt{5}}{\\sqrt{5}+5} \\). Penyebutnya masih memiliki akar!</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><rect x="20" y="20" width="60" height="40" fill="#fbbf24" rx="5"/><text x="50" y="45" font-size="10" text-anchor="middle">Circuit</text></svg>`, q: "An electrical circuit has a resistance of \\( \\frac{10}{2+\\sqrt{3}} \\) Ohms. If an engineer multiplies by \\( \\frac{\\sqrt{3}}{\\sqrt{3}} \\), what does the denominator become?", q_trans: "Rangkaian listrik memiliki hambatan \\( \\frac{10}{2+\\sqrt{3}} \\) Ohm. Jika seorang insinyur mengalikan dengan \\( \\frac{\\sqrt{3}}{\\sqrt{3}} \\), menjadi apa penyebutnya?", opts: ["\\( 2\\sqrt{3} + 3 \\)", "\\( 2 + 3 = 5 \\)", "\\( 4 + 3 = 7 \\)", "\\( 6 \\)", "\\( 2\\sqrt{3} \\)"], correct: 0, exp: "<div>\\( (2+\\sqrt{3})\\sqrt{3} = 2\\sqrt{3} + 3 \\). Still has a root!</div><div class='translation'>\\( (2+\\sqrt{3})\\sqrt{3} = 2\\sqrt{3} + 3 \\). Masih memiliki akar!</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><circle cx="50" cy="40" r="20" fill="#10b981"/><text x="50" y="45" font-size="10" text-anchor="middle" fill="#fff">Logic</text></svg>`, q: "What mathematical property do we need to completely remove roots from \\( (a+\\sqrt{b}) \\)?", q_trans: "Sifat matematis apa yang kita butuhkan untuk menghilangkan akar sepenuhnya dari \\( (a+\\sqrt{b}) \\)?", opts: ["Difference of two squares", "Pythagorean theorem", "Distributive property", "Commutative property", "Associative property"], correct: 0, exp: "<div>We need to multiply by its conjugate to use the difference of squares formula.</div><div class='translation'>Kita perlu mengalikan dengan konjugatnya untuk menggunakan rumus selisih kuadrat.</div>" }
+                    ]},
+                    { type: 'theory', content: `
+                        <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg mb-6">
+                            <h2 class="text-2xl font-bold text-green-700 mb-2"><i class="fas fa-wrench mr-2"></i>Real-World Engineering Application</h2>
+                            <p class="translation">Aplikasi Teknik di Dunia Nyata</p>
+                        </div>
+                        <div class="flex gap-6 items-center mb-6">
+                            <svg width="180" height="120" viewBox="0 0 200 150" class="flex-shrink-0">
+                                <path d="M 20 100 L 60 100 L 80 70 L 120 70 L 140 100 L 180 100" stroke="#ef4444" stroke-width="3" fill="none"/>
+                                <text x="100" y="130" font-size="12" text-anchor="middle">V / (R1 + R2)</text>
+                            </svg>
+                            <div>
+                                <p class="mb-2">When calculating alternating current (AC) impedance, engineers often face fractions like \\( \\frac{V}{R + \\omega L} \\). If \\( \\omega L \\) involves a square root, standardizing the formula requires rationalizing a binomial denominator.</p>
+                                <p class="translation">Saat menghitung impedansi arus bolak-balik (AC), insinyur sering menghadapi pecahan seperti \\( \\frac{V}{R + \\omega L} \\). Jika \\( \\omega L \\) melibatkan akar kuadrat, menstandarisasi rumus membutuhkan perasionalisasi penyebut binomial.</p>
+                                <p class="mt-2">This ensures measurements can be practically manufactured and standardized.</p>
+                                <p class="translation">Ini memastikan pengukuran dapat diproduksi secara praktis dan dibakukan.</p>
+                            </div>
+                        </div>
+                    `},
+                    { type: 'tasks', count: 3, tasks: [
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><path d="M 20 60 Q 50 20 80 60" stroke="#3b82f6" stroke-width="3" fill="none"/><circle cx="50" cy="20" r="4" fill="#ef4444"/></svg>`, q: "An AC circuit has a voltage of 12V and impedance \\( 2+\\sqrt{5} \\). The current is \\( \\frac{12}{2+\\sqrt{5}} \\). Why must we rationalize this?", q_trans: "Rangkaian AC memiliki tegangan 12V dan impedansi \\( 2+\\sqrt{5} \\). Arusnya adalah \\( \\frac{12}{2+\\sqrt{5}} \\). Mengapa kita harus merasionalkan ini?", opts: ["To make the current infinite", "To write the impedance as a standard real number plus a standard imaginary part", "Because the calculator cannot divide roots", "To change the voltage", "To make the denominator zero"], correct: 1, exp: "<div>Standardizing electrical formulas requires separating the real and imaginary/root parts cleanly.</div><div class='translation'>Menstandarisasi rumus listrik membutuhkan pemisahan bagian nyata dan imajiner/akar dengan bersih.</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><rect x="30" y="20" width="40" height="40" fill="#e0e7ff" stroke="#3b82f6" stroke-width="2"/><text x="50" y="45" font-size="10" text-anchor="middle">Force</text></svg>`, q: "A physics formula for drag force is \\( F = \\frac{15}{3-\\sqrt{2}} \\). What happens if we don't rationalize it?", q_trans: "Rumus fisika untuk gaya hambat adalah \\( F = \\frac{15}{3-\\sqrt{2}} \\). Apa yang terjadi jika kita tidak merasionalkannya?", opts: ["The force becomes zero", "It is harder to compare with other forces that have rational denominators", "The mass changes", "The square root becomes negative", "It turns into addition"], correct: 1, exp: "<div>Having a rational denominator makes comparing values and further calculations much easier.</div><div class='translation'>Memiliki penyebut rasional membuat membandingkan nilai dan perhitungan lebih lanjut jauh lebih mudah.</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="10" text-anchor="middle">1 / (√2+1)</text></svg>`, q: "In optics, the reciprocal of focal length is \\( \\frac{1}{\\sqrt{2}+1} \\). What is the denominator's conjugate?", q_trans: "Dalam optika, kebalikan dari panjang fokus adalah \\( \\frac{1}{\\sqrt{2}+1} \\). Apa konjugat dari penyebutnya?", opts: ["\\( \\sqrt{2}-1 \\)", "\\( \\sqrt{2}+1 \\)", "\\( -\\sqrt{2}-1 \\)", "\\( 1-\\sqrt{2} \\)", "\\( \\sqrt{2} \\)"], correct: 0, exp: "<div>The conjugate changes the middle sign: \\( \\sqrt{2}+1 \\) becomes \\( \\sqrt{2}-1 \\).</div><div class='translation'>Konjugat mengubah tanda di tengah: \\( \\sqrt{2}+1 \\) menjadi \\( \\sqrt{2}-1 \\).</div>" }
+                    ]},
+                    { type: 'theory', content: `
+                        <div class="bg-purple-50 border-l-4 border-purple-500 p-4 rounded-r-lg mb-6">
+                            <h2 class="text-2xl font-bold text-purple-700 mb-2"><i class="fas fa-clone mr-2"></i>Introducing the Conjugate</h2>
+                            <p class="translation">Mengenal Konjugat</p>
+                        </div>
+                        <div class="flex gap-6 items-center mb-6">
+                            <svg width="180" height="120" viewBox="0 0 200 150" class="flex-shrink-0">
+                                <circle cx="60" cy="75" r="40" fill="#e0e7ff" stroke="#3b82f6" stroke-width="2"/>
+                                <text x="60" y="80" font-size="12" text-anchor="middle">a + √b</text>
+                                <line x1="105" y1="40" x2="105" y2="110" stroke="#888" stroke-dasharray="4"/>
+                                <circle cx="150" cy="75" r="40" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+                                <text x="150" y="80" font-size="12" text-anchor="middle">a - √b</text>
+                            </svg>
+                            <div>
+                                <p class="mb-2">The "partner" that removes the root is called the <strong>conjugate</strong>. For any binomial \\( a + \\sqrt{b} \\), its conjugate is \\( a - \\sqrt{b} \\).</p>
+                                <p class="translation">"Pasangan" yang menghilangkan akar disebut <strong>konjugat</strong>. Untuk sembarang binomial \\( a + \\sqrt{b} \\), konjugatnya adalah \\( a - \\sqrt{b} \\).</p>
+                                <p class="mt-2">We just flip the sign in the middle!</p>
+                                <p class="translation">Kita hanya perlu mengubah tanda di tengahnya!</p>
+                            </div>
+                        </div>
+                    `},
+                    { type: 'tasks', count: 4, tasks: [
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="12" text-anchor="middle">4 - √7</text></svg>`, q: "What is the conjugate of \\( 4 - \\sqrt{7} \\)?", q_trans: "Berapakah konjugat dari \\( 4 - \\sqrt{7} \\)?", opts: ["\\( 4 + \\sqrt{7} \\)", "\\( -4 + \\sqrt{7} \\)", "\\( \\sqrt{7} - 4 \\)", "\\( 4 - \\sqrt{7} \\)", "\\( 7 - \\sqrt{4} \\)"], correct: 0, exp: "<div>Change the middle sign. The conjugate is \\( 4 + \\sqrt{7} \\).</div><div class='translation'>Ubah tanda di tengah. Konjugatnya adalah \\( 4 + \\sqrt{7} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="12" text-anchor="middle">-2 + √5</text></svg>`, q: "What is the conjugate of \\( -2 + \\sqrt{5} \\)?", q_trans: "Berapakah konjugat dari \\( -2 + \\sqrt{5} \\)?", opts: ["\\( -2 - \\sqrt{5} \\)", "\\( 2 + \\sqrt{5} \\)", "\\( 2 - \\sqrt{5} \\)", "\\( -2 + \\sqrt{5} \\)", "\\( \\sqrt{5} + 2 \\)"], correct: 0, exp: "<div>Change the middle sign. The conjugate is \\( -2 - \\sqrt{5} \\).</div><div class='translation'>Ubah tanda di tengah. Konjugatnya adalah \\( -2 - \\sqrt{5} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><rect x="20" y="20" width="60" height="40" fill="#3b82f6" rx="5"/><text x="50" y="45" font-size="10" text-anchor="middle" fill="#fff">Math</text></svg>`, q: "If a denominator is \\( \\sqrt{6} - 3 \\), what should you multiply it by?", q_trans: "Jika penyebutnya \\( \\sqrt{6} - 3 \\), dengan apa kamu harus mengalikannya?", opts: ["\\( \\sqrt{6} + 3 \\)", "\\( \\sqrt{6} - 3 \\)", "\\( 3 - \\sqrt{6} \\)", "\\( \\sqrt{6} \\)", "\\( 3 \\)"], correct: 0, exp: "<div>The conjugate of \\( \\sqrt{6} - 3 \\) is \\( \\sqrt{6} + 3 \\).</div><div class='translation'>Konjugat dari \\( \\sqrt{6} - 3 \\) adalah \\( \\sqrt{6} + 3 \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><circle cx="50" cy="40" r="20" fill="#8b5cf6"/><text x="50" y="45" font-size="10" text-anchor="middle" fill="#fff">Logic</text></svg>`, q: "Why is the conjugate of \\( a + \\sqrt{b} \\) equal to \\( a - \\sqrt{b} \\) and not \\( \\sqrt{b} - a \\)?", q_trans: "Mengapa konjugat dari \\( a + \\sqrt{b} \\) sama dengan \\( a - \\sqrt{b} \\) dan bukan \\( \\sqrt{b} - a \\)?", opts: ["Because the sign between the rational and irrational parts must be flipped", "Because \\( a \\) is always larger than \\( \\sqrt{b} \\)", "Because \\( \\sqrt{b} - a \\) is negative", "It doesn't matter, they both work", "Because \\( a \\) must be kept positive"], correct: 0, exp: "<div>We only change the operation connecting the two terms. \\( a - \\sqrt{b} \\) ensures the \\( a^2 \\) and \\( b \\) are correctly placed in the difference of squares.</div><div class='translation'>Kita hanya mengubah operasi yang menghubungkan dua suku. \\( a - \\sqrt{b} \\) memastikan \\( a^2 \\) dan \\( b \\) ditempatkan dengan benar dalam selisih kuadrat.</div>" }
+                    ]}
+                ]
+            },
+
+            review: {
+                title: "Review of Prior Knowledge",
+                pages: [
+                    { type: 'theory', content: `
+                        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg mb-6">
+                            <h2 class="text-2xl font-bold text-blue-700 mb-2"><i class="fas fa-expand-arrows-alt mr-2"></i>Expanding Binomials with Roots</h2>
+                            <p class="translation">Mengalikan Binomial dengan Akar</p>
+                        </div>
+                        <div class="flex gap-6 items-center mb-6">
+                            <svg width="180" height="120" viewBox="0 0 200 150" class="flex-shrink-0">
+                                <text x="40" y="40" font-size="14" text-anchor="middle">(2+√2)</text>
+                                <text x="100" y="40" font-size="14" text-anchor="middle">×</text>
+                                <text x="160" y="40" font-size="14" text-anchor="middle">(3+√2)</text>
+                                <path d="M 100 50 L 100 80" stroke="#000" stroke-width="2" marker-end="url(#arrow)"/>
+                                <text x="100" y="100" font-size="12" text-anchor="middle">6 + 2√2 + 3√2 + 2</text>
+                                <path d="M 100 110 L 100 130" stroke="#000" stroke-width="2" marker-end="url(#arrow)"/>
+                                <text x="100" y="145" font-size="12" text-anchor="middle">8 + 5√2</text>
+                            </svg>
+                            <div>
+                                <p class="mb-2">Before rationalizing, we must be comfortable expanding brackets using FOIL (First, Outer, Inner, Last).</p>
+                                <p class="translation">Sebelum merasionalkan, kita harus terbiasa mengalikan kurung menggunakan FOIL (First, Outer, Inner, Last).</p>
+                                <p class="mt-2">Example: \\( (2+\\sqrt{2})(3+\\sqrt{2}) = 6 + 2\\sqrt{2} + 3\\sqrt{2} + 2 = 8 + 5\\sqrt{2} \\).</p>
+                                <p class="translation">Contoh: \\( (2+\\sqrt{2})(3+\\sqrt{2}) = 6 + 2\\sqrt{2} + 3\\sqrt{2} + 2 = 8 + 5\\sqrt{2} \\).</p>
+                            </div>
+                        </div>
+                    `},
+                    { type: 'tasks', count: 3, tasks: [
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="12" text-anchor="middle">(1+√3)²</text></svg>`, q: "Expand \\( (1+\\sqrt{3})^2 \\).", q_trans: "Jabarkan \\( (1+\\sqrt{3})^2 \\).", opts: ["\\( 4 + 2\\sqrt{3} \\)", "\\( 4 \\)", "\\( 7 \\)", "\\( 1 + 3\\sqrt{3} \\)", "\\( 2\\sqrt{3} \\)"], correct: 0, exp: "<div>\\( 1^2 + 2(1)(\\sqrt{3}) + (\\sqrt{3})^2 = 1 + 2\\sqrt{3} + 3 = 4 + 2\\sqrt{3} \\).</div><div class='translation'>\\( 1^2 + 2(1)(\\sqrt{3}) + (\\sqrt{3})^2 = 1 + 2\\sqrt{3} + 3 = 4 + 2\\sqrt{3} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><rect x="20" y="20" width="60" height="40" fill="#fbbf24" rx="5"/><text x="50" y="45" font-size="10" text-anchor="middle">Field</text></svg>`, q: "A square field has side length \\( 2+\\sqrt{2} \\) meters. What is its area?", q_trans: "Lapangan persegi memiliki panjang sisi \\( 2+\\sqrt{2} \\) meter. Berapakah luasnya?", opts: ["\\( 6 + 4\\sqrt{2} \\) sq m", "\\( 4 + 2 = 6 \\) sq m", "\\( 6 + 2\\sqrt{2} \\) sq m", "\\( 4 + 4\\sqrt{2} \\) sq m", "\\( 8 \\) sq m"], correct: 0, exp: "<div>\\( (2+\\sqrt{2})^2 = 4 + 4\\sqrt{2} + 2 = 6 + 4\\sqrt{2} \\).</div><div class='translation'>\\( (2+\\sqrt{2})^2 = 4 + 4\\sqrt{2} + 2 = 6 + 4\\sqrt{2} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="10" text-anchor="middle">(√5-2)(√5+3)</text></svg>`, q: "Expand \\( (\\sqrt{5}-2)(\\sqrt{5}+3) \\).", q_trans: "Jabarkan \\( (\\sqrt{5}-2)(\\sqrt{5}+3) \\).", opts: ["\\( -1 + \\sqrt{5} \\)", "\\( 5 - 6 = -1 \\)", "\\( 11 + \\sqrt{5} \\)", "\\( 11 - \\sqrt{5} \\)", "\\( 15 - 2\\sqrt{5} \\)"], correct: 0, exp: "<div>\\( 5 + 3\\sqrt{5} - 2\\sqrt{5} - 6 = -1 + \\sqrt{5} \\).</div><div class='translation'>\\( 5 + 3\\sqrt{5} - 2\\sqrt{5} - 6 = -1 + \\sqrt{5} \\).</div>" }
+                    ]},
+                    { type: 'theory', content: `
+                        <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg mb-6">
+                            <h2 class="text-2xl font-bold text-green-700 mb-2"><i class="fas fa-magic mr-2"></i>The Magic of Conjugate Multiplication</h2>
+                            <p class="translation">Keajaiban Perkalian Konjugat</p>
+                        </div>
+                        <div class="flex gap-6 items-center mb-6">
+                            <svg width="180" height="120" viewBox="0 0 200 150" class="flex-shrink-0">
+                                <rect x="20" y="30" width="160" height="40" fill="#f3f4f6" stroke="#000" rx="5"/>
+                                <text x="100" y="55" font-size="12" text-anchor="middle">(3 + √2)(3 - √2)</text>
+                                <path d="M 100 70 L 100 90" stroke="#10b981" stroke-width="2" marker-end="url(#arrow)"/>
+                                <rect x="50" y="90" width="100" height="30" fill="#10b981" rx="5"/>
+                                <text x="100" y="110" font-size="12" text-anchor="middle" fill="#fff">9 - 2 = 7</text>
+                            </svg>
+                            <div>
+                                <p class="mb-2">When you multiply a binomial by its exact conjugate, the middle terms cancel out perfectly! You are left with a rational number.</p>
+                                <p class="translation">Saat kamu mengalikan binomial dengan konjugatnya yang persis, suku tengah akan saling menghilang dengan sempurna! Kamu akan mendapatkan bilangan rasional.</p>
+                                <p class="mt-2">Formula: \\( (a+\\sqrt{b})(a-\\sqrt{b}) = a^2 - b \\).</p>
+                                <p class="translation">Rumus: \\( (a+\\sqrt{b})(a-\\sqrt{b}) = a^2 - b \\).</p>
+                            </div>
+                        </div>
+                    `},
+                    { type: 'tasks', count: 3, tasks: [
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="10" text-anchor="middle">(4+√3)(4-√3)</text></svg>`, q: "Multiply \\( (4+\\sqrt{3})(4-\\sqrt{3}) \\).", q_trans: "Kalikan \\( (4+\\sqrt{3})(4-\\sqrt{3}) \\).", opts: ["\\( 13 \\)", "\\( 19 \\)", "\\( 7 \\)", "\\( 3 \\)", "\\( 16 \\)"], correct: 0, exp: "<div>\\( 4^2 - (\\sqrt{3})^2 = 16 - 3 = 13 \\).</div><div class='translation'>\\( 4^2 - (\\sqrt{3})^2 = 16 - 3 = 13 \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><circle cx="50" cy="40" r="20" fill="#3b82f6"/><text x="50" y="45" font-size="10" text-anchor="middle" fill="#fff">Circuit</text></svg>`, q: "An engineer needs to find the product of an impedance \\( 5+\\sqrt{7} \\) and its admittance partner \\( 5-\\sqrt{7} \\). What is the result?", q_trans: "Insinyur perlu mencari hasil kali impedansi \\( 5+\\sqrt{7} \\) dan pasangan admitansinya \\( 5-\\sqrt{7} \\). Berapakah hasilnya?", opts: ["\\( 18 \\)", "\\( 32 \\)", "\\( 2\\sqrt{7} \\)", "\\( 25 \\)", "\\( 7 \\)"], correct: 0, exp: "<div>\\( 5^2 - (\\sqrt{7})^2 = 25 - 7 = 18 \\).</div><div class='translation'>\\( 5^2 - (\\sqrt{7})^2 = 25 - 7 = 18 \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="10" text-anchor="middle">(√10 - 3)(√10 + 3)</text></svg>`, q: "Evaluate \\( (\\sqrt{10}-3)(\\sqrt{10}+3) \\).", q_trans: "Hitunglah \\( (\\sqrt{10}-3)(\\sqrt{10}+3) \\).", opts: ["\\( 1 \\)", "\\( -1 \\)", "\\( 19 \\)", "\\( 10 \\)", "\\( 9 \\)"], correct: 0, exp: "<div>\\( (\\sqrt{10})^2 - 3^2 = 10 - 9 = 1 \\).</div><div class='translation'>\\( (\\sqrt{10})^2 - 3^2 = 10 - 9 = 1 \\).</div>" },
+                    ]},
+                    { type: 'theory', content: `
+                        <div class="bg-purple-50 border-l-4 border-purple-500 p-4 rounded-r-lg mb-6">
+                            <h2 class="text-2xl font-bold text-purple-700 mb-2"><i class="fas fa-project-diagram mr-2"></i>Setting Up the Problem</h2>
+                            <p class="translation">Menyiapkan Masalah</p>
+                        </div>
+                        <div class="flex gap-6 items-center mb-6">
+                            <svg width="180" height="120" viewBox="0 0 200 150" class="flex-shrink-0">
+                                <text x="20" y="40" font-size="12" fill="#000">1 / (2 + √3)</text>
+                                <text x="100" y="40" font-size="12" fill="#3b82f6">× (2 - √3)/(2 - √3)</text>
+                                <path d="M 100 50 L 100 80" stroke="#000" stroke-width="2" marker-end="url(#arrow)"/>
+                                <text x="60" y="100" font-size="12" fill="#10b981">(2 - √3)</text>
+                                <line x1="20" y1="105" x2="100" y2="105" stroke="#000" stroke-width="2"/>
+                                <text x="60" y="120" font-size="12" fill="#10b981">4 - 3 = 1</text>
+                            </svg>
+                            <div>
+                                <p class="mb-2">To rationalize \\( \\frac{1}{a+\\sqrt{b}} \\), we multiply the numerator and denominator by the conjugate \\( a-\\sqrt{b} \\).</p>
+                                <p class="translation">Untuk merasionalkan \\( \\frac{1}{a+\\sqrt{b}} \\), kita mengalikan pembilang dan penyebut dengan konjugat \\( a-\\sqrt{b} \\).</p>
+                                <p class="mt-2">This is mathematically equivalent to multiplying by 1, so the value doesn't change!</p>
+                                <p class="translation">Ini secara matematis setara dengan mengalikan dengan 1, jadi nilainya tidak berubah!</p>
+                            </div>
+                        </div>
+                    `},
+                    { type: 'tasks', count: 4, tasks: [
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="12" text-anchor="middle">1 / (5 - √2)</text></svg>`, q: "What should you multiply to the top and bottom of \\( \\frac{1}{5-\\sqrt{2}} \\) to rationalize it?", q_trans: "Apa yang harus kamu kalikan ke atas dan bawah dari \\( \\frac{1}{5-\\sqrt{2}} \\) untuk merasionalkannya?", opts: ["\\( \\frac{5+\\sqrt{2}}{5+\\sqrt{2}} \\)", "\\( \\frac{5-\\sqrt{2}}{5-\\sqrt{2}} \\)", "\\( \\frac{\\sqrt{2}}{\\sqrt{2}} \\)", "\\( \\frac{5}{5} \\)", "\\( \\frac{\\sqrt{2}+5}{\\sqrt{2}-5} \\)"], correct: 0, exp: "<div>The conjugate of \\( 5-\\sqrt{2} \\) is \\( 5+\\sqrt{2} \\).</div><div class='translation'>Konjugat dari \\( 5-\\sqrt{2} \\) adalah \\( 5+\\sqrt{2} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><rect x="20" y="20" width="60" height="40" fill="#e0e7ff" stroke="#3b82f6" stroke-width="2"/><text x="50" y="45" font-size="10" text-anchor="middle">Lens</text></svg>`, q: "An optics formula gives \\( \\frac{3}{1+\\sqrt{2}} \\). If we multiply by \\( \\frac{1-\\sqrt{2}}{1-\\sqrt{2}} \\), what does the denominator become?", q_trans: "Rumus optika memberikan \\( \\frac{3}{1+\\sqrt{2}} \\). Jika kita mengalikan dengan \\( \\frac{1-\\sqrt{2}}{1-\\sqrt{2}} \\), menjadi apa penyebutnya?", opts: ["\\( -1 \\)", "\\( 1 \\)", "\\( 3 \\)", "\\( 2 \\)", "\\( -2 \\)"], correct: 0, exp: "<div>\\( 1^2 - (\\sqrt{2})^2 = 1 - 2 = -1 \\).</div><div class='translation'>\\( 1^2 - (\\sqrt{2})^2 = 1 - 2 = -1 \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="10" text-anchor="middle">2 / (√7 - 3)</text></svg>`, q: "What is the denominator of \\( \\frac{2}{\\sqrt{7}-3} \\) after multiplying by its conjugate?", q_trans: "Berapakah penyebut dari \\( \\frac{2}{\\sqrt{7}-3} \\) setelah dikalikan dengan konjugatnya?", opts: ["\\( -2 \\)", "\\( 2 \\)", "\\( 4 \\)", "\\( 16 \\)", "\\( -4 \\)"], correct: 0, exp: "<div>Conjugate is \\( \\sqrt{7}+3 \\). Denominator: \\( (\\sqrt{7})^2 - 3^2 = 7 - 9 = -2 \\).</div><div class='translation'>Konjugatnya adalah \\( \\sqrt{7}+3 \\). Penyebut: \\( (\\sqrt{7})^2 - 3^2 = 7 - 9 = -2 \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><circle cx="50" cy="40" r="20" fill="#fbbf24"/><text x="50" y="45" font-size="10" text-anchor="middle">Check</text></svg>`, q: "A student tries to rationalize \\( \\frac{5}{2+\\sqrt{3}} \\) by multiplying by \\( \\frac{2-\\sqrt{3}}{2-\\sqrt{3}} \\). Are they correct?", q_trans: "Seorang siswa mencoba merasionalkan \\( \\frac{5}{2+\\sqrt{3}} \\) dengan mengalikan \\( \\frac{2-\\sqrt{3}}{2-\\sqrt{3}} \\). Apakah mereka benar?", opts: ["Yes, because they used the exact conjugate of the denominator", "No, they should multiply by \\( \\sqrt{3} \\)", "No, they should multiply by \\( 2+\\sqrt{3} \\)", "Yes, because the denominator becomes 1", "No, the numerator will be irrational"], correct: 0, exp: "<div>Yes! The conjugate of \\( 2+\\sqrt{3} \\) is exactly \\( 2-\\sqrt{3} \\).</div><div class='translation'>Ya! Konjugat dari \\( 2+\\sqrt{3} \\) persis \\( 2-\\sqrt{3} \\).</div>" }
+                    ]}
+                ]
+            },
+			
+            problem: {
+                title: "Problem Introduction",
+                pages: [
+                    { type: 'theory', content: `
+                        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg mb-6">
+                            <h2 class="text-2xl font-bold text-blue-700 mb-2"><i class="fas fa-unlink mr-2"></i>Why Multiply by √b Fails</h2>
+                            <p class="translation">Mengapa Mengalikan dengan √b Gagal</p>
+                        </div>
+                        <div class="flex gap-6 items-center mb-6">
+                            <svg width="180" height="120" viewBox="0 0 200 150" class="flex-shrink-0">
+                                <rect x="20" y="30" width="160" height="40" fill="#fee2e2" stroke="#ef4444" rx="5"/>
+                                <text x="100" y="55" font-size="12" text-anchor="middle">1 / (2 + √3)</text>
+                                <path d="M 100 70 L 100 90" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow)"/>
+                                <rect x="20" y="90" width="160" height="40" fill="#fee2e2" stroke="#ef4444" rx="5"/>
+                                <text x="100" y="115" font-size="12" text-anchor="middle">√3 / (2√3 + 3)</text>
+                                <text x="100" y="145" font-size="12" text-anchor="middle" fill="#ef4444">Root is still there!</text>
+                            </svg>
+                            <div>
+                                <p class="mb-2">If we have \\( \\frac{1}{2+\\sqrt{3}} \\) and multiply by \\( \\frac{\\sqrt{3}}{\\sqrt{3}} \\), we get \\( \\frac{\\sqrt{3}}{2\\sqrt{3} + 3} \\).</p>
+                                <p class="translation">Jika kita punya \\( \\frac{1}{2+\\sqrt{3}} \\) dan mengalikan dengan \\( \\frac{\\sqrt{3}}{\\sqrt{3}} \\), kita dapat \\( \\frac{\\sqrt{3}}{2\\sqrt{3} + 3} \\).</p>
+                                <p class="mt-2">The denominator still contains a root! We need a partner that cancels <em>both</em> root terms.</p>
+                                <p class="translation">Penyebutnya masih mengandung akar! Kita butuh pasangan yang menghilangkan <em>kedua</em> suku akar tersebut.</p>
+                            </div>
+                        </div>
+                    `},
+                    { type: 'tasks', count: 3, tasks: [
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="12" text-anchor="middle">2 / (1 + √2)</text></svg>`, q: "A student tries to rationalize \\( \\frac{2}{1+\\sqrt{2}} \\) by multiplying top and bottom by \\( \\sqrt{2} \\). What is the new denominator?", q_trans: "Seorang siswa mencoba merasionalkan \\( \\frac{2}{1+\\sqrt{2}} \\) dengan mengalikan atas dan bawah dengan \\( \\sqrt{2} \\). Apa penyebut barunya?", opts: ["\\( \\sqrt{2} + 2 \\)", "\\( 1 + 2 = 3 \\)", "\\( 2 \\)", "\\( \\sqrt{2} \\)", "\\( 3\\sqrt{2} \\)"], correct: 0, exp: "<div>\\( (1+\\sqrt{2})\\sqrt{2} = \\sqrt{2} + 2 \\). The root is still there!</div><div class='translation'>\\( (1+\\sqrt{2})\\sqrt{2} = \\sqrt{2} + 2 \\). Akarnya masih ada!</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><rect x="20" y="20" width="60" height="40" fill="#fbbf24" rx="5"/><text x="50" y="45" font-size="10" text-anchor="middle">Logic</text></svg>`, q: "Why does multiplying by the conjugate work when multiplying by just the root fails?", q_trans: "Mengapa mengalikan dengan konjugat berhasil ketika mengalikan dengan akarnya saja gagal?", opts: ["Because the conjugate creates a difference of squares, eliminating the root entirely", "Because it makes the numerator 1", "Because the conjugate is always negative", "Because it squares the denominator without expanding", "Because it adds the terms together perfectly"], correct: 0, exp: "<div>The difference of squares formula \\( (a+b)(a-b) = a^2 - b^2 \\) ensures the root is squared into a rational number.</div><div class='translation'>Rumus selisih kuadrat \\( (a+b)(a-b) = a^2 - b^2 \\) memastikan akar dikuadratkan menjadi bilangan rasional.</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><circle cx="50" cy="40" r="20" fill="#3b82f6"/><text x="50" y="45" font-size="10" text-anchor="middle" fill="#fff">Math</text></svg>`, q: "If \\( \\frac{x}{3+\\sqrt{5}} \\) is multiplied by \\( \\frac{\\sqrt{5}}{\\sqrt{5}} \\), what type of number remains in the denominator?", q_trans: "Jika \\( \\frac{x}{3+\\sqrt{5}} \\) dikalikan dengan \\( \\frac{\\sqrt{5}}{\\sqrt{5}} \\), jenis bilangan apa yang tersisa di penyebut?", opts: ["Irrational", "Rational", "Integer", "Complex", "Natural"], correct: 0, exp: "<div>The denominator becomes \\( 3\\sqrt{5} + 5 \\), which is irrational.</div><div class='translation'>Penyebutnya menjadi \\( 3\\sqrt{5} + 5 \\), yang merupakan irasional.</div>" }
+                    ]},
+                    { type: 'theory', content: `
+                        <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg mb-6">
+                            <h2 class="text-2xl font-bold text-green-700 mb-2"><i class="fas fa-shoe-prints mr-2"></i>The 4-Step Binomial Rationalization</h2>
+                            <p class="translation">Rasionalisasi Binomial 4 Langkah</p>
+                        </div>
+                        <div class="flex gap-6 items-center mb-6">
+                            <svg width="180" height="140" viewBox="0 0 200 160" class="flex-shrink-0">
+                                <text x="20" y="30" font-size="14" fill="#3b82f6">1. Identify</text>
+                                <text x="20" y="60" font-size="14" fill="#10b981">2. Find Conjugate</text>
+                                <text x="20" y="90" font-size="14" fill="#fbbf24">3. Multiply</text>
+                                <text x="20" y="120" font-size="14" fill="#ef4444">4. Simplify</text>
+                                <text x="100" y="150" font-size="12" text-anchor="middle" fill="#6b7280">Follow the steps!</text>
+                            </svg>
+                            <div>
+                                <p class="mb-2"><strong>Step 1:</strong> Identify the binomial denominator (e.g., \\( a+\\sqrt{b} \\)).</p>
+                                <p class="translation"><strong>Langkah 1:</strong> Identifikasi penyebut binomial (misalnya, \\( a+\\sqrt{b} \\)).</p>
+                                <p class="mt-2"><strong>Step 2:</strong> Write its conjugate by flipping the middle sign (e.g., \\( a-\\sqrt{b} \\)).</p>
+                                <p class="translation"><strong>Langkah 2:</strong> Tulis konjugatnya dengan mengubah tanda tengah (misalnya, \\( a-\\sqrt{b} \\)).</p>
+                                <p class="mt-2"><strong>Step 3:</strong> Multiply both numerator and denominator by this conjugate.</p>
+                                <p class="translation"><strong>Langkah 3:</strong> Kalikan pembilang dan penyebut dengan konjugat ini.</p>
+                                <p class="mt-2"><strong>Step 4:</strong> Expand and simplify the resulting fraction.</p>
+                                <p class="translation"><strong>Langkah 4:</strong> Jabarkan dan sederhanakan pecahan yang dihasilkan.</p>
+                            </div>
+                        </div>
+                    `},
+                    { type: 'tasks', count: 3, tasks: [
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="12" text-anchor="middle">1 / (4 - √7)</text></svg>`, q: "To rationalize \\( \\frac{1}{4-\\sqrt{7}} \\), what is the correct multiplier?", q_trans: "Untuk merasionalkan \\( \\frac{1}{4-\\sqrt{7}} \\), apa pengali yang benar?", opts: ["\\( \\frac{4+\\sqrt{7}}{4+\\sqrt{7}} \\)", "\\( \\frac{4-\\sqrt{7}}{4-\\sqrt{7}} \\)", "\\( \\frac{\\sqrt{7}}{\\sqrt{7}} \\)", "\\( \\frac{1}{4+\\sqrt{7}} \\)", "\\( \\frac{7}{7} \\)"], correct: 0, exp: "<div>Change the sign of the second term: \\( 4-\\sqrt{7} \\) becomes \\( 4+\\sqrt{7} \\).</div><div class='translation'>Ubah tanda suku kedua: \\( 4-\\sqrt{7} \\) menjadi \\( 4+\\sqrt{7} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><rect x="30" y="20" width="40" height="40" fill="#e0e7ff" stroke="#3b82f6" stroke-width="2"/><text x="50" y="45" font-size="10" text-anchor="middle">Robot</text></svg>`, q: "A robot's programming logic uses the fraction \\( \\frac{5}{2+\\sqrt{3}} \\). What should the robot multiply top and bottom by?", q_trans: "Logika pemrograman robot menggunakan pecahan \\( \\frac{5}{2+\\sqrt{3}} \\). Dengan apa robot harus mengalikan atas dan bawah?", opts: ["\\( \\frac{2-\\sqrt{3}}{2-\\sqrt{3}} \\)", "\\( \\frac{2+\\sqrt{3}}{2+\\sqrt{3}} \\)", "\\( \\frac{\\sqrt{3}}{\\sqrt{3}} \\)", "\\( \\frac{5}{5} \\)", "\\( \\frac{2}{2} \\)"], correct: 0, exp: "<div>The conjugate of \\( 2+\\sqrt{3} \\) is \\( 2-\\sqrt{3} \\).</div><div class='translation'>Konjugat dari \\( 2+\\sqrt{3} \\) adalah \\( 2-\\sqrt{3} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="12" text-anchor="middle">3 / (√5 - 1)</text></svg>`, q: "What is the conjugate for the denominator of \\( \\frac{3}{\\sqrt{5}-1} \\)?", q_trans: "Apa konjugat untuk penyebut dari \\( \\frac{3}{\\sqrt{5}-1} \\)?", opts: ["\\( \\sqrt{5}+1 \\)", "\\( \\sqrt{5}-1 \\)", "\\( 1-\\sqrt{5} \\)", "\\( 5+1 \\)", "\\( -\\sqrt{5}-1 \\)"], correct: 0, exp: "<div>Change the middle sign: \\( \\sqrt{5}-1 \\) becomes \\( \\sqrt{5}+1 \\).</div><div class='translation'>Ubah tanda tengah: \\( \\sqrt{5}-1 \\) menjadi \\( \\sqrt{5}+1 \\).</div>" }
+                    ]},
+                    { type: 'theory', content: `
+                        <div class="bg-purple-50 border-l-4 border-purple-500 p-4 rounded-r-lg mb-6">
+                            <h2 class="text-2xl font-bold text-purple-700 mb-2"><i class="fas fa-magic mr-2"></i>The Difference of Squares in Action</h2>
+                            <p class="translation">Selisih Kuadrat dalam Aksi</p>
+                        </div>
+                        <div class="flex gap-6 items-center mb-6">
+                            <svg width="180" height="120" viewBox="0 0 200 150" class="flex-shrink-0">
+                                <text x="40" y="40" font-size="12" text-anchor="middle">(3 + √2)</text>
+                                <text x="100" y="40" font-size="12" text-anchor="middle">×</text>
+                                <text x="160" y="40" font-size="12" text-anchor="middle">(3 - √2)</text>
+                                <path d="M 100 50 L 100 70" stroke="#000" stroke-width="2" marker-end="url(#arrow)"/>
+                                <text x="100" y="90" font-size="12" text-anchor="middle">3² - (√2)²</text>
+                                <path d="M 100 100 L 100 120" stroke="#000" stroke-width="2" marker-end="url(#arrow)"/>
+                                <text x="100" y="140" font-size="12" text-anchor="middle" fill="#10b981">9 - 2 = 7</text>
+                            </svg>
+                            <div>
+                                <p class="mb-2">When you multiply the denominator by its conjugate, you use the difference of squares: \\( (a+b)(a-b) = a^2 - b^2 \\).</p>
+                                <p class="translation">Saat kamu mengalikan penyebut dengan konjugatnya, kamu menggunakan selisih kuadrat: \\( (a+b)(a-b) = a^2 - b^2 \\).</p>
+                                <p class="mt-2">Since \\( (\\sqrt{b})^2 = b \\), the roots vanish completely, leaving a clean rational number!</p>
+                                <p class="translation">Karena \\( (\\sqrt{b})^2 = b \\), akarnya hilang sepenuhnya, menyisakan bilangan rasional yang bersih!</p>
+                            </div>
+                        </div>
+                    `},
+                    { type: 'tasks', count: 4, tasks: [
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="10" text-anchor="middle">(5+√3)(5-√3)</text></svg>`, q: "What is the result of multiplying \\( (5+\\sqrt{3})(5-\\sqrt{3}) \\)?", q_trans: "Apa hasil dari \\( (5+\\sqrt{3})(5-\\sqrt{3}) \\)?", opts: ["\\( 22 \\)", "\\( 28 \\)", "\\( 2\\sqrt{15} \\)", "\\( 25 \\)", "\\( 3 \\)"], correct: 0, exp: "<div>\\( 5^2 - (\\sqrt{3})^2 = 25 - 3 = 22 \\).</div><div class='translation'>\\( 5^2 - (\\sqrt{3})^2 = 25 - 3 = 22 \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><rect x="20" y="20" width="60" height="40" fill="#fbbf24" rx="5"/><text x="50" y="45" font-size="10" text-anchor="middle">Circuit</text></svg>`, q: "An electrical circuit has impedance \\( 6-\\sqrt{2} \\). To find the admittance multiplier, we calculate \\( (6-\\sqrt{2})(6+\\sqrt{2}) \\). What is this value?", q_trans: "Rangkaian listrik memiliki impedansi \\( 6-\\sqrt{2} \\). Untuk mencari pengali admitansi, kita hitung \\( (6-\\sqrt{2})(6+\\sqrt{2}) \\). Berapakah nilai ini?", opts: ["\\( 34 \\)", "\\( 38 \\)", "\\( 6 \\)", "\\( 36 \\)", "\\( 2 \\)"], correct: 0, exp: "<div>\\( 6^2 - (\\sqrt{2})^2 = 36 - 2 = 34 \\).</div><div class='translation'>\\( 6^2 - (\\sqrt{2})^2 = 36 - 2 = 34 \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="10" text-anchor="middle">1 / (√7 - 2)</text></svg>`, q: "If you are rationalizing \\( \\frac{1}{\\sqrt{7}-2} \\), what will the new denominator become?", q_trans: "Jika kamu merasionalkan \\( \\frac{1}{\\sqrt{7}-2} \\), menjadi apa penyebut barunya?", opts: ["\\( 3 \\)", "\\( 11 \\)", "\\( 5 \\)", "\\( 7 \\)", "\\( 4 \\)"], correct: 0, exp: "<div>\\( (\\sqrt{7})^2 - 2^2 = 7 - 4 = 3 \\).</div><div class='translation'>\\( (\\sqrt{7})^2 - 2^2 = 7 - 4 = 3 \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><circle cx="50" cy="40" r="20" fill="#10b981"/><text x="50" y="45" font-size="10" text-anchor="middle" fill="#fff">Physics</text></svg>`, q: "A physics formula has a term \\( \\frac{1}{\\sqrt{10}+3} \\). What will the denominator be after rationalizing?", q_trans: "Rumus fisika memiliki suku \\( \\frac{1}{\\sqrt{10}+3} \\). Berapakah penyebutnya setelah dirasionalkan?", opts: ["\\( 1 \\)", "\\( 19 \\)", "\\( 13 \\)", "\\( 10 \\)", "\\( 9 \\)"], correct: 0, exp: "<div>\\( (\\sqrt{10})^2 - 3^2 = 10 - 9 = 1 \\).</div><div class='translation'>\\( (\\sqrt{10})^2 - 3^2 = 10 - 9 = 1 \\).</div>" },
+                    ]}
+                ]
+            },
+
+            guided: {
+                title: "Guided Practice",
+                pages: [
+                    { type: 'theory', content: `
+                        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg mb-6">
+                            <h2 class="text-2xl font-bold text-blue-700 mb-2"><i class="fas fa-walk mr-2"></i>Basic Binomial Rationalization (Numerator = 1)</h2>
+                            <p class="translation">Rasionalisasi Binomial Dasar (Pembilang = 1)</p>
+                        </div>
+                        <div class="flex gap-6 items-center mb-6">
+                            <svg width="180" height="140" viewBox="0 0 200 160" class="flex-shrink-0">
+                                <text x="100" y="20" font-size="12" text-anchor="middle" fill="#3b82f6">1 / (2 + √3)</text>
+                                <path d="M 100 25 L 100 45" stroke="#000" stroke-width="2" marker-end="url(#arrow)"/>
+                                <text x="100" y="60" font-size="12" text-anchor="middle" fill="#10b981">× (2 - √3) / (2 - √3)</text>
+                                <path d="M 100 65 L 100 85" stroke="#000" stroke-width="2" marker-end="url(#arrow)"/>
+                                <text x="100" y="100" font-size="12" text-anchor="middle" fill="#fbbf24">(2 - √3) / (4 - 3)</text>
+                                <path d="M 100 105 L 100 125" stroke="#000" stroke-width="2" marker-end="url(#arrow)"/>
+                                <text x="100" y="140" font-size="12" text-anchor="middle" fill="#ef4444">2 - √3</text>
+                            </svg>
+                            <div>
+                                <p class="mb-2">Let's rationalize \\( \\frac{1}{2+\\sqrt{3}} \\) together.</p>
+                                <p class="translation">Mari kita rasionalkan \\( \\frac{1}{2+\\sqrt{3}} \\) bersama-sama.</p>
+                                <p class="mt-2"><strong>Step 1 & 2:</strong> Conjugate is \\( 2-\\sqrt{3} \\).</p>
+                                <p class="translation"><strong>Langkah 1 & 2:</strong> Konjugatnya adalah \\( 2-\\sqrt{3} \\).</p>
+                                <p class="mt-2"><strong>Step 3:</strong> Multiply: \\( \\frac{1 \\times (2-\\sqrt{3})}{(2+\\sqrt{3})(2-\\sqrt{3})} \\).</p>
+                                <p class="translation"><strong>Langkah 3:</strong> Kalikan: \\( \\frac{1 \\times (2-\\sqrt{3})}{(2+\\sqrt{3})(2-\\sqrt{3})} \\).</p>
+                                <p class="mt-2"><strong>Step 4:</strong> Denominator becomes \\( 4 - 3 = 1 \\). Result: \\( 2-\\sqrt{3} \\).</p>
+                                <p class="translation"><strong>Langkah 4:</strong> Penyebut menjadi \\( 4 - 3 = 1 \\). Hasil: \\( 2-\\sqrt{3} \\).</p>
+                            </div>
+                        </div>
+                    `},
+                    { type: 'tasks', count: 3, tasks: [
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="12" text-anchor="middle">1 / (1 + √2)</text></svg>`, q: "Rationalize \\( \\frac{1}{1+\\sqrt{2}} \\).", q_trans: "Rasionalkan \\( \\frac{1}{1+\\sqrt{2}} \\).", opts: ["\\( \\sqrt{2}-1 \\)", "\\( 1-\\sqrt{2} \\)", "\\( \\frac{1}{1-\\sqrt{2}} \\)", "\\( \\frac{\\sqrt{2}-1}{3} \\)", "\\( \\sqrt{2}+1 \\)"], correct: 0, exp: "<div>\\( \\frac{1-\\sqrt{2}}{1-2} = \\frac{1-\\sqrt{2}}{-1} = \\sqrt{2}-1 \\).</div><div class='translation'>\\( \\frac{1-\\sqrt{2}}{1-2} = \\frac{1-\\sqrt{2}}{-1} = \\sqrt{2}-1 \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><rect x="20" y="20" width="60" height="40" fill="#fbbf24" rx="5"/><text x="50" y="45" font-size="10" text-anchor="middle">Light</text></svg>`, q: "In optics, the reciprocal of a focal length component is \\( \\frac{1}{3-\\sqrt{5}} \\). Rationalize this expression.", q_trans: "Dalam optika, kebalikan dari komponen panjang fokus adalah \\( \\frac{1}{3-\\sqrt{5}} \\). Rasionalkan ekspresi ini.", opts: ["\\( \\frac{3+\\sqrt{5}}{4} \\)", "\\( \\frac{3-\\sqrt{5}}{4} \\)", "\\( 3+\\sqrt{5} \\)", "\\( \\frac{1}{3+\\sqrt{5}} \\)", "\\( \\frac{3+\\sqrt{5}}{14} \\)"], correct: 0, exp: "<div>\\( \\frac{3+\\sqrt{5}}{9-5} = \\frac{3+\\sqrt{5}}{4} \\).</div><div class='translation'>\\( \\frac{3+\\sqrt{5}}{9-5} = \\frac{3+\\sqrt{5}}{4} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="10" text-anchor="middle">1 / (√7 - 2)</text></svg>`, q: "Simplify \\( \\frac{1}{\\sqrt{7}-2} \\).", q_trans: "Sederhanakan \\( \\frac{1}{\\sqrt{7}-2} \\).", opts: ["\\( \\frac{\\sqrt{7}+2}{3} \\)", "\\( \\frac{\\sqrt{7}-2}{3} \\)", "\\( \\frac{\\sqrt{7}+2}{5} \\)", "\\( \\sqrt{7}+2 \\)", "\\( \\frac{\\sqrt{7}+2}{11} \\)"], correct: 0, exp: "<div>\\( \\frac{\\sqrt{7}+2}{7-4} = \\frac{\\sqrt{7}+2}{3} \\).</div><div class='translation'>\\( \\frac{\\sqrt{7}+2}{7-4} = \\frac{\\sqrt{7}+2}{3} \\).</div>" }
+                    ]},
+                    { type: 'theory', content: `
+                        <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg mb-6">
+                            <h2 class="text-2xl font-bold text-green-700 mb-2"><i class="fas fa-running mr-2"></i>Rationalizing with Numerators > 1</h2>
+                            <p class="translation">Merasionalkan dengan Pembilang > 1</p>
+                        </div>
+                        <div class="flex gap-6 items-center mb-6">
+                            <svg width="180" height="140" viewBox="0 0 200 160" class="flex-shrink-0">
+                                <text x="100" y="20" font-size="12" text-anchor="middle" fill="#3b82f6">5 / (1 + √2)</text>
+                                <path d="M 100 25 L 100 45" stroke="#000" stroke-width="2" marker-end="url(#arrow)"/>
+                                <text x="100" y="60" font-size="12" text-anchor="middle" fill="#10b981">× (1 - √2) / (1 - √2)</text>
+                                <path d="M 100 65 L 100 85" stroke="#000" stroke-width="2" marker-end="url(#arrow)"/>
+                                <text x="100" y="100" font-size="12" text-anchor="middle" fill="#fbbf24">5(1 - √2) / (1 - 2)</text>
+                                <path d="M 100 105 L 100 125" stroke="#000" stroke-width="2" marker-end="url(#arrow)"/>
+                                <text x="100" y="140" font-size="12" text-anchor="middle" fill="#ef4444">-5 + 5√2</text>
+                            </svg>
+                            <div>
+                                <p class="mb-2">What if the numerator is not 1? Let's try \\( \\frac{5}{1+\\sqrt{2}} \\).</p>
+                                <p class="translation">Bagaimana jika pembilangnya bukan 1? Mari kita coba \\( \\frac{5}{1+\\sqrt{2}} \\).</p>
+                                <p class="mt-2"><strong>Step 1 & 2:</strong> Conjugate of \\( 1+\\sqrt{2} \\) is \\( 1-\\sqrt{2} \\).</p>
+                                <p class="translation"><strong>Langkah 1 & 2:</strong> Konjugat dari \\( 1+\\sqrt{2} \\) adalah \\( 1-\\sqrt{2} \\).</p>
+                                <p class="mt-2"><strong>Step 3:</strong> Multiply: \\( \\frac{5(1-\\sqrt{2})}{(1+\\sqrt{2})(1-\\sqrt{2})} \\).</p>
+                                <p class="translation"><strong>Langkah 3:</strong> Kalikan: \\( \\frac{5(1-\\sqrt{2})}{(1+\\sqrt{2})(1-\\sqrt{2})} \\).</p>
+                                <p class="mt-2"><strong>Step 4:</strong> Denominator: \\( 1 - 2 = -1 \\). Result: \\( -5(1-\\sqrt{2}) = -5 + 5\\sqrt{2} \\).</p>
+                                <p class="translation"><strong>Langkah 4:</strong> Penyebut: \\( 1 - 2 = -1 \\). Hasil: \\( -5(1-\\sqrt{2}) = -5 + 5\\sqrt{2} \\).</p>
+                            </div>
+                        </div>
+                    `},
+                    { type: 'tasks', count: 3, tasks: [
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="12" text-anchor="middle">3 / (2 + √3)</text></svg>`, q: "Rationalize \\( \\frac{3}{2+\\sqrt{3}} \\).", q_trans: "Rasionalkan \\( \\frac{3}{2+\\sqrt{3}} \\).", opts: ["\\( 6 - 3\\sqrt{3} \\)", "\\( 6 + 3\\sqrt{3} \\)", "\\( \\frac{6-3\\sqrt{3}}{7} \\)", "\\( \\frac{3(2+\\sqrt{3})}{1} \\)", "\\( 3\\sqrt{3} - 6 \\)"], correct: 0, exp: "<div>\\( \\frac{3(2-\\sqrt{3})}{4-3} = \\frac{6-3\\sqrt{3}}{1} = 6-3\\sqrt{3} \\).</div><div class='translation'>\\( \\frac{3(2-\\sqrt{3})}{4-3} = \\frac{6-3\\sqrt{3}}{1} = 6-3\\sqrt{3} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><rect x="20" y="20" width="60" height="40" fill="#3b82f6" rx="5"/><text x="50" y="45" font-size="10" text-anchor="middle" fill="#fff">Gear</text></svg>`, q: "A gear ratio is given by \\( \\frac{4}{3-\\sqrt{5}} \\). Simplify this ratio.", q_trans: "Rasio roda gigi diberikan oleh \\( \\frac{4}{3-\\sqrt{5}} \\). Sederhanakan rasio ini.", opts: ["\\( 3+\\sqrt{5} \\)", "\\( 3-\\sqrt{5} \\)", "\\( 12-4\\sqrt{5} \\)", "\\( \\frac{12+4\\sqrt{5}}{4} \\)", "\\( \\frac{4}{3+\\sqrt{5}} \\)"], correct: 0, exp: "<div>\\( \\frac{4(3+\\sqrt{5})}{9-5} = \\frac{4(3+\\sqrt{5})}{4} = 3+\\sqrt{5} \\).</div><div class='translation'>\\( \\frac{4(3+\\sqrt{5})}{9-5} = \\frac{4(3+\\sqrt{5})}{4} = 3+\\sqrt{5} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="12" text-anchor="middle">2 / (√6 - 1)</text></svg>`, q: "Simplify \\( \\frac{2}{\\sqrt{6}-1} \\).", q_trans: "Sederhanakan \\( \\frac{2}{\\sqrt{6}-1} \\).", opts: ["\\( \\frac{2\\sqrt{6}+2}{5} \\)", "\\( \\frac{2\\sqrt{6}-2}{5} \\)", "\\( 2\\sqrt{6}+2 \\)", "\\( \\frac{2(\\sqrt{6}-1)}{5} \\)", "\\( \\frac{2\\sqrt{6}+2}{7} \\)"], correct: 0, exp: "<div>\\( \\frac{2(\\sqrt{6}+1)}{6-1} = \\frac{2\\sqrt{6}+2}{5} \\).</div><div class='translation'>\\( \\frac{2(\\sqrt{6}+1)}{6-1} = \\frac{2\\sqrt{6}+2}{5} \\).</div>" }
+                    ]},
+                    { type: 'theory', content: `
+                        <div class="bg-purple-50 border-l-4 border-purple-500 p-4 rounded-r-lg mb-6">
+                            <h2 class="text-2xl font-bold text-purple-700 mb-2"><i class="fas fa-calculator mr-2"></i>When Both Terms Have Roots</h2>
+                            <p class="translation">Ketika Kedua Suku Memiliki Akar</p>
+                        </div>
+                        <div class="flex gap-6 items-center mb-6">
+                            <svg width="180" height="140" viewBox="0 0 200 160" class="flex-shrink-0">
+                                <text x="100" y="20" font-size="12" text-anchor="middle" fill="#3b82f6">1 / (√5 + √2)</text>
+                                <path d="M 100 25 L 100 45" stroke="#000" stroke-width="2" marker-end="url(#arrow)"/>
+                                <text x="100" y="60" font-size="12" text-anchor="middle" fill="#10b981">× (√5 - √2) / (√5 - √2)</text>
+                                <path d="M 100 65 L 100 85" stroke="#000" stroke-width="2" marker-end="url(#arrow)"/>
+                                <text x="100" y="100" font-size="12" text-anchor="middle" fill="#fbbf24">(√5 - √2) / (5 - 2)</text>
+                                <path d="M 100 105 L 100 125" stroke="#000" stroke-width="2" marker-end="url(#arrow)"/>
+                                <text x="100" y="140" font-size="12" text-anchor="middle" fill="#ef4444">(√5 - √2) / 3</text>
+                            </svg>
+                            <div>
+                                <p class="mb-2">Sometimes, both terms in the denominator are roots, like \\( \\sqrt{a} + \\sqrt{b} \\).</p>
+                                <p class="translation">Terkadang, kedua suku di penyebut adalah akar, seperti \\( \\sqrt{a} + \\sqrt{b} \\).</p>
+                                <p class="mt-2">The conjugate is simply \\( \\sqrt{a} - \\sqrt{b} \\).</p>
+                                <p class="translation">Konjugatnya hanyalah \\( \\sqrt{a} - \\sqrt{b} \\).</p>
+                                <p class="mt-2">Example: \\( \\frac{1}{\\sqrt{5}+\\sqrt{2}} \\times \\frac{\\sqrt{5}-\\sqrt{2}}{\\sqrt{5}-\\sqrt{2}} = \\frac{\\sqrt{5}-\\sqrt{2}}{5-2} = \\frac{\\sqrt{5}-\\sqrt{2}}{3} \\).</p>
+                                <p class="translation">Contoh: \\( \\frac{1}{\\sqrt{5}+\\sqrt{2}} \\times \\frac{\\sqrt{5}-\\sqrt{2}}{\\sqrt{5}-\\sqrt{2}} = \\frac{\\sqrt{5}-\\sqrt{2}}{5-2} = \\frac{\\sqrt{5}-\\sqrt{2}}{3} \\).</p>
+                            </div>
+                        </div>
+                    `},
+                    { type: 'tasks', count: 4, tasks: [
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="12" text-anchor="middle">1 / (√3 + √2)</text></svg>`, q: "Rationalize \\( \\frac{1}{\\sqrt{3}+\\sqrt{2}} \\).", q_trans: "Rasionalkan \\( \\frac{1}{\\sqrt{3}+\\sqrt{2}} \\).", opts: ["\\( \\sqrt{3}-\\sqrt{2} \\)", "\\( \\sqrt{2}-\\sqrt{3} \\)", "\\( \\frac{\\sqrt{3}-\\sqrt{2}}{5} \\)", "\\( \\sqrt{3}+\\sqrt{2} \\)", "\\( \\frac{\\sqrt{3}+\\sqrt{2}}{1} \\)"], correct: 0, exp: "<div>\\( \\frac{\\sqrt{3}-\\sqrt{2}}{3-2} = \\frac{\\sqrt{3}-\\sqrt{2}}{1} = \\sqrt{3}-\\sqrt{2} \\).</div><div class='translation'>\\( \\frac{\\sqrt{3}-\\sqrt{2}}{3-2} = \\frac{\\sqrt{3}-\\sqrt{2}}{1} = \\sqrt{3}-\\sqrt{2} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><rect x="20" y="20" width="60" height="40" fill="#8b5cf6" rx="5"/><text x="50" y="45" font-size="10" text-anchor="middle" fill="#fff">Wave</text></svg>`, q: "An acoustic wave amplitude is modeled by \\( \\frac{2}{\\sqrt{5}-\\sqrt{3}} \\). Simplify this expression.", q_trans: "Amplitudo gelombang akustik dimodelkan oleh \\( \\frac{2}{\\sqrt{5}-\\sqrt{3}} \\). Sederhanakan ekspresi ini.", opts: ["\\( \\sqrt{5}+\\sqrt{3} \\)", "\\( \\sqrt{5}-\\sqrt{3} \\)", "\\( \\frac{2(\\sqrt{5}+\\sqrt{3})}{2} \\)", "\\( \\frac{\\sqrt{5}+\\sqrt{3}}{2} \\)", "\\( 2\\sqrt{5}+2\\sqrt{3} \\)"], correct: 0, exp: "<div>\\( \\frac{2(\\sqrt{5}+\\sqrt{3})}{5-3} = \\frac{2(\\sqrt{5}+\\sqrt{3})}{2} = \\sqrt{5}+\\sqrt{3} \\).</div><div class='translation'>\\( \\frac{2(\\sqrt{5}+\\sqrt{3})}{5-3} = \\frac{2(\\sqrt{5}+\\sqrt{3})}{2} = \\sqrt{5}+\\sqrt{3} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="10" text-anchor="middle">3 / (√7 - √2)</text></svg>`, q: "Simplify \\( \\frac{3}{\\sqrt{7}-\\sqrt{2}} \\).", q_trans: "Sederhanakan \\( \\frac{3}{\\sqrt{7}-\\sqrt{2}} \\).", opts: ["\\( \\frac{3\\sqrt{7}+3\\sqrt{2}}{5} \\)", "\\( \\frac{\\sqrt{7}+\\sqrt{2}}{5} \\)", "\\( \\frac{3(\\sqrt{7}-\\sqrt{2})}{5} \\)", "\\( 3\\sqrt{7}+3\\sqrt{2} \\)", "\\( \\frac{3\\sqrt{7}-3\\sqrt{2}}{5} \\)"], correct: 0, exp: "<div>\\( \\frac{3(\\sqrt{7}+\\sqrt{2})}{7-2} = \\frac{3\\sqrt{7}+3\\sqrt{2}}{5} \\).</div><div class='translation'>\\( \\frac{3(\\sqrt{7}+\\sqrt{2})}{7-2} = \\frac{3\\sqrt{7}+3\\sqrt{2}}{5} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><circle cx="50" cy="40" r="20" fill="#10b981"/><text x="50" y="45" font-size="10" text-anchor="middle" fill="#fff">Math</text></svg>`, q: "What is the conjugate of \\( -\\sqrt{6} + 2\\sqrt{5} \\)?", q_trans: "Apa konjugat dari \\( -\\sqrt{6} + 2\\sqrt{5} \\)?", opts: ["\\( -\\sqrt{6} - 2\\sqrt{5} \\)", "\\( \\sqrt{6} - 2\\sqrt{5} \\)", "\\( \\sqrt{6} + 2\\sqrt{5} \\)", "\\( 2\\sqrt{5} + \\sqrt{6} \\)", "\\( \\sqrt{6} + 5\\sqrt{2} \\)"], correct: 0, exp: "<div>Change the middle sign: \\( -\\sqrt{6} - 2\\sqrt{5} \\).</div><div class='translation'>Ubah tanda tengah: \\( -\\sqrt{6} - 2\\sqrt{5} \\).</div>" }
+                    ]}
+                ]
+            },
+
+            independent: {
+                title: "Independent Practice",
+                pages: [
+                    { type: 'theory', content: `
+                        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg mb-6">
+                            <h2 class="text-2xl font-bold text-blue-700 mb-2"><i class="fas fa-broom mr-2"></i>Simplifying Negative Denominators</h2>
+                            <p class="translation">Menyederhanakan Penyebut Negatif</p>
+                        </div>
+                        <div class="flex gap-6 items-center mb-6">
+                            <svg width="180" height="140" viewBox="0 0 200 160" class="flex-shrink-0">
+                                <text x="100" y="20" font-size="12" text-anchor="middle" fill="#3b82f6">4 / (1 - √5)</text>
+                                <path d="M 100 25 L 100 45" stroke="#000" stroke-width="2" marker-end="url(#arrow)"/>
+                                <text x="100" y="60" font-size="12" text-anchor="middle" fill="#10b981">× (1 + √5) / (1 + √5)</text>
+                                <path d="M 100 65 L 100 85" stroke="#000" stroke-width="2" marker-end="url(#arrow)"/>
+                                <text x="100" y="100" font-size="12" text-anchor="middle" fill="#fbbf24">4(1 + √5) / (1 - 5)</text>
+                                <path d="M 100 105 L 100 125" stroke="#000" stroke-width="2" marker-end="url(#arrow)"/>
+                                <text x="100" y="140" font-size="12" text-anchor="middle" fill="#ef4444">-1 - √5</text>
+                            </svg>
+                            <div>
+                                <p class="mb-2">Sometimes the difference of squares yields a negative number. We must factor out the negative to keep the denominator positive!</p>
+                                <p class="translation">Terkadang selisih kuadrat menghasilkan bilangan negatif. Kita harus memfaktorkan negatifnya agar penyebut tetap positif!</p>
+                                <p class="mt-2">Example: \\( \\frac{4}{1-\\sqrt{5}} \\times \\frac{1+\\sqrt{5}}{1+\\sqrt{5}} = \\frac{4(1+\\sqrt{5})}{1-5} = \\frac{4(1+\\sqrt{5})}{-4} = -1(1+\\sqrt{5}) = -1-\\sqrt{5} \\).</p>
+                                <p class="translation">Contoh: \\( \\frac{4}{1-\\sqrt{5}} \\times \\frac{1+\\sqrt{5}}{1+\\sqrt{5}} = \\frac{4(1+\\sqrt{5})}{1-5} = \\frac{4(1+\\sqrt{5})}{-4} = -1(1+\\sqrt{5}) = -1-\\sqrt{5} \\).</p>
+                            </div>
+                        </div>
+                    `},
+                    { type: 'tasks', count: 3, tasks: [
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="12" text-anchor="middle">5 / (2 - √3)</text></svg>`, q: "Rationalize \\( \\frac{5}{2-\\sqrt{3}} \\).", q_trans: "Rasionalkan \\( \\frac{5}{2-\\sqrt{3}} \\).", opts: ["\\( 10 + 5\\sqrt{3} \\)", "\\( 10 - 5\\sqrt{3} \\)", "\\( \\frac{10+5\\sqrt{3}}{7} \\)", "\\( -10 - 5\\sqrt{3} \\)", "\\( \\frac{10-5\\sqrt{3}}{1} \\)"], correct: 0, exp: "<div>\\( \\frac{5(2+\\sqrt{3})}{4-3} = \\frac{10+5\\sqrt{3}}{1} = 10+5\\sqrt{3} \\).</div><div class='translation'>\\( \\frac{5(2+\\sqrt{3})}{4-3} = \\frac{10+5\\sqrt{3}}{1} = 10+5\\sqrt{3} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><rect x="20" y="20" width="60" height="40" fill="#ef4444" rx="5"/><text x="50" y="45" font-size="10" text-anchor="middle" fill="#fff">Motion</text></svg>`, q: "Kinematic motion gives \\( \\frac{2}{1-\\sqrt{2}} \\). Simplify this value.", q_trans: "Gerak kinematik memberikan \\( \\frac{2}{1-\\sqrt{2}} \\). Sederhanakan nilai ini.", opts: ["\\( -2 - 2\\sqrt{2} \\)", "\\( 2 - 2\\sqrt{2} \\)", "\\( -2 + 2\\sqrt{2} \\)", "\\( 2 + 2\\sqrt{2} \\)", "\\( \\frac{2-2\\sqrt{2}}{-1} \\)"], correct: 0, exp: "<div>\\( \\frac{2(1+\\sqrt{2})}{1-2} = \\frac{2+2\\sqrt{2}}{-1} = -2 - 2\\sqrt{2} \\).</div><div class='translation'>\\( \\frac{2(1+\\sqrt{2})}{1-2} = \\frac{2+2\\sqrt{2}}{-1} = -2 - 2\\sqrt{2} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="10" text-anchor="middle">6 / (√5 - 3)</text></svg>`, q: "Simplify \\( \\frac{6}{\\sqrt{5}-3} \\).", q_trans: "Sederhanakan \\( \\frac{6}{\\sqrt{5}-3} \\).", opts: ["\\( \\frac{-3\\sqrt{5} - 9}{2} \\)", "\\( \\frac{3\\sqrt{5} + 9}{2} \\)", "\\( \\frac{6\\sqrt{5} + 18}{4} \\)", "\\( \\frac{3\\sqrt{5} - 9}{2} \\)", "\\( 3\\sqrt{5} + 9 \\)"], correct: 0, exp: "<div>\\( \\frac{6(\\sqrt{5}+3)}{5-9} = \\frac{6\\sqrt{5}+18}{-4} = \\frac{-3\\sqrt{5}-9}{2} \\).</div><div class='translation'>\\( \\frac{6(\\sqrt{5}+3)}{5-9} = \\frac{6\\sqrt{5}+18}{-4} = \\frac{-3\\sqrt{5}-9}{2} \\).</div>" }
+                    ]},
+                    { type: 'theory', content: `
+                        <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg mb-6">
+                            <h2 class="text-2xl font-bold text-green-700 mb-2"><i class="fas fa-cut mr-2"></i>Simplify Roots BEFORE Rationalizing</h2>
+                            <p class="translation">Sederhanakan Akar SEBELUM Merasionalkan</p>
+                        </div>
+                        <div class="flex gap-6 items-center mb-6">
+                            <svg width="180" height="140" viewBox="0 0 200 160" class="flex-shrink-0">
+                                <text x="100" y="20" font-size="12" text-anchor="middle" fill="#3b82f6">3 / (2 + √8)</text>
+                                <path d="M 100 25 L 100 45" stroke="#000" stroke-width="2" marker-end="url(#arrow)"/>
+                                <text x="100" y="60" font-size="12" text-anchor="middle" fill="#10b981">3 / (2 + 2√2)</text>
+                                <path d="M 100 65 L 100 85" stroke="#000" stroke-width="2" marker-end="url(#arrow)"/>
+                                <text x="100" y="100" font-size="12" text-anchor="middle" fill="#fbbf24">× (2 - 2√2) / (2 - 2√2)</text>
+                                <path d="M 100 105 L 100 125" stroke="#000" stroke-width="2" marker-end="url(#arrow)"/>
+                                <text x="100" y="140" font-size="12" text-anchor="middle" fill="#ef4444">(3 - 3√2) / -2</text>
+                            </svg>
+                            <div>
+                                <p class="mb-2">If the binomial contains a root that can be simplified, do it first! It reduces calculation errors.</p>
+                                <p class="translation">Jika binomial berisi akar yang bisa disederhanakan, lakukan dulu! Ini mengurangi kesalahan hitung.</p>
+                                <p class="mt-2">Example: \\( \\frac{3}{2+\\sqrt{8}} = \\frac{3}{2+2\\sqrt{2}} \\).</p>
+                                <p class="translation">Contoh: \\( \\frac{3}{2+\\sqrt{8}} = \\frac{3}{2+2\\sqrt{2}} \\).</p>
+                                <p class="mt-2">Conjugate is \\( 2-2\\sqrt{2} \\). Denominator: \\( 4 - 8 = -4 \\).</p>
+                                <p class="translation">Konjugatnya \\( 2-2\\sqrt{2} \\). Penyebut: \\( 4 - 8 = -4 \\).</p>
+                            </div>
+                        </div>
+                    `},
+                    { type: 'tasks', count: 3, tasks: [
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="12" text-anchor="middle">2 / (1 + √12)</text></svg>`, q: "Rationalize \\( \\frac{2}{1+\\sqrt{12}} \\).", q_trans: "Rasionalkan \\( \\frac{2}{1+\\sqrt{12}} \\).", opts: ["\\( \\frac{2 - 4\\sqrt{3}}{-11} \\)", "\\( \\frac{2 - 2\\sqrt{3}}{-11} \\)", "\\( \\frac{2 + 4\\sqrt{3}}{13} \\)", "\\( 2 - 4\\sqrt{3} \\)", "\\( \\frac{4\\sqrt{3} - 2}{11} \\)"], correct: 0, exp: "<div>\\( \\sqrt{12} = 2\\sqrt{3} \\). \\( \\frac{2(1-2\\sqrt{3})}{1-12} = \\frac{2-4\\sqrt{3}}{-11} \\).</div><div class='translation'>\\( \\sqrt{12} = 2\\sqrt{3} \\). \\( \\frac{2(1-2\\sqrt{3})}{1-12} = \\frac{2-4\\sqrt{3}}{-11} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><rect x="20" y="20" width="60" height="40" fill="#3b82f6" rx="5"/><text x="50" y="45" font-size="10" text-anchor="middle" fill="#fff">Math</text></svg>`, q: "Simplify \\( \\frac{4}{\\sqrt{18}-2} \\).", q_trans: "Sederhanakan \\( \\frac{4}{\\sqrt{18}-2} \\).", opts: ["\\( \\frac{6\\sqrt{2}+4}{7} \\)", "\\( \\frac{12\\sqrt{2}-8}{14} \\)", "\\( \\frac{4\\sqrt{2}+8}{14} \\)", "\\( \\frac{6\\sqrt{2}-4}{7} \\)", "\\( 6\\sqrt{2}+4 \\)"], correct: 0, exp: "<div>\\( \\sqrt{18} = 3\\sqrt{2} \\). \\( \\frac{4(3\\sqrt{2}+2)}{18-4} = \\frac{12\\sqrt{2}+8}{14} = \\frac{6\\sqrt{2}+4}{7} \\).</div><div class='translation'>\\( \\sqrt{18} = 3\\sqrt{2} \\). \\( \\frac{4(3\\sqrt{2}+2)}{18-4} = \\frac{12\\sqrt{2}+8}{14} = \\frac{6\\sqrt{2}+4}{7} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="10" text-anchor="middle">5 / (√27 + 1)</text></svg>`, q: "Rationalize \\( \\frac{5}{\\sqrt{27}+1} \\).", q_trans: "Rasionalkan \\( \\frac{5}{\\sqrt{27}+1} \\).", opts: ["\\( \\frac{15\\sqrt{3} - 5}{26} \\)", "\\( \\frac{5\\sqrt{3} - 5}{26} \\)", "\\( \\frac{15\\sqrt{3} + 5}{28} \\)", "\\( 15\\sqrt{3} - 5 \\)", "\\( \\frac{5\\sqrt{3} + 5}{26} \\)"], correct: 0, exp: "<div>\\( \\sqrt{27} = 3\\sqrt{3} \\). \\( \\frac{5(3\\sqrt{3}-1)}{27-1} = \\frac{15\\sqrt{3}-5}{26} \\).</div><div class='translation'>\\( \\sqrt{27} = 3\\sqrt{3} \\). \\( \\frac{5(3\\sqrt{3}-1)}{27-1} = \\frac{15\\sqrt{3}-5}{26} \\).</div>" }
+                    ]},
+                    { type: 'theory', content: `
+                        <div class="bg-purple-50 border-l-4 border-purple-500 p-4 rounded-r-lg mb-6">
+                            <h2 class="text-2xl font-bold text-purple-700 mb-2"><i class="fas fa-balance-scale mr-2"></i>Rationalizing with Variables</h2>
+                            <p class="translation">Merasionalkan dengan Variabel</p>
+                        </div>
+                        <div class="flex gap-6 items-center mb-6">
+                            <svg width="180" height="140" viewBox="0 0 200 160" class="flex-shrink-0">
+                                <rect x="20" y="20" width="160" height="120" fill="#f3f4f6" stroke="#000" rx="10"/>
+                                <text x="100" y="60" font-size="14" text-anchor="middle">x / (x + √y)</text>
+                                <path d="M 100 70 L 100 90" stroke="#000" stroke-width="2" marker-end="url(#arrow)"/>
+                                <text x="100" y="110" font-size="12" text-anchor="middle">× (x - √y) / (x - √y)</text>
+                                <text x="100" y="135" font-size="12" text-anchor="middle" fill="#6b7280">Works the same way!</text>
+                            </svg>
+                            <div>
+                                <p class="mb-2">Variables follow the exact same rules! Treat them as algebraic terms.</p>
+                                <p class="translation">Variabel mengikuti aturan yang persis sama! Perlakukan mereka sebagai suku aljabar.</p>
+                                <p class="mt-2">Example: \\( \\frac{x}{x+\\sqrt{y}} \\times \\frac{x-\\sqrt{y}}{x-\\sqrt{y}} = \\frac{x(x-\\sqrt{y})}{x^2-y} \\).</p>
+                                <p class="translation">Contoh: \\( \\frac{x}{x+\\sqrt{y}} \\times \\frac{x-\\sqrt{y}}{x-\\sqrt{y}} = \\frac{x(x-\\sqrt{y})}{x^2-y} \\).</p>
+                                <p class="mt-2">The denominator becomes a difference of squares: \\( x^2 - y \\).</p>
+                                <p class="translation">Penyebutnya menjadi selisih kuadrat: \\( x^2 - y \\).</p>
+                            </div>
+                        </div>
+                    `},
+                    { type: 'tasks', count: 4, tasks: [
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="12" text-anchor="middle">x / (x + √2)</text></svg>`, q: "Rationalize \\( \\frac{x}{x+\\sqrt{2}} \\).", q_trans: "Rasionalkan \\( \\frac{x}{x+\\sqrt{2}} \\).", opts: ["\\( \\frac{x^2 - x\\sqrt{2}}{x^2 - 2} \\)", "\\( \\frac{x^2 + x\\sqrt{2}}{x^2 + 2} \\)", "\\( \\frac{x - \\sqrt{2}}{x^2 - 2} \\)", "\\( \\frac{x^2 - x\\sqrt{2}}{x^2 - 4} \\)", "\\( x - \\sqrt{2} \\)"], correct: 0, exp: "<div>\\( \\frac{x(x-\\sqrt{2})}{x^2 - (\\sqrt{2})^2} = \\frac{x^2 - x\\sqrt{2}}{x^2 - 2} \\).</div><div class='translation'>\\( \\frac{x(x-\\sqrt{2})}{x^2 - (\\sqrt{2})^2} = \\frac{x^2 - x\\sqrt{2}}{x^2 - 2} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><rect x="20" y="20" width="60" height="40" fill="#fbbf24" rx="5"/><text x="50" y="45" font-size="10" text-anchor="middle">Phys</text></svg>`, q: "A physics formula yields \\( \\frac{2v}{v - \\sqrt{3}} \\). Simplify this.", q_trans: "Rumus fisika menghasilkan \\( \\frac{2v}{v - \\sqrt{3}} \\). Sederhanakan ini.", opts: ["\\( \\frac{2v^2 + 2v\\sqrt{3}}{v^2 - 3} \\)", "\\( \\frac{2v^2 - 2v\\sqrt{3}}{v^2 - 3} \\)", "\\( \\frac{2v^2 + 2v\\sqrt{3}}{v^2 - 9} \\)", "\\( \\frac{2v + 2\\sqrt{3}}{v - 3} \\)", "\\( 2v + 2\\sqrt{3} \\)"], correct: 0, exp: "<div>\\( \\frac{2v(v+\\sqrt{3})}{v^2 - 3} = \\frac{2v^2 + 2v\\sqrt{3}}{v^2 - 3} \\).</div><div class='translation'>\\( \\frac{2v(v+\\sqrt{3})}{v^2 - 3} = \\frac{2v^2 + 2v\\sqrt{3}}{v^2 - 3} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="10" text-anchor="middle">1 / (a + √b)</text></svg>`, q: "What is the denominator of \\( \\frac{1}{a+\\sqrt{b}} \\) after rationalization?", q_trans: "Berapakah penyebut dari \\( \\frac{1}{a+\\sqrt{b}} \\) setelah dirasionalkan?", opts: ["\\( a^2 - b \\)", "\\( a^2 + b \\)", "\\( a - b \\)", "\\( a - \\sqrt{b} \\)", "\\( a^2 - b^2 \\)"], correct: 0, exp: "<div>Using difference of squares: \\( a^2 - (\\sqrt{b})^2 = a^2 - b \\).</div><div class='translation'>Menggunakan selisih kuadrat: \\( a^2 - (\\sqrt{b})^2 = a^2 - b \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><circle cx="50" cy="40" r="20" fill="#8b5cf6"/><text x="50" y="45" font-size="10" text-anchor="middle" fill="#fff">Math</text></svg>`, q: "Simplify \\( \\frac{y}{2y - \\sqrt{5}} \\).", q_trans: "Sederhanakan \\( \\frac{y}{2y - \\sqrt{5}} \\).", opts: ["\\( \\frac{2y^2 + y\\sqrt{5}}{4y^2 - 5} \\)", "\\( \\frac{2y^2 - y\\sqrt{5}}{4y^2 - 5} \\)", "\\( \\frac{2y^2 + y\\sqrt{5}}{4y^2 - 25} \\)", "\\( \\frac{y^2 + y\\sqrt{5}}{2y^2 - 5} \\)", "\\( 2y + \\sqrt{5} \\)"], correct: 0, exp: "<div>\\( \\frac{y(2y+\\sqrt{5})}{(2y)^2 - 5} = \\frac{2y^2 + y\\sqrt{5}}{4y^2 - 5} \\).</div><div class='translation'>\\( \\frac{y(2y+\\sqrt{5})}{(2y)^2 - 5} = \\frac{2y^2 + y\\sqrt{5}}{4y^2 - 5} \\).</div>" }
+                    ]}
+                ]
+            },
+
+            consolidation: {
+                title: "Consolidation & Reflection",
+                pages: [
+                    { type: 'theory', content: `
+                        <div class="bg-indigo-50 border-l-4 border-indigo-500 p-4 rounded-r-lg mb-6">
+                            <h2 class="text-2xl font-bold text-indigo-700 mb-2"><i class="fas fa-clipboard-check mr-2"></i>Summary: Binomial Rationalization</h2>
+                            <p class="translation">Rangkuman: Rasionalisasi Binomial</p>
+                        </div>
+                        <div class="flex gap-6 items-center mb-6">
+                            <svg width="150" height="150" viewBox="0 0 200 200" class="flex-shrink-0">
+                                <rect x="40" y="40" width="120" height="120" fill="#e0e7ff" stroke="#4f46e5" stroke-width="3" rx="15"/>
+                                <path d="M 60 100 L 90 130 L 140 70" fill="none" stroke="#10b981" stroke-width="8" stroke-linecap="round"/>
+                            </svg>
+                            <div>
+                                <p class="mb-2">Today we mastered rationalizing denominators that contain two terms (binomials) with square roots.</p>
+                                <p class="translation">Hari ini kita menguasai cara merasionalkan penyebut yang memuat dua suku (binomial) dengan akar kuadrat.</p>
+                                <ul class="list-disc ml-6 mt-2">
+                                    <li><strong>The Conjugate:</strong> Flip the middle sign. \\( a+\\sqrt{b} \\to a-\\sqrt{b} \\).</li>
+                                    <li class="translation"><strong>Konjugat:</strong> Ubah tanda tengah. \\( a+\\sqrt{b} \\to a-\\sqrt{b} \\).</li>
+                                    <li><strong>The Goal:</strong> Create a difference of squares \\( (a+b)(a-b) = a^2 - b^2 \\) to eliminate the root.</li>
+                                    <li class="translation"><strong>Tujuannya:</strong> Membuat selisih kuadrat \\( (a+b)(a-b) = a^2 - b^2 \\) untuk menghilangkan akar.</li>
+                                    <li><strong>Always Simplify:</strong> Check if the root can be simplified first, and reduce fractions at the end.</li>
+                                    <li class="translation"><strong>Selalu Sederhanakan:</strong> Periksa apakah akar bisa disederhanakan dulu, dan sederhanakan pecahan di akhir.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mt-6 text-center">
+                            <p class="mb-4">Ready to test your skills further? Visit our learning platform for unlimited practice!</p>
+                            <p class="translation">Siap menguji kemampuanmu lebih jauh? Kunjungi platform pembelajaran kami untuk latihan tanpa batas!</p>
+                            <a href="https://learn.algonova.id" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg text-lg shadow-md inline-flex items-center gap-2 mt-2">
+                                <i class="fas fa-rocket"></i> Continue to Algonova
+                                <span class="translation" style="color: #bfdbfe; display: inline;">Lanjut ke Algonova</span>
+                            </a>
+                        </div>
+                    `}
+                ]
+            },
+
+            task1: {
+                title: "Task 1: Basic Binomial Rationalization",
+                pages: [
+                    { type: 'tasks', count: 10, tasks: [
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="12" text-anchor="middle">4 - √7</text></svg>`, q: "What is the conjugate of \\( 4 - \\sqrt{7} \\)?", q_trans: "Berapakah konjugat dari \\( 4 - \\sqrt{7} \\)?", opts: ["\\( 4 + \\sqrt{7} \\)", "\\( -4 + \\sqrt{7} \\)", "\\( \\sqrt{7} - 4 \\)", "\\( 4 - \\sqrt{7} \\)", "\\( 7 - \\sqrt{4} \\)"], correct: 0, exp: "<div>Change the middle sign. The conjugate is \\( 4 + \\sqrt{7} \\).</div><div class='translation'>Ubah tanda di tengah. Konjugatnya adalah \\( 4 + \\sqrt{7} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="12" text-anchor="middle">1 / (1 + √2)</text></svg>`, q: "Rationalize \\( \\frac{1}{1+\\sqrt{2}} \\).", q_trans: "Rasionalkan \\( \\frac{1}{1+\\sqrt{2}} \\).", opts: ["\\( \\sqrt{2}-1 \\)", "\\( 1-\\sqrt{2} \\)", "\\( \\frac{1}{1-\\sqrt{2}} \\)", "\\( \\sqrt{2}+1 \\)", "\\( \\frac{\\sqrt{2}-1}{3} \\)"], correct: 0, exp: "<div>Multiply by \\( \\frac{1-\\sqrt{2}}{1-\\sqrt{2}} \\). Denom: \\( 1-2=-1 \\). Num: \\( 1-\\sqrt{2} \\). Result: \\( \\frac{1-\\sqrt{2}}{-1} = \\sqrt{2}-1 \\).</div><div class='translation'>Kalikan dengan \\( \\frac{1-\\sqrt{2}}{1-\\sqrt{2}} \\). Penyebut: \\( 1-2=-1 \\). Pembilang: \\( 1-\\sqrt{2} \\). Hasil: \\( \\frac{1-\\sqrt{2}}{-1} = \\sqrt{2}-1 \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><circle cx="50" cy="40" r="20" fill="#3b82f6"/><text x="50" y="45" font-size="10" text-anchor="middle" fill="#fff">Circuit</text></svg>`, q: "An electrical circuit has a resistance of \\( \\frac{5}{2+\\sqrt{3}} \\) Ohms. What is the exact resistance?", q_trans: "Rangkaian listrik memiliki hambatan \\( \\frac{5}{2+\\sqrt{3}} \\) Ohm. Berapakah hambatan pastinya?", opts: ["\\( 10 - 5\\sqrt{3} \\)", "\\( 10 + 5\\sqrt{3} \\)", "\\( \\frac{10-5\\sqrt{3}}{7} \\)", "\\( 5(2+\\sqrt{3}) \\)", "\\( \\frac{10+5\\sqrt{3}}{7} \\)"], correct: 0, exp: "<div>Multiply by \\( \\frac{2-\\sqrt{3}}{2-\\sqrt{3}} \\). Denom: \\( 4-3=1 \\). Num: \\( 5(2-\\sqrt{3}) = 10-5\\sqrt{3} \\).</div><div class='translation'>Kalikan dengan \\( \\frac{2-\\sqrt{3}}{2-\\sqrt{3}} \\). Penyebut: \\( 4-3=1 \\). Pembilang: \\( 5(2-\\sqrt{3}) = 10-5\\sqrt{3} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="12" text-anchor="middle">1 / (√7 - 2)</text></svg>`, q: "Simplify \\( \\frac{1}{\\sqrt{7}-2} \\).", q_trans: "Sederhanakan \\( \\frac{1}{\\sqrt{7}-2} \\).", opts: ["\\( \\frac{\\sqrt{7}+2}{3} \\)", "\\( \\frac{\\sqrt{7}-2}{3} \\)", "\\( \\frac{\\sqrt{7}+2}{5} \\)", "\\( \\sqrt{7}+2 \\)", "\\( \\frac{\\sqrt{7}+2}{11} \\)"], correct: 0, exp: "<div>Conjugate is \\( \\sqrt{7}+2 \\). Denom: \\( 7-4=3 \\). Result: \\( \\frac{\\sqrt{7}+2}{3} \\).</div><div class='translation'>Konjugatnya \\( \\sqrt{7}+2 \\). Penyebut: \\( 7-4=3 \\). Hasil: \\( \\frac{\\sqrt{7}+2}{3} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><rect x="20" y="20" width="60" height="40" fill="#fbbf24" rx="5"/><text x="50" y="45" font-size="10" text-anchor="middle">Optics</text></svg>`, q: "In optics, a focal length component is \\( \\frac{3}{2-\\sqrt{3}} \\). Rationalize this expression.", q_trans: "Dalam optika, komponen panjang fokus adalah \\( \\frac{3}{2-\\sqrt{3}} \\). Rasionalkan ekspresi ini.", opts: ["\\( 6 + 3\\sqrt{3} \\)", "\\( 6 - 3\\sqrt{3} \\)", "\\( \\frac{6+3\\sqrt{3}}{7} \\)", "\\( 3(2-\\sqrt{3}) \\)", "\\( \\frac{6-3\\sqrt{3}}{1} \\)"], correct: 0, exp: "<div>Conjugate is \\( 2+\\sqrt{3} \\). Denom: \\( 4-3=1 \\). Num: \\( 3(2+\\sqrt{3}) = 6+3\\sqrt{3} \\).</div><div class='translation'>Konjugatnya \\( 2+\\sqrt{3} \\). Penyebut: \\( 4-3=1 \\). Pembilang: \\( 3(2+\\sqrt{3}) = 6+3\\sqrt{3} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="10" text-anchor="middle">(4+√2)(4-√2)</text></svg>`, q: "Evaluate \\( (4+\\sqrt{2})(4-\\sqrt{2}) \\).", q_trans: "Hitunglah \\( (4+\\sqrt{2})(4-\\sqrt{2}) \\).", opts: ["\\( 14 \\)", "\\( 18 \\)", "\\( 4\\sqrt{2} \\)", "\\( 16 \\)", "\\( 2 \\)"], correct: 0, exp: "<div>\\( 4^2 - (\\sqrt{2})^2 = 16 - 2 = 14 \\).</div><div class='translation'>\\( 4^2 - (\\sqrt{2})^2 = 16 - 2 = 14 \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><circle cx="50" cy="40" r="20" fill="#8b5cf6"/><text x="50" y="45" font-size="10" text-anchor="middle" fill="#fff">Logic</text></svg>`, q: "What is the conjugate of \\( -\\sqrt{5} + 3 \\)?", q_trans: "Berapakah konjugat dari \\( -\\sqrt{5} + 3 \\)?", opts: ["\\( -\\sqrt{5} - 3 \\)", "\\( \\sqrt{5} - 3 \\)", "\\( \\sqrt{5} + 3 \\)", "\\( 3 + \\sqrt{5} \\)", "\\( 5 - \\sqrt{3} \\)"], correct: 0, exp: "<div>Change the middle sign: \\( -\\sqrt{5} + 3 \\) becomes \\( -\\sqrt{5} - 3 \\).</div><div class='translation'>Ubah tanda tengah: \\( -\\sqrt{5} + 3 \\) menjadi \\( -\\sqrt{5} - 3 \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="12" text-anchor="middle">2 / (√6 + 1)</text></svg>`, q: "Rationalize \\( \\frac{2}{\\sqrt{6}+1} \\).", q_trans: "Rasionalkan \\( \\frac{2}{\\sqrt{6}+1} \\).", opts: ["\\( \\frac{2\\sqrt{6}-2}{5} \\)", "\\( \\frac{2\\sqrt{6}+2}{5} \\)", "\\( 2\\sqrt{6}-2 \\)", "\\( \\frac{2\\sqrt{6}-2}{7} \\)", "\\( \\frac{2(\\sqrt{6}+1)}{5} \\)"], correct: 0, exp: "<div>\\( \\frac{2(\\sqrt{6}-1)}{6-1} = \\frac{2\\sqrt{6}-2}{5} \\).</div><div class='translation'>\\( \\frac{2(\\sqrt{6}-1)}{6-1} = \\frac{2\\sqrt{6}-2}{5} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><rect x="20" y="20" width="60" height="40" fill="#10b981" rx="5"/><text x="50" y="45" font-size="10" text-anchor="middle" fill="#fff">Physics</text></svg>`, q: "A physics formula yields \\( \\frac{4}{3-\\sqrt{2}} \\). Simplify this value.", q_trans: "Rumus fisika menghasilkan \\( \\frac{4}{3-\\sqrt{2}} \\). Sederhanakan nilai ini.", opts: ["\\( \\frac{12+4\\sqrt{2}}{7} \\)", "\\( \\frac{12-4\\sqrt{2}}{7} \\)", "\\( 12+4\\sqrt{2} \\)", "\\( \\frac{4(3-\\sqrt{2})}{7} \\)", "\\( \\frac{12+4\\sqrt{2}}{11} \\)"], correct: 0, exp: "<div>\\( \\frac{4(3+\\sqrt{2})}{9-2} = \\frac{12+4\\sqrt{2}}{7} \\).</div><div class='translation'>\\( \\frac{4(3+\\sqrt{2})}{9-2} = \\frac{12+4\\sqrt{2}}{7} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="12" text-anchor="middle">1 / (√10 - 3)</text></svg>`, q: "Rationalize \\( \\frac{1}{\\sqrt{10}-3} \\).", q_trans: "Rasionalkan \\( \\frac{1}{\\sqrt{10}-3} \\).", opts: ["\\( \\sqrt{10}+3 \\)", "\\( \\sqrt{10}-3 \\)", "\\( \\frac{\\sqrt{10}+3}{19} \\)", "\\( \\frac{\\sqrt{10}-3}{1} \\)", "\\( \\frac{\\sqrt{10}+3}{10} \\)"], correct: 0, exp: "<div>\\( \\frac{\\sqrt{10}+3}{10-9} = \\frac{\\sqrt{10}+3}{1} = \\sqrt{10}+3 \\).</div><div class='translation'>\\( \\frac{\\sqrt{10}+3}{10-9} = \\frac{\\sqrt{10}+3}{1} = \\sqrt{10}+3 \\).</div>" }
+                    ]}
+                ]
+            },
+
+            task2: {
+                title: "Task 2: Intermediate Rationalization",
+                pages: [
+                    { type: 'tasks', count: 10, tasks: [
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="12" text-anchor="middle">5 / (1 - √2)</text></svg>`, q: "Rationalize \\( \\frac{5}{1-\\sqrt{2}} \\).", q_trans: "Rasionalkan \\( \\frac{5}{1-\\sqrt{2}} \\).", opts: ["\\( -5 - 5\\sqrt{2} \\)", "\\( 5 - 5\\sqrt{2} \\)", "\\( -5 + 5\\sqrt{2} \\)", "\\( 5 + 5\\sqrt{2} \\)", "\\( \\frac{5+5\\sqrt{2}}{-1} \\)"], correct: 0, exp: "<div>\\( \\frac{5(1+\\sqrt{2})}{1-2} = \\frac{5+5\\sqrt{2}}{-1} = -5 - 5\\sqrt{2} \\).</div><div class='translation'>\\( \\frac{5(1+\\sqrt{2})}{1-2} = \\frac{5+5\\sqrt{2}}{-1} = -5 - 5\\sqrt{2} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><rect x="20" y="20" width="60" height="40" fill="#3b82f6" rx="5"/><text x="50" y="45" font-size="10" text-anchor="middle" fill="#fff">Eng</text></svg>`, q: "An engineering formula gives \\( \\frac{10}{3-\\sqrt{5}} \\). Simplify this expression.", q_trans: "Rumus teknik memberikan \\( \\frac{10}{3-\\sqrt{5}} \\). Sederhanakan ekspresi ini.", opts: ["\\( \\frac{15+5\\sqrt{5}}{2} \\)", "\\( \\frac{30+10\\sqrt{5}}{4} \\)", "\\( 30-10\\sqrt{5} \\)", "\\( \\frac{15-5\\sqrt{5}}{2} \\)", "\\( 15+5\\sqrt{5} \\)"], correct: 0, exp: "<div>\\( \\frac{10(3+\\sqrt{5})}{9-5} = \\frac{30+10\\sqrt{5}}{4} = \\frac{15+5\\sqrt{5}}{2} \\).</div><div class='translation'>\\( \\frac{10(3+\\sqrt{5})}{9-5} = \\frac{30+10\\sqrt{5}}{4} = \\frac{15+5\\sqrt{5}}{2} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="12" text-anchor="middle">3 / (2 + √8)</text></svg>`, q: "Rationalize \\( \\frac{3}{2+\\sqrt{8}} \\). (Hint: simplify root first!)", q_trans: "Rasionalkan \\( \\frac{3}{2+\\sqrt{8}} \\). (Petunjuk: sederhanakan akar dulu!)", opts: ["\\( \\frac{3 - 3\\sqrt{2}}{-2} \\)", "\\( \\frac{3 - 3\\sqrt{2}}{2} \\)", "\\( 3 - 3\\sqrt{2} \\)", "\\( \\frac{3 + 3\\sqrt{2}}{2} \\)", "\\( \\frac{3 - 3\\sqrt{2}}{-4} \\)"], correct: 0, exp: "<div>\\( \\sqrt{8}=2\\sqrt{2} \\). \\( \\frac{3}{2+2\\sqrt{2}} = \\frac{3(2-2\\sqrt{2})}{4-8} = \\frac{6-6\\sqrt{2}}{-4} = \\frac{3-3\\sqrt{2}}{-2} \\).</div><div class='translation'>\\( \\sqrt{8}=2\\sqrt{2} \\). \\( \\frac{3}{2+2\\sqrt{2}} = \\frac{3(2-2\\sqrt{2})}{4-8} = \\frac{6-6\\sqrt{2}}{-4} = \\frac{3-3\\sqrt{2}}{-2} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><circle cx="50" cy="40" r="20" fill="#8b5cf6"/><text x="50" y="45" font-size="10" text-anchor="middle" fill="#fff">Math</text></svg>`, q: "What is the conjugate of \\( x - \\sqrt{y} \\)?", q_trans: "Berapakah konjugat dari \\( x - \\sqrt{y} \\)?", opts: ["\\( x + \\sqrt{y} \\)", "\\( -x + \\sqrt{y} \\)", "\\( \\sqrt{y} - x \\)", "\\( x - \\sqrt{y} \\)", "\\( y + \\sqrt{x} \\)"], correct: 0, exp: "<div>Change the middle sign. The conjugate is \\( x + \\sqrt{y} \\).</div><div class='translation'>Ubah tanda tengah. Konjugatnya adalah \\( x + \\sqrt{y} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="12" text-anchor="middle">4 / (√5 - 1)</text></svg>`, q: "Simplify \\( \\frac{4}{\\sqrt{5}-1} \\).", q_trans: "Sederhanakan \\( \\frac{4}{\\sqrt{5}-1} \\).", opts: ["\\( \\sqrt{5}+1 \\)", "\\( \\sqrt{5}-1 \\)", "\\( \\frac{\\sqrt{5}+1}{4} \\)", "\\( 4\\sqrt{5}+4 \\)", "\\( \\frac{4\\sqrt{5}+4}{6} \\)"], correct: 0, exp: "<div>\\( \\frac{4(\\sqrt{5}+1)}{5-1} = \\frac{4(\\sqrt{5}+1)}{4} = \\sqrt{5}+1 \\).</div><div class='translation'>\\( \\frac{4(\\sqrt{5}+1)}{5-1} = \\frac{4(\\sqrt{5}+1)}{4} = \\sqrt{5}+1 \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><rect x="20" y="20" width="60" height="40" fill="#ef4444" rx="5"/><text x="50" y="45" font-size="10" text-anchor="middle" fill="#fff">Motion</text></svg>`, q: "Kinematic motion gives a velocity term \\( \\frac{10}{\\sqrt{2}-1} \\). Simplify this term.", q_trans: "Gerak kinematik memberikan suku kecepatan \\( \\frac{10}{\\sqrt{2}-1} \\). Sederhanakan suku ini.", opts: ["\\( 10\\sqrt{2}+10 \\)", "\\( 10\\sqrt{2}-10 \\)", "\\( -10\\sqrt{2}+10 \\)", "\\( \\frac{10\\sqrt{2}+10}{3} \\)", "\\( 10\\sqrt{2} \\)"], correct: 0, exp: "<div>\\( \\frac{10(\\sqrt{2}+1)}{2-1} = \\frac{10\\sqrt{2}+10}{1} = 10\\sqrt{2}+10 \\).</div><div class='translation'>\\( \\frac{10(\\sqrt{2}+1)}{2-1} = \\frac{10\\sqrt{2}+10}{1} = 10\\sqrt{2}+10 \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="12" text-anchor="middle">1 / (4 - √7)</text></svg>`, q: "Rationalize \\( \\frac{1}{4-\\sqrt{7}} \\).", q_trans: "Rasionalkan \\( \\frac{1}{4-\\sqrt{7}} \\).", opts: ["\\( \\frac{4+\\sqrt{7}}{9} \\)", "\\( \\frac{4-\\sqrt{7}}{9} \\)", "\\( 4+\\sqrt{7} \\)", "\\( \\frac{4+\\sqrt{7}}{3} \\)", "\\( \\frac{4+\\sqrt{7}}{23} \\)"], correct: 0, exp: "<div>\\( \\frac{4+\\sqrt{7}}{16-7} = \\frac{4+\\sqrt{7}}{9} \\).</div><div class='translation'>\\( \\frac{4+\\sqrt{7}}{16-7} = \\frac{4+\\sqrt{7}}{9} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><circle cx="50" cy="40" r="20" fill="#10b981"/><text x="50" y="45" font-size="10" text-anchor="middle" fill="#fff">Math</text></svg>`, q: "Rationalize \\( \\frac{1}{\\sqrt{3}+\\sqrt{2}} \\).", q_trans: "Rasionalkan \\( \\frac{1}{\\sqrt{3}+\\sqrt{2}} \\).", opts: ["\\( \\sqrt{3}-\\sqrt{2} \\)", "\\( \\sqrt{2}-\\sqrt{3} \\)", "\\( \\frac{\\sqrt{3}-\\sqrt{2}}{5} \\)", "\\( \\sqrt{3}+\\sqrt{2} \\)", "\\( \\frac{\\sqrt{3}+\\sqrt{2}}{1} \\)"], correct: 0, exp: "<div>\\( \\frac{\\sqrt{3}-\\sqrt{2}}{3-2} = \\frac{\\sqrt{3}-\\sqrt{2}}{1} = \\sqrt{3}-\\sqrt{2} \\).</div><div class='translation'>\\( \\frac{\\sqrt{3}-\\sqrt{2}}{3-2} = \\frac{\\sqrt{3}-\\sqrt{2}}{1} = \\sqrt{3}-\\sqrt{2} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><rect x="20" y="20" width="60" height="40" fill="#8b5cf6" rx="5"/><text x="50" y="45" font-size="10" text-anchor="middle" fill="#fff">Acou</text></svg>`, q: "An acoustic wave amplitude is \\( \\frac{2}{\\sqrt{5}-\\sqrt{3}} \\). Simplify this expression.", q_trans: "Amplitudo gelombang akustik adalah \\( \\frac{2}{\\sqrt{5}-\\sqrt{3}} \\). Sederhanakan ekspresi ini.", opts: ["\\( \\sqrt{5}+\\sqrt{3} \\)", "\\( \\sqrt{5}-\\sqrt{3} \\)", "\\( \\frac{\\sqrt{5}+\\sqrt{3}}{2} \\)", "\\( 2\\sqrt{5}+2\\sqrt{3} \\)", "\\( \\frac{2\\sqrt{5}+2\\sqrt{3}}{2} \\)"], correct: 0, exp: "<div>\\( \\frac{2(\\sqrt{5}+\\sqrt{3})}{5-3} = \\frac{2(\\sqrt{5}+\\sqrt{3})}{2} = \\sqrt{5}+\\sqrt{3} \\).</div><div class='translation'>\\( \\frac{2(\\sqrt{5}+\\sqrt{3})}{5-3} = \\frac{2(\\sqrt{5}+\\sqrt{3})}{2} = \\sqrt{5}+\\sqrt{3} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="10" text-anchor="middle">7 / (2√3 + 1)</text></svg>`, q: "Rationalize \\( \\frac{7}{2\\sqrt{3}+1} \\).", q_trans: "Rasionalkan \\( \\frac{7}{2\\sqrt{3}+1} \\).", opts: ["\\( \\frac{14\\sqrt{3}-7}{11} \\)", "\\( 4\\sqrt{3}-2 \\)", "\\( \\frac{14\\sqrt{3}+7}{13} \\)", "\\( \\frac{7(2\\sqrt{3}+1)}{11} \\)", "\\( 14\\sqrt{3}-7 \\)"], correct: 0, exp: "<div>\\( \\frac{7(2\\sqrt{3}-1)}{12-1} = \\frac{14\\sqrt{3}-7}{11} \\).</div><div class='translation'>\\( \\frac{7(2\\sqrt{3}-1)}{12-1} = \\frac{14\\sqrt{3}-7}{11} \\).</div>" }
+                    ]}
+                ]
+            },
+
+            task3: {
+                title: "Task 3: Advanced Rationalization",
+                pages: [
+                    { type: 'tasks', count: 10, tasks: [
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="12" text-anchor="middle">1 / (1 - √3)</text></svg>`, q: "Rationalize \\( \\frac{1}{1-\\sqrt{3}} \\).", q_trans: "Rasionalkan \\( \\frac{1}{1-\\sqrt{3}} \\).", opts: ["\\( \\frac{-1-\\sqrt{3}}{2} \\)", "\\( \\frac{1+\\sqrt{3}}{-2} \\)", "\\( 1+\\sqrt{3} \\)", "\\( \\frac{1+\\sqrt{3}}{2} \\)", "\\( \\frac{-1+\\sqrt{3}}{2} \\)"], correct: 0, exp: "<div>\\( \\frac{1(1+\\sqrt{3})}{1-3} = \\frac{1+\\sqrt{3}}{-2} = \\frac{-1-\\sqrt{3}}{2} \\).</div><div class='translation'>\\( \\frac{1(1+\\sqrt{3})}{1-3} = \\frac{1+\\sqrt{3}}{-2} = \\frac{-1-\\sqrt{3}}{2} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="10" text-anchor="middle">(√2+1)/(√2-1)</text></svg>`, q: "Simplify \\( \\frac{\\sqrt{2}+1}{\\sqrt{2}-1} \\).", q_trans: "Sederhanakan \\( \\frac{\\sqrt{2}+1}{\\sqrt{2}-1} \\).", opts: ["\\( 3+2\\sqrt{2} \\)", "\\( 1 \\)", "\\( 3-2\\sqrt{2} \\)", "\\( 2\\sqrt{2}-3 \\)", "\\( 2\\sqrt{2}+2 \\)"], correct: 0, exp: "<div>\\( \\frac{(\\sqrt{2}+1)(\\sqrt{2}+1)}{2-1} = \\frac{2 + 2\\sqrt{2} + 1}{1} = 3+2\\sqrt{2} \\).</div><div class='translation'>\\( \\frac{(\\sqrt{2}+1)(\\sqrt{2}+1)}{2-1} = \\frac{2 + 2\\sqrt{2} + 1}{1} = 3+2\\sqrt{2} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><circle cx="50" cy="40" r="20" fill="#fbbf24"/><text x="50" y="45" font-size="10" text-anchor="middle">Math</text></svg>`, q: "Rationalize \\( \\frac{1}{2\\sqrt{3}-\\sqrt{2}} \\).", q_trans: "Rasionalkan \\( \\frac{1}{2\\sqrt{3}-\\sqrt{2}} \\).", opts: ["\\( \\frac{2\\sqrt{3}+\\sqrt{2}}{10} \\)", "\\( \\frac{2\\sqrt{3}-\\sqrt{2}}{10} \\)", "\\( \\frac{\\sqrt{3}+\\sqrt{2}}{10} \\)", "\\( 2\\sqrt{3}+\\sqrt{2} \\)", "\\( \\frac{2\\sqrt{3}+\\sqrt{2}}{12} \\)"], correct: 0, exp: "<div>\\( \\frac{2\\sqrt{3}+\\sqrt{2}}{(2\\sqrt{3})^2 - (\\sqrt{2})^2} = \\frac{2\\sqrt{3}+\\sqrt{2}}{12-2} = \\frac{2\\sqrt{3}+\\sqrt{2}}{10} \\).</div><div class='translation'>\\( \\frac{2\\sqrt{3}+\\sqrt{2}}{(2\\sqrt{3})^2 - (\\sqrt{2})^2} = \\frac{2\\sqrt{3}+\\sqrt{2}}{12-2} = \\frac{2\\sqrt{3}+\\sqrt{2}}{10} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="10" text-anchor="middle">(√5-2)/(√5+2)</text></svg>`, q: "Simplify \\( \\frac{\\sqrt{5}-2}{\\sqrt{5}+2} \\).", q_trans: "Sederhanakan \\( \\frac{\\sqrt{5}-2}{\\sqrt{5}+2} \\).", opts: ["\\( 9-4\\sqrt{5} \\)", "\\( 1 \\)", "\\( 9+4\\sqrt{5} \\)", "\\( 5-4\\sqrt{5} \\)", "\\( 4\\sqrt{5}-9 \\)"], correct: 0, exp: "<div>\\( \\frac{(\\sqrt{5}-2)^2}{5-4} = \\frac{5 - 4\\sqrt{5} + 4}{1} = 9-4\\sqrt{5} \\).</div><div class='translation'>\\( \\frac{(\\sqrt{5}-2)^2}{5-4} = \\frac{5 - 4\\sqrt{5} + 4}{1} = 9-4\\sqrt{5} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><rect x="20" y="20" width="60" height="40" fill="#3b82f6" rx="5"/><text x="50" y="45" font-size="10" text-anchor="middle" fill="#fff">Math</text></svg>`, q: "Rationalize \\( \\frac{2}{3+2\\sqrt{2}} \\).", q_trans: "Rasionalkan \\( \\frac{2}{3+2\\sqrt{2}} \\).", opts: ["\\( 6-4\\sqrt{2} \\)", "\\( 6+4\\sqrt{2} \\)", "\\( \\frac{6+4\\sqrt{2}}{1} \\)", "\\( \\frac{6-4\\sqrt{2}}{17} \\)", "\\( 3-2\\sqrt{2} \\)"], correct: 0, exp: "<div>\\( \\frac{2(3-2\\sqrt{2})}{9-8} = \\frac{6-4\\sqrt{2}}{1} = 6-4\\sqrt{2} \\).</div><div class='translation'>\\( \\frac{2(3-2\\sqrt{2})}{9-8} = \\frac{6-4\\sqrt{2}}{1} = 6-4\\sqrt{2} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="12" text-anchor="middle">3 / (√10 - 1)</text></svg>`, q: "Simplify \\( \\frac{3}{\\sqrt{10}-1} \\).", q_trans: "Sederhanakan \\( \\frac{3}{\\sqrt{10}-1} \\).", opts: ["\\( \\frac{\\sqrt{10}+1}{3} \\)", "\\( \\sqrt{10}+1 \\)", "\\( \\frac{3\\sqrt{10}-3}{9} \\)", "\\( \\frac{\\sqrt{10}-1}{3} \\)", "\\( \\frac{3\\sqrt{10}+3}{11} \\)"], correct: 0, exp: "<div>\\( \\frac{3(\\sqrt{10}+1)}{10-1} = \\frac{3(\\sqrt{10}+1)}{9} = \\frac{\\sqrt{10}+1}{3} \\).</div><div class='translation'>\\( \\frac{3(\\sqrt{10}+1)}{10-1} = \\frac{3(\\sqrt{10}+1)}{9} = \\frac{\\sqrt{10}+1}{3} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><circle cx="50" cy="40" r="20" fill="#8b5cf6"/><text x="50" y="45" font-size="10" text-anchor="middle" fill="#fff">Math</text></svg>`, q: "Rationalize \\( \\frac{2\\sqrt{2}+1}{2\\sqrt{2}-1} \\).", q_trans: "Rasionalkan \\( \\frac{2\\sqrt{2}+1}{2\\sqrt{2}-1} \\).", opts: ["\\( \\frac{9+4\\sqrt{2}}{7} \\)", "\\( \\frac{9-4\\sqrt{2}}{7} \\)", "\\( 9+4\\sqrt{2} \\)", "\\( 9-4\\sqrt{2} \\)", "\\( \\frac{8+4\\sqrt{2}}{7} \\)"], correct: 0, exp: "<div>\\( \\frac{(2\\sqrt{2}+1)^2}{8-1} = \\frac{8 + 4\\sqrt{2} + 1}{7} = \\frac{9+4\\sqrt{2}}{7} \\).</div><div class='translation'>\\( \\frac{(2\\sqrt{2}+1)^2}{8-1} = \\frac{8 + 4\\sqrt{2} + 1}{7} = \\frac{9+4\\sqrt{2}}{7} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="10" text-anchor="middle">(√7-2)/(√7+2)</text></svg>`, q: "Rationalize \\( \\frac{\\sqrt{7}-2}{\\sqrt{7}+2} \\).", q_trans: "Rasionalkan \\( \\frac{\\sqrt{7}-2}{\\sqrt{7}+2} \\).", opts: ["\\( \\frac{11-4\\sqrt{7}}{3} \\)", "\\( \\frac{11+4\\sqrt{7}}{3} \\)", "\\( 11-4\\sqrt{7} \\)", "\\( \\frac{11-4\\sqrt{7}}{11} \\)", "\\( \\frac{7-4\\sqrt{7}}{3} \\)"], correct: 0, exp: "<div>\\( \\frac{(\\sqrt{7}-2)^2}{7-4} = \\frac{7 - 4\\sqrt{7} + 4}{3} = \\frac{11-4\\sqrt{7}}{3} \\).</div><div class='translation'>\\( \\frac{(\\sqrt{7}-2)^2}{7-4} = \\frac{7 - 4\\sqrt{7} + 4}{3} = \\frac{11-4\\sqrt{7}}{3} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><rect x="20" y="20" width="60" height="40" fill="#ef4444" rx="5"/><text x="50" y="45" font-size="10" text-anchor="middle" fill="#fff">Math</text></svg>`, q: "Simplify \\( \\frac{5}{2\\sqrt{5}-5} \\).", q_trans: "Sederhanakan \\( \\frac{5}{2\\sqrt{5}-5} \\).", opts: ["\\( -2\\sqrt{5}-5 \\)", "\\( 2\\sqrt{5}+5 \\)", "\\( \\frac{-2\\sqrt{5}+5}{5} \\)", "\\( \\frac{2\\sqrt{5}-5}{-5} \\)", "\\( \\frac{-2\\sqrt{5}-5}{25} \\)"], correct: 0, exp: "<div>\\( \\frac{5(2\\sqrt{5}+5)}{20-25} = \\frac{10\\sqrt{5}+25}{-5} = -2\\sqrt{5}-5 \\).</div><div class='translation'>\\( \\frac{5(2\\sqrt{5}+5)}{20-25} = \\frac{10\\sqrt{5}+25}{-5} = -2\\sqrt{5}-5 \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="10" text-anchor="middle">(√6-2)/(√6+2)</text></svg>`, q: "Simplify \\( \\frac{\\sqrt{6}-2}{\\sqrt{6}+2} \\).", q_trans: "Sederhanakan \\( \\frac{\\sqrt{6}-2}{\\sqrt{6}+2} \\).", opts: ["\\( 5-2\\sqrt{6} \\)", "\\( 5+2\\sqrt{6} \\)", "\\( \\frac{5-2\\sqrt{6}}{2} \\)", "\\( \\frac{5+2\\sqrt{6}}{2} \\)", "\\( 6-4\\sqrt{6} \\)"], correct: 0, exp: "<div>\\( \\frac{(\\sqrt{6}-2)^2}{6-4} = \\frac{6 - 4\\sqrt{6} + 4}{2} = \\frac{10 - 4\\sqrt{6}}{2} = 5-2\\sqrt{6} \\).</div><div class='translation'>\\( \\frac{(\\sqrt{6}-2)^2}{6-4} = \\frac{6 - 4\\sqrt{6} + 4}{2} = \\frac{10 - 4\\sqrt{6}}{2} = 5-2\\sqrt{6} \\).</div>" },
+                    ]}
+                ]
+            },
+
+            task4: {
+                title: "Task 4: Word Problems & Equations",
+                pages: [
+                    { type: 'tasks', count: 10, tasks: [
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><path d="M 20 60 Q 50 20 80 60" stroke="#3b82f6" stroke-width="3" fill="none"/><circle cx="50" cy="20" r="4" fill="#ef4444"/></svg>`, q: "A physics formula for velocity is \\( v = \\frac{8}{\\sqrt{2}-1} \\). Find the exact value of \\( v \\).", q_trans: "Rumus fisika untuk kecepatan adalah \\( v = \\frac{8}{\\sqrt{2}-1} \\). Temukan nilai pasti \\( v \\).", opts: ["\\( 8\\sqrt{2}+8 \\)", "\\( 8\\sqrt{2}-8 \\)", "\\( \\frac{8\\sqrt{2}+8}{3} \\)", "\\( -8\\sqrt{2}-8 \\)", "\\( 8 \\)"], correct: 0, exp: "<div>\\( \\frac{8(\\sqrt{2}+1)}{2-1} = 8\\sqrt{2}+8 \\).</div><div class='translation'>\\( \\frac{8(\\sqrt{2}+1)}{2-1} = 8\\sqrt{2}+8 \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><rect x="30" y="20" width="40" height="40" fill="#e0e7ff" stroke="#3b82f6" stroke-width="2"/><text x="50" y="45" font-size="10" text-anchor="middle">Lens</text></svg>`, q: "In optics, \\( \\frac{1}{f} = \\frac{1}{1+\\sqrt{2}} + \\frac{1}{1-\\sqrt{2}} \\). Find \\( \\frac{1}{f} \\).", q_trans: "Dalam optika, \\( \\frac{1}{f} = \\frac{1}{1+\\sqrt{2}} + \\frac{1}{1-\\sqrt{2}} \\). Temukan \\( \\frac{1}{f} \\).", opts: ["\\( -2 \\)", "\\( 2 \\)", "\\( 0 \\)", "\\( -1 \\)", "\\( 2\\sqrt{2} \\)"], correct: 0, exp: "<div>Rationalize 1st term: \\( \\sqrt{2}-1 \\). Rationalize 2nd term: \\( -(1+\\sqrt{2}) \\). Sum: \\( \\sqrt{2}-1 - 1 - \\sqrt{2} = -2 \\).</div><div class='translation'>Rasionalkan suku ke-1: \\( \\sqrt{2}-1 \\). Rasionalkan suku ke-2: \\( -(1+\\sqrt{2}) \\). Jumlah: \\( \\sqrt{2}-1 - 1 - \\sqrt{2} = -2 \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="12" text-anchor="middle">1/x = √3 + √2</text></svg>`, q: "If \\( \\frac{1}{x} = \\sqrt{3} + \\sqrt{2} \\), find \\( x \\).", q_trans: "Jika \\( \\frac{1}{x} = \\sqrt{3} + \\sqrt{2} \\), temukan \\( x \\).", opts: ["\\( \\sqrt{3}-\\sqrt{2} \\)", "\\( \\sqrt{2}-\\sqrt{3} \\)", "\\( \\frac{1}{\\sqrt{3}-\\sqrt{2}} \\)", "\\( 5+2\\sqrt{6} \\)", "\\( 1 \\)"], correct: 0, exp: "<div>\\( x = \\frac{1}{\\sqrt{3}+\\sqrt{2}} = \\frac{\\sqrt{3}-\\sqrt{2}}{3-2} = \\sqrt{3}-\\sqrt{2} \\).</div><div class='translation'>\\( x = \\frac{1}{\\sqrt{3}+\\sqrt{2}} = \\frac{\\sqrt{3}-\\sqrt{2}}{3-2} = \\sqrt{3}-\\sqrt{2} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><rect x="20" y="20" width="60" height="40" fill="#fbbf24" rx="5"/><text x="50" y="45" font-size="10" text-anchor="middle">Circuit</text></svg>`, q: "An engineering formula for resistance is \\( R = \\frac{1}{2+\\sqrt{3}} + \\frac{1}{2-\\sqrt{3}} \\). Find \\( R \\).", q_trans: "Rumus teknik untuk hambatan adalah \\( R = \\frac{1}{2+\\sqrt{3}} + \\frac{1}{2-\\sqrt{3}} \\). Temukan \\( R \\).", opts: ["\\( 4 \\)", "\\( 2-\\sqrt{3} + 2+\\sqrt{3} \\)", "\\( 0 \\)", "\\( 2 \\)", "\\( 1 \\)"], correct: 0, exp: "<div>1st term rationalizes to \\( 2-\\sqrt{3} \\). 2nd term rationalizes to \\( 2+\\sqrt{3} \\). Sum: \\( 4 \\).</div><div class='translation'>Suku pertama dirasionalkan menjadi \\( 2-\\sqrt{3} \\). Suku kedua menjadi \\( 2+\\sqrt{3} \\). Jumlah: \\( 4 \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="10" text-anchor="middle">2/(√3-1) - √3</text></svg>`, q: "Evaluate \\( \\frac{2}{\\sqrt{3}-1} - \\sqrt{3} \\).", q_trans: "Hitunglah \\( \\frac{2}{\\sqrt{3}-1} - \\sqrt{3} \\).", opts: ["\\( 1 \\)", "\\( \\sqrt{3}+2 \\)", "\\( 2\\sqrt{3}+2 \\)", "\\( \\sqrt{3}-2 \\)", "\\( 2 \\)"], correct: 0, exp: "<div>\\( \\frac{2(\\sqrt{3}+1)}{3-1} = \\sqrt{3}+1 \\). Subtract \\( \\sqrt{3} \\): \\( \\sqrt{3}+1 - \\sqrt{3} = 1 \\).</div><div class='translation'>\\( \\frac{2(\\sqrt{3}+1)}{3-1} = \\sqrt{3}+1 \\). Kurangi \\( \\sqrt{3} \\): \\( \\sqrt{3}+1 - \\sqrt{3} = 1 \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><circle cx="50" cy="40" r="20" fill="#10b981"/><text x="50" y="45" font-size="10" text-anchor="middle" fill="#fff">Current</text></svg>`, q: "An electric circuit has current \\( I = \\frac{12}{\\sqrt{5}+1} \\). Find \\( I \\).", q_trans: "Rangkaian listrik memiliki arus \\( I = \\frac{12}{\\sqrt{5}+1} \\). Temukan \\( I \\).", opts: ["\\( 3\\sqrt{5}-3 \\)", "\\( 3\\sqrt{5}+3 \\)", "\\( \\frac{12\\sqrt{5}+12}{4} \\)", "\\( 12\\sqrt{5}-12 \\)", "\\( \\frac{3\\sqrt{5}-3}{6} \\)"], correct: 0, exp: "<div>\\( \\frac{12(\\sqrt{5}-1)}{5-1} = \\frac{12(\\sqrt{5}-1)}{4} = 3(\\sqrt{5}-1) = 3\\sqrt{5}-3 \\).</div><div class='translation'>\\( \\frac{12(\\sqrt{5}-1)}{5-1} = \\frac{12(\\sqrt{5}-1)}{4} = 3(\\sqrt{5}-1) = 3\\sqrt{5}-3 \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="12" text-anchor="middle">1 / (1 - 1/√2)</text></svg>`, q: "Simplify \\( \\frac{1}{1 - \\frac{1}{\\sqrt{2}}} \\).", q_trans: "Sederhanakan \\( \\frac{1}{1 - \\frac{1}{\\sqrt{2}}} \\).", opts: ["\\( 2+\\sqrt{2} \\)", "\\( 2-\\sqrt{2} \\)", "\\( \\frac{\\sqrt{2}}{\\sqrt{2}+1} \\)", "\\( \\sqrt{2}+1 \\)", "\\( \\frac{1}{\\sqrt{2}-1} \\)"], correct: 0, exp: "<div>Multiply by \\( \\frac{\\sqrt{2}}{\\sqrt{2}} \\): \\( \\frac{\\sqrt{2}}{\\sqrt{2}-1} \\). Rationalize: \\( \\frac{\\sqrt{2}(\\sqrt{2}+1)}{2-1} = 2+\\sqrt{2} \\).</div><div class='translation'>Kalikan dengan \\( \\frac{\\sqrt{2}}{\\sqrt{2}} \\): \\( \\frac{\\sqrt{2}}{\\sqrt{2}-1} \\). Rasionalkan: \\( \\frac{\\sqrt{2}(\\sqrt{2}+1)}{2-1} = 2+\\sqrt{2} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><rect x="20" y="20" width="60" height="40" fill="#8b5cf6" rx="5"/><text x="50" y="45" font-size="10" text-anchor="middle" fill="#fff">Math</text></svg>`, q: "Evaluate \\( \\frac{1}{\\sqrt{2}+1} - \\frac{1}{\\sqrt{2}-1} \\).", q_trans: "Hitunglah \\( \\frac{1}{\\sqrt{2}+1} - \\frac{1}{\\sqrt{2}-1} \\).", opts: ["\\( -2 \\)", "\\( 2 \\)", "\\( 0 \\)", "\\( 2\\sqrt{2} \\)", "\\( -2\\sqrt{2} \\)"], correct: 0, exp: "<div>1st term is \\( \\sqrt{2}-1 \\). 2nd term is \\( \\sqrt{2}+1 \\). Difference: \\( (\\sqrt{2}-1) - (\\sqrt{2}+1) = -2 \\).</div><div class='translation'>Suku pertama adalah \\( \\sqrt{2}-1 \\). Suku kedua adalah \\( \\sqrt{2}+1 \\). Selisih: \\( (\\sqrt{2}-1) - (\\sqrt{2}+1) = -2 \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="12" text-anchor="middle">x = 2 - √3</text></svg>`, q: "If \\( x = 2 - \\sqrt{3} \\), find \\( \\frac{1}{x} \\).", q_trans: "Jika \\( x = 2 - \\sqrt{3} \\), temukan \\( \\frac{1}{x} \\).", opts: ["\\( 2+\\sqrt{3} \\)", "\\( 2-\\sqrt{3} \\)", "\\( \\frac{1}{2+\\sqrt{3}} \\)", "\\( -2-\\sqrt{3} \\)", "\\( \\frac{2+\\sqrt{3}}{7} \\)"], correct: 0, exp: "<div>\\( \\frac{1}{2-\\sqrt{3}} = \\frac{2+\\sqrt{3}}{4-3} = 2+\\sqrt{3} \\).</div><div class='translation'>\\( \\frac{1}{2-\\sqrt{3}} = \\frac{2+\\sqrt{3}}{4-3} = 2+\\sqrt{3} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><circle cx="50" cy="40" r="20" fill="#fbbf24"/><text x="50" y="45" font-size="10" text-anchor="middle">Math</text></svg>`, q: "Simplify \\( \\frac{3}{\\sqrt{2}-1} + \\frac{3}{\\sqrt{2}+1} \\).", q_trans: "Sederhanakan \\( \\frac{3}{\\sqrt{2}-1} + \\frac{3}{\\sqrt{2}+1} \\).", opts: ["\\( 6\\sqrt{2} \\)", "\\( 6 \\)", "\\( 3\\sqrt{2} \\)", "\\( 12\\sqrt{2} \\)", "\\( 0 \\)"], correct: 0, exp: "<div>1st term: \\( 3(\\sqrt{2}+1) = 3\\sqrt{2}+3 \\). 2nd term: \\( 3(\\sqrt{2}-1) = 3\\sqrt{2}-3 \\). Sum: \\( 6\\sqrt{2} \\).</div><div class='translation'>Suku pertama: \\( 3(\\sqrt{2}+1) = 3\\sqrt{2}+3 \\). Suku kedua: \\( 3(\\sqrt{2}-1) = 3\\sqrt{2}-3 \\). Jumlah: \\( 6\\sqrt{2} \\).</div>" }
+                    ]}
+                ]
+            },
+
+            task5: {
+                title: "Task 5: Challenging Mixed Concepts",
+                pages: [
+                    { type: 'tasks', count: 10, tasks: [
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="10" text-anchor="middle">10 / (3√2 - 4)</text></svg>`, q: "Rationalize \\( \\frac{10}{3\\sqrt{2}-4} \\).", q_trans: "Rasionalkan \\( \\frac{10}{3\\sqrt{2}-4} \\).", opts: ["\\( -15\\sqrt{2}-20 \\)", "\\( 15\\sqrt{2}+20 \\)", "\\( \\frac{30\\sqrt{2}-40}{2} \\)", "\\( \\frac{15\\sqrt{2}+20}{34} \\)", "\\( 15\\sqrt{2}-20 \\)"], correct: 1, exp: "<div>\\( \\frac{10(3\\sqrt{2}+4)}{18-16} = \\frac{30\\sqrt{2}+40}{2} = 15\\sqrt{2}+20 \\).</div><div class='translation'>\\( \\frac{10(3\\sqrt{2}+4)}{18-16} = \\frac{30\\sqrt{2}+40}{2} = 15\\sqrt{2}+20 \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><rect x="20" y="20" width="60" height="40" fill="#3b82f6" rx="5"/><text x="50" y="45" font-size="10" text-anchor="middle" fill="#fff">Math</text></svg>`, q: "Rationalize \\( \\frac{4}{\\sqrt{7}-1} \\).", q_trans: "Rasionalkan \\( \\frac{4}{\\sqrt{7}-1} \\).", opts: ["\\( \\frac{2\\sqrt{7}+2}{3} \\)", "\\( \\frac{4\\sqrt{7}-4}{6} \\)", "\\( \\frac{4\\sqrt{7}+4}{8} \\)", "\\( \\sqrt{7}+1 \\)", "\\( \\frac{2\\sqrt{7}-2}{3} \\)"], correct: 0, exp: "<div>\\( \\frac{4(\\sqrt{7}+1)}{7-1} = \\frac{4(\\sqrt{7}+1)}{6} = \\frac{2(\\sqrt{7}+1)}{3} = \\frac{2\\sqrt{7}+2}{3} \\).</div><div class='translation'>\\( \\frac{4(\\sqrt{7}+1)}{7-1} = \\frac{4(\\sqrt{7}+1)}{6} = \\frac{2(\\sqrt{7}+1)}{3} = \\frac{2\\sqrt{7}+2}{3} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="12" text-anchor="middle">5 / (2 - √5)</text></svg>`, q: "Simplify \\( \\frac{5}{2-\\sqrt{5}} \\).", q_trans: "Sederhanakan \\( \\frac{5}{2-\\sqrt{5}} \\).", opts: ["\\( -10-5\\sqrt{5} \\)", "\\( -10+5\\sqrt{5} \\)", "\\( 10-5\\sqrt{5} \\)", "\\( 10+5\\sqrt{5} \\)", "\\( \\frac{10-5\\sqrt{5}}{-1} \\)"], correct: 0, exp: "<div>\\( \\frac{5(2+\\sqrt{5})}{4-5} = \\frac{10+5\\sqrt{5}}{-1} = -10-5\\sqrt{5} \\).</div><div class='translation'>\\( \\frac{5(2+\\sqrt{5})}{4-5} = \\frac{10+5\\sqrt{5}}{-1} = -10-5\\sqrt{5} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><circle cx="50" cy="40" r="20" fill="#ef4444"/><text x="50" y="45" font-size="10" text-anchor="middle" fill="#fff">Math</text></svg>`, q: "Rationalize \\( \\frac{8}{3-\\sqrt{5}} \\).", q_trans: "Rasionalkan \\( \\frac{8}{3-\\sqrt{5}} \\).", opts: ["\\( 6+2\\sqrt{5} \\)", "\\( 6-2\\sqrt{5} \\)", "\\( 12+4\\sqrt{5} \\)", "\\( \\frac{24-8\\sqrt{5}}{4} \\)", "\\( 12-4\\sqrt{5} \\)"], correct: 0, exp: "<div>\\( \\frac{8(3+\\sqrt{5})}{9-5} = \\frac{24+8\\sqrt{5}}{4} = 6+2\\sqrt{5} \\).</div><div class='translation'>\\( \\frac{8(3+\\sqrt{5})}{9-5} = \\frac{24+8\\sqrt{5}}{4} = 6+2\\sqrt{5} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="10" text-anchor="middle">1 / (1 + 1/√3)</text></svg>`, q: "Simplify \\( \\frac{1}{1 + \\frac{1}{\\sqrt{3}}} \\).", q_trans: "Sederhanakan \\( \\frac{1}{1 + \\frac{1}{\\sqrt{3}}} \\).", opts: ["\\( \\frac{3-\\sqrt{3}}{2} \\)", "\\( \\frac{3+\\sqrt{3}}{2} \\)", "\\( 3-\\sqrt{3} \\)", "\\( \\frac{\\sqrt{3}}{\\sqrt{3}-1} \\)", "\\( \\frac{\\sqrt{3}}{\\sqrt{3}+1} \\)"], correct: 0, exp: "<div>Multiply by \\( \\frac{\\sqrt{3}}{\\sqrt{3}} \\): \\( \\frac{\\sqrt{3}}{\\sqrt{3}+1} \\). Rationalize: \\( \\frac{\\sqrt{3}(\\sqrt{3}-1)}{3-1} = \\frac{3-\\sqrt{3}}{2} \\).</div><div class='translation'>Kalikan dengan \\( \\frac{\\sqrt{3}}{\\sqrt{3}} \\): \\( \\frac{\\sqrt{3}}{\\sqrt{3}+1} \\). Rasionalkan: \\( \\frac{\\sqrt{3}(\\sqrt{3}-1)}{3-1} = \\frac{3-\\sqrt{3}}{2} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><rect x="20" y="20" width="60" height="40" fill="#fbbf24" rx="5"/><text x="50" y="45" font-size="10" text-anchor="middle">Math</text></svg>`, q: "Simplify \\( \\frac{2}{\\sqrt{5}-1} - \\frac{2}{\\sqrt{5}+1} \\).", q_trans: "Sederhanakan \\( \\frac{2}{\\sqrt{5}-1} - \\frac{2}{\\sqrt{5}+1} \\).", opts: ["\\( 1 \\)", "\\( -1 \\)", "\\( 2 \\)", "\\( 0 \\)", "\\( \\sqrt{5} \\)"], correct: 0, exp: "<div>1st term: \\( \\frac{2(\\sqrt{5}+1)}{4} = \\frac{\\sqrt{5}+1}{2} \\). 2nd term: \\( \\frac{2(\\sqrt{5}-1)}{4} = \\frac{\\sqrt{5}-1}{2} \\). Difference: \\( \\frac{\\sqrt{5}+1}{2} - \\frac{\\sqrt{5}-1}{2} = \\frac{2}{2} = 1 \\).</div><div class='translation'>Suku pertama: \\( \\frac{2(\\sqrt{5}+1)}{4} = \\frac{\\sqrt{5}+1}{2} \\). Suku kedua: \\( \\frac{2(\\sqrt{5}-1)}{4} = \\frac{\\sqrt{5}-1}{2} \\). Selisih: \\( \\frac{\\sqrt{5}+1}{2} - \\frac{\\sqrt{5}-1}{2} = \\frac{2}{2} = 1 \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="10" text-anchor="middle">4/(2-√3) + 4/(2+√3)</text></svg>`, q: "Evaluate \\( \\frac{4}{2-\\sqrt{3}} + \\frac{4}{2+\\sqrt{3}} \\).", q_trans: "Hitunglah \\( \\frac{4}{2-\\sqrt{3}} + \\frac{4}{2+\\sqrt{3}} \\).", opts: ["\\( 16 \\)", "\\( 8 \\)", "\\( 0 \\)", "\\( 4\\sqrt{3} \\)", "\\( 16\\sqrt{3} \\)"], correct: 0, exp: "<div>1st term: \\( 4(2+\\sqrt{3}) = 8+4\\sqrt{3} \\). 2nd term: \\( 4(2-\\sqrt{3}) = 8-4\\sqrt{3} \\). Sum: \\( 16 \\).</div><div class='translation'>Suku pertama: \\( 4(2+\\sqrt{3}) = 8+4\\sqrt{3} \\). Suku kedua: \\( 4(2-\\sqrt{3}) = 8-4\\sqrt{3} \\). Jumlah: \\( 16 \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><circle cx="50" cy="40" r="20" fill="#10b981"/><text x="50" y="45" font-size="10" text-anchor="middle" fill="#fff">Chem</text></svg>`, q: "A chemistry rate is \\( \\frac{1}{2+\\sqrt{3}} - \\frac{1}{2-\\sqrt{3}} \\). Find the rate.", q_trans: "Laju kimia adalah \\( \\frac{1}{2+\\sqrt{3}} - \\frac{1}{2-\\sqrt{3}} \\). Temukan lajunya.", opts: ["\\( -2\\sqrt{3} \\)", "\\( 2\\sqrt{3} \\)", "\\( 0 \\)", "\\( -4 \\)", "\\( 4 \\)"], correct: 0, exp: "<div>1st term rationalizes to \\( 2-\\sqrt{3} \\). 2nd term rationalizes to \\( 2+\\sqrt{3} \\). Difference: \\( (2-\\sqrt{3}) - (2+\\sqrt{3}) = -2\\sqrt{3} \\).</div><div class='translation'>Suku pertama dirasionalkan menjadi \\( 2-\\sqrt{3} \\). Suku kedua menjadi \\( 2+\\sqrt{3} \\). Selisih: \\( (2-\\sqrt{3}) - (2+\\sqrt{3}) = -2\\sqrt{3} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><text x="50" y="40" font-size="10" text-anchor="middle">(2√3-3)/(2√3+3)</text></svg>`, q: "Rationalize \\( \\frac{2\\sqrt{3}-3}{2\\sqrt{3}+3} \\).", q_trans: "Rasionalkan \\( \\frac{2\\sqrt{3}-3}{2\\sqrt{3}+3} \\).", opts: ["\\( \\frac{7-4\\sqrt{3}}{5} \\)", "\\( 7-4\\sqrt{3} \\)", "\\( \\frac{7+4\\sqrt{3}}{3} \\)", "\\( \\frac{7-4\\sqrt{3}}{3} \\)", "\\( 7+4\\sqrt{3} \\)"], correct: 1, exp: "<div>\\( \\frac{(2\\sqrt{3}-3)^2}{12-9} = \\frac{21 - 12\\sqrt{3}}{3} = 7 - 4\\sqrt{3} \\).</div><div class='translation'>\\( \\frac{(2\\sqrt{3}-3)^2}{12-9} = \\frac{21 - 12\\sqrt{3}}{3} = 7 - 4\\sqrt{3} \\).</div>" },
+                        { svg: `<svg width="100" height="80" viewBox="0 0 100 80"><rect x="20" y="20" width="60" height="40" fill="#8b5cf6" rx="5"/><text x="50" y="45" font-size="10" text-anchor="middle" fill="#fff">Math</text></svg>`, q: "Rationalize \\( \\frac{1}{3-\\sqrt{3}} \\).", q_trans: "Rasionalkan \\( \\frac{1}{3-\\sqrt{3}} \\).", opts: ["\\( \\frac{3+\\sqrt{3}}{6} \\)", "\\( \\frac{3+\\sqrt{3}}{12} \\)", "\\( 3+\\sqrt{3} \\)", "\\( \\frac{3-\\sqrt{3}}{6} \\)", "\\( \\frac{1}{3+\\sqrt{3}} \\)"], correct: 0, exp: "<div>\\( \\frac{3+\\sqrt{3}}{9-3} = \\frac{3+\\sqrt{3}}{6} \\).</div><div class='translation'>\\( \\frac{3+\\sqrt{3}}{9-3} = \\frac{3+\\sqrt{3}}{6} \\).</div>" }
+                    ]}
+                ]
+            }
+        };
+
+        // --- AUTO FIX KATEX ESCAPE SEQUENCE ---
+        (function() {
+            function fixString(str) {
+                if (typeof str !== 'string') return str;
+                str = str.replace(/\u000Crac/g, '\\frac');
+                str = str.replace(/\neq/g, '\\neq');
+                str = str.replace(/\u0009imes/g, '\\times');
+                str = str.replace(/\u0009ext/g, '\\text');
+                str = str.replace(/ pi\(/g, ' \\pi(');
+                str = str.replace(/ div /g, ' \\div ');
+                str = str.replace(/ cdot /g, ' \\cdot ');
+                str = str.replace(/ implies /g, ' \\implies ');
+                str = str.replace(/ pm /g, ' \\pm ');
+                str = str.replace(/ sqrt/g, ' \\sqrt');
+                str = str.replace(/ leq /g, ' \\leq ');
+                str = str.replace(/ geq /g, ' \\geq ');
+                str = str.replace(/ infty /g, ' \\infty ');
+                return str;
+            }
+            function processObject(obj) {
+                for (const key in obj) {
+                    if (typeof obj[key] === 'string') {
+                        obj[key] = fixString(obj[key]);
+                    } else if (typeof obj[key] === 'object' && obj[key] !== null) {
+                        processObject(obj[key]);
+                    }
+                }
+            }
+            processObject(contentData);
+        })();
+
+        // --- FUNCTIONS FOR MODAL ---
+        function openModal() { document.getElementById('rulesModal').classList.remove('hidden'); document.getElementById('rulesModal').classList.add('flex'); }
+        function closeModal() { document.getElementById('rulesModal').classList.add('hidden'); }
+
+        // --- NAVIGATION & PAGINATION ---
+        let currentSection = '';
+        let currentPage = 0;
+
+        function showSection(sectionId, pageIndex, event) {
+            currentSection = sectionId;
+            currentPage = pageIndex;
+            
+            document.querySelectorAll('.sidebar-item').forEach(item => item.classList.remove('active'));
+            if (event && event.currentTarget) {
+                event.currentTarget.classList.add('active');
+            } else {
+                const activeItem = document.querySelector(`.sidebar-item[onclick*="${sectionId}"]`);
+                if(activeItem) activeItem.classList.add('active');
+            }
+            renderContent();
+        }
+
+        function renderContent() {
+            const section = contentData[currentSection];
+            const mainContent = document.getElementById('mainContent');
+            
+            if (!section) {
+                mainContent.innerHTML = `<div class="text-center text-gray-500 mt-20"><i class="fas fa-spinner fa-spin text-4xl mb-4"></i><p>Loading content... Please wait for the next part of the code.</p></div>`;
+                return;
+            }
+
+            const page = section.pages[currentPage];
+            if (!page) return;
+            
+            let html = `<h2 class="text-3xl font-bold text-blue-800 mb-4">${section.title}</h2>`;
+            
+            if (currentSection.startsWith('task')) {
+                const taskNum = currentSection.replace('task', '');
+                html += `<div class="mb-4 no-print flex justify-end">
+                            <button onclick="printTask(${taskNum})" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg flex items-center gap-2">
+                                <i class="fas fa-print"></i> Print Task ${taskNum}
+                            </button>
+                         </div>`;
+            }
+
+            if (page.type === 'theory') {
+                html += `<div class="bg-white p-6 rounded-lg shadow-md">${page.content}</div>`;
+            } else if (page.type === 'tasks') {
+                html += `<div class="bg-white p-6 rounded-lg shadow-md">`;
+                page.tasks.forEach((task, index) => {
+                    html += renderTask(task, index);
+                });
+                html += `</div>`;
+            }
+            html += `<div class="flex justify-between mt-6 no-print">`;
+            if (currentPage > 0) {
+                html += `<button onclick="prevPage()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded"><i class="fas fa-arrow-left"></i> Prev</button>`;
+            } else {
+                html += `<div></div>`;
+            }
+            if (currentPage < section.pages.length - 1) {
+                html += `<button onclick="nextPage()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Next <i class="fas fa-arrow-right"></i></button>`;
+            } else {
+                html += `<div></div>`;
+            }
+            html += `</div>`;
+
+            mainContent.innerHTML = html;
+            if (window.renderMathInElement) {
+                renderMathInElement(mainContent, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '\\[', right: '\\]', display: true},
+                        {left: '\\(', right: '\\)', display: false}
+                    ]
+                });
+            }
+        }
+        
+        function prevPage() { currentPage--; renderContent(); }
+        function nextPage() { currentPage++; renderContent(); }
+
+        function renderTask(task, index) {
+            const taskId = `${currentSection}-${currentPage}-${index}`;
+            let opts = task.opts.map((opt, i) => ({ text: opt, isCorrect: i === task.correct }));
+            opts = shuffleArray(opts);
+
+            let optionsHtml = '';
+            opts.forEach((opt, i) => {
+                optionsHtml += `
+                    <button id="opt-${taskId}-${i}" onclick="checkAnswer('${taskId}', ${i}, ${opt.isCorrect})" class="option-btn w-full text-left p-3 border rounded-lg mb-2 flex items-center">
+                        <span class="w-6 h-6 bg-gray-200 rounded-full flex items-center justify-center mr-3 font-bold flex-shrink-0">${String.fromCharCode(65 + i)}</span>
+                        <span class="flex-1">${opt.text}</span>
+                    </button>
+                `;
+            });
+
+            let safeExp = task.exp ? task.exp.replace(/\\times/g, '×').replace(/<p>/g, '<div>').replace(/<\/p>/g, '</div>') : '';
+            let svgHtml = task.svg ? `<div class="mb-3 flex justify-center bg-blue-50 p-3 rounded-lg">${task.svg}</div>` : '';
+
+            return `
+                <div class="border-b border-gray-200 py-4">
+                    ${svgHtml}
+                    <p class="font-semibold mb-2">${index + 1}. ${task.q}</p>
+                    <p class="translation">${task.q_trans}</p>
+                    <div class="mt-4">
+                        ${optionsHtml}
+                    </div>
+                    <div id="feedback-${taskId}" class="mt-2"></div>
+                    <div id="collapse-${taskId}" class="collapse-content mt-2 bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <h4 class="font-bold text-blue-600 mb-2"><i class="fas fa-lightbulb mr-1"></i>Explanation</h4>
+                        <div>${safeExp}</div>
+                    </div>
+                    <div class="mt-2 no-print flex gap-2">
+                        <button id="reset-${taskId}" onclick="resetTask('${taskId}')" class="hidden bg-yellow-500 hover:bg-yellow-600 text-white text-sm font-bold py-1 px-3 rounded"><i class="fas fa-redo mr-1"></i>Reset</button>
+                        <button onclick="toggleCollapse('${taskId}')" class="hidden bg-gray-200 hover:bg-gray-300 text-gray-800 text-sm font-bold py-1 px-3 rounded"><i class="fas fa-chevron-down mr-1"></i>Show Explanation</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+        function checkAnswer(taskId, optIndex, isCorrect) {
+            const buttons = document.querySelectorAll(`[id^="opt-${taskId}-"]`);
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                btn.classList.add('opacity-50', 'cursor-not-allowed');
+            });
+
+            const selectedBtn = document.getElementById(`opt-${taskId}-${optIndex}`);
+            const feedback = document.getElementById(`feedback-${taskId}`);
+            const resetBtn = document.getElementById(`reset-${taskId}`);
+            const explainBtn = document.querySelector(`#reset-${taskId}`).nextElementSibling;
+            
+            resetBtn.classList.remove('hidden');
+            explainBtn.classList.remove('hidden');
+
+            if (isCorrect) {
+                selectedBtn.classList.add('bg-green-200', 'border-green-500');
+                feedback.innerHTML = `<p class="text-green-600 font-bold"><i class="fas fa-check-circle"></i> Correct! (Benar!)</p>`;
+            } else {
+                selectedBtn.classList.add('bg-red-200', 'border-red-500');
+                feedback.innerHTML = `<p class="text-red-600 font-bold"><i class="fas fa-times-circle"></i> Incorrect. Check the explanation! (Salah. Cek penjelasannya!)</p>`;
+                document.getElementById(`collapse-${taskId}`).classList.add('open');
+            }
+        }
+
+        function toggleCollapse(taskId) {
+            const content = document.getElementById(`collapse-${taskId}`);
+            content.classList.toggle('open');
+        }
+
+        function resetTask(taskId) {
+            renderContent();
+        }
+
+        function printTask(taskNumber) {
+            const printArea = document.getElementById('printArea');
+            const date = new Date().toLocaleDateString('en-GB');
+            let taskContent = contentData['task' + taskNumber].pages[0]; 
+            
+            let tableRows = '';
+            let score = 0;
+
+            taskContent.tasks.forEach((task, index) => {
+                const taskId = `task${taskNumber}-0-${index}`;
+                const correctAnswerText = task.opts[task.correct];
+                
+                const selectedBtn = document.querySelector(`[id^="opt-${taskId}-"].bg-green-200, [id^="opt-${taskId}-"].bg-red-200`);
+                
+                let studentAnswerHtml = '<span style="color:#9ca3af; font-style:italic;">(Empty)</span>';
+                let noteHtml = '❌';
+                
+                if (selectedBtn) {
+                    const ann = selectedBtn.querySelector('.katex-mathml annotation');
+                    if (ann) {
+                        studentAnswerHtml = `\\( ${ann.textContent} \\)`;
+                    } else {
+                        const textContainer = selectedBtn.querySelector('.flex-1');
+                        if (textContainer) {
+                            studentAnswerHtml = textContainer.innerText;
+                        } else {
+                            studentAnswerHtml = selectedBtn.innerText.substring(1).trim();
+                        }
+                    }
+                    
+                    if (selectedBtn.classList.contains('bg-green-200')) {
+                        noteHtml = '✔️';
+                        score++;
+                    } else {
+                        noteHtml = '❌';
+                    }
+                }
+                
+                tableRows += `
+                    <tr>
+                        <td style="text-align: center; vertical-align: top;">${index + 1}</td>
+                        <td style="vertical-align: top;">${task.q}</td>
+                        <td style="vertical-align: top;">${studentAnswerHtml}</td>
+                        <td style="vertical-align: top;">${correctAnswerText}</td>
+                        <td style="text-align: center; vertical-align: top; font-size: 16px;">${noteHtml}</td>
+                    </tr>
+                `;
+            });
+            printArea.innerHTML = `
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <h1>Math Tutoring by Deni</h1>
+                    <p>Topic: Rationalization (Binomial Denominators)</p>
+                    <p>Name: .........................</p>
+                    <p>Date: ${date}</p>
+                    <p>Task: ${taskNumber}/5</p>
+                    <p>Score: ${score} / 10</p>
+                </div>
+                <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+                    <thead>
+                        <tr style="border: 1px solid #000; background-color: #f3f4f6;">
+                            <th style="border: 1px solid #000; padding: 5px; width: 5%;">No.</th>
+                            <th style="border: 1px solid #000; padding: 5px; width: 40%;">Question</th>
+                            <th style="border: 1px solid #000; padding: 5px; width: 20%;">Student Answer</th>
+                            <th style="border: 1px solid #000; padding: 5px; width: 25%;">Correct Answer</th>
+                            <th style="border: 1px solid #000; padding: 5px; width: 10%;">Note (❌/✔️)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${tableRows}
+                    </tbody>
+                </table>
+                <div style="margin-top: 40px; text-align: right;">
+                    <p>Checked by,</p>
+                    <br><br>
+                    <p><strong>Deni</strong></p>
+                </div>
+            `;
+            
+            if (window.renderMathInElement) {
+                renderMathInElement(printArea, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '\\[', right: '\\]', display: true},
+                        {left: '\\(', right: '\\)', display: false}
+                    ]
+                });
+            }
+            
+            printArea.classList.remove('hidden');
+            window.print();
+            printArea.classList.add('hidden');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.renderMathInElement) {
+                document.querySelector('.sidebar-item').click();
+            } else {
+                window.addEventListener('load', () => {
+                    document.querySelector('.sidebar-item').click();
+                });
+            }
+        });
+    </script>
+</body>
+</html>
