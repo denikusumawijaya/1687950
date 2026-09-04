@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Tutoring by Deni</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .translation { font-style: italic; font-size: 0.85rem; color: #6b7280; margin-top: 0.25rem; display: block; }
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        .page { display: none; }
+        .page.active { display: block; }
+        .option-btn { transition: all 0.2s; }
+        .option-btn:hover { transform: translateX(5px); }
+        .collapse-content { 
+            max-height: 0; 
+            overflow: hidden; 
+            transition: max-height 0.4s ease-in-out, padding 0.4s, border 0.4s, background 0.4s; 
+            padding: 0; 
+            border: 0;
+            background: transparent;
+        }
+        .collapse-content.open { 
+            max-height: 2000px; 
+            padding: 1.5rem; 
+            border: 1px solid #bfdbfe; 
+            background: #eff6ff; 
+            border-radius: 0.5rem;
+            margin-top: 1rem; 
+        }
+        @media print {
+            body * { visibility: hidden; }
+            #printArea, #printArea * { visibility: visible; }
+            #printArea { 
+                display: block !important; 
+                position: absolute; 
+                left: 0; 
+                top: 0; 
+                width: 100%; 
+                padding: 20px;
+                box-sizing: border-box;
+            }
+            .no-print { display: none !important; }
+            @page { size: A4; margin: 10mm; }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex flex-col h-screen overflow-hidden">
+
+    <!-- Header -->
+    <header class="bg-blue-800 text-white p-4 flex justify-between items-center shadow-md no-print shrink-0 z-50">
+        <div>
+            <h1 class="text-xl font-bold">Math Tutoring by Deni</h1>
+            <p class="text-sm">Topic: Exponents (Bilangan Berpangkat)</p>
+            <p class="translation text-blue-200">Topik: Bilangan Berpangkat</p>
+        </div>
+        <div>
+            <button onclick="openModal()" class="bg-yellow-400 hover:bg-yellow-500 text-blue-900 font-bold py-2 px-4 rounded flex items-center gap-2">
+                <i class="fas fa-gavel"></i> Class Rules
+            </button>
+        </div>
+    </header>
+
+    <!-- Modal Class Rules -->
+    <div id="classRulesModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 no-print">
+        <div class="bg-white rounded-lg p-6 w-80 max-w-sm">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-blue-800">Class Rules <br><span class="translation text-gray-500">Aturan Kelas</span></h2>
+                <button onclick="closeModal()" class="text-gray-500 hover:text-red-500"><i class="fas fa-times text-xl"></i></button>
+            </div>
+            <ul class="space-y-3 text-gray-700">
+                <li class="flex items-start gap-2">
+                    <i class="fas fa-comments text-blue-500 mt-1"></i>
+                    <div>Take turns speaking. <span class="translation">Berbicara secara bergantian.</span></div>
+                </li>
+                <li class="flex items-start gap-2">
+                    <i class="fas fa-door-open text-blue-500 mt-1"></i>
+                    <div>Ask permission if you want to leave the class. <span class="translation">Meminta izin jika ingin meninggalkan kelas.</span></div>
+                </li>
+                <li class="flex items-start gap-2">
+                    <i class="fas fa-video text-blue-500 mt-1"></i>
+                    <div>Turn on camera and microphone if needed. <span class="translation">Menyalakan kamera dan microphone jika diperlukan.</span></div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Layout -->
+    <div class="flex flex-1 overflow-hidden">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white shadow-lg no-print border-r border-gray-200 flex flex-col">
+            <div class="p-4 bg-blue-800 text-white">
+                <h3 class="font-bold text-lg flex items-center gap-2"><i class="fas fa-book-open"></i> Class Agenda</h3>
+                <p class="text-xs text-blue-200 mt-1">Select a topic to navigate</p>
+            </div>
+            
+            <nav class="flex-1 overflow-y-auto p-2">
+                <ul class="space-y-1">
+                    <li>
+                        <a href="javascript:void(0)" onclick="showSection('warmup')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-800 transition-colors cursor-pointer" data-section="warmup">
+                            <div class="font-semibold text-sm text-gray-800">Spiral Review Warm-up</div>
+                            <div class="text-xs text-gray-500 flex items-center gap-1 mt-1"><i class="far fa-clock"></i> 00:00 - 00:10</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" onclick="showSection('intro')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-800 transition-colors cursor-pointer" data-section="intro">
+                            <div class="font-semibold text-sm text-gray-800">Introduction & Real-World</div>
+                            <div class="text-xs text-gray-500 flex items-center gap-1 mt-1"><i class="far fa-clock"></i> 00:10 - 00:15</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" onclick="showSection('review')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-800 transition-colors cursor-pointer" data-section="review">
+                            <div class="font-semibold text-sm text-gray-800">Review of Prior Knowledge</div>
+                            <div class="text-xs text-gray-500 flex items-center gap-1 mt-1"><i class="far fa-clock"></i> 00:15 - 00:20</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" onclick="showSection('problem')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-800 transition-colors cursor-pointer" data-section="problem">
+                            <div class="font-semibold text-sm text-gray-800">Problem Introduction</div>
+                            <div class="text-xs text-gray-500 flex items-center gap-1 mt-1"><i class="far fa-clock"></i> 00:20 - 00:30</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" onclick="showSection('guided')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-800 transition-colors cursor-pointer" data-section="guided">
+                            <div class="font-semibold text-sm text-gray-800">Guided Practice</div>
+                            <div class="text-xs text-gray-500 flex items-center gap-1 mt-1"><i class="far fa-clock"></i> 00:30 - 00:45</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" onclick="showSection('independent')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-800 transition-colors cursor-pointer" data-section="independent">
+                            <div class="font-semibold text-sm text-gray-800">Independent Practice</div>
+                            <div class="text-xs text-gray-500 flex items-center gap-1 mt-1"><i class="far fa-clock"></i> 00:45 - 00:55</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" onclick="showSection('consolidation')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-800 transition-colors cursor-pointer" data-section="consolidation">
+                            <div class="font-semibold text-sm text-gray-800">Consolidation & Reflection</div>
+                            <div class="text-xs text-gray-500 flex items-center gap-1 mt-1"><i class="far fa-clock"></i> 00:55 - 01:00</div>
+                        </a>
+                    </li>
+                    
+                    <hr class="my-3 border-gray-200">
+                    
+                    <li>
+                        <a href="javascript:void(0)" onclick="showSection('task1')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-orange-50 hover:text-orange-800 transition-colors cursor-pointer" data-section="task1">
+                            <div class="font-bold text-sm text-blue-800 flex items-center gap-2"><i class="fas fa-clipboard-list text-xs"></i> Task 1</div>
+                            <div class="text-xs text-gray-500 mt-1">10 Multiple Choice</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" onclick="showSection('task2')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-orange-50 hover:text-orange-800 transition-colors cursor-pointer" data-section="task2">
+                            <div class="font-bold text-sm text-blue-800 flex items-center gap-2"><i class="fas fa-clipboard-list text-xs"></i> Task 2</div>
+                            <div class="text-xs text-gray-500 mt-1">10 Multiple Choice</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" onclick="showSection('task3')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-orange-50 hover:text-orange-800 transition-colors cursor-pointer" data-section="task3">
+                            <div class="font-bold text-sm text-blue-800 flex items-center gap-2"><i class="fas fa-clipboard-list text-xs"></i> Task 3</div>
+                            <div class="text-xs text-gray-500 mt-1">10 Multiple Choice</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" onclick="showSection('task4')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-orange-50 hover:text-orange-800 transition-colors cursor-pointer" data-section="task4">
+                            <div class="font-bold text-sm text-blue-800 flex items-center gap-2"><i class="fas fa-clipboard-list text-xs"></i> Task 4</div>
+                            <div class="text-xs text-gray-500 mt-1">10 Multiple Choice</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" onclick="showSection('task5')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-orange-50 hover:text-orange-800 transition-colors cursor-pointer" data-section="task5">
+                            <div class="font-bold text-sm text-blue-800 flex items-center gap-2"><i class="fas fa-clipboard-list text-xs"></i> Task 5</div>
+                            <div class="text-xs text-gray-500 mt-1">10 Multiple Choice</div>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="p-4 bg-gray-50 border-t border-gray-200 text-center">
+                <p class="text-xs text-gray-500 font-medium">Math Tutoring System</p>
+                <p class="text-xs text-gray-400">by Deni</p>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col overflow-hidden">
+            <div id="contentScrollArea" class="flex-1 overflow-y-auto p-6">
+            
+            <!-- ========================================== -->
+            <!-- SECTION: SPIRAL REVIEW WARM-UP             -->
+            <!-- ========================================== -->
+            <div id="warmup" class="content-section active">
+                <!-- PAGE 1: THEORY 1 -->
+                <div class="page active" data-page="1">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-blue-500">
+                        <h2 class="text-2xl font-bold text-blue-800 mb-2">The Power of Multiplication</h2>
+                        <p class="translation">Kekuatan Perkalian</p>
+                        
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-blue-50 p-4 rounded flex justify-center">
+                                <svg width="150" height="120" viewBox="0 0 150 120">
+                                    <text x="75" y="30" font-size="15" fill="#333" text-anchor="middle" font-weight="bold">Repeated Addition</text>
+                                    <rect x="10" y="50" width="20" height="20" fill="#3b82f6" rx="3"/>
+                                    <rect x="35" y="50" width="20" height="20" fill="#3b82f6" rx="3"/>
+                                    <rect x="60" y="50" width="20" height="20" fill="#3b82f6" rx="3"/>
+                                    <rect x="85" y="50" width="20" height="20" fill="#3b82f6" rx="3"/>
+                                    <text x="50" y="85" font-size="12" fill="#666" text-anchor="middle">2 + 2 + 2 + 2</text>
+                                    <text x="75" y="105" font-size="15" fill="#10b981" text-anchor="middle" font-weight="bold">= 2 × 4 = 8</text>
+                                </svg>
+                            </div>
+                            <p>Exponents are simply a shortcut for repeated multiplication. Instead of writing \( 2 \times 2 \times 2 \times 2 \), we write \( 2^4 \). <span class="translation">Pangkat hanyalah jalan pintas untuk perkalian berulang. Alih-alih menulis \( 2 \times 2 \times 2 \times 2 \), kita menulis \( 2^4 \).</span></p>
+                        </div>
+                        <p>Here, 2 is the base (the number being multiplied) and 4 is the exponent (how many times it is multiplied). <span class="translation">Di sini, 2 adalah bilangan pokok (angka yang dikalikan) dan 4 adalah pangkat (berapa kali ia dikalikan).</span></p>
+                    </div>
+                </div>
+                <div class="page" data-page="2" data-task-id="w-task1"></div>
+                <div class="page" data-page="3" data-task-id="w-task2"></div>
+                <div class="page" data-page="4" data-task-id="w-task3"></div>
+
+                <!-- PAGE 5: THEORY 2 -->
+                <div class="page" data-page="5">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-green-500">
+                        <h2 class="text-2xl font-bold text-green-600 mb-2">Product of Powers Rule</h2>
+                        <p class="translation">Aturan Perkalian Pangkat</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-green-50 p-4 rounded flex items-center">
+                                <svg width="150" height="100" viewBox="0 0 150 100">
+                                    <rect x="10" y="30" width="50" height="40" fill="#10b981" rx="5"/>
+                                    <text x="35" y="55" font-size="16" fill="white" text-anchor="middle" font-weight="bold">a^m</text>
+                                    <text x="75" y="55" font-size="20" fill="#333" text-anchor="middle">×</text>
+                                    <rect x="90" y="30" width="50" height="40" fill="#3b82f6" rx="5"/>
+                                    <text x="115" y="55" font-size="16" fill="white" text-anchor="middle" font-weight="bold">a^n</text>
+                                    <text x="75" y="90" font-size="14" fill="#ef4444" text-anchor="middle" font-weight="bold">= a^(m+n)</text>
+                                </svg>
+                            </div>
+                            <p>When multiplying terms with the same base, keep the base and add the exponents. <span class="translation">Saat mengalikan suku dengan bilangan pokok yang sama, pertahankan bilangan pokoknya dan jumlahkan pangkatnya.</span></p>
+                        </div>
+                        <p>Example: \( x^3 \times x^4 = x^{3+4} = x^7 \). Notice that \( x^3 = x \cdot x \cdot x \) and \( x^4 = x \cdot x \cdot x \cdot x \). Together they make 7 \( x \)s. <span class="translation">Contoh: \( x^3 \times x^4 = x^{3+4} = x^7 \). Perhatikan bahwa \( x^3 = x \cdot x \cdot x \) dan \( x^4 = x \cdot x \cdot x \cdot x \). Bersama-sama mereka menjadi 7 \( x \).</span></p>
+                    </div>
+                </div>
+                <div class="page" data-page="6" data-task-id="w-task4"></div>
+                <div class="page" data-page="7" data-task-id="w-task5"></div>
+                <div class="page" data-page="8" data-task-id="w-task6"></div>
+
+                <!-- PAGE 9: THEORY 3 -->
+                <div class="page" data-page="9">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-purple-500">
+                        <h2 class="text-2xl font-bold text-purple-600 mb-2">Quotient of Powers Rule</h2>
+                        <p class="translation">Aturan Pembagian Pangkat</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-purple-50 p-4 rounded">
+                                <svg width="140" height="100" viewBox="0 0 140 100">
+                                    <rect x="10" y="20" width="50" height="30" fill="#8b5cf6" rx="5"/>
+                                    <text x="35" y="40" font-size="14" fill="white" text-anchor="middle" font-weight="bold">a^m</text>
+                                    <rect x="10" y="55" width="50" height="30" fill="#3b82f6" rx="5"/>
+                                    <text x="35" y="75" font-size="14" fill="white" text-anchor="middle" font-weight="bold">a^n</text>
+                                    <text x="75" y="60" font-size="20" fill="#333" text-anchor="middle">=</text>
+                                    <rect x="90" y="35" width="40" height="30" fill="#10b981" rx="5"/>
+                                    <text x="110" y="55" font-size="14" fill="white" text-anchor="middle" font-weight="bold">a^(m-n)</text>
+                                </svg>
+                            </div>
+                            <p>When dividing terms with the same base, keep the base and subtract the bottom exponent from the top exponent. <span class="translation">Saat membagi suku dengan bilangan pokok yang sama, pertahankan bilangan pokoknya dan kurangkan pangkat bawah dari pangkat atas.</span></p>
+                        </div>
+                        <p>Example: \( \frac{y^5}{y^2} = y^{5-2} = y^3 \). You are essentially cancelling out two \( y \)s from the top and bottom. <span class="translation">Contoh: \( \frac{y^5}{y^2} = y^{5-2} = y^3 \). Pada dasarnya Anda mencoret dua \( y \) dari atas dan bawah.</span></p>
+                    </div>
+                </div>
+                <div class="page" data-page="10" data-task-id="w-task7"></div>
+                <div class="page" data-page="11" data-task-id="w-task8"></div>
+                <div class="page" data-page="12" data-task-id="w-task9"></div>
+                <div class="page" data-page="13" data-task-id="w-task10"></div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- SECTION: INTRODUCTION & REAL-WORLD         -->
+            <!-- ========================================== -->
+            <div id="intro" class="content-section">
+                <div class="page active" data-page="1">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-blue-500">
+                        <h2 class="text-2xl font-bold text-blue-800 mb-2">Bacterial Growth</h2>
+                        <p class="translation">Pertumbuhan Bakteri</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-blue-50 p-4 rounded">
+                                <svg width="150" height="120" viewBox="0 0 150 120">
+                                    <circle cx="75" cy="60" r="40" fill="#3b82f6" opacity="0.2"/>
+                                    <circle cx="60" cy="50" r="8" fill="#3b82f6"/>
+                                    <circle cx="80" cy="70" r="5" fill="#3b82f6"/>
+                                    <circle cx="90" cy="45" r="6" fill="#3b82f6"/>
+                                    <circle cx="50" cy="70" r="7" fill="#3b82f6"/>
+                                    <path d="M120,110 Q120,40 130,40" stroke="#10b981" fill="none" stroke-width="3"/>
+                                    <text x="135" y="40" font-size="12" fill="#10b981" text-anchor="middle">x2</text>
+                                </svg>
+                            </div>
+                            <p>Bacteria reproduce by splitting in half. One bacterium becomes 2, then 4, then 8, 16, and so on. This is exponential growth. <span class="translation">Bakteri berkembang biak dengan membelah diri. Satu bakteri menjadi 2, lalu 4, lalu 8, 16, dan seterusnya. Ini adalah pertumbuhan eksponensial.</span></p>
+                        </div>
+                        <p>If we start with 1 bacterium and it doubles every hour, after \( t \) hours there will be \( 2^t \) bacteria. <span class="translation">Jika kita mulai dengan 1 bakteri dan jumlahnya berlipat ganda setiap jam, setelah \( t \) jam akan ada \( 2^t \) bakteri.</span></p>
+                    </div>
+                </div>
+                <div class="page" data-page="2" data-task-id="i-task1"></div>
+                <div class="page" data-page="3" data-task-id="i-task2"></div>
+                <div class="page" data-page="4" data-task-id="i-task3"></div>
+
+                <div class="page" data-page="5">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-green-500">
+                        <h2 class="text-2xl font-bold text-green-600 mb-2">Computer Memory & Bytes</h2>
+                        <p class="translation">Memori Komputer & Byte</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-green-50 p-4 rounded">
+                                <svg width="140" height="100" viewBox="0 0 140 100">
+                                    <rect x="20" y="20" width="100" height="60" fill="#10b981" rx="5" stroke="#333" stroke-width="2"/>
+                                    <text x="70" y="45" font-size="12" fill="white" text-anchor="middle">1 KB</text>
+                                    <text x="70" y="65" font-size="10" fill="white" text-anchor="middle">1024 Bytes</text>
+                                    <text x="70" y="90" font-size="10" text-anchor="middle" fill="#333">2^10 Bytes</text>
+                                </svg>
+                            </div>
+                            <p>In computers, memory is measured in powers of 2. 1 Kilobyte (KB) is not exactly 1000 bytes, but \( 2^{10} = 1024 \) bytes! <span class="translation">Di komputer, memori diukur dalam pangkat 2. 1 Kilobyte (KB) bukanlah tepat 1000 byte, melainkan \( 2^{10} = 1024 \) byte!</span></p>
+                        </div>
+                        <p>This is because computers run on binary code (0s and 1s). Exponents help us calculate large memory sizes easily. <span class="translation">Ini karena komputer beroperasi pada kode biner (0 dan 1). Pangkat membantu kita menghitung ukuran memori besar dengan mudah.</span></p>
+                    </div>
+                </div>
+                <div class="page" data-page="6" data-task-id="i-task4"></div>
+                <div class="page" data-page="7" data-task-id="i-task5"></div>
+                <div class="page" data-page="8" data-task-id="i-task6"></div>
+
+                <div class="page" data-page="9">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-purple-500">
+                        <h2 class="text-2xl font-bold text-purple-600 mb-2">The Spread of a Rumor</h2>
+                        <p class="translation">Penyebaran Rumor</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-purple-50 p-4 rounded">
+                                <svg width="140" height="100" viewBox="0 0 140 100">
+                                    <circle cx="70" cy="50" r="15" fill="#8b5cf6"/>
+                                    <text x="70" y="55" font-size="12" fill="white" text-anchor="middle">1</text>
+                                    <path d="M70,35 L40,20" stroke="#333" stroke-width="1"/>
+                                    <path d="M70,35 L100,20" stroke="#333" stroke-width="1"/>
+                                    <path d="M70,65 L40,80" stroke="#333" stroke-width="1"/>
+                                    <path d="M70,65 L100,80" stroke="#333" stroke-width="1"/>
+                                    <circle cx="40" cy="20" r="10" fill="#ef4444"/>
+                                    <circle cx="100" cy="20" r="10" fill="#ef4444"/>
+                                    <circle cx="40" cy="80" r="10" fill="#ef4444"/>
+                                    <circle cx="100" cy="80" r="10" fill="#ef4444"/>
+                                </svg>
+                            </div>
+                            <p>If 1 person tells a secret to 3 people, and those 3 tell 3 more, the pattern is \( 3^1, 3^2, 3^3 \). <span class="translation">Jika 1 orang memberitahu rahasia kepada 3 orang, dan 3 orang itu memberitahu 3 orang lagi, polanya adalah \( 3^1, 3^2, 3^3 \).</span></p>
+                        </div>
+                        <p>Exponents model how fast things spread. After 4 rounds, \( 3^4 = 81 \) people know the secret! <span class="translation">Pangkat memodelkan seberapa cepat hal-hal menyebar. Setelah 4 putaran, \( 3^4 = 81 \) orang tahu rahasianya!</span></p>
+                    </div>
+                </div>
+                <div class="page" data-page="10" data-task-id="i-task7"></div>
+                <div class="page" data-page="11" data-task-id="i-task8"></div>
+                <div class="page" data-page="12" data-task-id="i-task9"></div>
+                <div class="page" data-page="13" data-task-id="i-task10"></div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- SECTION: REVIEW OF PRIOR KNOWLEDGE         -->
+            <!-- ========================================== -->
+            <div id="review" class="content-section">
+                <div class="page active" data-page="1">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-blue-500">
+                        <h2 class="text-2xl font-bold text-blue-800 mb-2">Zero Exponent Rule</h2>
+                        <p class="translation">Aturan Pangkat Nol</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-blue-50 p-4 rounded">
+                                <svg width="150" height="100" viewBox="0 0 150 100">
+                                    <circle cx="75" cy="50" r="40" fill="#3b82f6" opacity="0.2"/>
+                                    <text x="75" y="60" font-size="40" fill="#3b82f6" text-anchor="middle" font-weight="bold">a^0</text>
+                                </svg>
+                            </div>
+                            <p>Any non-zero number raised to the power of 0 is always 1. <span class="translation">Setiap angka bukan nol yang dipangkatkan 0 selalu menghasilkan 1.</span></p>
+                        </div>
+                        <p>Why? Look at the division rule: \( \frac{a^3}{a^3} = a^{3-3} = a^0 \). But anything divided by itself is 1. So \( a^0 = 1 \). <span class="translation">Mengapa? Lihat aturan pembagian: \( \frac{a^3}{a^3} = a^{3-3} = a^0 \). Tapi apa pun yang dibagi dengan dirinya sendiri adalah 1. Jadi \( a^0 = 1 \).</span></p>
+                    </div>
+                </div>
+                <div class="page" data-page="2" data-task-id="r-task1"></div>
+                <div class="page" data-page="3" data-task-id="r-task2"></div>
+                <div class="page" data-page="4" data-task-id="r-task3"></div>
+
+                <div class="page" data-page="5">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-green-500">
+                        <h2 class="text-2xl font-bold text-green-600 mb-2">Negative Exponent Rule</h2>
+                        <p class="translation">Aturan Pangkat Negatif</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-green-50 p-4 rounded">
+                                <svg width="150" height="80" viewBox="0 0 150 80">
+                                    <rect x="10" y="20" width="50" height="40" fill="#10b981" rx="5"/>
+                                    <text x="35" y="45" font-size="16" fill="white" text-anchor="middle" font-weight="bold">a^-n</text>
+                                    <text x="75" y="45" font-size="20" fill="#333" text-anchor="middle">=</text>
+                                    <rect x="90" y="20" width="50" height="20" fill="#3b82f6" rx="3"/>
+                                    <text x="115" y="35" font-size="12" fill="white" text-anchor="middle">1</text>
+                                    <rect x="90" y="40" width="50" height="20" fill="#ef4444" rx="3"/>
+                                    <text x="115" y="55" font-size="12" fill="white" text-anchor="middle">a^n</text>
+                                </svg>
+                            </div>
+                            <p>A negative exponent means "divide" or "take the reciprocal". It is NOT a negative number. <span class="translation">Pangkat negatif berarti "membagi" atau "ambil kebalikannya". Ini BUKAN angka negatif.</span></p>
+                        </div>
+                        <p>\( 2^{-3} = \frac{1}{2^3} = \frac{1}{8} \). It flips the base to the bottom of a fraction. <span class="translation">\( 2^{-3} = \frac{1}{2^3} = \frac{1}{8} \). Ini membalik bilangan pokok ke bawah pecahan.</span></p>
+                    </div>
+                </div>
+                <div class="page" data-page="6" data-task-id="r-task4"></div>
+                <div class="page" data-page="7" data-task-id="r-task5"></div>
+                <div class="page" data-page="8" data-task-id="r-task6"></div>
+
+                <div class="page" data-page="9">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-purple-500">
+                        <h2 class="text-2xl font-bold text-purple-600 mb-2">Power of a Power Rule</h2>
+                        <p class="translation">Aturan Pangkat dari Pangkat</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-purple-50 p-4 rounded">
+                                <svg width="140" height="100" viewBox="0 0 140 100">
+                                    <rect x="10" y="20" width="60" height="60" fill="#8b5cf6" rx="5"/>
+                                    <text x="40" y="55" font-size="16" fill="white" text-anchor="middle" font-weight="bold">(a^m)^n</text>
+                                    <text x="85" y="55" font-size="20" fill="#333" text-anchor="middle">=</text>
+                                    <rect x="100" y="20" width="30" height="60" fill="#10b981" rx="5"/>
+                                    <text x="115" y="55" font-size="14" fill="white" text-anchor="middle" font-weight="bold">a^(mn)</text>
+                                </svg>
+                            </div>
+                            <p>When a power is raised to another power, you multiply the exponents together. <span class="translation">Ketika sebuah pangkat dinaikkan ke pangkat lain, Anda mengalikan pangkat-pangkatnya bersama.</span></p>
+                        </div>
+                        <p>Example: \( (x^2)^3 = x^{2 \times 3} = x^6 \). Think of it as \( (x \cdot x) \times (x \cdot x) \times (x \cdot x) \), which is 6 \( x \)s. <span class="translation">Contoh: \( (x^2)^3 = x^{2 \times 3} = x^6 \). Anggap saja itu \( (x \cdot x) \times (x \cdot x) \times (x \cdot x) \), yang berarti 6 \( x \).</span></p>
+                    </div>
+                </div>
+                <div class="page" data-page="10" data-task-id="r-task7"></div>
+                <div class="page" data-page="11" data-task-id="r-task8"></div>
+                <div class="page" data-page="12" data-task-id="r-task9"></div>
+                <div class="page" data-page="13" data-task-id="r-task10"></div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- SECTION: PROBLEM INTRODUCTION              -->
+            <!-- ========================================== -->
+            <div id="problem" class="content-section">
+                <!-- PAGE 1: THEORY 1 -->
+                <div class="page active" data-page="1">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-blue-500">
+                        <h2 class="text-2xl font-bold text-blue-800 mb-2">Fractional Exponents (Roots)</h2>
+                        <p class="translation">Pangkat Pecahan (Akar)</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-blue-50 p-4 rounded">
+                                <svg width="150" height="100" viewBox="0 0 150 100">
+                                    <text x="40" y="55" font-size="20" fill="#3b82f6" text-anchor="middle" font-weight="bold">x^(1/2)</text>
+                                    <text x="75" y="55" font-size="20" fill="#333" text-anchor="middle">=</text>
+                                    <text x="110" y="55" font-size="20" fill="#10b981" text-anchor="middle" font-weight="bold">√x</text>
+                                </svg>
+                            </div>
+                            <p>Exponents don't have to be whole numbers. A fraction exponent actually represents a root! <span class="translation">Pangkat tidak harus berupa bilangan bulat. Pangkat pecahan sebenarnya mewakili akar!</span></p>
+                        </div>
+                        <p>The general rule is \( a^{\frac{m}{n}} = \sqrt[n]{a^m} \). The bottom of the fraction (n) becomes the root, and the top (m) stays as the power. <span class="translation">Aturan umumnya adalah \( a^{\frac{m}{n}} = \sqrt[n]{a^m} \). Bagian bawah pecahan (n) menjadi akar, dan bagian atas (m) tetap sebagai pangkat.</span></p>
+                    </div>
+                </div>
+                <div class="page" data-page="2" data-task-id="p-task1"></div>
+                <div class="page" data-page="3" data-task-id="p-task2"></div>
+                <div class="page" data-page="4" data-task-id="p-task3"></div>
+
+                <!-- PAGE 5: THEORY 2 -->
+                <div class="page" data-page="5">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-green-500">
+                        <h2 class="text-2xl font-bold text-green-600 mb-2">Converting Roots to Exponents</h2>
+                        <p class="translation">Mengubah Akar menjadi Pangkat</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-green-50 p-4 rounded">
+                                <svg width="140" height="100" viewBox="0 0 140 100">
+                                    <path d="M10,50 L30,50 L40,20 L50,80 L60,50 L80,50" stroke="#10b981" stroke-width="3" fill="none"/>
+                                    <text x="100" y="55" font-size="16" fill="#333" text-anchor="middle">= x^(1/2)</text>
+                                </svg>
+                            </div>
+                            <p>Writing roots as exponents allows us to use all the exponent rules we learned. <span class="translation">Menulis akar sebagai pangkat memungkinkan kita menggunakan semua aturan pangkat yang telah kita pelajari.</span></p>
+                        </div>
+                        <p>For example, \( \sqrt[3]{x} \) is the same as \( x^{\frac{1}{3}} \). If we have \( \sqrt[3]{x^4} \), it is \( x^{\frac{4}{3}} \). <span class="translation">Misalnya, \( \sqrt[3]{x} \) sama dengan \( x^{\frac{1}{3}} \). Jika kita punya \( \sqrt[3]{x^4} \), itu menjadi \( x^{\frac{4}{3}} \).</span></p>
+                    </div>
+                </div>
+                <div class="page" data-page="6" data-task-id="p-task4"></div>
+                <div class="page" data-page="7" data-task-id="p-task5"></div>
+                <div class="page" data-page="8" data-task-id="p-task6"></div>
+
+                <!-- PAGE 9: THEORY 3 -->
+                <div class="page" data-page="9">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-purple-500">
+                        <h2 class="text-2xl font-bold text-purple-600 mb-2">Simplifying Roots with Exponents</h2>
+                        <p class="translation">Menyederhanakan Akar dengan Pangkat</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-purple-50 p-4 rounded">
+                                <svg width="140" height="100" viewBox="0 0 140 100">
+                                    <text x="40" y="55" font-size="16" fill="#8b5cf6" text-anchor="middle" font-weight="bold">√(x^8)</text>
+                                    <text x="75" y="55" font-size="20" fill="#333" text-anchor="middle">=</text>
+                                    <text x="110" y="55" font-size="16" fill="#10b981" text-anchor="middle" font-weight="bold">x^4</text>
+                                </svg>
+                            </div>
+                            <p>Using fractional exponents makes it easy to simplify complex roots. Just divide the power by the root index. <span class="translation">Menggunakan pangkat pecahan memudahkan penyederhanaan akar yang rumit. Cukup bagi pangkatnya dengan indeks akar.</span></p>
+                        </div>
+                        <p>\( \sqrt{x^8} = x^{\frac{8}{2}} = x^4 \). This is much faster than expanding it out! <span class="translation">\( \sqrt{x^8} = x^{\frac{8}{2}} = x^4 \). Ini jauh lebih cepat daripada mengurainya!</span></p>
+                    </div>
+                </div>
+                <div class="page" data-page="10" data-task-id="p-task7"></div>
+                <div class="page" data-page="11" data-task-id="p-task8"></div>
+                <div class="page" data-page="12" data-task-id="p-task9"></div>
+                <div class="page" data-page="13" data-task-id="p-task10"></div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- SECTION: GUIDED PRACTICE                   -->
+            <!-- ========================================== -->
+            <div id="guided" class="content-section">
+                <!-- PAGE 1: THEORY 1 -->
+                <div class="page active" data-page="1">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-blue-500">
+                        <h2 class="text-2xl font-bold text-blue-800 mb-2">Solving Exponential Equations</h2>
+                        <p class="translation">Menyelesaikan Persamaan Eksponensial</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-blue-50 p-4 rounded">
+                                <svg width="120" height="100" viewBox="0 0 120 100">
+                                    <text x="60" y="50" font-size="20" fill="#3b82f6" text-anchor="middle" font-weight="bold">2^x = 16</text>
+                                </svg>
+                            </div>
+                            <p>To solve an equation where the variable is in the exponent, we must make the bases the same. <span class="translation">Untuk menyelesaikan persamaan di mana variabel ada di pangkat, kita harus menyamakan bilangan pokoknya.</span></p>
+                        </div>
+                        <p>If we have \( 2^x = 16 \), we rewrite 16 as a power of 2. Since \( 16 = 2^4 \), the equation becomes \( 2^x = 2^4 \). Therefore, \( x = 4 \). <span class="translation">Jika kita punya \( 2^x = 16 \), kita tulis ulang 16 sebagai pangkat 2. Karena \( 16 = 2^4 \), persamaannya menjadi \( 2^x = 2^4 \). Oleh karena itu, \( x = 4 \).</span></p>
+                    </div>
+                </div>
+                <div class="page" data-page="2" data-task-id="g-task1"></div>
+                <div class="page" data-page="3" data-task-id="g-task2"></div>
+                <div class="page" data-page="4" data-task-id="g-task3"></div>
+
+                <!-- PAGE 5: THEORY 2 -->
+                <div class="page" data-page="5">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-green-500">
+                        <h2 class="text-2xl font-bold text-green-600 mb-2">Common Bases Strategy</h2>
+                        <p class="translation">Strategi Bilangan Pokok yang Sama</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-green-50 p-4 rounded">
+                                <svg width="150" height="80" viewBox="0 0 150 80">
+                                    <rect x="10" y="20" width="60" height="40" fill="#10b981" rx="5"/>
+                                    <text x="40" y="45" font-size="14" fill="white" text-anchor="middle" font-weight="bold">4^x = 64</text>
+                                    <text x="80" y="45" font-size="16" fill="#333" text-anchor="middle">→</text>
+                                    <rect x="90" y="20" width="60" height="40" fill="#3b82f6" rx="5"/>
+                                    <text x="120" y="45" font-size="14" fill="white" text-anchor="middle" font-weight="bold">(2^2)^x = 2^6</text>
+                                </svg>
+                            </div>
+                            <p>Sometimes numbers aren't the same base, but they share a common prime base. 4 and 64 are both powers of 2. <span class="translation">Kadang angka tidak memiliki bilangan pokok yang sama, tetapi mereka memiliki bilangan pokok prima yang sama. 4 dan 64 keduanya adalah pangkat dari 2.</span></p>
+                        </div>
+                        <p>Rewrite 4 as \( 2^2 \) and 64 as \( 2^6 \). The equation \( 4^x = 64 \) becomes \( (2^2)^x = 2^6 \), which means \( 2^{2x} = 2^6 \). So, \( 2x = 6 \) and \( x = 3 \). <span class="translation">Tulis ulang 4 sebagai \( 2^2 \) dan 64 sebagai \( 2^6 \). Persamaan \( 4^x = 64 \) menjadi \( (2^2)^x = 2^6 \), yang berarti \( 2^{2x} = 2^6 \). Jadi, \( 2x = 6 \) dan \( x = 3 \).</span></p>
+                    </div>
+                </div>
+                <div class="page" data-page="6" data-task-id="g-task4"></div>
+                <div class="page" data-page="7" data-task-id="g-task5"></div>
+                <div class="page" data-page="8" data-task-id="g-task6"></div>
+
+                <!-- PAGE 9: THEORY 3 -->
+                <div class="page" data-page="9">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-purple-500">
+                        <h2 class="text-2xl font-bold text-purple-600 mb-2">Equations with Negative Exponents</h2>
+                        <p class="translation">Persamaan dengan Pangkat Negatif</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-purple-50 p-4 rounded">
+                                <svg width="100" height="100" viewBox="0 0 100 100">
+                                    <text x="50" y="55" font-size="18" fill="#8b5cf6" text-anchor="middle" font-weight="bold">3^-x = 1/9</text>
+                                </svg>
+                            </div>
+                            <p>If an equation has a negative exponent, use the reciprocal rule to make it positive first. <span class="translation">Jika persamaan memiliki pangkat negatif, gunakan aturan kebalikan untuk membuatnya positif terlebih dahulu.</span></p>
+                        </div>
+                        <p>\( 3^{-x} = \frac{1}{9} \) becomes \( \frac{1}{3^x} = \frac{1}{9} \). If the fractions are equal, the denominators must be equal: \( 3^x = 9 \). Since \( 9 = 3^2 \), \( x = 2 \). <span class="translation">\( 3^{-x} = \frac{1}{9} \) menjadi \( \frac{1}{3^x} = \frac{1}{9} \). Jika pecahannya sama, penyebutnya pasti sama: \( 3^x = 9 \). Karena \( 9 = 3^2 \), maka \( x = 2 \).</span></p>
+                    </div>
+                </div>
+                <div class="page" data-page="10" data-task-id="g-task7"></div>
+                <div class="page" data-page="11" data-task-id="g-task8"></div>
+                <div class="page" data-page="12" data-task-id="g-task9"></div>
+                <div class="page" data-page="13" data-task-id="g-task10"></div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- SECTION: INDEPENDENT PRACTICE               -->
+            <!-- ========================================== -->
+            <div id="independent" class="content-section">
+                <!-- PAGE 1: THEORY 1 -->
+                <div class="page active" data-page="1">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-blue-500">
+                        <h2 class="text-2xl font-bold text-blue-800 mb-2">Compound Interest Formula</h2>
+                        <p class="translation">Rumus Bunga Majemuk</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-blue-50 p-4 rounded">
+                                <svg width="120" height="100" viewBox="0 0 120 100">
+                                    <rect x="20" y="20" width="80" height="60" fill="#3b82f6" rx="5"/>
+                                    <text x="60" y="50" font-size="14" fill="white" text-anchor="middle">Money</text>
+                                    <path d="M100,50 Q110,50 110,70" stroke="#10b981" fill="none" stroke-width="3"/>
+                                </svg>
+                            </div>
+                            <p>Exponents are heavily used in finance. The compound interest formula is \( A = P(1 + \frac{r}{n})^{nt} \). <span class="translation">Pangkat banyak digunakan di bidang keuangan. Rumus bunga majemuk adalah \( A = P(1 + \frac{r}{n})^{nt} \).</span></p>
+                        </div>
+                        <p>The exponent \( nt \) represents how many times the interest is calculated over time. This shows how investments grow exponentially. <span class="translation">Pangkat \( nt \) mewakili berapa kali bunga dihitung dari waktu ke waktu. Ini menunjukkan bagaimana investasi tumbuh secara eksponensial.</span></p>
+                    </div>
+                </div>
+                <div class="page" data-page="2" data-task-id="ind-task1"></div>
+                <div class="page" data-page="3" data-task-id="ind-task2"></div>
+                <div class="page" data-page="4" data-task-id="ind-task3"></div>
+
+                <!-- PAGE 5: THEORY 2 -->
+                <div class="page" data-page="5">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-green-500">
+                        <h2 class="text-2xl font-bold text-green-600 mb-2">Population Decay</h2>
+                        <p class="translation">Penyusutan Populasi</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-green-50 p-4 rounded">
+                                <svg width="100" height="100" viewBox="0 0 100 100">
+                                    <path d="M10,10 Q40,50 20,90" stroke="#10b981" stroke-width="3" fill="none"/>
+                                    <path d="M20,10 Q50,50 30,90" stroke="#10b981" stroke-width="3" fill="none"/>
+                                    <path d="M30,10 Q60,50 40,90" stroke="#10b981" stroke-width="3" fill="none"/>
+                                </svg>
+                            </div>
+                            <p>Things can also shrink exponentially. If a population decreases by 10% each year, we multiply by 0.9 each time. <span class="translation">Hal-hal juga bisa menyusut secara eksponensial. Jika populasi berkurang 10% setiap tahun, kita mengalikan dengan 0,9 setiap saat.</span></p>
+                        </div>
+                        <p>After \( t \) years, the population \( P \) becomes \( P(0.9)^t \). The base is less than 1, so the power decreases over time. <span class="translation">Setelah \( t \) tahun, populasi \( P \) menjadi \( P(0.9)^t \). Bilangan pokoknya kurang dari 1, sehingga pangkatnya berkurang seiring waktu.</span></p>
+                    </div>
+                </div>
+                <div class="page" data-page="6" data-task-id="ind-task4"></div>
+                <div class="page" data-page="7" data-task-id="ind-task5"></div>
+                <div class="page" data-page="8" data-task-id="ind-task6"></div>
+
+                <!-- PAGE 9: THEORY 3 -->
+                <div class="page" data-page="9">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-purple-500">
+                        <h2 class="text-2xl font-bold text-purple-600 mb-2">Radioactive Half-Life</h2>
+                        <p class="translation">Waktu Paruh Radioaktif</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-purple-50 p-4 rounded">
+                                <svg width="140" height="100" viewBox="0 0 140 100">
+                                    <circle cx="70" cy="50" r="30" fill="#8b5cf6" opacity="0.5"/>
+                                    <text x="70" y="55" font-size="14" fill="white" text-anchor="middle" font-weight="bold">Mass</text>
+                                    <text x="120" y="55" font-size="12" fill="#333" text-anchor="middle">→ M/2^t</text>
+                                </svg>
+                            </div>
+                            <p>Radioactive substances lose half their mass over a specific time. This is calculated using negative exponents. <span class="translation">Zat radioaktif kehilangan setengah massanya dalam waktu tertentu. Ini dihitung menggunakan pangkat negatif.</span></p>
+                        </div>
+                        <p>If a substance has a half-life of 1 year, after 3 years the remaining mass is \( M(\frac{1}{2})^3 = \frac{M}{8} \). <span class="translation">Jika zat memiliki waktu paruh 1 tahun, setelah 3 tahun massanya yang tersisa adalah \( M(\frac{1}{2})^3 = \frac{M}{8} \).</span></p>
+                    </div>
+                </div>
+                <div class="page" data-page="10" data-task-id="ind-task7"></div>
+                <div class="page" data-page="11" data-task-id="ind-task8"></div>
+                <div class="page" data-page="12" data-task-id="ind-task9"></div>
+                <div class="page" data-page="13" data-task-id="ind-task10"></div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- SECTION: CONSOLIDATION & REFLECTION         -->
+            <!-- ========================================== -->
+            <div id="consolidation" class="content-section">
+                 <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                    <h2 class="text-2xl font-bold text-gray-800">Consolidation & Reflection</h2>
+                    <p class="translation">Konsolidasi & Refleksi</p>
+                    <p>You have finished the learning journey about Exponents. <span class="translation">Anda telah menyelesaikan perjalanan belajar tentang Bilangan Berpangkat.</span></p>
+                    <p class="mt-2">Remember the core rules: Product, Quotient, Zero, Negative, and Power of a Power. <span class="translation">Ingat aturan intinya: Perkalian, Pembagian, Nol, Negatif, dan Pangkat dari Pangkat.</span></p>
+                    <a href="https://learn.algonova.id" target="_blank" class="mt-4 inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded">
+                        Go to learn.algonova.id <span class="translation text-sm italic">Pergi ke learn.algonova.id</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- TASK SECTIONS -->
+            <div id="task1" class="content-section">
+                <div class="page active" data-page="1"><div data-task-id="t1-task1"></div></div>
+                <div class="page" data-page="2"><div data-task-id="t1-task2"></div></div>
+                <div class="page" data-page="3"><div data-task-id="t1-task3"></div></div>
+                <div class="page" data-page="4"><div data-task-id="t1-task4"></div></div>
+                <div class="page" data-page="5"><div data-task-id="t1-task5"></div></div>
+                <div class="page" data-page="6"><div data-task-id="t1-task6"></div></div>
+                <div class="page" data-page="7"><div data-task-id="t1-task7"></div></div>
+                <div class="page" data-page="8"><div data-task-id="t1-task8"></div></div>
+                <div class="page" data-page="9"><div data-task-id="t1-task9"></div></div>
+                <div class="page" data-page="10"><div data-task-id="t1-task10"></div></div>
+            </div>
+            <div id="task2" class="content-section">
+                <div class="page active" data-page="1"><div data-task-id="t2-task1"></div></div>
+                <div class="page" data-page="2"><div data-task-id="t2-task2"></div></div>
+                <div class="page" data-page="3"><div data-task-id="t2-task3"></div></div>
+                <div class="page" data-page="4"><div data-task-id="t2-task4"></div></div>
+                <div class="page" data-page="5"><div data-task-id="t2-task5"></div></div>
+                <div class="page" data-page="6"><div data-task-id="t2-task6"></div></div>
+                <div class="page" data-page="7"><div data-task-id="t2-task7"></div></div>
+                <div class="page" data-page="8"><div data-task-id="t2-task8"></div></div>
+                <div class="page" data-page="9"><div data-task-id="t2-task9"></div></div>
+                <div class="page" data-page="10"><div data-task-id="t2-task10"></div></div>
+            </div>
+            <div id="task3" class="content-section">
+                <div class="page active" data-page="1"><div data-task-id="t3-task1"></div></div>
+                <div class="page" data-page="2"><div data-task-id="t3-task2"></div></div>
+                <div class="page" data-page="3"><div data-task-id="t3-task3"></div></div>
+                <div class="page" data-page="4"><div data-task-id="t3-task4"></div></div>
+                <div class="page" data-page="5"><div data-task-id="t3-task5"></div></div>
+                <div class="page" data-page="6"><div data-task-id="t3-task6"></div></div>
+                <div class="page" data-page="7"><div data-task-id="t3-task7"></div></div>
+                <div class="page" data-page="8"><div data-task-id="t3-task8"></div></div>
+                <div class="page" data-page="9"><div data-task-id="t3-task9"></div></div>
+                <div class="page" data-page="10"><div data-task-id="t3-task10"></div></div>
+            </div>
+            <div id="task4" class="content-section">
+                <div class="page active" data-page="1"><div data-task-id="t4-task1"></div></div>
+                <div class="page" data-page="2"><div data-task-id="t4-task2"></div></div>
+                <div class="page" data-page="3"><div data-task-id="t4-task3"></div></div>
+                <div class="page" data-page="4"><div data-task-id="t4-task4"></div></div>
+                <div class="page" data-page="5"><div data-task-id="t4-task5"></div></div>
+                <div class="page" data-page="6"><div data-task-id="t4-task6"></div></div>
+                <div class="page" data-page="7"><div data-task-id="t4-task7"></div></div>
+                <div class="page" data-page="8"><div data-task-id="t4-task8"></div></div>
+                <div class="page" data-page="9"><div data-task-id="t4-task9"></div></div>
+                <div class="page" data-page="10"><div data-task-id="t4-task10"></div></div>
+            </div>
+            <div id="task5" class="content-section">
+                <div class="page active" data-page="1"><div data-task-id="t5-task1"></div></div>
+                <div class="page" data-page="2"><div data-task-id="t5-task2"></div></div>
+                <div class="page" data-page="3"><div data-task-id="t5-task3"></div></div>
+                <div class="page" data-page="4"><div data-task-id="t5-task4"></div></div>
+                <div class="page" data-page="5"><div data-task-id="t5-task5"></div></div>
+                <div class="page" data-page="6"><div data-task-id="t5-task6"></div></div>
+                <div class="page" data-page="7"><div data-task-id="t5-task7"></div></div>
+                <div class="page" data-page="8"><div data-task-id="t5-task8"></div></div>
+                <div class="page" data-page="9"><div data-task-id="t5-task9"></div></div>
+                <div class="page" data-page="10"><div data-task-id="t5-task10"></div></div>
+            </div>
+
+            <!-- Pagination Bar -->
+            </div>
+            <div id="paginationBar" class="shrink-0 bg-white p-3 border-t border-gray-200 flex justify-center items-center gap-1 no-print z-40 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]"></div>
+        </main>
+    </div>
+    
+    <!-- Print Area -->
+    <div id="printArea" class="hidden p-8">
+        <div class="text-center border-b-2 border-black pb-4 mb-4">
+            <h1 class="text-xl font-bold">Math Tutoring by Deni</h1>
+            <p>Topic: Exponents</p>
+            <div class="flex justify-around mt-4 text-sm">
+                <p>Name: ..............................</p>
+                <p>Date: ..............................</p>
+                <p>Task: <span id="printTaskNum">1</span></p>
+                <p>Score: <span id="printScore">0</span>/10</p>
+            </div>
+        </div>
+        <table class="w-full border-collapse border border-black text-sm">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="border border-black p-1">No.</th>
+                    <th class="border border-black p-1">Question</th>
+                    <th class="border border-black p-1">Student Answer</th>
+                    <th class="border border-black p-1">Correct Answer</th>
+                    <th class="border border-black p-1">Note (❌/✔️)</th>
+                </tr>
+            </thead>
+            <tbody id="printTableBody"></tbody>
+        </table>
+        <div class="mt-8 text-right">
+            <p>Checked by,</p>
+            <br><br>
+            <p class="font-bold">Deni</p>
+        </div>
+    </div>
+
+    <script>
+        // ====== MATH QUESTIONS DATA (PART 1) ======
+        const questions = {
+            // SPIRAL REVIEW WARM-UP TASKS (Basic Exponents)
+            "w-task1": { q: "A bacteria population doubles every hour. If we start with 2 bacteria, which expression represents the population after 5 hours?", q_trans: "Populasi bakteri berlipat ganda setiap jam. Jika kita mulai dengan 2 bakteri, ekspresi manakah yang mewakili populasi setelah 5 jam?", opts: ["\\( 2 \\times 5 \\)", "\\( 2^5 \\)", "\\( 5^2 \\)", "\\( 2^6 \\)", "\\( 10^2 \\)"], ans: "\\( 2^5 \\)", exp: "Since it doubles (multiplies by 2) every hour for 5 hours, we multiply 2 by itself 5 times. This is written as \\( 2^5 \\).", exp_trans: "Karena berlipat ganda (dikali 2) setiap jam selama 5 jam, kita mengalikan 2 dengan dirinya sendiri 5 kali. Ini ditulis sebagai \\( 2^5 \\)." },
+            "w-task2": { q: "Simplify the expression: \\( x^3 \\times x^4 \\).", q_trans: "Sederhanakan ekspresi: \\( x^3 \\times x^4 \\).", opts: ["\\( x^{12} \\)", "\\( x^7 \\)", "\\( x^{34} \\)", "\\( 2x^7 \\)", "\\( x^{-1} \\)"], ans: "\\( x^7 \\)", exp: "When multiplying terms with the same base, keep the base and add the exponents (Product Rule). \\( 3 + 4 = 7 \\), so \\( x^3 \\times x^4 = x^7 \\).", exp_trans: "Saat mengalikan suku dengan bilangan pokok yang sama, pertahankan bilangan pokoknya dan jumlahkan pangkatnya (Aturan Perkalian). \\( 3 + 4 = 7 \\), jadi \\( x^3 \\times x^4 = x^7 \\)." },
+            "w-task3": { q: "Simplify the expression: \\( \\frac{y^8}{y^3} \\).", q_trans: "Sederhanakan ekspresi: \\( \\frac{y^8}{y^3 \\).", opts: ["\\( y^5 \\)", "\\( y^{11} \\)", "\\( y^4 \\)", "\\( y^{24} \\)", "\\( y^{-5} \\)"], ans: "\\( y^5 \\)", exp: "When dividing terms with the same base, keep the base and subtract the exponents (Quotient Rule). \\( 8 - 3 = 5 \\), so \\( \\frac{y^8}{y^3} = y^5 \\).", exp_trans: "Saat membagi suku dengan bilangan pokok yang sama, pertahankan bilangan pokoknya dan kurangkan pangkatnya (Aturan Pembagian). \\( 8 - 3 = 5 \\), jadi \\( \\frac{y^8}{y^3} = y^5 \\)." },
+            "w-task4": { q: "A piece of paper is folded in half repeatedly. The thickness of the paper can be modeled by \\( 2^n \\) folds. What is \\( (2^3)^2 \\)?", q_trans: "Secarik kertas dilipat dua berulang kali. Ketebalan kertas dapat dimodelkan dengan \\( 2^n \\) lipatan. Berapakah \\( (2^3)^2 \\)?", opts: ["\\( 2^5 \\)", "\\( 2^6 \\)", "\\( 2^9 \\)", "\\( 4^3 \\)", "\\( 8^2 \\)"], ans: "\\( 2^6 \\)", exp: "Power of a power rule: multiply the exponents. \\( 3 \\times 2 = 6 \\). So, \\( (2^3)^2 = 2^6 \\).", exp_trans: "Aturan pangkat dari pangkat: kalikan pangkatnya. \\( 3 \\times 2 = 6 \\). Jadi, \\( (2^3)^2 = 2^6 \\)." },
+            "w-task5": { q: "What is the value of \\( 5^0 \\)?", q_trans: "Berapakah nilai dari \\( 5^0 \\)?", opts: ["\\( 0 \\)", "\\( 5 \\)", "\\( 1 \\)", "\\( \\text{Undefined} \\)", "\\( 50 \\)"], ans: "\\( 1 \\)", exp: "Any non-zero number raised to the power of 0 is always 1.", exp_trans: "Setiap angka bukan nol yang dipangkatkan 0 selalu menghasilkan 1." },
+            "w-task6": { q: "Simplify: \\( \\frac{10x^6}{2x^2} \\).", q_trans: "Sederhanakan: \\( \\frac{10x^6}{2x^2} \\).", opts: ["\\( 5x^3 \\)", "\\( 8x^4 \\)", "\\( 5x^4 \\)", "\\( 8x^3 \\)", "\\( 5x^8 \\)"], ans: "\\( 5x^4 \\)", exp: "Divide the coefficients: \\( 10 / 2 = 5 \\). Then subtract exponents: \\( 6 - 2 = 4 \\). Result is \\( 5x^4 \\).", exp_trans: "Bagi koefisiennya: \\( 10 / 2 = 5 \\). Lalu kurangkan pangkatnya: \\( 6 - 2 = 4 \\). Hasilnya \\( 5x^4 \\)." },
+            "w-task7": { q: "Rewrite \\( x^{-3} \\) with a positive exponent.", q_trans: "Tulis ulang \\( x^{-3} \\) dengan pangkat positif.", opts: ["\\( x^3 \\)", "\\( -x^3 \\)", "\\( \\frac{1}{x^3} \\)", "\\( \\frac{1}{x^{-3}} \\)", "\\( -\\frac{1}{x^3} \\)"], ans: "\\( \\frac{1}{x^3} \\)", exp: "A negative exponent means taking the reciprocal. Move the base to the denominator and make the exponent positive.", exp_trans: "Pangkat negatif berarti mengambil kebalikannya. Pindahkan bilangan pokok ke penyebut dan buat pangkatnya positif." },
+            "w-task8": { q: "A cube has a side length of \\( x^2 \\) cm. What is the area of one of its faces?", q_trans: "Sebuah kubus memiliki panjang sisi \\( x^2 \\) cm. Berapakah luas salah satu sisinya?", opts: ["\\( x^6 \\text{ cm}^2 \\)", "\\( x^4 \\text{ cm}^2 \\)", "\\( x^8 \\text{ cm}^2 \\)", "\\( 2x^2 \\text{ cm}^2 \\)", "\\( x^2 \\text{ cm}^2 \\)"], ans: "\\( x^4 \\text{ cm}^2 \\)", exp: "The face of a cube is a square. Area = side \\( \\times \\) side. So, \\( x^2 \\times x^2 = x^{2+2} = x^4 \\text{ cm}^2 \\).", exp_trans: "Sisi kubus adalah persegi. Luas = sisi \\( \\times \\) sisi. Jadi, \\( x^2 \\times x^2 = x^{2+2} = x^4 \\text{ cm}^2 \\)." },
+            "w-task9": { q: "Simplify the expression: \\( (2x^3)(3x^4) \\).", q_trans: "Sederhanakan ekspresi: \\( (2x^3)(3x^4) \\).", opts: ["\\( 5x^7 \\)", "\\( 6x^{12} \\)", "\\( 6x^7 \\)", "\\( 5x^{12} \\)", "\\( 6x^1 \\)"], ans: "\\( 6x^7 \\)", exp: "Multiply the numbers: \\( 2 \\times 3 = 6 \\). Add the exponents: \\( 3 + 4 = 7 \\). Result is \\( 6x^7 \\).", exp_trans: "Kalikan angkanya: \\( 2 \\times 3 = 6 \\). Jumlahkan pangkatnya: \\( 3 + 4 = 7 \\). Hasilnya \\( 6x^7 \\)." },
+            "w-task10": { q: "If \\( a \\neq 0 \\), what is the value of \\( 7a^0 + 2 \\)?", q_trans: "Jika \\( a \\neq 0 \\), berapakah nilai dari \\( 7a^0 + 2 \\)?", opts: ["\\( 0 \\)", "\\( 9 \\)", "\\( 7a + 2 \\)", "\\( 9a \\)", "\\( 5 \\)"], ans: "\\( 9 \\)", exp: "Any non-zero number to the power of 0 is 1. So, \\( a^0 = 1 \\). The expression becomes \\( 7(1) + 2 = 7 + 2 = 9 \\).", exp_trans: "Setiap angka bukan nol berpangkat nol adalah 1. Jadi, \\( a^0 = 1 \\). Ekspresinya menjadi \\( 7(1) + 2 = 7 + 2 = 9 \\)." },
+
+            // INTRODUCTION & REAL-WORLD TASKS (Growth & Decay)
+            "i-task1": { q: "In a computer's memory, 1 KB is technically \\( 2^{10} \\) bytes. What is the value of \\( 2^{10} \\)?", q_trans: "Dalam memori komputer, 1 KB secara teknis adalah \\( 2^{10} \\) byte. Berapakah nilai \\( 2^{10} \\)?", opts: ["\\( 100 \\)", "\\( 512 \\)", "\\( 1000 \\)", "\\( 1024 \\)", "\\( 2048 \\)"], ans: "\\( 1024 \\)", exp: "While 1 KB is often approximated as 1000 bytes, in binary systems it is exactly \\( 2^{10} = 1024 \\) bytes.", exp_trans: "Meskipun 1 KB sering diperkirakan sebagai 1000 byte, dalam sistem biner itu tepatnya \\( 2^{10} = 1024 \\) byte." },
+            "i-task2": { q: "A rumor spreads in a school. Every person who hears it tells 3 new people. If 1 person starts it, how many people know the rumor after 3 rounds? (Calculate \\( 3^3 \\))", q_trans: "Sebuah rumor menyebar di sekolah. Setiap orang yang mendengarnya memberitahu 3 orang baru. Jika 1 orang memulainya, berapa banyak orang yang tahu rumor setelah 3 putaran? (Hitung \\( 3^3 \\))", opts: ["\\( 9 \\text{ people} \\)", "\\( 27 \\text{ people} \\)", "\\( 81 \\text{ people} \\)", "\\( 12 \\text{ people} \\)", "\\( 3 \\text{ people} \\)"], ans: "\\( 27 \\text{ people} \\)", exp: "The pattern is exponential: \\( 3^1 = 3 \\), \\( 3^2 = 9 \\), \\( 3^3 = 27 \\). So, 27 people know the rumor.", exp_trans: "Pola pertumbuhannya eksponensial: \\( 3^1 = 3 \\), \\( 3^2 = 9 \\), \\( 3^3 = 27 \\). Jadi, 27 orang tahu rumor tersebut." },
+            "i-task3": { q: "A radioactive substance has a half-life of 1 day. This means it loses half its mass daily. If initial mass is 100g, what represents the mass after 4 days?", q_trans: "Zat radioaktif memiliki waktu paruh 1 hari. Artinya ia kehilangan setengah massanya setiap hari. Jika massa awal 100g, apa yang mewakili massanya setelah 4 hari?", opts: ["\\( 100 \\times 2^4 \\)", "\\( 100 \\times (0.5)^4 \\)", "\\( 100 - 4 \\times 0.5 \\)", "\\( 100 / 4 \\)", "\\( 100 \\times 4^2 \\)"], ans: "\\( 100 \\times (0.5)^4 \\)", exp: "Losing half means multiplying by 0.5 each day. Over 4 days, it is multiplied by 0.5 four times: \\( (0.5)^4 \\).", exp_trans: "Kehilangan setengah berarti dikalikan 0,5 setiap hari. Selama 4 hari, ia dikalikan 0,5 sebanyak empat kali: \\( (0.5)^4 \\)." },
+            "i-task4": { q: "A populations of frogs doubles every year (\\( 2^t \\)). If there are 10 frogs initially, what is the population after 3 years? Calculate \\( 10 \\times 2^3 \\).", q_trans: "Populasi katak berlipat ganda setiap tahun (\\( 2^t \\)). Jika awalnya ada 10 katak, berapakah populasi setelah 3 tahun? Hitung \\( 10 \\times 2^3 \\).", opts: ["\\( 30 \\text{ frogs} \\)", "\\( 80 \\text{ frogs} \\)", "\\( 13 \\text{ frogs} \\)", "\\( 1000 \\text{ frogs} \\)", "\\( 60 \\text{ frogs} \\)"], ans: "\\( 80 \\text{ frogs} \\)", exp: "\\( 2^3 = 8 \\). So, \\( 10 \\times 8 = 80 \\). There will be 80 frogs after 3 years.", exp_trans: "\\( 2^3 = 8 \\). Jadi, \\( 10 \\times 8 = 80 \\). Akan ada 80 katak setelah 3 tahun." },
+            "i-task5": { q: "Why do we use exponents for things like bacteria growth?", q_trans: "Mengapa kita menggunakan pangkat untuk hal-hal seperti pertumbuhan bakteri?", opts: ["Because bacteria are very small", "Because the growth is repeated multiplication (very fast)", "Because we need to add them", "Because bacteria are round", "Because exponents make numbers smaller"], ans: "Because the growth is repeated multiplication (very fast)", exp: "Exponential growth represents repeated multiplication, which models how rapidly populations expand under ideal conditions.", exp_trans: "Pertumbuhan eksponensial mewakili perkalian berulang, yang memodelkan seberapa cepat populasi berkembang dalam kondisi ideal." },
+            "i-task6": { q: "If you have \\( 2^3 \\) dollars and your friend has \\( 2^4 \\) dollars, what is the total amount of money you both have?", q_trans: "Jika kamu punya \\( 2^3 \\) dolar dan temanmu punya \\( 2^4 \\) dolar, berapakah jumlah uang kalian berdua?", opts: ["\\( 2^7 \\text{ dollars} \\)", "\\( 2^{12} \\text{ dollars} \\)", "\\( 24 \\text{ dollars} \\)", "\\( 16 \\text{ dollars} \\)", "\\( 8 \\text{ dollars} \\)"], ans: "\\( 24 \\text{ dollars} \\)", exp: "\\( 2^3 = 8 \\) and \\( 2^4 = 16 \\). Total = \\( 8 + 16 = 24 \\) dollars. You cannot add exponents when you are just adding values, only when multiplying.", exp_trans: "\\( 2^3 = 8 \\) dan \\( 2^4 = 16 \\). Total = \\( 8 + 16 = 24 \\) dolar. Anda tidak bisa menjumlahkan pangkat saat hanya menjumlahkan nilai, hanya saat mengalikan." },
+            "i-task7": { q: "A car loses 10% of its value each year (multiplied by 0.9). Which expression shows its value after \\( t \\) years if starting value is \\( V \\)?", q_trans: "Sebuah mobil kehilangan 10% nilainya setiap tahun (dikali 0,9). Ekspresi manakah yang menunjukkan nilainya setelah \\( t \\) tahun jika nilai awalnya \\( V \\)?", opts: ["\\( V \\times 10^t \\)", "\\( V \\times (0.9)^t \\)", "\\( V - 10t \\)", "\\( V \\times (1.1)^t \\)", "\\( V / t^2 \\)"], ans: "\\( V \\times (0.9)^t \\)", exp: "Losing 10% means keeping 90% (0.9). So each year it's multiplied by 0.9. Over \\( t \\) years, it's \\( V \\times (0.9)^t \\).", exp_trans: "Kehilangan 10% berarti menyimpan 90% (0,9). Jadi setiap tahun dikalikan 0,9. Selama \\( t \\) tahun, menjadi \\( V \\times (0.9)^t \\)." },
+            "i-task8": { q: "A chessboard has 8 squares per row and 8 rows. The total squares can be written as \\( 8^2 \\). What is \\( 8^2 \\)?", q_trans: "Papan catur memiliki 8 kotak per baris dan 8 baris. Total kotak dapat ditulis sebagai \\( 8^2 \\). Berapakah \\( 8^2 \\)?", opts: ["\\( 16 \\)", "\\( 64 \\)", "\\( 81 \\)", "\\( 16^2 \\)", "\\( 88 \\)"], ans: "\\( 64 \\)", exp: "8 multiplied by itself is 64. \\( 8 \\times 8 = 64 \\).", exp_trans: "8 dikalikan dengan dirinya sendiri adalah 64. \\( 8 \\times 8 = 64 \\)." },
+            "i-task9": { q: "An invasive plant species triples in area every week. If it starts at 2 square meters, what is the area after 2 weeks? Calculate \\( 2 \\times 3^2 \\).", q_trans: "Spesies tanaman invasif melipatgandakan luasnya menjadi tiga kali setiap minggu. Jika mulai dari 2 meter persegi, berapakah luasnya setelah 2 minggu? Hitung \\( 2 \\times 3^2 \\).", opts: ["\\( 12 \\text{ m}^2 \\)", "\\( 18 \\text{ m}^2 \\)", "\\( 36 \\text{ m}^2 \\)", "\\( 6 \\text{ m}^2 \\)", "\\( 8 \\text{ m}^2 \\)"], ans: "\\( 18 \\text{ m}^2 \\)", exp: "\\( 3^2 = 9 \\). Multiply by the initial 2: \\( 2 \\times 9 = 18 \\text{ m}^2 \\).", exp_trans: "\\( 3^2 = 9 \\). Kalikan dengan 2 awal: \\( 2 \\times 9 = 18 \\text{ m}^2 \\)." },
+            "i-task10": { q: "If a magic coin doubles every day, which equation shows the coins after \\( d \\) days if you start with 5 coins?", q_trans: "Jika koin ajaib berlipat ganda setiap hari, persamaan manakah yang menunjukkan koin setelah \\( d \\) hari jika kamu mulai dengan 5 koin?", opts: ["\\( 5^d \\)", "\\( d^5 \\)", "\\( 5 \\times 2^d \\)", "\\( 2 \\times 5^d \\)", "\\( 5+d \\)"], ans: "\\( 5 \\times 2^d \\)", exp: "The initial amount is 5. Since it doubles (multiplies by 2) every day \\( d \\), the formula is \\( 5 \\times 2^d \\).", exp_trans: "Jumlah awal adalah 5. Karena berlipat ganda (dikali 2) setiap hari \\( d \\), rumusnya adalah \\( 5 \\times 2^d \\)." },
+
+            // REVIEW OF PRIOR KNOWLEDGE TASKS (Rules & Algebra)
+            "r-task1": { q: "Simplify: \\( (x^2 y^3)^4 \\).", q_trans: "Sederhanakan: \\( (x^2 y^3)^4 \\).", opts: ["\\( x^6 y^7 \\)", "\\( x^8 y^{12} \\)", "\\( x^6 y^{12} \\)", "\\( x^{16} y^{12} \\)", "\\( x^8 y^3 \\)"], ans: "\\( x^8 y^{12} \\)", exp: "Power of a product rule: raise each part to the power and multiply exponents. \\( 2 \\times 4 = 8 \\) and \\( 3 \\times 4 = 12 \\). Result: \\( x^8 y^{12} \\).", exp_trans: "Aturan pangkat dari perkalian: naikkan setiap bagian ke pangkat dan kalikan pangkatnya. \\( 2 \\times 4 = 8 \\) dan \\( 3 \\times 4 = 12 \\). Hasil: \\( x^8 y^{12} \\)." },
+            "r-task2": { q: "Rewrite using positive exponents: \\( \\frac{1}{x^{-4}} \\).", q_trans: "Tulis ulang menggunakan pangkat positif: \\( \\frac{1}{x^{-4}} \\).", opts: ["\\( x^{-4} \\)", "\\( -x^4 \\)", "\\( x^4 \\)", "\\( \\frac{1}{x^4} \\)", "\\( -\\frac{1}{x^4} \\)"], ans: "\\( x^4 \\)", exp: "When a term with a negative exponent is in the denominator, it moves to the numerator and the exponent becomes positive.", exp_trans: "Ketika suku dengan pangkat negatif ada di penyebut, ia pindah ke pembilang dan pangkatnya menjadi positif." },
+            "r-task3": { q: "Simplify the expression: \\( \\frac{14a^5 b^{-2}}{7a^2 b^3} \\).", q_trans: "Sederhanakan ekspresi: \\( \\frac{14a^5 b^{-2}}{7a^2 b^3} \\).", opts: ["\\( 2a^3 b^5 \\)", "\\( 2a^3 b^{-5} \\)", "\\( 2a^7 b^5 \\)", "\\( 2a^3 b \\)", "\\( \\frac{2a^3}{b^5} \\)"], ans: "\\( \\frac{2a^3}{b^5} \\)", exp: "Numbers: \\( 14/7 = 2 \\). 'a': \\( 5-2=3 \\). 'b': \\( -2 - 3 = -5 \\). So it's \\( 2a^3 b^{-5} \\), which is \\( \\frac{2a^3}{b^5} \\) for positive exponents.", exp_trans: "Angka: \\( 14/7 = 2 \\). 'a': \\( 5-2=3 \\). 'b': \\( -2 - 3 = -5 \\). Jadi ini \\( 2a^3 b^{-5} \\), yang sama dengan \\( \\frac{2a^3}{b^5} \\) untuk pangkat positif." },
+            "r-task4": { q: "What is the simplified form of \\( (2x^{-2})^3 \\)?", q_trans: "Apa bentuk sederhana dari \\( (2x^{-2})^3 \\)?", opts: ["\\( 8x^{-6} \\)", "\\( 6x^{-6} \\)", "\\( 8x^{-5} \\)", "\\( 8x^6 \\)", "\\( 2x^{-6} \\)"], ans: "\\( 8x^{-6} \\)", exp: "Raise 2 to power 3 to get 8. Raise \\( x^{-2} \\) to power 3 (multiply exponents) to get \\( x^{-6} \\). Result: \\( 8x^{-6} \\).", exp_trans: "Naikkan 2 ke pangkat 3 untuk dapat 8. Naikkan \\( x^{-2} \\) ke pangkat 3 (kalikan pangkat) untuk dapat \\( x^{-6} \\). Hasil: \\( 8x^{-6} \\)." },
+            "r-task5": { q: "Simplify: \\( x^5 \\cdot x^{-2} \\cdot x^0 \\).", q_trans: "Sederhanakan: \\( x^5 \\cdot x^{-2} \\cdot x^0 \\).", opts: ["\\( x^3 \\)", "\\( x^7 \\)", "\\( x^{-7} \\)", "\\( x^10 \\)", "\\( x^{-3} \\)"], ans: "\\( x^3 \\)", exp: "Add the exponents: \\( 5 + (-2) + 0 = 3 \\). So the result is \\( x^3 \\).", exp_trans: "Jumlahkan pangkatnya: \\( 5 + (-2) + 0 = 3 \\). Jadi hasilnya \\( x^3 \\)." },
+            "r-task6": { q: "Calculate and simplify: \\( \\frac{3^{-2}}{3^{-4}} \\).", q_trans: "Hitung dan sederhanakan: \\( \\frac{3^{-2}}{3^{-4}} \\).", opts: ["\\( 3^{-2} \\)", "\\( 3^{-6} \\)", "\\( 3^2 \\)", "\\( 3^6 \\)", "\\( 9^{-2} \\)"], ans: "\\( 3^2 \\)", exp: "Quotient rule: \\( -2 - (-4) = -2 + 4 = 2 \\). So the answer is \\( 3^2 \\).", exp_trans: "Aturan pembagian: \\( -2 - (-4) = -2 + 4 = 2 \\). Jadi jawabannya \\( 3^2 \\)." },
+            "r-task7": { q: "A pendulum's swing length is modeled by \\( L^{-1} \\). If the length is 4 meters, what is the value of the expression \\( 4^{-1} \\)?", q_trans: "Panjang ayunan bandul dimodelkan dengan \\( L^{-1} \\). Jika panjangnya 4 meter, berapakah nilai dari ekspresi \\( 4^{-1} \\)?", opts: ["\\( -4 \\)", "\\( 4 \\)", "\\( \\frac{1}{4} \\)", "\\( -\\frac{1}{4} \\)", "\\( 0 \\)"], ans: "\\( \\frac{1}{4} \\)", exp: "A negative exponent of 1 means taking the reciprocal. The reciprocal of 4 is \\( \\frac{1}{4} \\).", exp_trans: "Pangkat negatif 1 berarti mengambil kebalikannya. Kebalikan dari 4 adalah \\( \\frac{1}{4} \\)." },
+            "r-task8": { q: "Simplify the fraction: \\( \\frac{x^4 y^2}{x^2 y^{-3}} \\).", q_trans: "Sederhanakan pecahan: \\( \\frac{x^4 y^2}{x^2 y^{-3}} \\).", opts: ["\\( x^2 y^5 \\)", "\\( x^2 y^{-1} \\)", "\\( x^6 y^5 \\)", "\\( x^2 y^{-5} \\)", "\\( \\frac{x^2}{y^5} \\)"], ans: "\\( x^2 y^5 \\)", exp: "For x: \\( 4 - 2 = 2 \\). For y: \\( 2 - (-3) = 2 + 3 = 5 \\). The result is \\( x^2 y^5 \\).", exp_trans: "Untuk x: \\( 4 - 2 = 2 \\). Untuk y: \\( 2 - (-3) = 2 + 3 = 5 \\). Hasilnya \\( x^2 y^5 \\)." },
+            "r-task9": { q: "If a ball bounces back to \\( \\frac{1}{2} \\) of its previous height, which expression represents the height after \\( b \\) bounces if initial height is \\( H \\)?", q_trans: "Jika bola memantul kembali ke \\( \\frac{1}{2} \\) dari ketinggian sebelumnya, ekspresi manakah yang mewakili ketinggian setelah \\( b \\) pantulan jika ketinggian awalnya \\( H \\)?", opts: ["\\( H \\times 2^b \\)", "\\( H \\times (0.5)^b \\)", "\\( H / (0.5)^b \\)", "\\( H - 0.5b \\)", "\\( (H \\times 0.5)^b \\)"], ans: "\\( H \\times (0.5)^b \\)", exp: "Each bounce multiplies the height by 0.5. So after \\( b \\) bounces, the height is \\( H \\times (0.5)^b \\).", exp_trans: "Setiap pantulan mengalikan ketinggian dengan 0,5. Jadi setelah \\( b \\) pantulan, ketinggiannya adalah \\( H \\times (0.5)^b \\)." },
+            "r-task10": { q: "Simplify the algebraic expression: \\( (3x^2)^3 \\).", q_trans: "Sederhanakan ekspresi aljabar: \\( (3x^2)^3 \\).", opts: ["\\( 9x^5 \\)", "\\( 27x^6 \\)", "\\( 3x^6 \\)", "\\( 27x^5 \\)", "\\( 9x^6 \\)"], ans: "\\( 27x^6 \\)", exp: "Raise 3 to power 3 to get 27. Multiply exponent 2 by 3 to get 6. Result: \\( 27x^6 \\).", exp_trans: "Naikkan 3 ke pangkat 3 untuk mendapat 27. Kalikan pangkat 2 dengan 3 untuk mendapat 6. Hasil: \\( 27x^6 \\)." },
+
+            // PROBLEM INTRODUCTION TASKS (Fractional Exponents & Roots)
+            "p-task1": { q: "Rewrite \\( x^{1/2} \\) in radical form.", q_trans: "Tulis ulang \\( x^{1/2} \\) dalam bentuk akar.", opts: ["\\( \\sqrt{x} \\)", "\\( \\sqrt[3]{x} \\)", "\\( x^2 \\)", "\\( \\frac{1}{x^2} \\)", "\\( 2x \\)"], ans: "\\( \\sqrt{x} \\)", exp: "The denominator of the fractional exponent (2) becomes the index of the root. Since it's 2, it's a square root.", exp_trans: "Penyebut dari pangkat pecahan (2) menjadi indeks akar. Karena angkanya 2, itu menjadi akar kuadrat." },
+            "p-task2": { q: "Rewrite \\( \\sqrt[3]{y} \\) using a fractional exponent.", q_trans: "Tulis ulang \\( \\sqrt[3]{y} \\) menggunakan pangkat pecahan.", opts: ["\\( y^3 \\)", "\\( y^{1/3} \\)", "\\( y^{2/3} \\)", "\\( 3y \\)", "\\( \\frac{1}{y^3} \\)"], ans: "\\( y^{1/3} \\)", exp: "The index of the root (3) becomes the denominator of the exponent. The power inside the root (1) becomes the numerator. So it is \\( y^{1/3} \\).", exp_trans: "Indeks akar (3) menjadi penyebut pangkat. Pangkat di dalam akar (1) menjadi pembilang. Jadi hasilnya \\( y^{1/3} \\)." },
+            "p-task3": { q: "Simplify \\( \\sqrt[3]{x^9} \\) using fractional exponents.", q_trans: "Sederhanakan \\( \\sqrt[3]{x^9} \\) menggunakan pangkat pecahan.", opts: ["\\( x^3 \\)", "\\( x^{12} \\)", "\\( x^{27} \\)", "\\( x^{-3} \\)", "\\( x^{1/3} \\)"], ans: "\\( x^3 \\)", exp: "Convert to fraction: \\( x^{9/3} \\). Then divide 9 by 3 to get 3. So the answer is \\( x^3 \\).", exp_trans: "Ubah ke pecahan: \\( x^{9/3} \\). Lalu bagi 9 dengan 3 untuk dapat 3. Jadi jawabannya \\( x^3 \\)." },
+            "p-task4": { q: "A square garden has an area of \\( A = x^6 \\). What is the side length of the garden?", q_trans: "Taman persegi memiliki luas \\( A = x^6 \\). Berapakah panjang sisi taman tersebut?", opts: ["\\( x^2 \\)", "\\( x^3 \\)", "\\( x^{12} \\)", "\\( x^4 \\)", "\\( 2x^3 \\)"], ans: "\\( x^3 \\)", exp: "Side = \\( \\sqrt{Area} = \\sqrt{x^6} = (x^6)^{1/2} = x^3 \\).", exp_trans: "Sisi = \\( \\sqrt{Luas} = \\sqrt{x^6} = (x^6)^{1/2} = x^3 \\)." },
+            "p-task5": { q: "Simplify \\( 16^{3/4} \\).", q_trans: "Sederhanakan \\( 16^{3/4} \\).", opts: ["\\( 8 \\)", "\\( 12 \\)", "\\( 64 \\)", "\\( 16 \\)", "\\( 4 \\)"], ans: "\\( 8 \\)", exp: "Denominator 4 means 4th root: \\( \\sqrt[4]{16} = 2 \\). Numerator 3 means cube it: \\( 2^3 = 8 \\).", exp_trans: "Penyebut 4 berarti akar pangkat 4: \\( \\sqrt[4]{16} = 2 \\). Pembilang 3 berarti pangkat tiga: \\( 2^3 = 8 \\)." },
+            "p-task6": { q: "Simplify \\( \\sqrt{x} \\cdot \\sqrt[3]{x} \\) using fractional exponents.", q_trans: "Sederhanakan \\( \\sqrt{x} \\cdot \\sqrt[3]{x} \\) menggunakan pangkat pecahan.", opts: ["\\( x^{5/6} \\)", "\\( x^{2/3} \\)", "\\( x^{1/6} \\)", "\\( x^{1/5} \\)", "\\( x^5 \\)"], ans: "\\( x^{5/6} \\)", exp: "Rewrite as \\( x^{1/2} \\cdot x^{1/3} \\). Add fractions: \\( 1/2 + 1/3 = 3/6 + 2/6 = 5/6 \\). Result is \\( x^{5/6} \\).", exp_trans: "Tulis ulang sebagai \\( x^{1/2} \\cdot x^{1/3} \\). Jumlahkan pecahan: \\( 1/2 + 1/3 = 3/6 + 2/6 = 5/6 \\). Hasilnya \\( x^{5/6} \\)." },
+            "p-task7": { q: "A cube has a volume of \\( V = 8x^9 \\). What is the side length of the cube?", q_trans: "Sebuah kubus memiliki volume \\( V = 8x^9 \\). Berapakah panjang sisi kubus tersebut?", opts: ["\\( 2x^3 \\)", "\\( 2x^9 \\)", "\\( 8x^3 \\)", "\\( 2x^4 \\)", "\\( x^3 \\)"], ans: "\\( 2x^3 \\)", exp: "Side = \\( \\sqrt[3]{V} = \\sqrt[3]{8x^9} = \\sqrt[3]{8} \\cdot \\sqrt[3]{x^9} = 2 \\cdot x^{9/3} = 2x^3 \\).", exp_trans: "Sisi = \\( \\sqrt[3]{V} = \\sqrt[3]{8x^9} = \\sqrt[3]{8} \\cdot \\sqrt[3]{x^9} = 2 \\cdot x^{9/3} = 2x^3 \\)." },
+            "p-task8": { q: "Simplify \\( \\frac{x^{2/3}}{x^{1/3}} \\).", q_trans: "Sederhanakan \\( \\frac{x^{2/3}}{x^{1/3}} \\).", opts: ["\\( x^{1/3} \\)", "\\( x^{2/9} \\)", "\\( x^{-1/3} \\)", "\\( x^{3/5} \\)", "\\( x^1 \\)"], ans: "\\( x^{1/3} \\)", exp: "Subtract the fractions: \\( 2/3 - 1/3 = 1/3 \\). Result is \\( x^{1/3} \\).", exp_trans: "Kurangkan pecahannya: \\( 2/3 - 1/3 = 1/3 \\). Hasilnya \\( x^{1/3} \\)." },
+            "p-task9": { q: "Evaluate \\( 27^{-1/3} \\).", q_trans: "Hitung \\( 27^{-1/3} \\).", opts: ["\\( -3 \\)", "\\( 3 \\)", "\\( -\\frac{1}{3} \\)", "\\( \\frac{1}{3} \\)", "\\( 9 \\)"], ans: "\\( \\frac{1}{3} \\)", exp: "Denominator 3 means cube root: \\( \\sqrt[3]{27} = 3 \\). Negative means reciprocal: \\( 1/3 \\). Result: \\( \\frac{1}{3} \\).", exp_trans: "Penyebut 3 berarti akar pangkat 3: \\( \\sqrt[3]{27} = 3 \\). Negatif berarti kebalikan: \\( 1/3 \\). Hasil: \\( \\frac{1}{3} \\)." },
+            "p-task10": { q: "Simplify the expression \\( (x^{1/2})^6 \\).", q_trans: "Sederhanakan ekspresi \\( (x^{1/2})^6 \\).", opts: ["\\( x^3 \\)", "\\( x^4 \\)", "\\( x^{1/12} \\)", "\\( x^{6/2} \\)", "\\( x^{1/3} \\)"], ans: "\\( x^3 \\)", exp: "Multiply the exponents: \\( \\frac{1}{2} \\times 6 = 3 \\). So the answer is \\( x^3 \\).", exp_trans: "Kalikan pangkatnya: \\( \\frac{1}{2} \\times 6 = 3 \\). Jadi jawabannya \\( x^3 \\)." },
+
+            // GUIDED PRACTICE TASKS (Solving Exponential Equations)
+            "g-task1": { q: "Solve for x: \\( 2^x = 32 \\).", q_trans: "Selesaikan untuk x: \\( 2^x = 32 \\).", opts: ["\\( x = 5 \\)", "\\( x = 4 \\)", "\\( x = 6 \\)", "\\( x = 16 \\)", "\\( x = 3 \\)"], ans: "\\( x = 5 \\)", exp: "Find the power of 2 that equals 32. \\( 2^1=2, 2^2=4, 2^3=8, 2^4=16, 2^5=32 \\). So \\( x = 5 \\).", exp_trans: "Cari pangkat 2 yang sama dengan 32. \\( 2^1=2, 2^2=4, 2^3=8, 2^4=16, 2^5=32 \\). Jadi \\( x = 5 \\)." },
+            "g-task2": { q: "Solve for x: \\( 3^{x+1} = 81 \\).", q_trans: "Selesaikan untuk x: \\( 3^{x+1} = 81 \\).", opts: ["\\( x = 2 \\)", "\\( x = 3 \\)", "\\( x = 4 \\)", "\\( x = 80 \\)", "\\( x = 1 \\)"], ans: "\\( x = 3 \\)", exp: "81 is \\( 3^4 \\). So, \\( 3^{x+1} = 3^4 \\). The bases match, so exponents must match: \\( x+1 = 4 \\). Thus \\( x = 3 \\).", exp_trans: "81 adalah \\( 3^4 \\). Jadi, \\( 3^{x+1} = 3^4 \\). Karena bilangan pokoknya sama, pangkatnya pasti sama: \\( x+1 = 4 \\). Maka \\( x = 3 \\)." },
+            "g-task3": { q: "Solve for x: \\( 5^{-x} = \\frac{1}{25} \\).", q_trans: "Selesaikan untuk x: \\( 5^{-x} = \\frac{1}{25} \\).", opts: ["\\( x = 2 \\)", "\\( x = -2 \\)", "\\( x = 5 \\)", "\\( x = -5 \\)", "\\( x = 1 \\)"], ans: "\\( x = 2 \\)", exp: "Rewrite \\( \\frac{1}{25} \\) as \\( 5^{-2} \\). Equation becomes \\( 5^{-x} = 5^{-2} \\). So \\( -x = -2 \\), which means \\( x = 2 \\).", exp_trans: "Tulis ulang \\( \\frac{1}{25} \\) sebagai \\( 5^{-2} \\). Persamaannya menjadi \\( 5^{-x} = 5^{-2} \\). Jadi \\( -x = -2 \\), yang berarti \\( x = 2 \\)." },
+            "g-task4": { q: "Solve for x: \\( 4^x = 64 \\). (Hint: use common base 2)", q_trans: "Selesaikan untuk x: \\( 4^x = 64 \\). (Petunjuk: gunakan bilangan pokok yang sama yaitu 2)", opts: ["\\( x = 2 \\)", "\\( x = 3 \\)", "\\( x = 4 \\)", "\\( x = 6 \\)", "\\( x = 12 \\)"], ans: "\\( x = 3 \\)", exp: "Rewrite 4 as \\( 2^2 \\) and 64 as \\( 2^6 \\). Equation: \\( (2^2)^x = 2^6 \\Rightarrow 2^{2x} = 2^6 \\). So \\( 2x = 6 \\Rightarrow x = 3 \\).", exp_trans: "Tulis ulang 4 sebagai \\( 2^2 \\) dan 64 sebagai \\( 2^6 \\). Persamaan: \\( (2^2)^x = 2^6 \\Rightarrow 2^{2x} = 2^6 \\). Jadi \\( 2x = 6 \\Rightarrow x = 3 \\)." },
+            "g-task5": { q: "Solve for x: \\( 2^{2x} = 16 \\).", q_trans: "Selesaikan untuk x: \\( 2^{2x} = 16 \\).", opts: ["\\( x = 4 \\)", "\\( x = 2 \\)", "\\( x = 8 \\)", "\\( x = 16 \\)", "\\( x = 1 \\)"], ans: "\\( x = 2 \\)", exp: "16 is \\( 2^4 \\). So \\( 2^{2x} = 2^4 \\). Matching exponents: \\( 2x = 4 \\). So \\( x = 2 \\).", exp_trans: "16 adalah \\( 2^4 \\). Jadi \\( 2^{2x} = 2^4 \\). Samakan pangkatnya: \\( 2x = 4 \\). Maka \\( x = 2 \\)." },
+            "g-task6": { q: "In a lab, bacteria double every hour: \\( N = 2^t \\). If there are 512 bacteria, how many hours have passed?", q_trans: "Di lab, bakteri berlipat ganda setiap jam: \\( N = 2^t \\). Jika ada 512 bakteri, sudah berapa jam yang berlalu?", opts: ["\\( t = 8 \\text{ hours} \\)", "\\( t = 9 \\text{ hours} \\)", "\\( t = 10 \\text{ hours} \\)", "\\( t = 256 \\text{ hours} \\)", "\\( t = 7 \\text{ hours} \\)"], ans: "\\( t = 9 \\text{ hours} \\)", exp: "Set \\( 2^t = 512 \\). Knowing powers of 2: \\( 2^8 = 256 \\) and \\( 2^9 = 512 \\). So \\( t = 9 \\) hours.", exp_trans: "Set \\( 2^t = 512 \\). Mengetahui pangkat 2: \\( 2^8 = 256 \\) dan \\( 2^9 = 512 \\). Jadi \\( t = 9 \\) jam." },
+            "g-task7": { q: "Solve for x: \\( (\\frac{1}{3})^x = 27 \\).", q_trans: "Selesaikan untuk x: \\( (\\frac{1}{3})^x = 27 \\).", opts: ["\\( x = 3 \\)", "\\( x = -3 \\)", "\\( x = 9 \\)", "\\( x = -9 \\)", "\\( x = 1 \\)"], ans: "\\( x = -3 \\)", exp: "Rewrite \\( (1/3)^x \\) as \\( 3^{-x} \\). Rewrite 27 as \\( 3^3 \\). So \\( 3^{-x} = 3^3 \\). Matching exponents: \\( -x = 3 \\), so \\( x = -3 \\).", exp_trans: "Tulis ulang \\( (1/3)^x \\) sebagai \\( 3^{-x} \\). Tulis ulang 27 sebagai \\( 3^3 \\). Jadi \\( 3^{-x} = 3^3 \\). Samakan pangkat: \\( -x = 3 \\), maka \\( x = -3 \\)." },
+            "g-task8": { q: "Solve for x: \\( 9^{x-1} = 27 \\). (Hint: use common base 3)", q_trans: "Selesaikan untuk x: \\( 9^{x-1} = 27 \\). (Petunjuk: gunakan bilangan pokok yang sama yaitu 3)", opts: ["\\( x = 2.5 \\)", "\\( x = 2 \\)", "\\( x = 3 \\)", "\\( x = 1.5 \\)", "\\( x = 4 \\)"], ans: "\\( x = 2.5 \\)", exp: "9 is \\( 3^2 \\), 27 is \\( 3^3 \\). So \\( (3^2)^{x-1} = 3^3 \\Rightarrow 3^{2(x-1)} = 3^3 \\). Then \\( 2(x-1) = 3 \\Rightarrow 2x - 2 = 3 \\Rightarrow 2x = 5 \\Rightarrow x = 2.5 \\).", exp_trans: "9 adalah \\( 3^2 \\), 27 adalah \\( 3^3 \\). Jadi \\( (3^2)^{x-1} = 3^3 \\Rightarrow 3^{2(x-1)} = 3^3 \\). Lalu \\( 2(x-1) = 3 \\Rightarrow 2x - 2 = 3 \\Rightarrow 2x = 5 \\Rightarrow x = 2.5 \\)." },
+            "g-task9": { q: "A medication's concentration halves every hour: \\( C = 100(0.5)^t \\). When will the concentration be 12.5?", q_trans: "Konsentrasi obat berkurang setengahnya setiap jam: \\( C = 100(0.5)^t \\). Kapan konsentrasinya menjadi 12,5?", opts: ["\\( t = 1 \\text{ hr} \\)", "\\( t = 2 \\text{ hrs} \\)", "\\( t = 3 \\text{ hrs} \\)", "\\( t = 4 \\text{ hrs} \\)", "\\( t = 5 \\text{ hrs} \\)"], ans: "\\( t = 3 \\text{ hrs} \\)", exp: "Set \\( 100(0.5)^t = 12.5 \\). Divide by 100: \\( (0.5)^t = 0.125 \\) (which is 1/8). Since \\( (1/2)^3 = 1/8 \\), \\( t = 3 \\).", exp_trans: "Set \\( 100(0.5)^t = 12.5 \\). Bagi dengan 100: \\( (0.5)^t = 0.125 \\) (yaitu 1/8). Karena \\( (1/2)^3 = 1/8 \\), maka \\( t = 3 \\)." },
+            "g-task10": { q: "Solve for x: \\( 4^{x/2} = 8 \\). (Hint: use common base 2)", q_trans: "Selesaikan untuk x: \\( 4^{x/2} = 8 \\). (Petunjuk: gunakan bilangan pokok yang sama yaitu 2)", opts: ["\\( x = 2 \\)", "\\( x = 3 \\)", "\\( x = 4 \\)", "\\( x = 6 \\)", "\\( x = 1 \\)"], ans: "\\( x = 3 \\)", exp: "4 is \\( 2^2 \\), 8 is \\( 2^3 \\). Equation: \\( (2^2)^{x/2} = 2^3 \\Rightarrow 2^{2(x/2)} = 2^3 \\Rightarrow 2^x = 2^3 \\). So \\( x = 3 \\).", exp_trans: "4 adalah \\( 2^2 \\), 8 adalah \\( 2^3 \\). Persamaan: \\( (2^2)^{x/2} = 2^3 \\Rightarrow 2^{2(x/2)} = 2^3 \\Rightarrow 2^x = 2^3 \\). Jadi \\( x = 3 \\)." }
+        };
+		
+        // ====== MATH QUESTIONS DATA (PART 2) ======
+        Object.assign(questions, {
+            // INDEPENDENT PRACTICE TASKS (Real-World Applications)
+            "ind-task1": { q: "An investment of \\( \\$1000 \\) grows by 10% each year. The formula is \\( A = 1000(1.1)^t \\). What is the value after 2 years? Calculate \\( 1000(1.1)^2 \\).", q_trans: "Investasi \\( \\$1000 \\) tumbuh 10% setiap tahun. Rumusnya \\( A = 1000(1.1)^t \\). Berapakah nilainya setelah 2 tahun? Hitung \\( 1000(1.1)^2 \\).", opts: ["\\( \\$1100 \\)", "\\( \\$1210 \\)", "\\( \\$1200 \\)", "\\( \\$2000 \\)", "\\( \\$2010 \\)"], ans: "\\( \\$1210 \\)", exp: "\\( (1.1)^2 = 1.21 \\). Multiply by 1000: \\( 1000 \\times 1.21 = 1210 \\). The investment grows to \\$1210.", exp_trans: "\\( (1.1)^2 = 1.21 \\). Kalikan dengan 1000: \\( 1000 \\times 1.21 = 1210 \\). Investasi tumbuh menjadi \\$1210." },
+            "ind-task2": { q: "A certain species of animal has a population decay modeled by \\( P = 800(0.5)^t \\), where \\( t \\) is decades. What is the population after 3 decades? Calculate \\( 800 \\times (0.5)^3 \\).", q_trans: "Spesies hewan tertentu mengalami penurunan populasi yang dimodelkan dengan \\( P = 800(0.5)^t \\), di mana \\( t \\) adalah dekade. Berapakah populasi setelah 3 dekade? Hitung \\( 800 \\times (0.5)^3 \\).", opts: ["\\( 400 \\text{ animals} \\)", "\\( 200 \\text{ animals} \\)", "\\( 100 \\text{ animals} \\)", "\\( 150 \\text{ animals} \\)", "\\( 50 \\text{ animals} \\)"], ans: "\\( 100 \\text{ animals} \\)", exp: "\\( (0.5)^3 = 0.125 \\). Multiply by 800: \\( 800 \\times 0.125 = 100 \\). Only 100 animals remain.", exp_trans: "\\( (0.5)^3 = 0.125 \\). Kalikan dengan 800: \\( 800 \\times 0.125 = 100 \\). Hanya tersisa 100 hewan." },
+            "ind-task3": { q: "Simplify the algebraic expression: \\( \\frac{12x^6 y^{-2}}{3x^2 y^3} \\).", q_trans: "Sederhanakan ekspresi aljabar: \\( \\frac{12x^6 y^{-2}}{3x^2 y^3} \\).", opts: ["\\( 4x^4 y^5 \\)", "\\( 4x^4 y^{-5} \\)", "\\( 9x^4 y^{-5} \\)", "\\( 4x^8 y^5 \\)", "\\( \\frac{4x^4}{y^5} \\)"], ans: "\\( \\frac{4x^4}{y^5} \\)", exp: "Numbers: \\( 12/3 = 4 \\). x: \\( 6-2=4 \\). y: \\( -2 - 3 = -5 \\). Result is \\( 4x^4 y^{-5} \\), which is \\( \\frac{4x^4}{y^5} \\) with positive exponents.", exp_trans: "Angka: \\( 12/3 = 4 \\). x: \\( 6-2=4 \\). y: \\( -2 - 3 = -5 \\). Hasilnya \\( 4x^4 y^{-5} \\), yang sama dengan \\( \\frac{4x^4}{y^5} \\) dengan pangkat positif." },
+            "ind-task4": { q: "A radioactive isotope has a half-life of 1 year. If we start with 400g, what is the mass after 4 years? Calculate \\( 400 \\times (0.5)^4 \\).", q_trans: "Isotop radioaktif memiliki waktu paruh 1 tahun. Jika kita mulai dengan 400g, berapakah massanya setelah 4 tahun? Hitung \\( 400 \\times (0.5)^4 \\).", opts: ["\\( 100 \\text{ g} \\)", "\\( 50 \\text{ g} \\)", "\\( 25 \\text{ g} \\)", "\\( 200 \\text{ g} \\)", "\\( 12.5 \\text{ g} \\)"], ans: "\\( 25 \\text{ g} \\)", exp: "\\( (0.5)^4 = 0.0625 \\). Multiply by 400: \\( 400 \\times 0.0625 = 25 \\). 25 grams remain.", exp_trans: "\\( (0.5)^4 = 0.0625 \\). Kalikan dengan 400: \\( 400 \\times 0.0625 = 25 \\). Tersisa 25 gram." },
+            "ind-task5": { q: "Expand and simplify: \\( (2x^3)^4 \\).", q_trans: "Uraikan dan sederhanakan: \\( (2x^3)^4 \\).", opts: ["\\( 8x^7 \\)", "\\( 16x^{12} \\)", "\\( 2x^{12} \\)", "\\( 16x^7 \\)", "\\( 8x^{12} \\)"], ans: "\\( 16x^{12} \\)", exp: "Raise 2 to power 4: \\( 2^4 = 16 \\). Multiply exponent 3 by 4: \\( 3 \\times 4 = 12 \\). Result: \\( 16x^{12} \\).", exp_trans: "Naikkan 2 ke pangkat 4: \\( 2^4 = 16 \\). Kalikan pangkat 3 dengan 4: \\( 3 \\times 4 = 12 \\). Hasil: \\( 16x^{12} \\)." },
+            "ind-task6": { q: "In biology, a cell divides into 2 every hour. If we start with 1 cell, how many cells are there after 7 hours? Calculate \\( 2^7 \\).", q_trans: "Dalam biologi, sel membelah menjadi 2 setiap jam. Jika kita mulai dengan 1 sel, berapa banyak sel setelah 7 jam? Hitung \\( 2^7 \\).", opts: ["\\( 14 \\text{ cells} \\)", "\\( 64 \\text{ cells} \\)", "\\( 128 \\text{ cells} \\)", "\\( 256 \\text{ cells} \\)", "\\( 27 \\text{ cells} \\)"], ans: "\\( 128 \\text{ cells} \\)", exp: "\\( 2^7 = 2 \\times 2 \\times 2 \\times 2 \\times 2 \\times 2 \\times 2 = 128 \\). There will be 128 cells.", exp_trans: "\\( 2^7 = 2 \\times 2 \\times 2 \\times 2 \\times 2 \\times 2 \\times 2 = 128 \\). Akan ada 128 sel." },
+            "ind-task7": { q: "A car loses 20% of its value every year (multiplied by 0.8). If initial value is \\( V \\), what is the value after 3 years? Calculate \\( V \\times (0.8)^3 \\).", q_trans: "Sebuah mobil kehilangan 20% nilainya setiap tahun (dikali 0,8). Jika nilai awalnya \\( V \\), berapakah nilainya setelah 3 tahun? Hitung \\( V \\times (0.8)^3 \\).", opts: ["\\( 0.512V \\)", "\\( 0.24V \\)", "\\( 2.4V \\)", "\\( 0.08V \\)", "\\( 0.512V \\)"], ans: "\\( 0.512V \\)", exp: "\\( (0.8)^3 = 0.512 \\). So the car is worth \\( 0.512V \\) after 3 years, meaning it lost about half its value.", exp_trans: "\\( (0.8)^3 = 0.512 \\). Jadi mobil tersebut senilai \\( 0.512V \\) setelah 3 tahun, berarti ia kehilangan sekitar setengah nilainya." },
+            "ind-task8": { q: "Simplify the expression: \\( \\frac{x^7 y^2}{x^3 y^{-1}} \\).", q_trans: "Sederhanakan ekspresi: \\( \\frac{x^7 y^2}{x^3 y^{-1}} \\).", opts: ["\\( x^4 y \\)", "\\( x^{10} y^3 \\)", "\\( x^4 y^3 \\)", "\\( x^{21} y^{-2} \\)", "\\( x^4 y^{-3} \\)"], ans: "\\( x^4 y^3 \\)", exp: "x: \\( 7 - 3 = 4 \\). y: \\( 2 - (-1) = 2 + 1 = 3 \\). Result is \\( x^4 y^3 \\).", exp_trans: "x: \\( 7 - 3 = 4 \\). y: \\( 2 - (-1) = 2 + 1 = 3 \\). Hasilnya \\( x^4 y^3 \\)." },
+            "ind-task9": { q: "Light intensity decreases by the inverse square of distance: \\( I = \\frac{k}{d^2} \\). If distance triples, the intensity is multiplied by what factor? (Calculate \\( \\frac{1}{3^2} \\))", q_trans: "Intensitas cahaya berkurang sesuai invers kuadrat jarak: \\( I = \\frac{k}{d^2} \\). Jika jarak menjadi tiga kali lipat, intensitas dikalikan dengan faktor berapa? (Hitung \\( \\frac{1}{3^2} \\))", opts: ["\\( \\frac{1}{3} \\)", "\\( \\frac{1}{6} \\)", "\\( \\frac{1}{9} \\)", "\\( 3 \\)", "\\( 9 \\)"], ans: "\\( \\frac{1}{9} \\)", exp: "Distance is squared: \\( 3^2 = 9 \\). Since it's inverse, we divide by 9, which is multiplying by \\( \\frac{1}{9} \\).", exp_trans: "Jarak dikuadratkan: \\( 3^2 = 9 \\). Karena berbanding terbalik, kita bagi dengan 9, yang berarti dikalikan \\( \\frac{1}{9} \\)." },
+            "ind-task10": { q: "If \\( f(x) = x^{-2} \\), what is the value of \\( f(4) \\)?", q_trans: "Jika \\( f(x) = x^{-2} \\), berapakah nilai dari \\( f(4) \\)?", opts: ["\\( -16 \\)", "\\( 16 \\)", "\\( -\\frac{1}{16} \\)", "\\( \\frac{1}{16} \\)", "\\( \\frac{1}{8} \\)"], ans: "\\( \\frac{1}{16} \\)", exp: "Substitute \\( x=4 \\): \\( 4^{-2} = \\frac{1}{4^2} = \\frac{1}{16} \\).", exp_trans: "Substitusi \\( x=4 \\): \\( 4^{-2} = \\frac{1}{4^2} = \\frac{1}{16} \\)." },
+
+            // TASK 1: BASIC EXPONENT RULES (Product & Quotient)
+            "t1-task1": { q: "A rectangular field has a length of \\( x^5 \\) meters and a width of \\( x^3 \\) meters. What is the area of the field?", q_trans: "Lapangan persegi panjang memiliki panjang \\( x^5 \\) meter dan lebar \\( x^3 \\) meter. Berapakah luas lapangan tersebut?", opts: ["\\( x^{15} \\text{ m}^2 \\)", "\\( x^8 \\text{ m}^2 \\)", "\\( x^2 \\text{ m}^2 \\)", "\\( 2x^8 \\text{ m}^2 \\)", "\\( x^{125} \\text{ m}^2 \\)"], ans: "\\( x^8 \\text{ m}^2 \\)", exp: "Area = length \\( \\times \\) width. \\( x^5 \\times x^3 = x^{5+3} = x^8 \\). Area is \\( x^8 \\text{ m}^2 \\).", exp_trans: "Luas = panjang \\( \\times \\) lebar. \\( x^5 \\times x^3 = x^{5+3} = x^8 \\). Luasnya \\( x^8 \\text{ m}^2 \\)." },
+            "t1-task2": { q: "A water tank is being emptied. The remaining water volume is modeled by \\( \\frac{V}{x^2} \\). If initial volume is \\( x^{10} \\) liters, what is the expression for the remaining volume?", q_trans: "Tangki air sedang dikosongkan. Volume air yang tersisa dimodelkan dengan \\( \\frac{V}{x^2} \\). Jika volume awal \\( x^{10} \\) liter, berapakah ekspresi volume air yang tersisa?", opts: ["\\( x^5 \\text{ liters} \\)", "\\( x^{12} \\text{ liters} \\)", "\\( x^8 \\text{ liters} \\)", "\\( x^{20} \\text{ liters} \\)", "\\( x^{-8} \\text{ liters} \\)"], ans: "\\( x^8 \\text{ liters} \\)", exp: "Divide by \\( x^2 \\): \\( \\frac{x^{10}}{x^2} = x^{10-2} = x^8 \\). Remaining volume is \\( x^8 \\) liters.", exp_trans: "Bagi dengan \\( x^2 \\): \\( \\frac{x^{10}}{x^2} = x^{10-2} = x^8 \\). Volume tersisa adalah \\( x^8 \\) liter." },
+            "t1-task3": { q: "Simplify: \\( y^4 \\cdot y^6 \\cdot y \\).", q_trans: "Sederhanakan: \\( y^4 \\cdot y^6 \\cdot y \\).", opts: ["\\( y^{10} \\)", "\\( y^{11} \\)", "\\( y^{24} \\)", "\\( 3y^{10} \\)", "\\( y^{12} \\)"], ans: "\\( y^{11} \\)", exp: "Add the exponents: \\( 4 + 6 + 1 = 11 \\). Remember \\( y \\) is \\( y^1 \\).", exp_trans: "Jumlahkan pangkatnya: \\( 4 + 6 + 1 = 11 \\). Ingat bahwa \\( y \\) adalah \\( y^1 \\)." },
+            "t1-task4": { q: "Simplify the fraction: \\( \\frac{15a^7 b^4}{5a^3 b} \\).", q_trans: "Sederhanakan pecahan: \\( \\frac{15a^7 b^4}{5a^3 b} \\).", opts: ["\\( 3a^4 b^3 \\)", "\\( 10a^4 b^3 \\)", "\\( 3a^{10} b^5 \\)", "\\( 3a^4 b^4 \\)", "\\( 5a^4 b^3 \\)"], ans: "\\( 3a^4 b^3 \\)", exp: "Numbers: \\( 15/5 = 3 \\). a: \\( 7-3=4 \\). b: \\( 4-1=3 \\). Result: \\( 3a^4 b^3 \\).", exp_trans: "Angka: \\( 15/5 = 3 \\). a: \\( 7-3=4 \\). b: \\( 4-1=3 \\). Hasil: \\( 3a^4 b^3 \\)." },
+            "t1-task5": { q: "A cube has a side length of \\( 2x^2 \\). What is its volume? (Formula: \\( V = s^3 \\))", q_trans: "Kubus memiliki panjang sisi \\( 2x^2 \\). Berapakah volumenya? (Rumus: \\( V = s^3 \\))", opts: ["\\( 6x^6 \\)", "\\( 8x^5 \\)", "\\( 8x^6 \\)", "\\( 2x^6 \\)", "\\( 8x^8 \\)"], ans: "\\( 8x^6 \\)", exp: "Volume = side \\( \\times \\) side \\( \\times \\) side = \\( (2x^2)^3 \\). \\( 2^3 = 8 \\) and \\( (x^2)^3 = x^6 \\). Result: \\( 8x^6 \\).", exp_trans: "Volume = sisi \\( \\times \\) sisi \\( \\times \\) sisi = \\( (2x^2)^3 \\). \\( 2^3 = 8 \\) dan \\( (x^2)^3 = x^6 \\). Hasil: \\( 8x^6 \\)." },
+            "t1-task6": { q: "Simplify: \\( (x^3 y^2)^5 \\).", q_trans: "Sederhanakan: \\( (x^3 y^2)^5 \\).", opts: ["\\( x^8 y^7 \\)", "\\( x^{15} y^{10} \\)", "\\( x^5 y^7 \\)", "\\( x^{35} y^{10} \\)", "\\( x^{15} y^2 \\)"], ans: "\\( x^{15} y^{10} \\)", exp: "Multiply the outer exponent by each inner exponent: \\( 3 \\times 5 = 15 \\) and \\( 2 \\times 5 = 10 \\).", exp_trans: "Kalikan pangkat luar dengan setiap pangkat dalam: \\( 3 \\times 5 = 15 \\) dan \\( 2 \\times 5 = 10 \\)." },
+            "t1-task7": { q: "A scientist calculates the energy of a particle as \\( E = m^4 \\). If the mass \\( m \\) is squared first, what is the new energy expression? (Calculate \\( (m^2)^4 \\))", q_trans: "Seorang ilmuwan menghitung energi partikel sebagai \\( E = m^4 \\). Jika massa \\( m \\) dikuadratkan terlebih dahulu, apakah ekspresi energi barunya? (Hitung \\( (m^2)^4 \\))", opts: ["\\( m^6 \\)", "\\( m^8 \\)", "\\( m^{16} \\)", "\\( m^2 \\)", "\\( 2m^4 \\)"], ans: "\\( m^8 \\)", exp: "Power of a power rule: multiply the exponents. \\( 2 \\times 4 = 8 \\). So the energy is \\( m^8 \\).", exp_trans: "Aturan pangkat dari pangkat: kalikan pangkatnya. \\( 2 \\times 4 = 8 \\). Jadi energinya \\( m^8 \\)." },
+            "t1-task8": { q: "Simplify: \\( \\frac{x^{12}}{x^5} \\).", q_trans: "Sederhanakan: \\( \\frac{x^{12}}{x^5} \\).", opts: ["\\( x^7 \\)", "\\( x^{17} \\)", "\\( x^{60} \\)", "\\( x^{-7} \\)", "\\( x^6 \\)"], ans: "\\( x^7 \\)", exp: "Quotient rule: subtract the exponents. \\( 12 - 5 = 7 \\). So the result is \\( x^7 \\).", exp_trans: "Aturan pembagian: kurangkan pangkatnya. \\( 12 - 5 = 7 \\). Jadi hasilnya \\( x^7 \\)." },
+            "t1-task9": { q: "In a computer code, a loop runs \\( x^3 \\) times per second. If it runs for \\( x^4 \\) seconds, how many total loops occur?", q_trans: "Dalam kode komputer, loop berjalan \\( x^3 \\) kali per detik. Jika berjalan selama \\( x^4 \\) detik, berapa banyak total loop yang terjadi?", opts: ["\\( x^{12} \\text{ loops} \\)", "\\( x^7 \\text{ loops} \\)", "\\( x^{-1} \\text{ loops} \\)", "\\( x^1 \\text{ loops} \\)", "\\( x^{3/4} \\text{ loops} \\)"], ans: "\\( x^7 \\text{ loops} \\)", exp: "Total loops = rate \\( \\times \\) time = \\( x^3 \\times x^4 = x^{3+4} = x^7 \\).", exp_trans: "Total loop = laju \\( \\times \\) waktu = \\( x^3 \\times x^4 = x^{3+4} = x^7 \\)." },
+            "t1-task10": { q: "Simplify the expression: \\( \\frac{20m^6 n^4}{4m^2 n^3} \\).", q_trans: "Sederhanakan ekspresi: \\( \\frac{20m^6 n^4}{4m^2 n^3} \\).", opts: ["\\( 5m^4 n \\)", "\\( 16m^4 n \\)", "\\( 5m^3 n^1 \\)", "\\( 5m^8 n^7 \\)", "\\( 5m^4 n^4 \\)"], ans: "\\( 5m^4 n \\)", exp: "Numbers: \\( 20/4 = 5 \\). m: \\( 6-2=4 \\). n: \\( 4-3=1 \\). Result is \\( 5m^4 n \\).", exp_trans: "Angka: \\( 20/4 = 5 \\). m: \\( 6-2=4 \\). n: \\( 4-3=1 \\). Hasilnya \\( 5m^4 n \\)." },
+
+            // TASK 2: ZERO & NEGATIVE EXPONENTS
+            "t2-task1": { q: "A special bank account has a rule where the fee deducted is \\( \\$x^0 \\). If \\( x \\) is your balance (not zero), how much is the fee?", q_trans: "Rekening bank khusus memiliki aturan di mana biaya yang dipotong adalah \\( \\$x^0 \\). Jika \\( x \\) adalah saldo Anda (bukan nol), berapakah biayanya?", opts: ["\\( \\$0 \\)", "\\( \\$x \\)", "\\( \\$1 \\)", "\\( \\text{Depends on } x \\)", "\\( \\$10 \\)"], ans: "\\( \\$1 \\)", exp: "Any non-zero number raised to the power of 0 is 1. So the fee is always \\( \\$1 \\).", exp_trans: "Setiap angka bukan nol yang dipangkatkan 0 adalah 1. Jadi biayanya selalu \\( \\$1 \\)." },
+            "t2-task2": { q: "Rewrite \\( 5^{-2} \\) as a positive fraction.", q_trans: "Tulis ulang \\( 5^{-2} \\) sebagai pecahan positif.", opts: ["\\( \\frac{1}{5} \\)", "\\( \\frac{1}{10} \\)", "\\( \\frac{1}{25} \\)", "\\( -\\frac{1}{25} \\)", "\\( 25 \\)"], ans: "\\( \\frac{1}{25} \\)", exp: "Negative exponent means reciprocal. \\( 5^{-2} = \\frac{1}{5^2} = \\frac{1}{25} \\).", exp_trans: "Pangkat negatif berarti kebalikan. \\( 5^{-2} = \\frac{1}{5^2} = \\frac{1}{25} \\)." },
+            "t2-task3": { q: "In physics, the force between charges is \\( F = k \\frac{1}{r^2} \\). If \\( r = 3 \\), what is the value of \\( 3^{-2} \\)?", q_trans: "Dalam fisika, gaya antar muatan adalah \\( F = k \\frac{1}{r^2} \\). Jika \\( r = 3 \\), berapakah nilai dari \\( 3^{-2} \\)?", opts: ["\\( -6 \\)", "\\( -9 \\)", "\\( \\frac{1}{9} \\)", "\\( \\frac{1}{6} \\)", "\\( 9 \\)"], ans: "\\( \\frac{1}{9} \\)", exp: "\\( 3^{-2} = \\frac{1}{3^2} = \\frac{1}{9} \\).", exp_trans: "\\( 3^{-2} = \\frac{1}{3^2} = \\frac{1}{9} \\)." },
+            "t2-task4": { q: "Simplify the expression: \\( \\frac{x^{-4}}{x^{-7}} \\).", q_trans: "Sederhanakan ekspresi: \\( \\frac{x^{-4}}{x^{-7}} \\).", opts: ["\\( x^{-3} \\)", "\\( x^{3} \\)", "\\( x^{-11} \\)", "\\( x^{11} \\)", "\\( \\frac{1}{x^3} \\)"], ans: "\\( x^{3} \\)", exp: "Subtract exponents: \\( -4 - (-7) = -4 + 7 = 3 \\). Result is \\( x^3 \\).", exp_trans: "Kurangkan pangkatnya: \\( -4 - (-7) = -4 + 7 = 3 \\). Hasilnya \\( x^3 \\)." },
+            "t2-task5": { q: "A shrinking population of insects halves every week: \\( P = 100(2^{-t}) \\). What is the population after 3 weeks? Calculate \\( 100 \\times 2^{-3} \\).", q_trans: "Populasi serangga yang menyusut berkurang setengahnya setiap minggu: \\( P = 100(2^{-t}) \\). Berapakah populasinya setelah 3 minggu? Hitung \\( 100 \\times 2^{-3} \\).", opts: ["\\( 200 \\text{ insects} \\)", "\\( 300 \\text{ insects} \\)", "\\( 12.5 \\text{ insects} \\)", "\\( 33.3 \\text{ insects} \\)", "\\( 400 \\text{ insects} \\)"], ans: "\\( 12.5 \\text{ insects} \\)", exp: "\\( 2^{-3} = \\frac{1}{2^3} = \\frac{1}{8} \\). Multiply by 100: \\( 100 / 8 = 12.5 \\).", exp_trans: "\\( 2^{-3} = \\frac{1}{2^3} = \\frac{1}{8} \\). Kalikan dengan 100: \\( 100 / 8 = 12,5 \\)." },
+            "t2-task6": { q: "Simplify: \\( (3x^{-2})^{-1} \\).", q_trans: "Sederhanakan: \\( (3x^{-2})^{-1} \\).", opts: ["\\( 3x^2 \\)", "\\( \\frac{x^2}{3} \\)", "\\( \\frac{1}{3x^2} \\)", "\\( -3x^2 \\)", "\\( 3x^{-3} \\)"], ans: "\\( \\frac{x^2}{3} \\)", exp: "Invert the fraction and flip signs of exponents: \\( (3x^{-2})^{-1} = 3^{-1} x^2 = \\frac{1}{3} x^2 = \\frac{x^2}{3} \\).", exp_trans: "Balikkan pecahan dan ubah tanda pangkatnya: \\( (3x^{-2})^{-1} = 3^{-1} x^2 = \\frac{1}{3} x^2 = \\frac{x^2}{3} \\)." },
+            "t2-task7": { q: "Evaluate: \\( 2^{-3} + 2^{-2} \\).", q_trans: "Hitung: \\( 2^{-3} + 2^{-2} \\).", opts: ["\\( \\frac{3}{8} \\)", "\\( \\frac{2}{5} \\)", "\\( \\frac{5}{8} \\)", "\\( \\frac{1}{4} \\)", "\\( -\\frac{1}{8} \\)"], ans: "\\( \\frac{3}{8} \\)", exp: "\\( 2^{-3} = \\frac{1}{8} \\) and \\( 2^{-2} = \\frac{1}{4} = \\frac{2}{8} \\). Add them: \\( \\frac{1}{8} + \\frac{2}{8} = \\frac{3}{8} \\).", exp_trans: "\\( 2^{-3} = \\frac{1}{8} \\) dan \\( 2^{-2} = \\frac{1}{4} = \\frac{2}{8} \\). Jumlahkan: \\( \\frac{1}{8} + \\frac{2}{8} = \\frac{3}{8} \\)." },
+            "t2-task8": { q: "Rewrite \\( \\frac{1}{a^{-n}} \\) using a positive exponent.", q_trans: "Tulis ulang \\( \\frac{1}{a^{-n}} \\) menggunakan pangkat positif.", opts: ["\\( a^n \\)", "\\( a^{-n} \\)", "\\( -a^n \\)", "\\( \\frac{1}{a^n} \\)", "\\( a^{n-1} \\)"], ans: "\\( a^n \\)", exp: "A negative exponent in the denominator moves to the numerator and becomes positive. So it is \\( a^n \\).", exp_trans: "Pangkat negatif di penyebut akan pindah ke pembilang dan menjadi positif. Jadi hasilnya \\( a^n \\)." },
+            "t2-task9": { q: "If \\( f(x) = 4x^{-3} \\), what is the value of \\( f(2) \\)?", q_trans: "Jika \\( f(x) = 4x^{-3} \\), berapakah nilai dari \\( f(2) \\)?", opts: ["\\( 32 \\)", "\\( \\frac{1}{2} \\)", "\\( -32 \\)", "\\( \\frac{1}{32} \\)", "\\( 2 \\)"], ans: "\\( \\frac{1}{2} \\)", exp: "Substitute \\( x=2 \\): \\( 4(2^{-3}) = 4 \\times \\frac{1}{2^3} = 4 \\times \\frac{1}{8} = \\frac{4}{8} = \\frac{1}{2} \\).", exp_trans: "Substitusi \\( x=2 \\): \\( 4(2^{-3}) = 4 \\times \\frac{1}{2^3} = 4 \\times \\frac{1}{8} = \\frac{4}{8} = \\frac{1}{2} \\)." },
+            "t2-task10": { q: "Simplify completely: \\( \\frac{x^{-5} y^2}{x^{-2} y^{-3}} \\).", q_trans: "Sederhanakan sepenuhnya: \\( \\frac{x^{-5} y^2}{x^{-2} y^{-3}} \\).", opts: ["\\( \\frac{y^5}{x^3} \\)", "\\( \\frac{x^3}{y^5} \\)", "\\( x^3 y^5 \\)", "\\( x^{-7} y^{-1} \\)", "\\( \\frac{x^7}{y} \\)"], ans: "\\( \\frac{y^5}{x^3} \\)", exp: "x: \\( -5 - (-2) = -3 \\). y: \\( 2 - (-3) = 5 \\). Result is \\( x^{-3} y^5 \\), which is \\( \\frac{y^5}{x^3} \\).", exp_trans: "x: \\( -5 - (-2) = -3 \\). y: \\( 2 - (-3) = 5 \\). Hasilnya \\( x^{-3} y^5 \\), yang sama dengan \\( \\frac{y^5}{x^3} \\)." },
+
+            // TASK 3: FRACTIONAL EXPONENTS & ROOTS
+            "t3-task1": { q: "A square garden has an area of \\( A = 64x^4 \\). What is the length of its side?", q_trans: "Taman persegi memiliki luas \\( A = 64x^4 \\). Berapakah panjang sisinya?", opts: ["\\( 8x^2 \\)", "\\( 32x^2 \\)", "\\( 8x^4 \\)", "\\( 16x^2 \\)", "\\( 64x^2 \\)"], ans: "\\( 8x^2 \\)", exp: "Side = \\( \\sqrt{Area} = \\sqrt{64x^4} = \\sqrt{64} \\cdot \\sqrt{x^4} = 8x^2 \\).", exp_trans: "Sisi = \\( \\sqrt{Luas} = \\sqrt{64x^4} = \\sqrt{64} \\cdot \\sqrt{x^4} = 8x^2 \\)." },
+            "t3-task2": { q: "Convert \\( \\sqrt[3]{27x^6 y^9} \\) to a fractional exponent form and simplify.", q_trans: "Ubah \\( \\sqrt[3]{27x^6 y^9} \\) ke bentuk pangkat pecahan dan sederhanakan.", opts: ["\\( 3x^2 y^3 \\)", "\\( 9x^2 y^3 \\)", "\\( 3x^3 y^2 \\)", "\\( (27x^6 y^9)^3 \\)", "\\( 3x^{18} y^{27} \\)"], ans: "\\( 3x^2 y^3 \\)", exp: "Cube root of 27 is 3. For variables, divide exponents by 3: \\( 6/3=2 \\) and \\( 9/3=3 \\). Result: \\( 3x^2 y^3 \\).", exp_trans: "Akar pangkat tiga dari 27 adalah 3. Untuk variabel, bagi pangkatnya dengan 3: \\( 6/3=2 \\) dan \\( 9/3=3 \\). Hasil: \\( 3x^2 y^3 \\)." },
+            "t3-task3": { q: "A ball bounces to a height of \\( h = 16^{1/2} \\) meters. How high does it bounce?", q_trans: "Bola memantul ke ketinggian \\( h = 16^{1/2} \\) meter. Sampai ketinggian mana ia memantul?", opts: ["\\( 4 \\text{ m} \\)", "\\( 8 \\text{ m} \\)", "\\( 256 \\text{ m} \\)", "\\( 2 \\text{ m} \\)", "\\( 16.5 \\text{ m} \\)"], ans: "\\( 4 \\text{ m} \\)", exp: "An exponent of \\( 1/2 \\) means square root. \\( \\sqrt{16} = 4 \\). It bounces 4 meters high.", exp_trans: "Pangkat \\( 1/2 \\) berarti akar kuadrat. \\( \\sqrt{16} = 4 \\). Bola memantul setinggi 4 meter." },
+            "t3-task4": { q: "Simplify the expression: \\( 8^{2/3} \\).", q_trans: "Sederhanakan ekspresi: \\( 8^{2/3} \\).", opts: ["\\( 4 \\)", "\\( 16 \\)", "\\( 8 \\)", "\\( 32 \\)", "\\( 2 \\)"], ans: "\\( 4 \\)", exp: "Denominator 3 means cube root: \\( \\sqrt[3]{8} = 2 \\). Numerator 2 means square it: \\( 2^2 = 4 \\).", exp_trans: "Penyebut 3 berarti akar pangkat 3: \\( \\sqrt[3]{8} = 2 \\). Pembilang 2 berarti dikuadratkan: \\( 2^2 = 4 \\)." },
+            "t3-task5": { q: "In geometry, the volume of a cube is \\( V = s^3 \\). If the volume is \\( 125x^6 \\), what is the side length \\( s \\)?", q_trans: "Dalam geometri, volume kubus adalah \\( V = s^3 \\). Jika volumenya \\( 125x^6 \\), berapakah panjang sisi \\( s \\)?", opts: ["\\( 5x^2 \\)", "\\( 25x^2 \\)", "\\( 5x^3 \\)", "\\( 5x^6 \\)", "\\( 15x^2 \\)"], ans: "\\( 5x^2 \\)", exp: "Side is cube root of volume: \\( \\sqrt[3]{125x^6} = \\sqrt[3]{125} \\cdot \\sqrt[3]{x^6} = 5x^2 \\).", exp_trans: "Sisi adalah akar pangkat tiga dari volume: \\( \\sqrt[3]{125x^6} = \\sqrt[3]{125} \\cdot \\sqrt[3]{x^6} = 5x^2 \\)." },
+            "t3-task6": { q: "Simplify: \\( x^{1/3} \\cdot x^{2/3} \\).", q_trans: "Sederhanakan: \\( x^{1/3} \\cdot x^{2/3} \\).", opts: ["\\( x^{2/9} \\)", "\\( x^{1/3} \\)", "\\( x^{3/6} \\)", "\\( x^1 \\)", "\\( x^{2/3} \\)"], ans: "\\( x^1 \\)", exp: "Add the fractions: \\( 1/3 + 2/3 = 3/3 = 1 \\). So the result is \\( x^1 \\) or just \\( x \\).", exp_trans: "Jumlahkan pecahannya: \\( 1/3 + 2/3 = 3/3 = 1 \\). Jadi hasilnya \\( x^1 \\) atau cukup \\( x \\)." },
+            "t3-task7": { q: "A scientist measures the wavelength of a signal as \\( \\lambda = 16^{-1/2} \\) nm. What is its value?", q_trans: "Ilmuwan mengukur panjang gelombang sinyal sebagai \\( \\lambda = 16^{-1/2} \\) nm. Berapakah nilainya?", opts: ["\\( -4 \\text{ nm} \\)", "\\( \\frac{1}{4} \\text{ nm} \\)", "\\( 4 \\text{ nm} \\)", "\\( -\\frac{1}{4} \\text{ nm} \\)", "\\( \\frac{1}{16} \\text{ nm} \\)"], ans: "\\( \\frac{1}{4} \\text{ nm} \\)", exp: "Denominator 2 means square root: \\( \\sqrt{16} = 4 \\). Negative means reciprocal: \\( 1/4 \\).", exp_trans: "Penyebut 2 berarti akar kuadrat: \\( \\sqrt{16} = 4 \\). Negatif berarti kebalikan: \\( 1/4 \\)." },
+            "t3-task8": { q: "Simplify: \\( \\frac{x^{5/4}}{x^{1/4}} \\).", q_trans: "Sederhanakan: \\( \\frac{x^{5/4}}{x^{1/4}} \\).", opts: ["\\( x^{5/16} \\)", "\\( x^{4/4} \\text{ or } x \\)", "\\( x^{6/4} \\)", "\\( x^{-1} \\)", "\\( x^{5} \\)"], ans: "\\( x^{4/4} \\text{ or } x \\)", exp: "Subtract fractions: \\( 5/4 - 1/4 = 4/4 = 1 \\). So it is \\( x^1 \\) or \\( x \\).", exp_trans: "Kurangkan pecahan: \\( 5/4 - 1/4 = 4/4 = 1 \\). Jadi hasilnya \\( x^1 \\) atau \\( x \\)." },
+            "t3-task9": { q: "Evaluate: \\( 27^{-2/3} \\).", q_trans: "Hitung: \\( 27^{-2/3} \\).", opts: ["\\( -9 \\)", "\\( 9 \\)", "\\( \\frac{1}{9} \\)", "\\( -\\frac{1}{9} \\)", "\\( \\frac{1}{3} \\)"], ans: "\\( \\frac{1}{9} \\)", exp: "Cube root of 27 is 3. Square it: \\( 3^2 = 9 \\). Negative means reciprocal: \\( 1/9 \\).", exp_trans: "Akar pangkat 3 dari 27 adalah 3. Dikuadratkan: \\( 3^2 = 9 \\). Negatif berarti kebalikan: \\( 1/9 \\)." },
+            "t3-task10": { q: "Rewrite \\( \\sqrt{x^5} \\) using a fractional exponent.", q_trans: "Tulis ulang \\( \\sqrt{x^5} \\) menggunakan pangkat pecahan.", opts: ["\\( x^{5/2} \\)", "\\( x^{2/5} \\)", "\\( x^{1/5} \\)", "\\( 5x^2 \\)", "\\( x^{10} \\)"], ans: "\\( x^{5/2} \\)", exp: "A square root is a power of \\( 1/2 \\). So \\( \\sqrt{x^5} = (x^5)^{1/2} = x^{5/2} \\).", exp_trans: "Akar kuadrat adalah pangkat \\( 1/2 \\). Jadi \\( \\sqrt{x^5} = (x^5)^{1/2} = x^{5/2} \\)." },
+
+            // TASK 4: SOLVING EXPONENTIAL EQUATIONS
+            "t4-task1": { q: "A bacteria culture doubles every hour. If there are 256 bacteria now, how many hours ago were there only 16 bacteria? Solve \\( 16 \\times 2^t = 256 \\).", q_trans: "Kultur bakteri berlipat ganda setiap jam. Jika sekarang ada 256 bakteri, berapa jam yang lalu hanya ada 16 bakteri? Selesaikan \\( 16 \\times 2^t = 256 \\).", opts: ["\\( t = 2 \\text{ hours} \\)", "\\( t = 3 \\text{ hours} \\)", "\\( t = 4 \\text{ hours} \\)", "\\( t = 5 \\text{ hours} \\)", "\\( t = 16 \\text{ hours} \\)"], ans: "\\( t = 4 \\text{ hours} \\)", exp: "Divide by 16: \\( 2^t = 16 \\). Since \\( 2^4 = 16 \\), \\( t = 4 \\) hours ago.", exp_trans: "Bagi dengan 16: \\( 2^t = 16 \\). Karena \\( 2^4 = 16 \\), \\( t = 4 \\) jam yang lalu." },
+            "t4-task2": { q: "Solve for x: \\( 3^{2x-1} = 243 \\).", q_trans: "Selesaikan untuk x: \\( 3^{2x-1} = 243 \\).", opts: ["\\( x = 2 \\)", "\\( x = 3 \\)", "\\( x = 4 \\)", "\\( x = 1 \\)", "\\( x = 243 \\)"], ans: "\\( x = 3 \\)", exp: "243 is \\( 3^5 \\). So \\( 3^{2x-1} = 3^5 \\). Match exponents: \\( 2x - 1 = 5 \\). \\( 2x = 6 \\), so \\( x = 3 \\).", exp_trans: "243 adalah \\( 3^5 \\). Jadi \\( 3^{2x-1} = 3^5 \\). Samakan pangkat: \\( 2x - 1 = 5 \\). \\( 2x = 6 \\), maka \\( x = 3 \\)." },
+            "t4-task3": { q: "Solve for x: \\( 4^{x} = \\frac{1}{16} \\).", q_trans: "Selesaikan untuk x: \\( 4^{x} = \\frac{1}{16} \\).", opts: ["\\( x = 2 \\)", "\\( x = -2 \\)", "\\( x = 4 \\)", "\\( x = 1/4 \\)", "\\( x = -4 \\)"], ans: "\\( x = -2 \\)", exp: "Rewrite \\( \\frac{1}{16} \\) as \\( 16^{-1} \\), and 16 as \\( 4^2 \\). So \\( \\frac{1}{16} = 4^{-2} \\). Equation: \\( 4^x = 4^{-2} \\), so \\( x = -2 \\).", exp_trans: "Tulis ulang \\( \\frac{1}{16} \\) sebagai \\( 16^{-1} \\), dan 16 sebagai \\( 4^2 \\). Jadi \\( \\frac{1}{16} = 4^{-2} \\). Persamaan: \\( 4^x = 4^{-2} \\), maka \\( x = -2 \\)." },
+            "t4-task4": { q: "Solve for x: \\( 25^{x} = 125 \\). (Hint: common base 5)", q_trans: "Selesaikan untuk x: \\( 25^{x} = 125 \\). (Petunjuk: bilangan pokok yang sama 5)", opts: ["\\( x = 2 \\)", "\\( x = 3 \\)", "\\( x = 1.5 \\)", "\\( x = 2.5 \\)", "\\( x = 5/3 \\)"], ans: "\\( x = 1.5 \\)", exp: "25 is \\( 5^2 \\), 125 is \\( 5^3 \\). So \\( (5^2)^x = 5^3 \\Rightarrow 5^{2x} = 5^3 \\). Thus \\( 2x = 3 \\Rightarrow x = 1.5 \\).", exp_trans: "25 adalah \\( 5^2 \\), 125 adalah \\( 5^3 \\). Jadi \\( (5^2)^x = 5^3 \\Rightarrow 5^{2x} = 5^3 \\). Maka \\( 2x = 3 \\Rightarrow x = 1,5 \\)." },
+            "t4-task5": { q: "The temperature of a cooling pie drops according to \\( T = 80(0.5)^t \\). When will it reach 5 degrees? Solve \\( 80(0.5)^t = 5 \\).", q_trans: "Suhu pai yang mendingin turun sesuai \\( T = 80(0.5)^t \\). Kapan akan mencapai 5 derajat? Selesaikan \\( 80(0.5)^t = 5 \\).", opts: ["\\( t = 2 \\)", "\\( t = 3 \\)", "\\( t = 4 \\)", "\\( t = 5 \\)", "\\( t = 6 \\)"], ans: "\\( t = 4 \\)", exp: "Divide by 80: \\( (0.5)^t = 5/80 = 1/16 \\). Since \\( 16 = 2^4 \\), \\( 1/16 = (1/2)^4 = (0.5)^4 \\). So \\( t = 4 \\).", exp_trans: "Bagi dengan 80: \\( (0.5)^t = 5/80 = 1/16 \\). Karena \\( 16 = 2^4 \\), \\( 1/16 = (1/2)^4 = (0.5)^4 \\). Jadi \\( t = 4 \\)." },
+            "t4-task6": { q: "Solve for x: \\( 8^{x/3} = 16 \\). (Hint: common base 2)", q_trans: "Selesaikan untuk x: \\( 8^{x/3} = 16 \\). (Petunjuk: bilangan pokok yang sama 2)", opts: ["\\( x = 2 \\)", "\\( x = 3 \\)", "\\( x = 4 \\)", "\\( x = 6 \\)", "\\( x = 8 \\)"], ans: "\\( x = 4 \\)", exp: "8 is \\( 2^3 \\), 16 is \\( 2^4 \\). \\( (2^3)^{x/3} = 2^4 \\Rightarrow 2^x = 2^4 \\). So \\( x = 4 \\).", exp_trans: "8 adalah \\( 2^3 \\), 16 adalah \\( 2^4 \\). \\( (2^3)^{x/3} = 2^4 \\Rightarrow 2^x = 2^4 \\). Jadi \\( x = 4 \\)." },
+            "t4-task7": { q: "Solve for x: \\( 10^{2x-1} = 10^{x+3} \\).", q_trans: "Selesaikan untuk x: \\( 10^{2x-1} = 10^{x+3} \\).", opts: ["\\( x = 2 \\)", "\\( x = 3 \\)", "\\( x = 4 \\)", "\\( x = -4 \\)", "\\( x = 1 \\)"], ans: "\\( x = 4 \\)", exp: "Since bases are the same (10), set exponents equal: \\( 2x - 1 = x + 3 \\). Subtract \\( x \\) and add 1: \\( x = 4 \\).", exp_trans: "Karena bilangan pokoknya sama (10), samakan pangkatnya: \\( 2x - 1 = x + 3 \\). Kurangi \\( x \\) dan tambah 1: \\( x = 4 \\)." },
+            "t4-task8": { q: "If a magic bean doubles in size every day and is 1 inch on day 1, on what day will it be 64 inches? Solve \\( 2^t = 64 \\).", q_trans: "Jika kacang ajaib berlipat ganda ukurannya setiap hari dan berukuran 1 inci pada hari 1, pada hari berapa ia akan berukuran 64 inci? Selesaikan \\( 2^t = 64 \\).", opts: ["\\( \\text{Day } 5 \\)", "\\( \\text{Day } 6 \\)", "\\( \\text{Day } 7 \\)", "\\( \\text{Day } 8 \\)", "\\( \\text{Day } 64 \\)"], ans: "\\( \\text{Day } 6 \\)", exp: "Since \\( 2^6 = 64 \\), \\( t = 6 \\). It will be 64 inches on day 6.", exp_trans: "Karena \\( 2^6 = 64 \\), \\( t = 6 \\). Ukurannya akan menjadi 64 inci pada hari ke-6." },
+            "t4-task9": { q: "Solve for x: \\( (1/2)^{x} = 8 \\).", q_trans: "Selesaikan untuk x: \\( (1/2)^{x} = 8 \\).", opts: ["\\( x = 3 \\)", "\\( x = -3 \\)", "\\( x = 4 \\)", "\\( x = -4 \\)", "\\( x = 1/8 \\)"], ans: "\\( x = -3 \\)", exp: "Rewrite \\( (1/2)^x \\) as \\( 2^{-x} \\). Rewrite 8 as \\( 2^3 \\). So \\( 2^{-x} = 2^3 \\). Thus \\( -x = 3 \\), which means \\( x = -3 \\).", exp_trans: "Tulis ulang \\( (1/2)^x \\) sebagai \\( 2^{-x} \\). Tulis ulang 8 sebagai \\( 2^3 \\). Jadi \\( 2^{-x} = 2^3 \\). Maka \\( -x = 3 \\), yang berarti \\( x = -3 \\)." },
+            "t4-task10": { q: "Solve for x: \\( 9^{x+1} = 27^{x-1} \\). (Hint: common base 3)", q_trans: "Selesaikan untuk x: \\( 9^{x+1} = 27^{x-1} \\). (Petunjuk: bilangan pokok yang sama 3)", opts: ["\\( x = 2 \\)", "\\( x = 3 \\)", "\\( x = 5 \\)", "\\( x = 4 \\)", "\\( x = 6 \\)"], ans: "\\( x = 5 \\)", exp: "9 is \\( 3^2 \\), 27 is \\( 3^3 \\). \\( 3^{2(x+1)} = 3^{3(x-1)} \\Rightarrow 2x+2 = 3x-3 \\). Solving gives \\( x = 5 \\).", exp_trans: "9 adalah \\( 3^2 \\), 27 adalah \\( 3^3 \\). \\( 3^{2(x+1)} = 3^{3(x-1)} \\Rightarrow 2x+2 = 3x-3 \\). Menyelesaikannya menghasilkan \\( x = 5 \\)." },
+
+            // TASK 5: MIXED ADVANCED PROBLEMS
+            "t5-task1": { q: "An investment of \\( \\$2000 \\) grows by 5% annually. Formula: \\( A = 2000(1.05)^t \\). What is the value after 2 years? Calculate \\( 2000(1.05)^2 \\).", q_trans: "Investasi \\( \\$2000 \\) tumbuh 5% per tahun. Rumus: \\( A = 2000(1.05)^t \\). Berapakah nilainya setelah 2 tahun? Hitung \\( 2000(1.05)^2 \\).", opts: ["\\( \\$2100 \\)", "\\( \\$2205 \\)", "\\( \\$2200 \\)", "\\( \\$2500 \\)", "\\( \\$2005 \\)"], ans: "\\( \\$2205 \\)", exp: "\\( (1.05)^2 = 1.1025 \\). Multiply by 2000: \\( 2000 \\times 1.1025 = 2205 \\). The value is \\$2205.", exp_trans: "\\( (1.05)^2 = 1.1025 \\). Kalikan dengan 2000: \\( 2000 \\times 1.1025 = 2205 \\). Nilainya \\$2205." },
+            "t5-task2": { q: "Simplify completely: \\( \\frac{(2x^{-2})^3}{4x^4} \\).", q_trans: "Sederhanakan sepenuhnya: \\( \\frac{(2x^{-2})^3}{4x^4} \\).", opts: ["\\( \\frac{2}{x^{10}} \\)", "\\( 2x^{-2} \\)", "\\( \\frac{1}{2x^{10}} \\)", "\\( 2x^{10} \\)", "\\( \\frac{2x}{x^4} \\)"], ans: "\\( \\frac{2}{x^{10}} \\)", exp: "Numerator: \\( 2^3 x^{-6} = 8x^{-6} \\). Divide by \\( 4x^4 \\): \\( (8/4) x^{-6-4} = 2x^{-10} \\), which is \\( \\frac{2}{x^{10}} \\).", exp_trans: "Pembilang: \\( 2^3 x^{-6} = 8x^{-6} \\). Bagi dengan \\( 4x^4 \\): \\( (8/4) x^{-6-4} = 2x^{-10} \\), yang sama dengan \\( \\frac{2}{x^{10}} \\)." },
+            "t5-task3": { q: "A radioactive substance decays by 1/3 each year. If initial mass is 900g, what is the mass after 2 years? Calculate \\( 900 \\times (1/3)^2 \\).", q_trans: "Zat radioaktif menyusut 1/3 setiap tahun. Jika massa awal 900g, berapakah massanya setelah 2 tahun? Hitung \\( 900 \\times (1/3)^2 \\).", opts: ["\\( 300 \\text{ g} \\)", "\\( 100 \\text{ g} \\)", "\\( 150 \\text{ g} \\)", "\\( 450 \\text{ g} \\)", "\\( 33 \\text{ g} \\)"], ans: "\\( 100 \\text{ g} \\)", exp: "\\( (1/3)^2 = 1/9 \\). Multiply by 900: \\( 900 / 9 = 100 \\). Mass is 100g.", exp_trans: "\\( (1/3)^2 = 1/9 \\). Kalikan dengan 900: \\( 900 / 9 = 100 \\). Massanya 100g." },
+            "t5-task4": { q: "Simplify: \\( \\sqrt[3]{x^6 y^{12}} \\).", q_trans: "Sederhanakan: \\( \\sqrt[3]{x^6 y^{12}} \\).", opts: ["\\( x^2 y^4 \\)", "\\( x^3 y^4 \\)", "\\( x^2 y^6 \\)", "\\( x^{18} y^{36} \\)", "\\( x^9 y^{15} \\)"], ans: "\\( x^2 y^4 \\)", exp: "Divide exponents by the root index 3: \\( 6/3 = 2 \\) and \\( 12/3 = 4 \\). Result: \\( x^2 y^4 \\).", exp_trans: "Bagi pangkatnya dengan indeks akar 3: \\( 6/3 = 2 \\) dan \\( 12/3 = 4 \\). Hasil: \\( x^2 y^4 \\)." },
+			"t5-task5": { q: "Solve for x: \\( 2^{3x} = 4^{x-1} \\).", q_trans: "Selesaikan untuk x: \\( 2^{3x} = 4^{x-1} \\).", opts: ["\\( x = -5 \\)", "\\( x = 5 \\)", "\\( x = -1 \\)", "\\( x = 2 \\)", "\\( x = -2 \\)"], ans: "\\( x = -2 \\)", exp: "Rewrite 4 as \\( 2^2 \\). So \\( 2^{3x} = (2^2)^{x-1} = 2^{2x-2} \\). Match exponents: \\( 3x = 2x - 2 \\). Subtracting \\( 2x \\) from both sides gives \\( x = -2 \\).", exp_trans: "Tulis ulang 4 sebagai \\( 2^2 \\). Jadi \\( 2^{3x} = (2^2)^{x-1} = 2^{2x-2} \\). Samakan pangkat: \\( 3x = 2x - 2 \\). Kurangi \\( 2x \\) dari kedua sisi menghasilkan \\( x = -2 \\)." },
+            "t5-task6": { q: "A ball is dropped and bounces to 80% of its previous height. Which expression shows the height after \\( b \\) bounces if dropped from \\( H \\)?", q_trans: "Sebuah bola dijatuhkan dan memantul setinggi 80% dari ketinggian sebelumnya. Ekspresi manakah yang menunjukkan ketinggian setelah \\( b \\) pantulan jika dijatuhkan dari \\( H \\)?", opts: ["\\( H \\times 0.8^b \\)", "\\( H \\times 1.8^b \\)", "\\( H / 0.8^b \\)", "\\( H - 0.8b \\)", "\\( H \\times b^{0.8} \\)"], ans: "\\( H \\times 0.8^b \\)", exp: "Each bounce multiplies the height by 0.8. Over \\( b \\) bounces, it is \\( H \\times (0.8)^b \\).", exp_trans: "Setiap pantulan mengalikan ketinggian dengan 0,8. Selama \\( b \\) pantulan, menjadi \\( H \\times (0.8)^b \\)." },
+            "t5-task7": { q: "If \\( f(x) = x^{1/2} \\) and \\( g(x) = x^3 \\), what is \\( g(f(16)) \\)?", q_trans: "Jika \\( f(x) = x^{1/2} \\) dan \\( g(x) = x^3 \\), berapakah \\( g(f(16)) \\)?", opts: ["\\( 64 \\)", "\\( 12 \\)", "\\( 8 \\)", "\\( 4 \\)", "\\( 48 \\)"], ans: "\\( 64 \\)", exp: "First find \\( f(16) = 16^{1/2} = 4 \\). Then find \\( g(4) = 4^3 = 64 \\).", exp_trans: "Pertama cari \\( f(16) = 16^{1/2} = 4 \\). Lalu cari \\( g(4) = 4^3 = 64 \\)." },
+            "t5-task8": { q: "Simplify the expression: \\( (x^{-3} y^{-2})^{-2} \\).", q_trans: "Sederhanakan ekspresi: \\( (x^{-3} y^{-2})^{-2} \\).", opts: ["\\( x^{-5} y^{-4} \\)", "\\( x^6 y^4 \\)", "\\( \\frac{1}{x^6 y^4} \\)", "\\( x^6 y^{-4} \\)", "\\( x^{-6} y^4 \\)"], ans: "\\( x^6 y^4 \\)", exp: "Multiply outer exponent (-2) by inner exponents: \\( -3 \\times -2 = 6 \\) and \\( -2 \\times -2 = 4 \\). Result: \\( x^6 y^4 \\).", exp_trans: "Kalikan pangkat luar (-2) dengan pangkat dalam: \\( -3 \\times -2 = 6 \\) dan \\( -2 \\times -2 = 4 \\). Hasil: \\( x^6 y^4 \\)." },
+            "t5-task9": { q: "A scientist models the growth of a crystal as \\( V = 2^{t/2} \\). If \\( t = 6 \\) days, what is the volume? Calculate \\( 2^{6/2} \\).", q_trans: "Seorang ilmuwan memodelkan pertumbuhan kristal sebagai \\( V = 2^{t/2} \\). Jika \\( t = 6 \\) hari, berapakah volumenya? Hitung \\( 2^{6/2} \\).", opts: ["\\( 4 \\)", "\\( 8 \\)", "\\( 6 \\)", "\\( 12 \\)", "\\( 32 \\)"], ans: "\\( 8 \\)", exp: "Simplify the exponent: \\( 6/2 = 3 \\). Then \\( 2^3 = 8 \\). The volume is 8 cubic units.", exp_trans: "Sederhanakan pangkatnya: \\( 6/2 = 3 \\). Lalu \\( 2^3 = 8 \\). Volumenya adalah 8 unit kubik." },
+            "t5-task10": { q: "Simplify the complex fraction: \\( \\frac{x^{2/3} x^{1/2}}{x^{1/6}} \\).", q_trans: "Sederhanakan pecahan kompleks: \\( \\frac{x^{2/3} x^{1/2}}{x^{1/6}} \\).", opts: ["\\( x^{2/3} \\)", "\\( x^{1/3} \\)", "\\( x^1 \\text{ or } x \\)", "\\( x^{1/6} \\)", "\\( x^{5/6} \\)"], ans: "\\( x^1 \\text{ or } x \\)", exp: "Numerator: \\( 2/3 + 1/2 = 4/6 + 3/6 = 7/6 \\). So we have \\( \\frac{x^{7/6}}{x^{1/6}} \\). Subtract: \\( 7/6 - 1/6 = 6/6 = 1 \\). So the answer is \\( x^1 \\) or simply \\( x \\).", exp_trans: "Pembilang: \\( 2/3 + 1/2 = 4/6 + 3/6 = 7/6 \\). Jadi kita punya \\( \\frac{x^{7/6}}{x^{1/6}} \\). Kurangkan: \\( 7/6 - 1/6 = 6/6 = 1 \\). Jadi jawabannya \\( x^1 \\) atau sederhana \\( x \\)." }
+        });
+		
+        // ====== JAVASCRIPT LOGIC ======
+        let currentPage = 1;
+        let currentTaskSection = ""; 
+
+        function openModal() {
+            const modal = document.getElementById('classRulesModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+        function closeModal() {
+            const modal = document.getElementById('classRulesModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            
+            document.querySelectorAll('.sidebar-item').forEach(item => {
+                item.classList.remove('bg-blue-100', 'text-blue-800', 'font-bold', 'bg-orange-100', 'text-orange-800');
+            });
+            const activeLink = document.querySelector(`.sidebar-item[data-section="${sectionId}"]`);
+            if (activeLink) {
+                if(sectionId.startsWith('task')) {
+                    activeLink.classList.add('bg-orange-100', 'text-orange-800', 'font-bold');
+                } else {
+                    activeLink.classList.add('bg-blue-100', 'text-blue-800', 'font-bold');
+                }
+            }
+            
+            currentPage = 1;
+            currentTaskSection = sectionId;
+            
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            const firstPage = document.querySelector(`#${sectionId} .page[data-page="1"]`);
+            if(firstPage) firstPage.classList.add('active');
+            
+            renderMath();
+            renderPagination(sectionId, currentPage);
+        }
+
+        function changePage(direction) {
+            const activeSection = document.querySelector('.content-section.active');
+            if(!activeSection) return;
+            const pages = activeSection.querySelectorAll('.page');
+            let newPage = currentPage + direction;
+            if(newPage >= 1 && newPage <= pages.length) {
+                pages[currentPage - 1].classList.remove('active');
+                pages[newPage - 1].classList.add('active');
+                currentPage = newPage;
+                renderMath();
+                renderPagination(currentTaskSection, currentPage);
+                document.getElementById('contentScrollArea').scrollTo(0, 0);
+            }
+        }
+
+        function goToPage(pageNum) {
+            const activeSection = document.querySelector('.content-section.active');
+            if(!activeSection) return;
+            const pages = activeSection.querySelectorAll('.page');
+            if(pageNum >= 1 && pageNum <= pages.length) {
+                pages[currentPage - 1].classList.remove('active');
+                pages[pageNum - 1].classList.add('active');
+                currentPage = pageNum;
+                renderMath();
+                renderPagination(currentTaskSection, currentPage);
+                document.getElementById('contentScrollArea').scrollTo(0, 0);
+            }
+        }
+
+        function renderPagination(sectionId, pageNum) {
+            const activeSection = document.getElementById(sectionId);
+            if (!activeSection) return;
+            const pages = activeSection.querySelectorAll('.page');
+            const totalPages = pages.length;
+            let html = '';
+            const isMainTask = sectionId.startsWith('t');
+            const theoryPages = [1, 5, 9]; 
+            
+            html += `<button onclick="goToPage(${pageNum - 1})" class="px-3 py-1.5 rounded-md text-sm bg-gray-200 hover:bg-gray-300 text-gray-700 ${pageNum === 1 ? 'opacity-50 cursor-not-allowed' : ''}" ${pageNum === 1 ? 'disabled' : ''}><i class="fas fa-chevron-left"></i> Prev</button>`;
+            
+            for (let i = 1; i <= totalPages; i++) {
+                let btnColor = 'bg-gray-100 hover:bg-gray-200 text-gray-700';
+                if (!isMainTask && theoryPages.includes(i)) {
+                    btnColor = 'bg-blue-100 hover:bg-blue-200 text-blue-800'; 
+                } else {
+                    btnColor = 'bg-orange-100 hover:bg-orange-200 text-orange-800'; 
+                }
+                if (i === pageNum) {
+                    if (!isMainTask && theoryPages.includes(i)) {
+                        btnColor = 'bg-blue-600 text-white shadow-md'; 
+                    } else {
+                        btnColor = 'bg-orange-500 text-white shadow-md'; 
+                    }
+                }
+                html += `<button onclick="goToPage(${i})" class="w-9 h-9 rounded-md text-sm font-semibold transition-all ${btnColor}">${i}</button>`;
+            }
+            
+            html += `<button onclick="goToPage(${pageNum + 1})" class="px-3 py-1.5 rounded-md text-sm bg-gray-200 hover:bg-gray-300 text-gray-700 ${pageNum === totalPages ? 'opacity-50 cursor-not-allowed' : ''}" ${pageNum === totalPages ? 'disabled' : ''}>Next <i class="fas fa-chevron-right"></i></button>`;
+            document.getElementById('paginationBar').innerHTML = html;
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+        let studentAnswers = {};
+
+        function renderTasks() {
+            document.querySelectorAll('[data-task-id]').forEach(div => {
+                const taskId = div.getAttribute('data-task-id');
+                renderSingleTask(taskId, div);
+            });
+            renderMath();
+        }
+
+        function renderSingleTask(taskId, div) {
+            const data = questions[taskId];
+            if(!data) return;
+
+            const shuffledOpts = shuffleArray([...data.opts]);
+            const isMainTask = taskId.startsWith('t');
+            const taskNum = isMainTask ? taskId[1] : 0;
+            
+            div.innerHTML = `
+                <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-orange-500">
+                    <div class="flex justify-between items-center mb-4 no-print">
+                        <h2 class="text-xl font-bold text-orange-600">${isMainTask ? `Task ${taskNum}` : 'Task'} <span class="translation text-gray-500 text-sm">Tugas</span></h2>
+                        <div class="flex gap-2">
+                            <button onclick="resetTask('${taskId}')" class="text-sm bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded">
+                                <i class="fas fa-redo"></i> Reset
+                            </button>
+                            ${isMainTask ? `<button onclick="printTask(${taskNum})" class="text-sm bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded">
+                                <i class="fas fa-print"></i> Print
+                            </button>` : ''}
+                        </div>
+                    </div>
+                    <div class="mb-6 flex gap-4 items-start">
+                        <div class="bg-orange-100 p-3 rounded-full">
+                            <i class="fas fa-question text-orange-500 text-xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-lg">${data.q}</p>
+                            <p class="translation">${data.q_trans}</p>
+                        </div>
+                    </div>
+
+                    <div id="options-${taskId}" class="space-y-3">
+                        ${shuffledOpts.map((opt, i) => `
+                            <button onclick="checkAnswer('${taskId}', this.getAttribute('data-opt'))" 
+                                    class="option-btn w-full text-left p-3 border-2 border-gray-200 rounded hover:border-orange-500 flex items-center gap-3" 
+                                    data-opt="${opt}">
+                                <span class="w-6 h-6 flex items-center justify-center bg-gray-100 rounded-full font-bold">${String.fromCharCode(65 + i)}</span>
+                                <span class="katex">${opt}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+
+                    <div id="result-${taskId}" class="mt-4 hidden p-4 rounded"></div>
+
+                    <div class="mt-4 no-print">
+                        <button onclick="toggleCollapse('${taskId}')" id="collapse-btn-${taskId}" class="hidden text-blue-600 underline">
+                            Show Explanation <span class="translation text-gray-500 text-xs">Tampilkan Penjelasan</span>
+                        </button>
+                        <div id="collapse-${taskId}" class="collapse-content w-full">
+                            <h3 class="font-bold text-blue-800">Explanation: <span class="translation text-gray-500 text-sm">Penjelasan:</span></h3>
+                            <p class="mt-2">${data.exp}</p>
+                            <p class="translation">${data.exp_trans}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function checkAnswer(taskId, selectedOpt) {
+            studentAnswers[taskId] = selectedOpt; 
+            
+            const data = questions[taskId];
+            const resultDiv = document.getElementById(`result-${taskId}`);
+            const buttons = document.querySelectorAll(`#options-${taskId} button`);
+            const collapseBtn = document.getElementById(`collapse-btn-${taskId}`);
+
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                btn.classList.add('opacity-70', 'cursor-not-allowed');
+                if(btn.getAttribute('data-opt') === data.ans) {
+                    btn.classList.remove('border-gray-200', 'hover:border-orange-500');
+                    btn.classList.add('border-green-500', 'bg-green-50');
+                } else if (btn.getAttribute('data-opt') === selectedOpt) {
+                    btn.classList.remove('border-gray-200', 'hover:border-orange-500');
+                    btn.classList.add('border-red-500', 'bg-red-50');
+                }
+            });
+
+            if(selectedOpt === data.ans) {
+                resultDiv.innerHTML = `<p class="text-green-600 font-bold"><i class="fas fa-check-circle"></i> Correct! <span class="translation text-gray-600 font-normal">Benar!</span></p>`;
+                resultDiv.className = "mt-4 p-4 rounded bg-green-50 border border-green-200";
+            } else {
+                resultDiv.innerHTML = `<p class="text-red-600 font-bold"><i class="fas fa-times-circle"></i> Wrong! The correct answer is ${data.ans}. <span class="translation text-gray-600 font-normal">Salah! Jawaban yang benar adalah ${data.ans}.</span></p>`;
+                resultDiv.className = "mt-4 p-4 rounded bg-red-50 border border-red-200";
+            }
+            resultDiv.classList.remove('hidden');
+            collapseBtn.classList.remove('hidden');
+            
+            const collapseContent = document.getElementById(`collapse-${taskId}`);
+            collapseContent.classList.add('open');
+            collapseBtn.innerHTML = 'Hide Explanation <span class="translation text-gray-500 text-xs">Sembunyikan Penjelasan</span>';
+            
+            renderMath();
+        }
+
+        function printTask(taskNum) {
+            let score = 0;
+            let tableBody = '';
+            for(let i=1; i<=10; i++) {
+                const taskId = `t${taskNum}-task${i}`;
+                const data = questions[taskId];
+                if(!data) continue;
+                
+                const studentAns = studentAnswers[taskId] || 'Not Answered';
+                const correctAns = data.ans;
+                let note = '❌';
+                if(studentAns === correctAns) { score++; note = '✔️'; }
+                
+                tableBody += `<tr>
+                    <td class="border border-black p-1 text-center">${i}</td>
+                    <td class="border border-black p-1">${data.q}</td>
+                    <td class="border border-black p-1">${studentAns}</td>
+                    <td class="border border-black p-1">${correctAns}</td>
+                    <td class="border border-black p-1 text-center">${note}</td>
+                </tr>`;
+            }
+            document.getElementById('printTableBody').innerHTML = tableBody;
+            document.getElementById('printTaskNum').innerText = taskNum;
+            document.getElementById('printScore').innerText = score;
+            
+            renderMathInElement(document.getElementById('printArea'), {
+                delimiters: [
+                    {left: '\\(', right: '\\)', display: false},
+                    {left: '\\[', right: '\\]', display: true}
+                ]
+            });
+            window.print();
+        }
+
+        function toggleCollapse(taskId) {
+            const content = document.getElementById(`collapse-${taskId}`);
+            const btn = document.getElementById(`collapse-btn-${taskId}`);
+            content.classList.toggle('open');
+            if(content.classList.contains('open')) {
+                btn.innerHTML = 'Hide Explanation <span class="translation text-gray-500 text-xs">Sembunyikan Penjelasan</span>';
+            } else {
+                btn.innerHTML = 'Show Explanation <span class="translation text-gray-500 text-xs">Tampilkan Penjelasan</span>';
+            }
+        }
+
+        function resetTask(taskId) {
+            delete studentAnswers[taskId];
+            const taskDiv = document.querySelector(`[data-task-id="${taskId}"]`);
+            if(taskDiv) {
+                renderSingleTask(taskId, taskDiv);
+                renderMath();
+            }
+        }
+
+        function renderMath() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '\\(', right: '\\)', display: false},
+                    {left: '\\[', right: '\\]', display: true}
+                ]
+            });
+        }
+
+        window.onload = () => {
+            renderTasks();
+            renderMath();
+            showSection('warmup');
+        };
+    </script>
+</body>
+</html>
