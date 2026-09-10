@@ -1,0 +1,1484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Tutoring by Deni - Pythagorean Triples</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Segoe UI', Arial, Helvetica, sans-serif; }
+        .prompt-box { max-width: 650px; margin-left: auto; margin-right: auto; display: flex; flex-direction: column; align-items: center; text-align: left; }
+        .prompt-box p { width: 100%; }
+        .prompt-box img { width: 100%; height: auto; max-width: 300px; display: block; margin-top: 0.5rem; }
+        .translation { font-style: italic; font-size: 0.85rem; color: #6b7280; margin-top: 0.25rem; display: block; }
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        .page { display: none; }
+        .page.active { display: block; }
+        .option-btn { transition: all 0.2s; }
+        .option-btn:hover { transform: translateX(5px); }
+        .collapse-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-in-out, padding 0.4s, border 0.4s, background 0.4s; padding: 0; border: 0; background: transparent; }
+        .collapse-content.open { max-height: 2000px; padding: 1.5rem; border: 1px solid #bfdbfe; background: #eff6ff; border-radius: 0.5rem; margin-top: 1rem; }
+        @media print {
+            body * { visibility: hidden; }
+            #printArea, #printArea * { visibility: visible; }
+            #printArea { display: block !important; position: absolute; left: 0; top: 0; width: 100%; padding: 10px; box-sizing: border-box; }
+            .no-print { display: none !important; }
+            #printArea table { table-layout: fixed; width: 100%; font-size: 9px; }
+            #printArea td, #printArea th { word-wrap: break-word; padding: 2px !important; }
+            @page { size: A4; margin: 5mm; }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex flex-col h-screen overflow-hidden">
+    <svg width="0" height="0" style="position: absolute;">
+        <defs>
+            <marker id="arr1" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto" markerUnits="strokeWidth">
+                <path d="M0,0 L0,6 L9,3 z" fill="#333" />
+            </marker>
+            <marker id="arr2" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto" markerUnits="strokeWidth">
+                <path d="M0,0 L0,6 L9,3 z" fill="#333" />
+            </marker>
+        </defs>
+    </svg>
+
+    <!-- Header -->
+    <header class="bg-indigo-600 text-white p-4 flex justify-between items-center shadow-md no-print shrink-0 z-50">
+        <div>
+            <h1 class="text-xl font-bold">Math Tutoring by Deni</h1>
+            <p class="text-sm">Topic: Pythagorean Theorem - Pythagorean Triples</p>
+            <p class="translation text-indigo-200">Topik: Teorema Pythagoras - Tripel Pythagoras</p>
+        </div>
+        <div>
+            <button onclick="openModal()" class="bg-yellow-400 hover:bg-yellow-500 text-indigo-900 font-bold py-2 px-4 rounded flex items-center gap-2">
+                <i class="fas fa-gavel"></i> Class Rules
+            </button>
+        </div>
+    </header>
+
+    <!-- Modal Class Rules -->
+    <div id="classRulesModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 no-print">
+        <div class="bg-white rounded-lg p-6 w-80 max-w-sm">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-indigo-600">Class Rules <br><span class="translation text-gray-500">Aturan Kelas</span></h2>
+                <button onclick="closeModal()" class="text-gray-500 hover:text-red-500"><i class="fas fa-times text-xl"></i></button>
+            </div>
+            <ul class="space-y-3 text-gray-700">
+                <li class="flex items-start gap-2">
+                    <i class="fas fa-comments text-indigo-500 mt-1"></i>
+                    <div>Take turns speaking. <span class="translation">Berbicara secara bergantian.</span></div>
+                </li>
+                <li class="flex items-start gap-2">
+                    <i class="fas fa-door-open text-indigo-500 mt-1"></i>
+                    <div>Ask permission if you want to leave the class. <span class="translation">Meminta izin jika ingin meninggalkan kelas.</span></div>
+                </li>
+                <li class="flex items-start gap-2">
+                    <i class="fas fa-video text-indigo-500 mt-1"></i>
+                    <div>Turn on camera and microphone if needed. <span class="translation">Menyalakan kamera dan microphone jika diperlukan.</span></div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Layout -->
+    <div class="flex flex-1 overflow-hidden">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white shadow-lg no-print border-r border-gray-200 flex flex-col">
+            <div class="p-4 bg-indigo-600 text-white">
+                <h3 class="font-bold text-lg flex items-center gap-2"><i class="fas fa-book-open"></i> Class Agenda</h3>
+                <p class="text-xs text-indigo-200 mt-1">Select topic to navigate <span class="translation text-indigo-300 block">Pilih topik untuk navigasi</span></p>
+            </div>
+            <nav class="flex-1 overflow-y-auto p-2">
+                <ul class="space-y-1">
+                    <li>
+                        <a href="javascript:void(0)" onclick="showSection('warmup')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-800 transition-colors cursor-pointer" data-section="warmup">
+                            <div class="font-semibold text-sm text-gray-800">Spiral Review Warm-up</div>
+                            <div class="text-xs text-gray-500 flex items-center gap-1 mt-1"><i class="far fa-clock"></i> 00:00 - 00:10</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" onclick="showSection('intro')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-800 transition-colors cursor-pointer" data-section="intro">
+                            <div class="font-semibold text-sm text-gray-800">Introduction & Real-World</div>
+                            <div class="text-xs text-gray-500 flex items-center gap-1 mt-1"><i class="far fa-clock"></i> 00:10 - 00:15</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" onclick="showSection('review')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-800 transition-colors cursor-pointer" data-section="review">
+                            <div class="font-semibold text-sm text-gray-800">Review of Prior Knowledge</div>
+                            <div class="text-xs text-gray-500 flex items-center gap-1 mt-1"><i class="far fa-clock"></i> 00:15 - 00:20</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" onclick="showSection('problem')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-800 transition-colors cursor-pointer" data-section="problem">
+                            <div class="font-semibold text-sm text-gray-800">Problem Introduction</div>
+                            <div class="text-xs text-gray-500 flex items-center gap-1 mt-1"><i class="far fa-clock"></i> 00:20 - 00:30</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" onclick="showSection('guided')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-800 transition-colors cursor-pointer" data-section="guided">
+                            <div class="font-semibold text-sm text-gray-800">Guided Practice</div>
+                            <div class="text-xs text-gray-500 flex items-center gap-1 mt-1"><i class="far fa-clock"></i> 00:30 - 00:45</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" onclick="showSection('independent')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-800 transition-colors cursor-pointer" data-section="independent">
+                            <div class="font-semibold text-sm text-gray-800">Independent Practice</div>
+                            <div class="text-xs text-gray-500 flex items-center gap-1 mt-1"><i class="far fa-clock"></i> 00:45 - 00:55</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" onclick="showSection('consolidation')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-800 transition-colors cursor-pointer" data-section="consolidation">
+                            <div class="font-semibold text-sm text-gray-800">Consolidation & Reflection</div>
+                            <div class="text-xs text-gray-500 flex items-center gap-1 mt-1"><i class="far fa-clock"></i> 00:55 - 01:00</div>
+                        </a>
+                    </li>
+                    <hr class="my-3 border-gray-200">
+                    <li>
+                        <a href="javascript:void(0)" onclick="showSection('task1')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-orange-50 hover:text-orange-800 transition-colors cursor-pointer" data-section="task1">
+                            <div class="font-bold text-sm text-indigo-800 flex items-center gap-2"><i class="fas fa-clipboard-list text-xs"></i> Task 1</div>
+                            <div class="text-xs text-gray-500 mt-1">10 Multiple Choice</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" onclick="showSection('task2')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-orange-50 hover:text-orange-800 transition-colors cursor-pointer" data-section="task2">
+                            <div class="font-bold text-sm text-indigo-800 flex items-center gap-2"><i class="fas fa-clipboard-list text-xs"></i> Task 2</div>
+                            <div class="text-xs text-gray-500 mt-1">10 Multiple Choice</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" onclick="showSection('task3')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-orange-50 hover:text-orange-800 transition-colors cursor-pointer" data-section="task3">
+                            <div class="font-bold text-sm text-indigo-800 flex items-center gap-2"><i class="fas fa-clipboard-list text-xs"></i> Task 3</div>
+                            <div class="text-xs text-gray-500 mt-1">10 Multiple Choice</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" onclick="showSection('task4')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-orange-50 hover:text-orange-800 transition-colors cursor-pointer" data-section="task4">
+                            <div class="font-bold text-sm text-indigo-800 flex items-center gap-2"><i class="fas fa-clipboard-list text-xs"></i> Task 4</div>
+                            <div class="text-xs text-gray-500 mt-1">10 Multiple Choice</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" onclick="showSection('task5')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-orange-50 hover:text-orange-800 transition-colors cursor-pointer" data-section="task5">
+                            <div class="font-bold text-sm text-indigo-800 flex items-center gap-2"><i class="fas fa-clipboard-list text-xs"></i> Task 5</div>
+                            <div class="text-xs text-gray-500 mt-1">10 Multiple Choice</div>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="p-4 bg-gray-50 border-t border-gray-200 text-center">
+                <p class="text-xs text-gray-500 font-medium">Math Tutoring System</p>
+                <p class="text-xs text-gray-400">by Deni</p>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col overflow-hidden">
+            <div id="contentScrollArea" class="flex-1 overflow-y-auto p-6">
+
+            <!-- ========================================== -->
+            <!-- SECTION: SPIRAL REVIEW WARM-UP             -->
+            <!-- ========================================== -->
+            <div id="warmup" class="content-section active">
+                <!-- PAGE 1: THEORY 1 -->
+                <div class="page active" data-page="1">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-indigo-500">
+                        <h2 class="text-2xl font-bold text-indigo-600 mb-2">Recall: The Pythagorean Theorem <i class="fas fa-triangle text-indigo-400 ml-2"></i></h2>
+                        <p class="translation">Mengingat Kembali: Teorema Pythagoras</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-indigo-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <polygon points="30,120 130,120 30,40" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+                                    <rect x="30" y="120" width="100" height="30" fill="#3b82f6" opacity="0.5"/>
+                                    <rect x="10" y="40" width="20" height="80" transform="rotate(90, 20, 80)" fill="#3b82f6" opacity="0.5"/>
+                                    <text x="80" y="140" font-size="10" text-anchor="middle" fill="#333">b</text>
+                                    <text x="20" y="85" font-size="10" text-anchor="middle" fill="#333">a</text>
+                                    <text x="85" y="75" font-size="10" fill="#ef4444" font-weight="bold">c</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>Before diving into Pythagorean Triples, let's recall the Pythagorean Theorem. It states that in a right-angled triangle, the square of the hypotenuse (\( c \)) is equal to the sum of the squares of the other two sides (\( a \) and \( b \)). <span class="translation">Sebelum mendalami Tripel Pythagoras, mari kita ingat Teorema Pythagoras. Teorema ini menyatakan bahwa pada segitiga siku-siku, kuadrat sisi miring (\( c \)) sama dengan jumlah kuadrat dua sisi lainnya (\( a \) dan \( b \)).</span></p>
+                                <p class="mt-2">The formula is \( a^2 + b^2 = c^2 \). The hypotenuse is always the longest side and is opposite the 90-degree angle. <span class="translation">Rumusnya adalah \( a^2 + b^2 = c^2 \). Sisi miring selalu merupakan sisi terpanjang dan berhadapan dengan sudut 90 derajat.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> Tips & Tricks: Identify the Hypotenuse</p>
+                            <p class="mt-1">The hypotenuse (\( c \)) is NEVER adjacent to the right angle. It is always directly across from it. <span class="translation">Sisi miring (\( c \)) TIDAK PERNAH berdekatan dengan sudut siku-siku. Ia selalu tepat di depan sudut tersebut.</span></p>
+                            <p class="mt-1 font-bold"><i class="fas fa-flag mr-1"></i> To The Point Formula: \( a^2 + b^2 = c^2 \)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="2" data-task-id="w-task1"></div>
+                <div class="page" data-page="3" data-task-id="w-task2"></div>
+                <div class="page" data-page="4" data-task-id="w-task3"></div>
+
+                <!-- PAGE 5: THEORY 2 -->
+                <div class="page" data-page="5">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-green-500">
+                        <h2 class="text-2xl font-bold text-green-600 mb-2">Finding the Missing Leg <i class="fas fa-ruler-combined text-green-400 ml-2"></i></h2>
+                        <p class="translation">Mencari Sisi Siku-siku yang Hilang</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-green-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <polygon points="40,120 140,120 40,40" fill="#dcfce7" stroke="#10b981" stroke-width="2"/>
+                                    <text x="90" y="140" font-size="10" text-anchor="middle" fill="#333">12</text>
+                                    <text x="30" y="85" font-size="10" text-anchor="middle" fill="#ef4444" font-weight="bold">b = ?</text>
+                                    <text x="95" y="75" font-size="10" fill="#333">13</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>Sometimes you know the hypotenuse and one leg, but need to find the other leg. We rearrange the formula. <span class="translation">Kadang kamu tahu sisi miring dan satu sisi siku-siku, tapi perlu mencari sisi siku-siku yang lain. Kita menata ulang rumusnya.</span></p>
+                                <p class="mt-2">If \( a^2 + b^2 = c^2 \), then \( b^2 = c^2 - a^2 \). You subtract the known leg's square from the hypotenuse's square. <span class="translation">Jika \( a^2 + b^2 = c^2 \), maka \( b^2 = c^2 - a^2 \). Kamu mengurangkan kuadrat sisi yang diketahui dari kuadrat sisi miring.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> Tips & Tricks: Subtraction vs Addition</p>
+                            <p class="mt-1">Finding the hypotenuse means ADDING (\( a^2 + b^2 \)). Finding a leg means SUBTRACTING (\( c^2 - a^2 \)). <span class="translation">Mencari sisi miring berarti MENAMBAH. Mencari sisi siku-siku berarti MENGURANGKAN.</span></p>
+                            <p class="mt-1 font-bold"><i class="fas fa-flag mr-1"></i> To The Point Formula: \( \text{Leg} = \sqrt{c^2 - a^2} \)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="6" data-task-id="w-task4"></div>
+                <div class="page" data-page="7" data-task-id="w-task5"></div>
+                <div class="page" data-page="8" data-task-id="w-task6"></div>
+
+                <!-- PAGE 9: THEORY 3 -->
+                <div class="page" data-page="9">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-purple-500">
+                        <h2 class="text-2xl font-bold text-purple-600 mb-2">Converse of the Theorem <i class="fas fa-check-double text-purple-400 ml-2"></i></h2>
+                        <p class="translation">Konvers Teorema</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-purple-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <polygon points="30,120 150,120 30,40" fill="#f3e8ff" stroke="#8b5cf6" stroke-width="2"/>
+                                    <text x="90" y="140" font-size="10" text-anchor="middle" fill="#333">4</text>
+                                    <text x="20" y="85" font-size="10" text-anchor="middle" fill="#333">3</text>
+                                    <text x="95" y="75" font-size="10" fill="#333">5</text>
+                                    <text x="40" y="115" font-size="14" text-anchor="middle" fill="#ef4444" font-weight="bold">90°</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>Does the Pythagorean Theorem work backwards? Yes! If a triangle has sides \( a, b, \) and \( c \) such that \( a^2 + b^2 = c^2 \), then it MUST be a right-angled triangle. <span class="translation">Apakah Teorema Pythagoras berlaku terbalik? Ya! Jika sebuah segitiga memiliki sisi \( a, b, \) dan \( c \) sehingga \( a^2 + b^2 = c^2 \), maka segitiga tersebut PASTI segitiga siku-siku.</span></p>
+                                <p class="mt-2">This is called the Converse of the Pythagorean Theorem. It is highly useful for checking if a corner is perfectly square (90 degrees). <span class="translation">Ini disebut Konvers Teorema Pythagoras. Sangat berguna untuk mengecek apakah sebuah sudut benar-benar siku-siku (90 derajat).</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> Tips & Tricks: Don't Assume!</p>
+                            <p class="mt-1">Never assume a triangle is right-angled just by looking. Always verify with \( a^2 + b^2 = c^2 \) unless explicitly stated. <span class="translation">Jangan pernah mengira segitiga siku-siku hanya dengan melihat. Selalu verifikasi dengan \( a^2 + b^2 = c^2 \) kecuali jika dinyatakan secara eksplisit.</span></p>
+                            <p class="mt-1 font-bold"><i class="fas fa-flag mr-1"></i> To The Point Formula: If \( a^2+b^2=c^2 \implies \) Right Triangle.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="10" data-task-id="w-task7"></div>
+                <div class="page" data-page="11" data-task-id="w-task8"></div>
+                <div class="page" data-page="12" data-task-id="w-task9"></div>
+                <div class="page" data-page="13" data-task-id="w-task10"></div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- SECTION: INTRODUCTION & REAL-WORLD         -->
+            <!-- ========================================== -->
+            <div id="intro" class="content-section">
+                <div class="page active" data-page="1">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-indigo-500">
+                        <h2 class="text-2xl font-bold text-indigo-600 mb-2">Real-World Connection: TV Sizes <i class="fas fa-tv text-indigo-400 ml-2"></i></h2>
+                        <p class="translation">Koneksi Dunia Nyata: Ukuran TV</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-indigo-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <rect x="20" y="20" width="140" height="90" rx="5" fill="#1f2937" stroke="#3b82f6" stroke-width="2"/>
+                                    <line x1="20" y1="20" x2="160" y2="110" stroke="#ef4444" stroke-width="2" stroke-dasharray="4"/>
+                                    <text x="80" y="70" font-size="12" fill="#fff" font-weight="bold">55"</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>When you buy a 55-inch TV, the "55 inches" refers to the diagonal length of the screen, not the width or height! <span class="translation">Saat kamu membeli TV 55 inci, "55 inci" tersebut mengacu pada panjang diagonal layar, bukan lebar atau tingginya!</span></p>
+                                <p class="mt-2">If we know the width and height of the TV, we can use the Pythagorean theorem to find the diagonal. This is exactly how Tripel Pythagoras is used in real life. <span class="translation">Jika kita tahu lebar dan tinggi TV, kita bisa menggunakan teorema Pythagoras untuk mencari diagonal. Beginilah Tripel Pythagoras digunakan dalam kehidupan nyata.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> Tips & Tricks: The Diagonal is the Hypotenuse</p>
+                            <p class="mt-1">In any rectangle, the diagonal acts as the hypotenuse of a right-angled triangle formed by its length and width. <span class="translation">Pada persegi panjang apa pun, diagonal berfungsi sebagai sisi miring dari segitiga siku-siku yang dibentuk oleh panjang dan lebarnya.</span></p>
+                            <p class="mt-1 font-bold"><i class="fas fa-flag mr-1"></i> To The Point Formula: \( \text{Diagonal} = \sqrt{\text{Width}^2 + \text{Height}^2} \)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="2" data-task-id="i-task1"></div>
+                <div class="page" data-page="3" data-task-id="i-task2"></div>
+                <div class="page" data-page="4" data-task-id="i-task3"></div>
+
+                <div class="page" data-page="5">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-green-500">
+                        <h2 class="text-2xl font-bold text-green-600 mb-2">What are Pythagorean Triples? <i class="fas fa-puzzle-piece text-green-400 ml-2"></i></h2>
+                        <p class="translation">Apa itu Tripel Pythagoras?</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-green-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <polygon points="40,120 100,120 40,80" fill="#dcfce7" stroke="#10b981" stroke-width="2"/>
+                                    <text x="70" y="135" font-size="10" text-anchor="middle" fill="#333">4</text>
+                                    <text x="30" y="105" font-size="10" text-anchor="middle" fill="#333">3</text>
+                                    <text x="75" y="95" font-size="10" fill="#333">5</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>A Pythagorean Triple consists of three positive integers \( a, b, \) and \( c \), such that \( a^2 + b^2 = c^2 \). <span class="translation">Tripel Pythagoras terdiri dari tiga bilangan bulat positif \( a, b, \) dan \( c \), sedemikian sehingga \( a^2 + b^2 = c^2 \).</span></p>
+                                <p class="mt-2">The most famous example is (3, 4, 5). Because \( 3^2 + 4^2 = 9 + 16 = 25 = 5^2 \). These triples save you from doing tedious calculations! <span class="translation">Contoh paling terkenal adalah (3, 4, 5). Karena \( 3^2 + 4^2 = 9 + 16 = 25 = 5^2 \). Tripel ini menyelamatkanmu dari perhitungan yang melelahkan!</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> Tips & Tricks: Integers Only!</p>
+                            <p class="mt-1">True Pythagorean Triples must be whole numbers (integers). If you have decimals or fractions, it's a right triangle, but technically not a "Triple". <span class="translation">Tripel Pythagoras yang sebenarnya harus berupa bilangan bulat. Jika ada desimal atau pecahan, itu segitiga siku-siku, tapi secara teknis bukan "Tripel".</span></p>
+                            <p class="mt-1 font-bold"><i class="fas fa-flag mr-1"></i> To The Point Formula: \( (a, b, c) \) where \( a, b, c \in \mathbb{Z}^+ \)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="6" data-task-id="i-task4"></div>
+                <div class="page" data-page="7" data-task-id="i-task5"></div>
+                <div class="page" data-page="8" data-task-id="i-task6"></div>
+
+                <div class="page" data-page="9">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-purple-500">
+                        <h2 class="text-2xl font-bold text-purple-600 mb-2">Scaling Triples <i class="fas fa-expand-arrows-alt text-purple-400 ml-2"></i></h2>
+                        <p class="translation">Mengali Tripel</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-purple-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <polygon points="50,110 80,110 50,90" fill="#f3e8ff" stroke="#8b5cf6" stroke-width="1"/>
+                                    <text x="65" y="118" font-size="8" fill="#333">4</text>
+                                    
+                                    <polygon points="40,120 100,120 40,80" fill="#f3e8ff" stroke="#8b5cf6" stroke-width="2"/>
+                                    <text x="70" y="135" font-size="10" text-anchor="middle" fill="#333">8</text>
+                                    <text x="30" y="105" font-size="10" text-anchor="middle" fill="#333">6</text>
+                                    <text x="75" y="95" font-size="10" fill="#333">10</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>If you multiply every number in a Pythagorean Triple by the same positive integer, the result is another Pythagorean Triple! <span class="translation">Jika kamu mengalikan setiap angka dalam Tripel Pythagoras dengan bilangan bulat positif yang sama, hasilnya adalah Tripel Pythagoras baru!</span></p>
+                                <p class="mt-2">For example, multiply (3, 4, 5) by 2. You get (6, 8, 10). Check: \( 6^2 + 8^2 = 36 + 64 = 100 = 10^2 \). It works! <span class="translation">Contohnya, kalikan (3, 4, 5) dengan 2. Kamu dapat (6, 8, 10). Cek: \( 6^2 + 8^2 = 36 + 64 = 100 = 10^2 \). Berhasil!</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> Tips & Tricks: Primitive vs Non-Primitive</p>
+                            <p class="mt-1">A "Primitive" triple has no common factors (like 3,4,5). A "Non-Primitive" one is just a scaled version (like 6,8,10). <span class="translation">Tripel "Primitif" tidak memiliki faktor persekutuan (seperti 3,4,5). Tripel "Non-Primitif" hanyalah versi yang dikali (seperti 6,8,10).</span></p>
+                            <p class="mt-1 font-bold"><i class="fas fa-flag mr-1"></i> To The Point Formula: \( (ka, kb, kc) \implies \) Still a Triple!</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="10" data-task-id="i-task7"></div>
+                <div class="page" data-page="11" data-task-id="i-task8"></div>
+                <div class="page" data-page="12" data-task-id="i-task9"></div>
+                <div class="page" data-page="13" data-task-id="i-task10"></div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- SECTION: REVIEW OF PRIOR KNOWLEDGE         -->
+            <!-- ========================================== -->
+            <div id="review" class="content-section">
+                <div class="page active" data-page="1">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-indigo-500">
+                        <h2 class="text-2xl font-bold text-indigo-600 mb-2">Memorizing the Primitive Triples <i class="fas fa-brain text-indigo-400 ml-2"></i></h2>
+                        <p class="translation">Menghafal Tripel Primitif</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-indigo-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="220" height="120" viewBox="0 0 220 120">
+                                    <rect x="10" y="10" width="200" height="100" rx="5" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+                                    <text x="30" y="40" font-size="12" fill="#333">1. (3, 4, 5)</text>
+                                    <text x="130" y="40" font-size="12" fill="#333">2. (5, 12, 13)</text>
+                                    <text x="30" y="70" font-size="12" fill="#333">3. (8, 15, 17)</text>
+                                    <text x="130" y="70" font-size="12" fill="#333">4. (7, 24, 25)</text>
+                                    <text x="70" y="100" font-size="12" fill="#ef4444" font-weight="bold">The Big Four!</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>There are infinitely many triples, but 4 "Primitive" triples show up constantly in exams. Memorize these four to save time: (3,4,5), (5,12,13), (8,15,17), and (7,24,25). <span class="translation">Ada tak terhingga banyaknya tripel, tapi 4 tripel "Primitif" sering muncul di ujian. Hafalkan empat ini untuk menghemat waktu: (3,4,5), (5,12,13), (8,15,17), dan (7,24,25).</span></p>
+                                <p class="mt-2">Notice that the largest number is always the hypotenuse. <span class="translation">Perhatikan bahwa angka terbesar selalu menjadi sisi miring.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> Tips & Tricks: Odd-Even Pattern</p>
+                            <p class="mt-1">In primitive triples, the hypotenuse is always odd, one leg is odd, and the other is even. <span class="translation">Pada tripel primitif, sisi miring selalu ganjil, satu sisi ganjil, dan sisi lainnya genap.</span></p>
+                            <p class="mt-1 font-bold"><i class="fas fa-flag mr-1"></i> To The Point Formula: Just memorize them! \( (3,4,5), (5,12,13), (8,15,17), (7,24,25) \)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="2" data-task-id="r-task1"></div>
+                <div class="page" data-page="3" data-task-id="r-task2"></div>
+                <div class="page" data-page="4" data-task-id="r-task3"></div>
+
+                <div class="page" data-page="5">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-green-500">
+                        <h2 class="text-2xl font-bold text-green-600 mb-2">Generating Triples (Euclid's Formula) <i class="fas fa-infinity text-green-400 ml-2"></i></h2>
+                        <p class="translation">Membuat Tripel (Rumus Euclid)</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-green-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="220" height="120" viewBox="0 0 220 120">
+                                    <rect x="10" y="20" width="200" height="80" rx="5" fill="#dcfce7" stroke="#10b981" stroke-width="2"/>
+                                    <text x="110" y="50" font-size="12" text-anchor="middle" fill="#333">a = m² - n²</text>
+                                    <text x="110" y="70" font-size="12" text-anchor="middle" fill="#333">b = 2mn</text>
+                                    <text x="110" y="90" font-size="12" text-anchor="middle" fill="#ef4444" font-weight="bold">c = m² + n²</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>You can generate any primitive triple using two positive integers \( m \) and \( n \), where \( m > n \). <span class="translation">Kamu bisa membuat tripel primitif apa pun menggunakan dua bilangan bulat positif \( m \) dan \( n \), di mana \( m > n \).</span></p>
+                                <p class="mt-2">Let \( m=2 \) and \( n=1 \). Then \( a = 2^2 - 1^2 = 3 \), \( b = 2(2)(1) = 4 \), and \( c = 2^2 + 1^2 = 5 \). We just generated (3,4,5)! <span class="translation">Misalkan \( m=2 \) dan \( n=1 \). Maka \( a = 2^2 - 1^2 = 3 \), \( b = 2(2)(1) = 4 \), dan \( c = 2^2 + 1^2 = 5 \). Kita baru saja membuat (3,4,5)!</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> Tips & Tricks: Coprime Condition</p>
+                            <p class="mt-1">To ensure the generated triple is primitive, \( m \) and \( n \) must be coprime (no common factors) and one must be odd, the other even. <span class="translation">Untuk memastikan tripel yang dibuat primitif, \( m \) dan \( n \) harus koprima (tidak punya faktor persekutuan) dan satu harus ganjil, yang lain genap.</span></p>
+                            <p class="mt-1 font-bold"><i class="fas fa-flag mr-1"></i> To The Point Formula: \( a=m^2-n^2, b=2mn, c=m^2+n^2 \) (\( m>n \))</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="6" data-task-id="r-task4"></div>
+                <div class="page" data-page="7" data-task-id="r-task5"></div>
+                <div class="page" data-page="8" data-task-id="r-task6"></div>
+
+                <div class="page" data-page="9">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-purple-500">
+                        <h2 class="text-2xl font-bold text-purple-600 mb-2">Using Triples in Reverse <i class="fas fa-undo-alt text-purple-400 ml-2"></i></h2>
+                        <p class="translation">Menggunakan Tripel Secara Terbalik</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-purple-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="200" height="130" viewBox="0 0 200 130">
+                                    <polygon points="30,120 150,120 30,50" fill="#f3e8ff" stroke="#8b5cf6" stroke-width="2"/>
+                                    <text x="90" y="135" font-size="10" text-anchor="middle" fill="#333">12</text>
+                                    <text x="20" y="90" font-size="10" text-anchor="middle" fill="#ef4444" font-weight="bold">b = ?</text>
+                                    <text x="95" y="80" font-size="10" fill="#333">13</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>Suppose a right triangle has a hypotenuse of 13 and one leg of 12. Instead of calculating \( \sqrt{13^2 - 12^2} \), you can instantly recognize the (5, 12, 13) triple! <span class="translation">Misalkan segitiga siku-siku memiliki sisi miring 13 dan satu sisi 12. Alih-alih menghitung \( \sqrt{13^2 - 12^2} \), kamu bisa langsung mengenali tripel (5, 12, 13)!</span></p>
+                                <p class="mt-2">Therefore, the missing leg is 5. Recognizing patterns makes math incredibly fast. <span class="translation">Oleh karena itu, sisi yang hilang adalah 5. Mengenali pola membuat matematika menjadi sangat cepat.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> Tips & Tricks: The Largest is Hypotenuse</p>
+                            <p class="mt-1">Always match the known leg and hypotenuse to two numbers in a triple family. The missing number is the third. <span class="translation">Selalu cocokkan sisi yang diketahui dan sisi miring ke dua angka dalam keluarga tripel. Angka yang hilang adalah yang ketiga.</span></p>
+                            <p class="mt-1 font-bold"><i class="fas fa-flag mr-1"></i> To The Point Formula: Match the pair \( \implies \) Identify the family \( \implies \) Find the missing.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="10" data-task-id="r-task7"></div>
+                <div class="page" data-page="11" data-task-id="r-task8"></div>
+                <div class="page" data-page="12" data-task-id="r-task9"></div>
+                <div class="page" data-page="13" data-task-id="r-task10"></div>
+            </div>
+            
+            <!-- ========================================== -->
+            <!-- SECTION: PROBLEM INTRODUCTION              -->
+            <!-- ========================================== -->
+            <div id="problem" class="content-section">
+                <div class="page active" data-page="1">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-indigo-500">
+                        <h2 class="text-2xl font-bold text-indigo-600 mb-2">Word Problem: The Ladder <i class="fas fa-arrows-up-to-line text-indigo-400 ml-2"></i></h2>
+                        <p class="translation">Soal Cerita: Tangga</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-indigo-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <line x1="30" y1="120" x2="30" y2="20" stroke="#333" stroke-width="3"/>
+                                    <line x1="30" y1="120" x2="130" y2="120" stroke="#333" stroke-width="3"/>
+                                    <line x1="30" y1="120" x2="130" y2="20" stroke="#3b82f6" stroke-width="4"/>
+                                    <text x="80" y="115" font-size="10" fill="#333">Distance = 5m</text>
+                                    <text x="140" y="70" font-size="10" fill="#3b82f6" transform="rotate(-63, 130, 70)">Ladder = ?</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>A ladder is placed against a wall. The base of the ladder is 5 meters away from the wall, and the ladder reaches exactly 12 meters up the wall. What is the length of the ladder? <span class="translation">Sebuah tangga disandarkan ke dinding. Bagian bawah tangga berjarak 5 meter dari dinding, dan tangga mencapai tepat 12 meter di dinding. Berapa panjang tangga tersebut?</span></p>
+                                <p class="mt-2">Instead of squaring and rooting, recognize the (5, 12, 13) triple! The ladder is the hypotenuse, so its length is 13 meters instantly. <span class="translation">Alih-alih mengkuadratkan dan mengakar, kenali tripel (5, 12, 13)! Tangga adalah sisi miring, jadi panjangnya langsung diketahui 13 meter.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> Tips & Tricks: Ground and Wall</p>
+                            <p class="mt-1">The ground and the wall always form a perfect 90-degree angle. The ladder is always the hypotenuse. <span class="translation">Tanah dan dinding selalu membentuk sudut 90 derajat yang sempurna. Tangga selalu merupakan sisi miring.</span></p>
+                            <p class="mt-1 font-bold"><i class="fas fa-flag mr-1"></i> To The Point Formula: Ground² + Wall² = Ladder²</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="2" data-task-id="p-task1"></div>
+                <div class="page" data-page="3" data-task-id="p-task2"></div>
+                <div class="page" data-page="4" data-task-id="p-task3"></div>
+
+                <div class="page" data-page="5">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-green-500">
+                        <h2 class="text-2xl font-bold text-green-600 mb-2">Word Problem: Navigation <i class="fas fa-map-marked-alt text-green-400 ml-2"></i></h2>
+                        <p class="translation">Soal Cerita: Navigasi</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-green-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="200" height="130" viewBox="0 0 200 130">
+                                    <line x1="20" y1="110" x2="180" y2="110" stroke="#333" stroke-width="2"/>
+                                    <line x1="20" y1="110" x2="20" y2="20" stroke="#333" stroke-width="2"/>
+                                    <path d="M 20 110 L 20 40 L 90 110" fill="none" stroke="#3b82f6" stroke-width="3"/>
+                                    <text x="5" y="75" font-size="10" fill="#3b82f6">North 15km</text>
+                                    <text x="55" y="105" font-size="10" fill="#3b82f6">East 8km</text>
+                                    <line x1="20" y1="40" x2="90" y2="110" stroke="#ef4444" stroke-width="2" stroke-dasharray="4"/>
+                                    <text x="60" y="70" font-size="10" fill="#ef4444" font-weight="bold">Direct?</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>A ship sails 15 km North, then turns and sails 8 km East. How far is the ship from its starting point if it traveled in a straight line? <span class="translation">Kapal berlayar 15 km ke Utara, lalu berbelajar dan berlayar 8 km ke Timur. Seberapa jauh kapal dari titik awalnya jika ia menempuh jalur garis lurus?</span></p>
+                                <p class="mt-2">Notice the 90-degree turn. We have legs of 15 and 8. This matches the (8, 15, 17) triple! The direct distance is 17 km. <span class="translation">Perhatikan belokan 90 derajat. Kita punya sisi 15 dan 8. Ini cocok dengan tripel (8, 15, 17)! Jarak langsungnya adalah 17 km.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> Tips & Tricks: North-East-South-West</p>
+                            <p class="mt-1">Moving vertically (North/South) and then horizontally (East/West) forms a perfect right angle. <span class="translation">Bergerak vertikal (Utara/Selatan) lalu horizontal (Timur/Barat) membentuk sudut siku-siku yang sempurna.</span></p>
+                            <p class="mt-1 font-bold"><i class="fas fa-flag mr-1"></i> To The Point Formula: \( \text{Displacement} = \sqrt{\text{N}^2 + \text{E}^2} \)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="6" data-task-id="p-task4"></div>
+                <div class="page" data-page="7" data-task-id="p-task5"></div>
+                <div class="page" data-page="8" data-task-id="p-task6"></div>
+
+                <div class="page" data-page="9">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-purple-500">
+                        <h2 class="text-2xl font-bold text-purple-600 mb-2">Checking if a Triangle is Right <i class="fas fa-shapes text-purple-400 ml-2"></i></h2>
+                        <p class="translation">Mengecek Apakah Segitiga Siku-siku</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-purple-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <polygon points="30,120 150,120 30,40" fill="#f3e8ff" stroke="#8b5cf6" stroke-width="2"/>
+                                    <text x="90" y="135" font-size="10" text-anchor="middle" fill="#333">9</text>
+                                    <text x="20" y="85" font-size="10" text-anchor="middle" fill="#333">12</text>
+                                    <text x="95" y="75" font-size="10" fill="#ef4444" font-weight="bold">15</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>A triangle has sides of length 9, 12, and 15. Is it a right-angled triangle? <span class="translation">Sebuah segitiga memiliki panjang sisi 9, 12, dan 15. Apakah ini segitiga siku-siku?</span></p>
+                                <p class="mt-2">Let's check: \( 9^2 + 12^2 = 81 + 144 = 225 \). And \( 15^2 = 225 \). Since they are equal, it is a right triangle! <span class="translation">Mari kita cek: \( 9^2 + 12^2 = 81 + 144 = 225 \). Dan \( 15^2 = 225 \). Karena keduanya sama, ini segitiga siku-siku!</span></p>
+                                <p class="mt-2">Even faster: Recognize that 9, 12, 15 is just the (3, 4, 5) triple multiplied by 3. <span class="translation">Lebih cepat: Kenali bahwa 9, 12, 15 hanyalah tripel (3, 4, 5) dikali 3.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> Tips & Tricks: Largest Side is Hypotenuse</p>
+                            <p class="mt-1">Always test the sum of the squares of the two smaller sides against the square of the largest side. <span class="translation">Selalu uji jumlah kuadrat dari dua sisi terkecil terhadap kuadrat sisi terbesar.</span></p>
+                            <p class="mt-1 font-bold"><i class="fas fa-flag mr-1"></i> To The Point Formula: If \( a^2+b^2=c^2 \implies \) Right Triangle.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="10" data-task-id="p-task7"></div>
+                <div class="page" data-page="11" data-task-id="p-task8"></div>
+                <div class="page" data-page="12" data-task-id="p-task9"></div>
+                <div class="page" data-page="13" data-task-id="p-task10"></div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- SECTION: GUIDED PRACTICE                   -->
+            <!-- ========================================== -->
+            <div id="guided" class="content-section">
+                <div class="page active" data-page="1">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-indigo-500">
+                        <h2 class="text-2xl font-bold text-indigo-600 mb-2">Verifying Triples Mathematically <i class="fas fa-calculator text-indigo-400 ml-2"></i></h2>
+                        <p class="translation">Verifikasi Tripel Secara Matematis</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-indigo-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="130" viewBox="0 0 180 130">
+                                    <rect x="10" y="10" width="160" height="110" rx="5" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+                                    <text x="90" y="45" font-size="12" text-anchor="middle" fill="#333">7² + 24² = ?</text>
+                                    <text x="90" y="65" font-size="12" text-anchor="middle" fill="#333">49 + 576 = 625</text>
+                                    <text x="90" y="95" font-size="12" text-anchor="middle" fill="#ef4444" font-weight="bold">25² = 625</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>Let's verify the (7, 24, 25) triple. We need to prove that \( 7^2 + 24^2 = 25^2 \). <span class="translation">Mari kita verifikasi tripel (7, 24, 25). Kita perlu membuktikan bahwa \( 7^2 + 24^2 = 25^2 \).</span></p>
+                                <p class="mt-2">Calculate \( 7^2 = 49 \) and \( 24^2 = 576 \). Add them: \( 49 + 576 = 625 \). Calculate \( 25^2 = 625 \). They match perfectly! <span class="translation">Hitung \( 7^2 = 49 \) dan \( 24^2 = 576 \). Jumlahkan: \( 49 + 576 = 625 \). Hitung \( 25^2 = 625 \). Keduanya cocok sempurna!</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> Tips & Tricks: Break Down the Numbers</p>
+                            <p class="mt-1">If squaring large numbers is hard, break them down. \( 24^2 = (20+4)^2 = 400 + 160 + 16 = 576 \). <span class="translation">Jika mengkuadratkan angka besar sulit, pisahkan. \( 24^2 = (20+4)^2 = 400 + 160 + 16 = 576 \).</span></p>
+                            <p class="mt-1 font-bold"><i class="fas fa-flag mr-1"></i> To The Point Formula: \( a^2 + b^2 = c^2 \implies \) Verified!</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="2" data-task-id="g-task1"></div>
+                <div class="page" data-page="3" data-task-id="g-task2"></div>
+                <div class="page" data-page="4" data-task-id="g-task3"></div>
+
+                <div class="page" data-page="5">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-green-500">
+                        <h2 class="text-2xl font-bold text-green-600 mb-2">Finding the Multiplier <i class="fas fa-search-dollar text-green-400 ml-2"></i></h2>
+                        <p class="translation">Mencari Pengali</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-green-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="200" height="120" viewBox="0 0 200 120">
+                                    <text x="50" y="40" font-size="14" fill="#333">9, 12, ?</text>
+                                    <path d="M 80 35 L 120 35" stroke="#ef4444" stroke-width="2" marker-end="url(#arr1)"/>
+                                    <text x="100" y="25" font-size="10" text-anchor="middle" fill="#ef4444" font-weight="bold">Divide by 3</text>
+                                    <text x="150" y="40" font-size="14" fill="#10b981">(3, 4, 5)</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>Sometimes you are given two numbers, like 9 and 12. How do you find the third? First, check if they belong to a known family. <span class="translation">Kadang kamu diberi dua angka, seperti 9 dan 12. Bagaimana mencari yang ketiga? Pertama, cek apakah mereka bagian dari keluarga yang diketahui.</span></p>
+                                <p class="mt-2">Notice that \( 9 = 3 \times 3 \) and \( 12 = 4 \times 3 \). They are the (3, 4, 5) triple scaled by 3. So the missing hypotenuse is \( 5 \times 3 = 15 \). <span class="translation">Perhatikan bahwa \( 9 = 3 \times 3 \) dan \( 12 = 4 \times 3 \). Itu adalah tripel (3, 4, 5) dikali 3. Jadi sisi miring yang hilang adalah \( 5 \times 3 = 15 \).</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> Tips & Tricks: Divide by Small Numbers</p>
+                            <p class="mt-1">If numbers seem large, try dividing them by 2, 3, or 5 to see if a primitive triple emerges. <span class="translation">Jika angkanya terlihat besar, coba dibagi dengan 2, 3, atau 5 untuk melihat apakah muncul tripel primitif.</span></p>
+                            <p class="mt-1 font-bold"><i class="fas fa-flag mr-1"></i> To The Point Formula: Find \( k \implies \) Multiply the triple by \( k \).</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="6" data-task-id="g-task4"></div>
+                <div class="page" data-page="7" data-task-id="g-task5"></div>
+                <div class="page" data-page="8" data-task-id="g-task6"></div>
+
+                <div class="page" data-page="9">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-purple-500">
+                        <h2 class="text-2xl font-bold text-purple-600 mb-2">Spotting Non-Triples <i class="fas fa-times-circle text-purple-400 ml-2"></i></h2>
+                        <p class="translation">Mengenali Bukan Tripel</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-purple-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <polygon points="30,120 150,120 30,40" fill="#f3e8ff" stroke="#8b5cf6" stroke-width="2"/>
+                                    <text x="90" y="135" font-size="10" text-anchor="middle" fill="#333">5</text>
+                                    <text x="20" y="85" font-size="10" text-anchor="middle" fill="#333">4</text>
+                                    <text x="95" y="75" font-size="10" fill="#ef4444" font-weight="bold">7</text>
+                                    <text x="100" y="110" font-size="10" fill="#666">4² + 5² = 41</text>
+                                    <text x="100" y="125" font-size="10" fill="#666">7² = 49</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>Not every set of three numbers is a Pythagorean triple. For example, is (4, 5, 7) a triple? Let's check. <span class="translation">Tidak setiap kumpulan tiga angka adalah tripel Pythagoras. Contohnya, apakah (4, 5, 7) tripel? Mari kita cek.</span></p>
+                                <p class="mt-2">\( 4^2 + 5^2 = 16 + 25 = 41 \). But \( 7^2 = 49 \). Since \( 41 \neq 49 \), this is NOT a Pythagorean triple, and it does not form a right triangle. <span class="translation">\( 4^2 + 5^2 = 16 + 25 = 41 \). Tapi \( 7^2 = 49 \). Karena \( 41 \neq 49 \), ini BUKAN tripel Pythagoras, dan tidak membentuk segitiga siku-siku.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> Tips & Tricks: Trust the Math</p>
+                            <p class="mt-1">If it's not in the primitive families and the scaling doesn't match, it's probably not a triple. Verify mathematically. <span class="translation">Jika tidak ada di keluarga primitif dan pengalinya tidak cocok, kemungkinan bukan tripel. Verifikasi secara matematis.</span></p>
+                            <p class="mt-1 font-bold"><i class="fas fa-flag mr-1"></i> To The Point Formula: If \( a^2+b^2 \neq c^2 \implies \) Not a Triple.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="10" data-task-id="g-task7"></div>
+                <div class="page" data-page="11" data-task-id="g-task8"></div>
+                <div class="page" data-page="12" data-task-id="g-task9"></div>
+                <div class="page" data-page="13" data-task-id="g-task10"></div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- SECTION: INDEPENDENT PRACTICE               -->
+            <!-- ========================================== -->
+            <div id="independent" class="content-section">
+                <div class="page active" data-page="1">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-indigo-500">
+                        <h2 class="text-2xl font-bold text-indigo-600 mb-2">Diagonals in Rectangles <i class="fas fa-vector-square text-indigo-400 ml-2"></i></h2>
+                        <p class="translation">Diagonal pada Persegi Panjang</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-indigo-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="130" viewBox="0 0 180 130">
+                                    <rect x="30" y="20" width="120" height="90" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+                                    <line x1="30" y1="20" x2="150" y2="110" stroke="#ef4444" stroke-width="3"/>
+                                    <text x="90" y="125" font-size="10" text-anchor="middle" fill="#333">Width = 8</text>
+                                    <text x="160" y="70" font-size="10" fill="#333">Len = 15</text>
+                                    <text x="70" y="75" font-size="10" fill="#ef4444" font-weight="bold">17</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>A rectangle has a length of 15 cm and a width of 8 cm. What is the length of its diagonal? <span class="translation">Persegi panjang memiliki panjang 15 cm dan lebar 8 cm. Berapa panjang diagonalnya?</span></p>
+                                <p class="mt-2">A rectangle's diagonal splits it into two right-angled triangles. We have legs of 15 and 8. This perfectly matches the (8, 15, 17) triple. The diagonal is 17 cm. <span class="translation">Diagonal persegi panjang membaginya menjadi dua segitiga siku-siku. Kita punya sisi 15 dan 8. Ini cocok sempurna dengan tripel (8, 15, 17). Diagonalnya adalah 17 cm.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> Tips & Tricks: Length and Width are Legs</p>
+                            <p class="mt-1">In a rectangle, the length and width are the perpendicular legs (\( a \) and \( b \)). The diagonal is the hypotenuse (\( c \)). <span class="translation">Pada persegi panjang, panjang dan lebar adalah sisi siku-siku (\( a \) dan \( b \)). Diagonal adalah sisi miring (\( c \)).</span></p>
+                            <p class="mt-1 font-bold"><i class="fas fa-flag mr-1"></i> To The Point Formula: \( \text{Diagonal} = \sqrt{l^2 + w^2} \)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="2" data-task-id="ind-task1"></div>
+                <div class="page" data-page="3" data-task-id="ind-task2"></div>
+                <div class="page" data-page="4" data-task-id="ind-task3"></div>
+
+                <div class="page" data-page="5">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-green-500">
+                        <h2 class="text-2xl font-bold text-green-600 mb-2">Construction: Roping a Square Corner <i class="fas fa-hammer text-green-400 ml-2"></i></h2>
+                        <p class="translation">Konstruksi: Menali Sudut Siku-siku</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-green-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="200" height="120" viewBox="0 0 200 120">
+                                    <line x1="20" y1="100" x2="180" y2="100" stroke="#8b5cf6" stroke-width="2"/>
+                                    <line x1="20" y1="100" x2="20" y2="20" stroke="#8b5cf6" stroke-width="2"/>
+                                    <line x1="20" y1="100" x2="100" y2="100" stroke="#ef4444" stroke-width="3"/>
+                                    <line x1="20" y1="100" x2="20" y2="60" stroke="#ef4444" stroke-width="3"/>
+                                    <line x1="20" y1="60" x2="100" y2="100" stroke="#10b981" stroke-width="3"/>
+                                    <text x="60" y="115" font-size="10" fill="#ef4444">4</text>
+                                    <text x="10" y="85" font-size="10" fill="#ef4444">3</text>
+                                    <text x="65" y="85" font-size="10" fill="#10b981" font-weight="bold">5</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>Builders use the (3, 4, 5) triple to create perfect 90-degree corners! They tie knots in a rope at equal distances. If they form a triangle with sides 3, 4, and 5, the angle opposite the 5 is exactly 90 degrees. <span class="translation">Tukang bangunan menggunakan tripel (3, 4, 5) untuk membuat sudut 90 derajat yang sempurna! Mereka mengikat simpul pada tali dengan jarak yang sama. Jika mereka membentuk segitiga dengan sisi 3, 4, dan 5, sudut di hadapan sisi 5 tepat 90 derajat.</span></p>
+                                <p class="mt-2">This technique is known as the "3-4-5 method" in carpentry and construction. <span class="translation">Teknik ini dikenal sebagai "metode 3-4-5" di pertukangan dan konstruksi.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> Tips & Tricks: Hypotenuse Defines the Angle</p>
+                            <p class="mt-1">The right angle is always formed between the two shorter sides (3 and 4). <span class="translation">Sudut siku-siku selalu terbentuk di antara dua sisi yang lebih pendek (3 dan 4).</span></p>
+                            <p class="mt-1 font-bold"><i class="fas fa-flag mr-1"></i> To The Point Formula: Rope(3, 4, 5) \( \implies \) 90° Corner.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="6" data-task-id="ind-task4"></div>
+                <div class="page" data-page="7" data-task-id="ind-task5"></div>
+                <div class="page" data-page="8" data-task-id="ind-task6"></div>
+
+                <div class="page" data-page="9">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-purple-500">
+                        <h2 class="text-2xl font-bold text-purple-600 mb-2">Isosceles Right Triangles <i class="fas fa-chevron-up text-purple-400 ml-2"></i></h2>
+                        <p class="translation">Segitiga Siku-siku Sama Kaki</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-purple-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="160" height="140" viewBox="0 0 160 140">
+                                    <polygon points="80,20 140,120 20,120" fill="#f3e8ff" stroke="#8b5cf6" stroke-width="2"/>
+                                    <text x="90" y="130" font-size="10" fill="#333">5</text>
+                                    <text x="60" y="130" font-size="10" fill="#333">5</text>
+                                    <text x="85" y="75" font-size="10" fill="#ef4444" font-weight="bold">5√2</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>What if both legs are equal? This is an Isosceles Right Triangle. Let the legs be \( a \) and \( a \). <span class="translation">Bagaimana jika kedua sisi siku-sikunya sama? Ini adalah Segitiga Siku-siku Sama Kaki. Misalkan sisinya \( a \) dan \( a \).</span></p>
+                                <p class="mt-2">Then \( c = \sqrt{a^2 + a^2} = \sqrt{2a^2} = a\sqrt{2} \). If \( a = 5 \), the hypotenuse is \( 5\sqrt{2} \). Note: This does NOT produce an integer triple, so it's not a Pythagorean Triple, but it's a vital concept! <span class="translation">Maka \( c = \sqrt{a^2 + a^2} = \sqrt{2a^2} = a\sqrt{2} \). Jika \( a = 5 \), sisi miringnya \( 5\sqrt{2} \). Catatan: Ini TIDAK menghasilkan tripel bulat, jadi bukan Tripel Pythagoras, tapi konsep yang penting!</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> Tips & Tricks: Not All Right Triangles Have Triples</p>
+                            <p class="mt-1">Triples require integers. If a triangle has irrational sides (like \( 5\sqrt{2} \)), it's still a right triangle, but doesn't have a Pythagorean Triple. <span class="translation">Tripel membutuhkan bilangan bulat. Jika segitiga memiliki sisi irasional (seperti \( 5\sqrt{2} \)), itu tetap segitiga siku-siku, tapi tidak punya Tripel Pythagoras.</span></p>
+                            <p class="mt-1 font-bold"><i class="fas fa-flag mr-1"></i> To The Point Formula: \( a, a, a\sqrt{2} \)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="10" data-task-id="ind-task7"></div>
+                <div class="page" data-page="11" data-task-id="ind-task8"></div>
+                <div class="page" data-page="12" data-task-id="ind-task9"></div>
+                <div class="page" data-page="13" data-task-id="ind-task10"></div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- SECTION: CONSOLIDATION & REFLECTION         -->
+            <!-- ========================================== -->
+            <div id="consolidation" class="content-section">
+                 <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                    <h2 class="text-2xl font-bold text-gray-800">Consolidation & Reflection</h2>
+                    <p class="translation">Konsolidasi & Refleksi</p>
+                    <p>You have successfully mastered Pythagorean Triples! Remembering the primitive triples (3,4,5), (5,12,13), (8,15,17), and (7,24,25) will make solving right-triangle problems incredibly fast. <span class="translation">Anda telah berhasil menguasai Tripel Pythagoras! Mengingat tripel primitif (3,4,5), (5,12,13), (8,15,17), dan (7,24,25) akan membuat penyelesaian masalah segitiga siku-siku menjadi sangat cepat.</span></p>
+                    <p class="mt-2">Keep practicing to spot these patterns instantly in word problems and geometric proofs. <span class="translation">Teruslah berlatih untuk mengenali pola ini secara instan di soal cerita dan pembuktian geometri.</span></p>
+                    <a href="https://learn.algonova.id" target="_blank" class="mt-4 inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded">
+                        Go to learn.algonova.id <span class="translation text-sm italic">Pergi ke learn.algonova.id</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- TASK SECTIONS -->
+            <div id="task1" class="content-section">
+                <div class="page active" data-page="1"><div data-task-id="t1-task1"></div></div>
+                <div class="page" data-page="2"><div data-task-id="t1-task2"></div></div>
+                <div class="page" data-page="3"><div data-task-id="t1-task3"></div></div>
+                <div class="page" data-page="4"><div data-task-id="t1-task4"></div></div>
+                <div class="page" data-page="5"><div data-task-id="t1-task5"></div></div>
+                <div class="page" data-page="6"><div data-task-id="t1-task6"></div></div>
+                <div class="page" data-page="7"><div data-task-id="t1-task7"></div></div>
+                <div class="page" data-page="8"><div data-task-id="t1-task8"></div></div>
+                <div class="page" data-page="9"><div data-task-id="t1-task9"></div></div>
+                <div class="page" data-page="10"><div data-task-id="t1-task10"></div></div>
+            </div>
+            <div id="task2" class="content-section">
+                <div class="page active" data-page="1"><div data-task-id="t2-task1"></div></div>
+                <div class="page" data-page="2"><div data-task-id="t2-task2"></div></div>
+                <div class="page" data-page="3"><div data-task-id="t2-task3"></div></div>
+                <div class="page" data-page="4"><div data-task-id="t2-task4"></div></div>
+                <div class="page" data-page="5"><div data-task-id="t2-task5"></div></div>
+                <div class="page" data-page="6"><div data-task-id="t2-task6"></div></div>
+                <div class="page" data-page="7"><div data-task-id="t2-task7"></div></div>
+                <div class="page" data-page="8"><div data-task-id="t2-task8"></div></div>
+                <div class="page" data-page="9"><div data-task-id="t2-task9"></div></div>
+                <div class="page" data-page="10"><div data-task-id="t2-task10"></div></div>
+            </div>
+            <div id="task3" class="content-section">
+                <div class="page active" data-page="1"><div data-task-id="t3-task1"></div></div>
+                <div class="page" data-page="2"><div data-task-id="t3-task2"></div></div>
+                <div class="page" data-page="3"><div data-task-id="t3-task3"></div></div>
+                <div class="page" data-page="4"><div data-task-id="t3-task4"></div></div>
+                <div class="page" data-page="5"><div data-task-id="t3-task5"></div></div>
+                <div class="page" data-page="6"><div data-task-id="t3-task6"></div></div>
+                <div class="page" data-page="7"><div data-task-id="t3-task7"></div></div>
+                <div class="page" data-page="8"><div data-task-id="t3-task8"></div></div>
+                <div class="page" data-page="9"><div data-task-id="t3-task9"></div></div>
+                <div class="page" data-page="10"><div data-task-id="t3-task10"></div></div>
+            </div>
+            <div id="task4" class="content-section">
+                <div class="page active" data-page="1"><div data-task-id="t4-task1"></div></div>
+                <div class="page" data-page="2"><div data-task-id="t4-task2"></div></div>
+                <div class="page" data-page="3"><div data-task-id="t4-task3"></div></div>
+                <div class="page" data-page="4"><div data-task-id="t4-task4"></div></div>
+                <div class="page" data-page="5"><div data-task-id="t4-task5"></div></div>
+                <div class="page" data-page="6"><div data-task-id="t4-task6"></div></div>
+                <div class="page" data-page="7"><div data-task-id="t4-task7"></div></div>
+                <div class="page" data-page="8"><div data-task-id="t4-task8"></div></div>
+                <div class="page" data-page="9"><div data-task-id="t4-task9"></div></div>
+                <div class="page" data-page="10"><div data-task-id="t4-task10"></div></div>
+            </div>
+            <div id="task5" class="content-section">
+                <div class="page active" data-page="1"><div data-task-id="t5-task1"></div></div>
+                <div class="page" data-page="2"><div data-task-id="t5-task2"></div></div>
+                <div class="page" data-page="3"><div data-task-id="t5-task3"></div></div>
+                <div class="page" data-page="4"><div data-task-id="t5-task4"></div></div>
+                <div class="page" data-page="5"><div data-task-id="t5-task5"></div></div>
+                <div class="page" data-page="6"><div data-task-id="t5-task6"></div></div>
+                <div class="page" data-page="7"><div data-task-id="t5-task7"></div></div>
+                <div class="page" data-page="8"><div data-task-id="t5-task8"></div></div>
+                <div class="page" data-page="9"><div data-task-id="t5-task9"></div></div>
+                <div class="page" data-page="10"><div data-task-id="t5-task10"></div></div>
+            </div>
+            </div> <!-- Penutup #contentScrollArea -->
+            <div id="paginationBar" class="shrink-0 bg-white p-3 border-t border-gray-200 flex justify-center items-center gap-1 no-print z-40 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]"></div>
+        </main>
+    </div>
+    
+    <!-- Print Area -->
+    <div id="printArea" class="hidden p-8">
+        <div class="text-center border-b-2 border-black pb-4 mb-4">
+            <h1 class="text-xl font-bold">Math Tutoring by Deni</h1>
+            <p>Topic: Pythagorean Triples</p>
+            <div class="flex justify-around mt-4 text-sm">
+                <p>Name: ..............................</p>
+                <p>Date: ..............................</p>
+                <p>Task: <span id="printTaskNum">1</span></p>
+                <p>Score: <span id="printScore">0</span>/10</p>
+            </div>
+        </div>
+        <table class="w-full border-collapse border border-black text-sm">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="border border-black p-1">No.</th>
+                    <th class="border border-black p-1">Question</th>
+                    <th class="border border-black p-1">Student Answer</th>
+                    <th class="border border-black p-1">Correct Answer</th>
+                    <th class="border border-black p-1">Note (❌/✔️)</th>
+                </tr>
+            </thead>
+            <tbody id="printTableBody"></tbody>
+        </table>
+        <div class="mt-8 text-right">
+            <p>Checked by,</p>
+            <br><br>
+            <p class="font-bold">Deni</p>
+        </div>
+    </div>
+    <script>
+        // ====== MATH QUESTIONS DATA (PART 1: WARMUP, INTRO, REVIEW, PROBLEM, GUIDED, INDEPENDENT) ======
+        const questions = {};
+        Object.assign(questions, {
+            // SPIRAL REVIEW WARM-UP
+            "w-task1": { type: "single", q: "A right-angled triangle has legs of length 3 cm and 4 cm. What is the length of the hypotenuse? <i class='fas fa-triangle text-blue-500 ml-2'></i>", q_trans: "Segitiga siku-siku memiliki sisi siku-siku 3 cm dan 4 cm. Berapa panjang sisi miringnya?", opts: ["\\( 5 \\text{ cm} \\)", "\\( 6 \\text{ cm} \\)", "\\( 7 \\text{ cm} \\)", "\\( 12 \\text{ cm} \\)", "\\( 25 \\text{ cm} \\)"], ans: "\\( 5 \\text{ cm} \\)", exp: "Using the Pythagorean theorem: \\( c = \\sqrt{a^2 + b^2} = \\sqrt{3^2 + 4^2} = \\sqrt{9 + 16} = \\sqrt{25} = 5 \\). Also, (3, 4, 5) is a primitive Pythagorean triple.", exp_trans: "Menggunakan teorema Pythagoras: \\( c = \\sqrt{a^2 + b^2} = \\sqrt{3^2 + 4^2} = \\sqrt{9 + 16} = \\sqrt{25} = 5 \\). Juga, (3, 4, 5) adalah tripel Pythagoras primitif." },
+            "w-task2": { type: "fill", q: "In a right triangle, the hypotenuse is 13 cm and one leg is 5 cm. What is the length of the other leg? <i class='fas fa-ruler text-blue-500 ml-2'></i>", q_trans: "Pada segitiga siku-siku, sisi miring 13 cm dan salah satu sisi siku-siku 5 cm. Berapa panjang sisi siku-siku yang lain?", ans: "12", exp: "Using \\( b = \\sqrt{c^2 - a^2} = \\sqrt{13^2 - 5^2} = \\sqrt{169 - 25} = \\sqrt{144} = 12 \\). This is the (5, 12, 13) triple.", exp_trans: "Menggunakan \\( b = \\sqrt{c^2 - a^2} = \\sqrt{13^2 - 5^2} = \\sqrt{169 - 25} = \\sqrt{144} = 12 \\). Ini adalah tripel (5, 12, 13)." },
+            "w-task3": { type: "tf_table", q: "Evaluate the following statements about the Pythagorean Theorem. <i class='fas fa-list-ul text-blue-500 ml-2'></i>", q_trans: "Evaluasi pernyataan berikut tentang Teorema Pythagoras.", opts: ["The hypotenuse is the longest side", "The theorem works for any triangle", "\\( a^2 + b^2 = c^2 \\) calculates the hypotenuse", "The hypotenuse is adjacent to the 90-degree angle"], ans: ["B", "S", "B", "S"], exp: "1. B, hypotenuse is longest. 2. S, only right triangles. 3. B, formula is correct. 4. S, hypotenuse is opposite the 90-degree angle.", exp_trans: "1. B, sisi miring terpanjang. 2. S, hanya segitiga siku-siku. 3. B, rumus benar. 4. S, sisi miring di hadapan sudut 90 derajat." },
+            "w-task4": { type: "single", q: "A ladder is placed against a wall. The base is 6 m away from the wall, and the ladder reaches 8 m up the wall. How long is the ladder? <i class='fas fa-arrows-up-to-line text-blue-500 ml-2'></i>", q_trans: "Tangga disandarkan ke dinding. Bawahnya 6 m dari dinding, dan tangga mencapai 8 m di dinding. Berapa panjang tangga?", opts: ["\\( 9 \\text{ m} \\)", "\\( 10 \\text{ m} \\)", "\\( 12 \\text{ m} \\)", "\\( 14 \\text{ m} \\)", "\\( 100 \\text{ m} \\)"], ans: "\\( 10 \\text{ m} \\)", exp: "The ladder forms the hypotenuse. \\( c = \\sqrt{6^2 + 8^2} = \\sqrt{36 + 64} = \\sqrt{100} = 10 \\). This is the (6, 8, 10) triple, which is 2 times (3, 4, 5).", exp_trans: "Tangga adalah sisi miring. \\( c = \\sqrt{6^2 + 8^2} = \\sqrt{36 + 64} = \\sqrt{100} = 10 \\). Ini tripel (6, 8, 10), yaitu 2 kali (3, 4, 5)." },
+            "w-task5": { type: "complex", q: "Which of the following sets of numbers are Pythagorean Triples? <i class='fas fa-check-double text-blue-500 ml-2'></i>", q_trans: "Manakah dari himpunan bilangan berikut yang merupakan Tripel Pythagoras?", opts: ["\\( (3, 4, 5) \\)", "\\( (5, 12, 13) \\)", "\\( (1, 2, 3) \\)", "\\( (6, 8, 10) \\)"], ans: [0, 1, 3], exp: "1. B, \\( 3^2+4^2=5^2 \\). 2. B, \\( 5^2+12^2=13^2 \\). 3. S, \\( 1^2+2^2=5 \\neq 3^2 \\). 4. B, scaled (3,4,5) by 2.", exp_trans: "1. B. 2. B. 3. S. 4. B, dikali 2 dari (3,4,5)." },
+            "w-task6": { type: "fill", q: "A TV screen is 16 inches wide and 12 inches high. What is the diagonal length of the TV? <i class='fas fa-tv text-blue-500 ml-2'></i>", q_trans: "Layar TV berlebar 16 inci dan tinggi 12 inci. Berapa panjang diagonal TV?", ans: "20", exp: "Diagonal = \\( \\sqrt{16^2 + 12^2} = \\sqrt{256 + 144} = \\sqrt{400} = 20 \\). It's the (12, 16, 20) triple, scaled by 4 from (3, 4, 5).", exp_trans: "Diagonal = \\( \\sqrt{16^2 + 12^2} = \\sqrt{256 + 144} = \\sqrt{400} = 20 \\). Tripel (12, 16, 20), dikali 4 dari (3, 4, 5)." },
+            "w-task7": { type: "single", q: "A triangle has sides of 4 cm, 5 cm, and 6 cm. Is it a right-angled triangle? <i class='fas fa-shapes text-blue-500 ml-2'></i>", q_trans: "Segitiga memiliki sisi 4 cm, 5 cm, dan 6 cm. Apakah ini segitiga siku-siku?", opts: ["Yes, because 4+5=9", "No, because \\( 4^2 + 5^2 \\neq 6^2 \\)", "Yes, because it has 3 sides", "Cannot be determined", "Yes, because 6 is the largest"], ans: "No, because \\( 4^2 + 5^2 \\neq 6^2 \\)", exp: "Check: \\( 4^2 + 5^2 = 16 + 25 = 41 \\). But \\( 6^2 = 36 \\). Since 41 ≠ 36, it is not a right triangle.", exp_trans: "Cek: \\( 4^2 + 5^2 = 16 + 25 = 41 \\). Tapi \\( 6^2 = 36 \\). Karena 41 ≠ 36, bukan segitiga siku-siku." },
+            "w-task8": { type: "tf_table", q: "Consider the right triangle with legs 9 and 12. <i class='fas fa-clipboard-check text-blue-500 ml-2'></i>", q_trans: "Perhatikan segitiga siku-siku dengan sisi 9 dan 12.", opts: ["The hypotenuse is 15", "This is a primitive Pythagorean triple", "This is a multiple of the (3, 4, 5) triple", "The hypotenuse is calculated by \\( 9+12 \\)"], ans: ["B", "S", "B", "S"], exp: "1. B, \\( \\sqrt{9^2+12^2}=15 \\). 2. S, it has a common factor of 3, so not primitive. 3. B, it's (3,4,5) scaled by 3. 4. S, you must square and add, not just add.", exp_trans: "1. B. 2. S, punya faktor 3. 3. B, dikali 3. 4. S, harus dikuadratkan." },
+            "w-task9": { type: "single", q: "If (3, 4, 5) is a Pythagorean triple, what is the hypotenuse of a triangle with legs 30 and 40? <i class='fas fa-expand-arrows-alt text-blue-500 ml-2'></i>", q_trans: "Jika (3, 4, 5) tripel Pythagoras, berapa sisi miring segitiga dengan sisi 30 dan 40?", opts: ["\\( 35 \\)", "\\( 45 \\)", "\\( 50 \\)", "\\( 70 \\)", "\\( 100 \\)"], ans: "\\( 50 \\)", exp: "The legs are multiplied by 10 (3*10=30, 4*10=40). Therefore, the hypotenuse is also multiplied by 10: 5 * 10 = 50.", exp_trans: "Sisi dikali 10. Oleh karena itu, sisi miring juga dikali 10: 5 * 10 = 50." },
+            "w-task10": { type: "complex", q: "Which of the following formulas correctly represent the Pythagorean Theorem? <i class='fas fa-brain text-blue-500 ml-2'></i>", q_trans: "Manakah rumus berikut yang benar mewakili Teorema Pythagoras?", opts: ["\\( c = \\sqrt{a^2 + b^2} \\)", "\\( a^2 + b^2 = c^2 \\)", "\\( c = a + b \\)", "\\( a = \\sqrt{c^2 - b^2} \\)"], ans: [0, 1, 3], exp: "1. B, solved for c. 2. B, standard form. 3. S, Pythagoras requires squaring. 4. B, solved for leg a.", exp_trans: "1. B, untuk c. 2. B, bentuk standar. 3. S, harus dikuadratkan. 4. B, untuk sisi a." },
+
+            // INTRODUCTION & REAL-WORLD
+            "i-task1": { type: "single", q: "A ship sails 15 km North, then turns and sails 8 km East. How far is the ship from its starting point? <i class='fas fa-map-marked-alt text-green-500 ml-2'></i>", q_trans: "Kapal berlayar 15 km Utara, lalu berbelajar ke Timur 8 km. Seberapa jauh kapal dari titik awal?", opts: ["\\( 17 \\text{ km} \\)", "\\( 23 \\text{ km} \\)", "\\( 7 \\text{ km} \\)", "\\( 289 \\text{ km} \\)", "\\( 120 \\text{ km} \\)"], ans: "\\( 17 \\text{ km} \\)", exp: "The path forms a right triangle with legs 15 and 8. This is the (8, 15, 17) triple. \\( c = \\sqrt{15^2 + 8^2} = 17 \\).", exp_trans: "Jalur membentuk segitiga siku-siku dengan sisi 15 dan 8. Ini tripel (8, 15, 17). \\( c = 17 \\)." },
+            "i-task2": { type: "fill", q: "A rectangle has a length of 15 cm and a width of 8 cm. What is the length of its diagonal? <i class='fas fa-vector-square text-green-500 ml-2'></i>", q_trans: "Persegi panjang panjang 15 cm dan lebar 8 cm. Berapa panjang diagonalnya?", ans: "17", exp: "The diagonal splits the rectangle into two right triangles with legs 15 and 8. Using the (8, 15, 17) triple, the diagonal is 17 cm.", exp_trans: "Diagonal membagi persegi panjang menjadi dua segitiga siku-siku dengan sisi 15 dan 8. Menggunakan tripel (8, 15, 17), diagonalnya 17 cm." },
+            "i-task3": { type: "tf_table", q: "Analyze the following statements about Pythagorean Triples. <i class='fas fa-list-ol text-green-500 ml-2'></i>", q_trans: "Analisis pernyataan berikut tentang Tripel Pythagoras.", opts: ["Triples must be whole numbers", "(6, 8, 10) is a primitive triple", "Primitive triples have no common factors", "Multiplying a triple by a constant creates a new triple"], ans: ["B", "S", "B", "B"], exp: "1. B, integers only. 2. S, it's a multiple of (3,4,5) by 2, so not primitive. 3. B, definition of primitive. 4. B, scaling property.", exp_trans: "1. B. 2. S. 3. B. 4. B." },
+            "i-task4": { type: "single", q: "If you multiply the (5, 12, 13) triple by 2, what is the new hypotenuse? <i class='fas fa-calculator text-green-500 ml-2'></i>", q_trans: "Jika tripel (5, 12, 13) dikali 2, berapa sisi miring barunya?", opts: ["\\( 15 \\)", "\\( 24 \\)", "\\( 26 \\)", "\\( 34 \\)", "\\( 10 \\)"], ans: "\\( 26 \\)", exp: "Multiply each number by 2. The hypotenuse was 13, so the new hypotenuse is \\( 13 \\times 2 = 26 \\).", exp_trans: "Kalikan setiap angka dengan 2. Sisi miringnya 13, jadi sisi miring baru \\( 13 \\times 2 = 26 \\)." },
+            "i-task5": { type: "complex", q: "Which of the following are primitive Pythagorean Triples? <i class='fas fa-check-double text-green-500 ml-2'></i>", q_trans: "Manakah dari berikut ini yang merupakan Tripel Pythagoras Primitif?", opts: ["\\( (3, 4, 5) \\)", "\\( (6, 8, 10) \\)", "\\( (5, 12, 13) \\)", "\\( (8, 15, 17) \\)"], ans: [0, 2, 3], exp: "Primitive triples have no common factors other than 1. (6, 8, 10) can all be divided by 2, so it's non-primitive. The others are primitive.", exp_trans: "Tripel primitif tidak punya faktor persekutuan selain 1. (6, 8, 10) bisa dibagi 2, jadi non-primitif." },
+            "i-task6": { type: "fill", q: "A pole is 24 m high. A wire is attached to the top of the pole and to a point on the ground 7 m from the base. What is the length of the wire? <i class='fas fa-broadcast-tower text-green-500 ml-2'></i>", q_trans: "Tiang setinggi 24 m. Kabel dipasang di puncak tiang dan ke titik di tanah 7 m dari dasar. Berapa panjang kabel?", ans: "25", exp: "The pole and ground form a right triangle with legs 24 and 7. This is the (7, 24, 25) triple. The wire is the hypotenuse, so it is 25 m.", exp_trans: "Tiang dan tanah membentuk segitiga siku-siku dengan sisi 24 dan 7. Ini tripel (7, 24, 25). Kabel adalah sisi miring, yaitu 25 m." },
+            "i-task7": { type: "single", q: "A triangle has side lengths of 7 cm, 24 cm, and 25 cm. Is this a right triangle? <i class='fas fa-shapes text-green-500 ml-2'></i>", q_trans: "Segitiga memiliki panjang sisi 7 cm, 24 cm, dan 25 cm. Apakah ini segitiga siku-siku?", opts: ["Yes, it is a right triangle", "No, it is an acute triangle", "No, it is an obtuse triangle", "Cannot be determined without angles", "Only if 25 is the shortest side"], ans: "Yes, it is a right triangle", exp: "Check: \\( 7^2 + 24^2 = 49 + 576 = 625 \\). And \\( 25^2 = 625 \\). Since \\( a^2 + b^2 = c^2 \\), it is a right triangle (specifically, the (7, 24, 25) triple).", exp_trans: "Cek: \\( 7^2 + 24^2 = 49 + 576 = 625 \\). Dan \\( 25^2 = 625 \\). Karena \\( a^2 + b^2 = c^2 \\), ini segitiga siku-siku." },
+            "i-task8": { type: "tf_table", q: "Evaluate the use of Euclid's formula to generate triples. <i class='fas fa-clipboard-check text-green-500 ml-2'></i>", q_trans: "Evaluasi penggunaan rumus Euclid untuk membuat tripel.", opts: ["It requires two integers \\( m \\) and \\( n \\)", "\\( m \\) must be smaller than \\( n \\)", "\\( a = m^2 - n^2 \\)", "\\( c = m^2 + n^2 \\)"], ans: ["B", "S", "B", "B"], exp: "1. B, uses m and n. 2. S, \\( m > n \\). 3. B, formula for leg a. 4. B, formula for hypotenuse c.", exp_trans: "1. B. 2. S. 3. B. 4. B." },
+            "i-task9": { type: "single", q: "Which of the following is NOT a Pythagorean triple? <i class='fas fa-times-circle text-green-500 ml-2'></i>", q_trans: "Manakah yang BUKAN tripel Pythagoras?", opts: ["\\( (9, 12, 15) \\)", "\\( (5, 12, 13) \\)", "\\( (8, 15, 17) \\)", "\\( (2, 3, 4) \\)", "\\( (7, 24, 25) \\)"], ans: "\\( (2, 3, 4) \\)", exp: "Check (2, 3, 4): \\( 2^2 + 3^2 = 4 + 9 = 13 \\). But \\( 4^2 = 16 \\). 13 ≠ 16. The others are valid triples (or multiples of).", exp_trans: "Cek (2, 3, 4): \\( 2^2 + 3^2 = 13 \\). Tapi \\( 4^2 = 16 \\). 13 ≠ 16." },
+            "i-task10": { type: "complex", q: "Select the real-world scenarios that form a right triangle. <i class='fas fa-check-circle text-green-500 ml-2'></i>", q_trans: "Pilih skenario dunia nyata yang membentuk segitiga siku-siku.", opts: ["A ladder leaning against a vertical wall", "A ship sailing North then turning East", "The diagonal of a rectangular field", "A car driving in a straight line on a flat road"], ans: [0, 1, 2], exp: "1. B, wall and ground are 90°. 2. B, North and East are 90°. 3. B, rectangle corners are 90°. 4. S, just a straight line, no triangle.", exp_trans: "1. B. 2. B. 3. B. 4. S." },
+
+            // REVIEW OF PRIOR KNOWLEDGE
+            "r-task1": { type: "single", q: "In the Pythagorean theorem \\( a^2 + b^2 = c^2 \\), what does \\( c \\) represent? <i class='fas fa-route text-purple-500 ml-2'></i>", q_trans: "Pada teorema Pythagoras \\( a^2 + b^2 = c^2 \\), apa yang diwakili oleh \\( c \\)?", opts: ["The shortest side", "The right angle", "The hypotenuse", "The area of the triangle", "One of the legs"], ans: "The hypotenuse", exp: "In the standard notation, \\( c \\) always represents the hypotenuse, which is the longest side opposite the right angle. \\( a \\) and \\( b \\) are the legs.", exp_trans: "Dalam notasi standar, \\( c \\) selalu mewakili sisi miring, yaitu sisi terpanjang di depan sudut siku-siku. \\( a \\) dan \\( b \\) adalah sisi siku-siku." },
+            "r-task2": { type: "fill", q: "Find the hypotenuse of a right triangle if the legs are 20 cm and 21 cm. <i class='fas fa-ruler-combined text-purple-500 ml-2'></i>", q_trans: "Cari sisi miring segitiga siku-siku jika sisi siku-sikunya 20 cm dan 21 cm.", ans: "29", exp: "\\( c = \\sqrt{20^2 + 21^2} = \\sqrt{400 + 441} = \\sqrt{841} = 29 \\). This is the (20, 21, 29) primitive triple.", exp_trans: "\\( c = \\sqrt{20^2 + 21^2} = \\sqrt{400 + 441} = \\sqrt{841} = 29 \\). Ini tripel primitif (20, 21, 29)." },
+            "r-task3": { type: "tf_table", q: "Check if the following triples satisfy the converse of the Pythagorean theorem. <i class='fas fa-brain text-purple-500 ml-2'></i>", q_trans: "Cek apakah tripel berikut memenuhi konvers teorema Pythagoras.", opts: ["(9, 40, 41) forms a right triangle", "(10, 15, 20) forms a right triangle", "(11, 60, 61) forms a right triangle", "(3, 5, 7) forms a right triangle"], ans: ["B", "S", "B", "S"], exp: "1. B, \\( 81+1600=1681=41^2 \\). 2. S, \\( 100+225=325 \\neq 400 \\). 3. B, \\( 121+3600=3721=61^2 \\). 4. S, \\( 9+25=34 \\neq 49 \\).", exp_trans: "1. B. 2. S. 3. B. 4. S." },
+            "r-task4": { type: "single", q: "Which primitive triple family does the set (10, 24, 26) belong to? <i class='fas fa-equals text-purple-500 ml-2'></i>", q_trans: "Keluarga tripel primitif mana yang memiliki himpunan (10, 24, 26)?", opts: ["\\( (3, 4, 5) \\)", "\\( (5, 12, 13) \\)", "\\( (8, 15, 17) \\)", "\\( (7, 24, 25) \\)", "\\( (20, 21, 29) \\)"], ans: "\\( (5, 12, 13) \\)", exp: "Divide all numbers by their greatest common divisor. 10/2=5, 24/2=12, 26/2=13. It belongs to the (5, 12, 13) family, scaled by 2.", exp_trans: "Bagi semua angka dengan FPB. 10/2=5, 24/2=12, 26/2=13. Ini keluarga (5, 12, 13) dikali 2." },
+            "r-task5": { type: "complex", q: "Which of the following are primitive Pythagorean Triples? <i class='fas fa-check-double text-purple-500 ml-2'></i>", q_trans: "Manakah dari berikut ini yang merupakan Tripel Pythagoras Primitif?", opts: ["\\( (3, 4, 5) \\)", "\\( (12, 16, 20) \\)", "\\( (8, 15, 17) \\)", "\\( (9, 12, 15) \\)"], ans: [0, 2], exp: "Primitive triples have no common factors. (12,16,20) and (9,12,15) are all multiples of (3,4,5). Only (3,4,5) and (8,15,17) are primitive.", exp_trans: "Tripel primitif tak punya faktor persekutuan. (12,16,20) dan (9,12,15) adalah kelipatan (3,4,5)." },
+            "r-task6": { type: "fill", q: "If the hypotenuse is 17 and one leg is 8, what is the length of the other leg? <i class='fas fa-key text-purple-500 ml-2'></i>", q_trans: "Jika sisi miring 17 dan satu sisi 8, berapa panjang sisi yang lain?", ans: "15", exp: "Using the (8, 15, 17) triple, if hypotenuse is 17 and leg is 8, the missing leg is 15. Math: \\( b = \\sqrt{17^2 - 8^2} = \\sqrt{289 - 64} = \\sqrt{225} = 15 \\).", exp_trans: "Menggunakan tripel (8, 15, 17), jika sisi miring 17 dan sisi 8, sisi yang hilang adalah 15." },
+            "r-task7": { type: "single", q: "Calculate the hypotenuse if the legs are 9 and 12. <i class='fas fa-calculator text-purple-500 ml-2'></i>", q_trans: "Hitung sisi miring jika sisi siku-sikunya 9 dan 12.", opts: ["\\( 15 \\)", "\\( 18 \\)", "\\( 21 \\)", "\\( 108 \\)", "\\( 225 \\)"], ans: "\\( 15 \\)", exp: "Recognize that 9 and 12 are 3 times (3 and 4). So the hypotenuse is 3 times 5, which is 15. Or: \\( \\sqrt{9^2 + 12^2} = \\sqrt{81 + 144} = \\sqrt{225} = 15 \\).", exp_trans: "Kenali bahwa 9 dan 12 adalah 3 kali (3 dan 4). Jadi sisi miring 3 kali 5, yaitu 15." },
+            "r-task8": { type: "tf_table", q: "What happens when you multiply a Pythagorean triple by a constant? <i class='fas fa-clipboard-list text-purple-500 ml-2'></i>", q_trans: "Apa yang terjadi jika tripel Pythagoras dikalikan konstanta?", opts: ["The result is still a Pythagorean triple", "The result is a primitive triple", "The new triangle is still a right triangle", "The angles of the triangle change"], ans: ["B", "S", "B", "S"], exp: "1. B, scaling preserves the triple property. 2. S, it becomes non-primitive. 3. B, still satisfies \\( a^2+b^2=c^2 \\). 4. S, angles remain the same.", exp_trans: "1. B. 2. S. 3. B. 4. S." },
+            "r-task9": { type: "single", q: "A builder uses the 3-4-5 method to check a corner. If he measures 30 cm on one wall and 40 cm on the other, how long should the diagonal be? <i class='fas fa-hammer text-purple-500 ml-2'></i>", q_trans: "Tukang pakai metode 3-4-5. Jika ia ukur 30 cm di satu dinding dan 40 cm di dinding lain, berapa panjang diagonalnya?", opts: ["\\( 45 \\text{ cm} \\)", "\\( 50 \\text{ cm} \\)", "\\( 60 \\text{ cm} \\)", "\\( 70 \\text{ cm} \\)", "\\( 120 \\text{ cm} \\)"], ans: "\\( 50 \\text{ cm} \\)", exp: "30 and 40 are 10 times (3 and 4). So the diagonal is 10 times 5, which is 50 cm.", exp_trans: "30 dan 40 adalah 10 kali (3 dan 4). Jadi diagonalnya 10 kali 5, yaitu 50 cm." },
+            "r-task10": { type: "complex", q: "Which formulas correctly find a missing leg of a right triangle? <i class='fas fa-check-circle text-purple-500 ml-2'></i>", q_trans: "Rumus mana yang benar untuk mencari sisi siku-siku yang hilang?", opts: ["\\( a = \\sqrt{c^2 - b^2} \\)", "\\( b = \\sqrt{c^2 - a^2} \\)", "\\( a = c^2 - b^2 \\)", "\\( b = \\sqrt{a^2 + c^2} \\)"], ans: [0, 1], exp: "1. B, correct rearrangement for leg a. 2. B, correct rearrangement for leg b. 3. S, missing square root. 4. S, addition is for finding hypotenuse, not leg.", exp_trans: "1. B. 2. B. 3. S, kurang akar. 4. S, penjumlahan untuk sisi miring." },
+
+            // PROBLEM INTRODUCTION
+            "p-task1": { type: "single", q: "A 10 m ladder is leaning against a wall. The base of the ladder is 6 m from the wall. How high up the wall does the ladder reach? <i class='fas fa-arrows-up-to-line text-orange-500 ml-2'></i>", q_trans: "Tangga 10 m disandarkan ke dinding. Bawah tangga 6 m dari dinding. Sampai berapa tinggi tangga di dinding?", opts: ["\\( 6 \\text{ m} \\)", "\\( 8 \\text{ m} \\)", "\\( 10 \\text{ m} \\)", "\\( 12 \\text{ m} \\)", "\\( 14 \\text{ m} \\)"], ans: "\\( 8 \\text{ m} \\)", exp: "The ladder is the hypotenuse (10). One leg is 6. \\( \\text{Height} = \\sqrt{10^2 - 6^2} = \\sqrt{100 - 36} = \\sqrt{64} = 8 \\). It's the (6, 8, 10) triple.", exp_trans: "Tangga adalah sisi miring (10). Satu sisi 6. \\( \\text{Tinggi} = \\sqrt{10^2 - 6^2} = \\sqrt{100 - 36} = \\sqrt{64} = 8 \\)." },
+            "p-task2": { type: "fill", q: "A ship sails 15 km North, then 8 km East. What is the direct distance back to the start? <i class='fas fa-map-marked-alt text-orange-500 ml-2'></i>", q_trans: "Kapal berlayar 15 km Utara, lalu 8 km Timur. Berapa jarak langsung kembali ke awal?", ans: "17", exp: "Legs are 15 and 8. Using the (8, 15, 17) triple, the direct distance (hypotenuse) is 17 km.", exp_trans: "Sisi siku-siku 15 dan 8. Menggunakan tripel (8, 15, 17), jarak langsung (sisi miring) adalah 17 km." },
+            "p-task3": { type: "tf_table", q: "Analyze the word problem: A TV has width 16 and height 12. <i class='fas fa-list-ol text-orange-500 ml-2'></i>", q_trans: "Analisis soal: TV lebar 16 dan tinggi 12.", opts: ["The diagonal is the hypotenuse", "The width and height are the legs", "The diagonal is 20", "This forms the (8, 15, 17) triple"], ans: ["B", "B", "B", "S"], exp: "1. B, diagonal is hypotenuse. 2. B, width/height are legs. 3. B, \\( \\sqrt{16^2+12^2} = 20 \\). 4. S, it's the (12, 16, 20) triple, from (3,4,5).", exp_trans: "1. B. 2. B. 3. B. 4. S." },
+            "p-task4": { type: "single", q: "A TV is advertised as 50 inches. If the width is 30 inches, what is the height? <i class='fas fa-tv text-orange-500 ml-2'></i>", q_trans: "TV diiklankan 50 inci. Jika lebarnya 30 inci, berapa tingginya?", opts: ["\\( 20 \\text{ in} \\)", "\\( 30 \\text{ in} \\)", "\\( 40 \\text{ in} \\)", "\\( 50 \\text{ in} \\)", "\\( 80 \\text{ in} \\)"], ans: "\\( 40 \\text{ in} \\)", exp: "50 is the hypotenuse. 30 is a leg. Using the (3,4,5) scaled by 10, legs are 30 and 40. So height is 40 inches. Math: \\( \\sqrt{50^2 - 30^2} = \\sqrt{2500 - 900} = 40 \\).", exp_trans: "50 sisi miring. 30 sisi siku-siku. Pakai (3,4,5) dikali 10, sisi siku-siku 30 dan 40. Tingginya 40 inci." },
+            "p-task5": { type: "complex", q: "Which situations correctly apply the Pythagorean theorem? <i class='fas fa-check-double text-orange-500 ml-2'></i>", q_trans: "Situasi mana yang benar menerapkan teorema Pythagoras?", opts: ["Finding the length of a diagonal in a rectangle", "Finding the shortest distance between two points on a grid", "Finding the perimeter of a square", "Finding the length of a shadow cast by a pole"], ans: [0, 1, 3], exp: "1. B, forms right triangle. 2. B, horizontal and vertical movements. 3. S, perimeter is just sides added. 4. B, pole and shadow form right triangle with sun ray.", exp_trans: "1. B. 2. B. 3. S. 4. B." },
+            "p-task6": { type: "fill", q: "A rectangular field is 15 m long and 20 m wide. What is the distance walking diagonally across it? <i class='fas fa-vector-square text-orange-500 ml-2'></i>", q_trans: "Lapangan persegi panjang panjang 15 m dan lebar 20 m. Berapa jarak berjalan melintang?", ans: "25", exp: "Legs are 15 and 20. This is the (3,4,5) triple scaled by 5. The diagonal is \\( 5 \\times 5 = 25 \\) m.", exp_trans: "Sisi 15 dan 20. Ini tripel (3,4,5) dikali 5. Diagonalnya 25 m." },
+            "p-task7": { type: "single", q: "A ship sails 20 km East, then 15 km North. How far is it from the start? <i class='fas fa-ship text-orange-500 ml-2'></i>", q_trans: "Kapal berlayar 20 km Timur, lalu 15 km Utara. Seberapa jauh dari awal?", opts: ["\\( 25 \\text{ km} \\)", "\\( 35 \\text{ km} \\)", "\\( 5 \\text{ km} \\)", "\\( 625 \\text{ km} \\)", "\\( 30 \\text{ km} \\)"], ans: "\\( 25 \\text{ km} \\)", exp: "Legs are 20 and 15. This is the (3,4,5) triple scaled by 5. Hypotenuse is \\( 5 \\times 5 = 25 \\) km.", exp_trans: "Sisi 20 dan 15. Tripel (3,4,5) dikali 5. Sisi miring 25 km." },
+            "p-task8": { type: "tf_table", q: "Evaluate the steps to solve: A wire reaches 24 m up a pole, with base 7 m away. Find wire length. <i class='fas fa-clipboard-check text-orange-500 ml-2'></i>", q_trans: "Evaluasi langkah penyelesaian: Kabel mencapai 24 m di tiang, bawah 7 m. Cari panjang kabel.", opts: ["Identify legs as 24 and 7", "Wire is the hypotenuse", "Calculate \\( 24^2 + 7^2 = 625 \\)", "Wire length is 25 m"], ans: ["B", "B", "B", "B"], exp: "1. B, pole and ground. 2. B, wire is hypotenuse. 3. B, math is correct. 4. B, \\( \\sqrt{625} = 25 \\). All true.", exp_trans: "1. B. 2. B. 3. B. 4. B." },
+            "p-task9": { type: "single", q: "A 25 m wire is attached to the top of a pole and to the ground 7 m from the base. How tall is the pole? <i class='fas fa-broadcast-tower text-orange-500 ml-2'></i>", q_trans: "Kabel 25 m dipasang di puncak tiang dan ke tanah 7 m dari dasar. Berapa tinggi tiang?", opts: ["\\( 18 \\text{ m} \\)", "\\( 24 \\text{ m} \\)", "\\( 26 \\text{ m} \\)", "\\( 32 \\text{ m} \\)", "\\( 49 \\text{ m} \\)"], ans: "\\( 24 \\text{ m} \\)", exp: "Wire is hypotenuse (25). Ground is leg (7). Using the (7, 24, 25) triple, the pole height is 24 m.", exp_trans: "Kabel sisi miring (25). Tanah sisi (7). Pakai tripel (7, 24, 25), tinggi tiang 24 m." },
+            "p-task10": { type: "complex", q: "Identify the hypotenuse in the following word problems. <i class='fas fa-check-circle text-orange-500 ml-2'></i>", q_trans: "Identifikasi sisi miring pada soal cerita berikut.", opts: ["The ladder in a wall problem", "The diagonal of a TV", "The distance from start in navigation", "The height of the pole"], ans: [0, 1, 2], exp: "1. B, ladder is across. 2. B, TV diagonal is across. 3. B, direct distance is across. 4. S, pole height is a leg.", exp_trans: "1. B. 2. B. 3. B. 4. S." },
+
+            // GUIDED PRACTICE
+            "g-task1": { type: "single", q: "A right triangle has legs of 9 and 12. What is the hypotenuse? <i class='fas fa-triangle text-blue-500 ml-2'></i>", q_trans: "Segitiga siku-siku memiliki sisi 9 dan 12. Berapa sisi miringnya?", opts: ["\\( 15 \\)", "\\( 18 \\)", "\\( 21 \\)", "\\( 108 \\)", "\\( 225 \\)"], ans: "\\( 15 \\)", exp: "Divide by 3: 9/3=3, 12/3=4. This is the (3,4,5) family. Hypotenuse is \\( 5 \\times 3 = 15 \\). Or math: \\( \\sqrt{9^2+12^2} = 15 \\).", exp_trans: "Bagi 3: 9/3=3, 12/3=4. Ini keluarga (3,4,5). Sisi miring \\( 5 \\times 3 = 15 \\)." },
+            "g-task2": { type: "fill", q: "If the legs are 20 and 21, what is the hypotenuse? <i class='fas fa-ruler text-blue-500 ml-2'></i>", q_trans: "Jika sisi siku-siku 20 dan 21, berapa sisi miringnya?", ans: "29", exp: "This is the primitive triple (20, 21, 29). \\( \\sqrt{20^2 + 21^2} = \\sqrt{400+441} = \\sqrt{841} = 29 \\).", exp_trans: "Ini tripel primitif (20, 21, 29)." },
+            "g-task3": { type: "tf_table", q: "Scaling the (5, 12, 13) triple. <i class='fas fa-list-ul text-blue-500 ml-2'></i>", q_trans: "Mengali tripel (5, 12, 13).", opts: ["Multiply by 2 gives (10, 24, 26)", "Multiply by 3 gives (15, 36, 39)", "Scaling creates a primitive triple", "Scaling preserves the right angle"], ans: ["B", "B", "S", "B"], exp: "1. B. 2. B. 3. S, creates non-primitive. 4. B, still a right triangle.", exp_trans: "1. B. 2. B. 3. S. 4. B." },
+            "g-task4": { type: "single", q: "Verify if (7, 24, 25) is a Pythagorean triple. Which calculation is correct? <i class='fas fa-calculator text-blue-500 ml-2'></i>", q_trans: "Verifikasi apakah (7, 24, 25) tripel. Mana perhitungan yang benar?", opts: ["\\( 7+24=31 \\neq 25 \\)", "\\( 7^2 + 24^2 = 49 + 576 = 625 = 25^2 \\)", "\\( 7^2 + 25^2 = 49 + 625 = 674 \\neq 24^2 \\)", "\\( 24^2 - 7^2 = 576 - 49 = 527 \\neq 25^2 \\)", "\\( 25 - 24 = 1 = 7 \\)"], ans: "\\( 7^2 + 24^2 = 49 + 576 = 625 = 25^2 \\)", exp: "The theorem requires the sum of the squares of the two smaller numbers to equal the square of the largest. \\( 49 + 576 = 625 \\), and \\( 25^2 = 625 \\).", exp_trans: "Teorema butuh jumlah kuadrat dua angka kecil sama dengan kuadrat angka terbesar." },
+            "g-task5": { type: "complex", q: "Which of the following are multiples of the (5, 12, 13) triple? <i class='fas fa-check-double text-blue-500 ml-2'></i>", q_trans: "Manakah berikut ini kelipatan tripel (5, 12, 13)?", opts: ["\\( (10, 24, 26) \\)", "\\( (15, 36, 39) \\)", "\\( (50, 120, 130) \\)", "\\( (20, 21, 29) \\)"], ans: [0, 1, 2], exp: "1. B, times 2. 2. B, times 3. 3. B, times 10. 4. S, this is a different primitive triple.", exp_trans: "1. B, kali 2. 2. B, kali 3. 3. B, kali 10. 4. S, tripel berbeda." },
+            "g-task6": { type: "fill", q: "If hypotenuse is 17 and one leg is 15, find the other leg. <i class='fas fa-key text-blue-500 ml-2'></i>", q_trans: "Jika sisi miring 17 dan satu sisi 15, cari sisi lain.", ans: "8", exp: "Using the (8, 15, 17) triple, if we have 17 and 15, the missing leg is 8. Math: \\( \\sqrt{17^2 - 15^2} = \\sqrt{289 - 225} = \\sqrt{64} = 8 \\).", exp_trans: "Pakai tripel (8, 15, 17), sisi yang hilang 8." },
+            "g-task7": { type: "single", q: "An isosceles right triangle has legs of 5 cm. What is the length of the hypotenuse? <i class='fas fa-shapes text-blue-500 ml-2'></i>", q_trans: "Segitiga siku-siku sama kaki memiliki sisi 5 cm. Berapa panjang sisi miringnya?", opts: ["\\( 5 \\text{ cm} \\)", "\\( 10 \\text{ cm} \\)", "\\( 5\\sqrt{2} \\text{ cm} \\)", "\\( 25 \\text{ cm} \\)", "\\( 7 \\text{ cm} \\)"], ans: "\\( 5\\sqrt{2} \\text{ cm} \\)", exp: "Since both legs are equal (\\( a=b \\)), \\( c = \\sqrt{a^2 + a^2} = \\sqrt{2a^2} = a\\sqrt{2} \\). So \\( c = 5\\sqrt{2} \\). This is not a Pythagorean triple because it has an irrational number.", exp_trans: "Karena sisi sama, \\( c = a\\sqrt{2} \\). Jadi \\( 5\\sqrt{2} \\). Ini bukan tripel Pythagoras karena irasional." },
+            "g-task8": { type: "tf_table", q: "Evaluate properties of isosceles right triangles. <i class='fas fa-clipboard-check text-blue-500 ml-2'></i>", q_trans: "Evaluasi sifat segitiga siku-siku sama kaki.", opts: ["Both legs are equal", "The hypotenuse is \\( a\\sqrt{2} \\)", "They always form Pythagorean triples", "The angles are 90, 45, 45 degrees"], ans: ["B", "B", "S", "B"], exp: "1. B, definition of isosceles. 2. B, derived formula. 3. S, hypotenuse is irrational, so not a triple. 4. B, right isosceles has 45-45-90 angles.", exp_trans: "1. B. 2. B. 3. S. 4. B." },
+            "g-task9": { type: "single", q: "Does a triangle with sides 6, 8, and 10 form a right triangle? <i class='fas fa-check-circle text-blue-500 ml-2'></i>", q_trans: "Apakah segitiga dengan sisi 6, 8, dan 10 membentuk segitiga siku-siku?", opts: ["Yes, because \\( 6+8=14 \\)", "Yes, because \\( 6^2 + 8^2 = 10^2 \\)", "No, because 6 is not equal to 8", "Cannot be determined", "No, because 10 is too large"], ans: "Yes, because \\( 6^2 + 8^2 = 10^2 \\)", exp: "Check: \\( 36 + 64 = 100 \\), and \\( 10^2 = 100 \\). By the converse of the Pythagorean theorem, it is a right triangle.", exp_trans: "Cek: \\( 36 + 64 = 100 \\). Menurut konvers teorema, ini segitiga siku-siku." },
+            "g-task10": { type: "complex", q: "Which of the following statements about Pythagorean triples are true? <i class='fas fa-check-double text-blue-500 ml-2'></i>", q_trans: "Pernyataan mana tentang tripel Pythagoras yang benar?", opts: ["They consist of integers", "They always include an even number", "They can be scaled by any positive integer", "They only exist for right triangles"], ans: [0, 1, 2, 3], exp: "1. B, must be integers. 2. B, in primitive triples, one leg is always even. 3. B, scaling property. 4. B, derived from Pythagorean theorem.", exp_trans: "1. B. 2. B. 3. B. 4. B." },
+
+            // INDEPENDENT PRACTICE
+            "ind-task1": { type: "single", q: "A rectangle has a length of 8 cm and a width of 15 cm. What is the length of its diagonal? <i class='fas fa-vector-square text-green-500 ml-2'></i>", q_trans: "Persegi panjang panjang 8 cm dan lebar 15 cm. Berapa panjang diagonalnya?", opts: ["\\( 17 \\text{ cm} \\)", "\\( 23 \\text{ cm} \\)", "\\( 12 \\text{ cm} \\)", "\\( 20 \\text{ cm} \\)", "\\( 22 \\text{ cm} \\)"], ans: "\\( 17 \\text{ cm} \\)", exp: "The diagonal is the hypotenuse of a right triangle with legs 8 and 15. This is the (8, 15, 17) triple.", exp_trans: "Diagonal adalah sisi miring segitiga siku-siku dengan sisi 8 dan 15. Ini tripel (8, 15, 17)." },
+            "ind-task2": { type: "fill", q: "A builder uses the 3-4-5 method. If he marks 12 feet on one wall, how far should he mark on the adjacent wall to get a 15-foot diagonal? <i class='fas fa-hammer text-green-500 ml-2'></i>", q_trans: "Tukang pakai metode 3-4-5. Jika ia menandai 12 kaki di satu dinding, berapa jauh ia menandai di dinding yang berdekatan untuk mendapat diagonal 15 kaki?", ans: "16", exp: "15 is 5 times 3. So the legs must be 5 times 3 and 4. \\( 3 \\times 4 = 12 \\) (given). The other leg is \\( 4 \\times 4 = 16 \\).", exp_trans: "15 adalah 5 kali 3. Jadi sisi harus 5 kali 3 dan 4. Sisi lain \\( 4 \\times 4 = 16 \\)." },
+            "ind-task3": { type: "tf_table", q: "Analyze diagonals in rectangles. <i class='fas fa-list-ul text-green-500 ml-2'></i>", q_trans: "Analisis diagonal pada persegi panjang.", opts: ["The diagonal splits the rectangle into two right triangles", "Length and width act as legs", "Diagonal = \\( \\sqrt{l^2 + w^2} \\)", "If length=20, width=21, diagonal=29"], ans: ["B", "B", "B", "B"], exp: "1. B, creates 90° corners. 2. B, they are perpendicular. 3. B, Pythagorean theorem. 4. B, matches (20,21,29) triple.", exp_trans: "1. B. 2. B. 3. B. 4. B." },
+            "ind-task4": { type: "single", q: "An isosceles right triangle has a hypotenuse of \\( 7\\sqrt{2} \\). What is the length of a leg? <i class='fas fa-chevron-up text-green-500 ml-2'></i>", q_trans: "Segitiga siku-siku sama kaki memiliki sisi miring \\( 7\\sqrt{2} \\). Berapa panjang satu sisi siku-sikunya?", opts: ["\\( 7 \\)", "\\( 14 \\)", "\\( 7\\sqrt{2} \\)", "\\( 49 \\)", "\\( 3.5 \\)"], ans: "\\( 7 \\)", exp: "For isosceles right triangles, hypotenuse \\( c = a\\sqrt{2} \\). So if \\( c = 7\\sqrt{2} \\), then \\( a = 7 \\).", exp_trans: "Untuk segitiga siku-siku sama kaki, \\( c = a\\sqrt{2} \\). Jadi jika \\( c = 7\\sqrt{2} \\), maka \\( a = 7 \\)." },
+            "ind-task5": { type: "complex", q: "Which of the following sets form a right triangle? <i class='fas fa-check-double text-green-500 ml-2'></i>", q_trans: "Manakah himpunan berikut yang membentuk segitiga siku-siku?", opts: ["\\( (9, 40, 41) \\)", "\\( (11, 60, 61) \\)", "\\( (12, 35, 37) \\)", "\\( (4, 5, 6) \\)"], ans: [0, 1, 2], exp: "1. B, \\( 81+1600=1681 \\). 2. B, \\( 121+3600=3721 \\). 3. B, \\( 144+1225=1369 \\). 4. S, \\( 16+25=41 \\neq 36 \\).", exp_trans: "1. B. 2. B. 3. B. 4. S." },
+            "ind-task6": { type: "fill", q: "If you scale the (8, 15, 17) triple by 3, what is the new hypotenuse? <i class='fas fa-expand-arrows-alt text-green-500 ml-2'></i>", q_trans: "Jika tripel (8, 15, 17) dikali 3, berapa sisi miring barunya?", ans: "51", exp: "Scaling by 3 means multiplying all numbers by 3. New hypotenuse = \\( 17 \\times 3 = 51 \\).", exp_trans: "Mengali 3 berarti mengalikan semua angka dengan 3. Sisi miring baru = 51." },
+            "ind-task7": { type: "single", q: "A ship sails 15 km North and 8 km East. What is the direct distance? <i class='fas fa-ship text-green-500 ml-2'></i>", q_trans: "Kapal berlayar 15 km Utara dan 8 km Timur. Berapa jarak langsungnya?", opts: ["\\( 12 \\text{ km} \\)", "\\( 17 \\text{ km} \\)", "\\( 23 \\text{ km} \\)", "\\( 20 \\text{ km} \\)", "\\( 7 \\text{ km} \\)"], ans: "\\( 17 \\text{ km} \\)", exp: "Legs are 15 and 8. This is the (8, 15, 17) triple. Hypotenuse is 17.", exp_trans: "Sisi 15 dan 8. Ini tripel (8, 15, 17). Sisi miring 17." },
+            "ind-task8": { type: "tf_table", q: "Word problem setup: A 25 m wire reaches 24 m up a pole. Base distance? <i class='fas fa-clipboard-list text-green-500 ml-2'></i>", q_trans: "Setup soal: Kabel 25 m mencapai 24 m di tiang. Jarak dasar?", opts: ["Hypotenuse is 25", "One leg is 24", "Use \\( b = \\sqrt{25^2 - 24^2} \\)", "Base distance is 7 m"], ans: ["B", "B", "B", "B"], exp: "1. B, wire is hypotenuse. 2. B, height is leg. 3. B, correct formula. 4. B, \\( \\sqrt{625-576} = \\sqrt{49} = 7 \\).", exp_trans: "1. B. 2. B. 3. B. 4. B." },
+            "ind-task9": { type: "single", q: "Verify if (9, 40, 41) is a Pythagorean triple. <i class='fas fa-check-circle text-green-500 ml-2'></i>", q_trans: "Verifikasi apakah (9, 40, 41) tripel Pythagoras.", opts: ["Yes, \\( 9^2 + 40^2 = 41^2 \\)", "Yes, \\( 9 + 40 = 49 \\approx 41 \\)", "No, 41 is a prime number", "No, 9 is not even", "Cannot be calculated"], ans: "Yes, \\( 9^2 + 40^2 = 41^2 \\)", exp: "\\( 9^2 = 81 \\). \\( 40^2 = 1600 \\). \\( 81 + 1600 = 1681 \\). \\( 41^2 = 1681 \\). They match, so it is a valid triple.", exp_trans: "Keduanya 1681. Cocok, jadi tripel valid." },
+            "ind-task10": { type: "complex", q: "Select the true statements about primitive triples. <i class='fas fa-check-double text-green-500 ml-2'></i>", q_trans: "Pilih pernyataan benar tentang tripel primitif.", opts: ["They have no common factors other than 1", "The hypotenuse is always odd", "One leg is always even", "They cannot be generated by Euclid's formula"], ans: [0, 1, 2], exp: "1. B, definition of primitive. 2. B, hypotenuse is always odd in primitive triples. 3. B, exactly one leg is even. 4. S, Euclid's formula generates them if m,n are coprime and one is odd.", exp_trans: "1. B. 2. B. 3. B. 4. S." }
+        });
+		
+        // ====== MATH QUESTIONS DATA (PART 2: TASK 1 - TASK 5) ======
+        Object.assign(questions, {
+            // TASK 1: Basic recognition and computation of Triples
+            "t1-task1": { type: "single", q: "Which of the following is a primitive Pythagorean triple? <i class='fas fa-star text-orange-500 ml-2'></i>", q_trans: "Manakah dari berikut ini yang merupakan tripel Pythagoras primitif?", opts: ["\\( (6, 8, 10) \\)", "\\( (9, 12, 15) \\)", "\\( (8, 15, 17) \\)", "\\( (12, 16, 20) \\)", "\\( (15, 20, 25) \\)"], ans: "\\( (8, 15, 17) \\)", exp: "A primitive triple has no common factors other than 1. (6,8,10), (9,12,15), (12,16,20), and (15,20,25) are all multiples of (3,4,5). (8,15,17) is primitive.", exp_trans: "Tripel primitif tidak punya faktor persekutuan selain 1. (8,15,17) adalah primitif, yang lain adalah kelipatan (3,4,5)." },
+            "t1-task2": { type: "fill", q: "In a right triangle, the legs are 20 cm and 21 cm. What is the exact length of the hypotenuse? <i class='fas fa-ruler text-orange-500 ml-2'></i>", q_trans: "Pada segitiga siku-siku, sisi siku-sikunya 20 cm dan 21 cm. Berapa panjang pasti sisi miringnya?", ans: "29", exp: "This is the primitive triple (20, 21, 29). \\( \\sqrt{20^2 + 21^2} = \\sqrt{400 + 441} = \\sqrt{841} = 29 \\).", exp_trans: "Ini adalah tripel primitif (20, 21, 29)." },
+            "t1-task3": { type: "tf_table", q: "Analyze the properties of the (3, 4, 5) triple. <i class='fas fa-list-ul text-orange-500 ml-2'></i>", q_trans: "Analisis sifat-sifat tripel (3, 4, 5).", opts: ["It is a primitive triple", "The hypotenuse is 5", "If scaled by 2, it becomes (6, 8, 10)", "The legs are 3 and 5"], ans: ["B", "B", "B", "S"], exp: "1. B, no common factors. 2. B, 5 is the largest. 3. B, multiplying by 2 works. 4. S, the legs are 3 and 4, the hypotenuse is 5.", exp_trans: "1. B. 2. B. 3. B. 4. S, sisi siku-siku 3 dan 4, sisi miring 5." },
+            "t1-task4": { type: "single", q: "A 10 m ladder leans against a wall. The base is 6 m from the wall. How high does it reach? <i class='fas fa-arrows-up-to-line text-orange-500 ml-2'></i>", q_trans: "Tangga 10 m disandarkan ke dinding. Bawahnya 6 m dari dinding. Berapa tingginya?", opts: ["\\( 6 \\text{ m} \\)", "\\( 8 \\text{ m} \\)", "\\( 10 \\text{ m} \\)", "\\( 12 \\text{ m} \\)", "\\( 14 \\text{ m} \\)"], ans: "\\( 8 \\text{ m} \\)", exp: "Ladder is hypotenuse (10), base is leg (6). Using (6, 8, 10) which is 2 times (3, 4, 5). Height is 8 m.", exp_trans: "Tangga sisi miring (10), bawah sisi (6). Pakai (6, 8, 10). Tingginya 8 m." },
+            "t1-task5": { type: "complex", q: "Which of the following sets of numbers form a right triangle? <i class='fas fa-check-double text-orange-500 ml-2'></i>", q_trans: "Manakah himpunan bilangan berikut yang membentuk segitiga siku-siku?", opts: ["\\( (5, 12, 13) \\)", "\\( (7, 24, 25) \\)", "\\( (8, 15, 17) \\)", "\\( (9, 10, 11) \\)"], ans: [0, 1, 2], exp: "1. B, \\( 25+144=169 \\). 2. B, \\( 49+576=625 \\). 3. B, \\( 64+225=289 \\). 4. S, \\( 81+100=181 \\neq 121 \\).", exp_trans: "1. B. 2. B. 3. B. 4. S." },
+            "t1-task6": { type: "fill", q: "A rectangle has a width of 16 cm and a length of 12 cm. Calculate the diagonal. <i class='fas fa-vector-square text-orange-500 ml-2'></i>", q_trans: "Persegi panjang lebar 16 cm dan panjang 12 cm. Hitung diagonalnya.", ans: "20", exp: "Diagonal forms hypotenuse. (12, 16, 20) is 4 times (3, 4, 5). Diagonal = 20 cm.", exp_trans: "Diagonal adalah sisi miring. (12, 16, 20) adalah 4 kali (3, 4, 5)." },
+            "t1-task7": { type: "single", q: "A ship sails 15 km North and 8 km East. What is the direct distance from the start? <i class='fas fa-ship text-orange-500 ml-2'></i>", q_trans: "Kapal berlayar 15 km Utara dan 8 km Timur. Berapa jarak langsung dari awal?", opts: ["\\( 12 \\text{ km} \\)", "\\( 17 \\text{ km} \\)", "\\( 23 \\text{ km} \\)", "\\( 20 \\text{ km} \\)", "\\( 7 \\text{ km} \\)"], ans: "\\( 17 \\text{ km} \\)", exp: "Legs are 15 and 8. This is the (8, 15, 17) triple. Direct distance is 17 km.", exp_trans: "Sisi 15 dan 8. Ini tripel (8, 15, 17). Jarak langsung 17 km." },
+            "t1-task8": { type: "tf_table", q: "Evaluate Euclid's formula for generating triples with \\( m=2, n=1 \\). <i class='fas fa-clipboard-check text-orange-500 ml-2'></i>", q_trans: "Evaluasi rumus Euclid untuk membuat tripel dengan \\( m=2, n=1 \\).", opts: ["\\( a = m^2 - n^2 = 3 \\)", "\\( b = 2mn = 4 \\)", "\\( c = m^2 + n^2 = 5 \\)", "The generated triple is (3, 4, 5)"], ans: ["B", "B", "B", "B"], exp: "All calculations are correct. m=2, n=1 yields the (3, 4, 5) primitive triple.", exp_trans: "Semua perhitungan benar. Menghasilkan tripel (3, 4, 5)." },
+            "t1-task9": { type: "single", q: "An isosceles right triangle has legs of 7 cm. What is the hypotenuse? <i class='fas fa-shapes text-orange-500 ml-2'></i>", q_trans: "Segitiga siku-siku sama kaki memiliki sisi 7 cm. Berapa sisi miringnya?", opts: ["\\( 7 \\text{ cm} \\)", "\\( 14 \\text{ cm} \\)", "\\( 7\\sqrt{2} \\text{ cm} \\)", "\\( 49 \\text{ cm} \\)", "\\( 9 \\text{ cm} \\)"], ans: "\\( 7\\sqrt{2} \\text{ cm} \\)", exp: "For isosceles right triangles, \\( c = a\\sqrt{2} \\). So \\( c = 7\\sqrt{2} \\). Note: this is NOT a Pythagorean triple because it contains an irrational number.", exp_trans: "Untuk segitiga sama kaki, \\( c = a\\sqrt{2} \\). Ini BUKAN tripel Pythagoras karena irasional." },
+            "t1-task10": { type: "complex", q: "Select all true statements about scaling Pythagorean triples. <i class='fas fa-check-circle text-orange-500 ml-2'></i>", q_trans: "Pilih semua pernyataan benar tentang mengali tripel Pythagoras.", opts: ["Scaling preserves the right angle", "Scaling creates a non-primitive triple", "Scaling changes the ratio of the sides", "If you scale by 3, the hypotenuse triples"], ans: [0, 1, 3], exp: "1. B, still a right triangle. 2. B, now has a common factor. 3. S, the ratio remains constant (similar triangles). 4. B, all sides scale equally.", exp_trans: "1. B. 2. B. 3. S, rasio tetap. 4. B." },
+
+            // TASK 2: Application in word problems
+            "t2-task1": { type: "single", q: "A wire reaches 24 m up a pole. The base of the wire is 7 m from the pole. How long is the wire? <i class='fas fa-broadcast-tower text-orange-500 ml-2'></i>", q_trans: "Kabel mencapai 24 m di tiang. Bawah kabel 7 m dari tiang. Berapa panjang kabel?", opts: ["\\( 25 \\text{ m} \\)", "\\( 31 \\text{ m} \\)", "\\( 17 \\text{ m} \\)", "\\( 26 \\text{ m} \\)", "\\( 576 \\text{ m} \\)"], ans: "\\( 25 \\text{ m} \\)", exp: "Wire is hypotenuse. Legs are 24 and 7. This is the (7, 24, 25) triple. Wire length is 25 m.", exp_trans: "Kabel sisi miring. Sisi 24 dan 7. Tripel (7, 24, 25). Panjang kabel 25 m." },
+            "t2-task2": { type: "fill", q: "A rectangle has length 20 and width 21. What is the exact diagonal? <i class='fas fa-vector-square text-orange-500 ml-2'></i>", q_trans: "Persegi panjang panjang 20 dan lebar 21. Berapa diagonal pastinya?", ans: "29", exp: "Diagonal forms hypotenuse of (20, 21, 29) primitive triple.", exp_trans: "Diagonal membentuk sisi miring tripel primitif (20, 21, 29)." },
+            "t2-task3": { type: "tf_table", q: "Verify if (9, 40, 41) is a Pythagorean triple. <i class='fas fa-list-ol text-orange-500 ml-2'></i>", q_trans: "Verifikasi apakah (9, 40, 41) tripel Pythagoras.", opts: ["Calculate \\( 9^2 + 40^2 \\)", "\\( 81 + 1600 = 1681 \\)", "Calculate \\( 41^2 = 1681 \\)", "It forms a right triangle"], ans: ["B", "B", "B", "B"], exp: "All steps are correct. Since \\( 9^2 + 40^2 = 41^2 \\), it is a valid triple and forms a right triangle.", exp_trans: "Semua langkah benar. Ini tripel valid dan membentuk segitiga siku-siku." },
+            "t2-task4": { type: "single", q: "A builder uses the 3-4-5 method. If he marks 15 feet on one wall, how far on the adjacent wall to ensure a 90-degree corner? <i class='fas fa-hammer text-orange-500 ml-2'></i>", q_trans: "Tukang pakai metode 3-4-5. Jika menandai 15 kaki di satu dinding, berapa jauh di dinding berdekatan untuk sudut 90 derajat?", opts: ["\\( 16 \\text{ ft} \\)", "\\( 18 \\text{ ft} \\)", "\\( 20 \\text{ ft} \\)", "\\( 25 \\text{ ft} \\)", "\\( 12 \\text{ ft} \\)"], ans: "\\( 20 \\text{ ft} \\)", exp: "He scaled the 3 side to 15 (multiplied by 5). So the 4 side must be \\( 4 \\times 5 = 20 \\). The diagonal would be 25.", exp_trans: "Ia mengali sisi 3 menjadi 15 (dikali 5). Jadi sisi 4 harus menjadi 20." },
+            "t2-task5": { type: "complex", q: "Which of the following describe valid Pythagorean triples? <i class='fas fa-check-double text-orange-500 ml-2'></i>", q_trans: "Manakah yang mendeskripsikan tripel Pythagoras yang valid?", opts: ["\\( (12, 35, 37) \\)", "\\( (11, 60, 61) \\)", "\\( (13, 84, 85) \\)", "\\( (14, 25, 30) \\)"], ans: [0, 1, 2], exp: "1. B, \\( 144+1225=1369 \\). 2. B, \\( 121+3600=3721 \\). 3. B, \\( 169+7056=7225 \\). 4. S, \\( 196+625=821 \\neq 900 \\).", exp_trans: "1. B. 2. B. 3. B. 4. S." },
+            "t2-task6": { type: "fill", q: "A ship sails 20 km East, then 15 km North. What is the direct distance back? <i class='fas fa-map-marked-alt text-orange-500 ml-2'></i>", q_trans: "Kapal berlayar 20 km Timur, lalu 15 km Utara. Berapa jarak langsung kembali?", ans: "25", exp: "Legs are 20 and 15. This is (3,4,5) scaled by 5. Hypotenuse is 25 km.", exp_trans: "Sisi 20 dan 15. Tripel (3,4,5) dikali 5. Sisi miring 25 km." },
+            "t2-task7": { type: "single", q: "A 50-inch TV has a width of 30 inches. What is the height? <i class='fas fa-tv text-orange-500 ml-2'></i>", q_trans: "TV 50 inci memiliki lebar 30 inci. Berapa tingginya?", opts: ["\\( 30 \\text{ in} \\)", "\\( 40 \\text{ in} \\)", "\\( 35 \\text{ in} \\)", "\\( 45 \\text{ in} \\)", "\\( 50 \\text{ in} \\)"], ans: "\\( 40 \\text{ in} \\)", exp: "Diagonal is 50, width is 30. This is (3,4,5) scaled by 10. Missing leg is \\( 4 \\times 10 = 40 \\).", exp_trans: "Diagonal 50, lebar 30. Tripel (3,4,5) dikali 10. Sisi yang hilang 40." },
+            "t2-task8": { type: "tf_table", q: "Find the hypotenuse of a right triangle with legs 9 and 12. <i class='fas fa-clipboard-list text-orange-500 ml-2'></i>", q_trans: "Cari sisi miring segitiga siku-siku dengan sisi 9 dan 12.", opts: ["Recognize as multiple of (3, 4, 5)", "Scale factor is 3", "Hypotenuse is \\( 5 \\times 3 \\)", "Hypotenuse is 15"], ans: ["B", "B", "B", "B"], exp: "All steps are correct. 9 and 12 are 3 times 3 and 4, so hypotenuse is 3 times 5, which is 15.", exp_trans: "Semua benar. Sisi miring 15." },
+            "t2-task9": { type: "single", q: "A 13 m ladder reaches 12 m up a wall. How far is the base from the wall? <i class='fas fa-arrows-up-to-line text-orange-500 ml-2'></i>", q_trans: "Tangga 13 m mencapai 12 m di dinding. Berapa jauh bawahnya dari dinding?", opts: ["\\( 1 \\text{ m} \\)", "\\( 5 \\text{ m} \\)", "\\( 6 \\text{ m} \\)", "\\( 7 \\text{ m} \\)", "\\( 10 \\text{ m} \\)"], ans: "\\( 5 \\text{ m} \\)", exp: "Ladder is 13 (hypotenuse), height is 12 (leg). This is the (5, 12, 13) triple. Base is 5 m.", exp_trans: "Tangga 13, tinggi 12. Tripel (5, 12, 13). Bawahnya 5 m." },
+            "t2-task10": { type: "complex", q: "Which formulas correctly find the hypotenuse? <i class='fas fa-check-circle text-orange-500 ml-2'></i>", q_trans: "Rumus mana yang benar mencari sisi miring?", opts: ["\\( c = \\sqrt{a^2 + b^2} \\)", "\\( a^2 + b^2 = c^2 \\)", "\\( c = a + b \\)", "\\( c = \\sqrt{b^2 - a^2} \\)"], ans: [0, 1], exp: "1. B, solved for c. 2. B, standard form. 3. S, sides don't add directly. 4. S, this formula finds a missing leg, not hypotenuse.", exp_trans: "1. B. 2. B. 3. S. 4. S." },
+
+            // TASK 3: Scaling and Non-Primitive Triples
+            "t3-task1": { type: "single", q: "If you multiply the (5, 12, 13) triple by 4, what is the new hypotenuse? <i class='fas fa-expand-arrows-alt text-orange-500 ml-2'></i>", q_trans: "Jika tripel (5, 12, 13) dikali 4, berapa sisi miring barunya?", opts: ["\\( 17 \\)", "\\( 26 \\)", "\\( 39 \\)", "\\( 52 \\)", "\\( 65 \\)"], ans: "\\( 52 \\)", exp: "Multiply the hypotenuse 13 by 4. \\( 13 \\times 4 = 52 \\).", exp_trans: "Kalikan sisi miring 13 dengan 4. Hasilnya 52." },
+            "t3-task2": { type: "fill", q: "A right triangle has legs of 30 and 40. What is the hypotenuse? <i class='fas fa-ruler text-orange-500 ml-2'></i>", q_trans: "Segitiga siku-siku memiliki sisi 30 dan 40. Berapa sisi miringnya?", ans: "50", exp: "This is (3, 4, 5) scaled by 10. Hypotenuse is \\( 5 \\times 10 = 50 \\).", exp_trans: "Ini (3, 4, 5) dikali 10. Sisi miring 50." },
+            "t3-task3": { type: "tf_table", q: "Analyze the triple (9, 12, 15). <i class='fas fa-list-ul text-orange-500 ml-2'></i>", q_trans: "Analisis tripel (9, 12, 15).", opts: ["It is a primitive triple", "It is a multiple of (3, 4, 5)", "The scale factor is 3", "It forms a right triangle"], ans: ["S", "B", "B", "B"], exp: "1. S, it has a common factor of 3. 2. B, divided by 3 gives (3, 4, 5). 3. B, scale factor is 3. 4. B, satisfies Pythagorean theorem.", exp_trans: "1. S. 2. B. 3. B. 4. B." },
+            "t3-task4": { type: "single", q: "If you scale the (8, 15, 17) triple by 2, what is the perimeter of the new triangle? <i class='fas fa-draw-polygon text-orange-500 ml-2'></i>", q_trans: "Jika tripel (8, 15, 17) dikali 2, berapa keliling segitiga barunya?", opts: ["\\( 40 \\)", "\\( 60 \\)", "\\( 80 \\)", "\\( 100 \\)", "\\( 120 \\)"], ans: "\\( 80 \\)", exp: "Scaled sides are 16, 30, 34. Perimeter = \\( 16 + 30 + 34 = 80 \\).", exp_trans: "Sisi baru 16, 30, 34. Keliling = 80." },
+            "t3-task5": { type: "complex", q: "Which of the following are non-primitive (scaled) triples? <i class='fas fa-check-double text-orange-500 ml-2'></i>", q_trans: "Manakah berikut ini tripel non-primitif (hasil skala)?", opts: ["\\( (10, 24, 26) \\)", "\\( (15, 36, 39) \\)", "\\( (20, 48, 52) \\)", "\\( (7, 24, 25) \\)"], ans: [0, 1, 2], exp: "1. B, 2 times (5,12,13). 2. B, 3 times (5,12,13). 3. B, 4 times (5,12,13). 4. S, (7,24,25) is primitive.", exp_trans: "1. B. 2. B. 3. B. 4. S, primitif." },
+            "t3-task6": { type: "fill", q: "A rectangle has a width of 20 and a diagonal of 52. What is the length? <i class='fas fa-vector-square text-orange-500 ml-2'></i>", q_trans: "Persegi panjang lebar 20 dan diagonal 52. Berapa panjangnya?", ans: "48", exp: "This is the (20, 48, 52) triple, which is 4 times (5, 12, 13). So length is 48.", exp_trans: "Ini tripel (20, 48, 52), 4 kali (5, 12, 13). Panjangnya 48." },
+            "t3-task7": { type: "single", q: "A ship sails 48 km North and 20 km East. What is the direct distance? <i class='fas fa-ship text-orange-500 ml-2'></i>", q_trans: "Kapal berlayar 48 km Utara dan 20 km Timur. Berapa jarak langsungnya?", opts: ["\\( 52 \\text{ km} \\)", "\\( 68 \\text{ km} \\)", "\\( 28 \\text{ km} \\)", "\\( 50 \\text{ km} \\)", "\\( 60 \\text{ km} \\)"], ans: "\\( 52 \\text{ km} \\)", exp: "Legs are 48 and 20. This is 4 times (12, 5, 13) -> (20, 48, 52). Distance is 52 km.", exp_trans: "Sisi 48 dan 20. Ini 4 kali (5, 12, 13). Jarak 52 km." },
+            "t3-task8": { type: "tf_table", q: "What happens when you divide a non-primitive triple by its greatest common divisor? <i class='fas fa-clipboard-check text-orange-500 ml-2'></i>", q_trans: "Apa yang terjadi jika tripel non-primitif dibagi FPB-nya?", opts: ["You get a primitive triple", "The angles change", "The sides remain proportional", "It no longer forms a right triangle"], ans: ["B", "S", "B", "S"], exp: "1. B, yields the base primitive triple. 2. S, angles remain identical. 3. B, still similar triangles. 4. S, still satisfies Pythagorean theorem.", exp_trans: "1. B. 2. S. 3. B. 4. S." },
+            "t3-task9": { type: "single", q: "A TV screen is 48 inches wide and 36 inches high. What is the diagonal size? <i class='fas fa-tv text-orange-500 ml-2'></i>", q_trans: "Layar TV lebar 48 inci dan tinggi 36 inci. Berapa ukuran diagonalnya?", opts: ["\\( 50 \\text{ in} \\)", "\\( 60 \\text{ in} \\)", "\\( 65 \\text{ in} \\)", "\\( 70 \\text{ in} \\)", "\\( 84 \\text{ in} \\)"], ans: "\\( 60 \\text{ in} \\)", exp: "This is 12 times (3, 4, 5) -> (36, 48, 60). Diagonal is 60 inches.", exp_trans: "Ini 12 kali (3, 4, 5). Diagonal 60 inci." },
+            "t3-task10": { type: "complex", q: "Which of the following represent valid steps to verify a scaled triple? <i class='fas fa-check-circle text-orange-500 ml-2'></i>", q_trans: "Manakah langkah valid untuk verifikasi tripel hasil skala?", opts: ["Divide by the common factor to get a primitive triple", "Check if \\( a^2 + b^2 = c^2 \\) still holds", "Verify that all sides were multiplied by the same factor", "Ensure the hypotenuse is an even number"], ans: [0, 1, 2], exp: "1. B, reduces to primitive. 2. B, mathematical proof. 3. B, definition of scaling. 4. S, hypotenuse can be odd (e.g., 15, 39).", exp_trans: "1. B. 2. B. 3. B. 4. S." },
+
+            // TASK 4: Advanced Word Problems & Spatial Visualization
+            "t4-task1": { type: "single", q: "Two ships leave port. Ship A sails 15 km North. Ship B sails 8 km East. How far apart are they? <i class='fas fa-ship text-orange-500 ml-2'></i>", q_trans: "Dua kapal meninggalkan pelabuhan. Kapal A berlayar 15 km Utara. Kapal B berlayar 8 km Timur. Seberapa jauh jarak mereka?", opts: ["\\( 12 \\text{ km} \\)", "\\( 17 \\text{ km} \\)", "\\( 23 \\text{ km} \\)", "\\( 20 \\text{ km} \\)", "\\( 7 \\text{ km} \\)"], ans: "\\( 17 \\text{ km} \\)", exp: "They form a right angle from the port. Legs are 15 and 8. Distance is hypotenuse of (8, 15, 17) = 17 km.", exp_trans: "Mereka membentuk sudut siku-siku. Sisi 15 dan 8. Jarak adalah sisi miring (8, 15, 17) = 17 km." },
+            "t4-task2": { type: "fill", q: "A rectangle has length 12 and diagonal 37. What is the width? <i class='fas fa-vector-square text-orange-500 ml-2'></i>", q_trans: "Persegi panjang panjang 12 dan diagonal 37. Berapa lebarnya?", ans: "35", exp: "Recognize the (12, 35, 37) primitive triple. Width is 35.", exp_trans: "Kenali tripel primitif (12, 35, 37). Lebar 35." },
+            "t4-task3": { type: "tf_table", q: "Evaluate properties of isosceles right triangles. <i class='fas fa-list-ol text-orange-500 ml-2'></i>", q_trans: "Evaluasi sifat segitiga siku-siku sama kaki.", opts: ["The legs are equal", "The hypotenuse is \\( a\\sqrt{2} \\)", "They are Pythagorean triples", "The angles are 45-45-90"], ans: ["B", "B", "S", "B"], exp: "1. B, definition of isosceles. 2. B, formula. 3. S, hypotenuse is irrational, so not a triple. 4. B, angle properties.", exp_trans: "1. B. 2. B. 3. S. 4. B." },
+            "t4-task4": { type: "single", q: "A park is rectangular, 24 m by 7 m. What is the distance walking diagonally across it? <i class='fas fa-tree text-orange-500 ml-2'></i>", q_trans: "Taman berbentuk persegi panjang, 24 m kali 7 m. Berapa jarak berjalan melintang?", opts: ["\\( 25 \\text{ m} \\)", "\\( 31 \\text{ m} \\)", "\\( 17 \\text{ m} \\)", "\\( 28 \\text{ m} \\)", "\\( 15 \\text{ m} \\)"], ans: "\\( 25 \\text{ m} \\)", exp: "Diagonal forms hypotenuse of (7, 24, 25). Distance is 25 m.", exp_trans: "Diagonal membentuk sisi miring (7, 24, 25). Jarak 25 m." },
+            "t4-task5": { type: "complex", q: "Which real-world scenarios correctly utilize the Pythagorean theorem? <i class='fas fa-check-double text-orange-500 ml-2'></i>", q_trans: "Skenario dunia nyata mana yang benar memakai teorema Pythagoras?", opts: ["Finding the diagonal of a rectangular field", "Finding the length of a shadow", "Finding the direct distance between two navigation points", "Finding the area of a circle"], ans: [0, 1, 2], exp: "1. B, rectangle forms right triangles. 2. B, pole and shadow form right triangle with sun ray. 3. B, N/S and E/W form right angles. 4. S, area of circle uses \\( \\pi r^2 \\).", exp_trans: "1. B. 2. B. 3. B. 4. S." },
+            "t4-task6": { type: "fill", q: "A 26 m ladder reaches 24 m up a wall. What is the distance from the base of the ladder to the wall? <i class='fas fa-arrows-up-to-line text-orange-500 ml-2'></i>", q_trans: "Tangga 26 m mencapai 24 m di dinding. Berapa jarak dari bawah tangga ke dinding?", ans: "10", exp: "Ladder is hypotenuse (26), height is leg (24). This is 2 times (5, 12, 13) -> (10, 24, 26). Base is 10 m.", exp_trans: "Tangga sisi miring (26), tinggi sisi (24). Ini 2 kali (5, 12, 13). Bawah 10 m." },
+            "t4-task7": { type: "single", q: "A 65-inch TV has a width of 52 inches. What is the height? <i class='fas fa-tv text-orange-500 ml-2'></i>", q_trans: "TV 65 inci memiliki lebar 52 inci. Berapa tingginya?", opts: ["\\( 26 \\text{ in} \\)", "\\( 39 \\text{ in} \\)", "\\( 45 \\text{ in} \\)", "\\( 48 \\text{ in} \\)", "\\( 33 \\text{ in} \\)"], ans: "\\( 39 \\text{ in} \\)", exp: "Diagonal is 65, width is 52. This is 13 times (3, 4, 5) -> (39, 52, 65). Height is 39 inches.", exp_trans: "Diagonal 65, lebar 52. Ini 13 kali (3, 4, 5). Tinggi 39 inci." },
+            "t4-task8": { type: "tf_table", q: "Analyze the right triangle with sides 15, 36, 39. <i class='fas fa-clipboard-list text-orange-500 ml-2'></i>", q_trans: "Analisis segitiga siku-siku dengan sisi 15, 36, 39.", opts: ["It is a primitive triple", "It is a scaled version of (5, 12, 13)", "The scale factor is 3", "The hypotenuse is 15"], ans: ["S", "B", "B", "S"], exp: "1. S, common factor of 3. 2. B, \\( 15/3=5, 36/3=12, 39/3=13 \\). 3. B, scale factor is 3. 4. S, hypotenuse is the largest side, which is 39.", exp_trans: "1. S. 2. B. 3. B. 4. S, sisi miring 39." },
+            "t4-task9": { type: "single", q: "A rope is attached to the top of a 24 m pole and to the ground 7 m away. How long is the rope? <i class='fas fa-broadcast-tower text-orange-500 ml-2'></i>", q_trans: "Tali dipasang di puncak tiang 24 m dan ke tanah 7 m jauhnya. Berapa panjang talinya?", opts: ["\\( 25 \\text{ m} \\)", "\\( 31 \\text{ m} \\)", "\\( 17 \\text{ m} \\)", "\\( 26 \\text{ m} \\)", "\\( 28 \\text{ m} \\)"], ans: "\\( 25 \\text{ m} \\)", exp: "Rope is hypotenuse. Legs are 24 and 7. This is the (7, 24, 25) triple. Rope is 25 m.", exp_trans: "Tali sisi miring. Sisi 24 dan 7. Tripel (7, 24, 25). Tali 25 m." },
+            "t4-task10": { type: "complex", q: "Which sets of numbers form a right triangle? <i class='fas fa-check-circle text-orange-500 ml-2'></i>", q_trans: "Himpunan bilangan mana yang membentuk segitiga siku-siku?", opts: ["\\( (20, 21, 29) \\)", "\\( (11, 60, 61) \\)", "\\( (13, 84, 85) \\)", "\\( (15, 20, 25) \\)"], ans: [0, 1, 2, 3], exp: "1. B, primitive. 2. B, primitive. 3. B, primitive. 4. B, scaled (3,4,5) by 5. All are valid Pythagorean triples.", exp_trans: "Semuanya valid." },
+
+            // TASK 5: Mastery and Challenge
+            "t5-task1": { type: "single", q: "Use Euclid's formula with \\( m=3 \\) and \\( n=2 \\). What is the generated triple? <i class='fas fa-infinity text-orange-500 ml-2'></i>", q_trans: "Gunakan rumus Euclid dengan \\( m=3 \\) dan \\( n=2 \\). Tripel apa yang dihasilkan?", opts: ["\\( (5, 12, 13) \\)", "\\( (7, 24, 25) \\)", "\\( (8, 15, 17) \\)", "\\( (9, 40, 41) \\)", "\\( (11, 60, 61) \\)"], ans: "\\( (5, 12, 13) \\)", exp: "\\( a = 3^2 - 2^2 = 9 - 4 = 5 \\). \\( b = 2(3)(2) = 12 \\). \\( c = 3^2 + 2^2 = 9 + 4 = 13 \\). Triple is (5, 12, 13).", exp_trans: "Tripel yang dihasilkan adalah (5, 12, 13)." },
+            "t5-task2": { type: "fill", q: "A right triangle has a leg of 20 and a hypotenuse of 29. Find the exact length of the other leg. <i class='fas fa-key text-orange-500 ml-2'></i>", q_trans: "Segitiga siku-siku memiliki sisi 20 dan sisi miring 29. Cari panjang pasti sisi lain.", ans: "21", exp: "Recognize the (20, 21, 29) primitive triple. Missing leg is 21.", exp_trans: "Kenali tripel (20, 21, 29). Sisi yang hilang 21." },
+            "t5-task3": { type: "tf_table", q: "Evaluate the conditions for Euclid's formula to generate a primitive triple. <i class='fas fa-clipboard-check text-orange-500 ml-2'></i>", q_trans: "Evaluasi syarat rumus Euclid untuk menghasilkan tripel primitif.", opts: ["\\( m \\) and \\( n \\) must be coprime", "\\( m \\) and \\( n \\) cannot both be odd", "\\( m \\) must be greater than \\( n \\)", "\\( m \\) and \\( n \\) must be even"], ans: ["B", "B", "B", "S"], exp: "1. B, no common factors. 2. B, one must be even, one odd. 3. B, to ensure positive side lengths. 4. S, if both are even, they aren't coprime.", exp_trans: "1. B. 2. B. 3. B. 4. S." },
+            "t5-task4": { type: "single", q: "A guy wire is attached to a 21 m pole and to the ground 20 m away. How long is the wire? <i class='fas fa-broadcast-tower text-orange-500 ml-2'></i>", q_trans: "Kabel penyangga dipasang di tiang 21 m dan ke tanah 20 m jauhnya. Berapa panjang kabel?", opts: ["\\( 25 \\text{ m} \\)", "\\( 28 \\text{ m} \\)", "\\( 29 \\text{ m} \\)", "\\( 30 \\text{ m} \\)", "\\( 41 \\text{ m} \\)"], ans: "\\( 29 \\text{ m} \\)", exp: "Wire is hypotenuse. Legs are 21 and 20. This is the (20, 21, 29) triple. Wire is 29 m.", exp_trans: "Kabel sisi miring. Sisi 21 dan 20. Tripel (20, 21, 29). Kabel 29 m." },
+            "t5-task5": { type: "complex", q: "Which of the following are primitive Pythagorean triples? <i class='fas fa-check-double text-orange-500 ml-2'></i>", q_trans: "Manakah berikut ini tripel Pythagoras primitif?", opts: ["\\( (16, 63, 65) \\)", "\\( (33, 56, 65) \\)", "\\( (48, 55, 73) \\)", "\\( (60, 63, 87) \\)"], ans: [0, 1, 2], exp: "1. B, primitive. 2. B, primitive. 3. B, primitive. 4. S, all divisible by 3 (20, 21, 29).", exp_trans: "1. B. 2. B. 3. B. 4. S, bisa dibagi 3." },
+            "t5-task6": { type: "fill", q: "A rectangle has a width of 60 and a diagonal of 61. What is the length? <i class='fas fa-vector-square text-orange-500 ml-2'></i>", q_trans: "Persegi panjang lebar 60 dan diagonal 61. Berapa panjangnya?", ans: "11", exp: "Recognize the (11, 60, 61) primitive triple. Length is 11.", exp_trans: "Kenali tripel (11, 60, 61). Panjang 11." },
+            "t5-task7": { type: "single", q: "Ship A sails 20 km North. Ship B sails 15 km East from the same port. How far apart are they? <i class='fas fa-ship text-orange-500 ml-2'></i>", q_trans: "Kapal A berlayar 20 km Utara. Kapal B berlayar 15 km Timur dari pelabuhan yang sama. Seberapa jauh jarak mereka?", opts: ["\\( 25 \\text{ km} \\)", "\\( 35 \\text{ km} \\)", "\\( 5 \\text{ km} \\)", "\\( 30 \\text{ km} \\)", "\\( 45 \\text{ km} \\)"], ans: "\\( 25 \\text{ km} \\)", exp: "Legs are 20 and 15. This is 5 times (4, 3, 5). Hypotenuse is \\( 5 \\times 5 = 25 \\) km.", exp_trans: "Sisi 20 dan 15. Ini 5 kali (3, 4, 5). Sisi miring 25 km." },
+            "t5-task8": { type: "tf_table", q: "Analyze the triple (12, 35, 37). <i class='fas fa-clipboard-list text-orange-500 ml-2'></i>", q_trans: "Analisis tripel (12, 35, 37).", opts: ["It is a primitive triple", "\\( 12^2 + 35^2 = 37^2 \\)", "The hypotenuse is 12", "It can be generated by Euclid's formula with \\( m=6, n=1 \\)"], ans: ["B", "B", "S", "B"], exp: "1. B, no common factors. 2. B, \\( 144+1225=1369 \\). 3. S, hypotenuse is the largest, 37. 4. B, \\( a=36-1=35, b=2(6)(1)=12, c=36+1=37 \\).", exp_trans: "1. B. 2. B. 3. S. 4. B." },
+            "t5-task9": { type: "single", q: "A right triangle has legs of 9 and 40. What is the area of the triangle? <i class='fas fa-draw-polygon text-orange-500 ml-2'></i>", q_trans: "Segitiga siku-siku memiliki sisi 9 dan 40. Berapa luas segitiganya?", opts: ["\\( 49 \\)", "\\( 98 \\)", "\\( 180 \\)", "\\( 360 \\)", "\\( 820 \\)"], ans: "\\( 180 \\)", exp: "First, note that (9, 40, 41) is a triple, but area doesn't need the hypotenuse. Area = \\( \\frac{1}{2} \\times 9 \\times 40 = 180 \\).", exp_trans: "Luas = \\( \\frac{1}{2} \\times 9 \\times 40 = 180 \\)." },
+            "t5-task10": { type: "complex", q: "Select all true statements combining geometry and algebra. <i class='fas fa-check-circle text-orange-500 ml-2'></i>", q_trans: "Pilih semua pernyataan benar yang menggabungkan geometri dan aljabar.", opts: ["If \\( a^2+b^2=c^2 \\), the triangle is right-angled", "Pythagorean triples only consist of integers", "The diagonal of a square with side \\( a \\) is \\( a\\sqrt{2} \\)", "The hypotenuse is always twice as long as the shortest leg"], ans: [0, 1, 2], exp: "1. B, converse of theorem. 2. B, definition of triples. 3. B, property of squares (isosceles right triangle). 4. S, only true for 30-60-90 triangles, not Pythagorean triples.", exp_trans: "1. B. 2. B. 3. B. 4. S." }
+        });
+        
+        // ====== JAVASCRIPT LOGIC ======
+        let currentPage = 1;
+        let currentTaskSection = ""; 
+
+        function openModal() {
+            const modal = document.getElementById('classRulesModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+        function closeModal() {
+            const modal = document.getElementById('classRulesModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            
+            document.querySelectorAll('.sidebar-item').forEach(item => {
+                item.classList.remove('bg-indigo-100', 'text-indigo-800', 'font-bold', 'bg-orange-100', 'text-orange-800');
+            });
+            const activeLink = document.querySelector(`.sidebar-item[data-section="${sectionId}"]`);
+            if (activeLink) {
+                if(sectionId.startsWith('task')) {
+                    activeLink.classList.add('bg-orange-100', 'text-orange-800', 'font-bold');
+                } else {
+                    activeLink.classList.add('bg-indigo-100', 'text-indigo-800', 'font-bold');
+                }
+            }
+            currentPage = 1;
+            currentTaskSection = sectionId;
+            
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            const firstPage = document.querySelector(`#${sectionId} .page[data-page="1"]`);
+            if(firstPage) firstPage.classList.add('active');
+            
+            renderMath();
+            renderPagination(sectionId, currentPage);
+        }
+
+        function changePage(direction) {
+            const activeSection = document.querySelector('.content-section.active');
+            if(!activeSection) return;
+            const pages = activeSection.querySelectorAll('.page');
+            let newPage = currentPage + direction;
+            if(newPage >= 1 && newPage <= pages.length) {
+                pages[currentPage - 1].classList.remove('active');
+                pages[newPage - 1].classList.add('active');
+                currentPage = newPage;
+                renderMath();
+                renderPagination(currentTaskSection, currentPage);
+                document.getElementById('contentScrollArea').scrollTo(0, 0);
+            }
+        }
+
+        function goToPage(pageNum) {
+            const activeSection = document.querySelector('.content-section.active');
+            if(!activeSection) return;
+            const pages = activeSection.querySelectorAll('.page');
+            if(pageNum >= 1 && pageNum <= pages.length) {
+                pages[currentPage - 1].classList.remove('active');
+                pages[pageNum - 1].classList.add('active');
+                currentPage = pageNum;
+                renderMath();
+                renderPagination(currentTaskSection, currentPage);
+                document.getElementById('contentScrollArea').scrollTo(0, 0);
+            }
+        }
+        function renderPagination(sectionId, pageNum) {
+            const activeSection = document.getElementById(sectionId);
+            if (!activeSection) return;
+            const pages = activeSection.querySelectorAll('.page');
+            const totalPages = pages.length;
+            let html = '';
+            const isMainTask = sectionId.startsWith('t');
+            const theoryPages = [1, 5, 9]; 
+            
+            html += `<button onclick="goToPage(${pageNum - 1})" class="px-3 py-1.5 rounded-md text-sm bg-gray-200 hover:bg-gray-300 text-gray-700 ${pageNum === 1 ? 'opacity-50 cursor-not-allowed' : ''}" ${pageNum === 1 ? 'disabled' : ''}><i class="fas fa-chevron-left"></i> Prev</button>`;
+            
+            for (let i = 1; i <= totalPages; i++) {
+                let btnColor = 'bg-gray-100 hover:bg-gray-200 text-gray-700';
+                if (!isMainTask && theoryPages.includes(i)) {
+                    btnColor = 'bg-indigo-100 hover:bg-indigo-200 text-indigo-800'; 
+                } else {
+                    btnColor = 'bg-orange-100 hover:bg-orange-200 text-orange-800'; 
+                }
+                if (i === pageNum) {
+                    if (!isMainTask && theoryPages.includes(i)) {
+                        btnColor = 'bg-indigo-600 text-white shadow-md'; 
+                    } else {
+                        btnColor = 'bg-orange-500 text-white shadow-md'; 
+                    }
+                }
+                html += `<button onclick="goToPage(${i})" class="w-9 h-9 rounded-md text-sm font-semibold transition-all ${btnColor}">${i}</button>`;
+            }
+            
+            html += `<button onclick="goToPage(${pageNum + 1})" class="px-3 py-1.5 rounded-md text-sm bg-gray-200 hover:bg-gray-300 text-gray-700 ${pageNum === totalPages ? 'opacity-50 cursor-not-allowed' : ''}" ${pageNum === totalPages ? 'disabled' : ''}>Next <i class="fas fa-chevron-right"></i></button>`;
+            document.getElementById('paginationBar').innerHTML = html;
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+        let studentAnswers = {};
+
+        function renderTasks() {
+            document.querySelectorAll('[data-task-id]').forEach(div => {
+                const taskId = div.getAttribute('data-task-id');
+                renderSingleTask(taskId, div);
+            });
+            renderMath();
+        }
+        
+        function renderSingleTask(taskId, div) {
+            const data = questions[taskId];
+            if(!data) return;
+
+            const isMainTask = taskId.startsWith('t');
+            const taskNum = isMainTask ? taskId[1] : 0;
+            let taskType = data.type || 'single';
+            
+            let questionHTML = `
+                <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-orange-500">
+                    <div class="flex justify-between items-center mb-4 no-print">
+                        <h2 class="text-xl font-bold text-orange-600">
+                            ${isMainTask ? `Task ${taskNum}` : 'Exercise'} 
+                            ${taskType === 'complex' ? '<span class="text-sm bg-purple-200 text-purple-800 px-2 py-1 rounded ml-2">PG Kompleks</span>' : ''}
+                            ${taskType === 'fill' ? '<span class="text-sm bg-blue-200 text-blue-800 px-2 py-1 rounded ml-2">Isian Singkat</span>' : ''}
+                            ${taskType === 'tf_table' ? '<span class="text-sm bg-teal-200 text-teal-800 px-2 py-1 rounded ml-2">Tabel Benar/Salah</span>' : ''}
+                            <span class="translation text-gray-500 text-sm">Exercise</span>
+                        </h2>
+                        <div class="flex gap-2">
+                            <button onclick="resetTask('${taskId}')" class="text-sm bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded">
+                                <i class="fas fa-redo"></i> Reset
+                            </button>
+                            ${isMainTask ? `<button onclick="printTask(${taskNum})" class="text-sm bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded">
+                                <i class="fas fa-print"></i> Print
+                            </button>` : ''}
+                        </div>
+                    </div>
+                    <div class="mb-6 flex gap-4 items-start">
+                        <div class="bg-orange-100 p-3 rounded-full shrink-0">
+                            <i class="fas fa-question text-orange-500 text-xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-lg">${data.q}</p>
+                            <p class="translation">${data.q_trans}</p>
+                        </div>
+                    </div>
+            `;
+
+            if (taskType === 'single') {
+                const shuffledOpts = shuffleArray([...data.opts]);
+                questionHTML += `
+                    <div id="options-${taskId}" class="space-y-3">
+                        ${shuffledOpts.map((opt, i) => `
+                            <button onclick="checkAnswer('${taskId}', this.getAttribute('data-opt'), 'single')" 
+                                    class="option-btn w-full text-left p-3 border-2 border-gray-200 rounded hover:border-orange-500 flex items-center gap-3" 
+                                    data-opt="${opt}">
+                                <span class="w-6 h-6 flex items-center justify-center bg-gray-100 rounded-full font-bold shrink-0">${String.fromCharCode(65 + i)}</span>
+                                <span class="katex">${opt}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+                `;
+            } else if (taskType === 'complex') {
+                questionHTML += `
+                    <p class="text-sm text-gray-600 mb-3">*Pilih semua pernyataan yang benar. <span class="translation">*Select all correct statements.</span></p>
+                    <div id="options-${taskId}" class="space-y-3">
+                        ${data.opts.map((opt, i) => `
+                            <label class="option-btn w-full text-left p-3 border-2 border-gray-200 rounded hover:border-purple-500 flex items-center gap-3 cursor-pointer">
+                                <input type="checkbox" class="w-5 h-5 complex-checkbox shrink-0" data-opt-index="${i}">
+                                <span class="katex">${opt}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                    <button onclick="checkAnswer('${taskId}', null, 'complex')" class="mt-4 bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded font-bold">Submit Jawaban</button>
+                `;
+            } else if (taskType === 'fill') {
+                questionHTML += `
+                    <div class="flex gap-2 items-center mt-2">
+                        <input type="text" id="input-${taskId}" class="border-2 border-gray-200 rounded p-2 w-32 text-lg text-center focus:border-orange-500 outline-none" placeholder="Jawaban...">
+                        <button onclick="checkAnswer('${taskId}', null, 'fill')" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded font-bold">Submit</button>
+                    </div>
+                `;
+            } else if (taskType === 'tf_table') {
+                questionHTML += `
+                    <p class="text-sm text-gray-600 mb-3">*Tentukan Benar atau Salah untuk setiap pernyataan. <span class="translation">*Determine True or False for each statement.</span></p>
+                    <div id="options-${taskId}" class="overflow-x-auto">
+                        <table class="w-full border-collapse border border-gray-300 text-sm">
+                            <thead>
+                                <tr class="bg-gray-100">
+                                    <th class="border border-gray-300 p-2 w-10">No.</th>
+                                    <th class="border border-gray-300 p-2 text-left">Pernyataan <span class="translation text-xs">Statement</span></th>
+                                    <th class="border border-gray-300 p-2 w-20">Benar <span class="translation text-xs block">True</span></th>
+                                    <th class="border border-gray-300 p-2 w-20">Salah <span class="translation text-xs block">False</span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${data.opts.map((opt, i) => `
+                                    <tr>
+                                        <td class="border border-gray-300 p-2 text-center font-bold">${i + 1}</td>
+                                        <td class="border border-gray-300 p-2"><span class="katex">${opt}</span></td>
+                                        <td class="border border-gray-300 p-2 text-center">
+                                            <input type="radio" name="tf-${taskId}-${i}" value="B" class="tf-radio w-5 h-5 cursor-pointer">
+                                        </td>
+                                        <td class="border border-gray-300 p-2 text-center">
+                                            <input type="radio" name="tf-${taskId}-${i}" value="S" class="tf-radio w-5 h-5 cursor-pointer">
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                    <button onclick="checkAnswer('${taskId}', null, 'tf_table')" class="mt-4 bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded font-bold">Submit Jawaban</button>
+                `;
+            }
+
+            questionHTML += `
+                    <div id="result-${taskId}" class="mt-4 hidden p-4 rounded"></div>
+
+                    <div class="mt-4 no-print">
+                        <button onclick="toggleCollapse('${taskId}')" id="collapse-btn-${taskId}" class="hidden text-blue-600 underline">
+                            Tampilkan Penjelasan <span class="translation text-gray-500 text-xs" style="display: inline-block; margin-left: 4px;">Show Explanation</span>
+                        </button>
+                        <div id="collapse-${taskId}" class="collapse-content w-full">
+                            <h3 class="font-bold text-blue-800">Penjelasan: <span class="translation text-gray-500 text-sm">Explanation:</span></h3>
+                            <p class="mt-2">${data.exp}</p>
+                            <p class="translation">${data.exp_trans}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            div.innerHTML = questionHTML;
+        }
+
+        function checkAnswer(taskId, selectedOpt, type) {
+            const data = questions[taskId];
+            const resultDiv = document.getElementById(`result-${taskId}`);
+            const collapseBtn = document.getElementById(`collapse-btn-${taskId}`);
+            let isCorrect = false;
+            let correctAnsText = '';
+
+            if (type === 'single') {
+                const buttons = document.querySelectorAll(`#options-${taskId} button`);
+                buttons.forEach(btn => {
+                    btn.disabled = true;
+                    btn.classList.add('opacity-70', 'cursor-not-allowed');
+                    if(btn.getAttribute('data-opt') === data.ans) {
+                        btn.classList.remove('border-gray-200', 'hover:border-orange-500');
+                        btn.classList.add('border-green-500', 'bg-green-50');
+                    } else if (btn.getAttribute('data-opt') === selectedOpt) {
+                        btn.classList.remove('border-gray-200', 'hover:border-orange-500');
+                        btn.classList.add('border-red-500', 'bg-red-50');
+                    }
+                });
+                isCorrect = (selectedOpt === data.ans);
+                correctAnsText = data.ans;
+                studentAnswers[taskId] = selectedOpt; 
+            } 
+            else if (type === 'complex') {
+                const checkboxes = document.querySelectorAll(`#options-${taskId} input[type="checkbox"]`);
+                let selectedAns = [];
+                checkboxes.forEach((cb, i) => {
+                    if (cb.checked) selectedAns.push(i);
+                    cb.disabled = true;
+                });
+                const correctAnsStr = [...data.ans].sort().join(',');
+                const selectedAnsStr = [...selectedAns].sort().join(',');
+                isCorrect = (correctAnsStr === selectedAnsStr);
+                
+                let correctComplexText = [];
+                data.ans.forEach(i => correctComplexText.push(data.opts[i]));
+                correctAnsText = correctComplexText.join(', ');
+
+                checkboxes.forEach((cb, i) => {
+                    if(data.ans.includes(i)) {
+                        cb.parentElement.classList.remove('border-gray-200', 'hover:border-purple-500');
+                        cb.parentElement.classList.add('border-green-500', 'bg-green-50');
+                    } else if (cb.checked) {
+                        cb.parentElement.classList.remove('border-gray-200', 'hover:border-purple-500');
+                        cb.parentElement.classList.add('border-red-500', 'bg-red-50');
+                    }
+                });
+                studentAnswers[taskId] = selectedAns;
+            } 
+            else if (type === 'fill') {
+                const inputField = document.getElementById(`input-${taskId}`);
+                let userVal = inputField.value.trim().replace(/\s/g, '').replace(',', '.').toLowerCase();
+                let correctAns = data.ans.toString().toLowerCase().replace(/\s/g, '');
+                inputField.disabled = true;
+                isCorrect = (userVal === correctAns);
+                if(!isCorrect) inputField.classList.add('border-red-500', 'bg-red-50');
+                else inputField.classList.add('border-green-500', 'bg-green-50');
+                correctAnsText = data.ans;
+                studentAnswers[taskId] = userVal;
+            }
+            else if (type === 'tf_table') {
+                const rows = document.querySelectorAll(`#options-${taskId} tbody tr`);
+                let userAns = [];
+                let allFilled = true;
+
+                rows.forEach((row, i) => {
+                    const radios = row.querySelectorAll('input[type="radio"]');
+                    let rowVal = null;
+                    radios.forEach(r => {
+                        r.disabled = true;
+                        if (r.checked) rowVal = r.value;
+                    });
+                    if (rowVal === null) allFilled = false;
+                    userAns.push(rowVal);
+                });
+
+                if (!allFilled) {
+                    alert("Harap isi semua pernyataan terlebih dahulu! / Please answer all statements first!");
+                    rows.forEach((row, i) => {
+                        let radios = row.querySelectorAll('input[type="radio"]');
+                        radios.forEach(r => r.disabled = false);
+                    });
+                    return;
+                }
+
+                let correctCount = 0;
+                let correctTFText = [];
+                rows.forEach((row, i) => {
+                    const userVal = userAns[i];
+                    const correctVal = data.ans[i];
+                    correctTFText.push(`${i+1}. ${correctVal}`);
+                    if (userVal === correctVal) {
+                        correctCount++;
+                        row.classList.add('bg-green-50');
+                    } else {
+                        row.classList.add('bg-red-50');
+                    }
+                });
+
+                isCorrect = (correctCount === data.ans.length);
+                correctAnsText = correctTFText.join(' | ');
+                studentAnswers[taskId] = userAns;
+            }
+
+            if(isCorrect) {
+                resultDiv.innerHTML = `<p class="text-green-600 font-bold"><i class="fas fa-check-circle"></i> Benar! <span class="translation text-gray-600 font-normal" style="display: inline-block; margin-left: 4px;">Correct!</span></p>`;
+                resultDiv.className = "mt-4 p-4 rounded bg-green-50 border border-green-200";
+            } else {
+                resultDiv.innerHTML = `<p class="text-red-600 font-bold"><i class="fas fa-times-circle"></i> Salah! Jawaban yang benar adalah: ${correctAnsText}. <span class="translation text-gray-600 font-normal" style="display: inline-block; margin-left: 4px;">Wrong! The correct answer is: ${correctAnsText}.</span></p>`;
+                resultDiv.className = "mt-4 p-4 rounded bg-red-50 border border-red-200";
+            }
+            resultDiv.classList.remove('hidden');
+            collapseBtn.classList.remove('hidden');
+            
+            const collapseContent = document.getElementById(`collapse-${taskId}`);
+            collapseContent.classList.add('open');
+            collapseBtn.innerHTML = 'Sembunyikan Penjelasan <span class="translation text-gray-500 text-xs" style="display: inline-block; margin-left: 4px;">Hide Explanation</span>';
+            
+            renderMath();
+        }
+
+        function resetTask(taskId) {
+            delete studentAnswers[taskId];
+            const taskDiv = document.querySelector(`[data-task-id="${taskId}"]`);
+            if(taskDiv) {
+                renderSingleTask(taskId, taskDiv);
+                renderMath();
+            }
+        }
+
+        function printTask(taskNum) {
+            let score = 0;
+            let tableBody = '';
+            for(let i=1; i<=10; i++) {
+                const taskId = `t${taskNum}-task${i}`;
+                const data = questions[taskId];
+                if(!data) continue;
+                
+                let studentAns = studentAnswers[taskId] || 'Tidak Dijawab';
+                let correctAns = data.ans;
+                
+                let sAnsStr = '';
+                let cAnsStr = '';
+                let isCorrect = false;
+                
+                if (data.type === 'complex') {
+                    let sArr = Array.isArray(studentAns) ? studentAns : [];
+                    let cArr = Array.isArray(correctAns) ? correctAns : [];
+                    sAnsStr = sArr.length > 0 ? sArr.slice().sort().map(idx => data.opts[idx]).join(', ') : 'Tidak Dijawab';
+                    cAnsStr = cArr.length > 0 ? cArr.slice().sort().map(idx => data.opts[idx]).join(', ') : 'Tidak Dijawab';
+                    isCorrect = (sArr.length > 0 && sArr.slice().sort().join(',') === cArr.slice().sort().join(','));
+                } else if (data.type === 'tf_table') {
+                    let sArr = Array.isArray(studentAns) ? studentAns : [];
+                    let cArr = Array.isArray(correctAns) ? correctAns : [];
+                    sAnsStr = sArr.length > 0 ? sArr.join(' | ') : 'Tidak Dijawab';
+                    cAnsStr = cArr.join(' | ');
+                    isCorrect = (sArr.length > 0 && sArr.join(',') === cArr.join(','));
+                } else {
+                    sAnsStr = studentAns || 'Tidak Dijawab';
+                    cAnsStr = correctAns;
+                    isCorrect = (sAnsStr === cAnsStr);
+                }
+                
+                let note = '❌';
+                if(isCorrect) { score++; note = '✔️'; }
+                
+                let qText = data.q.replace(/<[^>]+>/g, '');
+                if (data.type === 'tf_table') {
+                    qText += " | Statements: " + data.opts.map((opt, idx) => `${idx+1}. ${opt}`).join(" ; ");
+                }
+                
+                tableBody += `<tr>
+                    <td class="border border-black p-1 text-center">${i}</td>
+                    <td class="border border-black p-1">${qText}</td>
+                    <td class="border border-black p-1">${sAnsStr}</td>
+                    <td class="border border-black p-1">${cAnsStr}</td>
+                    <td class="border border-black p-1 text-center">${note}</td>
+                </tr>`;
+            }
+            document.getElementById('printTableBody').innerHTML = tableBody;
+            document.getElementById('printTaskNum').innerText = taskNum;
+            document.getElementById('printScore').innerText = score;
+            
+            renderMathInElement(document.getElementById('printArea'), {
+                delimiters: [
+                    {left: '\\(', right: '\\)', display: false},
+                    {left: '\\[', right: '\\]', display: true}
+                ]
+            });
+            window.print();
+        }
+
+        function toggleCollapse(taskId) {
+            const content = document.getElementById(`collapse-${taskId}`);
+            const btn = document.getElementById(`collapse-btn-${taskId}`);
+            content.classList.toggle('open');
+            if(content.classList.contains('open')) {
+                btn.innerHTML = 'Sembunyikan Penjelasan <span class="translation text-gray-500 text-xs" style="display: inline-block; margin-left: 4px;">Hide Explanation</span>';
+            } else {
+                btn.innerHTML = 'Tampilkan Penjelasan <span class="translation text-gray-500 text-xs">Show Explanation</span>';
+            }
+        }
+
+        function renderMath() {
+            if (typeof renderMathInElement === 'undefined') return;
+            
+            const target = document.querySelector('.content-section.active') || document.body;
+            try {
+                renderMathInElement(target, {
+                    delimiters: [
+                        {left: '\\(', right: '\\)', display: false},
+                        {left: '\\[', right: '\\]', display: true}
+                    ],
+                    throwOnError: false
+                });
+            } catch(e) {
+                console.error("KaTeX rendering error:", e);
+            }
+        }
+
+        window.onload = () => {
+            renderTasks();
+            setTimeout(() => {
+                showSection('warmup');
+                renderMath();
+            }, 100);
+        };
+    </script>
+</body>
+</html>
