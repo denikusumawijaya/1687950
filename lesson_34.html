@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Tutoring by Deni - Special Triangles</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Segoe UI', Arial, Helvetica, sans-serif; }
+        .prompt-box { max-width: 650px; margin-left: auto; margin-right: auto; display: flex; flex-direction: column; align-items: center; text-align: left; }
+        .prompt-box p { width: 100%; }
+        .prompt-box img { width: 100%; height: auto; max-width: 300px; display: block; margin-top: 0.5rem; }
+        .translation { font-style: italic; font-size: 0.85rem; color: #6b7280; margin-top: 0.25rem; display: block; }
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        .page { display: none; }
+        .page.active { display: block; }
+        .option-btn { transition: all 0.2s; }
+        .option-btn:hover { transform: translateX(5px); }
+        .collapse-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-in-out, padding 0.4s, border 0.4s, background 0.4s; padding: 0; border: 0; background: transparent; }
+        .collapse-content.open { max-height: 2000px; padding: 1.5rem; border: 1px solid #bfdbfe; background: #eff6ff; border-radius: 0.5rem; margin-top: 1rem; }
+        @media print {
+            body * { visibility: hidden; }
+            #printArea, #printArea * { visibility: visible; }
+            #printArea { display: block !important; position: absolute; left: 0; top: 0; width: 100%; padding: 10px; box-sizing: border-box; }
+            .no-print { display: none !important; }
+            #printArea table { table-layout: fixed; width: 100%; font-size: 9px; }
+            #printArea td, #printArea th { word-wrap: break-word; padding: 2px !important; }
+            @page { size: A4; margin: 5mm; }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex flex-col h-screen overflow-hidden">
+    <svg width="0" height="0" style="position: absolute;">
+        <defs>
+            <marker id="arr1" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto" markerUnits="strokeWidth">
+                <path d="M0,0 L0,6 L9,3 z" fill="#333" />
+            </marker>
+        </defs>
+    </svg>
+
+    <!-- Header -->
+    <header class="bg-indigo-600 text-white p-4 flex justify-between items-center shadow-md no-print shrink-0 z-50">
+        <div>
+            <h1 class="text-xl font-bold">Math Tutoring by Deni</h1>
+            <p class="text-sm">Topic: Pythagorean Theorem - Special Triangles</p>
+            <p class="translation text-indigo-200">Topik: Teorema Pythagoras - Segitiga Istimewa</p>
+        </div>
+        <div>
+            <button onclick="openModal()" class="bg-yellow-400 hover:bg-yellow-500 text-indigo-900 font-bold py-2 px-4 rounded flex items-center gap-2">
+                <i class="fas fa-gavel"></i> Class Rules
+            </button>
+        </div>
+    </header>
+
+    <!-- Modal Class Rules -->
+    <div id="classRulesModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 no-print">
+        <div class="bg-white rounded-lg p-6 w-80 max-w-sm">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-indigo-600">Class Rules <br><span class="translation text-gray-500">Aturan Kelas</span></h2>
+                <button onclick="closeModal()" class="text-gray-500 hover:text-red-500"><i class="fas fa-times text-xl"></i></button>
+            </div>
+            <ul class="space-y-3 text-gray-700">
+                <li class="flex items-start gap-2">
+                    <i class="fas fa-comments text-indigo-500 mt-1"></i>
+                    <div>Take turns speaking. <span class="translation">Berbicara secara bergantian.</span></div>
+                </li>
+                <li class="flex items-start gap-2">
+                    <i class="fas fa-door-open text-indigo-500 mt-1"></i>
+                    <div>Ask permission if you want to leave the class. <span class="translation">Meminta izin jika ingin meninggalkan kelas.</span></div>
+                </li>
+                <li class="flex items-start gap-2">
+                    <i class="fas fa-video text-indigo-500 mt-1"></i>
+                    <div>Turn on camera and microphone if needed. <span class="translation">Menyalakan kamera dan microphone jika diperlukan.</span></div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Layout -->
+    <div class="flex flex-1 overflow-hidden">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white shadow-lg no-print border-r border-gray-200 flex flex-col">
+            <div class="p-4 bg-indigo-600 text-white">
+                <h3 class="font-bold text-lg flex items-center gap-2"><i class="fas fa-book-open"></i> Class Agenda</h3>
+                <p class="text-xs text-indigo-200 mt-1">Select topic to navigate <span class="translation text-indigo-300 block">Pilih topik untuk navigasi</span></p>
+            </div>
+            <nav class="flex-1 overflow-y-auto p-2">
+                <ul class="space-y-1">
+                    <li><a href="javascript:void(0)" onclick="showSection('warmup')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-800 transition-colors cursor-pointer" data-section="warmup"><div class="font-semibold text-sm text-gray-800">Spiral Review Warm-up</div><div class="text-xs text-gray-500 flex items-center gap-1 mt-1"><i class="far fa-clock"></i> 00:00 - 00:10</div></a></li>
+                    <li><a href="javascript:void(0)" onclick="showSection('intro')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-800 transition-colors cursor-pointer" data-section="intro"><div class="font-semibold text-sm text-gray-800">Introduction & Real-World</div><div class="text-xs text-gray-500 flex items-center gap-1 mt-1"><i class="far fa-clock"></i> 00:10 - 00:15</div></a></li>
+                    <li><a href="javascript:void(0)" onclick="showSection('review')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-800 transition-colors cursor-pointer" data-section="review"><div class="font-semibold text-sm text-gray-800">Review of Prior Knowledge</div><div class="text-xs text-gray-500 flex items-center gap-1 mt-1"><i class="far fa-clock"></i> 00:15 - 00:20</div></a></li>
+                    <li><a href="javascript:void(0)" onclick="showSection('problem')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-800 transition-colors cursor-pointer" data-section="problem"><div class="font-semibold text-sm text-gray-800">Problem Introduction</div><div class="text-xs text-gray-500 flex items-center gap-1 mt-1"><i class="far fa-clock"></i> 00:20 - 00:30</div></a></li>
+                    <li><a href="javascript:void(0)" onclick="showSection('guided')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-800 transition-colors cursor-pointer" data-section="guided"><div class="font-semibold text-sm text-gray-800">Guided Practice</div><div class="text-xs text-gray-500 flex items-center gap-1 mt-1"><i class="far fa-clock"></i> 00:30 - 00:45</div></a></li>
+                    <li><a href="javascript:void(0)" onclick="showSection('independent')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-800 transition-colors cursor-pointer" data-section="independent"><div class="font-semibold text-sm text-gray-800">Independent Practice</div><div class="text-xs text-gray-500 flex items-center gap-1 mt-1"><i class="far fa-clock"></i> 00:45 - 00:55</div></a></li>
+                    <li><a href="javascript:void(0)" onclick="showSection('consolidation')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-800 transition-colors cursor-pointer" data-section="consolidation"><div class="font-semibold text-sm text-gray-800">Consolidation & Reflection</div><div class="text-xs text-gray-500 flex items-center gap-1 mt-1"><i class="far fa-clock"></i> 00:55 - 01:00</div></a></li>
+                    <hr class="my-3 border-gray-200">
+                    <li><a href="javascript:void(0)" onclick="showSection('task1')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-orange-50 hover:text-orange-800 transition-colors cursor-pointer" data-section="task1"><div class="font-bold text-sm text-indigo-800 flex items-center gap-2"><i class="fas fa-clipboard-list text-xs"></i> Task 1</div><div class="text-xs text-gray-500 mt-1">10 Multiple Choice</div></a></li>
+                    <li><a href="javascript:void(0)" onclick="showSection('task2')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-orange-50 hover:text-orange-800 transition-colors cursor-pointer" data-section="task2"><div class="font-bold text-sm text-indigo-800 flex items-center gap-2"><i class="fas fa-clipboard-list text-xs"></i> Task 2</div><div class="text-xs text-gray-500 mt-1">10 Multiple Choice</div></a></li>
+                    <li><a href="javascript:void(0)" onclick="showSection('task3')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-orange-50 hover:text-orange-800 transition-colors cursor-pointer" data-section="task3"><div class="font-bold text-sm text-indigo-800 flex items-center gap-2"><i class="fas fa-clipboard-list text-xs"></i> Task 3</div><div class="text-xs text-gray-500 mt-1">10 Multiple Choice</div></a></li>
+                    <li><a href="javascript:void(0)" onclick="showSection('task4')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-orange-50 hover:text-orange-800 transition-colors cursor-pointer" data-section="task4"><div class="font-bold text-sm text-indigo-800 flex items-center gap-2"><i class="fas fa-clipboard-list text-xs"></i> Task 4</div><div class="text-xs text-gray-500 mt-1">10 Multiple Choice</div></a></li>
+                    <li><a href="javascript:void(0)" onclick="showSection('task5')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-orange-50 hover:text-orange-800 transition-colors cursor-pointer" data-section="task5"><div class="font-bold text-sm text-indigo-800 flex items-center gap-2"><i class="fas fa-clipboard-list text-xs"></i> Task 5</div><div class="text-xs text-gray-500 mt-1">10 Multiple Choice</div></a></li>
+                </ul>
+            </nav>
+            <div class="p-4 bg-gray-50 border-t border-gray-200 text-center">
+                <p class="text-xs text-gray-500 font-medium">Math Tutoring System</p>
+                <p class="text-xs text-gray-400">by Deni</p>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col overflow-hidden">
+            <div id="contentScrollArea" class="flex-1 overflow-y-auto p-6">
+
+            <!-- ========================================== -->
+            <!-- SECTION: SPIRAL REVIEW WARM-UP             -->
+            <!-- ========================================== -->
+            <div id="warmup" class="content-section active">
+                <!-- PAGE 1: THEORY 1 -->
+                <div class="page active" data-page="1">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-indigo-500">
+                        <h2 class="text-2xl font-bold text-indigo-600 mb-2">The 45-45-90 Triangle <i class="fas fa-shapes text-indigo-400 ml-2"></i></h2>
+                        <p class="translation">Segitiga 45-45-90</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-indigo-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="140" height="140" viewBox="0 0 140 140">
+                                    <path d="M 20 120 L 120 120 L 20 20 Z" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+                                    <text x="70" y="135" font-size="12" text-anchor="middle" fill="#333">x</text>
+                                    <text x="10" y="75" font-size="12" text-anchor="middle" fill="#333" transform="rotate(-90 10 75)">x</text>
+                                    <text x="75" y="65" font-size="12" text-anchor="middle" fill="#ef4444" transform="rotate(-45 75 65)">x√2</text>
+                                    <text x="25" y="110" font-size="10" fill="#666">45°</text>
+                                    <text x="105" y="110" font-size="10" fill="#666">45°</text>
+                                    <text x="30" y="35" font-size="10" fill="#666">90°</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>An isosceles right triangle has angles \( 45^\circ, 45^\circ, \) and \( 90^\circ \). The two legs are equal (\( x \)), and the hypotenuse is \( x\sqrt{2} \). <span class="translation">Segitiga siku-siku sama kaki memiliki sudut \( 45^\circ, 45^\circ, \) dan \( 90^\circ \). Dua kakinya sama panjang (\( x \)), dan sisi miringnya adalah \( x\sqrt{2} \).</span></p>
+                                <p class="mt-2">If a leg is \( 5 \), the hypotenuse is \( 5\sqrt{2} \). <span class="translation">Jika kakinya \( 5 \), maka sisi miringnya \( 5\sqrt{2} \).</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> Tips & Tricks: The Diagonal of a Square</p>
+                            <p class="mt-1">If you cut a square in half diagonally, you get two 45-45-90 triangles. <span class="translation">Jika Anda memotong persegi secara diagonal menjadi dua, Anda mendapatkan dua segitiga 45-45-90.</span></p>
+                            <p class="mt-1 font-bold"><i class="fas fa-flag mr-1"></i> To The Point Formula: Hypotenuse = Leg \( \times \sqrt{2} \)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="2" data-task-id="w-task1"></div>
+                <div class="page" data-page="3" data-task-id="w-task2"></div>
+                <div class="page" data-page="4" data-task-id="w-task3"></div>
+
+                <!-- PAGE 5: THEORY 2 -->
+                <div class="page" data-page="5">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-green-500">
+                        <h2 class="text-2xl font-bold text-green-600 mb-2">The 30-60-90 Triangle <i class="fas fa-shapes text-green-400 ml-2"></i></h2>
+                        <p class="translation">Segitiga 30-60-90</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-green-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="150" height="140" viewBox="0 0 150 140">
+                                    <path d="M 20 120 L 130 120 L 20 40 Z" fill="#dcfce7" stroke="#10b981" stroke-width="2"/>
+                                    <text x="70" y="135" font-size="12" text-anchor="middle" fill="#333">x√3</text>
+                                    <text x="10" y="85" font-size="12" text-anchor="middle" fill="#333" transform="rotate(-90 10 85)">2x</text>
+                                    <text x="80" y="85" font-size="12" text-anchor="middle" fill="#ef4444" transform="rotate(-30 80 85)">x</text>
+                                    <text x="25" y="110" font-size="10" fill="#666">60°</text>
+                                    <text x="115" y="110" font-size="10" fill="#666">30°</text>
+                                    <text x="30" y="55" font-size="10" fill="#666">90°</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>This triangle has angles \( 30^\circ, 60^\circ, \) and \( 90^\circ \). The sides follow a specific ratio: \( x, x\sqrt{3}, \) and \( 2x \). <span class="translation">Segitiga ini memiliki sudut \( 30^\circ, 60^\circ, \) dan \( 90^\circ \). Sisi-sisinya mengikuti rasio tertentu: \( x, x\sqrt{3}, \) dan \( 2x \).</span></p>
+                                <p class="mt-2">The shortest side (opposite \( 30^\circ \)) is \( x \). The hypotenuse is \( 2x \). The longer leg is \( x\sqrt{3} \). <span class="translation">Sisi terpendek (depan \( 30^\circ \)) adalah \( x \). Sisi miringnya \( 2x \). Kaki yang lebih panjang adalah \( x\sqrt{3} \).</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> Tips & Tricks: Half of an Equilateral Triangle</p>
+                            <p class="mt-1">If you drop an altitude in an equilateral triangle, you split it into two 30-60-90 triangles. <span class="translation">Jika Anda menarik garis tinggi di segitiga sama sisi, Anda membaginya menjadi dua segitiga 30-60-90.</span></p>
+                            <p class="mt-1 font-bold"><i class="fas fa-flag mr-1"></i> To The Point Formula: Short Leg = \( x \), Hypotenuse = \( 2x \), Long Leg = \( x\sqrt{3} \).</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="6" data-task-id="w-task4"></div>
+                <div class="page" data-page="7" data-task-id="w-task5"></div>
+                <div class="page" data-page="8" data-task-id="w-task6"></div>
+
+                <!-- PAGE 9: THEORY 3 -->
+                <div class="page" data-page="9">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-purple-500">
+                        <h2 class="text-2xl font-bold text-purple-600 mb-2">Radicals in Special Triangles <i class="fas fa-square-root-variable text-purple-400 ml-2"></i></h2>
+                        <p class="translation">Bentuk Akar pada Segitiga Istimewa</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-purple-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <rect x="20" y="40" width="140" height="60" rx="5" fill="#f3e8ff" stroke="#8b5cf6" stroke-width="2"/>
+                                    <text x="90" y="65" font-size="14" text-anchor="middle" fill="#333">a² + b² = c²</text>
+                                    <text x="90" y="85" font-size="14" text-anchor="middle" fill="#666">x² + x² = (x√2)²</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>Since we use \( \sqrt{2} \) and \( \sqrt{3} \), you must be comfortable simplifying radicals. Remember that \( (\sqrt{2})^2 = 2 \) and \( (\sqrt{3})^2 = 3 \). <span class="translation">Karena kita menggunakan \( \sqrt{2} \) dan \( \sqrt{3} \), Anda harus mahir menyederhanakan bentuk akar. Ingat bahwa \( (\sqrt{2})^2 = 2 \) dan \( (\sqrt{3})^2 = 3 \).</span></p>
+                                <p class="mt-2">For example, if a leg is \( 3\sqrt{2} \), the hypotenuse is \( 3\sqrt{2} \times \sqrt{2} = 3 \times 2 = 6 \). <span class="translation">Misalnya, jika kaki suatu segitiga \( 3\sqrt{2} \), maka sisi miringnya \( 3\sqrt{2} \times \sqrt{2} = 3 \times 2 = 6 \).</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> Tips & Tricks: Rationalizing Denominators</p>
+                            <p class="mt-1">If your answer has a root in the denominator (like \( \frac{4}{\sqrt{2}} \)), multiply top and bottom by that root to rationalize it. <span class="translation">Jika jawaban Anda memiliki akar di penyebut (seperti \( \frac{4}{\sqrt{2}} \)), kalikan atas dan bawah dengan akar tersebut untuk merasionalkannya.</span></p>
+                            <p class="mt-1 font-bold"><i class="fas fa-flag mr-1"></i> To The Point Formula: \( \frac{x}{\sqrt{n}} \times \frac{\sqrt{n}}{\sqrt{n}} = \frac{x\sqrt{n}}{n} \)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="10" data-task-id="w-task7"></div>
+                <div class="page" data-page="11" data-task-id="w-task8"></div>
+                <div class="page" data-page="12" data-task-id="w-task9"></div>
+                <div class="page" data-page="13" data-task-id="w-task10"></div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- SECTION: INTRODUCTION & REAL-WORLD         -->
+            <!-- ========================================== -->
+            <div id="intro" class="content-section">
+                <div class="page active" data-page="1">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-indigo-500">
+                        <h2 class="text-2xl font-bold text-indigo-600 mb-2">Designing a Ramp <i class="fas fa-wheelchair text-indigo-400 ml-2"></i></h2>
+                        <p class="translation">Merancang Ramp</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-indigo-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <path d="M 20 120 L 160 120 L 20 40 Z" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+                                    <text x="90" y="135" font-size="12" text-anchor="middle" fill="#333">Horizontal</text>
+                                    <text x="85" y="80" font-size="12" text-anchor="middle" fill="#ef4444" transform="rotate(-30 85 80)">Ramp</text>
+                                    <circle cx="130" cy="110" r="10" fill="#333"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>A wheelchair ramp needs to have an angle of \( 30^\circ \) for safety. If the height of the step is \( 1.5 \) meters, how long must the ramp be? <span class="translation">Ramp kursi roda harus memiliki sudut \( 30^\circ \) demi keamanan. Jika tinggi anak tangga adalah \( 1.5 \) meter, berapa panjang ramp yang dibutuhkan?</span></p>
+                                <p class="mt-2">The height is the short leg (\( x \)). So \( x = 1.5 \). The ramp is the hypotenuse (\( 2x \)), so it must be \( 2 \times 1.5 = 3 \) meters long. <span class="translation">Tinggi adalah kaki pendek (\( x \)). Jadi \( x = 1.5 \). Ramp adalah sisi miring (\( 2x \)), jadi panjangnya harus \( 2 \times 1.5 = 3 \) meter.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> Tips & Tricks: Identifying the Short Leg</p>
+                            <p class="mt-1">In real-world problems, the height is often opposite the \( 30^\circ \) angle, making it the short leg. <span class="translation">Dalam soal dunia nyata, tinggi sering kali berhadapan dengan sudut \( 30^\circ \), menjadikannya kaki pendek.</span></p>
+                            <p class="mt-1 font-bold"><i class="fas fa-flag mr-1"></i> To The Point Formula: Height = Short Leg, Ramp = Hypotenuse = \( 2 \times \) Height.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="2" data-task-id="i-task1"></div>
+                <div class="page" data-page="3" data-task-id="i-task2"></div>
+                <div class="page" data-page="4" data-task-id="i-task3"></div>
+
+                <div class="page" data-page="5">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-green-500">
+                        <h2 class="text-2xl font-bold text-green-600 mb-2">Folding a Square Paper <i class="fas fa-square text-green-400 ml-2"></i></h2>
+                        <p class="translation">Melipat Kertas Persegi</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-green-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <rect x="30" y="20" width="100" height="100" fill="none" stroke="#10b981" stroke-width="2"/>
+                                    <path d="M 30 120 L 130 20" stroke="#ef4444" stroke-width="2" stroke-dasharray="5"/>
+                                    <text x="80" y="80" font-size="12" text-anchor="middle" fill="#333">10 cm</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>A square piece of paper with side length \( 10 \) cm is folded along its diagonal. What is the length of the crease? <span class="translation">Selembar kertas persegi dengan panjang sisi \( 10 \) cm dilipat sepanjang diagonalnya. Berapakah panjang lipatan tersebut?</span></p>
+                                <p class="mt-2">The diagonal of a square forms a 45-45-90 triangle. The hypotenuse is \( 10\sqrt{2} \) cm. <span class="translation">Diagonal persegi membentuk segitiga 45-45-90. Sisi miringnya adalah \( 10\sqrt{2} \) cm.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> Tips & Tricks: Diagonal Formula</p>
+                            <p class="mt-1">For any square with side \( s \), the diagonal is always \( s\sqrt{2} \). This is a direct application of the 45-45-90 triangle. <span class="translation">Untuk persegi dengan sisi \( s \), diagonalnya selalu \( s\sqrt{2} \). Ini adalah penerapan langsung dari segitiga 45-45-90.</span></p>
+                            <p class="mt-1 font-bold"><i class="fas fa-flag mr-1"></i> To The Point Formula: Diagonal = \( s\sqrt{2} \)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="6" data-task-id="i-task4"></div>
+                <div class="page" data-page="7" data-task-id="i-task5"></div>
+                <div class="page" data-page="8" data-task-id="i-task6"></div>
+
+                <div class="page" data-page="9">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-purple-500">
+                        <h2 class="text-2xl font-bold text-purple-600 mb-2">Equilateral Triangle Altitude <i class="fas fa-mountain text-purple-400 ml-2"></i></h2>
+                        <p class="translation">Garis Tinggi Segitiga Sama Sisi</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-purple-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <path d="M 30 120 L 150 120 L 90 20 Z" fill="none" stroke="#8b5cf6" stroke-width="2"/>
+                                    <path d="M 90 120 L 90 20" stroke="#ef4444" stroke-width="2"/>
+                                    <text x="90" y="135" font-size="12" text-anchor="middle" fill="#333">8</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>An equilateral triangle with side length \( 8 \) is split in half. What is the height? <span class="translation">Segitiga sama sisi dengan panjang sisi \( 8 \) dibagi dua. Berapakah tingginya?</span></p>
+                                <p class="mt-2">The height forms a 30-60-90 triangle. The base is \( 4 \) (short leg). The height is \( 4\sqrt{3} \) (long leg). <span class="translation">Tinggi membentuk segitiga 30-60-90. Alasnya \( 4 \) (kaki pendek). Tingginya adalah \( 4\sqrt{3} \) (kaki panjang).</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> Tips & Tricks: Half the Base</p>
+                            <p class="mt-1">When an equilateral triangle is split, the base of the new triangle is exactly half of the original side. <span class="translation">Ketika segitiga sama sisi dibagi, alas segitiga baru adalah tepat setengah dari sisi aslinya.</span></p>
+                            <p class="mt-1 font-bold"><i class="fas fa-flag mr-1"></i> To The Point Formula: Height = \( \frac{s}{2}\sqrt{3} \)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="10" data-task-id="i-task7"></div>
+                <div class="page" data-page="11" data-task-id="i-task8"></div>
+                <div class="page" data-page="12" data-task-id="i-task9"></div>
+                <div class="page" data-page="13" data-task-id="i-task10"></div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- SECTION: REVIEW OF PRIOR KNOWLEDGE         -->
+            <!-- ========================================== -->
+            <div id="review" class="content-section">
+                <div class="page active" data-page="1">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-indigo-500">
+                        <h2 class="text-2xl font-bold text-indigo-600 mb-2">Pythagorean Triples Recap <i class="fas fa-link text-indigo-400 ml-2"></i></h2>
+                        <p class="translation">Pengingat Tripel Pythagoras</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-indigo-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <rect x="20" y="20" width="140" height="100" rx="5" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+                                    <text x="90" y="50" font-size="14" text-anchor="middle" fill="#333">3, 4, 5</text>
+                                    <text x="90" y="70" font-size="14" text-anchor="middle" fill="#333">5, 12, 13</text>
+                                    <text x="90" y="90" font-size="14" text-anchor="middle" fill="#333">8, 15, 17</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>Before special triangles, we memorized triples like \( 3,4,5 \). These are whole numbers that satisfy \( a^2 + b^2 = c^2 \). <span class="translation">Sebelum segitiga istimewa, kita menghafal tripel seperti \( 3,4,5 \). Ini adalah bilangan bulat yang memenuhi \( a^2 + b^2 = c^2 \).</span></p>
+                                <p class="mt-2">However, special triangles introduce irrational numbers like \( \sqrt{2} \) and \( \sqrt{3} \). <span class="translation">Namun, segitiga istimewa memperkenalkan bilangan irasional seperti \( \sqrt{2} \) dan \( \sqrt{3} \).</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> Tips & Tricks: Scaling Triples</p>
+                            <p class="mt-1">If you multiply a triple by a whole number, it remains a triple (e.g., \( 6,8,10 \) is a \( 3,4,5 \) triple scaled by 2). <span class="translation">Jika Anda mengalikan tripel dengan bilangan bulat, ia tetap menjadi tripel (misalnya \( 6,8,10 \) adalah tripel \( 3,4,5 \) yang dikali 2).</span></p>
+                            <p class="mt-1 font-bold"><i class="fas fa-flag mr-1"></i> To The Point Formula: If \( a,b,c \) is a triple, then \( ka, kb, kc \) is also a triple.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="2" data-task-id="r-task1"></div>
+                <div class="page" data-page="3" data-task-id="r-task2"></div>
+                <div class="page" data-page="4" data-task-id="r-task3"></div>
+
+                <div class="page" data-page="5">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-green-500">
+                        <h2 class="text-2xl font-bold text-green-600 mb-2">Simplifying Square Roots <i class="fas fa-square-root-variable text-green-400 ml-2"></i></h2>
+                        <p class="translation">Menyederhanakan Akar Kuadrat</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-green-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <rect x="20" y="40" width="140" height="60" rx="5" fill="#dcfce7" stroke="#10b981" stroke-width="2"/>
+                                    <text x="90" y="65" font-size="14" text-anchor="middle" fill="#333">√12 = √(4 × 3)</text>
+                                    <text x="90" y="85" font-size="14" text-anchor="middle" fill="#666">= 2√3</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>To work with special triangles, you must simplify roots like \( \sqrt{12} \). Find the largest perfect square factor. <span class="translation">Untuk bekerja dengan segitiga istimewa, Anda harus menyederhanakan akar seperti \( \sqrt{12} \). Cari faktor persegi sempurna terbesar.</span></p>
+                                <p class="mt-2">\( \sqrt{12} = \sqrt{4 \times 3} = \sqrt{4} \times \sqrt{3} = 2\sqrt{3} \). <span class="translation">\( \sqrt{12} = \sqrt{4 \times 3} = \sqrt{4} \times \sqrt{3} = 2\sqrt{3} \).</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> Tips & Tricks: Perfect Squares List</p>
+                            <p class="mt-1">Memorize perfect squares up to 144 (1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144). <span class="translation">Hafalkan bilangan kuadrat sempurna hingga 144 (1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144).</span></p>
+                            <p class="mt-1 font-bold"><i class="fas fa-flag mr-1"></i> To The Point Formula: \( \sqrt{ab} = \sqrt{a} \times \sqrt{b} \)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="6" data-task-id="r-task4"></div>
+                <div class="page" data-page="7" data-task-id="r-task5"></div>
+                <div class="page" data-page="8" data-task-id="r-task6"></div>
+
+                <div class="page" data-page="9">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-purple-500">
+                        <h2 class="text-2xl font-bold text-purple-600 mb-2">Standard Form of Roots <i class="fas fa-square-root-variable text-purple-400 ml-2"></i></h2>
+                        <p class="translation">Bentuk Baku Akar</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-purple-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <rect x="20" y="40" width="140" height="60" rx="5" fill="#f3e8ff" stroke="#8b5cf6" stroke-width="2"/>
+                                    <text x="90" y="65" font-size="14" text-anchor="middle" fill="#333">3√2 + 5√2</text>
+                                    <text x="90" y="85" font-size="14" text-anchor="middle" fill="#666">= 8√2</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>Like terms can be added. \( 3\sqrt{2} + 5\sqrt{2} = 8\sqrt{2} \). You cannot add \( 3\sqrt{2} + 5\sqrt{3} \). <span class="translation">Suku sejenis dapat dijumlahkan. \( 3\sqrt{2} + 5\sqrt{2} = 8\sqrt{2} \). Anda tidak dapat menjumlahkan \( 3\sqrt{2} + 5\sqrt{3} \).</span></p>
+                                <p class="mt-2">Always simplify roots before adding them. <span class="translation">Selalu sederhanakan akar sebelum menjumlahkannya.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> Tips & Tricks: Treat Roots Like Variables</p>
+                            <p class="mt-1">Treat \( \sqrt{2} \) like an apple. 3 apples + 5 apples = 8 apples. 3 apples + 5 oranges cannot be combined. <span class="translation">Perlakukan \( \sqrt{2} \) seperti apel. 3 apel + 5 apel = 8 apel. 3 apel + 5 jeruk tidak bisa digabungkan.</span></p>
+                            <p class="mt-1 font-bold"><i class="fas fa-flag mr-1"></i> To The Point Formula: \( a\sqrt{x} + b\sqrt{x} = (a+b)\sqrt{x} \)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="10" data-task-id="r-task7"></div>
+                <div class="page" data-page="11" data-task-id="r-task8"></div>
+                <div class="page" data-page="12" data-task-id="r-task9"></div>
+                <div class="page" data-page="13" data-task-id="r-task10"></div>
+            </div>
+            
+            <!-- ========================================== -->
+            <!-- SECTION: PROBLEM INTRODUCTION              -->
+            <!-- ========================================== -->
+            <div id="problem" class="content-section">
+                <div class="page active" data-page="1">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-indigo-500">
+                        <h2 class="text-2xl font-bold text-indigo-600 mb-2">Using Ratios to Find Sides <i class="fas fa-divide text-indigo-400 ml-2"></i></h2>
+                        <p class="translation">Menggunakan Rasio untuk Mencari Sisi</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-indigo-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="150" height="140" viewBox="0 0 150 140">
+                                    <path d="M 20 120 L 130 120 L 20 40 Z" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+                                    <text x="70" y="135" font-size="12" text-anchor="middle" fill="#333">9</text>
+                                    <text x="80" y="80" font-size="12" text-anchor="middle" fill="#ef4444" transform="rotate(-30 80 80)">?</text>
+                                    <text x="25" y="110" font-size="10" fill="#666">60°</text>
+                                    <text x="115" y="110" font-size="10" fill="#666">30°</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>If you know one side of a special triangle, you can find the others using the ratios. <span class="translation">Jika Anda tahu satu sisi segitiga istimewa, Anda bisa mencari sisi lainnya menggunakan rasio.</span></p>
+                                <p class="mt-2">In this 30-60-90 triangle, the long leg is \( 9 \). Since Long Leg = \( x\sqrt{3} \), we have \( x\sqrt{3} = 9 \). Thus, \( x = \frac{9}{\sqrt{3}} = 3\sqrt{3} \). The hypotenuse is \( 2x = 6\sqrt{3} \). <span class="translation">Di segitiga 30-60-90 ini, kaki panjangnya \( 9 \). Karena Kaki Panjang = \( x\sqrt{3} \), kita punya \( x\sqrt{3} = 9 \). Maka, \( x = \frac{9}{\sqrt{3}} = 3\sqrt{3} \). Sisi miringnya adalah \( 2x = 6\sqrt{3} \).</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> Tips & Tricks: Rationalize the Denominator</p>
+                            <p class="mt-1">When you divide by a square root, multiply the top and bottom by that root to remove the radical from the denominator. <span class="translation">Ketika Anda membagi dengan akar kuadrat, kalikan atas dan bawah dengan akar tersebut untuk menghilangkan akar dari penyebut.</span></p>
+                            <p class="mt-1 font-bold"><i class="fas fa-flag mr-1"></i> To The Point Formula: \( \frac{x}{\sqrt{3}} = \frac{x\sqrt{3}}{3} \)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="2" data-task-id="p-task1"></div>
+                <div class="page" data-page="3" data-task-id="p-task2"></div>
+                <div class="page" data-page="4" data-task-id="p-task3"></div>
+
+                <div class="page" data-page="5">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-green-500">
+                        <h2 class="text-2xl font-bold text-green-600 mb-2">Working Backwards <i class="fas fa-rotate-left text-green-400 ml-2"></i></h2>
+                        <p class="translation">Bekerja Secara Terbalik</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-green-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="150" height="140" viewBox="0 0 150 140">
+                                    <path d="M 20 120 L 130 120 L 20 40 Z" fill="#dcfce7" stroke="#10b981" stroke-width="2"/>
+                                    <text x="70" y="135" font-size="12" text-anchor="middle" fill="#333">?</text>
+                                    <text x="80" y="80" font-size="12" text-anchor="middle" fill="#ef4444" transform="rotate(-30 80 80)">10</text>
+                                    <text x="25" y="110" font-size="10" fill="#666">60°</text>
+                                    <text x="115" y="110" font-size="10" fill="#666">30°</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>Sometimes you are given the hypotenuse and need to find the legs. <span class="translation">Kadang-kadang Anda diberikan sisi miring dan perlu mencari kakinya.</span></p>
+                                <p class="mt-2">Here, Hypotenuse = \( 10 \). Since Hypotenuse = \( 2x \), \( 2x = 10 \implies x = 5 \). The short leg is \( 5 \), and the long leg is \( 5\sqrt{3} \). <span class="translation">Di sini, Sisi Miring = \( 10 \). Karena Sisi Miring = \( 2x \), \( 2x = 10 \implies x = 5 \). Kaki pendeknya \( 5 \), dan kaki panjangnya \( 5\sqrt{3} \).</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> Tips & Tricks: Identify 'x' First</p>
+                            <p class="mt-1">Always find the short leg (\( x \)) first. From \( x \), everything else is just a simple multiplication. <span class="translation">Selalu cari kaki pendek (\( x \)) terlebih dahulu. Dari \( x \), hal lain hanyalah perkalian sederhana.</span></p>
+                            <p class="mt-1 font-bold"><i class="fas fa-flag mr-1"></i> To The Point Formula: \( x = \frac{\text{Hypotenuse}}{2} \)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="6" data-task-id="p-task4"></div>
+                <div class="page" data-page="7" data-task-id="p-task5"></div>
+                <div class="page" data-page="8" data-task-id="p-task6"></div>
+
+                <div class="page" data-page="9">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-purple-500">
+                        <h2 class="text-2xl font-bold text-purple-600 mb-2">Algebraic Connections <i class="fas fa-square-root-variable text-purple-400 ml-2"></i></h2>
+                        <p class="translation">Hubungan Aljabar</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-purple-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <path d="M 30 120 L 150 120 L 30 40 Z" fill="#f3e8ff" stroke="#8b5cf6" stroke-width="2"/>
+                                    <text x="90" y="135" font-size="12" text-anchor="middle" fill="#333">x√3</text>
+                                    <text x="80" y="80" font-size="12" text-anchor="middle" fill="#ef4444" transform="rotate(-30 80 80)">2x</text>
+                                    <text x="35" y="110" font-size="10" fill="#666">60°</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>You can use the Pythagorean theorem to verify the ratios. If legs are \( x \) and \( x\sqrt{3} \), then \( c^2 = x^2 + (x\sqrt{3})^2 = x^2 + 3x^2 = 4x^2 \). Thus \( c = 2x \). <span class="translation">Anda bisa menggunakan teorema Pythagoras untuk memverifikasi rasio. Jika kakinya \( x \) dan \( x\sqrt{3} \), maka \( c^2 = x^2 + (x\sqrt{3})^2 = x^2 + 3x^2 = 4x^2 \). Jadi \( c = 2x \).</span></p>
+                                <p class="mt-2">This proves that our special triangle ratios are perfectly consistent with \( a^2 + b^2 = c^2 \). <span class="translation">Ini membuktikan bahwa rasio segitiga istimewa kita sepenuhnya konsisten dengan \( a^2 + b^2 = c^2 \).</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> Tips & Tricks: Squaring Radicals</p>
+                            <p class="mt-1">Remember that \( (x\sqrt{3})^2 = x^2 \times 3 = 3x^2 \). Square the coefficient and square the radicand. <span class="translation">Ingat bahwa \( (x\sqrt{3})^2 = x^2 \times 3 = 3x^2 \). Kuadratkan koefisien dan kuadratkan radikan.</span></p>
+                            <p class="mt-1 font-bold"><i class="fas fa-flag mr-1"></i> To The Point Formula: \( (a\sqrt{b})^2 = a^2 b \)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="10" data-task-id="p-task7"></div>
+                <div class="page" data-page="11" data-task-id="p-task8"></div>
+                <div class="page" data-page="12" data-task-id="p-task9"></div>
+                <div class="page" data-page="13" data-task-id="p-task10"></div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- SECTION: GUIDED PRACTICE                   -->
+            <!-- ========================================== -->
+            <div id="guided" class="content-section">
+                <div class="page active" data-page="1">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-indigo-500">
+                        <h2 class="text-2xl font-bold text-indigo-600 mb-2">Nested Triangles <i class="fas fa-layer-group text-indigo-400 ml-2"></i></h2>
+                        <p class="translation">Segitiga Bertingkat</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-indigo-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <path d="M 20 120 L 160 120 L 20 20 Z" fill="none" stroke="#3b82f6" stroke-width="2"/>
+                                    <path d="M 90 120 L 20 20" stroke="#ef4444" stroke-width="2"/>
+                                    <text x="50" y="115" font-size="10" text-anchor="middle" fill="#333">8</text>
+                                    <text x="105" y="115" font-size="10" text-anchor="middle" fill="#333">8</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>An altitude drawn to the hypotenuse of an isosceles right triangle creates two smaller 45-45-90 triangles. <span class="translation">Garis tinggi yang ditarik ke sisi miring segitiga siku-siku sama kaki menciptakan dua segitiga 45-45-90 yang lebih kecil.</span></p>
+                                <p class="mt-2">If the large triangle's hypotenuse is \( 16 \), the altitude splits it into two segments of \( 8 \). The altitude itself is \( 8\sqrt{2} \). <span class="translation">Jika sisi miring segitiga besar adalah \( 16 \), garis tingginya membaginya menjadi dua segmen \( 8 \). Garis tingginya sendiri adalah \( 8\sqrt{2} \).</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> Tips & Tricks: Look for the Square</p>
+                            <p class="mt-1">If an isosceles right triangle is split by its altitude, you are essentially looking at half of a square. <span class="translation">Jika segitiga siku-siku sama kaki dibagi oleh garis tingginya, Anda pada dasarnya melihat setengah dari sebuah persegi.</span></p>
+                            <p class="mt-1 font-bold"><i class="fas fa-flag mr-1"></i> To The Point Formula: Altitude = \( \frac{\text{Hypotenuse}}{2} \times \sqrt{2} \)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="2" data-task-id="g-task1"></div>
+                <div class="page" data-page="3" data-task-id="g-task2"></div>
+                <div class="page" data-page="4" data-task-id="g-task3"></div>
+
+                <div class="page" data-page="5">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-green-500">
+                        <h2 class="text-2xl font-bold text-green-600 mb-2">Diagonals in 3D Shapes <i class="fas fa-cube text-green-400 ml-2"></i></h2>
+                        <p class="translation">Diagonal pada Bangun 3D</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-green-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <path d="M 40 100 L 100 100 L 100 40 L 40 40 Z" fill="none" stroke="#10b981" stroke-width="2"/>
+                                    <path d="M 40 100 L 60 120 L 120 120 L 100 100 M 100 40 L 120 60 L 120 120 L 100 100" fill="none" stroke="#10b981" stroke-width="2"/>
+                                    <path d="M 40 40 L 120 120" stroke="#ef4444" stroke-width="2" stroke-dasharray="5"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>A cube with side length \( s \) has a face diagonal of \( s\sqrt{2} \). The space diagonal (from one corner to the opposite) is \( s\sqrt{3} \). <span class="translation">Kubus dengan panjang sisi \( s \) memiliki diagonal sisi \( s\sqrt{2} \). Diagonal ruangnya (dari sudut ke sudut berlawanan) adalah \( s\sqrt{3} \).</span></p>
+                                <p class="mt-2">This comes from applying the Pythagorean theorem twice: first on a 45-45-90 face, then on a 30-60-90 internal triangle. <span class="translation">Ini berasal dari penerapan teorema Pythagoras dua kali: pertama pada sisi 45-45-90, lalu pada segitiga internal 30-60-90.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> Tips & Tricks: 2D vs 3D</p>
+                            <p class="mt-1">Face diagonal = \( \sqrt{2} \) dimension. Space diagonal = \( \sqrt{3} \) dimension. <span class="translation">Diagonal sisi = dimensi \( \sqrt{2} \). Diagonal ruang = dimensi \( \sqrt{3} \).</span></p>
+                            <p class="mt-1 font-bold"><i class="fas fa-flag mr-1"></i> To The Point Formula: Space Diagonal of Cube = \( s\sqrt{3} \)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="6" data-task-id="g-task4"></div>
+                <div class="page" data-page="7" data-task-id="g-task5"></div>
+                <div class="page" data-page="8" data-task-id="g-task6"></div>
+
+                <div class="page" data-page="9">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-purple-500">
+                        <h2 class="text-2xl font-bold text-purple-600 mb-2">Coordinate Geometry <i class="fas fa-map text-purple-400 ml-2"></i></h2>
+                        <p class="translation">Geometri Koordinat</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-purple-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <line x1="20" y1="70" x2="160" y2="70" stroke="#333" stroke-width="1"/>
+                                    <line x1="90" y1="20" x2="90" y2="120" stroke="#333" stroke-width="1"/>
+                                    <path d="M 90 70 L 130 70 L 130 40 Z" fill="#f3e8ff" stroke="#8b5cf6" stroke-width="2"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>The distance between \( (0,0) \) and \( (3,3) \) is the hypotenuse of a 45-45-90 triangle with legs of length \( 3 \). Distance = \( 3\sqrt{2} \). <span class="translation">Jarak antara \( (0,0) \) dan \( (3,3) \) adalah sisi miring segitiga 45-45-90 dengan kaki panjang \( 3 \). Jarak = \( 3\sqrt{2} \).</span></p>
+                                <p class="mt-2">Similarly, the distance from \( (0,0) \) to \( (4, 4\sqrt{3}) \) forms a 30-60-90 triangle. <span class="translation">Demikian pula, jarak dari \( (0,0) \) ke \( (4, 4\sqrt{3}) \) membentuk segitiga 30-60-90.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> Tips & Tricks: Count the Grid</p>
+                            <p class="mt-1">If the x and y differences are equal, it's a 45-45-90 triangle. If the y difference is \( \sqrt{3} \) times the x difference, it's 30-60-90. <span class="translation">Jika selisih x dan y sama, itu segitiga 45-45-90. Jika selisih y adalah \( \sqrt{3} \) kali selisih x, itu 30-60-90.</span></p>
+                            <p class="mt-1 font-bold"><i class="fas fa-flag mr-1"></i> To The Point Formula: \( d = \sqrt{\Delta x^2 + \Delta y^2} \)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="10" data-task-id="g-task7"></div>
+                <div class="page" data-page="11" data-task-id="g-task8"></div>
+                <div class="page" data-page="12" data-task-id="g-task9"></div>
+                <div class="page" data-page="13" data-task-id="g-task10"></div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- SECTION: INDEPENDENT PRACTICE               -->
+            <!-- ========================================== -->
+            <div id="independent" class="content-section">
+                <div class="page active" data-page="1">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-indigo-500">
+                        <h2 class="text-2xl font-bold text-indigo-600 mb-2">Finding Area of Special Triangles <i class="fas fa-vector-square text-indigo-400 ml-2"></i></h2>
+                        <p class="translation">Mencari Luas Segitiga Istimewa</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-indigo-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <path d="M 40 120 L 120 120 L 40 40 Z" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+                                    <text x="80" y="135" font-size="12" text-anchor="middle" fill="#333">6</text>
+                                    <text x="30" y="85" font-size="12" text-anchor="middle" fill="#333" transform="rotate(-90 30 85)">6</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>To find the area, you need the base and height. In a 45-45-90 triangle, the two legs act as base and height. <span class="translation">Untuk mencari luas, Anda membutuhkan alas dan tinggi. Pada segitiga 45-45-90, kedua kaki berfungsi sebagai alas dan tinggi.</span></p>
+                                <p class="mt-2">If legs are \( 6 \), Area = \( \frac{1}{2} \times 6 \times 6 = 18 \). <span class="translation">Jika kakinya \( 6 \), Luas = \( \frac{1}{2} \times 6 \times 6 = 18 \).</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> Tips & Tricks: Base and Height are Perpendicular</p>
+                            <p class="mt-1">In a right triangle, the two legs are always the base and height. <span class="translation">Pada segitiga siku-siku, dua kaki selalu merupakan alas dan tinggi.</span></p>
+                            <p class="mt-1 font-bold"><i class="fas fa-flag mr-1"></i> To The Point Formula: Area = \( \frac{1}{2} \times \text{leg}_1 \times \text{leg}_2 \)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="2" data-task-id="ind-task1"></div>
+                <div class="page" data-page="3" data-task-id="ind-task2"></div>
+                <div class="page" data-page="4" data-task-id="ind-task3"></div>
+
+                <div class="page" data-page="5">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-green-500">
+                        <h2 class="text-2xl font-bold text-green-600 mb-2">Perimeter Problems <i class="fas fa-ruler-horizontal text-green-400 ml-2"></i></h2>
+                        <p class="translation">Soal Keliling</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-green-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <path d="M 30 120 L 150 120 L 30 40 Z" fill="#dcfce7" stroke="#10b981" stroke-width="2"/>
+                                    <text x="90" y="135" font-size="12" text-anchor="middle" fill="#333">5</text>
+                                    <text x="80" y="80" font-size="12" text-anchor="middle" fill="#ef4444" transform="rotate(-30 80 80)">10</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>Perimeter is the sum of all sides. For a 30-60-90 triangle with short leg \( 5 \), the sides are \( 5 \), \( 5\sqrt{3} \), and \( 10 \). <span class="translation">Keliling adalah jumlah semua sisi. Untuk segitiga 30-60-90 dengan kaki pendek \( 5 \), sisinya adalah \( 5 \), \( 5\sqrt{3} \), dan \( 10 \).</span></p>
+                                <p class="mt-2">Perimeter = \( 15 + 5\sqrt{3} \). <span class="translation">Keliling = \( 15 + 5\sqrt{3} \).</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> Tips & Tricks: Don't Combine Unlikes</p>
+                            <p class="mt-1">Keep rational numbers and radicals separate. \( 15 + 5\sqrt{3} \) cannot be simplified further. <span class="translation">Pisahkan bilangan rasional dan bentuk akar. \( 15 + 5\sqrt{3} \) tidak dapat disederhanakan lagi.</span></p>
+                            <p class="mt-1 font-bold"><i class="fas fa-flag mr-1"></i> To The Point Formula: \( P = a + b + c \)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="6" data-task-id="ind-task4"></div>
+                <div class="page" data-page="7" data-task-id="ind-task5"></div>
+                <div class="page" data-page="8" data-task-id="ind-task6"></div>
+
+                <div class="page" data-page="9">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-purple-500">
+                        <h2 class="text-2xl font-bold text-purple-600 mb-2">Finding Heights of Structures <i class="fas fa-building text-purple-400 ml-2"></i></h2>
+                        <p class="translation">Mencari Tinggi Struktur</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-purple-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <line x1="20" y1="120" x2="160" y2="120" stroke="#333" stroke-width="2"/>
+                                    <line x1="40" y1="120" x2="40" y2="40" stroke="#8b5cf6" stroke-width="4"/>
+                                    <line x1="40" y1="40" x2="140" y2="120" stroke="#ef4444" stroke-width="2"/>
+                                    <text x="50" y="90" font-size="12" text-anchor="middle" fill="#333">?</text>
+                                    <text x="100" y="115" font-size="12" text-anchor="middle" fill="#333">100</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>A guy wire is attached to the top of a pole and to the ground \( 50\sqrt{3} \) feet away. The wire forms a 30° angle with the ground. What is the height of the pole? <span class="translation">Sebuah kawat penyangga dipasang di atas tiang dan ke tanah sejauh \( 50\sqrt{3} \) kaki. Kawat membentuk sudut 30° dengan tanah. Berapakah tinggi tiang tersebut?</span></p>
+                                <p class="mt-2">Distance on ground is the long leg \( x\sqrt{3} = 50\sqrt{3} \implies x = 50 \). Height is the short leg \( x \), so height is \( 50 \) feet. <span class="translation">Jarak di tanah adalah kaki panjang \( x\sqrt{3} = 50\sqrt{3} \implies x = 50 \). Tinggi adalah kaki pendek \( x \), jadi tingginya \( 50 \) kaki.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> Tips & Tricks: Ground vs Height</p>
+                            <p class="mt-1">Distance along the ground is usually the long leg (if angle is 30°), while height is the short leg. <span class="translation">Jarak sepanjang tanah biasanya adalah kaki panjang (jika sudutnya 30°), sedangkan tinggi adalah kaki pendek.</span></p>
+                            <p class="mt-1 font-bold"><i class="fas fa-flag mr-1"></i> To The Point Formula: Height = \( \frac{\text{Distance on Ground}}{\sqrt{3}} \)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="10" data-task-id="ind-task7"></div>
+                <div class="page" data-page="11" data-task-id="ind-task8"></div>
+                <div class="page" data-page="12" data-task-id="ind-task9"></div>
+                <div class="page" data-page="13" data-task-id="ind-task10"></div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- SECTION: CONSOLIDATION & REFLECTION         -->
+            <!-- ========================================== -->
+            <div id="consolidation" class="content-section">
+                 <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                    <h2 class="text-2xl font-bold text-gray-800">Consolidation & Reflection</h2>
+                    <p class="translation">Konsolidasi & Refleksi</p>
+                    <p>Excellent work! You've mastered the 45-45-90 and 30-60-90 special triangles. These ratios are fundamental tools in geometry and trigonometry. <span class="translation">Kerja bagus! Anda telah menguasai segitiga istimewa 45-45-90 dan 30-60-90. Rasio ini adalah alat mendasar dalam geometri dan trigonometri.</span></p>
+                    <p class="mt-2">Keep practicing to instantly recognize these triangles in complex shapes! <span class="translation">Teruslah berlatih untuk langsung mengenali segitiga ini dalam bentuk yang kompleks!</span></p>
+                    <a href="https://learn.algonova.id" target="_blank" class="mt-4 inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded">
+                        Go to learn.algonova.id <span class="translation text-sm italic">Pergi ke learn.algonova.id</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- TASK SECTIONS -->
+            <div id="task1" class="content-section">
+                <div class="page active" data-page="1"><div data-task-id="t1-task1"></div></div>
+                <div class="page" data-page="2"><div data-task-id="t1-task2"></div></div>
+                <div class="page" data-page="3"><div data-task-id="t1-task3"></div></div>
+                <div class="page" data-page="4"><div data-task-id="t1-task4"></div></div>
+                <div class="page" data-page="5"><div data-task-id="t1-task5"></div></div>
+                <div class="page" data-page="6"><div data-task-id="t1-task6"></div></div>
+                <div class="page" data-page="7"><div data-task-id="t1-task7"></div></div>
+                <div class="page" data-page="8"><div data-task-id="t1-task8"></div></div>
+                <div class="page" data-page="9"><div data-task-id="t1-task9"></div></div>
+                <div class="page" data-page="10"><div data-task-id="t1-task10"></div></div>
+            </div>
+            <div id="task2" class="content-section">
+                <div class="page active" data-page="1"><div data-task-id="t2-task1"></div></div>
+                <div class="page" data-page="2"><div data-task-id="t2-task2"></div></div>
+                <div class="page" data-page="3"><div data-task-id="t2-task3"></div></div>
+                <div class="page" data-page="4"><div data-task-id="t2-task4"></div></div>
+                <div class="page" data-page="5"><div data-task-id="t2-task5"></div></div>
+                <div class="page" data-page="6"><div data-task-id="t2-task6"></div></div>
+                <div class="page" data-page="7"><div data-task-id="t2-task7"></div></div>
+                <div class="page" data-page="8"><div data-task-id="t2-task8"></div></div>
+                <div class="page" data-page="9"><div data-task-id="t2-task9"></div></div>
+                <div class="page" data-page="10"><div data-task-id="t2-task10"></div></div>
+            </div>
+            <div id="task3" class="content-section">
+                <div class="page active" data-page="1"><div data-task-id="t3-task1"></div></div>
+                <div class="page" data-page="2"><div data-task-id="t3-task2"></div></div>
+                <div class="page" data-page="3"><div data-task-id="t3-task3"></div></div>
+                <div class="page" data-page="4"><div data-task-id="t3-task4"></div></div>
+                <div class="page" data-page="5"><div data-task-id="t3-task5"></div></div>
+                <div class="page" data-page="6"><div data-task-id="t3-task6"></div></div>
+                <div class="page" data-page="7"><div data-task-id="t3-task7"></div></div>
+                <div class="page" data-page="8"><div data-task-id="t3-task8"></div></div>
+                <div class="page" data-page="9"><div data-task-id="t3-task9"></div></div>
+                <div class="page" data-page="10"><div data-task-id="t3-task10"></div></div>
+            </div>
+            <div id="task4" class="content-section">
+                <div class="page active" data-page="1"><div data-task-id="t4-task1"></div></div>
+                <div class="page" data-page="2"><div data-task-id="t4-task2"></div></div>
+                <div class="page" data-page="3"><div data-task-id="t4-task3"></div></div>
+                <div class="page" data-page="4"><div data-task-id="t4-task4"></div></div>
+                <div class="page" data-page="5"><div data-task-id="t4-task5"></div></div>
+                <div class="page" data-page="6"><div data-task-id="t4-task6"></div></div>
+                <div class="page" data-page="7"><div data-task-id="t4-task7"></div></div>
+                <div class="page" data-page="8"><div data-task-id="t4-task8"></div></div>
+                <div class="page" data-page="9"><div data-task-id="t4-task9"></div></div>
+                <div class="page" data-page="10"><div data-task-id="t4-task10"></div></div>
+            </div>
+            <div id="task5" class="content-section">
+                <div class="page active" data-page="1"><div data-task-id="t5-task1"></div></div>
+                <div class="page" data-page="2"><div data-task-id="t5-task2"></div></div>
+                <div class="page" data-page="3"><div data-task-id="t5-task3"></div></div>
+                <div class="page" data-page="4"><div data-task-id="t5-task4"></div></div>
+                <div class="page" data-page="5"><div data-task-id="t5-task5"></div></div>
+                <div class="page" data-page="6"><div data-task-id="t5-task6"></div></div>
+                <div class="page" data-page="7"><div data-task-id="t5-task7"></div></div>
+                <div class="page" data-page="8"><div data-task-id="t5-task8"></div></div>
+                <div class="page" data-page="9"><div data-task-id="t5-task9"></div></div>
+                <div class="page" data-page="10"><div data-task-id="t5-task10"></div></div>
+            </div>
+            </div> <!-- Penutup #contentScrollArea -->
+            <div id="paginationBar" class="shrink-0 bg-white p-3 border-t border-gray-200 flex justify-center items-center gap-1 no-print z-40 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]"></div>
+        </main>
+    </div>
+    
+    <!-- Print Area -->
+    <div id="printArea" class="hidden p-8">
+        <div class="text-center border-b-2 border-black pb-4 mb-4">
+            <h1 class="text-xl font-bold">Math Tutoring by Deni</h1>
+            <p>Topic: Pythagorean Theorem - Special Triangles</p>
+            <div class="flex justify-around mt-4 text-sm">
+                <p>Name: ..............................</p>
+                <p>Date: ..............................</p>
+                <p>Task: <span id="printTaskNum">1</span></p>
+                <p>Score: <span id="printScore">0</span>/10</p>
+            </div>
+        </div>
+        <table class="w-full border-collapse border border-black text-sm">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="border border-black p-1">No.</th>
+                    <th class="border border-black p-1">Question</th>
+                    <th class="border border-black p-1">Student Answer</th>
+                    <th class="border border-black p-1">Correct Answer</th>
+                    <th class="border border-black p-1">Note (❌/✔️)</th>
+                </tr>
+            </thead>
+            <tbody id="printTableBody"></tbody>
+        </table>
+        <div class="mt-8 text-right">
+            <p>Checked by,</p>
+            <br><br>
+            <p class="font-bold">Deni</p>
+        </div>
+    </div>
+    
+    <script>
+        // ====== MATH QUESTIONS DATA (PART 1) ======
+        const questions = {};
+        Object.assign(questions, {
+            // SPIRAL REVIEW WARM-UP
+            "w-task1": { type: "single", q: "In a 45-45-90 triangle, if a leg is \\( 7 \\), what is the hypotenuse? <i class='fas fa-shapes text-blue-500 ml-2'></i>", q_trans: "Pada segitiga 45-45-90, jika sebuah kaki \\( 7 \\), berapakah sisi miringnya?", opts: ["\\( 7 \\)", "\\( 14 \\)", "\\( 7\\sqrt{2} \\)", "\\( 7\\sqrt{3} \\)", "\\( 14\\sqrt{2} \\)"], ans: "\\( 7\\sqrt{2} \\)", exp: "In a 45-45-90 triangle, hypotenuse = leg × √2. So, 7 × √2 = 7√2.", exp_trans: "Pada segitiga 45-45-90, sisi miring = kaki × √2. Jadi, 7 × √2 = 7√2." },
+            "w-task2": { type: "fill", q: "In a 30-60-90 triangle, the shortest leg is \\( 4 \\). What is the length of the hypotenuse? <i class='fas fa-ruler text-blue-500 ml-2'></i>", q_trans: "Pada segitiga 30-60-90, kaki terpendek adalah \\( 4 \\). Berapakah panjang sisi miringnya?", ans: "8", exp: "The shortest leg (opposite 30°) is x. The hypotenuse is 2x. So, 2 × 4 = 8.", exp_trans: "Kaki terpendek (depan 30°) adalah x. Sisi miringnya adalah 2x. Jadi, 2 × 4 = 8." },
+            "w-task3": { type: "tf_table", q: "Evaluate the statements regarding 45-45-90 triangles. <i class='fas fa-list-ul text-blue-500 ml-2'></i>", q_trans: "Evaluasi pernyataan mengenai segitiga 45-45-90.", opts: ["The two legs are congruent", "The angles are 45, 45, and 90", "The hypotenuse is leg × √3", "It is an isosceles triangle"], ans: ["B", "B", "S", "B"], exp: "1. T. 2. T. 3. F, hypotenuse is leg × √2. 4. T.", exp_trans: "1. B. 2. B. 3. S, sisi miringnya kaki × √2. 4. B." },
+            "w-task4": { type: "single", q: "In a 30-60-90 triangle, if the shorter leg is \\( 5 \\), what is the longer leg? <i class='fas fa-ruler-horizontal text-blue-500 ml-2'></i>", q_trans: "Pada segitiga 30-60-90, jika kaki yang lebih pendek \\( 5 \\), berapakah kaki yang lebih panjang?", opts: ["\\( 5 \\)", "\\( 10 \\)", "\\( 5\\sqrt{2} \\)", "\\( 5\\sqrt{3} \\)", "\\( 10\\sqrt{3} \\)"], ans: "\\( 5\\sqrt{3} \\)", exp: "The longer leg is x√3. Since x = 5, the longer leg is 5√3.", exp_trans: "Kaki yang lebih panjang adalah x√3. Karena x = 5, maka kaki yang lebih panjang adalah 5√3." },
+            "w-task5": { type: "complex", q: "Which of the following represent the sides of a 45-45-90 triangle? <i class='fas fa-check-double text-blue-500 ml-2'></i>", q_trans: "Manakah dari berikut ini yang mewakili sisi-sisi segitiga 45-45-90?", opts: ["\\( 3, 3, 3\\sqrt{2} \\)", "\\( 4, 4, 4\\sqrt{2} \\)", "\\( 5, 12, 13 \\)", "\\( 2, 2, 2\\sqrt{3} \\)"], ans: [0, 1], exp: "Options 1 and 2 fit the pattern x, x, x√2. Option 3 is a Pythagorean triple. Option 4 is for 30-60-90 (if 2 is the short leg, hypotenuse should be 4).", exp_trans: "Opsi 1 dan 2 sesuai dengan pola x, x, x√2. Opsi 3 adalah tripel Pythagoras. Opsi 4 untuk 30-60-90 (jika 2 kaki pendek, sisi miring harusnya 4)." },
+            "w-task6": { type: "fill", q: "Simplify the radical: \\( \\sqrt{50} \\). (Format: a√b) <i class='fas fa-square-root-variable text-blue-500 ml-2'></i>", q_trans: "Sederhanakan bentuk akar: \\( \\sqrt{50} \\). (Format: a√b)", ans: "5√2", exp: "√50 = √(25 × 2) = √25 × √2 = 5√2.", exp_trans: "√50 = √(25 × 2) = √25 × √2 = 5√2." },
+            "w-task7": { type: "single", q: "A square has a side length of \\( 6 \\). What is the length of its diagonal? <i class='fas fa-square text-blue-500 ml-2'></i>", q_trans: "Sebuah persegi memiliki panjang sisi \\( 6 \\). Berapakah panjang diagonalnya?", opts: ["\\( 6 \\)", "\\( 12 \\)", "\\( 6\\sqrt{2} \\)", "\\( 6\\sqrt{3} \\)", "\\( 12\\sqrt{2} \\)"], ans: "\\( 6\\sqrt{2} \\)", exp: "The diagonal of a square forms a 45-45-90 triangle. Diagonal = side × √2 = 6√2.", exp_trans: "Diagonal persegi membentuk segitiga 45-45-90. Diagonal = sisi × √2 = 6√2." },
+            "w-task8": { type: "tf_table", q: "Evaluate statements about 30-60-90 triangles. <i class='fas fa-clipboard-check text-blue-500 ml-2'></i>", q_trans: "Evaluasi pernyataan tentang segitiga 30-60-90.", opts: ["The hypotenuse is twice the shorter leg", "The longer leg is shorter leg × √3", "The angles are 30, 60, and 100", "The sides are in ratio 1 : √3 : 2"], ans: ["B", "B", "S", "B"], exp: "1. T. 2. T. 3. F, angles are 30, 60, 90. 4. T.", exp_trans: "1. B. 2. B. 3. S, sudutnya 30, 60, 90. 4. B." },
+            "w-task9": { type: "single", q: "If the hypotenuse of a 45-45-90 triangle is \\( 4\\sqrt{2} \\), what is the length of a leg? <i class='fas fa-shapes text-blue-500 ml-2'></i>", q_trans: "Jika sisi miring segitiga 45-45-90 adalah \\( 4\\sqrt{2} \\), berapakah panjang kakinya?", opts: ["\\( 2 \\)", "\\( 4 \\)", "\\( 8 \\)", "\\( 4\\sqrt{2} \\)", "\\( 8\\sqrt{2} \\)"], ans: "\\( 4 \\)", exp: "Hypotenuse = leg × √2. So leg = Hypotenuse / √2 = 4√2 / √2 = 4.", exp_trans: "Sisi miring = kaki × √2. Jadi kaki = Sisi miring / √2 = 4√2 / √2 = 4." },
+            "w-task10": { type: "complex", q: "Which of the following radicals are fully simplified? <i class='fas fa-check-circle text-blue-500 ml-2'></i>", q_trans: "Manakah dari bentuk akar berikut yang sudah disederhanakan sepenuhnya?", opts: ["\\( 3\\sqrt{5} \\)", "\\( \\sqrt{18} \\)", "\\( 7\\sqrt{2} \\)", "\\( 4\\sqrt{8} \\)"], ans: [0, 2], exp: "1. T. 2. F, can be simplified to 3√2. 3. T. 4. F, can be simplified to 8√2.", exp_trans: "1. B. 2. S, bisa disederhanakan jadi 3√2. 3. B. 4. S, bisa disederhanakan jadi 8√2." },
+
+            // INTRODUCTION & REAL-WORLD
+            "i-task1": { type: "single", q: "A wheelchair ramp forms a \\( 30^\circ \\) angle with the ground. If the height of the step is \\( 2 \\) ft, how long is the ramp? <i class='fas fa-wheelchair text-green-500 ml-2'></i>", q_trans: "Sebuah ramp kursi roda membentuk sudut \\( 30^\circ \\) dengan tanah. Jika tinggi anak tangga \\( 2 \\) kaki, berapa panjang ramp tersebut?", opts: ["\\( 2 \\text{ ft} \\)", "\\( 4 \\text{ ft} \\)", "\\( 2\\sqrt{3} \\text{ ft} \\)", "\\( 4\\sqrt{3} \\text{ ft} \\)", "\\( 8 \\text{ ft} \\)"], ans: "\\( 4 \\text{ ft} \\)", exp: "Height is the short leg (x = 2). The ramp is the hypotenuse (2x). So 2 × 2 = 4 ft.", exp_trans: "Tinggi adalah kaki pendek (x = 2). Ramp adalah sisi miring (2x). Jadi 2 × 2 = 4 kaki." },
+            "i-task2": { type: "fill", q: "A square table has sides of \\( 5 \\) ft. What is the distance between opposite corners (diagonal) in feet? (Format: a√b or a) <i class='fas fa-table text-green-500 ml-2'></i>", q_trans: "Meja persegi memiliki sisi \\( 5 \\) kaki. Berapakah jarak antara sudut berlawanan (diagonal) dalam kaki? (Format: a√b atau a)", ans: "5√2", exp: "Diagonal of square = side × √2 = 5√2.", exp_trans: "Diagonal persegi = sisi × √2 = 5√2." },
+            "i-task3": { type: "tf_table", q: "Analyze the real-world applications of special triangles. <i class='fas fa-list-ul text-green-500 ml-2'></i>", q_trans: "Analisis aplikasi dunia nyata dari segitiga istimewa.", opts: ["A 45-45-90 triangle is used to find the diagonal of a square", "A 30-60-90 triangle is formed when an equilateral triangle is bisected", "A ramp with a 30° angle has a hypotenuse 3 times the height", "A staircase with 45° angle has equal rise and run"], ans: ["B", "B", "S", "B"], exp: "1. T. 2. T. 3. F, hypotenuse is 2 times the height. 4. T.", exp_trans: "1. B. 2. B. 3. S, sisi miringnya 2 kali tinggi. 4. B." },
+            "i-task4": { type: "single", q: "An equilateral triangle has a side length of \\( 10 \\). What is its height? <i class='fas fa-mountain text-green-500 ml-2'></i>", q_trans: "Segitiga sama sisi memiliki panjang sisi \\( 10 \\). Berapakah tingginya?", opts: ["\\( 5 \\)", "\\( 10 \\)", "\\( 5\\sqrt{2} \\)", "\\( 5\\sqrt{3} \\)", "\\( 10\\sqrt{3} \\)"], ans: "\\( 5\\sqrt{3} \\)", exp: "Height forms a 30-60-90 triangle. Short leg is 5 (half of 10). Long leg is 5√3.", exp_trans: "Tinggi membentuk segitiga 30-60-90. Kaki pendek adalah 5 (setengah dari 10). Kaki panjang adalah 5√3." },
+            "i-task5": { type: "complex", q: "Which of these scenarios involve a 30-60-90 triangle? <i class='fas fa-check-double text-green-500 ml-2'></i>", q_trans: "Skenario mana saja yang melibatkan segitiga 30-60-90?", opts: ["Finding the altitude of an equilateral triangle", "Finding the diagonal of a square", "A ramp with a 30° angle of elevation", "A right triangle with angles 45, 45, 90"], ans: [0, 2], exp: "1. T. 2. F, that's 45-45-90. 3. T. 4. F, that's 45-45-90.", exp_trans: "1. B. 2. S, itu 45-45-90. 3. B. 4. S, itu 45-45-90." },
+            "i-task6": { type: "fill", q: "A square photo has a diagonal of \\( 6\\sqrt{2} \\) inches. What is the side length in inches? <i class='fas fa-image text-green-500 ml-2'></i>", q_trans: "Foto persegi memiliki diagonal \\( 6\\sqrt{2} \\) inci. Berapakah panjang sisinya dalam inci?", ans: "6", exp: "Diagonal = side × √2. So 6√2 = side × √2. Side = 6.", exp_trans: "Diagonal = sisi × √2. Jadi 6√2 = sisi × √2. Sisi = 6." },
+            "i-task7": { type: "single", q: "A ladder leaning against a wall forms a \\( 45^\circ \\) angle with the ground. If the base is \\( 8 \\) ft from the wall, how high up the wall does it reach? <i class='fas fa-ladder text-green-500 ml-2'></i>", q_trans: "Tangga yang bersandar di dinding membentuk sudut \\( 45^\circ \\) dengan tanah. Jika alasnya \\( 8 \\) kaki dari dinding, sampai berapa tinggi tangga di dinding?", opts: ["\\( 8 \\text{ ft} \\)", "\\( 16 \\text{ ft} \\)", "\\( 8\\sqrt{2} \\text{ ft} \\)", "\\( 8\\sqrt{3} \\text{ ft} \\)", "\\( 4 \\text{ ft} \\)"], ans: "\\( 8 \\text{ ft} \\)", exp: "In a 45-45-90 triangle, both legs are equal. If base is 8, height is 8.", exp_trans: "Pada segitiga 45-45-90, kedua kaki sama panjang. Jika alas 8, tingginya 8." },
+            "i-task8": { type: "tf_table", q: "Evaluate statements about equilateral triangles. <i class='fas fa-clipboard-list text-green-500 ml-2'></i>", q_trans: "Evaluasi pernyataan tentang segitiga sama sisi.", opts: ["All sides are equal", "All angles are 60°", "Altitude splits it into two 30-60-90 triangles", "Altitude splits it into two 45-45-90 triangles"], ans: ["B", "B", "B", "S"], exp: "1. T. 2. T. 3. T. 4. F, it splits into 30-60-90.", exp_trans: "1. B. 2. B. 3. B. 4. S, terbagi menjadi 30-60-90." },
+            "i-task9": { type: "single", q: "An equilateral triangle has a side of \\( 12 \\). What is the length of its altitude? <i class='fas fa-mountain text-green-500 ml-2'></i>", q_trans: "Segitiga sama sisi memiliki sisi \\( 12 \\). Berapakah panjang garis tingginya?", opts: ["\\( 6 \\)", "\\( 12 \\)", "\\( 6\\sqrt{2} \\)", "\\( 6\\sqrt{3} \\)", "\\( 12\\sqrt{3} \\)"], ans: "\\( 6\\sqrt{3} \\)", exp: "Altitude forms 30-60-90. Short leg is 6. Altitude is 6√3.", exp_trans: "Garis tinggi membentuk 30-60-90. Kaki pendek 6. Tingginya 6√3." },
+            "i-task10": { type: "complex", q: "Select the correct real-world applications. <i class='fas fa-check-circle text-green-500 ml-2'></i>", q_trans: "Pilih aplikasi dunia nyata yang benar.", opts: ["Finding the height of an equilateral pyramid's face", "Finding the length of a square's diagonal", "Calculating the length of a shadow for a 30° sun angle", "Measuring the circumference of a circle"], ans: [0, 1, 2], exp: "1. T. 2. T. 3. T. 4. F, circumference uses π, not Pythagorean theorem.", exp_trans: "1. B. 2. B. 3. B. 4. S, keliling menggunakan π, bukan teorema Pythagoras." },
+
+            // REVIEW OF PRIOR KNOWLEDGE
+            "r-task1": { type: "single", q: "Which of the following is a Pythagorean triple? <i class='fas fa-link text-purple-500 ml-2'></i>", q_trans: "Manakah dari berikut ini yang merupakan tripel Pythagoras?", opts: ["\\( 1, 2, 3 \\)", "\\( 2, 3, 4 \\)", "\\( 5, 12, 13 \\)", "\\( 7, 24, 26 \\)", "\\( 4, 5, 6 \\)"], ans: "\\( 5, 12, 13 \\)", exp: "5² + 12² = 25 + 144 = 169 = 13². Thus, 5, 12, 13 is a valid Pythagorean triple.", exp_trans: "5² + 12² = 25 + 144 = 169 = 13². Jadi, 5, 12, 13 adalah tripel Pythagoras yang valid." },
+            "r-task2": { type: "fill", q: "Simplify \\( \\sqrt{72} \\). (Format: a√b) <i class='fas fa-square-root-variable text-purple-500 ml-2'></i>", q_trans: "Sederhanakan \\( \\sqrt{72} \\). (Format: a√b)", ans: "6√2", exp: "√72 = √(36 × 2) = 6√2.", exp_trans: "√72 = √(36 × 2) = 6√2." },
+            "r-task3": { type: "tf_table", q: "Evaluate statements about Pythagorean triples. <i class='fas fa-list-ul text-purple-500 ml-2'></i>", q_trans: "Evaluasi pernyataan tentang tripel Pythagoras.", opts: ["3-4-5 is a primitive triple", "Multiplying a triple by 2 yields another triple", "Triples consist only of irrational numbers", "8-15-17 is a Pythagorean triple"], ans: ["B", "B", "S", "B"], exp: "1. T. 2. T. 3. F, they are integers. 4. T (8²+15²=64+225=289=17²).", exp_trans: "1. B. 2. B. 3. S, mereka bilangan bulat. 4. B (8²+15²=64+225=289=17²)." },
+            "r-task4": { type: "single", q: "Add \\( 3\\sqrt{5} + 7\\sqrt{5} \\). <i class='fas fa-plus text-purple-500 ml-2'></i>", q_trans: "Jumlahkan \\( 3\\sqrt{5} + 7\\sqrt{5} \\).", opts: ["\\( 10\\sqrt{5} \\)", "\\( 10\\sqrt{10} \\)", "\\( 21\\sqrt{5} \\)", "\\( 21\\sqrt{10} \\)", "\\( 10 \\)"], ans: "\\( 10\\sqrt{5} \\)", exp: "Combine coefficients: 3 + 7 = 10. Root remains √5.", exp_trans: "Jumlahkan koefisien: 3 + 7 = 10. Akarnya tetap √5." },
+            "r-task5": { type: "complex", q: "Which of the following radicals can be simplified to an integer? <i class='fas fa-check-double text-purple-500 ml-2'></i>", q_trans: "Manakah dari bentuk akar berikut yang dapat disederhanakan menjadi bilangan bulat?", opts: ["\\( \\sqrt{16} \\)", "\\( \\sqrt{50} \\)", "\\( \\sqrt{81} \\)", "\\( \\sqrt{100} \\)"], ans: [0, 2, 3], exp: "1. T (4). 2. F (5√2). 3. T (9). 4. T (10).", exp_trans: "1. B (4). 2. S (5√2). 3. B (9). 4. B (10)." },
+            "r-task6": { type: "fill", q: "If \\( a=6 \\) and \\( b=8 \\) in a right triangle, what is \\( c \\)? <i class='fas fa-right-left text-purple-500 ml-2'></i>", q_trans: "Jika \\( a=6 \\) dan \\( b=8 \\) pada segitiga siku-siku, berapakah \\( c \\)?", ans: "10", exp: "6² + 8² = 36 + 64 = 100. c = √100 = 10.", exp_trans: "6² + 8² = 36 + 64 = 100. c = √100 = 10." },
+            "r-task7": { type: "single", q: "Multiply \\( \\sqrt{3} \\times \\sqrt{12} \\). <i class='fas fa-times text-purple-500 ml-2'></i>", q_trans: "Kalikan \\( \\sqrt{3} \\times \\sqrt{12} \\).", opts: ["\\( \\sqrt{15} \\)", "\\( 6 \\)", "\\( 12 \\)", "\\( 6\\sqrt{3} \\)", "\\( 36 \\)"], ans: "\\( 6 \\)", exp: "√3 × √12 = √36 = 6.", exp_trans: "√3 × √12 = √36 = 6." },
+            "r-task8": { type: "tf_table", q: "Evaluate rules of exponents and roots. <i class='fas fa-clipboard-check text-purple-500 ml-2'></i>", q_trans: "Evaluasi aturan pangkat dan akar.", opts: ["(√2)² = 2", "√(a × b) = √a × √b", "√(a + b) = √a + √b", "a√x + b√x = (a+b)√x"], ans: ["B", "B", "S", "B"], exp: "1. T. 2. T. 3. F, roots don't distribute over addition. 4. T.", exp_trans: "1. B. 2. B. 3. S, akar tidak dapat didistribusikan pada penjumlahan. 4. B." },
+            "r-task9": { type: "single", q: "Simplify \\( 2\\sqrt{3} \\times 5\\sqrt{6} \\). <i class='fas fa-square-root-variable text-purple-500 ml-2'></i>", q_trans: "Sederhanakan \\( 2\\sqrt{3} \\times 5\\sqrt{6} \\).", opts: ["\\( 10\\sqrt{3} \\)", "\\( 10\\sqrt{18} \\)", "\\( 30\\sqrt{2} \\)", "\\( 15\\sqrt{2} \\)", "\\( 60 \\)"], ans: "\\( 30\\sqrt{2} \\)", exp: "2×5 = 10. √3 × √6 = √18 = 3√2. 10 × 3√2 = 30√2.", exp_trans: "2×5 = 10. √3 × √6 = √18 = 3√2. 10 × 3√2 = 30√2." },
+            "r-task10": { type: "complex", q: "Select the equations that are true. <i class='fas fa-check-circle text-purple-500 ml-2'></i>", q_trans: "Pilih persamaan yang benar.", opts: ["\\( 3^2 + 4^2 = 5^2 \\)", "\\( \\sqrt{8} = 2\\sqrt{2} \\)", "\\( (\\sqrt{5})^2 = 25 \\)", "\\( \\sqrt{2} \\times \\sqrt{8} = 4 \\)"], ans: [0, 1, 3], exp: "1. T (9+16=25). 2. T. 3. F, (√5)² = 5. 4. T (√16=4).", exp_trans: "1. B (9+16=25). 2. B. 3. S, (√5)² = 5. 4. B (√16=4)." }
+        });
+        Object.assign(questions, {
+            // PROBLEM INTRODUCTION
+            "p-task1": { type: "single", q: "In a 30-60-90 triangle, the longer leg is \\( 6\\sqrt{3} \\). What is the hypotenuse? <i class='fas fa-shapes text-orange-500 ml-2'></i>", q_trans: "Pada segitiga 30-60-90, kaki yang lebih panjang adalah \\( 6\\sqrt{3} \\). Berapakah sisi miringnya?", opts: ["\\( 6 \\)", "\\( 12 \\)", "\\( 12\\sqrt{3} \\)", "\\( 6\\sqrt{2} \\)", "\\( 24 \\)"], ans: "\\( 12 \\)", exp: "Long leg = x√3. So x√3 = 6√3 => x = 6. Hypotenuse = 2x = 12.", exp_trans: "Kaki panjang = x√3. Jadi x√3 = 6√3 => x = 6. Sisi miring = 2x = 12." },
+            "p-task2": { type: "fill", q: "In a 45-45-90 triangle, the hypotenuse is \\( 7\\sqrt{2} \\). What is the length of a leg? <i class='fas fa-ruler text-orange-500 ml-2'></i>", q_trans: "Pada segitiga 45-45-90, sisi miringnya \\( 7\\sqrt{2} \\). Berapakah panjang kakinya?", ans: "7", exp: "Hypotenuse = leg × √2. So leg = 7√2 / √2 = 7.", exp_trans: "Sisi miring = kaki × √2. Jadi kaki = 7√2 / √2 = 7." },
+            "p-task3": { type: "tf_table", q: "Evaluate statements about solving for sides. <i class='fas fa-list-ul text-orange-500 ml-2'></i>", q_trans: "Evaluasi pernyataan tentang mencari sisi.", opts: ["In 30-60-90, if short leg is x, long leg is x√3", "In 45-45-90, if hypotenuse is 10, legs are 10√2", "In 30-60-90, if hypotenuse is 10, short leg is 5", "In 45-45-90, legs are always equal"], ans: ["B", "S", "B", "B"], exp: "1. T. 2. F, legs are 10/√2 = 5√2. 3. T. 4. T.", exp_trans: "1. B. 2. S, kakinya 10/√2 = 5√2. 3. B. 4. B." },
+            "p-task4": { type: "single", q: "A 30-60-90 triangle has a hypotenuse of \\( 14 \\). What is the length of the shorter leg? <i class='fas fa-ruler-horizontal text-orange-500 ml-2'></i>", q_trans: "Segitiga 30-60-90 memiliki sisi miring \\( 14 \\). Berapakah panjang kaki yang lebih pendek?", opts: ["\\( 7 \\)", "\\( 14 \\)", "\\( 7\\sqrt{2} \\)", "\\( 7\\sqrt{3} \\)", "\\( 14\\sqrt{3} \\)"], ans: "\\( 7 \\)", exp: "Hypotenuse = 2x = 14 => x = 7. Short leg is x = 7.", exp_trans: "Sisi miring = 2x = 14 => x = 7. Kaki pendek adalah x = 7." },
+            "p-task5": { type: "complex", q: "Which of the following combinations are valid for a 30-60-90 triangle? <i class='fas fa-check-double text-orange-500 ml-2'></i>", q_trans: "Manakah kombinasi berikut yang valid untuk segitiga 30-60-90?", opts: ["Short leg = 3, Long leg = 3√3", "Short leg = 4, Hypotenuse = 8", "Long leg = 5, Hypotenuse = 10", "Short leg = 5, Long leg = 10"], ans: [0, 1], exp: "1. True (Long leg = 3 * √3). 2. True (Hypotenuse = 2 * 4). 3. False (If long leg is 5, hypotenuse should be 10/√3, not 10). 4. False (Long leg should be 5√3).", exp_trans: "1. Benar (Kaki panjang = 3 * √3). 2. Benar (Sisi miring = 2 * 4). 3. Salah (Jika kaki panjang 5, sisi miringnya harusnya 10/√3, bukan 10). 4. Salah (Kaki panjangnya harusnya 5√3)." },
+            "p-task6": { type: "fill", q: "Rationalize the denominator: \\( \\frac{5}{\\sqrt{3}} \\). (Format: a√b / c) <i class='fas fa-square-root-variable text-orange-500 ml-2'></i>", q_trans: "Rasionalkan penyebut: \\( \\frac{5}{\\sqrt{3}} \\). (Format: a√b / c)", ans: "\\( \\frac{5\\sqrt{3}}{3} \\)", exp: "Multiply top and bottom by √3: \\( \\frac{5 \\times \\sqrt{3}}{3} = \\frac{5\\sqrt{3}}{3} \\).", exp_trans: "Kalikan atas dan bawah dengan √3: \\( \\frac{5 \\times \\sqrt{3}}{3} = \\frac{5\\sqrt{3}}{3} \\)." },
+            "p-task7": { type: "single", q: "If the long leg of a 30-60-90 triangle is \\( 8\\sqrt{3} \\), what is the short leg? <i class='fas fa-shapes text-orange-500 ml-2'></i>", q_trans: "Jika kaki panjang segitiga 30-60-90 adalah \\( 8\\sqrt{3} \\), berapakah kaki pendeknya?", opts: ["\\( 8 \\)", "\\( 16 \\)", "\\( 8\\sqrt{2} \\)", "\\( 4\\sqrt{3} \\)", "\\( 24 \\)"], ans: "\\( 8 \\)", exp: "Long leg = x√3 = 8√3 => x = 8. Short leg is x = 8.", exp_trans: "Kaki panjang = x√3 = 8√3 => x = 8. Kaki pendek adalah x = 8." },
+            "p-task8": { type: "tf_table", q: "Evaluate algebraic manipulations with radicals. <i class='fas fa-clipboard-check text-orange-500 ml-2'></i>", q_trans: "Evaluasi manipulasi aljabar dengan bentuk akar.", opts: ["(x√2)² = 2x²", "(x√3)² = 3x²", "x√2 + x√2 = 2x√2", "x√2 × x√3 = x²√6"], ans: ["B", "B", "B", "B"], exp: "All are true. Squaring a radical multiplies the radicand. Adding combines coefficients. Multiplying multiplies coefficients and radicands.", exp_trans: "Semua benar. Mengkuadratkan akar mengalikan radikan. Menjumlahkan menggabungkan koefisien. Mengalikan mengalikan koefisien dan radikan." },
+            "p-task9": { type: "single", q: "In a 45-45-90 triangle, a leg is \\( 4\\sqrt{3} \\). What is the hypotenuse? <i class='fas fa-shapes text-orange-500 ml-2'></i>", q_trans: "Pada segitiga 45-45-90, seeku kaki \\( 4\\sqrt{3} \\). Berapakah sisi miringnya?", opts: ["\\( 4\\sqrt{6} \\)", "\\( 8\\sqrt{3} \\)", "\\( 4\\sqrt{5} \\)", "\\( 12 \\)", "\\( 4 \\)"], ans: "\\( 4\\sqrt{6} \\)", exp: "Hypotenuse = leg × √2 = 4√3 × √2 = 4√6.", exp_trans: "Sisi miring = kaki × √2 = 4√3 × √2 = 4√6." },
+            "p-task10": { type: "complex", q: "Which of the following are true regarding a 30-60-90 triangle with short leg \\( x \\)? <i class='fas fa-check-circle text-orange-500 ml-2'></i>", q_trans: "Manakah pernyataan berikut yang benar mengenai segitiga 30-60-90 dengan kaki pendek \\( x \\)?", opts: ["The hypotenuse is 2x", "The long leg is x√3", "The hypotenuse is x√2", "The perimeter is 3x + x√3"], ans: [0, 1, 3], exp: "1. T. 2. T. 3. F, hypotenuse is 2x. 4. T, perimeter = x + x√3 + 2x = 3x + x√3.", exp_trans: "1. B. 2. B. 3. S, sisi miringnya 2x. 4. B, keliling = x + x√3 + 2x = 3x + x√3." },
+
+            // GUIDED PRACTICE
+            "g-task1": { type: "single", q: "An isosceles right triangle has a hypotenuse of \\( 10 \\). An altitude is drawn to the hypotenuse. What is the length of the altitude? <i class='fas fa-layer-group text-blue-500 ml-2'></i>", q_trans: "Segitiga siku-siku sama kaki memiliki sisi miring \\( 10 \\). Garis tinggi ditarik ke sisi miring. Berapakah panjang garis tingginya?", opts: ["\\( 5 \\)", "\\( 5\\sqrt{2} \\)", "\\( 10 \\)", "\\( 10\\sqrt{2} \\)", "\\( 2.5 \\)"], ans: "\\( 5 \\)", exp: "In an isosceles right triangle, the altitude to the hypotenuse also acts as the median. It splits the hypotenuse (10) into two segments of 5. Using the 45-45-90 ratio for the smaller triangle formed, the altitude (leg) equals the segment, which is 5. Alternatively, using area: Area = 1/2 * (5√2)² = 25. And 1/2 * 10 * h = 25 implies h = 5.", exp_trans: "Pada segitiga siku-siku sama kaki, garis tinggi ke sisi miring juga berfungsi sebagai median. Membagi sisi miring (10) menjadi dua segmen 5. Pada segitiga 45-45-90 kecil yang terbentuk, garis tinggi (kaki) sama dengan segmen yaitu 5. Atau pakai luas: Luas = 1/2 * (5√2)² = 25. Dan 1/2 * 10 * t = 25 -> t = 5." },
+            "g-task2": { type: "fill", q: "A cube has a face diagonal of \\( 5\\sqrt{2} \\). What is the length of its space diagonal? (Format: a or a√b) <i class='fas fa-cube text-blue-500 ml-2'></i>", q_trans: "Kubus memiliki diagonal sisi \\( 5\\sqrt{2} \\). Berapakah panjang diagonal ruangnya? (Format: a atau a√b)", ans: "5√3", exp: "Face diagonal = s√2 = 5√2 => s = 5. Space diagonal = s√3 = 5√3.", exp_trans: "Diagonal sisi = s√2 = 5√2 => s = 5. Diagonal ruang = s√3 = 5√3." },
+            "g-task3": { type: "tf_table", q: "Evaluate statements about 3D diagonals. <i class='fas fa-clipboard-check text-blue-500 ml-2'></i>", q_trans: "Evaluasi pernyataan tentang diagonal 3D.", opts: ["Face diagonal of a cube uses 45-45-90 ratios", "Space diagonal of a cube uses 30-60-90 ratios", "If side of cube is 1, face diagonal is √2", "If side of cube is 1, space diagonal is √3"], ans: ["B", "S", "B", "B"], exp: "1. T. 2. F, it uses a right triangle with legs s and s√2, hypotenuse s√3, which is NOT 30-60-90. 3. T. 4. T.", exp_trans: "1. B. 2. S, menggunakan segitiga siku-siku dengan kaki s dan s√2, sisi miring s√3, yang BUKAN 30-60-90. 3. B. 4. B." },
+            "g-task4": { type: "single", q: "What is the distance between the points \\( (0, 0) \\) and \\( (6, 6) \\)? <i class='fas fa-map text-blue-500 ml-2'></i>", q_trans: "Berapakah jarak antara titik \\( (0, 0) \\) dan \\( (6, 6) \\)?", opts: ["\\( 6 \\)", "\\( 12 \\)", "\\( 6\\sqrt{2} \\)", "\\( 6\\sqrt{3} \\)", "\\( 36 \\)"], ans: "\\( 6\\sqrt{2} \\)", exp: "Forms a 45-45-90 triangle with legs 6. Distance = 6√2.", exp_trans: "Membentuk segitiga 45-45-90 dengan kaki 6. Jarak = 6√2." },
+            "g-task5": { type: "complex", q: "Which point distances from the origin involve a 30-60-90 triangle? <i class='fas fa-check-double text-blue-500 ml-2'></i>", q_trans: "Jarak titik mana dari pusat yang melibatkan segitiga 30-60-90?", opts: ["\\( (3, 3\\sqrt{3}) \\)", "\\( (4, 4) \\)", "\\( (5, 5\\sqrt{3}) \\)", "\\( (6, 8) \\)"], ans: [0, 2], exp: "1. T, x=3, y=3√3. Distance = √(9 + 27) = √36 = 6. This is 2x. Forms 30-60-90. 2. F, 45-45-90. 3. T, x=5, y=5√3. 4. F, 3-4-5 triple.", exp_trans: "1. B, x=3, y=3√3. Jarak = √(9 + 27) = √36 = 6. Ini adalah 2x. Membentuk 30-60-90. 2. S, 45-45-90. 3. B, x=5, y=5√3. 4. S, tripel 3-4-5." },
+            "g-task6": { type: "fill", q: "A rectangle has sides \\( 4 \\) and \\( 4\\sqrt{3} \\). What is the length of its diagonal? (Format: a) <i class='fas fa-vector-square text-blue-500 ml-2'></i>", q_trans: "Persegi panjang memiliki sisi \\( 4 \\) dan \\( 4\\sqrt{3} \\). Berapakah panjang diagonalnya? (Format: a)", ans: "8", exp: "Diagonal forms a 30-60-90 triangle. Short leg = 4, long leg = 4√3. Hypotenuse (diagonal) = 2 * 4 = 8.", exp_trans: "Diagonal membentuk segitiga 30-60-90. Kaki pendek = 4, kaki panjang = 4√3. Sisi miring (diagonal) = 2 * 4 = 8." },
+            "g-task7": { type: "single", q: "An equilateral triangle has a side length of \\( 12 \\). What is its area? <i class='fas fa-vector-square text-blue-500 ml-2'></i>", q_trans: "Segitiga sama sisi memiliki panjang sisi \\( 12 \\). Berapakah luasnya?", opts: ["\\( 36 \\)", "\\( 72 \\)", "\\( 36\\sqrt{2} \\)", "\\( 36\\sqrt{3} \\)", "\\( 144\\sqrt{3} \\)"], ans: "\\( 36\\sqrt{3} \\)", exp: "Height = 6√3. Area = 1/2 * 12 * 6√3 = 36√3.", exp_trans: "Tinggi = 6√3. Luas = 1/2 * 12 * 6√3 = 36√3." },
+            "g-task8": { type: "tf_table", q: "Evaluate area statements. <i class='fas fa-clipboard-list text-blue-500 ml-2'></i>", q_trans: "Evaluasi pernyataan luas.", opts: ["Area of right triangle = 1/2 * leg1 * leg2", "Area of equilateral triangle with side s is \\( \\frac{s^2\\sqrt{3}}{4} \\)", "If 45-45-90 legs are 4, area is 16", "If 30-60-90 short leg is 4, area is 8√3"], ans: ["B", "B", "S", "B"], exp: "1. T. 2. T. 3. F, area is \\( \\frac{1}{2} \\times 4 \\times 4 = 8 \\). 4. T, legs are 4 and 4√3. Area = \\( \\frac{1}{2} \\times 4 \\times 4\\sqrt{3} = 8\\sqrt{3} \\).", exp_trans: "1. B. 2. B. 3. S, luasnya \\( \\frac{1}{2} \\times 4 \\times 4 = 8 \\). 4. B, kakinya 4 dan 4√3. Luas = \\( \\frac{1}{2} \\times 4 \\times 4\\sqrt{3} = 8\\sqrt{3} \\)." },
+            "g-task9": { type: "single", q: "A 30-60-90 triangle has a short leg of \\( 5 \\). What is its perimeter? <i class='fas fa-ruler-horizontal text-blue-500 ml-2'></i>", q_trans: "Segitiga 30-60-90 memiliki kaki pendek \\( 5 \\). Berapakah kelilingnya?", opts: ["\\( 15 \\)", "\\( 15 + 5\\sqrt{3} \\)", "\\( 10 + 5\\sqrt{3} \\)", "\\( 25 \\)", "\\( 15 + 10\\sqrt{3} \\)"], ans: "\\( 15 + 5\\sqrt{3} \\)", exp: "Sides are 5, 5√3, 10. P = 5 + 10 + 5√3 = 15 + 5√3.", exp_trans: "Sisinya 5, 5√3, 10. K = 5 + 10 + 5√3 = 15 + 5√3." },
+            "g-task10": { type: "complex", q: "Which of the following represent the sides of a 30-60-90 triangle? <i class='fas fa-check-circle text-blue-500 ml-2'></i>", q_trans: "Manakah dari berikut ini yang mewakili sisi segitiga 30-60-90?", opts: ["\\( 5, 5\\sqrt{3}, 10 \\)", "\\( 2, 2\\sqrt{3}, 4 \\)", "\\( 7, 7\\sqrt{2}, 14 \\)", "\\( x, x\\sqrt{3}, 2x \\)"], ans: [0, 1, 3], exp: "1. T. 2. T. 3. F, 7√2 is for 45-45-90. 4. T.", exp_trans: "1. B. 2. B. 3. S, 7√2 untuk 45-45-90. 4. B." }
+        });
+
+        Object.assign(questions, {
+            // INDEPENDENT PRACTICE
+            "ind-task1": { type: "single", q: "A square has a diagonal of \\( 10\\sqrt{2} \\). What is its area? <i class='fas fa-square text-green-500 ml-2'></i>", q_trans: "Persegi memiliki diagonal \\( 10\\sqrt{2} \\). Berapakah luasnya?", opts: ["\\( 100 \\)", "\\( 50 \\)", "\\( 100\\sqrt{2} \\)", "\\( 200 \\)", "\\( 50\\sqrt{2} \\)"], ans: "\\( 100 \\)", exp: "Diagonal = s√2 = 10√2 => s = 10. Area = s² = 100.", exp_trans: "Diagonal = s√2 = 10√2 => s = 10. Luas = s² = 100." },
+            "ind-task2": { type: "fill", q: "A 30-60-90 triangle has a long leg of \\( 9\\sqrt{3} \\). What is its area? (Format: a√b or a) <i class='fas fa-vector-square text-green-500 ml-2'></i>", q_trans: "Segitiga 30-60-90 memiliki kaki panjang \\( 9\\sqrt{3} \\). Berapakah luasnya? (Format: a√b atau a)", ans: "\\( \\frac{81\\sqrt{3}}{2} \\)", exp: "Long leg = x√3 = 9√3 => x = 9. Short leg = 9. Area = \\( \\frac{1}{2} \\times 9 \\times 9\\sqrt{3} = \\frac{81\\sqrt{3}}{2} \\).", exp_trans: "Kaki panjang = x√3 = 9√3 => x = 9. Kaki pendek = 9. Luas = \\( \\frac{1}{2} \\times 9 \\times 9\\sqrt{3} = \\frac{81\\sqrt{3}}{2} \\)." },
+            "ind-task3": { type: "tf_table", q: "Analyze perimeter and area. <i class='fas fa-list-ol text-green-500 ml-2'></i>", q_trans: "Analisis keliling dan luas.", opts: ["If sides of 45-45-90 are 5, area is 12.5", "If short leg of 30-60-90 is 4, perimeter is 12 + 4√3", "If diagonal of square is 8, area is 32", "If hypotenuse of 30-60-90 is 10, area is 25√3"], ans: ["B", "B", "B", "S"], exp: "1. True (\\( \\frac{1}{2} \\times 5 \\times 5 = 12.5 \\)). 2. True (sides 4, 4√3, 8 -> P = 12 + 4√3). 3. True (d=8 => s=4√2 -> Area = 32). 4. False (hyp=10 => short=5, long=5√3. Area = \\( \\frac{1}{2} \\times 5 \\times 5\\sqrt{3} = 12.5\\sqrt{3} \\), not 25√3).", exp_trans: "1. B (\\( \\frac{1}{2} \\times 5 \\times 5 = 12.5 \\)). 2. B (sisi 4, 4√3, 8 -> K = 12 + 4√3). 3. B (d=8 => s=4√2 -> Luas = 32). 4. S (s.m.=10 => pendek=5, panjang=5√3. Luas = \\( \\frac{1}{2} \\times 5 \\times 5\\sqrt{3} = 12.5\\sqrt{3} \\), bukan 25√3)." },
+            "ind-task4": { type: "single", q: "A guy wire is attached to a pole \\( 10\\sqrt{3} \\) ft from the base. It forms a 30° angle with the ground. How tall is the pole? <i class='fas fa-building text-green-500 ml-2'></i>", q_trans: "Kawat penyangga dipasang di tiang sejauh \\( 10\\sqrt{3} \\) kaki dari alas. Membentuk sudut 30° dengan tanah. Berapa tinggi tiangnya?", opts: ["\\( 10 \\text{ ft} \\)", "\\( 20 \\text{ ft} \\)", "\\( 10\\sqrt{2} \\text{ ft} \\)", "\\( 10\\sqrt{3} \\text{ ft} \\)", "\\( 30 \\text{ ft} \\)"], ans: "\\( 10 \\text{ ft} \\)", exp: "Distance on ground is long leg = x√3 = 10√3 => x = 10. Height is short leg = 10 ft.", exp_trans: "Jarak di tanah adalah kaki panjang = x√3 = 10√3 => x = 10. Tinggi adalah kaki pendek = 10 kaki." },
+            "ind-task5": { type: "complex", q: "Which of the following scenarios correctly use 30-60-90 ratios? <i class='fas fa-check-double text-green-500 ml-2'></i>", q_trans: "Skenario mana yang benar menggunakan rasio 30-60-90?", opts: ["Finding height of equilateral triangle", "Finding distance on ground from 30° ramp", "Finding diagonal of a square", "Finding space diagonal of a cube"], ans: [0, 1], exp: "1. T. 2. T. 3. F, uses 45-45-90. 4. F, uses right triangle but not 30-60-90.", exp_trans: "1. B. 2. B. 3. S, menggunakan 45-45-90. 4. S, menggunakan segitiga siku-siku tapi bukan 30-60-90." },
+            "ind-task6": { type: "fill", q: "A square has an area of \\( 64 \\). What is the length of its diagonal? (Format: a√b or a) <i class='fas fa-square text-green-500 ml-2'></i>", q_trans: "Persegi memiliki luas \\( 64 \\). Berapakah panjang diagonalnya? (Format: a√b atau a)", ans: "8√2", exp: "Area = 64 => s = 8. Diagonal = 8√2.", exp_trans: "Luas = 64 => s = 8. Diagonal = 8√2." },
+            "ind-task7": { type: "single", q: "A rectangle has sides \\( 10 \\) and \\( 10\\sqrt{3} \\). What is the length of the diagonal? <i class='fas fa-vector-square text-green-500 ml-2'></i>", q_trans: "Persegi panjang memiliki sisi \\( 10 \\) dan \\( 10\\sqrt{3} \\). Berapakah panjang diagonalnya?", opts: ["\\( 10 \\)", "\\( 20 \\)", "\\( 10\\sqrt{2} \\)", "\\( 10\\sqrt{3} \\)", "\\( 30 \\)"], ans: "\\( 20 \\)", exp: "Forms 30-60-90 triangle. Short leg = 10. Hypotenuse = 2 * 10 = 20.", exp_trans: "Membentuk segitiga 30-60-90. Kaki pendek = 10. Sisi miring = 2 * 10 = 20." },
+            "ind-task8": { type: "tf_table", q: "Evaluate real-world applications. <i class='fas fa-clipboard-check text-green-500 ml-2'></i>", q_trans: "Evaluasi aplikasi dunia nyata.", opts: ["A 45° staircase has equal rise and run", "A 30° ramp has a run that is √3 times the rise", "If a square's side doubles, its diagonal doubles", "If a 30-60-90 triangle's sides double, its area doubles"], ans: ["B", "B", "B", "S"], exp: "1. T. 2. T. 3. T, diagonal = s√2. 4. F, area quadruples if sides double.", exp_trans: "1. B. 2. B. 3. B, diagonal = s√2. 4. S, luas menjadi 4 kali lipat jika sisi digandakan." },
+            "ind-task9": { type: "single", q: "Two 30-60-90 triangles are joined along their hypotenuses to form a rectangle. If the short leg is \\( 5 \\), what is the perimeter of the rectangle? <i class='fas fa-shapes text-green-500 ml-2'></i>", q_trans: "Dua segitiga 30-60-90 disatukan pada sisi miringnya membentuk persegi panjang. Jika kaki pendek \\( 5 \\), berapakah keliling persegi panjang tersebut?", opts: ["\\( 10 + 10\\sqrt{3} \\)", "\\( 20 + 10\\sqrt{3} \\)", "\\( 20 + 5\\sqrt{3} \\)", "\\( 10 + 20\\sqrt{3} \\)", "\\( 30 \\)"], ans: "\\( 10 + 10\\sqrt{3} \\)", exp: "The sides of the triangle are 5, 5√3, and 10. Joining them on the hypotenuse forms a rectangle with length 5√3 and width 5. Perimeter = 2(5) + 2(5√3) = 10 + 10√3.", exp_trans: "Sisi segitiga adalah 5, 5√3, dan 10. Menggabungkannya di sisi miring membentuk persegi panjang dengan panjang 5√3 dan lebar 5. Keliling = 2(5) + 2(5√3) = 10 + 10√3." },
+            "ind-task10": { type: "complex", q: "Select the correct formulas. <i class='fas fa-check-circle text-green-500 ml-2'></i>", q_trans: "Pilih rumus yang benar.", opts: ["\\( \\text{Area of square} = \\frac{d^2}{2} \\)", "\\( \\text{Area of equilateral triangle} = \\frac{s^2\\sqrt{3}}{4} \\)", "\\( \\text{Diagonal of cube} = s\\sqrt{3} \\)", "\\( \\text{Diagonal of rectangle} = \\sqrt{l^2 + w^2} \\)"], ans: [0, 1, 2, 3], exp: "All are standard geometric formulas derived using Pythagorean theorem.", exp_trans: "Semua adalah rumus geometri standar yang diturunkan menggunakan teorema Pythagoras." },
+
+            // TASK 1: 45-45-90 Triangles
+            "t1-task1": { type: "single", q: "In a 45-45-90 triangle, a leg is \\( 9 \\). What is the hypotenuse? <i class='fas fa-shapes text-orange-500 ml-2'></i>", q_trans: "Pada segitiga 45-45-90, sebuah kaki \\( 9 \\). Berapakah sisi miringnya?", opts: ["\\( 9 \\)", "\\( 18 \\)", "\\( 9\\sqrt{2} \\)", "\\( 9\\sqrt{3} \\)", "\\( 18\\sqrt{2} \\)"], ans: "\\( 9\\sqrt{2} \\)", exp: "Hypotenuse = leg × √2 = 9√2.", exp_trans: "Sisi miring = kaki × √2 = 9√2." },
+            "t1-task2": { type: "fill", q: "In a 45-45-90 triangle, the hypotenuse is \\( 14\\sqrt{2} \\). What is the length of a leg? <i class='fas fa-ruler text-orange-500 ml-2'></i>", q_trans: "Pada segitiga 45-45-90, sisi miringnya \\( 14\\sqrt{2} \\). Berapakah panjang kakinya?", ans: "14", exp: "Leg = Hypotenuse / √2 = 14√2 / √2 = 14.", exp_trans: "Kaki = Sisi miring / √2 = 14√2 / √2 = 14." },
+            "t1-task3": { type: "tf_table", q: "Evaluate statements about 45-45-90 triangles. <i class='fas fa-list-ul text-orange-500 ml-2'></i>", q_trans: "Evaluasi pernyataan tentang segitiga 45-45-90.", opts: ["The legs are congruent", "The hypotenuse is leg × √3", "The angles are 45, 45, 90", "It is half of a square"], ans: ["B", "S", "B", "B"], exp: "1. T. 2. F, it's leg × √2. 3. T. 4. T.", exp_trans: "1. B. 2. S, itu kaki × √2. 3. B. 4. B." },
+            "t1-task4": { type: "single", q: "A square has a side length of \\( 8 \\). What is its diagonal? <i class='fas fa-square text-orange-500 ml-2'></i>", q_trans: "Persegi memiliki panjang sisi \\( 8 \\). Berapakah diagonalnya?", opts: ["\\( 8 \\)", "\\( 16 \\)", "\\( 8\\sqrt{2} \\)", "\\( 8\\sqrt{3} \\)", "\\( 16\\sqrt{2} \\)"], ans: "\\( 8\\sqrt{2} \\)", exp: "Diagonal of square = side × √2 = 8√2.", exp_trans: "Diagonal persegi = sisi × √2 = 8√2." },
+            "t1-task5": { type: "complex", q: "Which of the following are sides of a 45-45-90 triangle? <i class='fas fa-check-double text-orange-500 ml-2'></i>", q_trans: "Manakah dari berikut ini yang merupakan sisi segitiga 45-45-90?", opts: ["\\( 3, 3, 3\\sqrt{2} \\)", "\\( 5, 5, 10 \\)", "\\( 7, 7, 7\\sqrt{2} \\)", "\\( 4, 4, 4\\sqrt{3} \\)"], ans: [0, 2], exp: "1. T. 2. F, hyp should be 5√2. 3. T. 4. F, for 30-60-90 (if 4 is short leg).", exp_trans: "1. B. 2. S, s.m. seharusnya 5√2. 3. B. 4. S, untuk 30-60-90 (jika 4 kaki pendek)." },
+            "t1-task6": { type: "fill", q: "If the diagonal of a square is \\( 12\\sqrt{2} \\), what is its side length? <i class='fas fa-ruler-horizontal text-orange-500 ml-2'></i>", q_trans: "Jika diagonal persegi adalah \\( 12\\sqrt{2} \\), berapakah panjang sisinya?", ans: "12", exp: "Diagonal = s√2 = 12√2 => s = 12.", exp_trans: "Diagonal = s√2 = 12√2 => s = 12." },
+            "t1-task7": { type: "single", q: "In a 45-45-90 triangle, if a leg is \\( 5\\sqrt{2} \\), what is the hypotenuse? <i class='fas fa-shapes text-orange-500 ml-2'></i>", q_trans: "Pada segitiga 45-45-90, jika sebuah kaki \\( 5\\sqrt{2} \\), berapakah sisi miringnya?", opts: ["\\( 5 \\)", "\\( 10 \\)", "\\( 10\\sqrt{2} \\)", "\\( 5\\sqrt{3} \\)", "\\( 20 \\)"], ans: "\\( 10 \\)", exp: "Hypotenuse = 5√2 × √2 = 5 × 2 = 10.", exp_trans: "Sisi miring = 5√2 × √2 = 5 × 2 = 10." },
+            "t1-task8": { type: "tf_table", q: "Evaluate diagonal statements. <i class='fas fa-clipboard-check text-orange-500 ml-2'></i>", q_trans: "Evaluasi pernyataan diagonal.", opts: ["Diagonal of square = s√2", "Diagonal of square divides it into two 30-60-90 triangles", "If diagonal is 10, side is 5√2", "If side is 10, area is 100"], ans: ["B", "S", "B", "B"], exp: "1. T. 2. F, divides into 45-45-90. 3. T, 10 = s√2 => s = 10/√2 = 5√2. 4. T.", exp_trans: "1. B. 2. S, membagi menjadi 45-45-90. 3. B, 10 = s√2 => s = 10/√2 = 5√2. 4. B." },
+            "t1-task9": { type: "single", q: "What is the area of a 45-45-90 triangle with a leg of \\( 6\\sqrt{2} \\)? <i class='fas fa-vector-square text-orange-500 ml-2'></i>", q_trans: "Berapakah luas segitiga 45-45-90 dengan kaki \\( 6\\sqrt{2} \\)?", opts: ["\\( 18 \\)", "\\( 36 \\)", "\\( 18\\sqrt{2} \\)", "\\( 36\\sqrt{2} \\)", "\\( 72 \\)"], ans: "\\( 36 \\)", exp: "Area = \\( \\frac{1}{2} \\times \\text{leg} \\times \\text{leg} = \\frac{1}{2} \\times (6\\sqrt{2})^2 = \\frac{1}{2} \\times 72 = 36 \\).", exp_trans: "Luas = \\( \\frac{1}{2} \\times \\text{kaki} \\times \\text{kaki} = \\frac{1}{2} \\times (6\\sqrt{2})^2 = \\frac{1}{2} \\times 72 = 36 \\)." },
+
+            // TASK 2: 30-60-90 Triangles
+            "t2-task1": { type: "single", q: "In a 30-60-90 triangle, the short leg is \\( 6 \\). What is the hypotenuse? <i class='fas fa-shapes text-orange-500 ml-2'></i>", q_trans: "Pada segitiga 30-60-90, kaki pendek \\( 6 \\). Berapakah sisi miringnya?", opts: ["\\( 6 \\)", "\\( 12 \\)", "\\( 6\\sqrt{2} \\)", "\\( 6\\sqrt{3} \\)", "\\( 24 \\)"], ans: "\\( 12 \\)", exp: "Hypotenuse = 2 * short leg = 12.", exp_trans: "Sisi miring = 2 * kaki pendek = 12." },
+            "t2-task2": { type: "fill", q: "In a 30-60-90 triangle, the short leg is \\( 5 \\). What is the length of the long leg? (Format: a√b) <i class='fas fa-ruler text-orange-500 ml-2'></i>", q_trans: "Pada segitiga 30-60-90, kaki pendek \\( 5 \\). Berapakah panjang kaki panjangnya? (Format: a√b)", ans: "5√3", exp: "Long leg = short leg * √3 = 5√3.", exp_trans: "Kaki panjang = kaki pendek * √3 = 5√3." },
+            "t2-task3": { type: "tf_table", q: "Evaluate statements about 30-60-90 triangles. <i class='fas fa-list-ul text-orange-500 ml-2'></i>", q_trans: "Evaluasi pernyataan tentang segitiga 30-60-90.", opts: ["Hypotenuse is twice the short leg", "Long leg is short leg × √3", "The angles are 30, 60, 100", "It is half of an equilateral triangle"], ans: ["B", "B", "S", "B"], exp: "1. T. 2. T. 3. F, angles are 30, 60, 90. 4. T.", exp_trans: "1. B. 2. B. 3. S, sudutnya 30, 60, 90. 4. B." },
+            "t2-task4": { type: "single", q: "An equilateral triangle has a side of \\( 14 \\). What is its height? <i class='fas fa-mountain text-orange-500 ml-2'></i>", q_trans: "Segitiga sama sisi memiliki sisi \\( 14 \\). Berapakah tingginya?", opts: ["\\( 7 \\)", "\\( 14 \\)", "\\( 7\\sqrt{2} \\)", "\\( 7\\sqrt{3} \\)", "\\( 14\\sqrt{3} \\)"], ans: "\\( 7\\sqrt{3} \\)", exp: "Height = (side / 2) * √3 = 7√3.", exp_trans: "Tinggi = (sisi / 2) * √3 = 7√3." },
+            "t2-task5": { type: "complex", q: "Which of the following represent the sides of a 30-60-90 triangle? <i class='fas fa-check-double text-orange-500 ml-2'></i>", q_trans: "Manakah dari berikut ini yang mewakili sisi segitiga 30-60-90?", opts: ["\\( 4, 4\\sqrt{3}, 8 \\)", "\\( 10, 10\\sqrt{3}, 20 \\)", "\\( 6, 6\\sqrt{2}, 12 \\)", "\\( x, x\\sqrt{3}, 2x \\)"], ans: [0, 1, 3], exp: "1. T. 2. T. 3. F, that's 45-45-90 pattern. 4. T.", exp_trans: "1. B. 2. B. 3. S, itu pola 45-45-90. 4. B." },
+            "t2-task6": { type: "fill", q: "If the hypotenuse of a 30-60-90 triangle is \\( 18 \\), what is the short leg? <i class='fas fa-ruler-horizontal text-orange-500 ml-2'></i>", q_trans: "Jika sisi miring segitiga 30-60-90 adalah \\( 18 \\), berapakah kaki pendeknya?", ans: "9", exp: "Short leg = Hypotenuse / 2 = 18 / 2 = 9.", exp_trans: "Kaki pendek = Sisi miring / 2 = 18 / 2 = 9." },
+            "t2-task7": { type: "single", q: "A 30-60-90 triangle has a long leg of \\( 8\\sqrt{3} \\). What is the hypotenuse? <i class='fas fa-shapes text-orange-500 ml-2'></i>", q_trans: "Segitiga 30-60-90 memiliki kaki panjang \\( 8\\sqrt{3} \\). Berapakah sisi miringnya?", opts: ["\\( 8 \\)", "\\( 16 \\)", "\\( 8\\sqrt{2} \\)", "\\( 16\\sqrt{3} \\)", "\\( 24 \\)"], ans: "\\( 16 \\)", exp: "Long leg = x√3 = 8√3 => x = 8. Hypotenuse = 2x = 16.", exp_trans: "Kaki panjang = x√3 = 8√3 => x = 8. Sisi miring = 2x = 16." },
+            "t2-task8": { type: "tf_table", q: "Evaluate height statements. <i class='fas fa-clipboard-check text-orange-500 ml-2'></i>", q_trans: "Evaluasi pernyataan tinggi.", opts: ["Height of equilateral triangle with side s is s√3 / 2", "If side is 10, height is 5√3", "If height is 10√3, side is 20", "Height is equal to the side"], ans: ["B", "B", "B", "S"], exp: "1. T. 2. T. 3. T, h = x√3 = 10√3 => x = 10. Side = 2x = 20. 4. F.", exp_trans: "1. B. 2. B. 3. B, t = x√3 = 10√3 => x = 10. Sisi = 2x = 20. 4. S." },
+            "t2-task9": { type: "single", q: "What is the perimeter of a 30-60-90 triangle with short leg \\( 7 \\)? <i class='fas fa-ruler-horizontal text-orange-500 ml-2'></i>", q_trans: "Berapakah keliling segitiga 30-60-90 dengan kaki pendek \\( 7 \\)?", opts: ["\\( 21 \\)", "\\( 21 + 7\\sqrt{3} \\)", "\\( 14 + 7\\sqrt{3} \\)", "\\( 35 \\)", "\\( 21 + 14\\sqrt{3} \\)"], ans: "\\( 21 + 7\\sqrt{3} \\)", exp: "Sides: 7, 7√3, 14. P = 7 + 14 + 7√3 = 21 + 7√3.", exp_trans: "Sisi: 7, 7√3, 14. K = 7 + 14 + 7√3 = 21 + 7√3." },
+            "t2-task10": { type: "complex", q: "Which of the following are true about a 30-60-90 triangle with short leg 5? <i class='fas fa-check-circle text-orange-500 ml-2'></i>", q_trans: "Manakah pernyataan berikut yang benar tentang segitiga 30-60-90 dengan kaki pendek 5?", opts: ["The hypotenuse is 10", "The long leg is 5√3", "The perimeter is 15 + 5√3", "The area is 12.5√3"], ans: [0, 1, 2, 3], exp: "1. T. 2. T. 3. T. 4. T, Area = 1/2 * 5 * 5√3 = 12.5√3.", exp_trans: "1. B. 2. B. 3. B. 4. B, Luas = 1/2 * 5 * 5√3 = 12.5√3." },
+
+            // TASK 3: Mixed Special Triangles
+            "t3-task1": { type: "single", q: "A right triangle has a leg of \\( 9 \\) and a hypotenuse of \\( 9\\sqrt{2} \\). What is the length of the other leg? <i class='fas fa-shapes text-orange-500 ml-2'></i>", q_trans: "Segitiga siku-siku memiliki kaki \\( 9 \\) dan sisi miring \\( 9\\sqrt{2} \\). Berapakah panjang kaki yang lain?", opts: ["\\( 9 \\)", "\\( 18 \\)", "\\( 9\\sqrt{3} \\)", "\\( 9\\sqrt{2} \\)", "\\( 27 \\)"], ans: "\\( 9 \\)", exp: "This is a 45-45-90 triangle. Legs are equal. Other leg = 9.", exp_trans: "Ini adalah segitiga 45-45-90. Kakinya sama panjang. Kaki lain = 9." },
+            "t3-task2": { type: "fill", q: "A right triangle has legs of \\( 10 \\) and \\( 10\\sqrt{3} \\). What is the hypotenuse? <i class='fas fa-ruler text-orange-500 ml-2'></i>", q_trans: "Segitiga siku-siku memiliki kaki \\( 10 \\) dan \\( 10\\sqrt{3} \\). Berapakah sisi miringnya?", ans: "20", exp: "This is a 30-60-90 triangle. Short leg = 10, hypotenuse = 2 * 10 = 20.", exp_trans: "Ini adalah segitiga 30-60-90. Kaki pendek = 10, sisi miring = 2 * 10 = 20." },
+            "t3-task3": { type: "tf_table", q: "Identify triangle types based on sides. <i class='fas fa-list-ul text-orange-500 ml-2'></i>", q_trans: "Identifikasi jenis segitiga berdasarkan sisi.", opts: ["Sides 5, 5, 5√2 is 45-45-90", "Sides 6, 6√3, 12 is 30-60-90", "Sides 3, 4, 5 is 45-45-90", "Sides 7, 7, 7√3 is 30-60-90"], ans: ["B", "B", "S", "S"], exp: "1. T. 2. T. 3. F, it's a Pythagorean triple. 4. F, hyp should be 14, long leg 7√3.", exp_trans: "1. B. 2. B. 3. S, itu tripel Pythagoras. 4. S, s.m. seharusnya 14, kaki panjang 7√3." },
+            "t3-task4": { type: "single", q: "A square has an area of \\( 50 \\). What is its diagonal? <i class='fas fa-square text-orange-500 ml-2'></i>", q_trans: "Persegi memiliki luas \\( 50 \\). Berapakah diagonalnya?", opts: ["\\( 5 \\)", "\\( 10 \\)", "\\( 5\\sqrt{2} \\)", "\\( 10\\sqrt{2} \\)", "\\( 25 \\)"], ans: "\\( 10 \\)", exp: "Area = 50 => s = √50 = 5√2. Diagonal = s√2 = 5√2 * √2 = 10.", exp_trans: "Luas = 50 => s = √50 = 5√2. Diagonal = s√2 = 5√2 * √2 = 10." },
+            "t3-task5": { type: "complex", q: "Which of the following are true? <i class='fas fa-check-double text-orange-500 ml-2'></i>", q_trans: "Manakah dari berikut ini yang benar?", opts: ["In 45-45-90, hypotenuse = leg * √2", "In 30-60-90, hypotenuse = short leg * 2", "In 45-45-90, area = \\( \\frac{\\text{leg}^2}{2} \\)", "In 30-60-90, area = short leg * long leg"], ans: [0, 1, 2], exp: "1. T. 2. T. 3. T. 4. F, area = \\( \\frac{1}{2} \\times \\text{short leg} \\times \\text{long leg} \\).", exp_trans: "1. B. 2. B. 3. B. 4. S, luas = \\( \\frac{1}{2} \\times \\text{kaki pendek} \\times \\text{kaki panjang} \\)." },
+            "t3-task6": { type: "fill", q: "An equilateral triangle has a height of \\( 12\\sqrt{3} \\). What is its side length? <i class='fas fa-mountain text-orange-500 ml-2'></i>", q_trans: "Segitiga sama sisi memiliki tinggi \\( 12\\sqrt{3} \\). Berapakah panjang sisinya?", ans: "24", exp: "Height = (side / 2) * √3 = 12√3 => side / 2 = 12 => side = 24.", exp_trans: "Tinggi = (sisi / 2) * √3 = 12√3 => sisi / 2 = 12 => sisi = 24." },
+            "t3-task7": { type: "single", q: "A rectangle has sides \\( 5 \\) and \\( 5\\sqrt{3} \\). What is the length of the diagonal? <i class='fas fa-vector-square text-orange-500 ml-2'></i>", q_trans: "Persegi panjang memiliki sisi \\( 5 \\) dan \\( 5\\sqrt{3} \\). Berapakah panjang diagonalnya?", opts: ["\\( 5 \\)", "\\( 10 \\)", "\\( 5\\sqrt{2} \\)", "\\( 10\\sqrt{3} \\)", "\\( 15 \\)"], ans: "\\( 10 \\)", exp: "Forms 30-60-90 triangle. Short leg = 5. Hypotenuse = 2 * 5 = 10.", exp_trans: "Membentuk segitiga 30-60-90. Kaki pendek = 5. Sisi miring = 2 * 5 = 10." },
+            "t3-task8": { type: "tf_table", q: "Evaluate geometric shapes. <i class='fas fa-clipboard-check text-orange-500 ml-2'></i>", q_trans: "Evaluasi bentuk geometri.", opts: ["A square cut diagonally forms two 45-45-90 triangles", "An equilateral triangle split by altitude forms two 30-60-90 triangles", "A rectangle with sides x and x√2 forms a 45-45-90 triangle", "A cube's face diagonal is s√2"], ans: ["B", "B", "S", "B"], exp: "1. T. 2. T. 3. F, forms a triangle with legs x and x√2, which is not special. 4. T.", exp_trans: "1. B. 2. B. 3. S, membentuk segitiga dengan kaki x dan x√2, yang bukan istimewa. 4. B." },
+            "t3-task9": { type: "single", q: "What is the area of an equilateral triangle with side length \\( 10 \\)? <i class='fas fa-vector-square text-orange-500 ml-2'></i>", q_trans: "Berapakah luas segitiga sama sisi dengan panjang sisi \\( 10 \\)?", opts: ["\\( 25 \\)", "\\( 50 \\)", "\\( 25\\sqrt{2} \\)", "\\( 25\\sqrt{3} \\)", "\\( 50\\sqrt{3} \\)"], ans: "\\( 25\\sqrt{3} \\)", exp: "Area = s²√3 / 4 = 100√3 / 4 = 25√3.", exp_trans: "Luas = s²√3 / 4 = 100√3 / 4 = 25√3." },
+            "t3-task10": { type: "complex", q: "Which of the following scenarios yield an area of \\( 25\\sqrt{2} \\)? <i class='fas fa-check-circle text-orange-500 ml-2'></i>", q_trans: "Skenario mana yang menghasilkan luas \\( 25\\sqrt{2} \\)?", opts: ["A 45-45-90 triangle with leg 5√2", "A 30-60-90 triangle with short leg 5", "A square with side 5", "A rectangle with sides 5 and 5√2"], ans: [3], exp: "1. F, Area = 1/2 * (5√2)² = 25. 2. F, Area = 1/2 * 5 * 5√3 = 12.5√3. 3. F, Area = 25. 4. T, Area = 5 * 5√2 = 25√2.", exp_trans: "1. S, Luas = 1/2 * (5√2)² = 25. 2. S, Luas = 1/2 * 5 * 5√3 = 12.5√3. 3. S, Luas = 25. 4. B, Luas = 5 * 5√2 = 25√2." },
+        
+            // TASK 4: Advanced Applications & Word Problems
+            "t4-task1": { type: "single", q: "A square has a side length of \\( 15 \\). What is the length of its diagonal? <i class='fas fa-square text-orange-500 ml-2'></i>", q_trans: "Persegi memiliki panjang sisi \\( 15 \\). Berapakah panjang diagonalnya?", opts: ["\\( 15 \\)", "\\( 30 \\)", "\\( 15\\sqrt{2} \\)", "\\( 15\\sqrt{3} \\)", "\\( 30\\sqrt{2} \\)"], ans: "\\( 15\\sqrt{2} \\)", exp: "Diagonal of a square forms a 45-45-90 triangle. Diagonal = side × √2 = 15√2.", exp_trans: "Diagonal persegi membentuk segitiga 45-45-90. Diagonal = sisi × √2 = 15√2." },
+            "t4-task2": { type: "fill", q: "The diagonal of a square is \\( 18\\sqrt{2} \\). What is the side length? <i class='fas fa-ruler text-orange-500 ml-2'></i>", q_trans: "Diagonal persegi adalah \\( 18\\sqrt{2} \\). Berapakah panjang sisinya?", ans: "18", exp: "Diagonal = s√2 = 18√2. So s = 18.", exp_trans: "Diagonal = s√2 = 18√2. Jadi s = 18." },
+            "t4-task3": { type: "tf_table", q: "Evaluate statements about equilateral triangles. <i class='fas fa-list-ul text-orange-500 ml-2'></i>", q_trans: "Evaluasi pernyataan tentang segitiga sama sisi.", opts: ["Altitude splits it into two 30-60-90 triangles", "If side is 10, height is 5√3", "If side is 12, area is 36√3", "If side is 6, perimeter is 12"], ans: ["B", "B", "B", "S"], exp: "1. T. 2. T. 3. T, Area = \\( \\frac{s^2\\sqrt{3}}{4} = \\frac{144\\sqrt{3}}{4} = 36\\sqrt{3} \\). 4. F, perimeter is 18.", exp_trans: "1. B. 2. B. 3. B, Luas = \\( \\frac{s^2\\sqrt{3}}{4} = \\frac{144\\sqrt{3}}{4} = 36\\sqrt{3} \\). 4. S, keliling 18." },
+            "t4-task4": { type: "single", q: "An equilateral triangle has a perimeter of \\( 30 \\). What is its height? <i class='fas fa-mountain text-orange-500 ml-2'></i>", q_trans: "Segitiga sama sisi memiliki keliling \\( 30 \\). Berapakah tingginya?", opts: ["\\( 5 \\)", "\\( 10 \\)", "\\( 5\\sqrt{2} \\)", "\\( 5\\sqrt{3} \\)", "\\( 15\\sqrt{3} \\)"], ans: "\\( 5\\sqrt{3} \\)", exp: "Side = 30 / 3 = 10. Height = (side / 2) × √3 = 5√3.", exp_trans: "Sisi = 30 / 3 = 10. Tinggi = (sisi / 2) × √3 = 5√3." },
+            "t4-task5": { type: "complex", q: "Which of the following represent the area of an equilateral triangle with side \\( 6 \\)? <i class='fas fa-check-double text-orange-500 ml-2'></i>", q_trans: "Manakah dari berikut ini yang mewakili luas segitiga sama sisi dengan sisi \\( 6 \\)?", opts: ["\\( 9\\sqrt{3} \\)", "\\( \\frac{36\\sqrt{3}}{4} \\)", "\\( 15 \\)", "\\( \\frac{3 \\times 3\\sqrt{3}}{2} \\)"], ans: [0, 1, 3], exp: "1. T. 2. T (same as 9√3). 3. F. 4. T (\\( \\frac{1}{2} \\times \\text{base} \\times \\text{height} = \\frac{1}{2} \\times 6 \\times 3\\sqrt{3} = 9\\sqrt{3} \\)).", exp_trans: "1. B. 2. B (sama dengan 9√3). 3. S. 4. B (\\( \\frac{1}{2} \\times \\text{alas} \\times \\text{tinggi} = \\frac{1}{2} \\times 6 \\times 3\\sqrt{3} = 9\\sqrt{3} \\))." },
+            "t4-task6": { type: "fill", q: "A 30-60-90 triangle has a hypotenuse of \\( 16 \\). What is the length of the longer leg? (Format: a√b) <i class='fas fa-ruler-horizontal text-orange-500 ml-2'></i>", q_trans: "Segitiga 30-60-90 memiliki sisi miring \\( 16 \\). Berapakah panjang kaki yang lebih panjang? (Format: a√b)", ans: "8√3", exp: "Hypotenuse = 2x = 16 => x = 8. Long leg = x√3 = 8√3.", exp_trans: "Sisi miring = 2x = 16 => x = 8. Kaki panjang = x√3 = 8√3." },
+            "t4-task7": { type: "single", q: "A rectangle has a length of \\( 12 \\) and a width of \\( 5 \\). What is the length of its diagonal? <i class='fas fa-vector-square text-orange-500 ml-2'></i>", q_trans: "Persegi panjang memiliki panjang \\( 12 \\) dan lebar \\( 5 \\). Berapakah panjang diagonalnya?", opts: ["\\( 13 \\)", "\\( 17 \\)", "\\( 60 \\)", "\\( 10\\sqrt{2} \\)", "\\( 7 \\)"], ans: "\\( 13 \\)", exp: "This is a 5-12-13 Pythagorean triple. Diagonal = 13.", exp_trans: "Ini adalah tripel Pythagoras 5-12-13. Diagonal = 13." },
+            "t4-task8": { type: "tf_table", q: "Evaluate algebraic expressions with radicals. <i class='fas fa-clipboard-check text-orange-500 ml-2'></i>", q_trans: "Evaluasi ekspresi aljabar dengan bentuk akar.", opts: ["\\( \\sqrt{2} \\times \\sqrt{8} = 4 \\)", "\\( \\sqrt{3} \\times \\sqrt{12} = 6 \\)", "\\( 2\\sqrt{5} \\times 3\\sqrt{5} = 30 \\)", "\\( \\sqrt{2} + \\sqrt{3} = \\sqrt{5} \\)"], ans: ["B", "B", "B", "S"], exp: "1. T (√16=4). 2. T (√36=6). 3. T (2×3×5=30). 4. F, cannot add different radicals.", exp_trans: "1. B (√16=4). 2. B (√36=6). 3. B (2×3×5=30). 4. S, tidak bisa menjumlahkan akar berbeda." },
+            "t4-task9": { type: "single", q: "A ladder leans against a wall forming a \\( 45^\circ \\) angle with the ground. If the ladder is \\( 10\\sqrt{2} \\) ft long, how far is the base from the wall? <i class='fas fa-ladder text-orange-500 ml-2'></i>", q_trans: "Tangga bersandar di dinding membentuk sudut \\( 45^\circ \\) dengan tanah. Jika panjang tangga \\( 10\\sqrt{2} \\) kaki, berapa jauh alasnya dari dinding?", opts: ["\\( 10 \\text{ ft} \\)", "\\( 20 \\text{ ft} \\)", "\\( 10\\sqrt{2} \\text{ ft} \\)", "\\( 5\\sqrt{2} \\text{ ft} \\)", "\\( 10\\sqrt{3} \\text{ ft} \\)"], ans: "\\( 10 \\text{ ft} \\)", exp: "Ladder is hypotenuse = 10√2. In 45-45-90, leg = hypotenuse / √2 = 10√2 / √2 = 10.", exp_trans: "Tangga adalah sisi miring = 10√2. Pada 45-45-90, kaki = sisi miring / √2 = 10√2 / √2 = 10." },
+            "t4-task10": { type: "complex", q: "Which of the following form a right triangle? <i class='fas fa-check-circle text-orange-500 ml-2'></i>", q_trans: "Manakah dari berikut ini yang membentuk segitiga siku-siku?", opts: ["\\( 3, 4, 5 \\)", "\\( 5, 12, 13 \\)", "\\( 7, 7, 7\\sqrt{2} \\)", "\\( 4, 4\\sqrt{3}, 8 \\)"], ans: [0, 1, 2, 3], exp: "All satisfy a² + b² = c². 1 & 2 are Pythagorean triples. 3 is 45-45-90. 4 is 30-60-90.", exp_trans: "Semua memenuhi a² + b² = c². 1 & 2 adalah tripel Pythagoras. 3 adalah 45-45-90. 4 adalah 30-60-90." },
+
+            // TASK 5: Mastery - Advanced Geometry & Algebra
+            "t5-task1": { type: "single", q: "What is the distance between the points \\( (0, 0) \\) and \\( (12, 5) \\)? <i class='fas fa-map text-orange-500 ml-2'></i>", q_trans: "Berapakah jarak antara titik \\( (0, 0) \\) dan \\( (12, 5) \\)?", opts: ["\\( 13 \\)", "\\( 17 \\)", "\\( 60 \\)", "\\( 12\\sqrt{2} \\)", "\\( 5\\sqrt{12} \\)"], ans: "\\( 13 \\)", exp: "Forms a 5-12-13 right triangle. Distance = 13.", exp_trans: "Membentuk segitiga siku-siku 5-12-13. Jarak = 13." },
+            "t5-task2": { type: "fill", q: "Simplify \\( \\sqrt{98} \\). (Format: a√b) <i class='fas fa-square-root-variable text-orange-500 ml-2'></i>", q_trans: "Sederhanakan \\( \\sqrt{98} \\). (Format: a√b)", ans: "7√2", exp: "√98 = √(49 × 2) = 7√2.", exp_trans: "√98 = √(49 × 2) = 7√2." },
+            "t5-task3": { type: "tf_table", q: "Evaluate radical arithmetic. <i class='fas fa-list-ul text-orange-500 ml-2'></i>", q_trans: "Evaluasi operasi hitung bentuk akar.", opts: ["\\( \\sqrt{50} + \\sqrt{8} = 7\\sqrt{2} \\)", "\\( \\sqrt{75} - \\sqrt{12} = 3\\sqrt{3} \\)", "\\( (\\sqrt{6})^2 = 6 \\)", "\\( \\frac{\\sqrt{16}}{\\sqrt{4}} = 2 \\)"], ans: ["B", "B", "B", "B"], exp: "1. T (5√2 + 2√2 = 7√2). 2. T (5√3 - 2√3 = 3√3). 3. T. 4. T (\\( \\frac{4}{2} = 2 \\)).", exp_trans: "1. B (5√2 + 2√2 = 7√2). 2. B (5√3 - 2√3 = 3√3). 3. B. 4. B (\\( \\frac{4}{2} = 2 \\))." },
+            "t5-task4": { type: "single", q: "A 30-60-90 triangle has a short leg of \\( 8 \\). What is its area? <i class='fas fa-vector-square text-orange-500 ml-2'></i>", q_trans: "Segitiga 30-60-90 memiliki kaki pendek \\( 8 \\). Berapakah luasnya?", opts: ["\\( 32 \\)", "\\( 64 \\)", "\\( 32\\sqrt{3} \\)", "\\( 64\\sqrt{3} \\)", "\\( 16\\sqrt{3} \\)"], ans: "\\( 32\\sqrt{3} \\)", exp: "Legs are 8 and 8√3. Area = 1/2 * 8 * 8√3 = 32√3.", exp_trans: "Kakinya 8 dan 8√3. Luas = 1/2 * 8 * 8√3 = 32√3." },
+            "t5-task5": { type: "complex", q: "Which of the following distances form a 45-45-90 triangle from the origin? <i class='fas fa-check-double text-orange-500 ml-2'></i>", q_trans: "Jarak mana yang membentuk segitiga 45-45-90 dari pusat?", opts: ["\\( (4, 4) \\)", "\\( (7, 7) \\)", "\\( (5, 5\\sqrt{3}) \\)", "\\( (10, 10) \\)"], ans: [0, 1, 3], exp: "1. T (legs 4, 4). 2. T (legs 7, 7). 3. F (30-60-90). 4. T (legs 10, 10).", exp_trans: "1. B (kaki 4, 4). 2. B (kaki 7, 7). 3. S (30-60-90). 4. B (kaki 10, 10)." },
+            "t5-task6": { type: "fill", q: "Rationalize the denominator: \\( \\frac{12}{\\sqrt{3}} \\). (Format: a√b) <i class='fas fa-square-root-variable text-orange-500 ml-2'></i>", q_trans: "Rasionalkan penyebut: \\( \\frac{12}{\\sqrt{3}} \\). (Format: a√b)", ans: "4√3", exp: "Multiply by √3/√3: 12√3 / 3 = 4√3.", exp_trans: "Kalikan dengan √3/√3: 12√3 / 3 = 4√3." },
+            "t5-task7": { type: "single", q: "An equilateral triangle has a height of \\( 15\\sqrt{3} \\). What is its perimeter? <i class='fas fa-mountain text-orange-500 ml-2'></i>", q_trans: "Segitiga sama sisi memiliki tinggi \\( 15\\sqrt{3} \\). Berapakah kelilingnya?", opts: ["\\( 30 \\)", "\\( 45 \\)", "\\( 60 \\)", "\\( 90 \\)", "\\( 30\\sqrt{3} \\)"], ans: "\\( 90 \\)", exp: "Height = (side/2) * √3 = 15√3 => side/2 = 15 => side = 30. Perimeter = 3 * 30 = 90.", exp_trans: "Tinggi = (sisi/2) * √3 = 15√3 => sisi/2 = 15 => sisi = 30. Keliling = 3 * 30 = 90." },
+            "t5-task8": { type: "tf_table", q: "Evaluate special triangle properties. <i class='fas fa-clipboard-check text-orange-500 ml-2'></i>", q_trans: "Evaluasi sifat segitiga istimewa.", opts: ["If hypotenuse of 45-45-90 is 10, legs are 5√2", "If long leg of 30-60-90 is 12, short leg is 4√3", "Area of square with diagonal 10 is 50", "Diagonal of cube with side 4 is 4√3"], ans: ["B", "B", "B", "B"], exp: "1. True (10/√2 = 5√2). 2. True (short leg = 12/√3 = 4√3). 3. True (Area = d²/2 = 100/2 = 50). 4. True (Space diagonal = s√3 = 4√3).", exp_trans: "1. B (10/√2 = 5√2). 2. B (kaki pendek = 12/√3 = 4√3). 3. B (Luas = d²/2 = 100/2 = 50). 4. B (Diagonal ruang = s√3 = 4√3)." },
+            "t5-task9": { type: "single", q: "A square is inscribed in a circle with radius \\( 8 \\). What is the perimeter of the square? <i class='fas fa-draw-polygon text-orange-500 ml-2'></i>", q_trans: "Persegi berada di dalam lingkaran berjari-jari \\( 8 \\). Berapakah keliling persegi tersebut?", opts: ["\\( 16 \\)", "\\( 32 \\)", "\\( 16\\sqrt{2} \\)", "\\( 32\\sqrt{2} \\)", "\\( 64 \\)"], ans: "\\( 32\\sqrt{2} \\)", exp: "Radius is half the diagonal. So diagonal = 16. Side = 16/√2 = 8√2. Perimeter = 4 * 8√2 = 32√2.", exp_trans: "Jari-jari adalah setengah diagonal. Jadi diagonal = 16. Sisi = 16/√2 = 8√2. Keliling = 4 * 8√2 = 32√2." },
+            "t5-task10": { type: "complex", q: "Which of the following are true? <i class='fas fa-check-circle text-orange-500 ml-2'></i>", q_trans: "Manakah dari pernyataan berikut yang benar?", opts: ["\\( (3\\sqrt{2})^2 = 18 \\)", "\\( \\sqrt{27} = 3\\sqrt{3} \\)", "\\( \\text{Area of 30-60-90 with short leg } 6 = 18\\sqrt{3} \\)", "\\( \\text{Distance } (0,0) \\text{ to } (3,4) = 5 \\)"], ans: [0, 1, 2, 3], exp: "1. T (9*2=18). 2. T (√9*3). 3. T (1/2 * 6 * 6√3 = 18√3). 4. T (3-4-5 triple).", exp_trans: "1. B (9*2=18). 2. B (√9*3). 3. B (1/2 * 6 * 6√3 = 18√3). 4. B (tripel 3-4-5)." }
+        });
+        
+        // ====== JAVASCRIPT LOGIC ======
+        let currentPage = 1;
+        let currentTaskSection = ""; 
+
+        function openModal() {
+            const modal = document.getElementById('classRulesModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+        function closeModal() {
+            const modal = document.getElementById('classRulesModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            
+            document.querySelectorAll('.sidebar-item').forEach(item => {
+                item.classList.remove('bg-indigo-100', 'text-indigo-800', 'font-bold', 'bg-orange-100', 'text-orange-800');
+            });
+            const activeLink = document.querySelector(`.sidebar-item[data-section="${sectionId}"]`);
+            if (activeLink) {
+                if(sectionId.startsWith('task')) {
+                    activeLink.classList.add('bg-orange-100', 'text-orange-800', 'font-bold');
+                } else {
+                    activeLink.classList.add('bg-indigo-100', 'text-indigo-800', 'font-bold');
+                }
+            }
+            currentPage = 1;
+            currentTaskSection = sectionId;
+            
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            const firstPage = document.querySelector(`#${sectionId} .page[data-page="1"]`);
+            if(firstPage) firstPage.classList.add('active');
+            
+            renderMath();
+            renderPagination(sectionId, currentPage);
+            document.getElementById('contentScrollArea').scrollTo(0, 0);
+        }
+
+        function changePage(direction) {
+            const activeSection = document.querySelector('.content-section.active');
+            if(!activeSection) return;
+            const pages = activeSection.querySelectorAll('.page');
+            let newPage = currentPage + direction;
+            if(newPage >= 1 && newPage <= pages.length) {
+                pages[currentPage - 1].classList.remove('active');
+                pages[newPage - 1].classList.add('active');
+                currentPage = newPage;
+                renderMath();
+                renderPagination(currentTaskSection, currentPage);
+                document.getElementById('contentScrollArea').scrollTo(0, 0);
+            }
+        }
+
+        function goToPage(pageNum) {
+            const activeSection = document.querySelector('.content-section.active');
+            if(!activeSection) return;
+            const pages = activeSection.querySelectorAll('.page');
+            if(pageNum >= 1 && pageNum <= pages.length) {
+                pages[currentPage - 1].classList.remove('active');
+                pages[pageNum - 1].classList.add('active');
+                currentPage = pageNum;
+                renderMath();
+                renderPagination(currentTaskSection, currentPage);
+                document.getElementById('contentScrollArea').scrollTo(0, 0);
+            }
+        }
+        
+        function renderPagination(sectionId, pageNum) {
+            const activeSection = document.getElementById(sectionId);
+            if (!activeSection) return;
+            const pages = activeSection.querySelectorAll('.page');
+            const totalPages = pages.length;
+            let html = '';
+            const isMainTask = sectionId.startsWith('t');
+            const theoryPages = [1, 5, 9]; 
+            
+            html += `<button onclick="goToPage(${pageNum - 1})" class="px-3 py-1.5 rounded-md text-sm bg-gray-200 hover:bg-gray-300 text-gray-700 ${pageNum === 1 ? 'opacity-50 cursor-not-allowed' : ''}" ${pageNum === 1 ? 'disabled' : ''}><i class="fas fa-chevron-left"></i> Prev</button>`;
+            
+            for (let i = 1; i <= totalPages; i++) {
+                let btnColor = 'bg-gray-100 hover:bg-gray-200 text-gray-700';
+                if (!isMainTask && theoryPages.includes(i)) {
+                    btnColor = 'bg-indigo-100 hover:bg-indigo-200 text-indigo-800'; 
+                } else {
+                    btnColor = 'bg-orange-100 hover:bg-orange-200 text-orange-800'; 
+                }
+                if (i === pageNum) {
+                    if (!isMainTask && theoryPages.includes(i)) {
+                        btnColor = 'bg-indigo-600 text-white shadow-md'; 
+                    } else {
+                        btnColor = 'bg-orange-500 text-white shadow-md'; 
+                    }
+                }
+                html += `<button onclick="goToPage(${i})" class="w-9 h-9 rounded-md text-sm font-semibold transition-all ${btnColor}">${i}</button>`;
+            }
+            
+            html += `<button onclick="goToPage(${pageNum + 1})" class="px-3 py-1.5 rounded-md text-sm bg-gray-200 hover:bg-gray-300 text-gray-700 ${pageNum === totalPages ? 'opacity-50 cursor-not-allowed' : ''}" ${pageNum === totalPages ? 'disabled' : ''}>Next <i class="fas fa-chevron-right"></i></button>`;
+            document.getElementById('paginationBar').innerHTML = html;
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+        let studentAnswers = {};
+
+        function renderTasks() {
+            document.querySelectorAll('[data-task-id]').forEach(div => {
+                const taskId = div.getAttribute('data-task-id');
+                renderSingleTask(taskId, div);
+            });
+            renderMath();
+        }
+        
+        function renderSingleTask(taskId, div) {
+            const data = questions[taskId];
+            if(!data) return;
+
+            const isMainTask = taskId.startsWith('t');
+            const taskNum = isMainTask ? taskId[1] : 0;
+            let taskType = data.type || 'single';
+            
+            let questionHTML = `
+                <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-orange-500">
+                    <div class="flex justify-between items-center mb-4 no-print">
+                        <h2 class="text-xl font-bold text-orange-600">
+                            ${isMainTask ? `Task ${taskNum}` : 'Exercise'} 
+                            ${taskType === 'complex' ? '<span class="text-sm bg-purple-200 text-purple-800 px-2 py-1 rounded ml-2">PG Kompleks</span>' : ''}
+                            ${taskType === 'fill' ? '<span class="text-sm bg-blue-200 text-blue-800 px-2 py-1 rounded ml-2">Isian Singkat</span>' : ''}
+                            ${taskType === 'tf_table' ? '<span class="text-sm bg-teal-200 text-teal-800 px-2 py-1 rounded ml-2">Tabel Benar/Salah</span>' : ''}
+                            <span class="translation text-gray-500 text-sm">Latihan</span>
+                        </h2>
+                        <div class="flex gap-2">
+                            <button onclick="resetTask('${taskId}')" class="text-sm bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded">
+                                <i class="fas fa-redo"></i> Reset
+                            </button>
+                            ${isMainTask ? `<button onclick="printTask(${taskNum})" class="text-sm bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded">
+                                <i class="fas fa-print"></i> Print
+                            </button>` : ''}
+                        </div>
+                    </div>
+                    <div class="mb-6 flex gap-4 items-start">
+                        <div class="bg-orange-100 p-3 rounded-full shrink-0">
+                            <i class="fas fa-question text-orange-500 text-xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-lg">${data.q}</p>
+                            <p class="translation">${data.q_trans}</p>
+                        </div>
+                    </div>
+            `;
+
+            if (taskType === 'single') {
+                const shuffledOpts = shuffleArray([...data.opts]);
+                questionHTML += `
+                    <div id="options-${taskId}" class="space-y-3">
+                        ${shuffledOpts.map((opt, i) => `
+                            <button onclick="checkAnswer('${taskId}', this.getAttribute('data-opt'), 'single')" 
+                                    class="option-btn w-full text-left p-3 border-2 border-gray-200 rounded hover:border-orange-500 flex items-center gap-3" 
+                                    data-opt="${opt}">
+                                <span class="w-6 h-6 flex items-center justify-center bg-gray-100 rounded-full font-bold shrink-0">${String.fromCharCode(65 + i)}</span>
+                                <span class="katex">${opt}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+                `;
+            } else if (taskType === 'complex') {
+                questionHTML += `
+                    <p class="text-sm text-gray-600 mb-3">*Select all correct statements. <span class="translation">*Pilih semua pernyataan yang benar.</span></p>
+                    <div id="options-${taskId}" class="space-y-3">
+                        ${data.opts.map((opt, i) => `
+                            <label class="option-btn w-full text-left p-3 border-2 border-gray-200 rounded hover:border-purple-500 flex items-center gap-3 cursor-pointer">
+                                <input type="checkbox" class="w-5 h-5 complex-checkbox shrink-0" data-opt-index="${i}">
+                                <span class="katex">${opt}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                    <button onclick="checkAnswer('${taskId}', null, 'complex')" class="mt-4 bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded font-bold">Submit Jawaban</button>
+                `;
+            } else if (taskType === 'fill') {
+                questionHTML += `
+                    <div class="flex gap-2 items-center mt-2">
+                        <input type="text" id="input-${taskId}" class="border-2 border-gray-200 rounded p-2 w-32 text-lg text-center focus:border-orange-500 outline-none" placeholder="Jawaban...">
+                        <button onclick="checkAnswer('${taskId}', null, 'fill')" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded font-bold">Submit</button>
+                    </div>
+                `;
+            } else if (taskType === 'tf_table') {
+                questionHTML += `
+                    <p class="text-sm text-gray-600 mb-3">*Determine True or False for each statement. <span class="translation">*Tentukan Benar atau Salah untuk setiap pernyataan.</span></p>
+                    <div id="options-${taskId}" class="overflow-x-auto">
+                        <table class="w-full border-collapse border border-gray-300 text-sm">
+                            <thead>
+                                <tr class="bg-gray-100">
+                                    <th class="border border-gray-300 p-2 w-10">No.</th>
+                                    <th class="border border-gray-300 p-2 text-left">Pernyataan <span class="translation text-xs">Statement</span></th>
+                                    <th class="border border-gray-300 p-2 w-20">Benar <span class="translation text-xs block">True</span></th>
+                                    <th class="border border-gray-300 p-2 w-20">Salah <span class="translation text-xs block">False</span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${data.opts.map((opt, i) => `
+                                    <tr>
+                                        <td class="border border-gray-300 p-2 text-center font-bold">${i + 1}</td>
+                                        <td class="border border-gray-300 p-2"><span class="katex">${opt}</span></td>
+                                        <td class="border border-gray-300 p-2 text-center">
+                                            <input type="radio" name="tf-${taskId}-${i}" value="B" class="tf-radio w-5 h-5 cursor-pointer">
+                                        </td>
+                                        <td class="border border-gray-300 p-2 text-center">
+                                            <input type="radio" name="tf-${taskId}-${i}" value="S" class="tf-radio w-5 h-5 cursor-pointer">
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                    <button onclick="checkAnswer('${taskId}', null, 'tf_table')" class="mt-4 bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded font-bold">Submit Jawaban</button>
+                `;
+            }
+
+            questionHTML += `
+                    <div id="result-${taskId}" class="mt-4 hidden p-4 rounded"></div>
+
+                    <div class="mt-4 no-print">
+                        <button onclick="toggleCollapse('${taskId}')" id="collapse-btn-${taskId}" class="hidden text-blue-600 underline">
+                            Tampilkan Penjelasan <span class="translation text-gray-500 text-xs" style="display: inline-block; margin-left: 4px;">Show Explanation</span>
+                        </button>
+                        <div id="collapse-${taskId}" class="collapse-content w-full">
+                            <h3 class="font-bold text-blue-800">Penjelasan: <span class="translation text-gray-500 text-sm">Explanation:</span></h3>
+                            <p class="mt-2">${data.exp}</p>
+                            <p class="translation">${data.exp_trans}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            div.innerHTML = questionHTML;
+        }
+
+        function checkAnswer(taskId, selectedOpt, type) {
+            const data = questions[taskId];
+            const resultDiv = document.getElementById(`result-${taskId}`);
+            const collapseBtn = document.getElementById(`collapse-btn-${taskId}`);
+            let isCorrect = false;
+            let correctAnsText = '';
+
+            if (type === 'single') {
+                const buttons = document.querySelectorAll(`#options-${taskId} button`);
+                buttons.forEach(btn => {
+                    btn.disabled = true;
+                    btn.classList.add('opacity-70', 'cursor-not-allowed');
+                    if(btn.getAttribute('data-opt') === data.ans) {
+                        btn.classList.remove('border-gray-200', 'hover:border-orange-500');
+                        btn.classList.add('border-green-500', 'bg-green-50');
+                    } else if (btn.getAttribute('data-opt') === selectedOpt) {
+                        btn.classList.remove('border-gray-200', 'hover:border-orange-500');
+                        btn.classList.add('border-red-500', 'bg-red-50');
+                    }
+                });
+                isCorrect = (selectedOpt === data.ans);
+                correctAnsText = data.ans;
+                studentAnswers[taskId] = selectedOpt; 
+            } 
+            else if (type === 'complex') {
+                const checkboxes = document.querySelectorAll(`#options-${taskId} input[type="checkbox"]`);
+                let selectedAns = [];
+                checkboxes.forEach((cb, i) => {
+                    if (cb.checked) selectedAns.push(i);
+                    cb.disabled = true;
+                });
+                const correctAnsStr = [...data.ans].sort().join(',');
+                const selectedAnsStr = [...selectedAns].sort().join(',');
+                isCorrect = (correctAnsStr === selectedAnsStr);
+                
+                let correctComplexText = [];
+                data.ans.forEach(i => correctComplexText.push(data.opts[i]));
+                correctAnsText = correctComplexText.join(', ');
+
+                checkboxes.forEach((cb, i) => {
+                    if(data.ans.includes(i)) {
+                        cb.parentElement.classList.remove('border-gray-200', 'hover:border-purple-500');
+                        cb.parentElement.classList.add('border-green-500', 'bg-green-50');
+                    } else if (cb.checked) {
+                        cb.parentElement.classList.remove('border-gray-200', 'hover:border-purple-500');
+                        cb.parentElement.classList.add('border-red-500', 'bg-red-50');
+                    }
+                });
+                studentAnswers[taskId] = selectedAns;
+            } 
+            else if (type === 'fill') {
+                const inputField = document.getElementById(`input-${taskId}`);
+                // Hapus spasi, ubah jadi lowercase agar tidak sensitif terhadap kapital
+                let userVal = inputField.value.trim().toLowerCase().replace(/\s/g, '');
+                let correctAns = data.ans.toString().toLowerCase().replace(/\s/g, '');
+                inputField.disabled = true;
+                isCorrect = (userVal === correctAns);
+                if(!isCorrect) inputField.classList.add('border-red-500', 'bg-red-50');
+                else inputField.classList.add('border-green-500', 'bg-green-50');
+                correctAnsText = data.ans;
+                studentAnswers[taskId] = userVal;
+            }
+            else if (type === 'tf_table') {
+                const rows = document.querySelectorAll(`#options-${taskId} tbody tr`);
+                let userAns = [];
+                let allFilled = true;
+
+                rows.forEach((row, i) => {
+                    const radios = row.querySelectorAll('input[type="radio"]');
+                    let rowVal = null;
+                    radios.forEach(r => {
+                        r.disabled = true;
+                        if (r.checked) rowVal = r.value;
+                    });
+                    if (rowVal === null) allFilled = false;
+                    userAns.push(rowVal);
+                });
+
+                if (!allFilled) {
+                    alert("Harap isi semua pernyataan terlebih dahulu! / Please answer all statements first!");
+                    rows.forEach((row, i) => {
+                        let radios = row.querySelectorAll('input[type="radio"]');
+                        radios.forEach(r => r.disabled = false);
+                    });
+                    return;
+                }
+
+                let correctCount = 0;
+                let correctTFText = [];
+                rows.forEach((row, i) => {
+                    const userVal = userAns[i];
+                    const correctVal = data.ans[i];
+                    correctTFText.push(`${i+1}. ${correctVal}`);
+                    if (userVal === correctVal) {
+                        correctCount++;
+                        row.classList.add('bg-green-50');
+                    } else {
+                        row.classList.add('bg-red-50');
+                    }
+                });
+
+                isCorrect = (correctCount === data.ans.length);
+                correctAnsText = correctTFText.join(' | ');
+                studentAnswers[taskId] = userAns;
+            }
+
+            if(isCorrect) {
+                resultDiv.innerHTML = `<p class="text-green-600 font-bold"><i class="fas fa-check-circle"></i> Benar! <span class="translation text-gray-600 font-normal" style="display: inline-block; margin-left: 4px;">Correct!</span></p>`;
+                resultDiv.className = "mt-4 p-4 rounded bg-green-50 border border-green-200";
+            } else {
+                resultDiv.innerHTML = `<p class="text-red-600 font-bold"><i class="fas fa-times-circle"></i> Salah! Jawaban yang benar adalah: ${correctAnsText}. <span class="translation text-gray-600 font-normal" style="display: inline-block; margin-left: 4px;">Wrong! The correct answer is: ${correctAnsText}.</span></p>`;
+                resultDiv.className = "mt-4 p-4 rounded bg-red-50 border border-red-200";
+            }
+            resultDiv.classList.remove('hidden');
+            collapseBtn.classList.remove('hidden');
+            
+            const collapseContent = document.getElementById(`collapse-${taskId}`);
+            collapseContent.classList.add('open');
+            collapseBtn.innerHTML = 'Sembunyikan Penjelasan <span class="translation text-gray-500 text-xs" style="display: inline-block; margin-left: 4px;">Hide Explanation</span>';
+            
+            renderMath();
+        }
+
+        function resetTask(taskId) {
+            delete studentAnswers[taskId];
+            const taskDiv = document.querySelector(`[data-task-id="${taskId}"]`);
+            if(taskDiv) {
+                renderSingleTask(taskId, taskDiv);
+                renderMath();
+            }
+        }
+
+        function printTask(taskNum) {
+            let score = 0;
+            let tableBody = '';
+            for(let i=1; i<=10; i++) {
+                const taskId = `t${taskNum}-task${i}`;
+                const data = questions[taskId];
+                if(!data) continue;
+                
+                let studentAns = studentAnswers[taskId] || 'Tidak Dijawab';
+                let correctAns = data.ans;
+                
+                let sAnsStr = '';
+                let cAnsStr = '';
+                let isCorrect = false;
+                
+                if (data.type === 'complex') {
+                    let sArr = Array.isArray(studentAns) ? studentAns : [];
+                    let cArr = Array.isArray(correctAns) ? correctAns : [];
+                    sAnsStr = sArr.length > 0 ? sArr.slice().sort().map(idx => data.opts[idx]).join(', ') : 'Tidak Dijawab';
+                    cAnsStr = cArr.length > 0 ? cArr.slice().sort().map(idx => data.opts[idx]).join(', ') : 'Tidak Dijawab';
+                    isCorrect = (sArr.length > 0 && sArr.slice().sort().join(',') === cArr.slice().sort().join(','));
+                } else if (data.type === 'tf_table') {
+                    let sArr = Array.isArray(studentAns) ? studentAns : [];
+                    let cArr = Array.isArray(correctAns) ? correctAns : [];
+                    sAnsStr = sArr.length > 0 ? sArr.join(' | ') : 'Tidak Dijawab';
+                    cAnsStr = cArr.join(' | ');
+                    isCorrect = (sArr.length > 0 && sArr.join(',') === cArr.join(','));
+                } else {
+                    sAnsStr = studentAns || 'Tidak Dijawab';
+                    cAnsStr = correctAns;
+                    isCorrect = (sAnsStr === cAnsStr);
+                }
+                
+                let note = '❌';
+                if(isCorrect) { score++; note = '✔️'; }
+                
+                let qText = data.q.replace(/<[^>]+>/g, '');
+                if (data.type === 'tf_table') {
+                    qText += " | Statements: " + data.opts.map((opt, idx) => `${idx+1}. ${opt}`).join(" ; ");
+                }
+                
+                tableBody += `<tr>
+                    <td class="border border-black p-1 text-center">${i}</td>
+                    <td class="border border-black p-1">${qText}</td>
+                    <td class="border border-black p-1">${sAnsStr}</td>
+                    <td class="border border-black p-1">${cAnsStr}</td>
+                    <td class="border border-black p-1 text-center">${note}</td>
+                </tr>`;
+            }
+            document.getElementById('printTableBody').innerHTML = tableBody;
+            document.getElementById('printTaskNum').innerText = taskNum;
+            document.getElementById('printScore').innerText = score;
+            
+            renderMathInElement(document.getElementById('printArea'), {
+                delimiters: [
+                    {left: '\\(', right: '\\)', display: false},
+                    {left: '\\[', right: '\\]', display: true}
+                ]
+            });
+            window.print();
+        }
+
+        function toggleCollapse(taskId) {
+            const content = document.getElementById(`collapse-${taskId}`);
+            const btn = document.getElementById(`collapse-btn-${taskId}`);
+            content.classList.toggle('open');
+            if(content.classList.contains('open')) {
+                btn.innerHTML = 'Sembunyikan Penjelasan <span class="translation text-gray-500 text-xs" style="display: inline-block; margin-left: 4px;">Hide Explanation</span>';
+            } else {
+                btn.innerHTML = 'Tampilkan Penjelasan <span class="translation text-gray-500 text-xs">Show Explanation</span>';
+            }
+        }
+
+        function renderMath() {
+            if (typeof renderMathInElement === 'undefined') return;
+            
+            const target = document.querySelector('.content-section.active') || document.body;
+            try {
+                renderMathInElement(target, {
+                    delimiters: [
+                        {left: '\\(', right: '\\)', display: false},
+                        {left: '\\[', right: '\\]', display: true}
+                    ],
+                    throwOnError: false
+                });
+            } catch(e) {
+                console.error("KaTeX rendering error:", e);
+            }
+        }
+
+        window.onload = () => {
+            renderTasks();
+            setTimeout(() => {
+                showSection('warmup');
+                renderMath();
+            }, 100);
+        };
+    </script>
+</body>
+</html>
