@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Tutoring by Deni - Applications of the Pythagorean Theorem</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Segoe UI', Arial, Helvetica, sans-serif; }
+        .prompt-box { max-width: 650px; margin-left: auto; margin-right: auto; display: flex; flex-direction: column; align-items: center; text-align: left; }
+        .prompt-box p { width: 100%; }
+        .prompt-box img { width: 100%; height: auto; max-width: 300px; display: block; margin-top: 0.5rem; }
+        .translation { font-style: italic; font-size: 0.85rem; color: #6b7280; margin-top: 0.25rem; display: block; }
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        .page { display: none; }
+        .page.active { display: block; }
+        .option-btn { transition: all 0.2s; }
+        .option-btn:hover { transform: translateX(5px); }
+        .collapse-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-in-out, padding 0.4s, border 0.4s, background 0.4s; padding: 0; border: 0; background: transparent; }
+        .collapse-content.open { max-height: 2000px; padding: 1.5rem; border: 1px solid #bfdbfe; background: #eff6ff; border-radius: 0.5rem; margin-top: 1rem; }
+        @media print {
+            body * { visibility: hidden; }
+            #printArea, #printArea * { visibility: visible; }
+            #printArea { display: block !important; position: absolute; left: 0; top: 0; width: 100%; padding: 10px; box-sizing: border-box; }
+            .no-print { display: none !important; }
+            #printArea table { table-layout: fixed; width: 100%; font-size: 9px; }
+            #printArea td, #printArea th { word-wrap: break-word; padding: 2px !important; }
+            @page { size: A4; margin: 5mm; }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex flex-col h-screen overflow-hidden">
+    <svg width="0" height="0" style="position: absolute;">
+        <defs>
+            <marker id="arr1" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto" markerUnits="strokeWidth">
+                <path d="M0,0 L0,6 L9,3 z" fill="#333" />
+            </marker>
+        </defs>
+    </svg>
+
+    <!-- Header -->
+    <header class="bg-indigo-600 text-white p-4 flex justify-between items-center shadow-md no-print shrink-0 z-50">
+        <div>
+            <h1 class="text-xl font-bold">Math Tutoring by Deni</h1>
+            <p class="text-sm">Topic: Applications of the Pythagorean Theorem</p>
+            <p class="translation text-indigo-200">Topik: Penerapan Teorema Pythagoras</p>
+        </div>
+        <div>
+            <button onclick="openModal()" class="bg-yellow-400 hover:bg-yellow-500 text-indigo-900 font-bold py-2 px-4 rounded flex items-center gap-2">
+                <i class="fas fa-gavel"></i> Class Rules
+            </button>
+        </div>
+    </header>
+
+    <!-- Modal Class Rules -->
+    <div id="classRulesModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 no-print">
+        <div class="bg-white rounded-lg p-6 w-80 max-w-sm">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-indigo-600">Class Rules <br><span class="translation text-gray-500">Aturan Kelas</span></h2>
+                <button onclick="closeModal()" class="text-gray-500 hover:text-red-500"><i class="fas fa-times text-xl"></i></button>
+            </div>
+            <ul class="space-y-3 text-gray-700">
+                <li class="flex items-start gap-2">
+                    <i class="fas fa-comments text-indigo-500 mt-1"></i>
+                    <div>Take turns speaking. <span class="translation">Berbicara secara bergantian.</span></div>
+                </li>
+                <li class="flex items-start gap-2">
+                    <i class="fas fa-door-open text-indigo-500 mt-1"></i>
+                    <div>Ask permission if you want to leave the class. <span class="translation">Meminta izin jika ingin meninggalkan kelas.</span></div>
+                </li>
+                <li class="flex items-start gap-2">
+                    <i class="fas fa-video text-indigo-500 mt-1"></i>
+                    <div>Turn on camera and microphone if needed. <span class="translation">Menyalakan kamera dan microphone jika diperlukan.</span></div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Layout -->
+    <div class="flex flex-1 overflow-hidden">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white shadow-lg no-print border-r border-gray-200 flex flex-col">
+            <div class="p-4 bg-indigo-600 text-white">
+                <h3 class="font-bold text-lg flex items-center gap-2"><i class="fas fa-book-open"></i> Class Agenda</h3>
+                <p class="text-xs text-indigo-200 mt-1">Select topic to navigate <span class="translation text-indigo-300 block">Pilih topik untuk navigasi</span></p>
+            </div>
+            <nav class="flex-1 overflow-y-auto p-2">
+                <ul class="space-y-1">
+                    <li><a href="javascript:void(0)" onclick="showSection('warmup')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-800 transition-colors cursor-pointer" data-section="warmup"><div class="font-semibold text-sm text-gray-800">Spiral Review Warm-up</div><div class="text-xs text-gray-500 flex items-center gap-1 mt-1"><i class="far fa-clock"></i> 00:00 - 00:10</div></a></li>
+                    <li><a href="javascript:void(0)" onclick="showSection('intro')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-800 transition-colors cursor-pointer" data-section="intro"><div class="font-semibold text-sm text-gray-800">Introduction & Real-World</div><div class="text-xs text-gray-500 flex items-center gap-1 mt-1"><i class="far fa-clock"></i> 00:10 - 00:15</div></a></li>
+                    <li><a href="javascript:void(0)" onclick="showSection('review')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-800 transition-colors cursor-pointer" data-section="review"><div class="font-semibold text-sm text-gray-800">Review of Prior Knowledge</div><div class="text-xs text-gray-500 flex items-center gap-1 mt-1"><i class="far fa-clock"></i> 00:15 - 00:20</div></a></li>
+                    <li><a href="javascript:void(0)" onclick="showSection('problem')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-800 transition-colors cursor-pointer" data-section="problem"><div class="font-semibold text-sm text-gray-800">Problem Introduction</div><div class="text-xs text-gray-500 flex items-center gap-1 mt-1"><i class="far fa-clock"></i> 00:20 - 00:30</div></a></li>
+                    <li><a href="javascript:void(0)" onclick="showSection('guided')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-800 transition-colors cursor-pointer" data-section="guided"><div class="font-semibold text-sm text-gray-800">Guided Practice</div><div class="text-xs text-gray-500 flex items-center gap-1 mt-1"><i class="far fa-clock"></i> 00:30 - 00:45</div></a></li>
+                    <li><a href="javascript:void(0)" onclick="showSection('independent')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-800 transition-colors cursor-pointer" data-section="independent"><div class="font-semibold text-sm text-gray-800">Independent Practice</div><div class="text-xs text-gray-500 flex items-center gap-1 mt-1"><i class="far fa-clock"></i> 00:45 - 00:55</div></a></li>
+                    <li><a href="javascript:void(0)" onclick="showSection('consolidation')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-800 transition-colors cursor-pointer" data-section="consolidation"><div class="font-semibold text-sm text-gray-800">Consolidation & Reflection</div><div class="text-xs text-gray-500 flex items-center gap-1 mt-1"><i class="far fa-clock"></i> 00:55 - 01:00</div></a></li>
+                    <hr class="my-3 border-gray-200">
+                    <li><a href="javascript:void(0)" onclick="showSection('task1')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-orange-50 hover:text-orange-800 transition-colors cursor-pointer" data-section="task1"><div class="font-bold text-sm text-indigo-800 flex items-center gap-2"><i class="fas fa-clipboard-list text-xs"></i> Task 1</div><div class="text-xs text-gray-500 mt-1">10 Mixed Questions</div></a></li>
+                    <li><a href="javascript:void(0)" onclick="showSection('task2')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-orange-50 hover:text-orange-800 transition-colors cursor-pointer" data-section="task2"><div class="font-bold text-sm text-indigo-800 flex items-center gap-2"><i class="fas fa-clipboard-list text-xs"></i> Task 2</div><div class="text-xs text-gray-500 mt-1">10 Mixed Questions</div></a></li>
+                    <li><a href="javascript:void(0)" onclick="showSection('task3')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-orange-50 hover:text-orange-800 transition-colors cursor-pointer" data-section="task3"><div class="font-bold text-sm text-indigo-800 flex items-center gap-2"><i class="fas fa-clipboard-list text-xs"></i> Task 3</div><div class="text-xs text-gray-500 mt-1">10 Mixed Questions</div></a></li>
+                    <li><a href="javascript:void(0)" onclick="showSection('task4')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-orange-50 hover:text-orange-800 transition-colors cursor-pointer" data-section="task4"><div class="font-bold text-sm text-indigo-800 flex items-center gap-2"><i class="fas fa-clipboard-list text-xs"></i> Task 4</div><div class="text-xs text-gray-500 mt-1">10 Mixed Questions</div></a></li>
+                    <li><a href="javascript:void(0)" onclick="showSection('task5')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-orange-50 hover:text-orange-800 transition-colors cursor-pointer" data-section="task5"><div class="font-bold text-sm text-indigo-800 flex items-center gap-2"><i class="fas fa-clipboard-list text-xs"></i> Task 5</div><div class="text-xs text-gray-500 mt-1">10 Mixed Questions</div></a></li>
+                </ul>
+            </nav>
+            <div class="p-4 bg-gray-50 border-t border-gray-200 text-center">
+                <p class="text-xs text-gray-500 font-medium">Math Tutoring System</p>
+                <p class="text-xs text-gray-400">by Deni</p>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col overflow-hidden">
+            <div id="contentScrollArea" class="flex-1 overflow-y-auto p-6">
+
+            <!-- ========================================== -->
+            <!-- SECTION: SPIRAL REVIEW WARM-UP             -->
+            <!-- ========================================== -->
+            <div id="warmup" class="content-section active">
+                <!-- PAGE 1: THEORY 1 -->
+                <div class="page active" data-page="1">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-indigo-500">
+                        <h2 class="text-2xl font-bold text-indigo-600 mb-2">Review: Exponents & Roots <i class="fas fa-fire text-indigo-400 ml-2"></i></h2>
+                        <p class="translation">Bilangan Berpangkat & Bentuk Akar</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-indigo-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <rect x="40" y="30" width="40" height="40" fill="#6366f1" rx="4"/>
+                                    <text x="60" y="55" font-size="14" text-anchor="middle" fill="white">3</text>
+                                    <rect x="80" y="20" width="20" height="20" fill="#10b981" rx="4"/>
+                                    <text x="90" y="35" font-size="14" text-anchor="middle" fill="white">2</text>
+                                    <text x="90" y="90" font-size="14" text-anchor="middle" fill="#333">= 9</text>
+                                    <path d="M 120 50 L 140 50 L 140 80 L 120 80" stroke="#f59e0b" stroke-width="3" fill="none"/>
+                                    <text x="130" y="100" font-size="14" text-anchor="middle" fill="#333">√9 = 3</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>Exponents represent repeated multiplication. The square root \( (\sqrt{}) \) is the inverse operation of squaring a number. <span class="translation">Pangkat menyatakan perkalian berulang. Akar kuadrat adalah kebalikan dari pangkat.</span></p>
+                                <p class="mt-2">If \( a^2 = b \), then \( \sqrt{b} = a \). <span class="translation">Jika \( a^2 = b \), maka \( \sqrt{b} = a \).</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> To The Point Formula</p>
+                            <p class="mt-1 font-bold">1. \( a^2 = a \times a \)</p>
+                            <p class="mt-1 font-bold">2. \( \sqrt{a \times a} = a \)</p>
+                            <p class="mt-1"><span class="translation">Rumus To The Point: Pangkat itu perkalian berulang. Akar kuadrat membalikkan proses kuadrat.</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="2" data-task-id="w-task1"></div>
+                <div class="page" data-page="3" data-task-id="w-task2"></div>
+                <div class="page" data-page="4" data-task-id="w-task3"></div>
+
+                <!-- PAGE 5: THEORY 2 -->
+                <div class="page" data-page="5">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-green-500">
+                        <h2 class="text-2xl font-bold text-green-600 mb-2">Review: The Pythagorean Theorem <i class="fas fa-triangle text-green-400 ml-2"></i></h2>
+                        <p class="translation">Teorema Pythagoras</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-green-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <path d="M 30 110 L 130 110 L 30 30 Z" fill="#10b981" fill-opacity="0.2" stroke="#10b981" stroke-width="2"/>
+                                    <rect x="22" y="98" width="12" height="12" fill="none" stroke="#333" stroke-width="1"/>
+                                    <text x="20" y="80" font-size="12" text-anchor="middle" fill="#333" transform="rotate(-90 20 80)">a</text>
+                                    <text x="80" y="125" font-size="12" text-anchor="middle" fill="#333">b</text>
+                                    <text x="90" y="65" font-size="12" text-anchor="middle" fill="#ef4444" transform="rotate(45 90 65)">c (hypotenuse)</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>In a right-angled triangle, the square of the hypotenuse (the side opposite the right angle) is equal to the sum of the squares of the other two sides. <span class="translation">Pada segitiga siku-siku, kuadrat sisi miring sama dengan jumlah kuadrat sisi siku-sikunya.</span></p>
+                                <p class="mt-2"><b>Hypotenuse</b> (\( c \)) is always the longest side. <span class="translation"><b>Sisi miring</b> selalu sisi terpanjang.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> To The Point Formula</p>
+                            <p class="mt-1 font-bold">\( a^2 + b^2 = c^2 \)</p>
+                            <p class="mt-1"><span class="translation">Rumus To The Point: \( a^2 + b^2 = c^2 \), di mana \( c \) adalah sisi miring.</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="6" data-task-id="w-task4"></div>
+                <div class="page" data-page="7" data-task-id="w-task5"></div>
+                <div class="page" data-page="8" data-task-id="w-task6"></div>
+
+                <!-- PAGE 9: THEORY 3 -->
+                <div class="page" data-page="9">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-purple-500">
+                        <h2 class="text-2xl font-bold text-purple-600 mb-2">Review: Pythagorean Triples <i class="fas fa-layer-group text-purple-400 ml-2"></i></h2>
+                        <p class="translation">Tripel Pythagoras</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-purple-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <path d="M 40 100 L 120 100 L 40 40 Z" fill="#8b5cf6" fill-opacity="0.2" stroke="#8b5cf6" stroke-width="2"/>
+                                    <text x="30" y="75" font-size="14" text-anchor="middle" fill="#333" transform="rotate(-90 30 75)">3</text>
+                                    <text x="80" y="115" font-size="14" text-anchor="middle" fill="#333">4</text>
+                                    <text x="85" y="65" font-size="14" text-anchor="middle" fill="#333" transform="rotate(45 85 65)">5</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>Pythagorean triples are sets of three positive integers \( (a, b, c) \) that perfectly satisfy \( a^2 + b^2 = c^2 \). <span class="translation">Tripel Pythagoras adalah tiga bilangan bulat positif yang memenuhi rumus Pythagoras.</span></p>
+                                <p class="mt-2">Common triples: \( (3, 4, 5) \), \( (5, 12, 13) \), \( (8, 15, 17) \). <span class="translation">Tripel yang sering muncul: 3-4-5, 5-12-13, 8-15-17.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> To The Point Formula</p>
+                            <p class="mt-1 font-bold">Memorize: \( 3^2 + 4^2 = 5^2 \) (Base for all multiples!)</p>
+                            <p class="mt-1"><span class="translation">Rumus To The Point: Hafalkan 3-4-5. Kelipatannya seperti 6-8-10 juga berlaku.</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="10" data-task-id="w-task7"></div>
+                <div class="page" data-page="11" data-task-id="w-task8"></div>
+                <div class="page" data-page="12" data-task-id="w-task9"></div>
+                <div class="page" data-page="13" data-task-id="w-task10"></div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- SECTION: INTRODUCTION & REAL-WORLD         -->
+            <!-- ========================================== -->
+            <div id="intro" class="content-section">
+                <!-- PAGE 1: THEORY 1 -->
+                <div class="page active" data-page="1">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-indigo-500">
+                        <h2 class="text-2xl font-bold text-indigo-600 mb-2">Real-World Connection: Ladders & Walls <i class="fas fa-hard-hat text-indigo-400 ml-2"></i></h2>
+                        <p class="translation">Penerapan di Dunia Nyata: Tangga & Tembok</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-indigo-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <rect x="20" y="110" width="140" height="5" fill="#6366f1"/> <!-- Ground -->
+                                    <rect x="20" y="20" width="5" height="90" fill="#6366f1"/> <!-- Wall -->
+                                    <line x1="20" y1="20" x2="125" y2="110" stroke="#ef4444" stroke-width="4"/> <!-- Ladder -->
+                                    <rect x="15" y="105" width="10" height="10" fill="none" stroke="#333" stroke-width="1"/> <!-- Right angle -->
+                                    <text x="60" y="100" font-size="12" text-anchor="middle" fill="#333" transform="rotate(36 60 100)">Ladder (c)</text>
+                                    <text x="5" y="65" font-size="12" text-anchor="middle" fill="#333" transform="rotate(-90 5 65)">Wall (b)</text>
+                                    <text x="75" y="125" font-size="12" text-anchor="middle" fill="#333">Ground (a)</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>The Pythagorean theorem is highly practical! If a 5-meter ladder leans against a wall, and its base is 3 meters from the wall, we can find exactly how high the ladder reaches. <span class="translation">Teorema Pythagoras sangat praktis! Kita bisa mencari tinggi tangga ke tembok.</span></p>
+                                <p class="mt-2">Here, the ladder is the hypotenuse \( c \), the wall is \( b \), and the ground is \( a \). <span class="translation">Tangga adalah sisi miring, tembok dan tanah adalah sisi siku-sikunya.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> To The Point Formula</p>
+                            <p class="mt-1 font-bold">Identify \( c \) first (it's always opposite the right angle / usually the longest object).</p>
+                            <p class="mt-1"><span class="translation">Rumus To The Point: Cari dulu sisi miring (\( c \)). Sisi miring selalu di depan sudut siku-siku.</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="2" data-task-id="i-task1"></div>
+                <div class="page" data-page="3" data-task-id="i-task2"></div>
+                <div class="page" data-page="4" data-task-id="i-task3"></div>
+
+                <!-- PAGE 5: THEORY 2 -->
+                <div class="page" data-page="5">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-green-500">
+                        <h2 class="text-2xl font-bold text-green-600 mb-2">Finding Distances: Diagonals <i class="fas fa-ruler-combined text-green-400 ml-2"></i></h2>
+                        <p class="translation">Mencari Jarak: Diagonal</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-green-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <rect x="40" y="20" width="100" height="80" fill="#10b981" fill-opacity="0.1" stroke="#10b981" stroke-width="2"/>
+                                    <line x1="40" y1="20" x2="140" y2="100" stroke="#ef4444" stroke-width="3"/>
+                                    <text x="90" y="15" font-size="12" text-anchor="middle" fill="#333">Width = 8</text>
+                                    <text x="155" y="65" font-size="12" text-anchor="middle" fill="#333" transform="rotate(90 155 65)">Length = 6</text>
+                                    <text x="80" y="70" font-size="12" text-anchor="middle" fill="#ef4444" transform="rotate(35 80 70)">Diagonal = ?</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>A rectangle is made of two right-angled triangles if you draw a diagonal line across it. <span class="translation">Persegi panang dibagi menjadi dua segitiga siku-siku oleh diagonalnya.</span></p>
+                                <p class="mt-2">The diagonal acts as the hypotenuse! If a TV is 80 cm wide and 60 cm tall, the diagonal screen size is \( \sqrt{80^2 + 60^2} \). <span class="translation">Diagonal adalah sisi miring. Ukuran TV didapat dari diagonalnya.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> To The Point Formula</p>
+                            <p class="mt-1 font-bold">Diagonal of Rectangle \( = \sqrt{\text{width}^2 + \text{length}^2} \)</p>
+                            <p class="mt-1"><span class="translation">Rumus To The Point: Diagonal Persegi Panjang \( = \sqrt{p^2 + l^2} \).</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="6" data-task-id="i-task4"></div>
+                <div class="page" data-page="7" data-task-id="i-task5"></div>
+                <div class="page" data-page="8" data-task-id="i-task6"></div>
+
+                <!-- PAGE 9: THEORY 3 -->
+                <div class="page" data-page="9">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-purple-500">
+                        <h2 class="text-2xl font-bold text-purple-600 mb-2">Navigation & Shortest Paths <i class="fas fa-map-marked-alt text-purple-400 ml-2"></i></h2>
+                        <p class="translation">Navigasi & Jalur Tercepat</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-purple-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <path d="M 20 20 L 20 100 L 140 100" fill="none" stroke="#333" stroke-width="2" stroke-dasharray="5,5"/>
+                                    <line x1="20" y1="20" x2="140" y2="100" stroke="#8b5cf6" stroke-width="3"/>
+                                    <circle cx="20" cy="20" r="4" fill="#ef4444"/>
+                                    <circle cx="140" cy="100" r="4" fill="#10b981"/>
+                                    <text x="10" y="60" font-size="12" text-anchor="middle" fill="#333">3 km N</text>
+                                    <text x="80" y="115" font-size="12" text-anchor="middle" fill="#333">4 km E</text>
+                                    <text x="90" y="50" font-size="12" text-anchor="middle" fill="#8b5cf6">Shortest = 5 km</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>If you walk 3 km North and then 4 km East, you actually traveled 7 km. But if you could fly straight, the distance is exactly 5 km! <span class="translation">Jika berjalan ke utara lalu ke timur, jarak tempuhnya bertambah. Tapi jarak terusannya bisa dihitung Pythagoras.</span></p>
+                                <p class="mt-2">This is how GPS systems calculate straight-line distances. <span class="translation">Begitu cara GPS menghitung jarak lurus antar dua titik.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> To The Point Formula</p>
+                            <p class="mt-1 font-bold">Straight-line distance \( = \sqrt{(\Delta x)^2 + (\Delta y)^2} \)</p>
+                            <p class="mt-1"><span class="translation">Rumus To The Point: Jarak lurus tinggal akarkan jumlah kuadrat selisih koordinatnya.</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="10" data-task-id="i-task7"></div>
+                <div class="page" data-page="11" data-task-id="i-task8"></div>
+                <div class="page" data-page="12" data-task-id="i-task9"></div>
+                <div class="page" data-page="13" data-task-id="i-task10"></div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- SECTION: REVIEW OF PRIOR KNOWLEDGE         -->
+            <!-- ========================================== -->
+            <div id="review" class="content-section">
+                <!-- PAGE 1: THEORY 1 -->
+                <div class="page active" data-page="1">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-indigo-500">
+                        <h2 class="text-2xl font-bold text-indigo-600 mb-2">Converting Roots and Exponents <i class="fas fa-exchange-alt text-indigo-400 ml-2"></i></h2>
+                        <p class="translation">Mengubah Bentuk Akar dan Pangkat</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-indigo-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <rect x="20" y="50" width="60" height="40" fill="#6366f1" rx="4"/>
+                                    <text x="50" y="75" font-size="14" text-anchor="middle" fill="white">√25</text>
+                                    <path d="M 80 70 L 110 70" stroke="#333" stroke-width="2" marker-end="url(#arr1)"/>
+                                    <rect x="110" y="50" width="60" height="40" fill="#10b981" rx="4"/>
+                                    <text x="140" y="75" font-size="14" text-anchor="middle" fill="white">5</text>
+                                    <path d="M 140 90 L 140 110 L 110 110" stroke="#ef4444" stroke-width="2" fill="none"/>
+                                    <text x="90" y="125" font-size="12" text-anchor="middle" fill="#333">5^2 = 25</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>A square root \( \sqrt{x} \) asks: "What number multiplied by itself gives \( x \)?" <span class="translation">Akar kuadrat bertanya: "Angka apa dikali dirinya sendiri menghasilkan \( x \)?"</span></p>
+                                <p class="mt-2">We can write roots as fractional exponents: \( \sqrt{x} = x^{1/2} \). <span class="translation">Kita bisa menulis akar sebagai pangkat pecahan: \( \sqrt{x} = x^{1/2} \).</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> To The Point Formula</p>
+                            <p class="mt-1 font-bold">\( \sqrt{x} = x^{1/2} \) &nbsp;&nbsp; | &nbsp;&nbsp; \( \sqrt[3]{x} = x^{1/3} \)</p>
+                            <p class="mt-1"><span class="translation">Rumus To The Point: Akar kuadrat sama dengan pangkat setengah.</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="2" data-task-id="r-task1"></div>
+                <div class="page" data-page="3" data-task-id="r-task2"></div>
+                <div class="page" data-page="4" data-task-id="r-task3"></div>
+
+                <!-- PAGE 5: THEORY 2 -->
+                <div class="page" data-page="5">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-green-500">
+                        <h2 class="text-2xl font-bold text-green-600 mb-2">Standard Form (Bilangan Baku) <i class="fas fa-book text-green-400 ml-2"></i></h2>
+                        <p class="translation">Bilangan Baku</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-green-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <text x="90" y="40" font-size="16" text-anchor="middle" fill="#333">150,000</text>
+                                    <path d="M 90 50 L 90 70" stroke="#10b981" stroke-width="2" marker-end="url(#arr1)"/>
+                                    <text x="90" y="90" font-size="16" text-anchor="middle" fill="#10b981">1.5 × 10^5</text>
+                                    <text x="90" y="115" font-size="10" text-anchor="middle" fill="#333">(1 ≤ a < 10)</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>Standard form (scientific notation) expresses very large or small numbers easily. <span class="translation">Bentuk baku digunakan untuk menulis angka yang sangat besar atau kecil.</span></p>
+                                <p class="mt-2">Format: \( a \times 10^n \), where \( 1 \le a < 10 \) and \( n \) is an integer. <span class="translation">Formatnya: \( a \times 10^n \), dengan \( a \) antara 1 dan 9.999...</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> To The Point Formula</p>
+                            <p class="mt-1 font-bold">\( a \times 10^n \) (Move decimal right = negative \( n \), left = positive \( n \))</p>
+                            <p class="mt-1"><span class="translation">Rumus To The Point: Geser koma ke kiri, pangkat positif. Geser ke kanan, pangkat negatif.</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="6" data-task-id="r-task4"></div>
+                <div class="page" data-page="7" data-task-id="r-task5"></div>
+                <div class="page" data-page="8" data-task-id="r-task6"></div>
+
+                <!-- PAGE 9: THEORY 3 -->
+                <div class="page" data-page="9">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-purple-500">
+                        <h2 class="text-2xl font-bold text-purple-600 mb-2">Isolating Variables in Pythagoras <i class="fas fa-square-root-alt text-purple-400 ml-2"></i></h2>
+                        <p class="translation">Memisahkan Variabel di Pythagoras</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-purple-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <text x="90" y="40" font-size="16" text-anchor="middle" fill="#8b5cf6">a^2 + b^2 = c^2</text>
+                                    <path d="M 90 50 L 90 70" stroke="#333" stroke-width="2" marker-end="url(#arr1)"/>
+                                    <text x="90" y="90" font-size="16" text-anchor="middle" fill="#ef4444">c = √(a^2 + b^2)</text>
+                                    <text x="90" y="115" font-size="16" text-anchor="middle" fill="#10b981">b = √(c^2 - a^2)</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>Sometimes we know the hypotenuse and one side, but need to find the missing leg. <span class="translation">Kadang kita tahu sisi miring dan satu sisi, lalu mencari sisi yang hilang.</span></p>
+                                <p class="mt-2">If \( a^2 + b^2 = c^2 \), then \( b^2 = c^2 - a^2 \), so \( b = \sqrt{c^2 - a^2} \). <span class="translation">Jika mencari sisi siku-siku, kurangkan kuadrat sisi miring dengan kuadrat sisi yang diketahui.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> To The Point Formula</p>
+                            <p class="mt-1 font-bold">Finding a leg: \( b = \sqrt{c^2 - a^2} \)</p>
+                            <p class="mt-1"><span class="translation">Rumus To The Point: Mencari sisi siku-siku: \( \sqrt{\text{miring}^2 - \text{sisi}^2} \).</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="10" data-task-id="r-task7"></div>
+                <div class="page" data-page="11" data-task-id="r-task8"></div>
+                <div class="page" data-page="12" data-task-id="r-task9"></div>
+                <div class="page" data-page="13" data-task-id="r-task10"></div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- SECTION: PROBLEM INTRODUCTION              -->
+            <!-- ========================================== -->
+            <div id="problem" class="content-section">
+                <!-- PAGE 1: THEORY 1 -->
+                <div class="page active" data-page="1">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-indigo-500">
+                        <h2 class="text-2xl font-bold text-indigo-600 mb-2">Checking for Right Triangles <i class="fas fa-check-double text-indigo-400 ml-2"></i></h2>
+                        <p class="translation">Mengecek Segitiga Siku-siku</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-indigo-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <path d="M 30 110 L 150 110 L 30 30 Z" fill="#6366f1" fill-opacity="0.1" stroke="#6366f1" stroke-width="2"/>
+                                    <rect x="22" y="98" width="12" height="12" fill="none" stroke="#333" stroke-width="1.5"/>
+                                    <text x="15" y="75" font-size="14" text-anchor="middle" fill="#333" transform="rotate(-90 15 75)">5</text>
+                                    <text x="90" y="125" font-size="14" text-anchor="middle" fill="#333">12</text>
+                                    <text x="100" y="60" font-size="14" text-anchor="middle" fill="#ef4444" transform="rotate(35 100 60)">13</text>
+                                    <text x="90" y="20" font-size="12" text-anchor="middle" fill="#10b981">25 + 144 = 169?</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>The converse of the Pythagorean Theorem states: If \( a^2 + b^2 = c^2 \), then the triangle is a right-angled triangle. <span class="translation">Kebalikan Teorema Pythagoras: Jika \( a^2 + b^2 = c^2 \), maka itu segitiga siku-siku.</span></p>
+                                <p class="mt-2">This is useful to verify if a corner is perfectly 90 degrees, like in construction or carpentry. <span class="translation">Berguna untuk memastikan sudut 90 derajat, seperti di konstruksi.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> To The Point Formula</p>
+                            <p class="mt-1 font-bold">Test \( a^2 + b^2 \). If it equals \( c^2 \), it's a right triangle!</p>
+                            <p class="mt-1"><span class="translation">Rumus To The Point: Cek apakah jumlah kuadrat dua sisi sama dengan kuadrat sisi terpanjang.</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="2" data-task-id="p-task1"></div>
+                <div class="page" data-page="3" data-task-id="p-task2"></div>
+                <div class="page" data-page="4" data-task-id="p-task3"></div>
+
+                <!-- PAGE 5: THEORY 2 -->
+                <div class="page" data-page="5">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-green-500">
+                        <h2 class="text-2xl font-bold text-green-600 mb-2">Height of an Isosceles Triangle <i class="fas fa-mountain text-green-400 ml-2"></i></h2>
+                        <p class="translation">Tinggi Segitiga Sama Kaki</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-green-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <path d="M 90 20 L 30 110 L 150 110 Z" fill="#10b981" fill-opacity="0.1" stroke="#10b981" stroke-width="2"/>
+                                    <line x1="90" y1="20" x2="90" y2="110" stroke="#ef4444" stroke-width="2" stroke-dasharray="4"/>
+                                    <rect x="82" y="98" width="12" height="12" fill="none" stroke="#333" stroke-width="1.5"/>
+                                    <text x="105" y="70" font-size="12" text-anchor="middle" fill="#ef4444">h = ?</text>
+                                    <text x="60" y="125" font-size="12" text-anchor="middle" fill="#333">10</text>
+                                    <text x="120" y="70" font-size="12" text-anchor="middle" fill="#333" transform="rotate(60 120 70)">13</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>An isosceles triangle can be split perfectly down the middle into two identical right-angled triangles. <span class="translation">Segitiga sama kaki bisa dibagi menjadi dua segitiga siku-siku yang identik.</span></p>
+                                <p class="mt-2">The base becomes half (\( a \)), the equal side becomes the hypotenuse (\( c \)), and the height is \( b \). <span class="translation">Alas jadi setengah, sisi sama kaki jadi sisi miring, tinggi dicari dengan Pythagoras.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> To The Point Formula</p>
+                            <p class="mt-1 font-bold">\( h = \sqrt{\text{side}^2 - (\frac{\text{base}}{2})^2} \)</p>
+                            <p class="mt-1"><span class="translation">Rumus To The Point: Bagi alas dua, lalu cari sisi siku-sikunya.</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="6" data-task-id="p-task4"></div>
+                <div class="page" data-page="7" data-task-id="p-task5"></div>
+                <div class="page" data-page="8" data-task-id="p-task6"></div>
+
+                <!-- PAGE 9: THEORY 3 -->
+                <div class="page" data-page="9">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-purple-500">
+                        <h2 class="text-2xl font-bold text-purple-600 mb-2">Diagonals in 3D: The Box Problem <i class="fas fa-box text-purple-400 ml-2"></i></h2>
+                        <p class="translation">Diagonal di Ruang 3D: Balok</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-purple-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <path d="M 40 100 L 120 100 L 120 40 L 40 40 Z" fill="#8b5cf6" fill-opacity="0.1" stroke="#8b5cf6" stroke-width="2"/>
+                                    <path d="M 40 40 L 60 20 L 140 20 L 120 40" fill="none" stroke="#8b5cf6" stroke-width="2"/>
+                                    <path d="M 120 100 L 140 80 L 140 20" fill="none" stroke="#8b5cf6" stroke-width="2"/>
+                                    <line x1="40" y1="100" x2="140" y2="20" stroke="#ef4444" stroke-width="3"/>
+                                    <text x="80" y="60" font-size="12" text-anchor="middle" fill="#ef4444" transform="rotate(-35 80 60)">Space Diagonal</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>To find the longest diagonal inside a rectangular box (room), we use the 3D Pythagorean theorem. <span class="translation">Untuk mencari diagonal ruang di balok, gunakan Pythagoras 3D.</span></p>
+                                <p class="mt-2">First find the base diagonal, then use that with the height to find the space diagonal. <span class="translation">Cari diagonal alas dulu, lalu gabungkan dengan tinggi.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> To The Point Formula</p>
+                            <p class="mt-1 font-bold">Space Diagonal \( = \sqrt{l^2 + w^2 + h^2} \)</p>
+                            <p class="mt-1"><span class="translation">Rumus To The Point: Diagonal ruang \( = \sqrt{p^2 + l^2 + t^2} \).</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="10" data-task-id="p-task7"></div>
+                <div class="page" data-page="11" data-task-id="p-task8"></div>
+                <div class="page" data-page="12" data-task-id="p-task9"></div>
+                <div class="page" data-page="13" data-task-id="p-task10"></div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- SECTION: GUIDED PRACTICE                   -->
+            <!-- ========================================== -->
+            <div id="guided" class="content-section">
+                <!-- PAGE 1: THEORY 1 -->
+                <div class="page active" data-page="1">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-indigo-500">
+                        <h2 class="text-2xl font-bold text-indigo-600 mb-2">Step-by-Step: Finding Hypotenuse <i class="fas fa-shoe-prints text-indigo-400 ml-2"></i></h2>
+                        <p class="translation">Langkah demi Langkah: Mencari Sisi Miring</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-indigo-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <circle cx="40" cy="40" r="15" fill="#6366f1"/>
+                                    <text x="40" y="45" font-size="14" text-anchor="middle" fill="white">1</text>
+                                    <text x="65" y="45" font-size="12" fill="#333">Square a and b</text>
+                                    <circle cx="40" cy="70" r="15" fill="#6366f1"/>
+                                    <text x="40" y="75" font-size="14" text-anchor="middle" fill="white">2</text>
+                                    <text x="65" y="75" font-size="12" fill="#333">Add them up</text>
+                                    <circle cx="40" cy="100" r="15" fill="#6366f1"/>
+                                    <text x="40" y="105" font-size="14" text-anchor="middle" fill="white">3</text>
+                                    <text x="65" y="105" font-size="12" fill="#333">Square root the sum</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>Let's do it together! A triangle has legs \( a = 6 \) cm and \( b = 8 \) cm. <span class="translation">Mari coba bersama! Segitiga dengan sisi 6 cm dan 8 cm.</span></p>
+                                <p class="mt-2">Step 1: \( 6^2 = 36 \), \( 8^2 = 64 \). <br>Step 2: \( 36 + 64 = 100 \). <br>Step 3: \( c = \sqrt{100} = 10 \) cm. <span class="translation">Langkah 1: Kuadratkan. Langkah 2: Jumlahkan. Langkah 3: Akarkan.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> To The Point Formula</p>
+                            <p class="mt-1 font-bold">\( c = \sqrt{a^2 + b^2} \) -> Square, Add, Root!</p>
+                            <p class="mt-1"><span class="translation">Rumus To The Point: Kuadratkan, jumlahkan, lalu akarkan!</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="2" data-task-id="g-task1"></div>
+                <div class="page" data-page="3" data-task-id="g-task2"></div>
+                <div class="page" data-page="4" data-task-id="g-task3"></div>
+
+                <!-- PAGE 5: THEORY 2 -->
+                <div class="page" data-page="5">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-green-500">
+                        <h2 class="text-2xl font-bold text-green-600 mb-2">Step-by-Step: Finding a Leg <i class="fas fa-search text-green-400 ml-2"></i></h2>
+                        <p class="translation">Langkah demi Langkah: Mencari Sisi Siku-siku</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-green-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <text x="90" y="40" font-size="16" text-anchor="middle" fill="#333">c = 15, b = 12</text>
+                                    <path d="M 90 50 L 90 70" stroke="#333" stroke-width="2" marker-end="url(#arr1)"/>
+                                    <text x="90" y="90" font-size="14" text-anchor="middle" fill="#10b981">a^2 = 15^2 - 12^2</text>
+                                    <path d="M 90 100 L 90 120" stroke="#333" stroke-width="2" marker-end="url(#arr1)"/>
+                                    <text x="90" y="135" font-size="14" text-anchor="middle" fill="#ef4444">a = 9</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>What if we know the hypotenuse (\( c \)) and one leg (\( b \)), but need to find the other leg (\( a \))? <span class="translation">Bagaimana jika kita tahu sisi miring dan satu sisi siku-siku?</span></p>
+                                <p class="mt-2">Subtract the square of the leg from the square of the hypotenuse, then take the square root. <span class="translation">Kurangkan kuadrat sisi miring dengan kuadrat sisi yang diketahui, lalu akarkan.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> To The Point Formula</p>
+                            <p class="mt-1 font-bold">\( a = \sqrt{c^2 - b^2} \) -> Square, Subtract, Root!</p>
+                            <p class="mt-1"><span class="translation">Rumus To The Point: Kuadratkan, kurangkan, lalu akarkan!</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="6" data-task-id="g-task4"></div>
+                <div class="page" data-page="7" data-task-id="g-task5"></div>
+                <div class="page" data-page="8" data-task-id="g-task6"></div>
+
+                <!-- PAGE 9: THEORY 3 -->
+                <div class="page" data-page="9">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-purple-500">
+                        <h2 class="text-2xl font-bold text-purple-600 mb-2">Spotting Pythagorean Triples Fast <i class="fas fa-bolt text-purple-400 ml-2"></i></h2>
+                        <p class="translation">Mengenali Tripel Pythagoras dengan Cepat</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-purple-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <rect x="30" y="30" width="120" height="30" fill="#8b5cf6" rx="4"/>
+                                    <text x="90" y="50" font-size="14" text-anchor="middle" fill="white">Multiples of (3, 4, 5)</text>
+                                    <rect x="30" y="70" width="120" height="30" fill="#10b981" rx="4"/>
+                                    <text x="90" y="90" font-size="12" text-anchor="middle" fill="white">6, 8, 10 (x2)</text>
+                                    <rect x="30" y="105" width="120" height="30" fill="#ef4444" rx="4"/>
+                                    <text x="90" y="125" font-size="12" text-anchor="middle" fill="white">30, 40, 50 (x10)</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>If you spot numbers that are multiples of basic triples, you don't need to calculate! <span class="translation">Jika angkanya kelipatan tripel dasar, tidak perlu menghitung manual!</span></p>
+                                <p class="mt-2">If legs are 18 and 24, notice they are \( 6 \times 3 \) and \( 6 \times 4 \). So the hypotenuse is \( 6 \times 5 = 30 \). <span class="translation">Jika sisi 18 dan 24, itu kelipatan 6 dari tripel 3-4-5. Sisi miringnya 30.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> To The Point Formula</p>
+                            <p class="mt-1 font-bold">Scale factor: If \( a,b,c \) is a triple, so is \( ka, kb, kc \).</p>
+                            <p class="mt-1"><span class="translation">Rumus To The Point: Kelipatan tripel juga merupakan tripel.</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="10" data-task-id="g-task7"></div>
+                <div class="page" data-page="11" data-task-id="g-task8"></div>
+                <div class="page" data-page="12" data-task-id="g-task9"></div>
+                <div class="page" data-page="13" data-task-id="g-task10"></div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- SECTION: INDEPENDENT PRACTICE              -->
+            <!-- ========================================== -->
+            <div id="independent" class="content-section">
+                <!-- PAGE 1: THEORY 1 -->
+                <div class="page active" data-page="1">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-indigo-500">
+                        <h2 class="text-2xl font-bold text-indigo-600 mb-2">Distance on a Coordinate Grid <i class="fas fa-th text-indigo-400 ml-2"></i></h2>
+                        <p class="translation">Jarak pada Koordinat Kartesius</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-indigo-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <line x1="20" y1="70" x2="160" y2="70" stroke="#cbd5e1" stroke-width="1"/>
+                                    <line x1="90" y1="10" x2="90" y2="130" stroke="#cbd5e1" stroke-width="1"/>
+                                    <circle cx="40" cy="110" r="4" fill="#ef4444"/>
+                                    <text x="30" y="125" font-size="10" fill="#333">(1, 1)</text>
+                                    <circle cx="140" cy="30" r="4" fill="#10b981"/>
+                                    <text x="145" y="25" font-size="10" fill="#333">(5, 4)</text>
+                                    <line x1="40" y1="110" x2="140" y2="30" stroke="#6366f1" stroke-width="2"/>
+                                    <line x1="40" y1="30" x2="140" y2="30" stroke="#333" stroke-width="1" stroke-dasharray="3"/>
+                                    <line x1="40" y1="110" x2="40" y2="30" stroke="#333" stroke-width="1" stroke-dasharray="3"/>
+                                    <text x="90" y="20" font-size="10" text-anchor="middle" fill="#333">dx = 4</text>
+                                    <text x="25" y="70" font-size="10" text-anchor="middle" fill="#333" transform="rotate(-90 25 70)">dy = 3</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>To find the distance between two points \( (x_1, y_1) \) and \( (x_2, y_2) \), we treat the horizontal and vertical distances as the legs of a right triangle. <span class="translation">Jarak antar dua titik bisa dicari dengan memperlakukan selisih x dan y sebagai sisi siku-siku.</span></p>
+                                <p class="mt-2">Distance \( = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2} \). <span class="translation">Rumus jarak dua titik.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> To The Point Formula</p>
+                            <p class="mt-1 font-bold">\( d = \sqrt{(\Delta x)^2 + (\Delta y)^2} \)</p>
+                            <p class="mt-1"><span class="translation">Rumus To The Point: Jarak = akar dari kuadrat selisih x ditambah kuadrat selisih y.</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="2" data-task-id="ind-task1"></div>
+                <div class="page" data-page="3" data-task-id="ind-task2"></div>
+                <div class="page" data-page="4" data-task-id="ind-task3"></div>
+
+                <!-- PAGE 5: THEORY 2 -->
+                <div class="page" data-page="5">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-green-500">
+                        <h2 class="text-2xl font-bold text-green-600 mb-2">Classifying Triangles by Angles <i class="fas fa-shapes text-green-400 ml-2"></i></h2>
+                        <p class="translation">Mengklasifikasikan Segitiga berdasarkan Sudut</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-green-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <path d="M 20 100 L 60 100 L 20 60 Z" fill="#10b981" fill-opacity="0.2" stroke="#10b981" stroke-width="1"/>
+                                    <text x="30" y="90" font-size="10" fill="#333">Acute</text>
+                                    <text x="40" y="115" font-size="8" text-anchor="middle" fill="#333">c^2 < a^2+b^2</text>
+                                    
+                                    <path d="M 80 100 L 120 100 L 80 60 Z" fill="#6366f1" fill-opacity="0.2" stroke="#6366f1" stroke-width="1"/>
+                                    <rect x="72" y="88" width="12" height="12" fill="none" stroke="#333" stroke-width="1"/>
+                                    <text x="90" y="90" font-size="10" fill="#333">Right</text>
+                                    <text x="100" y="115" font-size="8" text-anchor="middle" fill="#333">c^2 = a^2+b^2</text>
+                                    
+                                    <path d="M 140 100 L 160 100 L 130 70 Z" fill="#ef4444" fill-opacity="0.2" stroke="#ef4444" stroke-width="1"/>
+                                    <text x="135" y="90" font-size="10" fill="#333">Obtuse</text>
+                                    <text x="145" y="115" font-size="8" text-anchor="middle" fill="#333">c^2 > a^2+b^2</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>Using the Pythagorean inequalities, we can determine if a triangle is acute, right, or obtuse without using a protractor. <span class="translation">Dengan Pythagoras, kita bisa tahu jenis segitiga tanpa busur derajat.</span></p>
+                                <p class="mt-2">Assume \( c \) is the longest side. <br>If \( c^2 < a^2 + b^2 \), it's acute. <br>If \( c^2 = a^2 + b^2 \), it's right. <br>If \( c^2 > a^2 + b^2 \), it's obtuse. <span class="translation">Asumsikan \( c \) sisi terpanjang. Bandingkan kuadratnya.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> To The Point Formula</p>
+                            <p class="mt-1 font-bold">Compare \( c^2 \) with \( a^2 + b^2 \): Less than, Equal to, or Greater than.</p>
+                            <p class="mt-1"><span class="translation">Rumus To The Point: Bandingkan kuadrat sisi miring dengan jumlah kuadrat sisi lain.</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="6" data-task-id="ind-task4"></div>
+                <div class="page" data-page="7" data-task-id="ind-task5"></div>
+                <div class="page" data-page="8" data-task-id="ind-task6"></div>
+
+                <!-- PAGE 9: THEORY 3 -->
+                <div class="page" data-page="9">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-purple-500">
+                        <h2 class="text-2xl font-bold text-purple-600 mb-2">The Sliding Ladder Problem <i class="fas fa-arrows-alt text-purple-400 ml-2"></i></h2>
+                        <p class="translation">Masalah Tangga Meluncur</p>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-purple-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <rect x="10" y="110" width="160" height="5" fill="#8b5cf6"/>
+                                    <rect x="10" y="20" width="5" height="90" fill="#8b5cf6"/>
+                                    
+                                    <line x1="10" y1="20" x2="100" y2="110" stroke="#ef4444" stroke-width="3"/>
+                                    <text x="40" y="60" font-size="10" fill="#ef4444">Ladder 1</text>
+                                    
+                                    <line x1="10" y1="50" x2="130" y2="110" stroke="#10b981" stroke-width="3" stroke-dasharray="4"/>
+                                    <text x="70" y="90" font-size="10" fill="#10b981">Ladder 2</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>A ladder of fixed length leans against a wall. If the base slides away from the wall, the top must slide down. <span class="translation">Tangga dengan panjang tetap bersandar di tembok. Jika dasarnya menjauh, atasnya turun.</span></p>
+                                <p class="mt-2">The ladder length (\( c \)) remains constant! Use the new base (\( a \)) to find the new height (\( b \)). <span class="translation">Panjang tangga tetap! Gunakan alas baru untuk mencari tinggi baru.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> To The Point Formula</p>
+                            <p class="mt-1 font-bold">Constant \( c \). Find new \( b = \sqrt{c^2 - a_{new}^2} \)</p>
+                            <p class="mt-1"><span class="translation">Rumus To The Point: Sisi miring tetap. Cari tinggi baru dengan rumus mencari sisi siku-siku.</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="10" data-task-id="ind-task7"></div>
+                <div class="page" data-page="11" data-task-id="ind-task8"></div>
+                <div class="page" data-page="12" data-task-id="ind-task9"></div>
+                <div class="page" data-page="13" data-task-id="ind-task10"></div>
+            </div>
+            
+            <!-- ========================================== -->
+            <!-- SECTION: CONSOLIDATION & REFLECTION        -->
+            <!-- ========================================== -->
+            <div id="consolidation" class="content-section">
+                 <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                    <h2 class="text-2xl font-bold text-gray-800">Consolidation & Reflection</h2>
+                    <p class="translation">Konsolidasi & Refleksi</p>
+                    <p>Excellent work! You've completed the material on Applications of the Pythagorean Theorem. Keep practicing your problem-solving skills. <span class="translation">Kerja bagus! Kamu telah menyelesaikan materi Penerapan Teorema Pythagoras. Teruslah berlatih.</span></p>
+                    <p class="mt-2">To test your understanding further, please complete Task 1 to Task 5. <span class="translation">Untuk menguji pemahamanmu lebih lanjut, silakan kerjakan Task 1 hingga Task 5.</span></p>
+                    <a href="https://learn.algonova.id" target="_blank" class="mt-4 inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded">
+                        Go to learn.algonova.id <span class="translation text-sm italic">Pergi ke learn.algonova.id</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- TASK SECTIONS WRAPPERS                     -->
+            <!-- ========================================== -->
+            <div id="task1" class="content-section">
+                <div class="page active" data-page="1"><div data-task-id="t1-task1"></div></div>
+                <div class="page" data-page="2"><div data-task-id="t1-task2"></div></div>
+                <div class="page" data-page="3"><div data-task-id="t1-task3"></div></div>
+                <div class="page" data-page="4"><div data-task-id="t1-task4"></div></div>
+                <div class="page" data-page="5"><div data-task-id="t1-task5"></div></div>
+                <div class="page" data-page="6"><div data-task-id="t1-task6"></div></div>
+                <div class="page" data-page="7"><div data-task-id="t1-task7"></div></div>
+                <div class="page" data-page="8"><div data-task-id="t1-task8"></div></div>
+                <div class="page" data-page="9"><div data-task-id="t1-task9"></div></div>
+                <div class="page" data-page="10"><div data-task-id="t1-task10"></div></div>
+            </div>
+            <div id="task2" class="content-section">
+                <div class="page active" data-page="1"><div data-task-id="t2-task1"></div></div>
+                <div class="page" data-page="2"><div data-task-id="t2-task2"></div></div>
+                <div class="page" data-page="3"><div data-task-id="t2-task3"></div></div>
+                <div class="page" data-page="4"><div data-task-id="t2-task4"></div></div>
+                <div class="page" data-page="5"><div data-task-id="t2-task5"></div></div>
+                <div class="page" data-page="6"><div data-task-id="t2-task6"></div></div>
+                <div class="page" data-page="7"><div data-task-id="t2-task7"></div></div>
+                <div class="page" data-page="8"><div data-task-id="t2-task8"></div></div>
+                <div class="page" data-page="9"><div data-task-id="t2-task9"></div></div>
+                <div class="page" data-page="10"><div data-task-id="t2-task10"></div></div>
+            </div>
+            <div id="task3" class="content-section">
+                <div class="page active" data-page="1"><div data-task-id="t3-task1"></div></div>
+                <div class="page" data-page="2"><div data-task-id="t3-task2"></div></div>
+                <div class="page" data-page="3"><div data-task-id="t3-task3"></div></div>
+                <div class="page" data-page="4"><div data-task-id="t3-task4"></div></div>
+                <div class="page" data-page="5"><div data-task-id="t3-task5"></div></div>
+                <div class="page" data-page="6"><div data-task-id="t3-task6"></div></div>
+                <div class="page" data-page="7"><div data-task-id="t3-task7"></div></div>
+                <div class="page" data-page="8"><div data-task-id="t3-task8"></div></div>
+                <div class="page" data-page="9"><div data-task-id="t3-task9"></div></div>
+                <div class="page" data-page="10"><div data-task-id="t3-task10"></div></div>
+            </div>
+            <div id="task4" class="content-section">
+                <div class="page active" data-page="1"><div data-task-id="t4-task1"></div></div>
+                <div class="page" data-page="2"><div data-task-id="t4-task2"></div></div>
+                <div class="page" data-page="3"><div data-task-id="t4-task3"></div></div>
+                <div class="page" data-page="4"><div data-task-id="t4-task4"></div></div>
+                <div class="page" data-page="5"><div data-task-id="t4-task5"></div></div>
+                <div class="page" data-page="6"><div data-task-id="t4-task6"></div></div>
+                <div class="page" data-page="7"><div data-task-id="t4-task7"></div></div>
+                <div class="page" data-page="8"><div data-task-id="t4-task8"></div></div>
+                <div class="page" data-page="9"><div data-task-id="t4-task9"></div></div>
+                <div class="page" data-page="10"><div data-task-id="t4-task10"></div></div>
+            </div>
+            <div id="task5" class="content-section">
+                <div class="page active" data-page="1"><div data-task-id="t5-task1"></div></div>
+                <div class="page" data-page="2"><div data-task-id="t5-task2"></div></div>
+                <div class="page" data-page="3"><div data-task-id="t5-task3"></div></div>
+                <div class="page" data-page="4"><div data-task-id="t5-task4"></div></div>
+                <div class="page" data-page="5"><div data-task-id="t5-task5"></div></div>
+                <div class="page" data-page="6"><div data-task-id="t5-task6"></div></div>
+                <div class="page" data-page="7"><div data-task-id="t5-task7"></div></div>
+                <div class="page" data-page="8"><div data-task-id="t5-task8"></div></div>
+                <div class="page" data-page="9"><div data-task-id="t5-task9"></div></div>
+                <div class="page" data-page="10"><div data-task-id="t5-task10"></div></div>
+            </div>
+
+            </div> <!-- Penutup #contentScrollArea -->
+            
+            <div id="paginationBar" class="shrink-0 bg-white p-3 border-t border-gray-200 flex justify-center items-center gap-1 no-print z-40 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]"></div>
+        </main>
+    </div>
+    
+    <!-- Print Area -->
+    <div id="printArea" class="hidden p-8">
+        <div class="text-center border-b-2 border-black pb-4 mb-4">
+            <h1 class="text-xl font-bold">Math Tutoring by Deni</h1>
+            <p>Topic: Applications of the Pythagorean Theorem</p>
+            <div class="flex justify-around mt-4 text-sm">
+                <p>Name: ..............................</p>
+                <p>Date: ..............................</p>
+                <p>Task: <span id="printTaskNum">1</span></p>
+                <p>Score: <span id="printScore">0</span>/10</p>
+            </div>
+        </div>
+        <table class="w-full border-collapse border border-black text-sm">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="border border-black p-1">No.</th>
+                    <th class="border border-black p-1">Question</th>
+                    <th class="border border-black p-1">Student Answer</th>
+                    <th class="border border-black p-1">Correct Answer</th>
+                    <th class="border border-black p-1">Note (❌/✔️)</th>
+                </tr>
+            </thead>
+            <tbody id="printTableBody"></tbody>
+        </table>
+        <div class="mt-8 text-right">
+            <p>Checked by,</p>
+            <br><br>
+            <p class="font-bold">Deni</p>
+        </div>
+    </div>
+    
+    <script>
+        const questions = {};
+        
+        Object.assign(questions, {
+            // SECTION 1: SPIRAL REVIEW WARM-UP
+            "w-task1": { type: "single", q: "A square garden has an area of 144 m². What is the exact length of one side of the garden? <i class='fas fa-seedling text-indigo-500 ml-2'></i>", q_trans: "Sebuah kebun persegi luasnya 144 m². Berapa panjang satu sisinya?", opts: ["\\( 10 \\text{ m} \\)", "\\( 11 \\text{ m} \\)", "\\( 12 \\text{ m} \\)", "\\( 13 \\text{ m} \\)", "\\( 14 \\text{ m} \\)"], ans: "\\( 12 \\text{ m} \\)", exp: "Area of a square is side × side (\( s^2 \)). To find the side, take the square root of the area: \( \sqrt{144} = 12 \) m. <span class='translation'>Luas persegi = sisi × sisi. Untuk mencari sisi, akarkan luasnya: √144 = 12 m.</span>" },
+            "w-task2": { type: "single", q: "Which of the following sets of numbers represents a Pythagorean triple? <i class='fas fa-layer-group text-indigo-500 ml-2'></i>", q_trans: "Manakah himpunan bilangan berikut yang merupakan tripel Pythagoras?", opts: ["\\( 1, 2, 3 \\)", "\\( 2, 3, 4 \\)", "\\( 4, 5, 6 \\)", "\\( 5, 12, 13 \\)", "\\( 6, 7, 8 \\)"], ans: "\\( 5, 12, 13 \\)", exp: "Test \( a^2 + b^2 = c^2 \). \( 5^2 + 12^2 = 25 + 144 = 169 \). Since \( 13^2 = 169 \), the set (5, 12, 13) is a Pythagorean triple. <span class='translation'>Cek \( 5^2 + 12^2 = 169 \) dan \( 13^2 = 169 \). Jadi 5, 12, 13 adalah tripel Pythagoras.</span>" },
+            "w-task3": { type: "single", q: "In a right-angled triangle, the side opposite the right angle is called... <i class='fas fa-triangle text-indigo-500 ml-2'></i>", q_trans: "Pada segitiga siku-siku, sisi di depan sudut siku-siku disebut...", opts: ["Leg", "Base", "Hypotenuse", "Altitude", "Perpendicular"], ans: "Hypotenuse", exp: "The hypotenuse is always the longest side and is located opposite the 90-degree angle. <span class='translation'>Sisi miring (hypotenuse) selalu sisi terpanjang dan berada di depan sudut siku-siku.</span>" },
+            "w-task4": { type: "single", q: "A right triangle has legs of 9 cm and 12 cm. What is the length of the hypotenuse? <i class='fas fa-ruler text-indigo-500 ml-2'></i>", q_trans: "Segitiga siku-siku memiliki sisi 9 cm dan 12 cm. Berapa panjang sisi miringnya?", opts: ["\\( 14 \\text{ cm} \\)", "\\( 15 \\text{ cm} \\)", "\\( 16 \\text{ cm} \\)", "\\( 18 \\text{ cm} \\)", "\\( 21 \\text{ cm} \\)"], ans: "\\( 15 \\text{ cm} \\)", exp: "Using \( a^2 + b^2 = c^2 \), we get \( 9^2 + 12^2 = 81 + 144 = 225 \). Then \( c = \sqrt{225} = 15 \) cm. (Notice this is a 3-4-5 triple multiplied by 3). <span class='translation'>\( 9^2 + 12^2 = 225 \). \( c = \sqrt{225} = 15 \) cm. (Ini kelipatan tripel 3-4-5).</span>" },
+            "w-task5": { type: "single", q: "Calculate the value of \( \sqrt{81} + \sqrt{64} \). <i class='fas fa-calculator text-indigo-500 ml-2'></i>", q_trans: "Hitunglah nilai \( \sqrt{81} + \sqrt{64} \).", opts: ["\\( 15 \\)", "\\( 16 \\)", "\\( 17 \\)", "\\( 18 \\)", "\\( 145 \\)"], ans: "\\( 17 \\)", exp: "First, find each root: \( \sqrt{81} = 9 \) and \( \sqrt{64} = 8 \). Then add them: \( 9 + 8 = 17 \). <span class='translation'>Akar 81 adalah 9, akar 64 adalah 8. Jumlahnya 9 + 8 = 17.</span>" },
+            "w-task6": { type: "single", q: "A ladder is leaning against a wall. The base is 6 m from the wall, and the ladder reaches 8 m up the wall. How long is the ladder? <i class='fas fa-hard-hat text-indigo-500 ml-2'></i>", q_trans: "Tangga bersandar di tembok. Jarak dasar 6 m, tinggi 8 m. Berapa panjang tangga?", opts: ["\\( 9 \\text{ m} \\)", "\\( 10 \\text{ m} \\)", "\\( 11 \\text{ m} \\)", "\\( 12 \\text{ m} \\)", "\\( 14 \\text{ m} \\)"], ans: "\\( 10 \\text{ m} \\)", exp: "The ladder is the hypotenuse: \( c = \sqrt{6^2 + 8^2} = \sqrt{36 + 64} = \sqrt{100} = 10 \) m. <span class='translation'>Tangga adalah sisi miring: \( \sqrt{6^2 + 8^2} = \sqrt{100} = 10 \) m.</span>" },
+            "w-task7": { type: "single", q: "Write \( 5^3 \) in expanded form and find its value. <i class='fas fa-fire text-indigo-500 ml-2'></i>", q_trans: "Tulis \( 5^3 \) dalam bentuk perkalian dan cari nilainya.", opts: ["\\( 5 \times 3 = 15 \\)", "\\( 5 \times 5 \times 5 = 125 \\)", "\\( 5 + 5 + 5 = 15 \\)", "\\( 5 \times 5 = 25 \\)", "\\( 3 \times 3 \times 3 \times 3 \times 3 = 243 \\)"], ans: "\\( 5 \times 5 \times 5 = 125 \\)", exp: "An exponent means multiplying the base by itself that many times. \( 5^3 = 5 \times 5 \times 5 = 125 \). <span class='translation'>Pangkat 3 berarti dikali 3 kali. \( 5 \times 5 \times 5 = 125 \).</span>" },
+            "w-task8": { type: "single", q: "The distance from Earth to a star is approximately \( 50,000,000,000 \) km. What is this in standard form (bentuk baku)? <i class='fas fa-star text-indigo-500 ml-2'></i>", q_trans: "Jarak Bumi ke bintang 50 miliar km. Berapa bentuk bakunya?", opts: ["\\( 5 \times 10^9 \\)", "\\( 5 \times 10^{10} \\)", "\\( 5 \times 10^{11} \\)", "\\( 0.5 \times 10^{11} \\)", "\\( 50 \times 10^9 \\)"], ans: "\\( 5 \times 10^{10} \\)", exp: "Move the decimal 10 places to the left to get a number between 1 and 10 (which is 5). So, \( 50,000,000,000 = 5 \times 10^{10} \). <span class='translation'>Geser koma 10 langkah ke kiri agar dapat angka 5. Hasilnya \( 5 \times 10^{10} \).</span>" },
+            "w-task9": { type: "single", q: "A triangle has sides 15, 20, and 25. Is it a right triangle? <i class='fas fa-check-double text-indigo-500 ml-2'></i>", q_trans: "Segitiga punya sisi 15, 20, 25. Apakah ini segitiga siku-siku?", opts: ["Yes, because \( 15+20=35 \)", "Yes, because \( 15^2+20^2=25^2 \)", "No, because 25 is too large", "No, because they are not prime", "Cannot be determined"], ans: "Yes, because \( 15^2+20^2=25^2 \)", exp: "Check the converse: \( 15^2 + 20^2 = 225 + 400 = 625 \). Since \( 25^2 = 625 \), the condition \( a^2 + b^2 = c^2 \) holds true. It is a right triangle (scaled 3-4-5). <span class='translation'>\( 15^2 + 20^2 = 625 \) dan \( 25^2 = 625 \). Memenuhi rumus, jadi segitiga siku-siku (kelipatan 3-4-5).</span>" },
+            "w-task10": { type: "single", q: "If \( a^2 = 49 \) and \( b^2 = 576 \), what is the length of the hypotenuse \( c \)? <i class='fas fa-square-root-alt text-indigo-500 ml-2'></i>", q_trans: "Jika \( a^2 = 49 \) dan \( b^2 = 576 \), berapa panjang sisi miring \( c \)?", opts: ["\\( 23 \\)", "\\( 24 \\)", "\\( 25 \\)", "\\( 26 \\)", "\\( 625 \\)"], ans: "\\( 25 \\)", exp: "Using Pythagoras: \( c^2 = a^2 + b^2 = 49 + 576 = 625 \). So \( c = \sqrt{625} = 25 \). <span class='translation'>\( c^2 = 49 + 576 = 625 \). Maka \( c = \sqrt{625} = 25 \).</span>" },
+
+            // SECTION 2: INTRO & REAL-WORLD CONNECTION
+            "i-task1": { type: "single", q: "A 13-foot ladder is placed against a wall. If the base is 5 feet from the wall, how high up the wall does it reach? <i class='fas fa-building text-green-500 ml-2'></i>", q_trans: "Tangga 13 kaki bersandar di tembok. Jika jarak dasar 5 kaki, berapa tingginya?", opts: ["\\( 8 \\text{ ft} \\)", "\\( 10 \\text{ ft} \\)", "\\( 11 \\text{ ft} \\)", "\\( 12 \\text{ ft} \\)", "\\( 14 \\text{ ft} \\)"], ans: "\\( 12 \\text{ ft} \\)", exp: "The ladder is \( c = 13 \). Base \( a = 5 \). \( b = \sqrt{13^2 - 5^2} = \sqrt{169 - 25} = \sqrt{144} = 12 \) ft. <span class='translation'>\( c=13, a=5 \). \( b = \sqrt{169 - 25} = \sqrt{144} = 12 \) kaki.</span>" },
+            "i-task2": { type: "single", q: "A TV screen is 40 inches wide and 30 inches tall. What is the diagonal length of the TV screen? <i class='fas fa-tv text-green-500 ml-2'></i>", q_trans: "Layar TV lebar 40 inci, tinggi 30 inci. Berapa panjang diagonalnya?", opts: ["\\( 45 \\text{ in} \\)", "\\( 50 \\text{ in} \\)", "\\( 55 \\text{ in} \\)", "\\( 60 \\text{ in} \\)", "\\( 70 \\text{ in} \\)"], ans: "\\( 50 \\text{ in} \\)", exp: "Diagonal is hypotenuse: \( \sqrt{40^2 + 30^2} = \sqrt{1600 + 900} = \sqrt{2500} = 50 \) inches. <span class='translation'>Diagonal adalah sisi miring: \( \sqrt{1600 + 900} = \sqrt{2500} = 50 \) inci.</span>" },
+            "i-task3": { type: "single", q: "A ship sails 12 km North, then 5 km East. What is the direct straight-line distance back to the start? <i class='fas fa-ship text-green-500 ml-2'></i>", q_trans: "Kapal berlayar 12 km Utara, lalu 5 km Timur. Berapa jarak lurus kembali ke awal?", opts: ["\\( 13 \\text{ km} \\)", "\\( 15 \\text{ km} \\)", "\\( 17 \\text{ km} \\)", "\\( 19 \\text{ km} \\)", "\\( 24 \\text{ km} \\)"], ans: "\\( 13 \\text{ km} \\)", exp: "Distance \( = \sqrt{12^2 + 5^2} = \sqrt{144 + 25} = \sqrt{169} = 13 \) km. <span class='translation'>Jarak \( = \sqrt{144 + 25} = \sqrt{169} = 13 \) km.</span>" },
+            "i-task4": { type: "single", q: "A rectangular park is 60 m long and 80 m wide. If you walk diagonally across it, how far do you walk? <i class='fas fa-tree text-green-500 ml-2'></i>", q_trans: "Taman persegi panjang panjang 60 m, lebar 80 m. Jika menempuh diagonal, berapa jaraknya?", opts: ["\\( 90 \\text{ m} \\)", "\\( 100 \\text{ m} \\)", "\\( 110 \\text{ m} \\)", "\\( 120 \\text{ m} \\)", "\\( 140 \\text{ m} \\)"], ans: "\\( 100 \\text{ m} \\)", exp: "Diagonal \( = \sqrt{60^2 + 80^2} = \sqrt{3600 + 6400} = \sqrt{10000} = 100 \) m. <span class='translation'>Diagonal \( = \sqrt{3600 + 6400} = \sqrt{10000} = 100 \) m.</span>" },
+            "i-task5": { type: "single", q: "A guy wire is attached to a 24 m tall antenna. The wire is anchored 7 m from the base. How long is the wire? <i class='fas fa-broadcast-tower text-green-500 ml-2'></i>", q_trans: "Kabel penyangga menara 24 m. Jarak kabel ke dasar 7 m. Berapa panjang kabel?", opts: ["\\( 25 \\text{ m} \\)", "\\( 26 \\text{ m} \\)", "\\( 28 \\text{ m} \\)", "\\( 30 \\text{ m} \\)", "\\( 31 \\text{ m} \\)"], ans: "\\( 25 \\text{ m} \\)", exp: "Wire is hypotenuse: \( \sqrt{24^2 + 7^2} = \sqrt{576 + 49} = \sqrt{625} = 25 \) m. <span class='translation'>Kabel adalah sisi miring: \( \sqrt{576 + 49} = \sqrt{625} = 25 \) m.</span>" },
+            "i-task6": { type: "single", q: "A farmer wants to fence a diagonal across a square field with an area of 625 m². What is the length of the diagonal? <i class='fas fa-tractor text-green-500 ml-2'></i>", q_trans: "Petani ingin memagari diagonal lapangan persegi luas 625 m². Berapa panjang diagonalnya?", opts: ["\\( 25\sqrt{2} \\text{ m} \\)", "\\( 30\sqrt{2} \\text{ m} \\)", "\\( 35 \\text{ m} \\)", "\\( 50 \\text{ m} \\)", "\\( 625 \\text{ m} \\)"], ans: "\\( 25\sqrt{2} \\text{ m} \\)", exp: "Side of square \( = \sqrt{625} = 25 \) m. Diagonal of square \( = s\sqrt{2} = 25\sqrt{2} \) m. <span class='translation'>Sisi persegi 25 m. Diagonal persegi \( = s\sqrt{2} = 25\sqrt{2} \) m.</span>" },
+            "i-task7": { type: "single", q: "Two planes leave an airport. One flies 40 km North, the other flies 9 km East. How far apart are they? <i class='fas fa-plane text-green-500 ml-2'></i>", q_trans: "Dua pesawat berangkat. Satu ke utara 40 km, satu ke timur 9 km. Berapa jarak antar mereka?", opts: ["\\( 39 \\text{ km} \\)", "\\( 41 \\text{ km} \\)", "\\( 43 \\text{ km} \\)", "\\( 49 \\text{ km} \\)", "\\( 50 \\text{ km} \\)"], ans: "\\( 41 \\text{ km} \\)", exp: "Distance \( = \sqrt{40^2 + 9^2} = \sqrt{1600 + 81} = \sqrt{1681} = 41 \) km. <span class='translation'>Jarak \( = \sqrt{1600 + 81} = \sqrt{1681} = 41 \) km.</span>" },
+            "i-task8": { type: "single", q: "A door is 3 feet wide and 7 feet tall. Can a 7.5-foot long surfboard fit diagonally inside the door? <i class='fas fa-door-open text-green-500 ml-2'></i>", q_trans: "Pintu lebar 3 kaki, tinggi 7 kaki. Apakah papan selancar 7.5 kaki muat diagonalnya?", opts: ["Yes, the diagonal is about 7.6 ft", "No, the diagonal is about 7.0 ft", "Yes, the diagonal is 10 ft", "No, the diagonal is 6.5 ft", "Cannot be determined"], ans: "Yes, the diagonal is about 7.6 ft", exp: "Diagonal \( = \sqrt{3^2 + 7^2} = \sqrt{9 + 49} = \sqrt{58} \approx 7.62 \) ft. Since 7.5 < 7.62, it fits! <span class='translation'>Diagonal \( \sqrt{58} \approx 7.62 \) kaki. Karena 7.5 < 7.62, muat!</span>" },
+            "i-task9": { type: "single", q: "You walk 8 blocks East and 15 blocks South. What is the straight-line distance from your start? <i class='fas fa-walking text-green-500 ml-2'></i>", q_trans: "Kamu jalan 8 blok ke timur, 15 blok ke selatan. Berapa jarak garis lurus dari awal?", opts: ["\\( 16 \\text{ blocks} \\)", "\\( 17 \\text{ blocks} \\)", "\\( 18 \\text{ blocks} \\)", "\\( 20 \\text{ blocks} \\)", "\\( 23 \\text{ blocks} \\)"], ans: "\\( 17 \\text{ blocks} \\)", exp: "Distance \( = \sqrt{8^2 + 15^2} = \sqrt{64 + 225} = \sqrt{289} = 17 \) blocks. <span class='translation'>Jarak \( = \sqrt{64 + 225} = \sqrt{289} = 17 \) blok.</span>" },
+            "i-task10": { type: "single", q: "A tent pole is 8 m high. A rope runs from the top to a peg 6 m from the base. How long is the rope? <i class='fas fa-campground text-green-500 ml-2'></i>", q_trans: "Tiang tenda tinggi 8 m. Tali dari atas ke pasak di tanah 6 m. Berapa panjang tali?", opts: ["\\( 9 \\text{ m} \\)", "\\( 10 \\text{ m} \\)", "\\( 11 \\text{ m} \\)", "\\( 12 \\text{ m} \\)", "\\( 14 \\text{ m} \\)"], ans: "\\( 10 \\text{ m} \\)", exp: "Rope is hypotenuse: \( \sqrt{8^2 + 6^2} = \sqrt{64 + 36} = \sqrt{100} = 10 \) m. <span class='translation'>Tali sisi miring: \( \sqrt{64 + 36} = \sqrt{100} = 10 \) m.</span>" },
+
+            // SECTION 3: REVIEW OF PRIOR KNOWLEDGE
+			"r-task1": { type: "single", q: "What is the exact value of \( \sqrt{36} \)? <i class='fas fa-exchange-alt text-indigo-500 ml-2'></i>", q_trans: "Berapa nilai pasti dari \( \sqrt{36} \)?", opts: ["\\( 4 \\)", "\\( 5 \\)", "\\( 6 \\)", "\\( 7 \\)", "\\( 8 \\)"], ans: "\\( 6 \\)", exp: "The square root of 36 is the number that, when multiplied by itself, gives 36. Since \( 6 \times 6 = 36 \), \( \sqrt{36} = 6 \). <span class='translation'>Akar kuadrat dari 36 adalah angka yang bila dikali dirinya sendiri menghasilkan 36. Karena \( 6 \times 6 = 36 \), maka \( \sqrt{36} = 6 \).</span>" },
+            "r-task2": { type: "single", q: "Which expression correctly finds the missing leg \( b \) if \( c = 15 \) and \( a = 9 \)? <i class='fas fa-square-root-alt text-indigo-500 ml-2'></i>", q_trans: "Manakah rumus yang benar mencari \( b \) jika \( c=15, a=9 \)?", opts: ["\\( b = \sqrt{15 + 9} \\)", "\\( b = \sqrt{15^2 - 9^2} \\)", "\\( b = \sqrt{15^2 + 9^2} \\)", "\\( b = 15 - 9 \\)", "\\( b = 15^2 - 9^2 \\)"], ans: "\\( b = \sqrt{15^2 - 9^2} \\)", exp: "To find a leg, subtract the square of the known leg from the square of the hypotenuse, then take the square root: \( b = \sqrt{c^2 - a^2} = \sqrt{15^2 - 9^2} \). <span class='translation'>Mencari sisi siku-siku: \( \sqrt{\text{miring}^2 - \text{sisi}^2} \).</span>" },
+            "r-task3": { type: "single", q: "Calculate \( \sqrt{169} - \sqrt{100} \). <i class='fas fa-minus text-indigo-500 ml-2'></i>", q_trans: "Hitung \( \sqrt{169} - \sqrt{100} \).", opts: ["\\( 3 \\)", "\\( 4 \\)", "\\( 5 \\)", "\\( 7 \\)", "\\( 69 \\)"], ans: "\\( 3 \\)", exp: "\( \sqrt{169} = 13 \) and \( \sqrt{100} = 10 \). So, \( 13 - 10 = 3 \). <span class='translation'>\( \sqrt{169} = 13 \) dan \( \sqrt{100} = 10 \). Maka \( 13 - 10 = 3 \).</span>" },
+            "r-task4": { type: "single", q: "Write 0.000304 in standard form (bentuk baku). <i class='fas fa-book text-indigo-500 ml-2'></i>", q_trans: "Tulis 0.000304 dalam bentuk baku.", opts: ["\\( 3.04 \times 10^{-4} \\)", "\\( 3.04 \times 10^{4} \\)", "\\( 304 \times 10^{-6} \\)", "\\( 3.04 \times 10^{-3} \\)", "\\( 0.304 \times 10^{-3} \\)"], ans: "\\( 3.04 \times 10^{-4} \\)", exp: "Move the decimal 4 places to the right to get 3.04. Since it's a small number, the exponent is negative. \( 3.04 \times 10^{-4} \). <span class='translation'>Geser koma 4 langkah ke kanan dapat 3.04. Pangkat negatif karena angka kecil.</span>" },
+            "r-task5": { type: "single", q: "If \( x = 5 \), evaluate \( \sqrt{x^2 + 144} \). <i class='fas fa-equals text-indigo-500 ml-2'></i>", q_trans: "Jika \( x = 5 \), hitung \( \sqrt{x^2 + 144} \).", opts: ["\\( 12 \\)", "\\( 13 \\)", "\\( 14 \\)", "\\( 15 \\)", "\\( 16 \\)"], ans: "\\( 13 \\)", exp: "Substitute \( x = 5 \): \( \sqrt{5^2 + 144} = \sqrt{25 + 144} = \sqrt{169} = 13 \). <span class='translation'>Substitusi: \( \sqrt{25 + 144} = \sqrt{169} = 13 \).</span>" },
+            "r-task6": { type: "single", q: "A right triangle has a hypotenuse of 17 cm and one leg of 8 cm. What is the area of the triangle? <i class='fas fa-shapes text-indigo-500 ml-2'></i>", q_trans: "Segitiga siku-siku sisi miring 17 cm, sisi 8 cm. Berapa luasnya?", opts: ["\\( 45 \\text{ cm}^2 \\)", "\\( 50 \\text{ cm}^2 \\)", "\\( 60 \\text{ cm}^2 \\)", "\\( 68 \\text{ cm}^2 \\)", "\\( 120 \\text{ cm}^2 \\)"], ans: "\\( 60 \\text{ cm}^2 \\)", exp: "Find the other leg: \( b = \sqrt{17^2 - 8^2} = \sqrt{289 - 64} = \sqrt{225} = 15 \) cm. Area \( = \frac{1}{2} \times 8 \times 15 = 60 \) cm². <span class='translation'>Cari sisi lain: \( \sqrt{289 - 64} = 15 \) cm. Luas \( = \frac{1}{2} \times 8 \times 15 = 60 \) cm².</span>" },
+            "r-task7": { type: "single", q: "What is \( \sqrt{2^2 + 3^2 + 4^2} \)? <i class='fas fa-layer-group text-indigo-500 ml-2'></i>", q_trans: "Berapa nilai \( \sqrt{2^2 + 3^2 + 4^2} \)?", opts: ["\\( 5 \\)", "\\( 5.38 \\)", "\\( 6 \\)", "\\( 7 \\)", "\\( 29 \\)"], ans: "\\( 5.38 \\)", exp: "Sum the squares: \( 4 + 9 + 16 = 29 \). Then take the square root: \( \sqrt{29} \approx 5.385 \). <span class='translation'>Jumlah kuadrat: 29. Lalu diakarkan: \( \sqrt{29} \approx 5.38 \).</span>" },
+            "r-task8": { type: "single", q: "A rope of 10 m is cut into two pieces to form the legs of a right triangle. If the hypotenuse is \( \sqrt{52} \), what are the lengths of the legs? <i class='fas fa-cut text-indigo-500 ml-2'></i>", q_trans: "Tali 10 m dipotong untuk sisi siku-siku. Jika sisi miring \( \sqrt{52} \), berapa panjang kedua sisi itu?", opts: ["\\( 3 \\text{ m and } 7 \\text{ m} \\)", "\\( 4 \\text{ m and } 6 \\text{ m} \\)", "\\( 5 \\text{ m and } 5 \\text{ m} \\)", "\\( 2 \\text{ m and } 8 \\text{ m} \\)", "\\( 1 \\text{ m and } 9 \\text{ m} \\)"], ans: "\\( 4 \\text{ m and } 6 \\text{ m} \\)", exp: "\( a^2 + b^2 = 52 \). Since \( a + b = 10 \), we can test options. \( 4^2 + 6^2 = 16 + 36 = 52 \). This matches perfectly! <span class='translation'>Cek pilihan: \( 4^2 + 6^2 = 16 + 36 = 52 \). Sesuai dengan sisi miring \( \sqrt{52} \).</span>" },
+            "r-task9": { type: "single", q: "Evaluate \( \sqrt{144} \times \sqrt{4} \). <i class='fas fa-times text-indigo-500 ml-2'></i>", q_trans: "Hitung \( \sqrt{144} \times \sqrt{4} \).", opts: ["\\( 20 \\)", "\\( 22 \\)", "\\( 24 \\)", "\\( 26 \\)", "\\( 48 \\)"], ans: "\\( 24 \\)", exp: "\( \sqrt{144} = 12 \) and \( \sqrt{4} = 2 \). Multiply them: \( 12 \times 2 = 24 \). <span class='translation'>\( \sqrt{144} = 12 \) dan \( \sqrt{4} = 2 \). Kalikan: 24.</span>" },
+            "r-task10": { type: "single", q: "Simplify \( \sqrt{50} \). <i class='fas fa-broom text-indigo-500 ml-2'></i>", q_trans: "Sederhanakan \( \sqrt{50} \).", opts: ["\\( 2\sqrt{5} \\)", "\\( 5\sqrt{2} \\)", "\\( 10\sqrt{2} \\)", "\\( 25\sqrt{2} \\)", "\\( 5 \\)"], ans: "\\( 5\sqrt{2} \\)", exp: "Factor 50 to find perfect squares: \( 50 = 25 \times 2 \). So, \( \sqrt{50} = \sqrt{25 \times 2} = \sqrt{25} \times \sqrt{2} = 5\sqrt{2} \). <span class='translation'>Faktorkan: 50 = 25 x 2. Maka \( \sqrt{50} = 5\sqrt{2} \).</span>" },
+
+            // SECTION 4: PROBLEM INTRODUCTION
+            "p-task1": { type: "single", q: "A triangle has sides 7, 11, and 14. Is it a right triangle? <i class='fas fa-check-double text-indigo-500 ml-2'></i>", q_trans: "Segitiga sisi 7, 11, 14. Apakah siku-siku?", opts: ["Yes", "No", "Only if angles are equal", "Cannot be determined", "Yes, because 7+11=14"], ans: "No", exp: "Test \( 7^2 + 11^2 = 49 + 121 = 170 \). But \( 14^2 = 196 \). Since 170 ≠ 196, it is not a right triangle. <span class='translation'>\( 7^2 + 11^2 = 170 \). Tapi \( 14^2 = 196 \). Tidak sama, jadi bukan siku-siku.</span>" },
+            "p-task2": { type: "single", q: "An isosceles triangle has equal sides of 10 cm and a base of 12 cm. What is its height? <i class='fas fa-mountain text-green-500 ml-2'></i>", q_trans: "Segitiga sama kaki sisi 10 cm, alas 12 cm. Berapa tingginya?", opts: ["\\( 6 \\text{ cm} \\)", "\\( 7 \\text{ cm} \\)", "\\( 8 \\text{ cm} \\)", "\\( 9 \\text{ cm} \\)", "\\( 10 \\text{ cm} \\)"], ans: "\\( 8 \\text{ cm} \\)", exp: "Split the base in half (6 cm). Height \( = \sqrt{10^2 - 6^2} = \sqrt{100 - 36} = \sqrt{64} = 8 \) cm. <span class='translation'>Bagi alas jadi 6 cm. Tinggi \( = \sqrt{100 - 36} = \sqrt{64} = 8 \) cm.</span>" },
+            "p-task3": { type: "single", q: "A rectangular box is 3 m long, 4 m wide, and 12 m high. What is the longest diagonal inside the box? <i class='fas fa-box text-purple-500 ml-2'></i>", q_trans: "Balok panjang 3 m, lebar 4 m, tinggi 12 m. Berapa diagonal ruangnya?", opts: ["\\( 11 \\text{ m} \\)", "\\( 12 \\text{ m} \\)", "\\( 13 \\text{ m} \\)", "\\( 15 \\text{ m} \\)", "\\( 19 \\text{ m} \\)"], ans: "\\( 13 \\text{ m} \\)", exp: "Space diagonal \( = \sqrt{l^2 + w^2 + h^2} = \sqrt{3^2 + 4^2 + 12^2} = \sqrt{9 + 16 + 144} = \sqrt{169} = 13 \) m. <span class='translation'>Diagonal ruang \( = \sqrt{9 + 16 + 144} = \sqrt{169} = 13 \) m.</span>" },
+            "p-task4": { type: "single", q: "A rhombus has diagonals of 16 cm and 12 cm. What is the length of one side of the rhombus? <i class='fas fa-diamond text-green-500 ml-2'></i>", q_trans: "Belah ketupat diagonal 16 cm dan 12 cm. Berapa panjang sisinya?", opts: ["\\( 8 \\text{ cm} \\)", "\\( 10 \\text{ cm} \\)", "\\( 12 \\text{ cm} \\)", "\\( 14 \\text{ cm} \\)", "\\( 16 \\text{ cm} \\)"], ans: "\\( 10 \\text{ cm} \\)", exp: "Diagonals bisect at right angles. Legs are 8 and 6. Side \( = \sqrt{8^2 + 6^2} = \sqrt{64 + 36} = \sqrt{100} = 10 \) cm. <span class='translation'>Diagonal berpotongan tegak lurus. Sisi \( = \sqrt{64 + 36} = 10 \) cm.</span>" },
+            "p-task5": { type: "single", q: "Can a 15-inch ruler fit flat inside a 12-inch by 16-inch rectangular box? <i class='fas fa-ruler-combined text-indigo-500 ml-2'></i>", q_trans: "Apakah penggaris 15 inci muat di kotak 12x16 inci?", opts: ["Yes, the diagonal is 20 inches", "No, the diagonal is 14 inches", "Yes, the diagonal is 15 inches", "No, the box is too small", "Only diagonally if tilted up"], ans: "Yes, the diagonal is 20 inches", exp: "Diagonal \( = \sqrt{12^2 + 16^2} = \sqrt{144 + 256} = \sqrt{400} = 20 \) inches. Since 15 < 20, it fits easily. <span class='translation'>Diagonal \( \sqrt{144 + 256} = 20 \) inci. Karena 15 < 20, muat dengan mudah.</span>" },
+            "p-task6": { type: "single", q: "A 17 ft ladder reaches exactly to the top of a wall. If the base is 8 ft from the wall, how tall is the wall? <i class='fas fa-bricks text-green-500 ml-2'></i>", q_trans: "Tangga 17 kaki mencapai puncak tembok. Jika jarak dasar 8 kaki, berapa tinggi tembok?", opts: ["\\( 12 \\text{ ft} \\)", "\\( 13 \\text{ ft} \\)", "\\( 14 \\text{ ft} \\)", "\\( 15 \\text{ ft} \\)", "\\( 16 \\text{ ft} \\)"], ans: "\\( 15 \\text{ ft} \\)", exp: "Wall height \( = \sqrt{17^2 - 8^2} = \sqrt{289 - 64} = \sqrt{225} = 15 \) ft. <span class='translation'>Tinggi \( = \sqrt{289 - 64} = 15 \) kaki.</span>" },
+            "p-task7": { type: "single", q: "A baseball diamond is a square with 90 ft sides. What is the direct distance from 1st base to 3rd base? <i class='fas fa-baseball-ball text-indigo-500 ml-2'></i>", q_trans: "Lapangan bisbol persegi sisi 90 kaki. Berapa jarak dari base 1 ke base 3?", opts: ["\\( 90\sqrt{2} \\text{ ft} \\)", "\\( 90 \\text{ ft} \\)", "\\( 180 \\text{ ft} \\)", "\\( 120 \\text{ ft} \\)", "\\( 127 \\text{ ft} \\)"], ans: "\\( 90\sqrt{2} \\text{ ft} \\)", exp: "Distance is the diagonal of a square: \( d = s\sqrt{2} = 90\sqrt{2} \) ft (which is about 127.3 ft). <span class='translation'>Jarak diagonal persegi: \( 90\sqrt{2} \) kaki.</span>" },
+            "p-task8": { type: "single", q: "Two cars start at the same point. Car A drives 35 km West. Car B drives 12 km South. How far apart are they? <i class='fas fa-car-crash text-indigo-500 ml-2'></i>", q_trans: "Dua mobil dari titik sama. A ke barat 35 km. B ke selatan 12 km. Berapa jarak mereka?", opts: ["\\( 34 \\text{ km} \\)", "\\( 36 \\text{ km} \\)", "\\( 37 \\text{ km} \\)", "\\( 38 \\text{ km} \\)", "\\( 47 \\text{ km} \\)"], ans: "\\( 37 \\text{ km} \\)", exp: "Distance \( = \sqrt{35^2 + 12^2} = \sqrt{1225 + 144} = \sqrt{1369} = 37 \) km. <span class='translation'>Jarak \( = \sqrt{1225 + 144} = 37 \) km.</span>" },
+            "p-task9": { type: "single", q: "An equilateral triangle has a side length of 10 cm. What is its exact height? <i class='fas fa-triangle text-purple-500 ml-2'></i>", q_trans: "Segitiga sama sisi sisi 10 cm. Berapa tinggi tepatnya?", opts: ["\\( 5 \\text{ cm} \\)", "\\( 5\sqrt{3} \\text{ cm} \\)", "\\( 10\sqrt{3} \\text{ cm} \\)", "\\( 7 \\text{ cm} \\)", "\\( 8.66 \\text{ cm} \\)"], ans: "\\( 5\sqrt{3} \\text{ cm} \\)", exp: "Split base to 5 cm. Height \( = \sqrt{10^2 - 5^2} = \sqrt{100 - 25} = \sqrt{75} = 5\sqrt{3} \) cm. <span class='translation'>Bagi alas jadi 5. Tinggi \( = \sqrt{100 - 25} = \sqrt{75} = 5\sqrt{3} \) cm.</span>" },
+            "p-task10": { type: "single", q: "A room is 6 m long, 8 m wide, and has a diagonal space (from bottom corner to opposite top corner) of 10 m. What is the height of the room? <i class='fas fa-house-user text-purple-500 ml-2'></i>", q_trans: "Ruang panjang 6 m, lebar 8 m, diagonal ruang 10 m. Berapa tinggi ruangan?", opts: ["\\( 0 \\text{ m} \\)", "\\( 2 \\text{ m} \\)", "\\( 4 \\text{ m} \\)", "\\( 6 \\text{ m} \\)", "\\( 8 \\text{ m} \\)"], ans: "\\( 0 \\text{ m} \\)", exp: "The base diagonal is \( \sqrt{6^2 + 8^2} = 10 \) m. The space diagonal formula is \( d = \sqrt{l^2 + w^2 + h^2} \). Since the space diagonal is also 10 m, we have \( 10^2 = 10^2 + h^2 \), which means \( h^2 = 0 \). Thus, the height is 0 m (a trick question!). <span class='translation'>Diagonal alas sudah 10 m. Rumus diagonal ruang \( \sqrt{p^2 + l^2 + t^2} \). Karena diagonal ruang 10 m, maka \( 100 = 100 + t^2 \), artinya \( t = 0 \) (soal jebakan).</span>" },
+
+            // SECTION 5: GUIDED PRACTICE
+            "g-task1": { type: "single", q: "A right triangle has legs of 18 mm and 24 mm. Find the hypotenuse. <i class='fas fa-ruler text-green-500 ml-2'></i>", q_trans: "Segitiga siku-siku sisi 18 mm dan 24 mm. Cari sisi miring.", opts: ["\\( 26 \\text{ mm} \\)", "\\( 28 \\text{ mm} \\)", "\\( 30 \\text{ mm} \\)", "\\( 32 \\text{ mm} \\)", "\\( 36 \\text{ mm} \\)"], ans: "\\( 30 \\text{ mm} \\)", exp: "Recognize the 3-4-5 triple multiplied by 6! \( 18 = 6 \times 3 \), \( 24 = 6 \times 4 \). Hypotenuse \( = 6 \times 5 = 30 \) mm. <span class='translation'>Ini tripel 3-4-5 dikali 6. Sisi miring \( 6 \times 5 = 30 \) mm.</span>" },
+            "g-task2": { type: "single", q: "A kite string is 50 m long. The kite is 30 m above the ground. How far away horizontally is the kite from the person holding it? <i class='fas fa-kite text-green-500 ml-2'></i>", q_trans: "Benang layang-layang 50 m. Tinggi 30 m. Berapa jarak mendatar layang-layang?", opts: ["\\( 35 \\text{ m} \\)", "\\( 40 \\text{ m} \\)", "\\( 45 \\text{ m} \\)", "\\( 48 \\text{ m} \\)", "\\( 58 \\text{ m} \\)"], ans: "\\( 40 \\text{ m} \\)", exp: "Distance \( = \sqrt{50^2 - 30^2} = \sqrt{2500 - 900} = \sqrt{1600} = 40 \) m. <span class='translation'>Jarak \( = \sqrt{2500 - 900} = 40 \) m.</span>" },
+            "g-task3": { type: "single", q: "A triangle has sides 24, 32, and 40. What is the area? <i class='fas fa-shapes text-indigo-500 ml-2'></i>", q_trans: "Segitiga sisi 24, 32, 40. Berapa luasnya?", opts: ["\\( 320 \\)", "\\( 360 \\)", "\\( 384 \\)", "\\( 400 \\)", "\\( 480 \\)"], ans: "\\( 384 \\)", exp: "It's a 3-4-5 triple scaled by 8. Legs are 24 and 32. Area \( = \frac{1}{2} \times 24 \times 32 = 12 \times 32 = 384 \). <span class='translation'>Tripel 3-4-5 dikali 8. Luas \( \frac{1}{2} \times 24 \times 32 = 384 \).</span>" },
+            "g-task4": { type: "single", q: "Find the distance between points A(1, 2) and B(4, 6) on a coordinate plane. <i class='fas fa-th text-indigo-500 ml-2'></i>", q_trans: "Cari jarak titik A(1,2) dan B(4,6).", opts: ["\\( 4 \\)", "\\( 5 \\)", "\\( 6 \\)", "\\( 7 \\)", "\\( 25 \\)"], ans: "\\( 5 \\)", exp: "Distance \( = \sqrt{(4-1)^2 + (6-2)^2} = \sqrt{3^2 + 4^2} = \sqrt{9 + 16} = \sqrt{25} = 5 \). <span class='translation'>Jarak \( \sqrt{(4-1)^2 + (6-2)^2} = \sqrt{9 + 16} = 5 \).</span>" },
+            "g-task5": { type: "single", q: "A square has a diagonal of 14 cm. What is the exact length of one side? <i class='fas fa-vector-square text-indigo-500 ml-2'></i>", q_trans: "Persegi diagonal 14 cm. Berapa panjang sisinya?", opts: ["\\( 7 \\text{ cm} \\)", "\\( 7\sqrt{2} \\text{ cm} \\)", "\\( 14\sqrt{2} \\text{ cm} \\)", "\\( 49 \\text{ cm} \\)", "\\( 28 \\text{ cm} \\)"], ans: "\\( 7\sqrt{2} \\text{ cm} \\)", exp: "For a square, diagonal \( d = s\sqrt{2} \). So \( s = \frac{d}{\sqrt{2}} = \frac{14}{\sqrt{2}} = 7\sqrt{2} \) cm. <span class='translation'>Diagonal persegi \( s\sqrt{2} \). Sisi \( 14 / \sqrt{2} = 7\sqrt{2} \) cm.</span>" },
+            "g-task6": { type: "single", q: "A 15 ft ramp rises 9 ft. What is the horizontal distance covered by the ramp? <i class='fas fa-wheelchair text-indigo-500 ml-2'></i>", q_trans: "Ramp 15 kaki naik 9 kaki. Berapa jarak mendatarnya?", opts: ["\\( 10 \\text{ ft} \\)", "\\( 11 \\text{ ft} \\)", "\\( 12 \\text{ ft} \\)", "\\( 13 \\text{ ft} \\)", "\\( 14 \\text{ ft} \\)"], ans: "\\( 12 \\text{ ft} \\)", exp: "Distance \( = \sqrt{15^2 - 9^2} = \sqrt{225 - 81} = \sqrt{144} = 12 \) ft. <span class='translation'>Jarak \( \sqrt{225 - 81} = 12 \) kaki.</span>" },
+            "g-task7": { type: "single", q: "A builder checks if a corner is square using the 3-4-5 method. If he marks 6 ft on one wall and 8 ft on the other, how far apart should the marks be if the corner is 90 degrees? <i class='fas fa-hammer text-indigo-500 ml-2'></i>", q_trans: "Tukang cek sudut dengan metode 3-4-5. Tandai 6 kaki dan 8 kaki. Berapa jarak kedua tanda itu?", opts: ["\\( 9 \\text{ ft} \\)", "\\( 10 \\text{ ft} \\)", "\\( 11 \\text{ ft} \\)", "\\( 12 \\text{ ft} \\)", "\\( 14 \\text{ ft} \\)"], ans: "\\( 10 \\text{ ft} \\)", exp: "Using 3-4-5 scaled by 2: \( 2 \times 3 = 6 \), \( 2 \times 4 = 8 \). The diagonal must be \( 2 \times 5 = 10 \) ft. <span class='translation'>Kelipatan 3-4-5 dikali 2. Diagonalnya \( 2 \times 5 = 10 \) kaki.</span>" },
+            "g-task8": { type: "single", q: "An isosceles trapezoid has bases of 10 and 20, and legs of 13. What is the height? <i class='fas fa-trapezoid text-green-500 ml-2'></i>", q_trans: "Trapesium sama kaki alas 10 dan 20, sisi miring 13. Berapa tingginya?", opts: ["\\( 10 \\)", "\\( 11 \\)", "\\( 12 \\)", "\\( 13 \\)", "\\( 14 \\)"], ans: "\\( 12 \\)", exp: "The difference in bases is 10. Split evenly, each side overhangs by 5. This creates a right triangle with hypotenuse 13 and base 5. Height \( = \sqrt{13^2 - 5^2} = \sqrt{169 - 25} = \sqrt{144} = 12 \). <span class='translation'>Selisih alas 10, bagi 2 jadi 5. Tinggi \( \sqrt{169 - 25} = 12 \).</span>" },
+            "g-task9": { type: "single", q: "Find the distance between (2, 3) and (14, 8). <i class='fas fa-map text-green-500 ml-2'></i>", q_trans: "Cari jarak antara (2,3) dan (14,8).", opts: ["\\( 12 \\)", "\\( 13 \\)", "\\( 14 \\)", "\\( 15 \\)", "\\( 17 \\)"], ans: "\\( 13 \\)", exp: "Distance \( = \sqrt{(14-2)^2 + (8-3)^2} = \sqrt{12^2 + 5^2} = \sqrt{144 + 25} = \sqrt{169} = 13 \). <span class='translation'>Jarak \( \sqrt{12^2 + 5^2} = \sqrt{144 + 25} = 13 \).</span>" },
+            "g-task10": { type: "single", q: "A 10 m ladder has its base 6 m from a wall. If the base slips 2 m further away, how far up the wall is the top now? <i class='fas fa-arrows-alt text-indigo-500 ml-2'></i>", q_trans: "Tangga 10 m, jarak dasar 6 m. Jika dasar menjauh 2 m, berapa tingginya sekarang?", opts: ["\\( 6 \\text{ m} \\)", "\\( 7 \\text{ m} \\)", "\\( 8 \\text{ m} \\)", "\\( \sqrt{51} \\text{ m} \\)", "\\( 5 \\text{ m} \\)"], ans: "\\( 6 \\text{ m} \\)", exp: "New base distance \( = 6 + 2 = 8 \) m. The ladder length (\( c = 10 \) m) remains constant. New height \( = \sqrt{10^2 - 8^2} = \sqrt{100 - 64} = \sqrt{36} = 6 \) m. <span class='translation'>Dasar baru 8 m. Tinggi baru \( = \sqrt{100 - 64} = \sqrt{36} = 6 \) m.</span>" },
+
+            // SECTION 6: INDEPENDENT PRACTICE
+            "ind-task1": { type: "single", q: "A triangle has sides 10, 24, and 26. What type of triangle is it? <i class='fas fa-shapes text-indigo-500 ml-2'></i>", q_trans: "Segitiga sisi 10, 24, 26. Jenis segitiga apakah ini?", opts: ["Acute", "Right", "Obtuse", "Isosceles", "Equilateral"], ans: "Right", exp: "Check \( 10^2 + 24^2 = 100 + 576 = 676 \). Since \( 26^2 = 676 \), it satisfies \( a^2 + b^2 = c^2 \). It is a right triangle. <span class='translation'>\( 10^2 + 24^2 = 676 \) dan \( 26^2 = 676 \). Memenuhi Pythagoras, jadi siku-siku.</span>" },
+            "ind-task2": { type: "single", q: "A triangle has sides 5, 6, and 8. What type of triangle is it? <i class='fas fa-shapes text-green-500 ml-2'></i>", q_trans: "Segitiga sisi 5, 6, 8. Jenis segitiga apakah ini?", opts: ["Acute", "Right", "Obtuse", "Equilateral", "Scalene Right"], ans: "Obtuse", exp: "Longest side is 8. \( 8^2 = 64 \). Sum of other squares: \( 5^2 + 6^2 = 25 + 36 = 61 \). Since \( 64 > 61 \) (\( c^2 > a^2 + b^2 \)), it is obtuse. <span class='translation'>Sisi terpanjang 8. \( 8^2 = 64 \). Jumlah kuadrat lain 61. Karena 64 > 61, ini segitiga tumpul.</span>" },
+            "ind-task3": { type: "single", q: "A TV is advertised as 60 inches wide and 45 inches tall. What is the advertised diagonal screen size? <i class='fas fa-tv text-indigo-500 ml-2'></i>", q_trans: "TV lebar 60 inci, tinggi 45 inci. Berapa diagonal layarnya?", opts: ["\\( 65 \\text{ in} \\)", "\\( 70 \\text{ in} \\)", "\\( 75 \\text{ in} \\)", "\\( 80 \\text{ in} \\)", "\\( 85 \\text{ in} \\)"], ans: "\\( 75 \\text{ in} \\)", exp: "Diagonal \( = \sqrt{60^2 + 45^2} = \sqrt{3600 + 2025} = \sqrt{5625} = 75 \) inches. <span class='translation'>Diagonal \( \sqrt{3600 + 2025} = 75 \) inci.</span>" },
+            "ind-task4": { type: "single", q: "A boat travels 20 km North, then 48 km East. How far is it from the starting point? <i class='fas fa-anchor text-green-500 ml-2'></i>", q_trans: "Perahu ke utara 20 km, lalu timur 48 km. Berapa jaraknya dari awal?", opts: ["\\( 50 \\text{ km} \\)", "\\( 52 \\text{ km} \\)", "\\( 54 \\text{ km} \\)", "\\( 56 \\text{ km} \\)", "\\( 68 \\text{ km} \\)"], ans: "\\( 52 \\text{ km} \\)", exp: "Distance \( = \sqrt{20^2 + 48^2} = \sqrt{400 + 2304} = \sqrt{2704} = 52 \) km. <span class='translation'>Jarak \( \sqrt{400 + 2304} = 52 \) km.</span>" },
+            "ind-task5": { type: "single", q: "An equilateral triangle has sides of 14 cm. What is the exact height? <i class='fas fa-triangle text-purple-500 ml-2'></i>", q_trans: "Segitiga sama sisi sisi 14 cm. Berapa tinggi tepatnya?", opts: ["\\( 7 \\text{ cm} \\)", "\\( 7\sqrt{3} \\text{ cm} \\)", "\\( 14\sqrt{3} \\text{ cm} \\)", "\\( 49 \\text{ cm} \\)", "\\( 7\sqrt{2} \\text{ cm} \\)"], ans: "\\( 7\sqrt{3} \\text{ cm} \\)", exp: "Height \( = \sqrt{14^2 - 7^2} = \sqrt{196 - 49} = \sqrt{147} = \sqrt{49 \times 3} = 7\sqrt{3} \) cm. <span class='translation'>Tinggi \( \sqrt{196 - 49} = \sqrt{147} = 7\sqrt{3} \) cm.</span>" },
+            "ind-task6": { type: "single", q: "Find the distance between (-1, -1) and (2, 3). <i class='fas fa-map text-indigo-500 ml-2'></i>", q_trans: "Cari jarak antara (-1, -1) dan (2, 3).", opts: ["\\( 4 \\)", "\\( 5 \\)", "\\( 6 \\)", "\\( 7 \\)", "\\( 8 \\)"], ans: "\\( 5 \\)", exp: "Distance \( = \sqrt{(2 - (-1))^2 + (3 - (-1))^2} = \sqrt{3^2 + 4^2} = \sqrt{9 + 16} = 5 \). <span class='translation'>Jarak \( \sqrt{3^2 + 4^2} = 5 \).</span>" },
+            "ind-task7": { type: "single", q: "A rectangle has a diagonal of 26 and one side of 10. What is its area? <i class='fas fa-square text-green-500 ml-2'></i>", q_trans: "Persegi panjang diagonal 26, sisi 10. Berapa luasnya?", opts: ["\\( 120 \\)", "\\( 240 \\)", "\\( 260 \\)", "\\( 130 \\)", "\\( 100 \\)"], ans: "\\( 240 \\)", exp: "Other side \( = \sqrt{26^2 - 10^2} = \sqrt{676 - 100} = \sqrt{576} = 24 \). Area \( = 10 \times 24 = 240 \). <span class='translation'>Sisi lain \( \sqrt{676 - 100} = 24 \). Luas \( 10 \times 24 = 240 \).</span>" },
+            "ind-task8": { type: "single", q: "A 25-foot ladder leans against a wall. The base is 7 ft from the wall. If the base is pushed 8 ft further away, how much does the ladder slide down? <i class='fas fa-arrows-alt-v text-purple-500 ml-2'></i>", q_trans: "Tangga 25 kaki, jarak dasar 7 kaki. Jika dasar dijauhkan 8 kaki, berapa tangga turun?", opts: ["\\( 2 \\text{ ft} \\)", "\\( 3 \\text{ ft} \\)", "\\( 4 \\text{ ft} \\)", "\\( 5 \\text{ ft} \\)", "\\( 6 \\text{ ft} \\)"], ans: "\\( 4 \\text{ ft} \\)", exp: "Original height \( = \sqrt{25^2 - 7^2} = \sqrt{625 - 49} = \sqrt{576} = 24 \) ft. New base \( = 7 + 8 = 15 \) ft. New height \( = \sqrt{25^2 - 15^2} = \sqrt{625 - 225} = \sqrt{400} = 20 \) ft. The ladder slides down by \( 24 - 20 = 4 \) ft. <span class='translation'>Tinggi awal 24 kaki. Dasar baru 15 kaki. Tinggi baru 20 kaki. Tangga turun sejauh 24 - 20 = 4 kaki.</span>" },
+            "ind-task9": { type: "single", q: "Find the length of the diagonal of a square with an area of 98 cm². <i class='fas fa-vector-square text-indigo-500 ml-2'></i>", q_trans: "Cari diagonal persegi luas 98 cm².", opts: ["\\( 10 \\text{ cm} \\)", "\\( 12 \\text{ cm} \\)", "\\( 14 \\text{ cm} \\)", "\\( 16 \\text{ cm} \\)", "\\( 18 \\text{ cm} \\)"], ans: "\\( 14 \\text{ cm} \\)", exp: "Side \( = \sqrt{98} = 7\sqrt{2} \). Diagonal \( = s\sqrt{2} = 7\sqrt{2} \times \sqrt{2} = 7 \times 2 = 14 \) cm. <span class='translation'>Sisi \( \sqrt{98} \). Diagonal \( s\sqrt{2} = 14 \) cm.</span>" },
+			"ind-task10": { type: "single", q: "A rectangular swimming pool is 80 m long and 60 m wide. A swimmer swims from one corner to the opposite corner. How far did they swim? <i class='fas fa-swimmer text-green-500 ml-2'></i>", q_trans: "Kolam panjang 80 m, lebar 60 m. Perenang dari sudut ke sudut lawan. Berapa jarak renangnya?", opts: ["\\( 90 \\text{ m} \\)", "\\( 100 \\text{ m} \\)", "\\( 110 \\text{ m} \\)", "\\( 120 \\text{ m} \\)", "\\( 140 \\text{ m} \\)"], ans: "\\( 100 \\text{ m} \\)", exp: "Distance \( = \sqrt{80^2 + 60^2} = \sqrt{6400 + 3600} = \sqrt{10000} = 100 \) m. <span class='translation'>Jarak \( \sqrt{6400 + 3600} = \sqrt{10000} = 100 \) m.</span>" }
+        });
+        
+        Object.assign(questions, {
+            // TASK 1: Ladders and Walls
+            "t1-task1": { type: "single", q: "A 10-meter ladder leans against a vertical wall. The base of the ladder is 6 meters from the wall. How high up the wall does the ladder reach? <i class='fas fa-hard-hat text-orange-500 ml-2'></i>", q_trans: "Tangga 10 m bersandar di tembok. Jarak dasar 6 m. Berapa tingginya?", opts: ["\\( 6 \\text{ m} \\)", "\\( 7 \\text{ m} \\)", "\\( 8 \\text{ m} \\)", "\\( 9 \\text{ m} \\)", "\\( 10 \\text{ m} \\)"], ans: "\\( 8 \\text{ m} \\)", exp: "Use \( b = \sqrt{c^2 - a^2} \). \( \sqrt{10^2 - 6^2} = \sqrt{100 - 36} = \sqrt{64} = 8 \) m. <span class='translation'>\( \sqrt{100 - 36} = \sqrt{64} = 8 \) m.</span>" },
+            "t1-task2": { type: "single", q: "A 13-foot ladder reaches a height of 5 feet on a wall. How far is the base of the ladder from the wall? <i class='fas fa-ruler text-orange-500 ml-2'></i>", q_trans: "Tangga 13 kaki mencapai tinggi 5 kaki. Berapa jarak dasarnya?", opts: ["\\( 10 \\text{ ft} \\)", "\\( 11 \\text{ ft} \\)", "\\( 12 \\text{ ft} \\)", "\\( 13 \\text{ ft} \\)", "\\( 14 \\text{ ft} \\)"], ans: "\\( 12 \\text{ ft} \\)", exp: "Base \( = \sqrt{13^2 - 5^2} = \sqrt{169 - 25} = \sqrt{144} = 12 \) ft. <span class='translation'>\( \sqrt{169 - 25} = \sqrt{144} = 12 \) kaki.</span>" },
+            "t1-task3": { type: "single", q: "A 15-meter ladder is placed against a wall. The base is 9 meters away. How high does it reach? <i class='fas fa-building text-orange-500 ml-2'></i>", q_trans: "Tangga 15 m, jarak dasar 9 m. Berapa tingginya?", opts: ["\\( 10 \\text{ m} \\)", "\\( 11 \\text{ m} \\)", "\\( 12 \\text{ m} \\)", "\\( 13 \\text{ m} \\)", "\\( 14 \\text{ m} \\)"], ans: "\\( 12 \\text{ m} \\)", exp: "Height \( = \sqrt{15^2 - 9^2} = \sqrt{225 - 81} = \sqrt{144} = 12 \) m. <span class='translation'>\( \sqrt{225 - 81} = 12 \) m.</span>" },
+            "t1-task4": { type: "single", q: "An 17-foot ladder base is 8 feet from a wall. What is the vertical height reached? <i class='fas fa-bricks text-orange-500 ml-2'></i>", q_trans: "Tangga 17 kaki, dasar 8 kaki. Berapa tinggi vertikalnya?", opts: ["\\( 14 \\text{ ft} \\)", "\\( 15 \\text{ ft} \\)", "\\( 16 \\text{ ft} \\)", "\\( 17 \\text{ ft} \\)", "\\( 18 \\text{ ft} \\)"], ans: "\\( 15 \\text{ ft} \\)", exp: "Height \( = \sqrt{17^2 - 8^2} = \sqrt{289 - 64} = \sqrt{225} = 15 \) ft. <span class='translation'>\( \sqrt{289 - 64} = 15 \) kaki.</span>" },
+            "t1-task5": { type: "single", q: "A 25-meter ladder reaches 24 meters up a wall. What is the distance from the base of the ladder to the wall? <i class='fas fa-tape text-orange-500 ml-2'></i>", q_trans: "Tangga 25 m, tinggi 24 m. Berapa jarak dasarnya?", opts: ["\\( 5 \\text{ m} \\)", "\\( 6 \\text{ m} \\)", "\\( 7 \\text{ m} \\)", "\\( 8 \\text{ m} \\)", "\\( 10 \\text{ m} \\)"], ans: "\\( 7 \\text{ m} \\)", exp: "Base \( = \sqrt{25^2 - 24^2} = \sqrt{625 - 576} = \sqrt{49} = 7 \) m. <span class='translation'>\( \sqrt{625 - 576} = 7 \) m.</span>" },
+            "t1-task6": { type: "single", q: "A 26-foot ladder has its base 10 feet from a wall. How high does it reach? <i class='fas fa-home text-orange-500 ml-2'></i>", q_trans: "Tangga 26 kaki, dasar 10 kaki. Berapa tingginya?", opts: ["\\( 22 \\text{ ft} \\)", "\\( 23 \\text{ ft} \\)", "\\( 24 \\text{ ft} \\)", "\\( 25 \\text{ ft} \\)", "\\( 26 \\text{ ft} \\)"], ans: "\\( 24 \\text{ ft} \\)", exp: "Height \( = \sqrt{26^2 - 10^2} = \sqrt{676 - 100} = \sqrt{576} = 24 \) ft. <span class='translation'>\( \sqrt{676 - 100} = 24 \) kaki.</span>" },
+            "t1-task7": { type: "single", q: "A 20-meter ladder is placed with its base 12 meters from a wall. Find the vertical height. <i class='fas fa-warehouse text-orange-500 ml-2'></i>", q_trans: "Tangga 20 m, dasar 12 m. Cari tinggi vertikal.", opts: ["\\( 14 \\text{ m} \\)", "\\( 15 \\text{ m} \\)", "\\( 16 \\text{ m} \\)", "\\( 18 \\text{ m} \\)", "\\( 20 \\text{ m} \\)"], ans: "\\( 16 \\text{ m} \\)", exp: "Height \( = \sqrt{20^2 - 12^2} = \sqrt{400 - 144} = \sqrt{256} = 16 \) m. <span class='translation'>\( \sqrt{400 - 144} = 16 \) m.</span>" },
+            "t1-task8": { type: "single", q: "A 50-foot ladder reaches a height of 14 feet. How far is the base from the wall? <i class='fas fa-industry text-orange-500 ml-2'></i>", q_trans: "Tangga 50 kaki, tinggi 14 kaki. Berapa jarak dasarnya?", opts: ["\\( 45 \\text{ ft} \\)", "\\( 46 \\text{ ft} \\)", "\\( 47 \\text{ ft} \\)", "\\( 48 \\text{ ft} \\)", "\\( 50 \\text{ ft} \\)"], ans: "\\( 48 \\text{ ft} \\)", exp: "Base \( = \sqrt{50^2 - 14^2} = \sqrt{2500 - 196} = \sqrt{2304} = 48 \) ft. <span class='translation'>\( \sqrt{2500 - 196} = 48 \) kaki.</span>" },
+            "t1-task9": { type: "single", q: "A 41-meter ladder is 9 meters from the base of a wall. What height does it reach? <i class='fas fa-archway text-orange-500 ml-2'></i>", q_trans: "Tangga 41 m, jarak 9 m. Berapa tingginya?", opts: ["\\( 38 \\text{ m} \\)", "\\( 39 \\text{ m} \\)", "\\( 40 \\text{ m} \\)", "\\( 41 \\text{ m} \\)", "\\( 42 \\text{ m} \\)"], ans: "\\( 40 \\text{ m} \\)", exp: "Height \( = \sqrt{41^2 - 9^2} = \sqrt{1681 - 81} = \sqrt{1600} = 40 \) m. <span class='translation'>\( \sqrt{1681 - 81} = 40 \) m.</span>" },
+            "t1-task10": { type: "single", q: "A 15-foot ladder reaches 12 feet up a wall. What is the distance from the base of the ladder to the wall? <i class='fas fa-door-closed text-orange-500 ml-2'></i>", q_trans: "Tangga 15 kaki, tinggi 12 kaki. Berapa jarak dasarnya?", opts: ["\\( 7 \\text{ ft} \\)", "\\( 8 \\text{ ft} \\)", "\\( 9 \\text{ ft} \\)", "\\( 10 \\text{ ft} \\)", "\\( 12 \\text{ ft} \\)"], ans: "\\( 9 \\text{ ft} \\)", exp: "Base \( = \sqrt{15^2 - 12^2} = \sqrt{225 - 144} = \sqrt{81} = 9 \) ft. <span class='translation'>\( \sqrt{225 - 144} = 9 \) kaki.</span>" },
+
+            // TASK 2: Navigation and Distance
+            "t2-task1": { type: "single", q: "A ship sails 3 km North, then 4 km East. What is the direct distance back to the start? <i class='fas fa-ship text-orange-500 ml-2'></i>", q_trans: "Kapal berlayar 3 km Utara, lalu 4 km Timur. Berapa jarak lurus kembali?", opts: ["\\( 5 \\text{ km} \\)", "\\( 6 \\text{ km} \\)", "\\( 7 \\text{ km} \\)", "\\( 8 \\text{ km} \\)", "\\( 12 \\text{ km} \\)"], ans: "\\( 5 \\text{ km} \\)", exp: "Distance \( = \sqrt{3^2 + 4^2} = \sqrt{9 + 16} = \sqrt{25} = 5 \) km. <span class='translation'>\( \sqrt{9 + 16} = 5 \) km.</span>" },
+            "t2-task2": { type: "single", q: "A hiker walks 6 km West, then 8 km South. How far is he from his starting point? <i class='fas fa-hiking text-orange-500 ml-2'></i>", q_trans: "Pendaki jalan 6 km Barat, lalu 8 km Selatan. Berapa jaraknya dari awal?", opts: ["\\( 9 \\text{ km} \\)", "\\( 10 \\text{ km} \\)", "\\( 12 \\text{ km} \\)", "\\( 14 \\text{ km} \\)", "\\( 48 \\text{ km} \\)"], ans: "\\( 10 \\text{ km} \\)", exp: "Distance \( = \sqrt{6^2 + 8^2} = \sqrt{36 + 64} = \sqrt{100} = 10 \) km. <span class='translation'>\( \sqrt{36 + 64} = 10 \) km.</span>" },
+            "t2-task3": { type: "single", q: "Two planes start from the same airport. One flies 5 km North, the other 12 km East. How far apart are they? <i class='fas fa-plane text-orange-500 ml-2'></i>", q_trans: "Dua pesawat dari bandara sama. Satu ke utara 5 km, satu ke timur 12 km. Berapa jarak mereka?", opts: ["\\( 13 \\text{ km} \\)", "\\( 14 \\text{ km} \\)", "\\( 15 \\text{ km} \\)", "\\( 17 \\text{ km} \\)", "\\( 60 \\text{ km} \\)"], ans: "\\( 13 \\text{ km} \\)", exp: "Distance \( = \sqrt{5^2 + 12^2} = \sqrt{25 + 144} = \sqrt{169} = 13 \) km. <span class='translation'>\( \sqrt{25 + 144} = 13 \) km.</span>" },
+            "t2-task4": { type: "single", q: "A boat travels 8 miles North, then 15 miles West. What is the straight-line distance from the start? <i class='fas fa-anchor text-orange-500 ml-2'></i>", q_trans: "Perahu 8 mil Utara, 15 mil Barat. Berapa jarak garis lurusnya?", opts: ["\\( 16 \\text{ mi} \\)", "\\( 17 \\text{ mi} \\)", "\\( 18 \\text{ mi} \\)", "\\( 20 \\text{ mi} \\)", "\\( 23 \\text{ mi} \\)"], ans: "\\( 17 \\text{ mi} \\)", exp: "Distance \( = \sqrt{8^2 + 15^2} = \sqrt{64 + 225} = \sqrt{289} = 17 \) miles. <span class='translation'>\( \sqrt{64 + 225} = 17 \) mil.</span>" },
+            "t2-task5": { type: "single", q: "A car drives 7 km East, then 24 km South. What is the direct distance back to the start? <i class='fas fa-car text-orange-500 ml-2'></i>", q_trans: "Mobil 7 km Timur, 24 km Selatan. Berapa jarak langsung kembali?", opts: ["\\( 25 \\text{ km} \\)", "\\( 26 \\text{ km} \\)", "\\( 28 \\text{ km} \\)", "\\( 30 \\text{ km} \\)", "\\( 31 \\text{ km} \\)"], ans: "\\( 25 \\text{ km} \\)", exp: "Distance \( = \sqrt{7^2 + 24^2} = \sqrt{49 + 576} = \sqrt{625} = 25 \) km. <span class='translation'>\( \sqrt{49 + 576} = 25 \) km.</span>" },
+            "t2-task6": { type: "single", q: "Find the distance between point A(0, 0) and point B(3, 4) on a coordinate map. <i class='fas fa-map text-orange-500 ml-2'></i>", q_trans: "Cari jarak titik A(0,0) dan B(3,4).", opts: ["\\( 5 \\)", "\\( 6 \\)", "\\( 7 \\)", "\\( 8 \\)", "\\( 12 \\)"], ans: "\\( 5 \\)", exp: "Distance \( = \sqrt{(3-0)^2 + (4-0)^2} = \sqrt{3^2 + 4^2} = \sqrt{9+16} = 5 \). <span class='translation'>\( \sqrt{3^2 + 4^2} = 5 \).</span>" },
+            "t2-task7": { type: "single", q: "Find the distance between point A(1, 2) and point B(4, 6). <i class='fas fa-map-marked-alt text-orange-500 ml-2'></i>", q_trans: "Cari jarak titik A(1,2) dan B(4,6).", opts: ["\\( 4 \\)", "\\( 5 \\)", "\\( 6 \\)", "\\( 7 \\)", "\\( 8 \\)"], ans: "\\( 5 \\)", exp: "Distance \( = \sqrt{(4-1)^2 + (6-2)^2} = \sqrt{3^2 + 4^2} = \sqrt{9+16} = 5 \). <span class='translation'>\( \sqrt{3^2 + 4^2} = 5 \).</span>" },
+            "t2-task8": { type: "single", q: "A point is at (-2, -2) and another is at (1, 2). What is the distance between them? <i class='fas fa-location-arrow text-orange-500 ml-2'></i>", q_trans: "Titik (-2,-2) dan (1,2). Berapa jaraknya?", opts: ["\\( 4 \\)", "\\( 5 \\)", "\\( 6 \\)", "\\( 7 \\)", "\\( 8 \\)"], ans: "\\( 5 \\)", exp: "Distance \( = \sqrt{(1 - (-2))^2 + (2 - (-2))^2} = \sqrt{3^2 + 4^2} = 5 \). <span class='translation'>\( \sqrt{3^2 + 4^2} = 5 \).</span>" },
+            "t2-task9": { type: "single", q: "A dog runs 20 meters East, then 21 meters North. How far is the dog from its starting point? <i class='fas fa-dog text-orange-500 ml-2'></i>", q_trans: "Anjing lari 20 m Timur, 21 m Utara. Berapa jaraknya dari awal?", opts: ["\\( 28 \\text{ m} \\)", "\\( 29 \\text{ m} \\)", "\\( 30 \\text{ m} \\)", "\\( 31 \\text{ m} \\)", "\\( 41 \\text{ m} \\)"], ans: "\\( 29 \\text{ m} \\)", exp: "Distance \( = \sqrt{20^2 + 21^2} = \sqrt{400 + 441} = \sqrt{841} = 29 \) m. <span class='translation'>\( \sqrt{400 + 441} = 29 \) m.</span>" },
+            "t2-task10": { type: "single", q: "A cyclist rides 12 miles East, then 35 miles North. What is the direct distance from the start? <i class='fas fa-bicycle text-orange-500 ml-2'></i>", q_trans: "Pesepeda 12 mil Timur, 35 mil Utara. Berapa jarak langsungnya?", opts: ["\\( 36 \\text{ mi} \\)", "\\( 37 \\text{ mi} \\)", "\\( 38 \\text{ mi} \\)", "\\( 39 \\text{ mi} \\)", "\\( 47 \\text{ mi} \\)"], ans: "\\( 37 \\text{ mi} \\)", exp: "Distance \( = \sqrt{12^2 + 35^2} = \sqrt{144 + 1225} = \sqrt{1369} = 37 \) miles. <span class='translation'>\( \sqrt{144 + 1225} = 37 \) mil.</span>" },
+
+            // TASK 3: Diagonals in 2D Shapes
+            "t3-task1": { type: "single", q: "A rectangle has a width of 6 cm and a length of 8 cm. What is the length of its diagonal? <i class='fas fa-vector-square text-orange-500 ml-2'></i>", q_trans: "Persegi panjang lebar 6 cm, panjang 8 cm. Berapa diagonalnya?", opts: ["\\( 9 \\text{ cm} \\)", "\\( 10 \\text{ cm} \\)", "\\( 11 \\text{ cm} \\)", "\\( 12 \\text{ cm} \\)", "\\( 14 \\text{ cm} \\)"], ans: "\\( 10 \\text{ cm} \\)", exp: "Diagonal \( = \sqrt{6^2 + 8^2} = \sqrt{36 + 64} = \sqrt{100} = 10 \) cm. <span class='translation'>\( \sqrt{36 + 64} = 10 \) cm.</span>" },
+            "t3-task2": { type: "single", q: "A rectangular field is 9 m long and 12 m wide. What is the distance across the field diagonally? <i class='fas fa-crop text-orange-500 ml-2'></i>", q_trans: "Lapangan panjang 9 m, lebar 12 m. Berapa jarak diagonalnya?", opts: ["\\( 13 \\text{ m} \\)", "\\( 14 \\text{ m} \\)", "\\( 15 \\text{ m} \\)", "\\( 16 \\text{ m} \\)", "\\( 21 \\text{ m} \\)"], ans: "\\( 15 \\text{ m} \\)", exp: "Diagonal \( = \sqrt{9^2 + 12^2} = \sqrt{81 + 144} = \sqrt{225} = 15 \) m. <span class='translation'>\( \sqrt{81 + 144} = 15 \) m.</span>" },
+            "t3-task3": { type: "single", q: "A rectangle has sides of 12 inches and 16 inches. Find the diagonal. <i class='fas fa-square text-orange-500 ml-2'></i>", q_trans: "Persegi panjang sisi 12 dan 16 inci. Cari diagonalnya.", opts: ["\\( 18 \\text{ in} \\)", "\\( 20 \\text{ in} \\)", "\\( 22 \\text{ in} \\)", "\\( 24 \\text{ in} \\)", "\\( 28 \\text{ in} \\)"], ans: "\\( 20 \\text{ in} \\)", exp: "Diagonal \( = \sqrt{12^2 + 16^2} = \sqrt{144 + 256} = \sqrt{400} = 20 \) in. <span class='translation'>\( \sqrt{144 + 256} = 20 \) inci.</span>" },
+            "t3-task4": { type: "single", q: "A rectangle has a width of 8 m and a diagonal of 17 m. What is the length? <i class='fas fa-ruler-combined text-orange-500 ml-2'></i>", q_trans: "Persegi panjang lebar 8 m, diagonal 17 m. Berapa panjangnya?", opts: ["\\( 14 \\text{ m} \\)", "\\( 15 \\text{ m} \\)", "\\( 16 \\text{ m} \\)", "\\( 17 \\text{ m} \\)", "\\( 18 \\text{ m} \\)"], ans: "\\( 15 \\text{ m} \\)", exp: "Length \( = \sqrt{17^2 - 8^2} = \sqrt{289 - 64} = \sqrt{225} = 15 \) m. <span class='translation'>\( \sqrt{289 - 64} = 15 \) m.</span>" },
+            "t3-task5": { type: "single", q: "A rectangle has a length of 10 cm and a diagonal of 26 cm. What is the width? <i class='fas fa-border-all text-orange-500 ml-2'></i>", q_trans: "Persegi panjang panjang 10 cm, diagonal 26 cm. Berapa lebarnya?", opts: ["\\( 22 \\text{ cm} \\)", "\\( 23 \\text{ cm} \\)", "\\( 24 \\text{ cm} \\)", "\\( 25 \\text{ cm} \\)", "\\( 26 \\text{ cm} \\)"], ans: "\\( 24 \\text{ cm} \\)", exp: "Width \( = \sqrt{26^2 - 10^2} = \sqrt{676 - 100} = \sqrt{576} = 24 \) cm. <span class='translation'>\( \sqrt{676 - 100} = 24 \) cm.</span>" },
+            "t3-task6": { type: "single", q: "A square has a side length of 7 cm. What is the exact length of its diagonal? <i class='fas fa-shapes text-orange-500 ml-2'></i>", q_trans: "Persegi sisi 7 cm. Berapa panjang diagonal eksaknya?", opts: ["\\( 7 \\text{ cm} \\)", "\\( 7\sqrt{2} \\text{ cm} \\)", "\\( 14 \\text{ cm} \\)", "\\( 14\sqrt{2} \\text{ cm} \\)", "\\( 49 \\text{ cm} \\)"], ans: "\\( 7\sqrt{2} \\text{ cm} \\)", exp: "For a square, diagonal \( d = s\sqrt{2} = 7\sqrt{2} \) cm. <span class='translation'>Diagonal persegi \( = s\sqrt{2} = 7\sqrt{2} \) cm.</span>" },
+            "t3-task7": { type: "single", q: "A square has a side length of 12 m. What is the exact length of its diagonal? <i class='fas fa-square-full text-orange-500 ml-2'></i>", q_trans: "Persegi sisi 12 m. Berapa panjang diagonal eksaknya?", opts: ["\\( 12 \\text{ m} \\)", "\\( 12\sqrt{2} \\text{ m} \\)", "\\( 24 \\text{ m} \\)", "\\( 24\sqrt{2} \\text{ m} \\)", "\\( 144 \\text{ m} \\)"], ans: "\\( 12\sqrt{2} \\text{ m} \\)", exp: "Diagonal \( d = 12\sqrt{2} \) m. <span class='translation'>\( 12\sqrt{2} \) m.</span>" },
+            "t3-task8": { type: "single", q: "A square has a side length of 15 cm. What is the exact length of its diagonal? <i class='fas fa-vector-square text-orange-500 ml-2'></i>", q_trans: "Persegi sisi 15 cm. Berapa panjang diagonal eksaknya?", opts: ["\\( 15 \\text{ cm} \\)", "\\( 15\sqrt{2} \\text{ cm} \\)", "\\( 30 \\text{ cm} \\)", "\\( 30\sqrt{2} \\text{ cm} \\)", "\\( 225 \\text{ cm} \\)"], ans: "\\( 15\sqrt{2} \\text{ cm} \\)", exp: "Diagonal \( d = 15\sqrt{2} \) cm. <span class='translation'>\( 15\sqrt{2} \) cm.</span>" },
+            "t3-task9": { type: "single", q: "A square has a diagonal of 10 m. What is the exact length of one side? <i class='fas fa-border-style text-orange-500 ml-2'></i>", q_trans: "Persegi diagonal 10 m. Berapa panjang sisi eksaknya?", opts: ["\\( 5 \\text{ m} \\)", "\\( 5\sqrt{2} \\text{ m} \\)", "\\( 10 \\text{ m} \\)", "\\( 10\sqrt{2} \\text{ m} \\)", "\\( 25 \\text{ m} \\)"], ans: "\\( 5\sqrt{2} \\text{ m} \\)", exp: "Side \( s = \frac{d}{\sqrt{2}} = \frac{10}{\sqrt{2}} = 5\sqrt{2} \) m. <span class='translation'>Sisi \( = \frac{10}{\sqrt{2}} = 5\sqrt{2} \) m.</span>" },
+            "t3-task10": { type: "single", q: "A rectangle has a diagonal of 15 cm and a width of 9 cm. Find the length. <i class='fas fa-rectangle-list text-orange-500 ml-2'></i>", q_trans: "Persegi panjang diagonal 15 cm, lebar 9 cm. Cari panjangnya.", opts: ["\\( 10 \\text{ cm} \\)", "\\( 11 \\text{ cm} \\)", "\\( 12 \\text{ cm} \\)", "\\( 13 \\text{ cm} \\)", "\\( 14 \\text{ cm} \\)"], ans: "\\( 12 \\text{ cm} \\)", exp: "Length \( = \sqrt{15^2 - 9^2} = \sqrt{225 - 81} = \sqrt{144} = 12 \) cm. <span class='translation'>\( \sqrt{225 - 81} = 12 \) cm.</span>" },
+
+            // TASK 4: Converse of Pythagoras & Triangle Types
+            "t4-task1": { type: "single", q: "A triangle has sides 3, 4, and 5. What type of triangle is it? <i class='fas fa-shapes text-orange-500 ml-2'></i>", q_trans: "Segitiga sisi 3, 4, 5. Jenis segitiga apakah ini?", opts: ["Acute", "Right", "Obtuse", "Equilateral", "Cannot exist"], ans: "Right", exp: "3² + 4² = 9 + 16 = 25. 5² = 25. Since \( a^2+b^2=c^2 \), it is a right triangle. <span class='translation'>Memenuhi Pythagoras, jadi siku-siku.</span>" },
+            "t4-task2": { type: "single", q: "A triangle has sides 5, 12, and 13. What type of triangle is it? <i class='fas fa-shapes text-orange-500 ml-2'></i>", q_trans: "Segitiga sisi 5, 12, 13. Jenis segitiga apakah ini?", opts: ["Acute", "Right", "Obtuse", "Isosceles", "Cannot exist"], ans: "Right", exp: "5² + 12² = 25 + 144 = 169. 13² = 169. Right triangle. <span class='translation'>Memenuhi Pythagoras, siku-siku.</span>" },
+            "t4-task3": { type: "single", q: "A triangle has sides 6, 8, and 10. What type of triangle is it? <i class='fas fa-shapes text-orange-500 ml-2'></i>", q_trans: "Segitiga sisi 6, 8, 10. Jenis segitiga apakah ini?", opts: ["Acute", "Right", "Obtuse", "Scalene", "Cannot exist"], ans: "Right", exp: "6² + 8² = 36 + 64 = 100. 10² = 100. Right triangle. <span class='translation'>Memenuhi Pythagoras, siku-siku.</span>" },
+            "t4-task4": { type: "single", q: "A triangle has sides 4, 5, and 6. What type of triangle is it? <i class='fas fa-shapes text-orange-500 ml-2'></i>", q_trans: "Segitiga sisi 4, 5, 6. Jenis segitiga apakah ini?", opts: ["Acute", "Right", "Obtuse", "Equilateral", "Cannot exist"], ans: "Acute", exp: "Longest side 6. 6² = 36. Sum of others: 4² + 5² = 16 + 25 = 41. Since 36 < 41, it is acute. <span class='translation'>36 < 41, jadi segitiga lancip.</span>" },
+            "t4-task5": { type: "single", q: "A triangle has sides 5, 6, and 7. What type of triangle is it? <i class='fas fa-shapes text-orange-500 ml-2'></i>", q_trans: "Segitiga sisi 5, 6, 7. Jenis segitiga apakah ini?", opts: ["Acute", "Right", "Obtuse", "Isosceles", "Cannot exist"], ans: "Acute", exp: "7² = 49. 5² + 6² = 25 + 36 = 61. Since 49 < 61, it is acute. <span class='translation'>49 < 61, jadi lancip.</span>" },
+            "t4-task6": { type: "single", q: "A triangle has sides 4, 5, and 8. What type of triangle is it? <i class='fas fa-shapes text-orange-500 ml-2'></i>", q_trans: "Segitiga sisi 4, 5, 8. Jenis segitiga apakah ini?", opts: ["Acute", "Right", "Obtuse", "Equilateral", "Cannot exist"], ans: "Obtuse", exp: "8² = 64. 4² + 5² = 16 + 25 = 41. Since 64 > 41, it is obtuse. <span class='translation'>64 > 41, jadi segitiga tumpul.</span>" },
+            "t4-task7": { type: "single", q: "A triangle has sides 5, 7, and 9. What type of triangle is it? <i class='fas fa-shapes text-orange-500 ml-2'></i>", q_trans: "Segitiga sisi 5, 7, 9. Jenis segitiga apakah ini?", opts: ["Acute", "Right", "Obtuse", "Isosceles", "Cannot exist"], ans: "Obtuse", exp: "9² = 81. 5² + 7² = 25 + 49 = 74. Since 81 > 74, it is obtuse. <span class='translation'>81 > 74, jadi tumpul.</span>" },
+            "t4-task8": { type: "single", q: "A triangle has sides 8, 9, and 13. What type of triangle is it? <i class='fas fa-shapes text-orange-500 ml-2'></i>", q_trans: "Segitiga sisi 8, 9, 13. Jenis segitiga apakah ini?", opts: ["Acute", "Right", "Obtuse", "Scalene Right", "Cannot exist"], ans: "Obtuse", exp: "13² = 169. 8² + 9² = 64 + 81 = 145. Since 169 > 145, it is obtuse. <span class='translation'>169 > 145, jadi tumpul.</span>" },
+            "t4-task9": { type: "single", q: "An isosceles triangle has equal sides of 10 cm and a base of 12 cm. What is its height? <i class='fas fa-mountain text-orange-500 ml-2'></i>", q_trans: "Segitiga sama kaki sisi 10 cm, alas 12 cm. Berapa tingginya?", opts: ["\\( 6 \\text{ cm} \\)", "\\( 7 \\text{ cm} \\)", "\\( 8 \\text{ cm} \\)", "\\( 9 \\text{ cm} \\)", "\\( 10 \\text{ cm} \\)"], ans: "\\( 8 \\text{ cm} \\)", exp: "Split base to 6. Height \( = \sqrt{10^2 - 6^2} = \sqrt{100 - 36} = \sqrt{64} = 8 \) cm. <span class='translation'>\( \sqrt{100 - 36} = 8 \) cm.</span>" },
+            "t4-task10": { type: "single", q: "An equilateral triangle has a side length of 10 cm. What is its exact height? <i class='fas fa-triangle text-orange-500 ml-2'></i>", q_trans: "Segitiga sama sisi sisi 10 cm. Berapa tinggi eksaknya?", opts: ["\\( 5 \\text{ cm} \\)", "\\( 5\sqrt{3} \\text{ cm} \\)", "\\( 10\sqrt{3} \\text{ cm} \\)", "\\( 10 \\text{ cm} \\)", "\\( 15 \\text{ cm} \\)"], ans: "\\( 5\sqrt{3} \\text{ cm} \\)", exp: "Height \( = \sqrt{10^2 - 5^2} = \sqrt{100 - 25} = \sqrt{75} = 5\sqrt{3} \) cm. <span class='translation'>\( \sqrt{75} = 5\sqrt{3} \) cm.</span>" },
+
+            // TASK 5: Mixed Advanced Problems
+            "t5-task1": { type: "single", q: "A rectangular box is 2 m long, 3 m wide, and 6 m high. What is the longest diagonal inside the box? <i class='fas fa-box text-orange-500 ml-2'></i>", q_trans: "Balok 2x3x6 m. Berapa diagonal ruangnya?", opts: ["\\( 6 \\text{ m} \\)", "\\( 7 \\text{ m} \\)", "\\( 8 \\text{ m} \\)", "\\( 9 \\text{ m} \\)", "\\( 11 \\text{ m} \\)"], ans: "\\( 7 \\text{ m} \\)", exp: "Space diagonal \( = \sqrt{2^2 + 3^2 + 6^2} = \sqrt{4 + 9 + 36} = \sqrt{49} = 7 \) m. <span class='translation'>\( \sqrt{4 + 9 + 36} = 7 \) m.</span>" },
+            "t5-task2": { type: "single", q: "A box is 4 cm long, 4 cm wide, and 7 cm high. Find the space diagonal. <i class='fas fa-cube text-orange-500 ml-2'></i>", q_trans: "Balok 4x4x7 cm. Cari diagonal ruang.", opts: ["\\( 8 \\text{ cm} \\)", "\\( 9 \\text{ cm} \\)", "\\( 10 \\text{ cm} \\)", "\\( 11 \\text{ cm} \\)", "\\( 12 \\text{ cm} \\)"], ans: "\\( 9 \\text{ cm} \\)", exp: "Diagonal \( = \sqrt{4^2 + 4^2 + 7^2} = \sqrt{16 + 16 + 49} = \sqrt{81} = 9 \) cm. <span class='translation'>\( \sqrt{16 + 16 + 49} = 9 \) cm.</span>" },
+            "t5-task3": { type: "single", q: "A room is 3 m long, 4 m wide, and 12 m high. What is the space diagonal? <i class='fas fa-warehouse text-orange-500 ml-2'></i>", q_trans: "Ruang 3x4x12 m. Berapa diagonal ruangnya?", opts: ["\\( 11 \\text{ m} \\)", "\\( 12 \\text{ m} \\)", "\\( 13 \\text{ m} \\)", "\\( 14 \\text{ m} \\)", "\\( 15 \\text{ m} \\)"], ans: "\\( 13 \\text{ m} \\)", exp: "Diagonal \( = \sqrt{3^2 + 4^2 + 12^2} = \sqrt{9 + 16 + 144} = \sqrt{169} = 13 \) m. <span class='translation'>\( \sqrt{9 + 16 + 144} = 13 \) m.</span>" },
+            "t5-task4": { type: "single", q: "A box is 6 m long, 8 m wide, and 24 m high. Find the space diagonal. <i class='fas fa-cubes text-orange-500 ml-2'></i>", q_trans: "Balok 6x8x24 m. Cari diagonal ruang.", opts: ["\\( 24 \\text{ m} \\)", "\\( 25 \\text{ m} \\)", "\\( 26 \\text{ m} \\)", "\\( 27 \\text{ m} \\)", "\\( 28 \\text{ m} \\)"], ans: "\\( 26 \\text{ m} \\)", exp: "Diagonal \( = \sqrt{6^2 + 8^2 + 24^2} = \sqrt{36 + 64 + 576} = \sqrt{676} = 26 \) m. <span class='translation'>\( \sqrt{36 + 64 + 576} = 26 \) m.</span>" },
+            "t5-task5": { type: "single", q: "A rhombus has diagonals of 10 cm and 24 cm. What is the length of one side? <i class='fas fa-diamond text-orange-500 ml-2'></i>", q_trans: "Belah ketupat diagonal 10 cm dan 24 cm. Berapa panjang sisinya?", opts: ["\\( 11 \\text{ cm} \\)", "\\( 12 \\text{ cm} \\)", "\\( 13 \\text{ cm} \\)", "\\( 14 \\text{ cm} \\)", "\\( 15 \\text{ cm} \\)"], ans: "\\( 13 \\text{ cm} \\)", exp: "Diagonals bisect at right angles: 5 and 12. Side \( = \sqrt{5^2 + 12^2} = \sqrt{25 + 144} = \sqrt{169} = 13 \) cm. <span class='translation'>Setengah diagonal 5 dan 12. Sisi \( \sqrt{25 + 144} = 13 \) cm.</span>" },
+            "t5-task6": { type: "single", q: "A rhombus has diagonals of 16 m and 30 m. Find the side length. <i class='fas fa-gem text-orange-500 ml-2'></i>", q_trans: "Belah ketupat diagonal 16 m dan 30 m. Cari panjang sisi.", opts: ["\\( 15 \\text{ m} \\)", "\\( 16 \\text{ m} \\)", "\\( 17 \\text{ m} \\)", "\\( 18 \\text{ m} \\)", "\\( 19 \\text{ m} \\)"], ans: "\\( 17 \\text{ m} \\)", exp: "Half diagonals: 8 and 15. Side \( = \sqrt{8^2 + 15^2} = \sqrt{64 + 225} = \sqrt{289} = 17 \) m. <span class='translation'>Setengah diagonal 8 dan 15. Sisi \( \sqrt{64 + 225} = 17 \) m.</span>" },
+            "t5-task7": { type: "single", q: "A TV screen is 40 inches wide and 30 inches tall. What is the diagonal size? <i class='fas fa-tv text-orange-500 ml-2'></i>", q_trans: "TV lebar 40 inci, tinggi 30 inci. Berapa ukuran diagonalnya?", opts: ["\\( 45 \\text{ in} \\)", "\\( 50 \\text{ in} \\)", "\\( 55 \\text{ in} \\)", "\\( 60 \\text{ in} \\)", "\\( 70 \\text{ in} \\)"], ans: "\\( 50 \\text{ in} \\)", exp: "Diagonal \( = \sqrt{40^2 + 30^2} = \sqrt{1600 + 900} = \sqrt{2500} = 50 \) in. <span class='translation'>\( \sqrt{1600 + 900} = 50 \) inci.</span>" },
+            "t5-task8": { type: "single", q: "A TV is 60 inches wide and 80 inches tall. What is the diagonal? <i class='fas fa-desktop text-orange-500 ml-2'></i>", q_trans: "TV lebar 60 inci, tinggi 80 inci. Berapa diagonalnya?", opts: ["\\( 90 \\text{ in} \\)", "\\( 100 \\text{ in} \\)", "\\( 110 \\text{ in} \\)", "\\( 120 \\text{ in} \\)", "\\( 140 \\text{ in} \\)"], ans: "\\( 100 \\text{ in} \\)", exp: "Diagonal \( = \sqrt{60^2 + 80^2} = \sqrt{3600 + 6400} = \sqrt{10000} = 100 \) in. <span class='translation'>\( \sqrt{3600 + 6400} = 100 \) inci.</span>" },
+            "t5-task9": { type: "single", q: "A 10 m ramp rises to a height of 6 m. What is the horizontal distance covered? <i class='fas fa-wheelchair text-orange-500 ml-2'></i>", q_trans: "Ramp 10 m, tinggi 6 m. Berapa jarak mendatarnya?", opts: ["\\( 7 \\text{ m} \\)", "\\( 8 \\text{ m} \\)", "\\( 9 \\text{ m} \\)", "\\( 10 \\text{ m} \\)", "\\( 12 \\text{ m} \\)"], ans: "\\( 8 \\text{ m} \\)", exp: "Distance \( = \sqrt{10^2 - 6^2} = \sqrt{100 - 36} = \sqrt{64} = 8 \) m. <span class='translation'>\( \sqrt{100 - 36} = 8 \) m.</span>" },
+            "t5-task10": { type: "single", q: "A kite string is 50 m long. The kite is 30 m above the ground. What is the horizontal distance to the kite? <i class='fas fa-kite text-orange-500 ml-2'></i>", q_trans: "Benang layang-layang 50 m, tinggi 30 m. Berapa jarak mendatarnya?", opts: ["\\( 35 \\text{ m} \\)", "\\( 40 \\text{ m} \\)", "\\( 45 \\text{ m} \\)", "\\( 48 \\text{ m} \\)", "\\( 50 \\text{ m} \\)"], ans: "\\( 40 \\text{ m} \\)", exp: "Distance \( = \sqrt{50^2 - 30^2} = \sqrt{2500 - 900} = \sqrt{1600} = 40 \) m. <span class='translation'>\( \sqrt{2500 - 900} = 40 \) m.</span>" }
+        });
+        
+        // ====== JAVASCRIPT LOGIC ======
+        let currentPage = 1;
+        let currentTaskSection = ""; 
+        let studentAnswers = {};
+        
+        function openModal() {
+            const modal = document.getElementById('classRulesModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+        function closeModal() {
+            const modal = document.getElementById('classRulesModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+        
+        function showSection(sectionId) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            
+            document.querySelectorAll('.sidebar-item').forEach(item => {
+                item.classList.remove('bg-indigo-100', 'text-indigo-800', 'font-bold', 'bg-orange-100', 'text-orange-800');
+            });
+            const activeLink = document.querySelector(`.sidebar-item[data-section="${sectionId}"]`);
+            if (activeLink) {
+                if(sectionId.startsWith('task')) {
+                    activeLink.classList.add('bg-orange-100', 'text-orange-800', 'font-bold');
+                } else {
+                    activeLink.classList.add('bg-indigo-100', 'text-indigo-800', 'font-bold');
+                }
+            }
+            
+            currentPage = 1;
+            currentTaskSection = sectionId;
+            
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            const firstPage = document.querySelector(`#${sectionId} .page[data-page="1"]`);
+            if(firstPage) firstPage.classList.add('active');
+            
+            renderMath();
+            renderPagination(sectionId, currentPage);
+            document.getElementById('contentScrollArea').scrollTo(0, 0);
+        }
+        
+        function changePage(direction) {
+            const activeSection = document.querySelector('.content-section.active');
+            if(!activeSection) return;
+            const pages = activeSection.querySelectorAll('.page');
+            let newPage = currentPage + direction;
+            if(newPage >= 1 && newPage <= pages.length) {
+                pages[currentPage - 1].classList.remove('active');
+                pages[newPage - 1].classList.add('active');
+                currentPage = newPage;
+                renderMath();
+                renderPagination(currentTaskSection, currentPage);
+                document.getElementById('contentScrollArea').scrollTo(0, 0);
+            }
+        }
+
+        function goToPage(pageNum) {
+            const activeSection = document.querySelector('.content-section.active');
+            if(!activeSection) return;
+            const pages = activeSection.querySelectorAll('.page');
+            if(pageNum >= 1 && pageNum <= pages.length) {
+                pages[currentPage - 1].classList.remove('active');
+                pages[pageNum - 1].classList.add('active');
+                currentPage = pageNum;
+                renderMath();
+                renderPagination(currentTaskSection, currentPage);
+                document.getElementById('contentScrollArea').scrollTo(0, 0);
+            }
+        }
+
+        function renderPagination(sectionId, pageNum) {
+            const activeSection = document.getElementById(sectionId);
+            if (!activeSection) return;
+            const pages = activeSection.querySelectorAll('.page');
+            const totalPages = pages.length;
+            let html = '';
+            const isMainTask = sectionId.startsWith('t');
+            const theoryPages = [1, 5, 9]; 
+            
+            html += `<button onclick="goToPage(${pageNum - 1})" class="px-3 py-1.5 rounded-md text-sm bg-gray-200 hover:bg-gray-300 text-gray-700 ${pageNum === 1 ? 'opacity-50 cursor-not-allowed' : ''}" ${pageNum === 1 ? 'disabled' : ''}><i class="fas fa-chevron-left"></i> Prev</button>`;
+            
+            for (let i = 1; i <= totalPages; i++) {
+                let btnColor = 'bg-gray-100 hover:bg-gray-200 text-gray-700';
+                if (!isMainTask && theoryPages.includes(i)) {
+                    btnColor = 'bg-indigo-100 hover:bg-indigo-200 text-indigo-800'; 
+                } else {
+                    btnColor = 'bg-orange-100 hover:bg-orange-200 text-orange-800'; 
+                }
+                if (i === pageNum) {
+                    if (!isMainTask && theoryPages.includes(i)) {
+                        btnColor = 'bg-indigo-600 text-white shadow-md'; 
+                    } else {
+                        btnColor = 'bg-orange-500 text-white shadow-md'; 
+                    }
+                }
+                html += `<button onclick="goToPage(${i})" class="w-9 h-9 rounded-md text-sm font-semibold transition-all ${btnColor}">${i}</button>`;
+            }
+            
+            html += `<button onclick="goToPage(${pageNum + 1})" class="px-3 py-1.5 rounded-md text-sm bg-gray-200 hover:bg-gray-300 text-gray-700 ${pageNum === totalPages ? 'opacity-50 cursor-not-allowed' : ''}" ${pageNum === totalPages ? 'disabled' : ''}>Next <i class="fas fa-chevron-right"></i></button>`;
+            document.getElementById('paginationBar').innerHTML = html;
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function renderTasks() {
+            document.querySelectorAll('[data-task-id]').forEach(div => {
+                const taskId = div.getAttribute('data-task-id');
+                renderSingleTask(taskId, div);
+            });
+            renderMath();
+        }
+        
+        function renderSingleTask(taskId, div) {
+            const data = questions[taskId];
+            if(!data) return;
+
+            const isMainTask = taskId.startsWith('t');
+            const taskNum = isMainTask ? taskId[1] : 0;
+            const taskType = data.type || 'single';
+            
+            let questionHTML = `
+                <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-orange-500">
+                    <div class="flex justify-between items-center mb-4 no-print">
+                        <h2 class="text-xl font-bold text-orange-600">
+                            ${isMainTask ? `Task ${taskNum}` : 'Exercise'} 
+                            <span class="text-sm bg-gray-200 text-gray-800 px-2 py-1 rounded ml-2">Multiple Choice</span>
+                            <span class="translation text-gray-500 text-sm">Latihan Soal</span>
+                        </h2>
+                        <div class="flex gap-2">
+                            <button onclick="resetTask('${taskId}')" class="text-sm bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded">
+                                <i class="fas fa-redo"></i> Reset
+                            </button>
+                            ${isMainTask ? `<button onclick="printTask(${taskNum})" class="text-sm bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded">
+                                <i class="fas fa-print"></i> Print
+                            </button>` : ''}
+                        </div>
+                    </div>
+                    <div class="mb-6 flex gap-4 items-start">
+                        <div class="bg-orange-100 p-3 rounded-full shrink-0">
+                            <i class="fas fa-question text-orange-500 text-xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-lg">${data.q}</p>
+                            <p class="translation">${data.q_trans}</p>
+                        </div>
+                    </div>
+            `;
+
+            if (taskType === 'single') {
+                const shuffledOpts = shuffleArray([...data.opts]);
+                questionHTML += `
+                    <div id="options-${taskId}" class="space-y-3">
+                        ${shuffledOpts.map((opt, i) => `
+                            <button onclick="checkAnswer('${taskId}', this.getAttribute('data-opt'), 'single')" 
+                                    class="option-btn w-full text-left p-3 border-2 border-gray-200 rounded hover:border-orange-500 flex items-center gap-3" 
+                                    data-opt="${opt}">
+                                <span class="w-6 h-6 flex items-center justify-center bg-gray-100 rounded-full font-bold shrink-0">${String.fromCharCode(65 + i)}</span>
+                                <span class="katex">${opt}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            questionHTML += `
+                    <div id="result-${taskId}" class="mt-4 hidden p-4 rounded"></div>
+
+                    <div class="mt-4 no-print">
+                        <button onclick="toggleCollapse('${taskId}')" id="collapse-btn-${taskId}" class="hidden text-blue-600 underline">
+                            Show Explanation <span class="translation text-gray-500 text-xs" style="display: inline-block; margin-left: 4px;">Tampilkan Penjelasan</span>
+                        </button>
+                        <div id="collapse-${taskId}" class="collapse-content w-full">
+                            <h3 class="font-bold text-blue-800">Explanation: <span class="translation text-gray-500 text-sm">Penjelasan:</span></h3>
+                            <p class="mt-2">${data.exp}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            div.innerHTML = questionHTML;
+        }
+
+        function checkAnswer(taskId, selectedOpt, type) {
+            const data = questions[taskId];
+            const resultDiv = document.getElementById(`result-${taskId}`);
+            const collapseBtn = document.getElementById(`collapse-btn-${taskId}`);
+            let isCorrect = false;
+            let correctAnsText = '';
+
+            if (type === 'single') {
+                const buttons = document.querySelectorAll(`#options-${taskId} button`);
+                buttons.forEach(btn => {
+                    btn.disabled = true;
+                    btn.classList.add('opacity-70', 'cursor-not-allowed');
+                    if(btn.getAttribute('data-opt') === data.ans) {
+                        btn.classList.remove('border-gray-200', 'hover:border-orange-500');
+                        btn.classList.add('border-green-500', 'bg-green-50');
+                    } else if (btn.getAttribute('data-opt') === selectedOpt) {
+                        btn.classList.remove('border-gray-200', 'hover:border-orange-500');
+                        btn.classList.add('border-red-500', 'bg-red-50');
+                    }
+                });
+                isCorrect = (selectedOpt === data.ans);
+                correctAnsText = data.ans;
+                studentAnswers[taskId] = selectedOpt; 
+            }
+
+            if(isCorrect) {
+                resultDiv.innerHTML = `<p class="text-green-600 font-bold"><i class="fas fa-check-circle"></i> Correct! <span class="translation text-gray-600 font-normal" style="display: inline-block; margin-left: 4px;">Benar!</span></p>`;
+                resultDiv.className = "mt-4 p-4 rounded bg-green-50 border border-green-200";
+            } else {
+                resultDiv.innerHTML = `<p class="text-red-600 font-bold"><i class="fas fa-times-circle"></i> Incorrect! The correct answer is: ${correctAnsText}. <span class="translation text-gray-600 font-normal" style="display: inline-block; margin-left: 4px;">Salah! Jawaban yang benar: ${correctAnsText}.</span></p>`;
+                resultDiv.className = "mt-4 p-4 rounded bg-red-50 border border-red-200";
+            }
+            resultDiv.classList.remove('hidden');
+            collapseBtn.classList.remove('hidden');
+            
+            const collapseContent = document.getElementById(`collapse-${taskId}`);
+            collapseContent.classList.add('open');
+            collapseBtn.innerHTML = 'Hide Explanation <span class="translation text-gray-500 text-xs" style="display: inline-block; margin-left: 4px;">Sembunyikan Penjelasan</span>';
+            
+            renderMath();
+        }
+
+        function resetTask(taskId) {
+            delete studentAnswers[taskId];
+            const taskDiv = document.querySelector(`[data-task-id="${taskId}"]`);
+            if(taskDiv) {
+                renderSingleTask(taskId, taskDiv);
+                renderMath();
+            }
+        }
+
+        function printTask(taskNum) {
+            let score = 0;
+            let tableBody = '';
+            for(let i=1; i<=10; i++) {
+                const taskId = `t${taskNum}-task${i}`;
+                const data = questions[taskId];
+                if(!data) continue;
+                
+                let studentAns = studentAnswers[taskId] || 'Not Answered';
+                let correctAns = data.ans;
+                
+                let sAnsStr = '';
+                let cAnsStr = '';
+                let isCorrect = false;
+                const normalize = (str) => str.toString().toLowerCase().replace(/rp/g, '').replace(/rb/g, '').replace(/[\s.,]/g, '');
+                
+                sAnsStr = studentAns || 'Not Answered';
+                cAnsStr = correctAns;
+                let userValNorm = normalize(studentAns || '');
+                let correctAnsNorm = normalize(correctAns);
+                isCorrect = (userValNorm === correctAnsNorm);
+                
+                let note = '❌';
+                if(isCorrect) { score++; note = '✔️'; }
+                
+                let qText = data.q.replace(/<[^>]+>/g, '');
+                
+                tableBody += `<tr>
+                    <td class="border border-black p-1 text-center">${i}</td>
+                    <td class="border border-black p-1">${qText}</td>
+                    <td class="border border-black p-1">${sAnsStr}</td>
+                    <td class="border border-black p-1">${cAnsStr}</td>
+                    <td class="border border-black p-1 text-center">${note}</td>
+                </tr>`;
+            }
+            document.getElementById('printTableBody').innerHTML = tableBody;
+            document.getElementById('printTaskNum').innerText = taskNum;
+            document.getElementById('printScore').innerText = score;
+            
+            renderMathInElement(document.getElementById('printArea'), {
+                delimiters: [
+                    {left: '\\(', right: '\\)', display: false},
+                    {left: '\\[', right: '\\]', display: true}
+                ]
+            });
+            setTimeout(() => {
+                window.print();
+            }, 500);
+        }
+
+        function toggleCollapse(taskId) {
+            const content = document.getElementById(`collapse-${taskId}`);
+            const btn = document.getElementById(`collapse-btn-${taskId}`);
+            content.classList.toggle('open');
+            if(content.classList.contains('open')) {
+                btn.innerHTML = 'Hide Explanation <span class="translation text-gray-500 text-xs" style="display: inline-block; margin-left: 4px;">Sembunyikan Penjelasan</span>';
+            } else {
+                btn.innerHTML = 'Show Explanation <span class="translation text-gray-500 text-xs">Tampilkan Penjelasan</span>';
+            }
+        }
+
+        function renderMath() {
+            if (typeof renderMathInElement === 'undefined') return;
+            
+            const target = document.querySelector('.content-section.active') || document.body;
+            try {
+                renderMathInElement(target, {
+                    delimiters: [
+                        {left: '\\(', right: '\\)', display: false},
+                        {left: '\\[', right: '\\]', display: true}
+                    ],
+                    throwOnError: false
+                });
+            } catch(e) {
+                console.error("KaTeX rendering error:", e);
+            }
+        }
+        
+        window.onload = () => {
+            renderTasks();
+            setTimeout(() => {
+                showSection('warmup');
+                renderMath();
+            }, 100);
+        };
+        
+    </script>
+</body>
+</html>
