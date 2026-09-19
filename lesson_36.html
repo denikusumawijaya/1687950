@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Tutoring by Deni - Linear Equations in One Variable</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Segoe UI', Arial, Helvetica, sans-serif; }
+        .prompt-box { max-width: 650px; margin-left: auto; margin-right: auto; display: flex; flex-direction: column; align-items: center; text-align: left; }
+        .prompt-box p { width: 100%; }
+        .prompt-box img { width: 100%; height: auto; max-width: 300px; display: block; margin-top: 0.5rem; }
+        .translation { font-style: italic; font-size: 0.85rem; color: #6b7280; margin-top: 0.25rem; display: block; }
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        .page { display: none; }
+        .page.active { display: block; }
+        .option-btn { transition: all 0.2s; }
+        .option-btn:hover { transform: translateX(5px); }
+        .collapse-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-in-out, padding 0.4s, border 0.4s, background 0.4s; padding: 0; border: 0; background: transparent; }
+        .collapse-content.open { max-height: 2000px; padding: 1.5rem; border: 1px solid #bfdbfe; background: #eff6ff; border-radius: 0.5rem; margin-top: 1rem; }
+        @media print {
+            body * { visibility: hidden; }
+            #printArea, #printArea * { visibility: visible; }
+            #printArea { display: block !important; position: absolute; left: 0; top: 0; width: 100%; padding: 10px; box-sizing: border-box; }
+            .no-print { display: none !important; }
+            #printArea table { table-layout: fixed; width: 100%; font-size: 9px; }
+            #printArea td, #printArea th { word-wrap: break-word; padding: 2px !important; }
+            @page { size: A4; margin: 5mm; }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex flex-col h-screen overflow-hidden">
+    <svg width="0" height="0" style="position: absolute;">
+        <defs>
+            <marker id="arr1" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto" markerUnits="strokeWidth">
+                <path d="M0,0 L0,6 L9,3 z" fill="#333" />
+            </marker>
+        </defs>
+    </svg>
+
+    <!-- Header -->
+    <header class="bg-indigo-600 text-white p-4 flex justify-between items-center shadow-md no-print shrink-0 z-50">
+        <div>
+            <h1 class="text-xl font-bold">Math Tutoring by Deni</h1>
+            <p class="text-sm">Topic: Linear Equations & Inequalities in One Variable: Understanding Linear Equations</p>
+        </div>
+        <div>
+            <button onclick="openModal()" class="bg-yellow-400 hover:bg-yellow-500 text-indigo-900 font-bold py-2 px-4 rounded flex items-center gap-2">
+                <i class="fas fa-gavel"></i> Class Rules
+            </button>
+        </div>
+    </header>
+
+    <!-- Modal Class Rules -->
+    <div id="classRulesModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 no-print">
+        <div class="bg-white rounded-lg p-6 w-80 max-w-sm">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-indigo-600">Class Rules <br><span class="translation text-gray-500">Aturan Kelas</span></h2>
+                <button onclick="closeModal()" class="text-gray-500 hover:text-red-500"><i class="fas fa-times text-xl"></i></button>
+            </div>
+            <ul class="space-y-3 text-gray-700">
+                <li class="flex items-start gap-2">
+                    <i class="fas fa-comments text-indigo-500 mt-1"></i>
+                    <div>Take turns speaking.</div>
+                </li>
+                <li class="flex items-start gap-2">
+                    <i class="fas fa-door-open text-indigo-500 mt-1"></i>
+                    <div>Ask for permission if you need to leave the class.</div>
+                </li>
+                <li class="flex items-start gap-2">
+                    <i class="fas fa-video text-indigo-500 mt-1"></i>
+                    <div>Turn on your camera and microphone when needed.</div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Layout -->
+    <div class="flex flex-1 overflow-hidden">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white shadow-lg no-print border-r border-gray-200 flex flex-col">
+            <div class="p-4 bg-indigo-600 text-white">
+                <h3 class="font-bold text-lg flex items-center gap-2"><i class="fas fa-book-open"></i> Class Agenda</h3>
+                <p class="text-xs text-indigo-200 mt-1">Select a topic to navigate</p>
+            </div>
+            <nav class="flex-1 overflow-y-auto p-2">
+                <ul class="space-y-1">
+                    <li><a href="javascript:void(0)" onclick="showSection('warmup')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-800 transition-colors cursor-pointer" data-section="warmup"><div class="font-semibold text-sm text-gray-800">Spiral Review Warm-up</div><div class="text-xs text-gray-500 flex items-center gap-1 mt-1"><i class="far fa-clock"></i> 00:00 - 00:10</div></a></li>
+                    <li><a href="javascript:void(0)" onclick="showSection('intro')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-800 transition-colors cursor-pointer" data-section="intro"><div class="font-semibold text-sm text-gray-800">Introduction & Real-World</div><div class="text-xs text-gray-500 flex items-center gap-1 mt-1"><i class="far fa-clock"></i> 00:10 - 00:15</div></a></li>
+                    <li><a href="javascript:void(0)" onclick="showSection('review')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-800 transition-colors cursor-pointer" data-section="review"><div class="font-semibold text-sm text-gray-800">Review of Prior Knowledge</div><div class="text-xs text-gray-500 flex items-center gap-1 mt-1"><i class="far fa-clock"></i> 00:15 - 00:20</div></a></li>
+                    <li><a href="javascript:void(0)" onclick="showSection('problem')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-800 transition-colors cursor-pointer" data-section="problem"><div class="font-semibold text-sm text-gray-800">Problem Introduction</div><div class="text-xs text-gray-500 flex items-center gap-1 mt-1"><i class="far fa-clock"></i> 00:20 - 00:30</div></a></li>
+                    <li><a href="javascript:void(0)" onclick="showSection('guided')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-800 transition-colors cursor-pointer" data-section="guided"><div class="font-semibold text-sm text-gray-800">Guided Practice</div><div class="text-xs text-gray-500 flex items-center gap-1 mt-1"><i class="far fa-clock"></i> 00:30 - 00:45</div></a></li>
+                    <li><a href="javascript:void(0)" onclick="showSection('independent')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-800 transition-colors cursor-pointer" data-section="independent"><div class="font-semibold text-sm text-gray-800">Independent Practice</div><div class="text-xs text-gray-500 flex items-center gap-1 mt-1"><i class="far fa-clock"></i> 00:45 - 00:55</div></a></li>
+                    <li><a href="javascript:void(0)" onclick="showSection('consolidation')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-indigo-50 hover:text-indigo-800 transition-colors cursor-pointer" data-section="consolidation"><div class="font-semibold text-sm text-gray-800">Consolidation & Reflection</div><div class="text-xs text-gray-500 flex items-center gap-1 mt-1"><i class="far fa-clock"></i> 00:55 - 01:00</div></a></li>
+                    <hr class="my-3 border-gray-200">
+                    <li><a href="javascript:void(0)" onclick="showSection('task1')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-orange-50 hover:text-orange-800 transition-colors cursor-pointer" data-section="task1"><div class="font-bold text-sm text-indigo-800 flex items-center gap-2"><i class="fas fa-clipboard-list text-xs"></i> Task 1</div><div class="text-xs text-gray-500 mt-1">10 Story Questions</div></a></li>
+                    <li><a href="javascript:void(0)" onclick="showSection('task2')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-orange-50 hover:text-orange-800 transition-colors cursor-pointer" data-section="task2"><div class="font-bold text-sm text-indigo-800 flex items-center gap-2"><i class="fas fa-clipboard-list text-xs"></i> Task 2</div><div class="text-xs text-gray-500 mt-1">10 Story Questions</div></a></li>
+                    <li><a href="javascript:void(0)" onclick="showSection('task3')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-orange-50 hover:text-orange-800 transition-colors cursor-pointer" data-section="task3"><div class="font-bold text-sm text-indigo-800 flex items-center gap-2"><i class="fas fa-clipboard-list text-xs"></i> Task 3</div><div class="text-xs text-gray-500 mt-1">10 Story Questions</div></a></li>
+                    <li><a href="javascript:void(0)" onclick="showSection('task4')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-orange-50 hover:text-orange-800 transition-colors cursor-pointer" data-section="task4"><div class="font-bold text-sm text-indigo-800 flex items-center gap-2"><i class="fas fa-clipboard-list text-xs"></i> Task 4</div><div class="text-xs text-gray-500 mt-1">10 Story Questions</div></a></li>
+                    <li><a href="javascript:void(0)" onclick="showSection('task5')" class="sidebar-item block px-4 py-2 rounded-lg hover:bg-orange-50 hover:text-orange-800 transition-colors cursor-pointer" data-section="task5"><div class="font-bold text-sm text-indigo-800 flex items-center gap-2"><i class="fas fa-clipboard-list text-xs"></i> Task 5</div><div class="text-xs text-gray-500 mt-1">10 Story Questions</div></a></li>
+                </ul>
+            </nav>
+            <div class="p-4 bg-gray-50 border-t border-gray-200 text-center">
+                <p class="text-xs text-gray-500 font-medium">Math Tutoring System</p>
+                <p class="text-xs text-gray-400">by Deni</p>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col overflow-hidden">
+            <div id="contentScrollArea" class="flex-1 overflow-y-auto p-6">
+
+            <!-- ========================================== -->
+            <!-- SECTION: SPIRAL REVIEW WARM-UP             -->
+            <!-- ========================================== -->
+            <div id="warmup" class="content-section active">
+                <!-- PAGE 1: THEORY 1 -->
+                <div class="page active" data-page="1">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-indigo-500">
+                        <h2 class="text-2xl font-bold text-indigo-600 mb-2">Review: Exponents & Roots <i class="fas fa-superscript text-indigo-400 ml-2"></i></h2>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-indigo-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="200" height="120" viewBox="0 0 200 120">
+                                    <text x="50" y="70" font-size="40" text-anchor="middle" fill="#333">x</text>
+                                    <text x="75" y="45" font-size="20" text-anchor="middle" fill="#ef4444">2</text>
+                                    <text x="110" y="70" font-size="30" text-anchor="middle" fill="#333">=</text>
+                                    <text x="160" y="70" font-size="40" text-anchor="middle" fill="#10b981">x</text>
+                                    <text x="175" y="85" font-size="20" text-anchor="middle" fill="#10b981">·</text>
+                                    <text x="190" y="70" font-size="40" text-anchor="middle" fill="#10b981">x</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>An exponent tells you how many times a base number is multiplied by itself. A square root is the inverse operation of squaring a number. <span class="translation">Eksponen menunjukkan berapa kali sebuah bilangan dasar dikalikan dengan dirinya sendiri. Akar kuadrat adalah kebalikan dari operasi kuadrat.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> To The Point Formula</p>
+                            <p class="mt-1 font-bold katex">\( x^2 = x \cdot x \) and \( \sqrt{x^2} = |x| \)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="2" data-task-id="w-task1"></div>
+                <div class="page" data-page="3" data-task-id="w-task2"></div>
+                <div class="page" data-page="4" data-task-id="w-task3"></div>
+
+                <!-- PAGE 5: THEORY 2 -->
+                <div class="page" data-page="5">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-green-500">
+                        <h2 class="text-2xl font-bold text-green-600 mb-2">Review: Scientific Notation <i class="fas fa-flask text-green-400 ml-2"></i></h2>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-green-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="200" height="100" viewBox="0 0 200 100">
+                                    <text x="30" y="60" font-size="24" fill="#8b5cf6">a</text>
+                                    <text x="55" y="60" font-size="24" fill="#333">×</text>
+                                    <text x="90" y="60" font-size="24" fill="#f59e0b">10</text>
+                                    <text x="115" y="40" font-size="16" fill="#ef4444">n</text>
+                                    <text x="140" y="60" font-size="24" fill="#333">=</text>
+                                    <text x="170" y="60" font-size="20" fill="#10b981">Standard</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>Scientific notation is a way to write very large or very small numbers easily. It consists of a coefficient \(a\) (\(1 \le a < 10\)) multiplied by 10 to a power \(n\). <span class="translation">Notasi ilmiah adalah cara menulis bilangan yang sangat besar atau sangat kecil dengan mudah. Terdiri dari koefisien \(a\) dikali 10 pangkat \(n\).</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> To The Point Formula</p>
+                            <p class="mt-1 font-bold katex">\( a \times 10^n \) where \( 1 \le a < 10 \)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="6" data-task-id="w-task4"></div>
+                <div class="page" data-page="7" data-task-id="w-task5"></div>
+                <div class="page" data-page="8" data-task-id="w-task6"></div>
+
+                <!-- PAGE 9: THEORY 3 -->
+                <div class="page" data-page="9">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-purple-500">
+                        <h2 class="text-2xl font-bold text-purple-600 mb-2">Review: Pythagorean Theorem <i class="fas fa-shapes text-purple-400 ml-2"></i></h2>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-purple-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="140" height="140" viewBox="0 0 140 140">
+                                    <polygon points="20,120 120,120 20,20" fill="#8b5cf6" fill-opacity="0.3" stroke="#8b5cf6" stroke-width="2"/>
+                                    <text x="65" y="135" font-size="14" text-anchor="middle" fill="#333">b</text>
+                                    <text x="10" y="75" font-size="14" text-anchor="middle" fill="#333" transform="rotate(-90 10,75)">a</text>
+                                    <text x="85" y="60" font-size="14" text-anchor="middle" fill="#ef4444" transform="rotate(45 85,60)">c</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>In a right-angled triangle, the square of the hypotenuse (c) is equal to the sum of the squares of the other two sides (a and b). <span class="translation">Pada segitiga siku-siku, kuadrat sisi miring (c) sama dengan jumlah kuadrat sisi siku-siku lainnya (a dan b).</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> To The Point Formula</p>
+                            <p class="mt-1 font-bold katex">\( a^2 + b^2 = c^2 \)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="10" data-task-id="w-task7"></div>
+                <div class="page" data-page="11" data-task-id="w-task8"></div>
+                <div class="page" data-page="12" data-task-id="w-task9"></div>
+                <div class="page" data-page="13" data-task-id="w-task10"></div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- SECTION: INTRODUCTION & REAL-WORLD         -->
+            <!-- ========================================== -->
+            <div id="intro" class="content-section">
+                <div class="page active" data-page="1">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-indigo-500">
+                        <h2 class="text-2xl font-bold text-indigo-600 mb-2">Variables & Constants <i class="fas fa-box-open text-indigo-400 ml-2"></i></h2>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-indigo-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <rect x="20" y="40" width="40" height="60" fill="#6366f1" stroke="#333" rx="4"/>
+                                    <text x="40" y="75" font-size="20" text-anchor="middle" fill="white">x</text>
+                                    <text x="80" y="75" font-size="24" text-anchor="middle" fill="#333">+</text>
+                                    <circle cx="120" cy="70" r="20" fill="#f59e0b" stroke="#333"/>
+                                    <text x="120" y="75" font-size="16" text-anchor="middle" fill="white">5</text>
+                                    <text x="155" y="75" font-size="24" text-anchor="middle" fill="#333">=</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>In an equation, a <b>variable</b> is an unknown symbol (usually a letter like \(x\)), and a <b>constant</b> is a fixed number. <span class="translation">Dalam persamaan, <b>variabel</b> adalah simbol yang tidak diketahui (biasanya huruf seperti \(x\)), dan <b>konstanta</b> adalah bilangan tetap.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> To The Point Formula</p>
+                            <p class="mt-1 font-bold katex">Variable = Unknown (\(x\)), Constant = Fixed Number (\(5\)).</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="2" data-task-id="i-task1"></div>
+                <div class="page" data-page="3" data-task-id="i-task2"></div>
+                <div class="page" data-page="4" data-task-id="i-task3"></div>
+
+                <div class="page" data-page="5">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-green-500">
+                        <h2 class="text-2xl font-bold text-green-600 mb-2">Real-World Connection: Saving Money <i class="fas fa-piggy-bank text-green-400 ml-2"></i></h2>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-green-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <path d="M 50 50 Q 90 20 130 50 L 140 80 Q 140 110 90 110 Q 40 110 40 80 Z" fill="#f59e0b" stroke="#333" stroke-width="2"/>
+                                    <circle cx="60" cy="70" r="3" fill="#333"/>
+                                    <circle cx="120" cy="70" r="3" fill="#333"/>
+                                    <text x="90" y="135" font-size="12" text-anchor="middle" fill="#333">Total = Initial + Weekly</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>Linear equations are used in daily life. If you start with \( \$10 \) and save \( \$5 \) per week, your total money after \( x \) weeks is modeled by an equation. <span class="translation">Persamaan linier digunakan dalam kehidupan sehari-hari. Jika kamu punya awal Rp10.000 dan menabung Rp5.000 per minggu, uangmu setelah \(x\) minggu dimodelkan dengan persamaan.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> To The Point Formula</p>
+                            <p class="mt-1 font-bold katex">\( \text{Total} = \text{Initial} + \text{Rate} \times \text{Time} \)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="6" data-task-id="i-task4"></div>
+                <div class="page" data-page="7" data-task-id="i-task5"></div>
+                <div class="page" data-page="8" data-task-id="i-task6"></div>
+
+                <div class="page" data-page="9">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-purple-500">
+                        <h2 class="text-2xl font-bold text-purple-600 mb-2">The Concept of Equality <i class="fas fa-balance-scale-right text-purple-400 ml-2"></i></h2>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-purple-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <rect x="80" y="20" width="10" height="80" fill="#333"/>
+                                    <rect x="60" y="100" width="50" height="10" fill="#333"/>
+                                    <line x1="40" y1="40" x2="140" y2="40" stroke="#8b5cf6" stroke-width="2"/>
+                                    <rect x="25" y="40" width="30" height="20" fill="#10b981" stroke="#333"/>
+                                    <text x="40" y="35" font-size="14" text-anchor="middle" fill="#333">2x</text>
+                                    <rect x="125" y="40" width="30" height="20" fill="#f59e0b" stroke="#333"/>
+                                    <text x="140" y="35" font-size="14" text-anchor="middle" fill="#333">10</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>An equation is like a balanced scale. The left side must equal the right side. Whatever you do to one side, you must do to the other to keep it balanced. <span class="translation">Persamaan seperti timbangan yang seimbang. Sisi kiri harus sama dengan sisi kanan. Apa pun yang kamu lakukan pada satu sisi, harus dilakukan juga di sisi lainnya agar tetap seimbang.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> To The Point Formula</p>
+                            <p class="mt-1 font-bold katex">Left Side \( = \) Right Side</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="10" data-task-id="i-task7"></div>
+                <div class="page" data-page="11" data-task-id="i-task8"></div>
+                <div class="page" data-page="12" data-task-id="i-task9"></div>
+                <div class="page" data-page="13" data-task-id="i-task10"></div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- SECTION: REVIEW OF PRIOR KNOWLEDGE         -->
+            <!-- ========================================== -->
+            <div id="review" class="content-section">
+                <div class="page active" data-page="1">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-indigo-500">
+                        <h2 class="text-2xl font-bold text-indigo-600 mb-2">Simplifying Algebraic Expressions <i class="fas fa-broom text-indigo-400 ml-2"></i></h2>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-indigo-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <rect x="20" y="50" width="30" height="30" fill="#6366f1" rx="3"/>
+                                    <text x="35" y="70" font-size="16" text-anchor="middle" fill="white">x</text>
+                                    <rect x="50" y="50" width="30" height="30" fill="#6366f1" rx="3"/>
+                                    <text x="65" y="70" font-size="16" text-anchor="middle" fill="white">x</text>
+                                    <text x="95" y="75" font-size="20" fill="#333">+</text>
+                                    <rect x="110" y="50" width="30" height="30" fill="#f59e0b" rx="3"/>
+                                    <text x="125" y="70" font-size="16" text-anchor="middle" fill="white">5</text>
+                                    <text x="155" y="75" font-size="20" fill="#333">=</text>
+                                    <rect x="170" y="50" width="20" height="30" fill="#10b981" rx="3"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>To simplify expressions, combine "like terms" (same variables). You cannot combine \( 2x \) and \( 5 \) because they are different types. <span class="translation">Untuk menyederhanakan bentuk aljabar, gabungkan "suku sejenis" (variabel yang sama). Kamu tidak bisa menjumlahkan \( 2x \) dan \( 5 \) karena jenisnya berbeda.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> To The Point Formula</p>
+                            <p class="mt-1 font-bold katex">\( 2x + 3x = 5x \), but \( 2x + 5 \) stays \( 2x + 5 \).</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="2" data-task-id="r-task1"></div>
+                <div class="page" data-page="3" data-task-id="r-task2"></div>
+                <div class="page" data-page="4" data-task-id="r-task3"></div>
+
+                <div class="page" data-page="5">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-green-500">
+                        <h2 class="text-2xl font-bold text-green-600 mb-2">Distributive Property <i class="fas fa-share-alt text-green-400 ml-2"></i></h2>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-green-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="200" height="120" viewBox="0 0 200 120">
+                                    <text x="20" y="70" font-size="24" fill="#333">2 (</text>
+                                    <rect x="50" y="45" width="30" height="30" fill="#6366f1" rx="3"/>
+                                    <text x="65" y="65" font-size="16" text-anchor="middle" fill="white">x</text>
+                                    <text x="90" y="70" font-size="24" fill="#333">+</text>
+                                    <rect x="110" y="45" width="30" height="30" fill="#f59e0b" rx="3"/>
+                                    <text x="125" y="65" font-size="16" text-anchor="middle" fill="white">3</text>
+                                    <text x="145" y="70" font-size="24" fill="#333">)</text>
+                                    <path d="M 50 90 L 65 110" stroke="#10b981" stroke-width="2"/>
+                                    <path d="M 125 90 L 140 110" stroke="#10b981" stroke-width="2"/>
+                                    <text x="60" y="115" font-size="14" text-anchor="middle" fill="#10b981">2x</text>
+                                    <text x="135" y="115" font-size="14" text-anchor="middle" fill="#10b981">6</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>When a number is outside parentheses, it multiplies everything inside. This is the distributive property. <span class="translation">Ketika angka berada di luar tanda kurung, angka tersebut dikalikan dengan semua yang ada di dalam. Ini adalah sifat distributif.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> To The Point Formula</p>
+                            <p class="mt-1 font-bold katex">\( a(b + c) = ab + ac \)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="6" data-task-id="r-task4"></div>
+                <div class="page" data-page="7" data-task-id="r-task5"></div>
+                <div class="page" data-page="8" data-task-id="r-task6"></div>
+
+                <div class="page" data-page="9">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-purple-500">
+                        <h2 class="text-2xl font-bold text-purple-600 mb-2">Inverse Operations <i class="fas fa-exchange-alt text-purple-400 ml-2"></i></h2>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-purple-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="200" height="100" viewBox="0 0 200 100">
+                                    <rect x="20" y="30" width="60" height="40" fill="#8b5cf6" rx="4"/>
+                                    <text x="50" y="55" font-size="16" text-anchor="middle" fill="white">Addition</text>
+                                    <text x="50" y="85" font-size="12" text-anchor="middle" fill="#333">\( + \)</text>
+                                    
+                                    <text x="100" y="55" font-size="20" text-anchor="middle" fill="#333">⇄</text>
+                                    
+                                    <rect x="120" y="30" width="60" height="40" fill="#f59e0b" rx="4"/>
+                                    <text x="150" y="55" font-size="16" text-anchor="middle" fill="white">Subtraction</text>
+                                    <text x="150" y="85" font-size="12" text-anchor="middle" fill="#333">\( - \)</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>To solve equations, we use inverse operations (opposites). Addition undoes subtraction, and multiplication undoes division. <span class="translation">Untuk menyelesaikan persamaan, kita gunakan operasi invers (kebalikan). Penjumlahan membatalkan pengurangan, dan perkalian membatalkan pembagian.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> To The Point Formula</p>
+                            <p class="mt-1 font-bold katex">\( + \) undoes \( - \), &nbsp; \( \times \) undoes \( \div \)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="10" data-task-id="r-task7"></div>
+                <div class="page" data-page="11" data-task-id="r-task8"></div>
+                <div class="page" data-page="12" data-task-id="r-task9"></div>
+                <div class="page" data-page="13" data-task-id="r-task10"></div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- SECTION: PROBLEM INTRODUCTION              -->
+            <!-- ========================================== -->
+            <div id="problem" class="content-section">
+                <div class="page active" data-page="1">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-indigo-500">
+                        <h2 class="text-2xl font-bold text-indigo-600 mb-2">Solving \( x + a = b \) <i class="fas fa-equals text-indigo-400 ml-2"></i></h2>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-indigo-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="200" height="100" viewBox="0 0 200 100">
+                                    <text x="30" y="60" font-size="24" text-anchor="middle" fill="#6366f1">x</text>
+                                    <text x="60" y="60" font-size="24" text-anchor="middle" fill="#333">+</text>
+                                    <text x="90" y="60" font-size="24" text-anchor="middle" fill="#f59e0b">5</text>
+                                    <text x="120" y="60" font-size="24" text-anchor="middle" fill="#333">=</text>
+                                    <text x="150" y="60" font-size="24" text-anchor="middle" fill="#10b981">12</text>
+                                    <path d="M 90 75 L 150 75" stroke="#ef4444" stroke-width="2" marker-end="url(#arr1)"/>
+                                    <text x="120" y="90" font-size="12" text-anchor="middle" fill="#ef4444">- 5</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>To isolate \( x \), move the constant to the other side by doing the inverse operation. If it says \( + 5 \), subtract \( 5 \) from both sides. <span class="translation">Untuk mengisolasi \( x \), pindahkan konstanta ke sisi lain dengan operasi invers. Jika ada \( + 5 \), kurangi kedua sisi dengan \( 5 \).</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> To The Point Formula</p>
+                            <p class="mt-1 font-bold katex">\( x + a = b \Rightarrow x = b - a \)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="2" data-task-id="p-task1"></div>
+                <div class="page" data-page="3" data-task-id="p-task2"></div>
+                <div class="page" data-page="4" data-task-id="p-task3"></div>
+
+                <div class="page" data-page="5">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-green-500">
+                        <h2 class="text-2xl font-bold text-green-600 mb-2">Solving \( ax = b \) <i class="fas fa-divide text-green-400 ml-2"></i></h2>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-green-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="200" height="100" viewBox="0 0 200 100">
+                                    <text x="30" y="60" font-size="24" text-anchor="middle" fill="#6366f1">3x</text>
+                                    <text x="80" y="60" font-size="24" text-anchor="middle" fill="#333">=</text>
+                                    <text x="120" y="60" font-size="24" text-anchor="middle" fill="#10b981">15</text>
+                                    <path d="M 30 75 L 120 75" stroke="#ef4444" stroke-width="2" marker-end="url(#arr1)"/>
+                                    <text x="75" y="90" font-size="12" text-anchor="middle" fill="#ef4444">÷ 3</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>If \( x \) is multiplied by a number, divide both sides by that number to isolate \( x \). <span class="translation">Jika \( x \) dikalikan dengan suatu bilangan, bagi kedua sisi dengan bilangan tersebut untuk mengisolasi \( x \).</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> To The Point Formula</p>
+                            <p class="mt-1 font-bold katex">\( ax = b \Rightarrow x = \frac{b}{a} \)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="6" data-task-id="p-task4"></div>
+                <div class="page" data-page="7" data-task-id="p-task5"></div>
+                <div class="page" data-page="8" data-task-id="p-task6"></div>
+
+                <div class="page" data-page="9">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-purple-500">
+                        <h2 class="text-2xl font-bold text-purple-600 mb-2">Two-Step Equations: \( ax + b = c \) <i class="fas fa-shoe-prints text-purple-400 ml-2"></i></h2>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-purple-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="220" height="100" viewBox="0 0 220 100">
+                                    <text x="20" y="60" font-size="24" text-anchor="middle" fill="#6366f1">2x</text>
+                                    <text x="50" y="60" font-size="24" text-anchor="middle" fill="#333">+</text>
+                                    <text x="80" y="60" font-size="24" text-anchor="middle" fill="#f59e0b">4</text>
+                                    <text x="110" y="60" font-size="24" text-anchor="middle" fill="#333">=</text>
+                                    <text x="140" y="60" font-size="24" text-anchor="middle" fill="#10b981">10</text>
+                                    <text x="180" y="50" font-size="14" text-anchor="middle" fill="#ef4444">1. Subtract 4</text>
+                                    <text x="180" y="70" font-size="14" text-anchor="middle" fill="#ef4444">2. Divide by 2</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>First, move the constant (addition/subtraction). Second, move the coefficient (multiplication/division). <span class="translation">Pertama, pindahkan konstanta (penjumlahan/pengurangan). Kedua, pindahkan koefisien (perkalian/pembagian).</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> To The Point Formula</p>
+                            <p class="mt-1 font-bold katex">1. \( ax = c - b \) &nbsp;&nbsp; 2. \( x = \frac{c-b}{a} \)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="10" data-task-id="p-task7"></div>
+                <div class="page" data-page="11" data-task-id="p-task8"></div>
+                <div class="page" data-page="12" data-task-id="p-task9"></div>
+                <div class="page" data-page="13" data-task-id="p-task10"></div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- SECTION: GUIDED PRACTICE                   -->
+            <!-- ========================================== -->
+            <div id="guided" class="content-section">
+                <div class="page active" data-page="1">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-indigo-500">
+                        <h2 class="text-2xl font-bold text-indigo-600 mb-2">Variables on Both Sides <i class="fas fa-arrows-alt-h text-indigo-400 ml-2"></i></h2>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-indigo-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="220" height="120" viewBox="0 0 220 120">
+                                    <rect x="20" y="40" width="60" height="40" fill="#6366f1" rx="4"/>
+                                    <text x="50" y="65" font-size="16" text-anchor="middle" fill="white">5x</text>
+                                    <text x="90" y="65" font-size="20" text-anchor="middle" fill="#333">=</text>
+                                    <rect x="100" y="40" width="60" height="40" fill="#f59e0b" rx="4"/>
+                                    <text x="130" y="65" font-size="16" text-anchor="middle" fill="white">2x + 9</text>
+                                    <path d="M 130 90 L 50 90" stroke="#ef4444" stroke-width="2" marker-end="url(#arr1)"/>
+                                    <text x="90" y="105" font-size="12" text-anchor="middle" fill="#ef4444">- 2x</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>Sometimes, the variable \( x \) appears on both sides of the equals sign. Move the smaller \( x \) term to the other side so they combine into one. <span class="translation">Kadang, variabel \( x \) muncul di kedua sisi tanda sama dengan. Pindahkan suku \( x \) yang lebih kecil ke sisi lain agar digabungkan menjadi satu.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> To The Point Formula</p>
+                            <p class="mt-1 font-bold katex">\( ax + b = cx + d \Rightarrow (a-c)x = d - b \)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="2" data-task-id="g-task1"></div>
+                <div class="page" data-page="3" data-task-id="g-task2"></div>
+                <div class="page" data-page="4" data-task-id="g-task3"></div>
+
+                <div class="page" data-page="5">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-green-500">
+                        <h2 class="text-2xl font-bold text-green-600 mb-2">Equations with Parentheses <i class="fas fa-expand text-green-400 ml-2"></i></h2>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-green-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="220" height="100" viewBox="0 0 220 100">
+                                    <text x="20" y="60" font-size="24" fill="#333">3 (</text>
+                                    <rect x="50" y="35" width="30" height="40" fill="#6366f1" rx="3"/>
+                                    <text x="65" y="60" font-size="16" text-anchor="middle" fill="white">x</text>
+                                    <text x="90" y="60" font-size="24" fill="#333">+</text>
+                                    <rect x="110" y="35" width="30" height="40" fill="#f59e0b" rx="3"/>
+                                    <text x="125" y="60" font-size="16" text-anchor="middle" fill="white">2</text>
+                                    <text x="145" y="60" font-size="24" fill="#333">) = 14</text>
+                                    <path d="M 65 85 L 20 95" stroke="#10b981" stroke-width="2"/>
+                                    <text x="30" y="95" font-size="12" text-anchor="middle" fill="#10b981">3x</text>
+                                    <path d="M 125 85 L 180 95" stroke="#10b981" stroke-width="2"/>
+                                    <text x="170" y="95" font-size="12" text-anchor="middle" fill="#10b981">6</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>If an equation has parentheses, use the distributive property to remove them first. Then combine like terms before solving. <span class="translation">Jika persamaan memiliki tanda kurung, gunakan sifat distributif untuk menghilangkannya terlebih dahulu. Lalu gabungkan suku sebelum menyelesaikannya.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> To The Point Formula</p>
+                            <p class="mt-1 font-bold katex">1. Expand \( \rightarrow \) 2. Combine Like Terms \( \rightarrow \) 3. Solve</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="6" data-task-id="g-task4"></div>
+                <div class="page" data-page="7" data-task-id="g-task5"></div>
+                <div class="page" data-page="8" data-task-id="g-task6"></div>
+
+                <div class="page" data-page="9">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-purple-500">
+                        <h2 class="text-2xl font-bold text-purple-600 mb-2">Word Problems Strategy <i class="fas fa-book-reader text-purple-400 ml-2"></i></h2>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-purple-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="140" viewBox="0 0 180 140">
+                                    <rect x="40" y="20" width="100" height="30" fill="#8b5cf6" rx="3"/>
+                                    <text x="90" y="40" font-size="14" text-anchor="middle" fill="white">1. Define Variable</text>
+                                    <rect x="40" y="55" width="100" height="30" fill="#6366f1" rx="3"/>
+                                    <text x="90" y="75" font-size="14" text-anchor="middle" fill="white">2. Set Up Equation</text>
+                                    <rect x="40" y="90" width="100" height="30" fill="#10b981" rx="3"/>
+                                    <text x="90" y="110" font-size="14" text-anchor="middle" fill="white">3. Solve & Answer</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>When reading a word problem, first define what \( x \) represents. Translate the sentences into math, build your equation, and solve it. <span class="translation">Saat membaca soal cerita, tentukan dulu apa yang dimaksud \( x \). Terjemahkan kalimat menjadi matematika, buat persamaannya, dan selesaikan.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> To The Point Formula</p>
+                            <p class="mt-1 font-bold katex">Let \( x = \) unknown. Translate words \( \rightarrow \) Equation \( \rightarrow \) Solve!</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="10" data-task-id="g-task7"></div>
+                <div class="page" data-page="11" data-task-id="g-task8"></div>
+                <div class="page" data-page="12" data-task-id="g-task9"></div>
+                <div class="page" data-page="13" data-task-id="g-task10"></div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- SECTION: INDEPENDENT PRACTICE              -->
+            <!-- ========================================== -->
+            <div id="independent" class="content-section">
+                <div class="page active" data-page="1">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-indigo-500">
+                        <h2 class="text-2xl font-bold text-indigo-600 mb-2">Fractions in Equations <i class="fas fa-percentage text-indigo-400 ml-2"></i></h2>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-indigo-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="200" height="120" viewBox="0 0 200 120">
+                                    <text x="40" y="60" font-size="24" text-anchor="middle" fill="#8b5cf6">x</text>
+                                    <rect x="55" y="45" width="40" height="4" fill="#333"/>
+                                    <text x="75" y="80" font-size="24" text-anchor="middle" fill="#8b5cf6">3</text>
+                                    <text x="110" y="60" font-size="24" text-anchor="middle" fill="#333">=</text>
+                                    <text x="150" y="60" font-size="24" text-anchor="middle" fill="#10b981">5</text>
+                                    <path d="M 75 95 L 150 95" stroke="#ef4444" stroke-width="2" marker-end="url(#arr1)"/>
+                                    <text x="115" y="110" font-size="12" text-anchor="middle" fill="#ef4444">× 3</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>If an equation has a fraction like \( \frac{x}{3} \), you can multiply both sides by the denominator (3) to clear the fraction and make it easier to solve. <span class="translation">Jika persamaan memiliki pecahan seperti \( \frac{x}{3} \), kamu bisa mengalikan kedua sisi dengan penyebutnya (3) untuk menghilangkan pecahan sehingga lebih mudah diselesaikan.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> To The Point Formula</p>
+                            <p class="mt-1 font-bold katex">If \( \frac{x}{a} = b \), then \( x = a \times b \)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="2" data-task-id="ind-task1"></div>
+                <div class="page" data-page="3" data-task-id="ind-task2"></div>
+                <div class="page" data-page="4" data-task-id="ind-task3"></div>
+
+                <div class="page" data-page="5">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-green-500">
+                        <h2 class="text-2xl font-bold text-green-600 mb-2">Consecutive Integers <i class="fas fa-sort-numeric-down text-green-400 ml-2"></i></h2>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-green-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="100" viewBox="0 0 180 100">
+                                    <rect x="20" y="30" width="40" height="50" fill="#10b981" stroke="#333" rx="3"/>
+                                    <text x="40" y="60" font-size="16" text-anchor="middle" fill="white">x</text>
+                                    <rect x="70" y="30" width="40" height="50" fill="#6366f1" stroke="#333" rx="3"/>
+                                    <text x="90" y="60" font-size="16" text-anchor="middle" fill="white">x+1</text>
+                                    <rect x="120" y="30" width="40" height="50" fill="#8b5cf6" stroke="#333" rx="3"/>
+                                    <text x="140" y="60" font-size="16" text-anchor="middle" fill="white">x+2</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>Consecutive integers are numbers that follow each other (like 5, 6, 7). If the first number is \( x \), the next is \( x+1 \), and the one after is \( x+2 \). <span class="translation">Bilangan bulat berurutan adalah angka yang saling mengikuti (seperti 5, 6, 7). Jika angka pertama adalah \( x \), maka berikutnya \( x+1 \), dan seterusnya \( x+2 \).</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> To The Point Formula</p>
+                            <p class="mt-1 font-bold katex">1st: \( x \), 2nd: \( x+1 \), 3rd: \( x+2 \)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="6" data-task-id="ind-task4"></div>
+                <div class="page" data-page="7" data-task-id="ind-task5"></div>
+                <div class="page" data-page="8" data-task-id="ind-task6"></div>
+
+                <div class="page" data-page="9">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-purple-500">
+                        <h2 class="text-2xl font-bold text-purple-600 mb-2">Decimals in Equations <i class="fas fa-calculator text-purple-400 ml-2"></i></h2>
+                        <div class="flex gap-4 my-4 items-center">
+                            <div class="bg-purple-50 p-4 rounded flex justify-center shrink-0">
+                                <svg width="180" height="120" viewBox="0 0 180 120">
+                                    <text x="30" y="70" font-size="30" text-anchor="middle" fill="#8b5cf6">0.5x</text>
+                                    <text x="80" y="70" font-size="24" text-anchor="middle" fill="#333">+</text>
+                                    <text x="120" y="70" font-size="30" text-anchor="middle" fill="#f59e0b">1.5</text>
+                                    <text x="155" y="70" font-size="24" text-anchor="middle" fill="#333">=</text>
+                                    <text x="90" y="105" font-size="14" text-anchor="middle" fill="#10b981">Multiply by 10 to clear decimals</text>
+                                </svg>
+                            </div>
+                            <div>
+                                <p>You can solve equations with decimals just like normal numbers. If it's confusing, multiply everything by 10 or 100 to turn them into whole numbers. <span class="translation">Kamu bisa menyelesaikan persamaan dengan desimal seperti biasa. Jika membingungkan, kalikan semua dengan 10 atau 100 untuk mengubahnya menjadi bilangan bulat.</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                            <p class="font-bold text-yellow-800"><i class="fas fa-lightbulb mr-1"></i> To The Point Formula</p>
+                            <p class="mt-1 font-bold katex">\( 0.5x + 1.5 = 4 \) multiply by 10 \( \Rightarrow 5x + 15 = 40 \)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" data-page="10" data-task-id="ind-task7"></div>
+                <div class="page" data-page="11" data-task-id="ind-task8"></div>
+                <div class="page" data-page="12" data-task-id="ind-task9"></div>
+                <div class="page" data-page="13" data-task-id="ind-task10"></div>
+            </div>
+            
+            <!-- ========================================== -->
+            <!-- SECTION: CONSOLIDATION & REFLECTION        -->
+            <!-- ========================================== -->
+            <div id="consolidation" class="content-section">
+                 <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                    <h2 class="text-2xl font-bold text-gray-800">Consolidation & Reflection</h2>
+                    <p class="translation">Konsolidasi & Refleksi</p>
+                    <p>Great job! You have completed the material on Linear Equations in One Variable. Keep practicing to master solving equations with variables on both sides, fractions, and word problems.</p>
+                    <p class="mt-2">To test your understanding further, please complete Task 1 to Task 5 below.</p>
+                    <a href="https://learn.algonova.id" target="_blank" class="mt-4 inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded">
+                        Go to learn.algonova.id <span class="translation text-sm italic">Pergi ke learn.algonova.id</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- TASK SECTIONS WRAPPERS                     -->
+            <!-- ========================================== -->
+            <div id="task1" class="content-section">
+                <div class="page active" data-page="1"><div data-task-id="t1-task1"></div></div>
+                <div class="page" data-page="2"><div data-task-id="t1-task2"></div></div>
+                <div class="page" data-page="3"><div data-task-id="t1-task3"></div></div>
+                <div class="page" data-page="4"><div data-task-id="t1-task4"></div></div>
+                <div class="page" data-page="5"><div data-task-id="t1-task5"></div></div>
+                <div class="page" data-page="6"><div data-task-id="t1-task6"></div></div>
+                <div class="page" data-page="7"><div data-task-id="t1-task7"></div></div>
+                <div class="page" data-page="8"><div data-task-id="t1-task8"></div></div>
+                <div class="page" data-page="9"><div data-task-id="t1-task9"></div></div>
+                <div class="page" data-page="10"><div data-task-id="t1-task10"></div></div>
+            </div>
+            <div id="task2" class="content-section">
+                <div class="page active" data-page="1"><div data-task-id="t2-task1"></div></div>
+                <div class="page" data-page="2"><div data-task-id="t2-task2"></div></div>
+                <div class="page" data-page="3"><div data-task-id="t2-task3"></div></div>
+                <div class="page" data-page="4"><div data-task-id="t2-task4"></div></div>
+                <div class="page" data-page="5"><div data-task-id="t2-task5"></div></div>
+                <div class="page" data-page="6"><div data-task-id="t2-task6"></div></div>
+                <div class="page" data-page="7"><div data-task-id="t2-task7"></div></div>
+                <div class="page" data-page="8"><div data-task-id="t2-task8"></div></div>
+                <div class="page" data-page="9"><div data-task-id="t2-task9"></div></div>
+                <div class="page" data-page="10"><div data-task-id="t2-task10"></div></div>
+            </div>
+            <div id="task3" class="content-section">
+                <div class="page active" data-page="1"><div data-task-id="t3-task1"></div></div>
+                <div class="page" data-page="2"><div data-task-id="t3-task2"></div></div>
+                <div class="page" data-page="3"><div data-task-id="t3-task3"></div></div>
+                <div class="page" data-page="4"><div data-task-id="t3-task4"></div></div>
+                <div class="page" data-page="5"><div data-task-id="t3-task5"></div></div>
+                <div class="page" data-page="6"><div data-task-id="t3-task6"></div></div>
+                <div class="page" data-page="7"><div data-task-id="t3-task7"></div></div>
+                <div class="page" data-page="8"><div data-task-id="t3-task8"></div></div>
+                <div class="page" data-page="9"><div data-task-id="t3-task9"></div></div>
+                <div class="page" data-page="10"><div data-task-id="t3-task10"></div></div>
+            </div>
+            <div id="task4" class="content-section">
+                <div class="page active" data-page="1"><div data-task-id="t4-task1"></div></div>
+                <div class="page" data-page="2"><div data-task-id="t4-task2"></div></div>
+                <div class="page" data-page="3"><div data-task-id="t4-task3"></div></div>
+                <div class="page" data-page="4"><div data-task-id="t4-task4"></div></div>
+                <div class="page" data-page="5"><div data-task-id="t4-task5"></div></div>
+                <div class="page" data-page="6"><div data-task-id="t4-task6"></div></div>
+                <div class="page" data-page="7"><div data-task-id="t4-task7"></div></div>
+                <div class="page" data-page="8"><div data-task-id="t4-task8"></div></div>
+                <div class="page" data-page="9"><div data-task-id="t4-task9"></div></div>
+                <div class="page" data-page="10"><div data-task-id="t4-task10"></div></div>
+            </div>
+            <div id="task5" class="content-section">
+                <div class="page active" data-page="1"><div data-task-id="t5-task1"></div></div>
+                <div class="page" data-page="2"><div data-task-id="t5-task2"></div></div>
+                <div class="page" data-page="3"><div data-task-id="t5-task3"></div></div>
+                <div class="page" data-page="4"><div data-task-id="t5-task4"></div></div>
+                <div class="page" data-page="5"><div data-task-id="t5-task5"></div></div>
+                <div class="page" data-page="6"><div data-task-id="t5-task6"></div></div>
+                <div class="page" data-page="7"><div data-task-id="t5-task7"></div></div>
+                <div class="page" data-page="8"><div data-task-id="t5-task8"></div></div>
+                <div class="page" data-page="9"><div data-task-id="t5-task9"></div></div>
+                <div class="page" data-page="10"><div data-task-id="t5-task10"></div></div>
+            </div>
+
+            </div> <!-- Penutup #contentScrollArea -->
+            
+            <div id="paginationBar" class="shrink-0 bg-white p-3 border-t border-gray-200 flex justify-center items-center gap-1 no-print z-40 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]"></div>
+        </main>
+    </div>
+    
+    <!-- Print Area -->
+    <div id="printArea" class="hidden p-8">
+        <div class="text-center border-b-2 border-black pb-4 mb-4">
+            <h1 class="text-xl font-bold">Math Tutoring by Deni</h1>
+            <p>Topic: Linear Equations & Inequalities in One Variable: Understanding Linear Equations</p>
+            <div class="flex justify-around mt-4 text-sm">
+                <div>
+                    <p>Name: ..............................</p>
+                    <p class="translation text-xs">Nama</p>
+                </div>
+                <div>
+                    <p>Date: ..............................</p>
+                    <p class="translation text-xs">Tanggal</p>
+                </div>
+                <div>
+                    <p>Task: <span id="printTaskNum">1</span></p>
+                    <p class="translation text-xs">Tugas</p>
+                </div>
+                <div>
+                    <p>Score: <span id="printScore">0</span>/10</p>
+                    <p class="translation text-xs">Nilai</p>
+                </div>
+            </div>
+        </div>
+        <table class="w-full border-collapse border border-black text-sm">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="border border-black p-1">No. <br><span class="translation text-xs font-normal">No.</span></th>
+                    <th class="border border-black p-1">Question <br><span class="translation text-xs font-normal">Soal</span></th>
+                    <th class="border border-black p-1">Student Answer <br><span class="translation text-xs font-normal">Jawaban Siswa</span></th>
+                    <th class="border border-black p-1">Correct Answer <br><span class="translation text-xs font-normal">Kunci Jawaban</span></th>
+                    <th class="border border-black p-1">Note (❌/✔️) <br><span class="translation text-xs font-normal">Catatan</span></th>
+                </tr>
+            </thead>
+            <tbody id="printTableBody"></tbody>
+        </table>
+        <div class="mt-8 text-right">
+            <p>Checked by,</p>
+            <p class="translation text-xs">Diperiksa oleh,</p>
+            <br><br>
+            <p class="font-bold">Deni</p>
+        </div>
+    </div>
+    
+    <script>
+        const questions = {};
+        
+        // ====== JAVASCRIPT LOGIC ======
+        let currentPage = 1;
+        let currentTaskSection = ""; 
+        let studentAnswers = {};
+        
+        function openModal() {
+            const modal = document.getElementById('classRulesModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+        function closeModal() {
+            const modal = document.getElementById('classRulesModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+        
+        function showSection(sectionId) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            
+            document.querySelectorAll('.sidebar-item').forEach(item => {
+                item.classList.remove('bg-indigo-100', 'text-indigo-800', 'font-bold', 'bg-orange-100', 'text-orange-800');
+            });
+            const activeLink = document.querySelector(`.sidebar-item[data-section="${sectionId}"]`);
+            if (activeLink) {
+                if(sectionId.startsWith('task')) {
+                    activeLink.classList.add('bg-orange-100', 'text-orange-800', 'font-bold');
+                } else {
+                    activeLink.classList.add('bg-indigo-100', 'text-indigo-800', 'font-bold');
+                }
+            }
+            
+            currentPage = 1;
+            currentTaskSection = sectionId;
+            
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            const firstPage = document.querySelector(`#${sectionId} .page[data-page="1"]`);
+            if(firstPage) firstPage.classList.add('active');
+            
+            renderMath();
+            renderPagination(sectionId, currentPage);
+            document.getElementById('contentScrollArea').scrollTo(0, 0);
+        }
+        function changePage(direction) {
+            const activeSection = document.querySelector('.content-section.active');
+            if(!activeSection) return;
+            const pages = activeSection.querySelectorAll('.page');
+            let newPage = currentPage + direction;
+            if(newPage >= 1 && newPage <= pages.length) {
+                pages[currentPage - 1].classList.remove('active');
+                pages[newPage - 1].classList.add('active');
+                currentPage = newPage;
+                renderMath();
+                renderPagination(currentTaskSection, currentPage);
+                document.getElementById('contentScrollArea').scrollTo(0, 0);
+            }
+        }
+
+        function goToPage(pageNum) {
+            const activeSection = document.querySelector('.content-section.active');
+            if(!activeSection) return;
+            const pages = activeSection.querySelectorAll('.page');
+            if(pageNum >= 1 && pageNum <= pages.length) {
+                pages[currentPage - 1].classList.remove('active');
+                pages[pageNum - 1].classList.add('active');
+                currentPage = pageNum;
+                renderMath();
+                renderPagination(currentTaskSection, currentPage);
+                document.getElementById('contentScrollArea').scrollTo(0, 0);
+            }
+        }
+        function renderPagination(sectionId, pageNum) {
+            const activeSection = document.getElementById(sectionId);
+            if (!activeSection) return;
+            const pages = activeSection.querySelectorAll('.page');
+            const totalPages = pages.length;
+            let html = '';
+            const isMainTask = sectionId.startsWith('t');
+            const theoryPages = [1, 5, 9]; 
+            
+            html += `<button onclick="goToPage(${pageNum - 1})" class="px-3 py-1.5 rounded-md text-sm bg-gray-200 hover:bg-gray-300 text-gray-700 ${pageNum === 1 ? 'opacity-50 cursor-not-allowed' : ''}" ${pageNum === 1 ? 'disabled' : ''}><i class="fas fa-chevron-left"></i> Prev</button>`;
+            
+            for (let i = 1; i <= totalPages; i++) {
+                let btnColor = 'bg-gray-100 hover:bg-gray-200 text-gray-700';
+                if (!isMainTask && theoryPages.includes(i)) {
+                    btnColor = 'bg-indigo-100 hover:bg-indigo-200 text-indigo-800'; 
+                } else {
+                    btnColor = 'bg-orange-100 hover:bg-orange-200 text-orange-800'; 
+                }
+                if (i === pageNum) {
+                    if (!isMainTask && theoryPages.includes(i)) {
+                        btnColor = 'bg-indigo-600 text-white shadow-md'; 
+                    } else {
+                        btnColor = 'bg-orange-500 text-white shadow-md'; 
+                    }
+                }
+                html += `<button onclick="goToPage(${i})" class="w-9 h-9 rounded-md text-sm font-semibold transition-all ${btnColor}">${i}</button>`;
+            }
+            
+            html += `<button onclick="goToPage(${pageNum + 1})" class="px-3 py-1.5 rounded-md text-sm bg-gray-200 hover:bg-gray-300 text-gray-700 ${pageNum === totalPages ? 'opacity-50 cursor-not-allowed' : ''}" ${pageNum === totalPages ? 'disabled' : ''}>Next <i class="fas fa-chevron-right"></i></button>`;
+            document.getElementById('paginationBar').innerHTML = html;
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function renderTasks() {
+            document.querySelectorAll('[data-task-id]').forEach(div => {
+                const taskId = div.getAttribute('data-task-id');
+                renderSingleTask(taskId, div);
+            });
+            renderMath();
+        }
+        
+        function renderSingleTask(taskId, div) {
+            const data = questions[taskId];
+            if(!data) return;
+
+            const isMainTask = taskId.startsWith('t');
+            const taskNum = isMainTask ? taskId[1] : 0;
+            const taskType = data.type || 'single';
+            
+            let questionHTML = `
+                <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-orange-500">
+                    <div class="flex justify-between items-center mb-4 no-print">
+                        <h2 class="text-xl font-bold text-orange-600">
+                            ${isMainTask ? `Task ${taskNum}` : 'Practice Question'} <br>
+                            <span class="translation text-sm text-gray-500">${isMainTask ? `Tugas ${taskNum}` : 'Soal Latihan'}</span>
+                            <span class="text-sm bg-gray-200 text-gray-800 px-2 py-1 rounded ml-2">Multiple Choice <span class="translation text-xs">Pilihan Ganda</span></span>
+                        </h2>
+                        <div class="flex gap-2">
+                            <button onclick="resetTask('${taskId}')" class="text-sm bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded">
+                                <i class="fas fa-redo"></i> Reset <span class="translation text-xs">(Atur Ulang)</span>
+                            </button>
+                            ${isMainTask ? `<button onclick="printTask(${taskNum})" class="text-sm bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded">
+                                <i class="fas fa-print"></i> Print <span class="translation text-xs">(Cetak)</span>
+                            </button>` : ''}
+                        </div>
+                    </div>
+                    <div class="mb-6 flex gap-4 items-start">
+                        <div class="bg-orange-100 p-3 rounded-full shrink-0">
+                            <i class="fas fa-question text-orange-500 text-xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-lg">${data.q}</p>
+                        </div>
+                    </div>
+            `;
+
+            if (taskType === 'single') {
+                const shuffledOpts = shuffleArray([...data.opts]);
+                questionHTML += `
+                    <div id="options-${taskId}" class="space-y-3">
+                        ${shuffledOpts.map((opt, i) => `
+                            <button onclick="checkAnswer('${taskId}', this.getAttribute('data-opt'), 'single')" 
+                                    class="option-btn w-full text-left p-3 border-2 border-gray-200 rounded hover:border-orange-500 flex items-center gap-3" 
+                                    data-opt="${opt}">
+                                <span class="w-6 h-6 flex items-center justify-center bg-gray-100 rounded-full font-bold shrink-0">${String.fromCharCode(65 + i)}</span>
+                                <span class="katex">${opt}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            questionHTML += `
+                    <div id="result-${taskId}" class="mt-4 hidden p-4 rounded"></div>
+
+                    <div class="mt-4 no-print">
+                        <button onclick="toggleCollapse('${taskId}')" id="collapse-btn-${taskId}" class="hidden text-blue-600 underline">
+                            Show Explanation <span class="translation text-xs">(Tampilkan Penjelasan)</span>
+                        </button>
+                        <div id="collapse-${taskId}" class="collapse-content w-full">
+                            <h3 class="font-bold text-blue-800">Explanation: <span class="translation text-sm font-normal">Penjelasan:</span></h3>
+                            <p class="mt-2">${data.exp}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            div.innerHTML = questionHTML;
+        }
+
+        function checkAnswer(taskId, selectedOpt, type) {
+            const data = questions[taskId];
+            const resultDiv = document.getElementById(`result-${taskId}`);
+            const collapseBtn = document.getElementById(`collapse-btn-${taskId}`);
+            let isCorrect = false;
+            let correctAnsText = '';
+
+            if (type === 'single') {
+                const buttons = document.querySelectorAll(`#options-${taskId} button`);
+                buttons.forEach(btn => {
+                    btn.disabled = true;
+                    btn.classList.add('opacity-70', 'cursor-not-allowed');
+                    if(btn.getAttribute('data-opt') === data.ans) {
+                        btn.classList.remove('border-gray-200', 'hover:border-orange-500');
+                        btn.classList.add('border-green-500', 'bg-green-50');
+                    } else if (btn.getAttribute('data-opt') === selectedOpt) {
+                        btn.classList.remove('border-gray-200', 'hover:border-orange-500');
+                        btn.classList.add('border-red-500', 'bg-red-50');
+                    }
+                });
+                isCorrect = (selectedOpt === data.ans);
+                correctAnsText = data.ans;
+                studentAnswers[taskId] = selectedOpt; 
+            }
+
+            if(isCorrect) {
+                resultDiv.innerHTML = `<p class="text-green-600 font-bold"><i class="fas fa-check-circle"></i> Correct! <span class="translation text-sm">(Benar!)</span></p>`;
+                resultDiv.className = "mt-4 p-4 rounded bg-green-50 border border-green-200";
+            } else {
+                resultDiv.innerHTML = `<p class="text-red-600 font-bold"><i class="fas fa-times-circle"></i> Incorrect! The correct answer is ${correctAnsText}. <span class="translation text-sm block mt-1">(Salah! Jawaban yang benar adalah ${correctAnsText}.)</span></p>`;
+                resultDiv.className = "mt-4 p-4 rounded bg-red-50 border border-red-200";
+            }
+            resultDiv.classList.remove('hidden');
+            collapseBtn.classList.remove('hidden');
+            
+            const collapseContent = document.getElementById(`collapse-${taskId}`);
+            collapseContent.classList.add('open');
+            collapseBtn.innerHTML = 'Hide Explanation <span class="translation text-xs">(Sembunyikan Penjelasan)</span>';
+            
+            renderMath();
+        }
+
+        function resetTask(taskId) {
+            delete studentAnswers[taskId];
+            const taskDiv = document.querySelector(`[data-task-id="${taskId}"]`);
+            if(taskDiv) {
+                renderSingleTask(taskId, taskDiv);
+                renderMath();
+            }
+        }
+
+        function printTask(taskNum) {
+            let score = 0;
+            let tableBody = '';
+            for(let i=1; i<=10; i++) {
+                const taskId = `t${taskNum}-task${i}`;
+                const data = questions[taskId];
+                if(!data) continue;
+                
+                let studentAns = studentAnswers[taskId] || 'Not Answered';
+                let correctAns = data.ans;
+                
+                let sAnsStr = '';
+                let cAnsStr = '';
+                let isCorrect = false;
+                const normalize = (str) => str.toString().toLowerCase().replace(/rp/g, '').replace(/rb/g, '').replace(/[\s.,]/g, '');
+                
+                sAnsStr = studentAns || 'Not Answered';
+                cAnsStr = correctAns;
+                let userValNorm = normalize(studentAns || '');
+                let correctAnsNorm = normalize(correctAns);
+                isCorrect = (userValNorm === correctAnsNorm);
+                
+                let note = '❌';
+                if(isCorrect) { score++; note = '✔️'; }
+                
+                let qText = data.q.replace(/<[^>]+>/g, '');
+                
+                tableBody += `<tr>
+                    <td class="border border-black p-1 text-center">${i}</td>
+                    <td class="border border-black p-1">${qText}</td>
+                    <td class="border border-black p-1">${sAnsStr}</td>
+                    <td class="border border-black p-1">${cAnsStr}</td>
+                    <td class="border border-black p-1 text-center">${note}</td>
+                </tr>`;
+            }
+            document.getElementById('printTableBody').innerHTML = tableBody;
+            document.getElementById('printTaskNum').innerText = taskNum;
+            document.getElementById('printScore').innerText = score;
+            
+            renderMathInElement(document.getElementById('printArea'), {
+                delimiters: [
+                    {left: '\\(', right: '\\)', display: false},
+                    {left: '\\[', right: '\\]', display: true}
+                ]
+            });
+            setTimeout(() => {
+                window.print();
+            }, 500);
+        }
+
+        function toggleCollapse(taskId) {
+            const content = document.getElementById(`collapse-${taskId}`);
+            const btn = document.getElementById(`collapse-btn-${taskId}`);
+            content.classList.toggle('open');
+            if(content.classList.contains('open')) {
+                btn.innerHTML = 'Hide Explanation <span class="translation text-xs">(Sembunyikan Penjelasan)</span>';
+            } else {
+                btn.innerHTML = 'Show Explanation <span class="translation text-xs">(Tampilkan Penjelasan)</span>';
+            }
+        }
+
+        function renderMath() {
+            if (typeof renderMathInElement === 'undefined') return;
+            
+            const target = document.querySelector('.content-section.active') || document.body;
+            try {
+                renderMathInElement(target, {
+                    delimiters: [
+                        {left: '$', right: '$', display: false}, 
+                        {left: '\\(', right: '\\)', display: false},
+                        {left: '\\[', right: '\\]', display: true}
+                    ],
+                    throwOnError: false
+                });
+            } catch(e) {
+                console.error("KaTeX rendering error:", e);
+            }
+        }
+        
+        window.onload = () => {
+            renderTasks();
+            setTimeout(() => {
+                showSection('warmup');
+                renderMath();
+            }, 100);
+        };
+        
+        Object.assign(questions, {
+            // ==========================================
+            // SECTION 1: SPIRAL REVIEW WARM-UP (w-task)
+            // ==========================================
+            "w-task1": { type: "single", q: "A square garden has a side length of \\( x \\) meters. If the area is \\( 49 \\text{ m}^2 \\), what is \\( x \\)? <span class='translation block'>Sebuah taman berbentuk persegi memiliki panjang sisi \\( x \\) meter. Jika luasnya \\( 49 \\text{ m}^2 \\), berapakah \\( x \\)?</span>", opts: ["\\( 6 \\)", "\\( 7 \\)", "\\( 8 \\)", "\\( 14 \\)", "\\( 24.5 \\)"], ans: "\\( 7 \\)", exp: "The area of a square is side \\(\\times\\) side, or \\(x^2\\). We know \\(x^2 = 49\\). To find \\(x\\), we take the square root of 49: \\(x = \\sqrt{49} = 7\\). <span class='translation block'>Luas persegi adalah sisi \\(\\times\\) sisi, atau \\(x^2\\). Kita tahu \\(x^2 = 49\\). Untuk mencari \\(x\\), kita ambil akar kuadrat dari 49: \\(x = \\sqrt{49} = 7\\).</span>" },
+            "w-task2": { type: "single", q: "The speed of light is approximately \\( 3 \\times 10^8 \\) meters per second. How is this written in standard form? <span class='translation block'>Kecepatan cahaya kira-kira \\( 3 \\times 10^8 \\) meter per detik. Bagaimana ini ditulis dalam bentuk standar?</span>", opts: ["\\( 3,000,000 \\)", "\\( 30,000,000 \\)", "\\( 300,000,000 \\)", "\\( 3,000,000,000 \\)", "\\( 300,000 \\)"], ans: "\\( 300,000,000 \\)", exp: "\\(3 \\times 10^8\\) means moving the decimal point 8 places to the right. So, 3 becomes 300,000,000. <span class='translation block'>\\(3 \\times 10^8\\) berarti memindahkan titik desimal 8 tempat ke kanan. Jadi, 3 menjadi 300.000.000.</span>" },
+            "w-task3": { type: "single", q: "A right-angled triangle has legs of length \\( 3 \\) cm and \\( 4 \\) cm. What is the length of the hypotenuse? <span class='translation block'>Sebuah segitiga siku-siku memiliki sisi siku-siku sepanjang \\( 3 \\) cm dan \\( 4 \\) cm. Berapakah panjang sisi miringnya?</span>", opts: ["\\( 5 \\text{ cm} \\)", "\\( 6 \\text{ cm} \\)", "\\( 7 \\text{ cm} \\)", "\\( 12 \\text{ cm} \\)", "\\( 25 \\text{ cm} \\)"], ans: "\\( 5 \\text{ cm} \\)", exp: "Using Pythagorean theorem: \\(a^2 + b^2 = c^2\\). \\(3^2 + 4^2 = 9 + 16 = 25\\). \\(c = \\sqrt{25} = 5\\) cm. <span class='translation block'>Menggunakan teorema Pythagoras: \\(a^2 + b^2 = c^2\\). \\(3^2 + 4^2 = 9 + 16 = 25\\). \\(c = \\sqrt{25} = 5\\) cm.</span>" },
+            "w-task4": { type: "single", q: "Simplify the expression: \\( 2^3 \\times 2^2 \\). <span class='translation block'>Sederhanakan bentuk: \\( 2^3 \\times 2^2 \\).</span>", opts: ["\\( 2^5 \\)", "\\( 2^6 \\)", "\\( 4^5 \\)", "\\( 8^2 \\)", "\\( 16 \\)"], ans: "\\( 2^5 \\)", exp: "When multiplying exponents with the same base, you add the powers: \\(2^3 \\times 2^2 = 2^{3+2} = 2^5\\). <span class='translation block'>Saat mengalikan bilangan berpangkat dengan basis yang sama, jumlahkan pangkatnya: \\(2^3 \\times 2^2 = 2^{3+2} = 2^5\\).</span>" },
+            "w-task5": { type: "single", q: "What is the square root of \\( 144 \\)? <span class='translation block'>Berapakah akar kuadrat dari \\( 144 \\)?</span>", opts: ["\\( 12 \\)", "\\( 14 \\)", "\\( 72 \\)", "\\( 24 \\)", "\\( 144 \\)"], ans: "\\( 12 \\)", exp: "\\( 12 \\times 12 = 144 \\). Therefore, the square root of 144 is 12. <span class='translation block'>\\( 12 \\times 12 = 144 \\). Oleh karena itu, akar kuadrat dari 144 adalah 12.</span>" },
+            "w-task6": { type: "single", q: "Write \\( 0.00056 \\) in scientific notation. <span class='translation block'>Tulislah \\( 0.00056 \\) dalam notasi ilmiah.</span>", opts: ["\\( 5.6 \\times 10^3 \\)", "\\( 5.6 \\times 10^{-3} \\)", "\\( 5.6 \\times 10^{-4} \\)", "\\( 56 \\times 10^{-5} \\)", "\\( 5.6 \\times 10^4 \\)"], ans: "\\( 5.6 \\times 10^{-4} \\)", exp: "Move the decimal 4 places to the right to get 5.6. Since we moved right, the exponent is negative: \\( 5.6 \\times 10^{-4} \\). <span class='translation block'>Pindahkan koma 4 tempat ke kanan untuk mendapatkan 5.6. Karena kita pindah ke kanan, pangkatnya negatif: \\( 5.6 \\times 10^{-4} \\).</span>" },
+            "w-task7": { type: "single", q: "A ladder leans against a wall. The ladder is \\( 10 \\) m long, and the base is \\( 6 \\) m from the wall. How high up the wall does it reach? <span class='translation block'>Sebuah tangga bersandar pada dinding. Tangga tersebut panjangnya \\( 10 \\) m, dan alasnya berjarak \\( 6 \\) m dari dinding. Sudah berapa tinggi tangga tersebut menempel di dinding?</span>", opts: ["\\( 4 \\text{ m} \\)", "\\( 6 \\text{ m} \\)", "\\( 8 \\text{ m} \\)", "\\( 10 \\text{ m} \\)", "\\( 12 \\text{ m} \\)"], ans: "\\( 8 \\text{ m} \\)", exp: "Using \\( a^2 + b^2 = c^2 \\), where \\( c=10 \\) and \\( a=6 \\). \\( 6^2 + b^2 = 10^2 \\Rightarrow 36 + b^2 = 100 \\Rightarrow b^2 = 64 \\Rightarrow b = 8 \\) m. <span class='translation block'>Menggunakan \\( a^2 + b^2 = c^2 \\), di mana \\( c=10 \\) dan \\( a=6 \\). \\( 6^2 + b^2 = 10^2 \\Rightarrow 36 + b^2 = 100 \\Rightarrow b^2 = 64 \\Rightarrow b = 8 \\) m.</span>" },
+            "w-task8": { type: "single", q: "Calculate: \\( 5^3 \\). <span class='translation block'>Hitunglah: \\( 5^3 \\).</span>", opts: ["\\( 15 \\)", "\\( 25 \\)", "\\( 53 \\)", "\\( 125 \\)", "\\( 625 \\)"], ans: "\\( 125 \\)", exp: "\\( 5^3 \\) means \\( 5 \\times 5 \\times 5 = 125 \\). <span class='translation block'>\\( 5^3 \\) berarti \\( 5 \\times 5 \\times 5 = 125 \\).</span>" },
+            "w-task9": { type: "single", q: "Which of the following is a Pythagorean triple? <span class='translation block'>Manakah dari berikut ini yang merupakan tripel Pythagoras?</span>", opts: ["\\( 1, 2, 3 \\)", "\\( 2, 3, 4 \\)", "\\( 5, 12, 13 \\)", "\\( 4, 5, 6 \\)", "\\( 7, 8, 9 \\)"], ans: "\\( 5, 12, 13 \\)", exp: "Check \\( a^2 + b^2 = c^2 \\): \\( 5^2 + 12^2 = 25 + 144 = 169 \\). \\( 13^2 = 169 \\). They match! <span class='translation block'>Periksa \\( a^2 + b^2 = c^2 \\): \\( 5^2 + 12^2 = 25 + 144 = 169 \\). \\( 13^2 = 169 \\). Cocok!</span>" },
+            "w-task10": { type: "single", q: "The distance from Earth to the Sun is \\( 1.5 \\times 10^8 \\) km, and to the Moon is \\( 4 \\times 10^5 \\) km. How many times further is the Sun than the Moon? <span class='translation block'>Jarak dari Bumi ke Matahari adalah \\( 1.5 \\times 10^8 \\) km, dan ke Bulan adalah \\( 4 \\times 10^5 \\) km. Berapa kali lebih jauh Matahari daripada Bulan?</span>", opts: ["\\( 3.75 \\times 10^2 \\)", "\\( 3.75 \\times 10^3 \\)", "\\( 3.75 \\times 10^4 \\)", "\\( 375 \\)", "\\( 3.75 \\times 10^5 \\)"], ans: "\\( 3.75 \\times 10^2 \\)", exp: "Divide the distances: \\( \\frac{1.5 \\times 10^8}{4 \\times 10^5} \\). \\( 1.5 / 4 = 0.375 \\). \\( 10^8 / 10^5 = 10^3 \\). \\( 0.375 \\times 10^3 = 375 = 3.75 \\times 10^2 \\). <span class='translation block'>Bagikan jaraknya: \\( \\frac{1.5 \\times 10^8}{4 \\times 10^5} \\). \\( 1.5 / 4 = 0.375 \\). \\( 10^8 / 10^5 = 10^3 \\). \\( 0.375 \\times 10^3 = 375 = 3.75 \\times 10^2 \\).</span>" },
+
+            // ==========================================
+            // SECTION 2: INTRODUCTION & REAL-WORLD (i-task)
+            // ==========================================
+            "i-task1": { type: "single", q: "A box contains \\( x \\) marbles. If we add 5 more marbles, there are 12 marbles in total. Which equation represents this? <span class='translation block'>Sebuah kotak berisi \\( x \\) kelereng. Jika kita menambahkan 5 kelereng lagi, totalnya ada 12 kelereng. Persamaan manakah yang merepresentasikan hal ini?</span>", opts: ["\\( x - 5 = 12 \\)", "\\( x + 5 = 12 \\)", "\\( 5x = 12 \\)", "\\( x = 12 - 5 \\)", "\\( x + 12 = 5 \\)"], ans: "\\( x + 5 = 12 \\)", exp: "The box starts with \\( x \\) marbles. Adding 5 means \\( x + 5 \\). The total is 12, so \\( x + 5 = 12 \\). <span class='translation block'>Kotak awalnya berisi \\( x \\) kelereng. Menambahkan 5 berarti \\( x + 5 \\). Totalnya 12, jadi \\( x + 5 = 12 \\).</span>" },
+            "i-task2": { type: "single", q: "A taxi charges a flat fee of \\( \\$3 \\) plus \\( \\$2 \\) per mile. If a ride costs \\( \\$11 \\), which equation finds the miles traveled (\\( x \\))? <span class='translation block'>Sebuah taksi mengenakan biaya tetap \\( \\$3 \\) ditambah \\( \\$2 \\) per mil. Jika ongkos perjalanan \\( \\$11 \\), persamaan manakah yang mencari mil yang ditempuh (\\( x \\))?</span>", opts: ["\\( 3x + 2 = 11 \\)", "\\( 2x - 3 = 11 \\)", "\\( 2x + 3 = 11 \\)", "\\( 3 + x = 11 \\)", "\\( 2 + 3x = 11 \\)"], ans: "\\( 2x + 3 = 11 \\)", exp: "Flat fee is \\( \\$3 \\). Cost per mile is \\( \\$2 \\times x \\). Total cost is \\( 2x + 3 = 11 \\). <span class='translation block'>Biaya tetap \\( \\$3 \\). Biaya per mil \\( \\$2 \\times x \\). Total biaya \\( 2x + 3 = 11 \\).</span>" },
+            "i-task3": { type: "single", q: "You buy 4 apples for \\( x \\) dollars each. If the total price is \\( \\$8 \\), what is the equation? <span class='translation block'>Kamu membeli 4 apel seharga \\( x \\) dolar per buah. Jika total harga \\( \\$8 \\), apa persamaannya?</span>", opts: ["\\( 4 + x = 8 \\)", "\\( 4x = 8 \\)", "\\( x = 8 - 4 \\)", "\\( x - 4 = 8 \\)", "\\( \\frac{x}{4} = 8 \\)"], ans: "\\( 4x = 8 \\)", exp: "4 apples at \\( x \\) dollars each is \\( 4 \\times x = 4x \\). Total is \\( \\$8 \\), so \\( 4x = 8 \\). <span class='translation block'>4 apel seharga \\( x \\) dolar per buah adalah \\( 4 \\times x = 4x \\). Totalnya \\( \\$8 \\), jadi \\( 4x = 8 \\).</span>" },
+            "i-task4": { type: "single", q: "You have \\( \\$50 \\). You buy 3 books that cost \\( \\$x \\) each and have \\( \\$14 \\) left. What is the equation? <span class='translation block'>Kamu punya \\( \\$50 \\). Kamu membeli 3 buku seharga \\( \\$x \\) per buah dan bersisa \\( \\$14 \\). Apa persamaannya?</span>", opts: ["\\( 50 - 3x = 14 \\)", "\\( 3x - 50 = 14 \\)", "\\( 50 - x = 14 \\)", "\\( 3 + 50x = 14 \\)", "\\( 3x + 14 = 50 \\)"], ans: "\\( 50 - 3x = 14 \\)", exp: "Start with 50, subtract cost of 3 books (\\( 3x \\)), equals what is left (\\( 14 \\)): \\( 50 - 3x = 14 \\). <span class='translation block'>Mulai dengan 50, kurangi biaya 3 buku (\\( 3x \\)), sama dengan sisa (\\( 14 \\)): \\( 50 - 3x = 14 \\).</span>" },
+            "i-task5": { type: "single", q: "A rectangle has a length of \\( 2x \\) and a width of 3. If the perimeter is 16, what is the equation? <span class='translation block'>Sebuah persegi panjang memiliki panjang \\( 2x \\) dan lebar 3. Jika kelilingnya 16, apa persamaannya?</span>", opts: ["\\( 2x + 3 = 16 \\)", "\\( 2(2x + 3) = 16 \\)", "\\( 6x = 16 \\)", "\\( 2x \\times 3 = 16 \\)", "\\( 2x = 16 - 3 \\)"], ans: "\\( 2(2x + 3) = 16 \\)", exp: "Perimeter is \\( 2 \\times (\\text{Length} + \\text{Width}) \\). So, \\( 2(2x + 3) = 16 \\). <span class='translation block'>Keliling adalah \\( 2 \\times (\\text{Panjang} + \\text{Lebar}) \\). Jadi, \\( 2(2x + 3) = 16 \\).</span>" },
+            "i-task6": { type: "single", q: "A number \\( x \\) is doubled, then 5 is subtracted. The result is 9. Which equation is correct? <span class='translation block'>Sebuah bilangan \\( x \\) dikalikan dua, lalu dikurangi 5. Hasilnya 9. Persamaan manakah yang benar?</span>", opts: ["\\( 2(x - 5) = 9 \\)", "\\( x^2 - 5 = 9 \\)", "\\( 2x - 5 = 9 \\)", "\\( 5 - 2x = 9 \\)", "\\( 2x + 5 = 9 \\)"], ans: "\\( 2x - 5 = 9 \\)", exp: "Doubled means \\( 2x \\). Subtract 5 means \\( 2x - 5 \\). Result is 9, so \\( 2x - 5 = 9 \\). <span class='translation block'>Dikali dua berarti \\( 2x \\). Kurangi 5 berarti \\( 2x - 5 \\). Hasilnya 9, jadi \\( 2x - 5 = 9 \\).</span>" },
+            "i-task7": { type: "single", q: "Is \\( x = 4 \\) a solution to the equation \\( 3x - 5 = 7 \\)? <span class='translation block'>Apakah \\( x = 4 \\) merupakan solusi dari persamaan \\( 3x - 5 = 7 \\)?</span>", opts: ["\\( \\text{Yes, because } 3(4) - 5 = 7 \\)", "\\( \\text{No, because } 3(4) + 5 = 17 \\)", "\\( \\text{Yes, because } 3 \\times 4 = 12 \\)", "\\( \\text{No, because } 3(4) - 5 = 7 \\text{ is false} \\)", "\\( \\text{Cannot be determined} \\)"], ans: "\\( \\text{Yes, because } 3(4) - 5 = 7 \\)", exp: "Substitute \\( x = 4 \\): \\( 3(4) - 5 = 12 - 5 = 7 \\). Since \\( 7 = 7 \\) is true, it is a solution. <span class='translation block'>Substitusi \\( x = 4 \\): \\( 3(4) - 5 = 12 - 5 = 7 \\). Karena \\( 7 = 7 \\) benar, ini adalah solusi.</span>" },
+            "i-task8": { type: "single", q: "If \\( x = -2 \\), which equation is TRUE? <span class='translation block'>Jika \\( x = -2 \\), persamaan manakah yang BENAR?</span>", opts: ["\\( 2x + 5 = 1 \\)", "\\( 3x - 4 = -2 \\)", "\\( x + 5 = 3 \\)", "\\( 4x = 8 \\)", "\\( -x = -2 \\)"], ans: "\\( 2x + 5 = 1 \\)", exp: "Substitute \\( x = -2 \\) into \\( 2x + 5 \\): \\( 2(-2) + 5 = -4 + 5 = 1 \\). So, \\( 2x + 5 = 1 \\) is true. <span class='translation block'>Substitusi \\( x = -2 \\) ke \\( 2x + 5 \\): \\( 2(-2) + 5 = -4 + 5 = 1 \\). Jadi, \\( 2x + 5 = 1 \\) benar.</span>" },
+            "i-task9": { type: "single", q: "Which value of \\( x \\) makes the equation \\( x + 7 = 2 \\) true? <span class='translation block'>Nilai \\( x \\) berapa yang membuat persamaan \\( x + 7 = 2 \\) benar?</span>", opts: ["\\( x = 9 \\)", "\\( x = 5 \\)", "\\( x = -5 \\)", "\\( x = -9 \\)", "\\( x = 14 \\)"], ans: "\\( x = -5 \\)", exp: "Subtract 7 from both sides: \\( x = 2 - 7 = -5 \\). <span class='translation block'>Kurangi kedua sisi dengan 7: \\( x = 2 - 7 = -5 \\).</span>" },
+            "i-task10": { type: "single", q: "Sarah's age (\\( s \\)) is 3 years less than twice her brother's age (\\( 10 \\)). What is the equation? <span class='translation block'>Umur Sarah (\\( s \\)) 3 tahun kurangnya dari dua kali umur adik laki-lakinya (\\( 10 \\)). Apa persamaannya?</span>", opts: ["\\( s = 3 - 2(10) \\)", "\\( s = 2 \\times 10 + 3 \\)", "\\( s = 2(10) - 3 \\)", "\\( s - 3 = 2(10) \\)", "\\( 10 = 2s - 3 \\)"], ans: "\\( s = 2(10) - 3 \\)", exp: "Twice her brother's age is \\( 2 \\times 10 \\). 3 years less is \\( 2(10) - 3 \\). So, \\( s = 2(10) - 3 \\). <span class='translation block'>Dua kali umur adiknya adalah \\( 2 \\times 10 \\). 3 tahun kurangnya adalah \\( 2(10) - 3 \\). Jadi, \\( s = 2(10) - 3 \\).</span>" },
+
+            // ==========================================
+            // SECTION 3: REVIEW OF PRIOR KNOWLEDGE (r-task)
+            // ==========================================
+            "r-task1": { type: "single", q: "Simplify the expression: \\( 3x + 4x - 2 \\). <span class='translation block'>Sederhanakan bentuk: \\( 3x + 4x - 2 \\).</span>", opts: ["\\( 7x - 2 \\)", "\\( 12x - 2 \\)", "\\( 5x \\)", "\\( 7x + 2 \\)", "\\( 12x - 2 \\)"], ans: "\\( 7x - 2 \\)", exp: "Combine like terms: \\( 3x + 4x = 7x \\). The \\(-2\\) stays, so it's \\( 7x - 2 \\). <span class='translation block'>Gabungkan suku sejenis: \\( 3x + 4x = 7x \\). \\(-2\\) tetap, jadi hasilnya \\( 7x - 2 \\).</span>" },
+            "r-task2": { type: "single", q: "Simplify: \\( 5y - 2y + 8 - 3 \\). <span class='translation block'>Sederhanakan: \\( 5y - 2y + 8 - 3 \\).</span>", opts: ["\\( 3y + 5 \\)", "\\( 7y + 5 \\)", "\\( 3y - 5 \\)", "\\( 7y - 5 \\)", "\\( 3y + 11 \\)"], ans: "\\( 3y + 5 \\)", exp: "Combine \\( y \\): \\( 5y - 2y = 3y \\). Combine numbers: \\( 8 - 3 = 5 \\). Result: \\( 3y + 5 \\). <span class='translation block'>Gabungkan \\( y \\): \\( 5y - 2y = 3y \\). Gabungkan angka: \\( 8 - 3 = 5 \\). Hasil: \\( 3y + 5 \\).</span>" },
+            "r-task3": { type: "single", q: "A bag has \\( 3r \\) red candies and \\( 5r \\) blue candies. How many candies are there in total? <span class='translation block'>Sebuah kantong berisi \\( 3r \\) permen merah dan \\( 5r \\) permen biru. Berapa banyak permen semuanya?</span>", opts: ["\\( 8r \\)", "\\( 15r \\)", "\\( 2r \\)", "\\( 8 \\)", "\\( 8r^2 \\)"], ans: "\\( 8r \\)", exp: "Total candies = \\( 3r + 5r = 8r \\). <span class='translation block'>Total permen = \\( 3r + 5r = 8r \\).</span>" },
+            "r-task4": { type: "single", q: "Expand using distributive property: \\( 4(x + 5) \\). <span class='translation block'>Kembangkan menggunakan sifat distributif: \\( 4(x + 5) \\).</span>", opts: ["\\( 4x + 5 \\)", "\\( 4x + 20 \\)", "\\( x + 20 \\)", "\\( 4x + 9 \\)", "\\( 4x + 1 \\)"], ans: "\\( 4x + 20 \\)", exp: "Multiply 4 by both terms inside: \\( 4(x) + 4(5) = 4x + 20 \\). <span class='translation block'>Kalikan 4 dengan kedua suku di dalamnya: \\( 4(x) + 4(5) = 4x + 20 \\).</span>" },
+            "r-task5": { type: "single", q: "Expand: \\( -2(x - 3) \\). <span class='translation block'>Kembangkan: \\( -2(x - 3) \\).</span>", opts: ["\\( -2x - 6 \\)", "\\( -2x - 3 \\)", "\\( -2x + 6 \\)", "\\( 2x - 6 \\)", "\\( -2x + 3 \\)"], ans: "\\( -2x + 6 \\)", exp: "Multiply \\(-2\\) by \\( x \\) and \\(-2\\) by \\(-3\\). \\( -2x + 6 \\). <span class='translation block'>Kalikan \\(-2\\) dengan \\( x \\) dan \\(-2\\) dengan \\(-3\\). \\( -2x + 6 \\).</span>" },
+            "r-task6": { type: "single", q: "You buy 2 pizzas that cost \\( p \\) each and a \\( \\$4 \\) drink. What is the total cost expression? <span class='translation block'>Kamu membeli 2 pizza seharga \\( p \\) per buah dan minuman \\( \\$4 \\). Berapakah bentuk total biayanya?</span>", opts: ["\\( 2p + 4 \\)", "\\( p + 4 \\)", "\\( 2(p + 4) \\)", "\\( 8p \\)", "\\( 2p - 4 \\)"], ans: "\\( 2p + 4 \\)", exp: "2 pizzas at \\( p \\) each is \\( 2p \\). Add the \\( \\$4 \\) drink. Total: \\( 2p + 4 \\). <span class='translation block'>2 pizza seharga \\( p \\) per buah adalah \\( 2p \\). Tambahkan minuman \\( \\$4 \\). Total: \\( 2p + 4 \\).</span>" },
+            "r-task7": { type: "single", q: "To solve \\( x + 6 = 10 \\), what inverse operation should you use? <span class='translation block'>Untuk menyelesaikan \\( x + 6 = 10 \\), operasi invers apa yang harus kamu gunakan?</span>", opts: ["\\( \\text{Subtract 6 from both sides} \\)", "\\( \\text{Add 6 to both sides} \\)", "\\( \\text{Multiply by 6} \\)", "\\( \\text{Divide by 6} \\)", "\\( \\text{Square both sides} \\)"], ans: "\\( \\text{Subtract 6 from both sides} \\)", exp: "The operation is addition (\\( +6 \\)), so the inverse is subtraction (\\( -6 \\)). <span class='translation block'>Operasinya adalah penjumlahan (\\( +6 \\)), jadi inversnya adalah pengurangan (\\( -6 \\)).</span>" },
+            "r-task8": { type: "single", q: "To solve \\( 5x = 20 \\), what inverse operation should you use? <span class='translation block'>Untuk menyelesaikan \\( 5x = 20 \\), operasi invers apa yang harus kamu gunakan?</span>", opts: ["\\( \\text{Multiply by 5} \\)", "\\( \\text{Subtract 5} \\)", "\\( \\text{Divide by 5} \\)", "\\( \\text{Add 5} \\)", "\\( \\text{Divide by 20} \\)"], ans: "\\( \\text{Divide by 5} \\)", exp: "The operation is multiplication (\\( 5 \\times x \\)), so the inverse is division (\\( \\div 5 \\)). <span class='translation block'>Operasinya adalah perkalian (\\( 5 \\times x \\)), jadi inversnya adalah pembagian (\\( \\div 5 \\)).</span>" },
+            "r-task9": { type: "single", q: "Simplify: \\( 2(x + 4) - x \\). <span class='translation block'>Sederhanakan: \\( 2(x + 4) - x \\).</span>", opts: ["\\( x + 8 \\)", "\\( 2x + 8 \\)", "\\( 3x + 8 \\)", "\\( x + 4 \\)", "\\( 2x + 4 \\)"], ans: "\\( x + 8 \\)", exp: "First expand: \\( 2x + 8 - x \\). Then combine like terms: \\( 2x - x = x \\). Result: \\( x + 8 \\). <span class='translation block'>Pertama kembangkan: \\( 2x + 8 - x \\). Lalu gabungkan suku sejenis: \\( 2x - x = x \\). Hasil: \\( x + 8 \\).</span>" },
+            "r-task10": { type: "single", q: "Which expression is equivalent to \\( 3(2x - 1) + 4 \\)? <span class='translation block'>Bentuk manakah yang ekuivalen dengan \\( 3(2x - 1) + 4 \\)?</span>", opts: ["\\( 6x + 1 \\)", "\\( 6x + 3 \\)", "\\( 5x + 3 \\)", "\\( 6x - 3 \\)", "\\( 6x + 7 \\)"], ans: "\\( 6x + 1 \\)", exp: "Expand: \\( 6x - 3 + 4 \\). Combine numbers: \\( -3 + 4 = 1 \\). Result: \\( 6x + 1 \\). <span class='translation block'>Kembangkan: \\( 6x - 3 + 4 \\). Gabungkan angka: \\( -3 + 4 = 1 \\). Hasil: \\( 6x + 1 \\).</span>" },
+
+            // ==========================================
+            // SECTION 4: PROBLEM INTRODUCTION (p-task)
+            // ==========================================
+            "p-task1": { type: "single", q: "Solve for \\( x \\): \\( x + 7 = 15 \\). <span class='translation block'>Selesaikan untuk \\( x \\): \\( x + 7 = 15 \\).</span>", opts: ["\\( x = 7 \\)", "\\( x = 8 \\)", "\\( x = 15 \\)", "\\( x = 22 \\)", "\\( x = 9 \\)"], ans: "\\( x = 8 \\)", exp: "Subtract 7 from both sides: \\( x = 15 - 7 = 8 \\). <span class='translation block'>Kurangi kedua sisi dengan 7: \\( x = 15 - 7 = 8 \\).</span>" },
+            "p-task2": { type: "single", q: "Solve for \\( y \\): \\( y - 4 = 9 \\). <span class='translation block'>Selesaikan untuk \\( y \\): \\( y - 4 = 9 \\).</span>", opts: ["\\( y = 5 \\)", "\\( y = 13 \\)", "\\( y = 9 \\)", "\\( y = 4 \\)", "\\( y = 36 \\)"], ans: "\\( y = 13 \\)", exp: "Add 4 to both sides: \\( y = 9 + 4 = 13 \\). <span class='translation block'>Tambahkan kedua sisi dengan 4: \\( y = 9 + 4 = 13 \\).</span>" },
+            "p-task3": { type: "single", q: "A box of cookies weighs 250g. If you add a toy that weighs \\( x \\)g, the total weight is 400g. Find \\( x \\). <span class='translation block'>Sebuah kotak kue berbobot 250g. Jika kamu menambahkan mainan seberat \\( x \\)g, total beratnya menjadi 400g. Tentukan \\( x \\).</span>", opts: ["\\( x = 150 \\text{g} \\)", "\\( x = 650 \\text{g} \\)", "\\( x = 155 \\text{g} \\)", "\\( x = 100 \\text{g} \\)", "\\( x = 250 \\text{g} \\)"], ans: "\\( x = 150 \\text{g} \\)", exp: "Equation: \\( 250 + x = 400 \\). Subtract 250: \\( x = 400 - 250 = 150 \\)g. <span class='translation block'>Persamaan: \\( 250 + x = 400 \\). Kurangi 250: \\( x = 400 - 250 = 150 \\)g.</span>" },
+            "p-task4": { type: "single", q: "Solve for \\( x \\): \\( 4x = 24 \\). <span class='translation block'>Selesaikan untuk \\( x \\): \\( 4x = 24 \\).</span>", opts: ["\\( x = 6 \\)", "\\( x = 8 \\)", "\\( x = 20 \\)", "\\( x = 28 \\)", "\\( x = 96 \\)"], ans: "\\( x = 6 \\)", exp: "Divide both sides by 4: \\( x = \\frac{24}{4} = 6 \\). <span class='translation block'>Bagi kedua sisi dengan 4: \\( x = \\frac{24}{4} = 6 \\).</span>" },
+            "p-task5": { type: "single", q: "Solve for \\( m \\): \\( \\frac{m}{3} = 5 \\). <span class='translation block'>Selesaikan untuk \\( m \\): \\( \\frac{m}{3} = 5 \\).</span>", opts: ["\\( m = 2 \\)", "\\( m = 8 \\)", "\\( m = 15 \\)", "\\( m = 5 \\)", "\\( m = \\frac{5}{3} \\)"], ans: "\\( m = 15 \\)", exp: "Multiply both sides by 3: \\( m = 5 \\times 3 = 15 \\). <span class='translation block'>Kalikan kedua sisi dengan 3: \\( m = 5 \\times 3 = 15 \\).</span>" },
+            "p-task6": { type: "single", q: "You buy 5 identical notebooks for a total of \\( \\$15 \\). What is the price of one notebook (\\( x \\))? <span class='translation block'>Kamu membeli 5 buku tulis yang sama dengan total \\( \\$15 \\). Berapakah harga satu buku tulis (\\( x \\))?</span>", opts: ["\\( x = \\$3 \\)", "\\( x = \\$5 \\)", "\\( x = \\$10 \\)", "\\( x = \\$20 \\)", "\\( x = \\$75 \\)"], ans: "\\( x = \\$3 \\)", exp: "Equation: \\( 5x = 15 \\). Divide by 5: \\( x = \\frac{15}{5} = 3 \\). <span class='translation block'>Persamaan: \\( 5x = 15 \\). Bagi dengan 5: \\( x = \\frac{15}{5} = 3 \\).</span>" },
+            "p-task7": { type: "single", q: "Solve for \\( x \\): \\( 2x + 3 = 11 \\). <span class='translation block'>Selesaikan untuk \\( x \\): \\( 2x + 3 = 11 \\).</span>", opts: ["\\( x = 4 \\)", "\\( x = 7 \\)", "\\( x = 14 \\)", "\\( x = 8 \\)", "\\( x = 5 \\)"], ans: "\\( x = 4 \\)", exp: "Subtract 3: \\( 2x = 8 \\). Divide by 2: \\( x = 4 \\). <span class='translation block'>Kurangi 3: \\( 2x = 8 \\). Bagi dengan 2: \\( x = 4 \\).</span>" },
+            "p-task8": { type: "single", q: "Solve for \\( x \\): \\( 3x - 5 = 10 \\). <span class='translation block'>Selesaikan untuk \\( x \\): \\( 3x - 5 = 10 \\).</span>", opts: ["\\( x = 5 \\)", "\\( x = 15 \\)", "\\( x = 3 \\)", "\\( x = 4 \\)", "\\( x = 6 \\)"], ans: "\\( x = 5 \\)", exp: "Add 5: \\( 3x = 15 \\). Divide by 3: \\( x = 5 \\). <span class='translation block'>Tambahkan 5: \\( 3x = 15 \\). Bagi dengan 3: \\( x = 5 \\).</span>" },
+            "p-task9": { type: "single", q: "A plumber charges \\( \\$20 \\) for a visit, plus \\( \\$15 \\) per hour. If the total bill is \\( \\$65 \\), how many hours did he work? <span class='translation block'>Seorang tukang ledeng menarik biaya \\( \\$20 \\) untuk kunjungan, ditambah \\( \\$15 \\) per jam. Jika total tagihan \\( \\$65 \\), berapa jam ia bekerja?</span>", opts: ["\\( 2 \\text{ hours} \\)", "\\( 3 \\text{ hours} \\)", "\\( 4 \\text{ hours} \\)", "\\( 5 \\text{ hours} \\)", "\\( 6 \\text{ hours} \\)"], ans: "\\( 3 \\text{ hours} \\)", exp: "Equation: \\( 15x + 20 = 65 \\). Subtract 20: \\( 15x = 45 \\). Divide by 15: \\( x = 3 \\) hours. <span class='translation block'>Persamaan: \\( 15x + 20 = 65 \\). Kurangi 20: \\( 15x = 45 \\). Bagi dengan 15: \\( x = 3 \\) jam.</span>" },
+            "p-task10": { type: "single", q: "Solve: \\( \\frac{x}{2} - 4 = 1 \\). <span class='translation block'>Selesaikan: \\( \\frac{x}{2} - 4 = 1 \\).</span>", opts: ["\\( x = 5 \\)", "\\( x = 6 \\)", "\\( x = 8 \\)", "\\( x = 10 \\)", "\\( x = 2 \\)"], ans: "\\( x = 10 \\)", exp: "Add 4: \\( \\frac{x}{2} = 5 \\). Multiply by 2: \\( x = 10 \\). <span class='translation block'>Tambahkan 4: \\( \\frac{x}{2} = 5 \\). Kalikan dengan 2: \\( x = 10 \\).</span>" },
+            // ==========================================
+            // SECTION 5: GUIDED PRACTICE (g-task)
+            // ==========================================
+            "g-task1": { type: "single", q: "Solve for \\( x \\): \\( 5x - 2 = 2x + 10 \\). <span class='translation block'>Selesaikan untuk \\( x \\): \\( 5x - 2 = 2x + 10 \\).</span>", opts: ["\\( x = 3 \\)", "\\( x = 4 \\)", "\\( x = 5 \\)", "\\( x = 8 \\)", "\\( x = 12 \\)"], ans: "\\( x = 4 \\)", exp: "Subtract \\( 2x \\): \\( 3x - 2 = 10 \\). Add 2: \\( 3x = 12 \\). Divide by 3: \\( x = 4 \\). <span class='translation block'>Kurangi \\( 2x \\): \\( 3x - 2 = 10 \\). Tambahkan 2: \\( 3x = 12 \\). Bagi dengan 3: \\( x = 4 \\).</span>" },
+            "g-task2": { type: "single", q: "Solve for \\( x \\): \\( 3(x + 1) = 2x + 5 \\). <span class='translation block'>Selesaikan untuk \\( x \\): \\( 3(x + 1) = 2x + 5 \\).</span>", opts: ["\\( x = 1 \\)", "\\( x = 2 \\)", "\\( x = 3 \\)", "\\( x = 4 \\)", "\\( x = 5 \\)"], ans: "\\( x = 2 \\)", exp: "Distribute 3: \\( 3x + 3 = 2x + 5 \\). Subtract \\( 2x \\): \\( x + 3 = 5 \\). Subtract 3: \\( x = 2 \\). <span class='translation block'>Kembangkan 3: \\( 3x + 3 = 2x + 5 \\). Kurangi \\( 2x \\): \\( x + 3 = 5 \\). Kurangi 3: \\( x = 2 \\).</span>" },
+            "g-task3": { type: "single", q: "Solve for \\( x \\): \\( 4x + 3 = -2x + 15 \\). <span class='translation block'>Selesaikan untuk \\( x \\): \\( 4x + 3 = -2x + 15 \\).</span>", opts: ["\\( x = 2 \\)", "\\( x = 3 \\)", "\\( x = 4 \\)", "\\( x = 12 \\)", "\\( x = 18 \\)"], ans: "\\( x = 2 \\)", exp: "Add \\( 2x \\): \\( 6x + 3 = 15 \\). Subtract 3: \\( 6x = 12 \\). Divide by 6: \\( x = 2 \\). <span class='translation block'>Tambahkan \\( 2x \\): \\( 6x + 3 = 15 \\). Kurangi 3: \\( 6x = 12 \\). Bagi dengan 6: \\( x = 2 \\).</span>" },
+            "g-task4": { type: "single", q: "Solve for \\( x \\): \\( 2(x - 4) = 3x - 2 \\). <span class='translation block'>Selesaikan untuk \\( x \\): \\( 2(x - 4) = 3x - 2 \\).</span>", opts: ["\\( x = -6 \\)", "\\( x = -5 \\)", "\\( x = 5 \\)", "\\( x = 6 \\)", "\\( x = 10 \\)"], ans: "\\( x = -6 \\)", exp: "Distribute 2: \\( 2x - 8 = 3x - 2 \\). Subtract \\( 2x \\): \\( -8 = x - 2 \\). Add 2: \\( x = -6 \\). <span class='translation block'>Kembangkan 2: \\( 2x - 8 = 3x - 2 \\). Kurangi \\( 2x \\): \\( -8 = x - 2 \\). Tambahkan 2: \\( x = -6 \\).</span>" },
+            "g-task5": { type: "single", q: "Solve for \\( x \\): \\( 7x - 5 = 2x + 20 \\). <span class='translation block'>Selesaikan untuk \\( x \\): \\( 7x - 5 = 2x + 20 \\).</span>", opts: ["\\( x = 3 \\)", "\\( x = 4 \\)", "\\( x = 5 \\)", "\\( x = 15 \\)", "\\( x = 25 \\)"], ans: "\\( x = 5 \\)", exp: "Subtract \\( 2x \\): \\( 5x - 5 = 20 \\). Add 5: \\( 5x = 25 \\). Divide by 5: \\( x = 5 \\). <span class='translation block'>Kurangi \\( 2x \\): \\( 5x - 5 = 20 \\). Tambahkan 5: \\( 5x = 25 \\). Bagi dengan 5: \\( x = 5 \\).</span>" },
+            "g-task6": { type: "single", q: "Solve for \\( x \\): \\( 4(2x + 1) = 2(3x + 6) \\). <span class='translation block'>Selesaikan untuk \\( x \\): \\( 4(2x + 1) = 2(3x + 6) \\).</span>", opts: ["\\( x = 1 \\)", "\\( x = 2 \\)", "\\( x = 3 \\)", "\\( x = 4 \\)", "\\( x = 5 \\)"], ans: "\\( x = 4 \\)", exp: "Distribute both sides: \\( 8x + 4 = 6x + 12 \\). Subtract \\( 6x \\): \\( 2x + 4 = 12 \\). Subtract 4: \\( 2x = 8 \\). Divide by 2: \\( x = 4 \\). <span class='translation block'>Kembangkan kedua sisi: \\( 8x + 4 = 6x + 12 \\). Kurangi \\( 6x \\): \\( 2x + 4 = 12 \\). Kurangi 4: \\( 2x = 8 \\). Bagi dengan 2: \\( x = 4 \\).</span>" },
+            "g-task7": { type: "single", q: "Solve for \\( x \\): \\( 6x - 4 = 3x + 11 \\). <span class='translation block'>Selesaikan untuk \\( x \\): \\( 6x - 4 = 3x + 11 \\).</span>", opts: ["\\( x = 3 \\)", "\\( x = 5 \\)", "\\( x = 7 \\)", "\\( x = 15 \\)", "\\( x = -5 \\)"], ans: "\\( x = 5 \\)", exp: "Subtract \\( 3x \\): \\( 3x - 4 = 11 \\). Add 4: \\( 3x = 15 \\). Divide by 3: \\( x = 5 \\). <span class='translation block'>Kurangi \\( 3x \\): \\( 3x - 4 = 11 \\). Tambahkan 4: \\( 3x = 15 \\). Bagi dengan 3: \\( x = 5 \\).</span>" },
+            "g-task8": { type: "single", q: "Solve for \\( x \\): \\( 5(x - 2) = 2x + 5 \\). <span class='translation block'>Selesaikan untuk \\( x \\): \\( 5(x - 2) = 2x + 5 \\).</span>", opts: ["\\( x = 3 \\)", "\\( x = 4 \\)", "\\( x = 5 \\)", "\\( x = 6 \\)", "\\( x = 15 \\)"], ans: "\\( x = 5 \\)", exp: "Distribute 5: \\( 5x - 10 = 2x + 5 \\). Subtract \\( 2x \\): \\( 3x - 10 = 5 \\). Add 10: \\( 3x = 15 \\). Divide by 3: \\( x = 5 \\). <span class='translation block'>Kembangkan 5: \\( 5x - 10 = 2x + 5 \\). Kurangi \\( 2x \\): \\( 3x - 10 = 5 \\). Tambahkan 10: \\( 3x = 15 \\). Bagi dengan 3: \\( x = 5 \\).</span>" },
+            "g-task9": { type: "single", q: "Solve for \\( x \\): \\( 8x - 1 = 5x + 8 \\). <span class='translation block'>Selesaikan untuk \\( x \\): \\( 8x - 1 = 5x + 8 \\).</span>", opts: ["\\( x = 2 \\)", "\\( x = 3 \\)", "\\( x = 4 \\)", "\\( x = 9 \\)", "\\( x = -3 \\)"], ans: "\\( x = 3 \\)", exp: "Subtract \\( 5x \\): \\( 3x - 1 = 8 \\). Add 1: \\( 3x = 9 \\). Divide by 3: \\( x = 3 \\). <span class='translation block'>Kurangi \\( 5x \\): \\( 3x - 1 = 8 \\). Tambahkan 1: \\( 3x = 9 \\). Bagi dengan 3: \\( x = 3 \\).</span>" },
+            "g-task10": { type: "single", q: "Solve for \\( x \\): \\( 3(2x - 4) = 4x + 6 \\). <span class='translation block'>Selesaikan untuk \\( x \\): \\( 3(2x - 4) = 4x + 6 \\).</span>", opts: ["\\( x = 6 \\)", "\\( x = 9 \\)", "\\( x = 7 \\)", "\\( x = 8 \\)", "\\( x = 5 \\)"], ans: "\\( x = 9 \\)", exp: "Distribute 3: \\( 6x - 12 = 4x + 6 \\). Subtract \\( 4x \\): \\( 2x - 12 = 6 \\). Add 12: \\( 2x = 18 \\). Divide by 2: \\( x = 9 \\). <span class='translation block'>Kembangkan 3: \\( 6x - 12 = 4x + 6 \\). Kurangi \\( 4x \\): \\( 2x - 12 = 6 \\). Tambahkan 12: \\( 2x = 18 \\). Bagi dengan 2: \\( x = 9 \\).</span>" },
+
+            // ==========================================
+            // SECTION 6: INDEPENDENT PRACTICE (ind-task)
+            // ==========================================
+            "ind-task1": { type: "single", q: "The sum of three consecutive integers is 36. What is the largest integer? <span class='translation block'>Jumlah dari tiga bilangan bulat berurutan adalah 36. Berapakah bilangan terbesarnya?</span>", opts: ["\\( 11 \\)", "\\( 12 \\)", "\\( 13 \\)", "\\( 14 \\)", "\\( 15 \\)"], ans: "\\( 13 \\)", exp: "Let integers be \\( x, x+1, x+2 \\). Equation: \\( 3x + 3 = 36 \\). Subtract 3: \\( 3x = 33 \\). Divide by 3: \\( x = 11 \\). Largest is \\( 11 + 2 = 13 \\). <span class='translation block'>Misalkan bilangan \\( x, x+1, x+2 \\). Persamaan: \\( 3x + 3 = 36 \\). Kurangi 3: \\( 3x = 33 \\). Bagi 3: \\( x = 11 \\). Terbesar \\( 11 + 2 = 13 \\).</span>" },
+            "ind-task2": { type: "single", q: "John is twice as old as Mary. In 5 years, their total age will be 31. How old is John now? <span class='translation block'>John berusia dua kali lipat dari Mary. Dalam 5 tahun, total umur mereka akan 31. Berapakah umur John sekarang?</span>", opts: ["\\( 14 \\text{ years old} \\)", "\\( 16 \\text{ years old} \\)", "\\( 18 \\text{ years old} \\)", "\\( 20 \\text{ years old} \\)", "\\( 22 \\text{ years old} \\)"], ans: "\\( 14 \\text{ years old} \\)", exp: "Let Mary = \\( x \\), John = \\( 2x \\). In 5 years: \\( (x+5) + (2x+5) = 31 \\Rightarrow 3x + 10 = 31 \\). Subtract 10: \\( 3x = 21 \\Rightarrow x = 7 \\). John is \\( 2(7) = 14 \\). <span class='translation block'>Misal Mary \\( x \\), John \\( 2x \\). Dalam 5 tahun: \\( (x+5) + (2x+5) = 31 \\Rightarrow 3x + 10 = 31 \\). Kurangi 10: \\( 3x = 21 \\Rightarrow x = 7 \\). John \\( 2(7) = 14 \\).</span>" },
+            "ind-task3": { type: "single", q: "Solve for \\( x \\): \\( \\frac{2x}{3} + 1 = 5 \\). <span class='translation block'>Selesaikan untuk \\( x \\): \\( \\frac{2x}{3} + 1 = 5 \\).</span>", opts: ["\\( x = 4 \\)", "\\( x = 5 \\)", "\\( x = 6 \\)", "\\( x = 7 \\)", "\\( x = 8 \\)"], ans: "\\( x = 6 \\)", exp: "Subtract 1: \\( \\frac{2x}{3} = 4 \\). Multiply by 3: \\( 2x = 12 \\). Divide by 2: \\( x = 6 \\). <span class='translation block'>Kurangi 1: \\( \\frac{2x}{3} = 4 \\). Kalikan 3: \\( 2x = 12 \\). Bagi 2: \\( x = 6 \\).</span>" },
+            "ind-task4": { type: "single", q: "A rectangle has a length of \\( 2x + 1 \\) and a width of \\( x \\). If the perimeter is 26 cm, find the length. <span class='translation block'>Sebuah persegi panjang memiliki panjang \\( 2x + 1 \\) dan lebar \\( x \\). Jika kelilingnya 26 cm, tentukan panjangnya.</span>", opts: ["\\( 5 \\text{ cm} \\)", "\\( 7 \\text{ cm} \\)", "\\( 9 \\text{ cm} \\)", "\\( 11 \\text{ cm} \\)", "\\( 13 \\text{ cm} \\)"], ans: "\\( 9 \\text{ cm} \\)", exp: "Perimeter: \\( 2(2x + 1 + x) = 26 \\Rightarrow 3x + 1 = 13 \\). Subtract 1: \\( 3x = 12 \\). Divide by 3: \\( x = 4 \\). Length = \\( 2(4) + 1 = 9 \\) cm. <span class='translation block'>Keliling: \\( 2(2x + 1 + x) = 26 \\Rightarrow 3x + 1 = 13 \\). Kurangi 1: \\( 3x = 12 \\). Bagi 3: \\( x = 4 \\). Panjang = \\( 2(4) + 1 = 9 \\) cm.</span>" },
+            "ind-task5": { type: "single", q: "Two cars start 400 miles apart and drive towards each other. One drives 60 mph, the other 40 mph. How many hours until they meet? <span class='translation block'>Dua mobil mulai berjarak 400 mil dan saling mendekati. Satu melaju 60 mph, yang lain 40 mph. Berapa jam sampai mereka bertemu?</span>", opts: ["\\( 2 \\text{ hours} \\)", "\\( 3 \\text{ hours} \\)", "\\( 4 \\text{ hours} \\)", "\\( 5 \\text{ hours} \\)", "\\( 6 \\text{ hours} \\)"], ans: "\\( 4 \\text{ hours} \\)", exp: "Equation: \\( 60x + 40x = 400 \\). Combine: \\( 100x = 400 \\). Divide by 100: \\( x = 4 \\) hours. <span class='translation block'>Persamaan: \\( 60x + 40x = 400 \\). Gabungkan: \\( 100x = 400 \\). Bagi 100: \\( x = 4 \\) jam.</span>" },
+            "ind-task6": { type: "single", q: "A jar has 10 coins (dimes and quarters). Total value is \\( \\$1.60 \\). How many dimes are there? <span class='translation block'>Sebuah toples berisi 10 koin (uang 10 sen dan 25 sen). Nilai total \\( \\$1.60 \\). Berapa banyak koin 10 sen?</span>", opts: ["\\( 4 \\text{ dimes} \\)", "\\( 5 \\text{ dimes} \\)", "\\( 6 \\text{ dimes} \\)", "\\( 7 \\text{ dimes} \\)", "\\( 8 \\text{ dimes} \\)"], ans: "\\( 6 \\text{ dimes} \\)", exp: "Let dimes = \\( x \\), quarters = \\( 10-x \\). Value: \\( 10x + 25(10-x) = 160 \\). Distribute: \\( 10x + 250 - 25x = 160 \\). Combine: \\( -15x = -90 \\). Divide: \\( x = 6 \\). <span class='translation block'>Misal 10 sen \\( x \\), 25 sen \\( 10-x \\). Nilai: \\( 10x + 25(10-x) = 160 \\). Terapkan: \\( 10x + 250 - 25x = 160 \\). Gabungkan: \\( -15x = -90 \\). Bagi: \\( x = 6 \\).</span>" },
+            "ind-task7": { type: "single", q: "Solve for \\( x \\): \\( \\frac{x+5}{2} = 4 \\). <span class='translation block'>Selesaikan untuk \\( x \\): \\( \\frac{x+5}{2} = 4 \\).</span>", opts: ["\\( x = 2 \\)", "\\( x = 3 \\)", "\\( x = 4 \\)", "\\( x = 5 \\)", "\\( x = 8 \\)"], ans: "\\( x = 3 \\)", exp: "Multiply by 2: \\( x + 5 = 8 \\). Subtract 5: \\( x = 3 \\). <span class='translation block'>Kalikan 2: \\( x + 5 = 8 \\). Kurangi 5: \\( x = 3 \\).</span>" },
+            "ind-task8": { type: "single", q: "Tom is 5 years older than Jerry. Three years ago, Tom was twice Jerry's age. How old is Jerry now? <span class='translation block'>Tom berusia 5 tahun lebih tua dari Jerry. Tiga tahun lalu, umur Tom dua kali umur Jerry. Berapakah umur Jerry sekarang?</span>", opts: ["\\( 5 \\text{ years old} \\)", "\\( 6 \\text{ years old} \\)", "\\( 7 \\text{ years old} \\)", "\\( 8 \\text{ years old} \\)", "\\( 10 \\text{ years old} \\)"], ans: "\\( 8 \\text{ years old} \\)", exp: "Let Jerry = \\( x \\), Tom = \\( x+5 \\). 3 years ago: \\( x+2 = 2(x-3) \\Rightarrow x+2 = 2x-6 \\). Subtract \\( x \\): \\( 2 = x-6 \\). Add 6: \\( x = 8 \\). <span class='translation block'>Misal Jerry \\( x \\), Tom \\( x+5 \\). 3 tahun lalu: \\( x+2 = 2(x-3) \\Rightarrow x+2 = 2x-6 \\). Kurangi \\( x \\): \\( 2 = x-6 \\). Tambah 6: \\( x = 8 \\).</span>" },
+            "ind-task9": { type: "single", q: "A store marks up the wholesale price by 20% to get the selling price. If the selling price is \\( \\$60 \\), what is the wholesale price? <span class='translation block'>Sebuah toko menaikkan harga grosir sebesar 20% untuk mendapatkan harga jual. Jika harga jual \\( \\$60 \\), berapakah harga grosirnya?</span>", opts: ["\\( \\$40 \\)", "\\( \\$45 \\)", "\\( \\$48 \\)", "\\( \\$50 \\)", "\\( \\$52 \\)"], ans: "\\( \\$50 \\)", exp: "Let wholesale = \\( x \\). \\( x + 0.2x = 60 \\Rightarrow 1.2x = 60 \\). Divide by 1.2: \\( x = 50 \\). <span class='translation block'>Misal harga grosir \\( x \\). \\( x + 0.2x = 60 \\Rightarrow 1.2x = 60 \\). Bagi 1.2: \\( x = 50 \\).</span>" },
+            "ind-task10": { type: "single", q: "Solve for \\( x \\): \\( 0.5x + 4 = 6 \\). <span class='translation block'>Selesaikan untuk \\( x \\): \\( 0.5x + 4 = 6 \\).</span>", opts: ["\\( x = 2 \\)", "\\( x = 4 \\)", "\\( x = 5 \\)", "\\( x = 6 \\)", "\\( x = 8 \\)"], ans: "\\( x = 4 \\)", exp: "Subtract 4: \\( 0.5x = 2 \\). Divide by 0.5 (or multiply by 2): \\( x = 4 \\). <span class='translation block'>Kurangi 4: \\( 0.5x = 2 \\). Bagi 0.5 (atau kalikan 2): \\( x = 4 \\).</span>" },
+
+            // ==========================================
+            // SECTION 7: TASK 1 - 5 (Mixed Story Problems)
+            // ==========================================
+            // TASK 1: Basic Translations & One/Two-Step Word Problems
+            "t1-task1": { type: "single", q: "A father is 3 times as old as his son. In 10 years, the father will be twice as old as his son. How old is the son currently? <span class='translation block'>Seorang ayah berusia 3 kali lipat dari anaknya. Dalam 10 tahun, ayah akan berusia dua kali lipat dari anaknya. Berapakah umur anaknya saat ini?</span>", opts: ["\\( 8 \\text{ years old} \\)", "\\( 10 \\text{ years old} \\)", "\\( 12 \\text{ years old} \\)", "\\( 15 \\text{ years old} \\)", "\\( 20 \\text{ years old} \\)"], ans: "\\( 10 \\text{ years old} \\)", exp: "Let son = \\( x \\), father = \\( 3x \\). In 10 years: \\( 3x + 10 = 2(x + 10) \\). \\( 3x + 10 = 2x + 20 \\). Subtract \\( 2x \\) and 10: \\( x = 10 \\). <span class='translation block'>Misalkan anak = \\( x \\), ayah = \\( 3x \\). Dalam 10 tahun: \\( 3x + 10 = 2(x + 10) \\). \\( 3x + 10 = 2x + 20 \\). Kurangi \\( 2x \\) dan 10: \\( x = 10 \\).</span>" },
+            "t1-task2": { type: "single", q: "The sum of two numbers is 20. The larger number is 4 less than twice the smaller number. What is the larger number? <span class='translation block'>Jumlah dua bilangan adalah 20. Bilangan yang lebih besar berjumlah 4 kurangnya dari dua kali bilangan yang lebih kecil. Berapakah bilangan yang lebih besar?</span>", opts: ["\\( 10 \\)", "\\( 12 \\)", "\\( 14 \\)", "\\( 16 \\)", "\\( 18 \\)"], ans: "\\( 12 \\)", exp: "Let smaller = \\( x \\), larger = \\( 20 - x \\). Equation: \\( 20 - x = 2x - 4 \\). Add \\( x \\) and 4: \\( 24 = 3x \\). \\( x = 8 \\). Larger number = \\( 20 - 8 = 12 \\). <span class='translation block'>Misalkan kecil = \\( x \\), besar = \\( 20 - x \\). Persamaan: \\( 20 - x = 2x - 4 \\). Tambah \\( x \\) dan 4: \\( 24 = 3x \\). \\( x = 8 \\). Bilangan besar = \\( 20 - 8 = 12 \\).</span>" },
+            "t1-task3": { type: "single", q: "The length of a rectangle is 3 cm more than its width. If the perimeter is 26 cm, what is the width? <span class='translation block'>Panjang sebuah persegi panjang adalah 3 cm lebih dari lebarnya. Jika kelilingnya 26 cm, berapakah lebarnya?</span>", opts: ["\\( 5 \\text{ cm} \\)", "\\( 6 \\text{ cm} \\)", "\\( 7 \\text{ cm} \\)", "\\( 8 \\text{ cm} \\)", "\\( 10 \\text{ cm} \\)"], ans: "\\( 5 \\text{ cm} \\)", exp: "Let width = \\( x \\), length = \\( x + 3 \\). Perimeter: \\( 2(x + x + 3) = 26 \\). \\( 2x + 3 = 13 \\). \\( 2x = 10 \\). \\( x = 5 \\) cm. <span class='translation block'>Misalkan lebar = \\( x \\), panjang = \\( x + 3 \\). Keliling: \\( 2(x + x + 3) = 26 \\). \\( 2x + 3 = 13 \\). \\( 2x = 10 \\). \\( x = 5 \\) cm.</span>" },
+            "t1-task4": { type: "single", q: "You buy 5 pens and 2 notebooks for \\( \\$13 \\). If a pen costs \\( \\$1 \\), how much does one notebook cost? <span class='translation block'>Kamu membeli 5 pulpen dan 2 buku catatan seharga \\( \\$13 \\). Jika satu pulpen berharga \\( \\$1 \\), berapakah harga satu buku catatan?</span>", opts: ["\\( \\$2 \\)", "\\( \\$3 \\)", "\\( \\$4 \\)", "\\( \\$5 \\)", "\\( \\$6 \\)"], ans: "\\( \\$4 \\)", exp: "Let notebook = \\( n \\). Cost: \\( 5(1) + 2n = 13 \\). \\( 5 + 2n = 13 \\). Subtract 5: \\( 2n = 8 \\). Divide by 2: \\( n = 4 \\). <span class='translation block'>Misalkan buku = \\( n \\). Biaya: \\( 5(1) + 2n = 13 \\). \\( 5 + 2n = 13 \\). Kurangi 5: \\( 2n = 8 \\). Bagi 2: \\( n = 4 \\).</span>" },
+            "t1-task5": { type: "single", q: "Solve for \\( x \\): \\( 3(x - 4) = x + 2 \\). <span class='translation block'>Selesaikan untuk \\( x \\): \\( 3(x - 4) = x + 2 \\).</span>", opts: ["\\( x = 5 \\)", "\\( x = 7 \\)", "\\( x = 9 \\)", "\\( x = 14 \\)", "\\( x = -5 \\)"], ans: "\\( x = 7 \\)", exp: "Distribute 3: \\( 3x - 12 = x + 2 \\). Subtract \\( x \\): \\( 2x - 12 = 2 \\). Add 12: \\( 2x = 14 \\). Divide by 2: \\( x = 7 \\). <span class='translation block'>Kembangkan 3: \\( 3x - 12 = x + 2 \\). Kurangi \\( x \\): \\( 2x - 12 = 2 \\). Tambah 12: \\( 2x = 14 \\). Bagi 2: \\( x = 7 \\).</span>" },
+            "t1-task6": { type: "single", q: "A car travels at 60 km/h. A bus travels at 40 km/h. If they start from the same point and drive in opposite directions, how many hours will it take for them to be 200 km apart? <span class='translation block'>Sebuah mobil melaju dengan kecepatan 60 km/jam. Sebuah bus melaju dengan kecepatan 40 km/jam. Jika mereka berangkat dari titik yang sama dan melaju ke arah yang berlawanan, berapa jam yang dibutuhkan agar jarak mereka menjadi 200 km?</span>", opts: ["\\( 1 \\text{ hour} \\)", "\\( 1.5 \\text{ hours} \\)", "\\( 2 \\text{ hours} \\)", "\\( 2.5 \\text{ hours} \\)", "\\( 3 \\text{ hours} \\)"], ans: "\\( 2 \\text{ hours} \\)", exp: "Let time = \\( t \\). Distance = \\( 60t + 40t = 200 \\). \\( 100t = 200 \\). Divide by 100: \\( t = 2 \\) hours. <span class='translation block'>Misalkan waktu = \\( t \\). Jarak = \\( 60t + 40t = 200 \\). \\( 100t = 200 \\). Bagi 100: \\( t = 2 \\) jam.</span>" },
+            "t1-task7": { type: "single", q: "Solve for \\( x \\): \\( \\frac{x}{4} - 2 = 3 \\). <span class='translation block'>Selesaikan untuk \\( x \\): \\( \\frac{x}{4} - 2 = 3 \\).</span>", opts: ["\\( x = 4 \\)", "\\( x = 12 \\)", "\\( x = 16 \\)", "\\( x = 20 \\)", "\\( x = 24 \\)"], ans: "\\( x = 20 \\)", exp: "Add 2: \\( \\frac{x}{4} = 5 \\). Multiply by 4: \\( x = 20 \\). <span class='translation block'>Tambah 2: \\( \\frac{x}{4} = 5 \\). Kalikan 4: \\( x = 20 \\).</span>" },
+            "t1-task8": { type: "single", q: "The sum of three consecutive integers is 45. What is the middle integer? <span class='translation block'>Jumlah tiga bilangan bulat berurutan adalah 45. Berapakah bilangan tengahnya?</span>", opts: ["\\( 12 \\)", "\\( 13 \\)", "\\( 14 \\)", "\\( 15 \\)", "\\( 16 \\)"], ans: "\\( 15 \\)", exp: "Let integers be \\( x-1, x, x+1 \\). Sum: \\( 3x = 45 \\). Divide by 3: \\( x = 15 \\). The middle integer is 15. <span class='translation block'>Misalkan bilangan \\( x-1, x, x+1 \\). Jumlah: \\( 3x = 45 \\). Bagi 3: \\( x = 15 \\). Bilangan tengah adalah 15.</span>" },
+            "t1-task9": { type: "single", q: "Solve for \\( x \\): \\( 4x + 5 = 17 \\). <span class='translation block'>Selesaikan untuk \\( x \\): \\( 4x + 5 = 17 \\).</span>", opts: ["\\( x = 2 \\)", "\\( x = 3 \\)", "\\( x = 4 \\)", "\\( x = 5 \\)", "\\( x = 6 \\)"], ans: "\\( x = 3 \\)", exp: "Subtract 5: \\( 4x = 12 \\). Divide by 4: \\( x = 3 \\). <span class='translation block'>Kurangi 5: \\( 4x = 12 \\). Bagi 4: \\( x = 3 \\).</span>" },
+            "t1-task10": { type: "single", q: "A jacket is on sale for \\( \\$40 \\). This price is 80% of the original price. What was the original price? <span class='translation block'>Sebuah jaket dijual seharga \\( \\$40 \\). Harga ini adalah 80% dari harga awal. Berapakah harga awalnya?</span>", opts: ["\\( \\$32 \\)", "\\( \\$40 \\)", "\\( \\$48 \\)", "\\( \\$50 \\)", "\\( \\$60 \\)"], ans: "\\( \\$50 \\)", exp: "Let original price = \\( p \\). \\( 0.80p = 40 \\). Divide by 0.80: \\( p = \\frac{40}{0.80} = 50 \\). <span class='translation block'>Misalkan harga awal = \\( p \\). \\( 0.80p = 40 \\). Bagi 0.80: \\( p = \\frac{40}{0.80} = 50 \\).</span>" },
+
+            // TASK 2: Variables on Both Sides & Geometric Applications
+            "t2-task1": { type: "single", q: "Solve for \\( x \\): \\( 5x - 7 = 2x + 8 \\). <span class='translation block'>Selesaikan untuk \\( x \\): \\( 5x - 7 = 2x + 8 \\).</span>", opts: ["\\( x = 3 \\)", "\\( x = 4 \\)", "\\( x = 5 \\)", "\\( x = 6 \\)", "\\( x = 15 \\)"], ans: "\\( x = 5 \\)", exp: "Subtract \\( 2x \\): \\( 3x - 7 = 8 \\). Add 7: \\( 3x = 15 \\). Divide by 3: \\( x = 5 \\). <span class='translation block'>Kurangi \\( 2x \\): \\( 3x - 7 = 8 \\). Tambah 7: \\( 3x = 15 \\). Bagi 3: \\( x = 5 \\).</span>" },
+            "t2-task2": { type: "single", q: "Two angles are supplementary (sum is \\( 180^\\circ \\)). One angle is \\( 20^\\circ \\) more than 3 times the other. What is the smaller angle? <span class='translation block'>Dua sudut saling berpelurus (jumlahnya \\( 180^\\circ \\)). Satu sudut berselisih \\( 20^\\circ \\) lebih dari 3 kali sudut lainnya. Berapakah sudut yang lebih kecil?</span>", opts: ["\\( 30^\\circ \\)", "\\( 35^\\circ \\)", "\\( 40^\\circ \\)", "\\( 45^\\circ \\)", "\\( 50^\\circ \\)"], ans: "\\( 40^\\circ \\)", exp: "Let smaller = \\( x \\), larger = \\( 3x + 20 \\). \\( x + 3x + 20 = 180 \\). \\( 4x + 20 = 180 \\). Subtract 20: \\( 4x = 160 \\). Divide by 4: \\( x = 40 \\). <span class='translation block'>Misalkan kecil = \\( x \\), besar = \\( 3x + 20 \\). \\( x + 3x + 20 = 180 \\). \\( 4x + 20 = 180 \\). Kurangi 20: \\( 4x = 160 \\). Bagi 4: \\( x = 40 \\).</span>" },
+            "t2-task3": { type: "single", q: "10 years ago, a mother was 3 times as old as her daughter. The mother is now 40 years old. How old is the daughter now? <span class='translation block'>10 tahun yang lalu, seorang ibu berusia 3 kali lipat dari anak perempuannya. Sang ibu sekarang berusia 40 tahun. Berapakah umur anak perempuannya sekarang?</span>", opts: ["\\( 15 \\text{ years old} \\)", "\\( 20 \\text{ years old} \\)", "\\( 25 \\text{ years old} \\)", "\\( 30 \\text{ years old} \\)", "\\( 35 \\text{ years old} \\)"], ans: "\\( 20 \\text{ years old} \\)", exp: "Mother 10 yrs ago = 30. Daughter 10 yrs ago = \\( \\frac{30}{3} = 10 \\). Daughter now = \\( 10 + 10 = 20 \\). <span class='translation block'>Ibu 10 tahun lalu = 30. Anak 10 tahun lalu = \\( \\frac{30}{3} = 10 \\). Anak sekarang = \\( 10 + 10 = 20 \\).</span>" },
+            "t2-task4": { type: "single", q: "Solve for \\( x \\): \\( 4(2x - 1) = 3x + 11 \\). <span class='translation block'>Selesaikan untuk \\( x \\): \\( 4(2x - 1) = 3x + 11 \\).</span>", opts: ["\\( x = 1 \\)", "\\( x = 2 \\)", "\\( x = 3 \\)", "\\( x = 4 \\)", "\\( x = 5 \\)"], ans: "\\( x = 3 \\)", exp: "Distribute 4: \\( 8x - 4 = 3x + 11 \\). Subtract \\( 3x \\): \\( 5x - 4 = 11 \\). Add 4: \\( 5x = 15 \\). Divide by 5: \\( x = 3 \\). <span class='translation block'>Kembangkan 4: \\( 8x - 4 = 3x + 11 \\). Kurangi \\( 3x \\): \\( 5x - 4 = 11 \\). Tambah 4: \\( 5x = 15 \\). Bagi 5: \\( x = 3 \\).</span>" },
+            "t2-task5": { type: "single", q: "Solve for \\( x \\): \\( \\frac{2x + 1}{3} = 5 \\). <span class='translation block'>Selesaikan untuk \\( x \\): \\( \\frac{2x + 1}{3} = 5 \\).</span>", opts: ["\\( x = 3 \\)", "\\( x = 5 \\)", "\\( x = 7 \\)", "\\( x = 8 \\)", "\\( x = 15 \\)"], ans: "\\( x = 7 \\)", exp: "Multiply by 3: \\( 2x + 1 = 15 \\). Subtract 1: \\( 2x = 14 \\). Divide by 2: \\( x = 7 \\). <span class='translation block'>Kalikan 3: \\( 2x + 1 = 15 \\). Kurangi 1: \\( 2x = 14 \\). Bagi 2: \\( x = 7 \\).</span>" },
+            "t2-task6": { type: "single", q: "A phone costs \\( \\$200 \\) after a 20% discount. What was the original price before the discount? <span class='translation block'>Sebuah ponsel seharga \\( \\$200 \\) setelah mendapat diskon 20%. Berapakah harga awal sebelum diskon?</span>", opts: ["\\( \\$160 \\)", "\\( \\$220 \\)", "\\( \\$240 \\)", "\\( \\$250 \\)", "\\( \\$300 \\)"], ans: "\\( \\$250 \\)", exp: "Let original = \\( p \\). \\( p - 0.20p = 200 \\). \\( 0.80p = 200 \\). Divide by 0.80: \\( p = 250 \\). <span class='translation block'>Misalkan harga awal = \\( p \\). \\( p - 0.20p = 200 \\). \\( 0.80p = 200 \\). Bagi 0.80: \\( p = 250 \\).</span>" },
+            "t2-task7": { type: "single", q: "The sum of three consecutive even integers is 54. What is the largest integer? <span class='translation block'>Jumlah tiga bilangan bulat genap berurutan adalah 54. Berapakah bilangan terbesarnya?</span>", opts: ["\\( 16 \\)", "\\( 18 \\)", "\\( 20 \\)", "\\( 22 \\)", "\\( 24 \\)"], ans: "\\( 20 \\)", exp: "Let integers be \\( x, x+2, x+4 \\). \\( 3x + 6 = 54 \\). Subtract 6: \\( 3x = 48 \\). Divide by 3: \\( x = 16 \\). Largest = \\( 16 + 4 = 20 \\). <span class='translation block'>Misalkan bilangan \\( x, x+2, x+4 \\). \\( 3x + 6 = 54 \\). Kurangi 6: \\( 3x = 48 \\). Bagi 3: \\( x = 16 \\). Terbesar = \\( 16 + 4 = 20 \\).</span>" },
+            "t2-task8": { type: "single", q: "Tom can paint a fence in 3 hours. Jerry can paint it in 6 hours. If they work together, how many hours will it take them to paint the fence? <span class='translation block'>Tom bisa mengecat pagar dalam 3 jam. Jerry bisa melakukannya dalam 6 jam. Jika mereka bekerja bersama, berapa jam yang dibutuhkan untuk mengecat pagar tersebut?</span>", opts: ["\\( 1.5 \\text{ hours} \\)", "\\( 2 \\text{ hours} \\)", "\\( 2.5 \\text{ hours} \\)", "\\( 3 \\text{ hours} \\)", "\\( 4.5 \\text{ hours} \\)"], ans: "\\( 2 \\text{ hours} \\)", exp: "Let time = \\( t \\). Rates: \\( \\frac{1}{3} + \\frac{1}{6} = \\frac{1}{t} \\). \\( \\frac{2}{6} + \\frac{1}{6} = \\frac{3}{6} = \\frac{1}{2} \\). So \\( t = 2 \\) hours. <span class='translation block'>Misalkan waktu = \\( t \\). Kecepatan: \\( \\frac{1}{3} + \\frac{1}{6} = \\frac{1}{t} \\). \\( \\frac{2}{6} + \\frac{1}{6} = \\frac{3}{6} = \\frac{1}{2} \\). Jadi \\( t = 2 \\) jam.</span>" },
+            "t2-task9": { type: "single", q: "How much pure water must be added to 2 liters of a 20% salt solution to make it a 10% salt solution? <span class='translation block'>Berapa banyak air murni yang harus ditambahkan ke 2 liter larutan garam 20% untuk membuatnya menjadi larutan garam 10%?</span>", opts: ["\\( 1 \\text{ liter} \\)", "\\( 2 \\text{ liters} \\)", "\\( 3 \\text{ liters} \\)", "\\( 4 \\text{ liters} \\)", "\\( 5 \\text{ liters} \\)"], ans: "\\( 2 \\text{ liters} \\)", exp: "Let water added = \\( x \\). Salt amount = \\( 0.20 \\times 2 = 0.40 \\) L. New volume = \\( 2 + x \\). \\( 0.40 = 0.10(2 + x) \\). \\( 4 = 2 + x \\). \\( x = 2 \\) L. <span class='translation block'>Misalkan air ditambah = \\( x \\). Jumlah garam = \\( 0.20 \\times 2 = 0.40 \\) L. Volume baru = \\( 2 + x \\). \\( 0.40 = 0.10(2 + x) \\). \\( 4 = 2 + x \\). \\( x = 2 \\) L.</span>" },
+            "t2-task10": { type: "single", q: "Solve for \\( x \\): \\( 0.2x + 1.5 = 2.3 \\). <span class='translation block'>Selesaikan untuk \\( x \\): \\( 0.2x + 1.5 = 2.3 \\).</span>", opts: ["\\( x = 2 \\)", "\\( x = 3 \\)", "\\( x = 4 \\)", "\\( x = 5 \\)", "\\( x = 8 \\)"], ans: "\\( x = 4 \\)", exp: "Multiply by 10: \\( 2x + 15 = 23 \\). Subtract 15: \\( 2x = 8 \\). Divide by 2: \\( x = 4 \\). <span class='translation block'>Kalikan 10: \\( 2x + 15 = 23 \\). Kurangi 15: \\( 2x = 8 \\). Bagi 2: \\( x = 4 \\).</span>" },
+            // TASK 3: Fractions, Decimals, and Age/Number Problems
+            "t3-task1": { type: "single", q: "A father is 3 times as old as his son. In 6 years, he will be twice as old as his son. How old is the son currently? <span class='translation block'>Seorang ayah berusia 3 kali lipat dari anaknya. Dalam 6 tahun, ia akan berusia dua kali lipat dari anaknya. Berapakah umur anaknya saat ini?</span>", opts: ["\\( 4 \\text{ years old} \\)", "\\( 5 \\text{ years old} \\)", "\\( 6 \\text{ years old} \\)", "\\( 8 \\text{ years old} \\)", "\\( 12 \\text{ years old} \\)"], ans: "\\( 6 \\text{ years old} \\)", exp: "Let son = \\( x \\), father = \\( 3x \\). In 6 years: \\( 3x + 6 = 2(x + 6) \\). \\( 3x + 6 = 2x + 12 \\). Subtract \\( 2x \\) and 6: \\( x = 6 \\). <span class='translation block'>Misalkan anak = \\( x \\), ayah = \\( 3x \\). Dalam 6 tahun: \\( 3x + 6 = 2(x + 6) \\). \\( 3x + 6 = 2x + 12 \\). Kurangi \\( 2x \\) dan 6: \\( x = 6 \\).</span>" },
+            "t3-task2": { type: "single", q: "A wallet contains \\(\\$2.55\\) in dimes (10 cents) and quarters (25 cents). If there are 15 coins in total, how many dimes are there? <span class='translation block'>Sebuah dompet berisi \\(\\$2.55\\) dalam koin 10 sen dan 25 sen. Jika total ada 15 koin, berapa banyak koin 10 sen yang ada?</span>", opts: ["\\( 6 \\text{ dimes} \\)", "\\( 7 \\text{ dimes} \\)", "\\( 8 \\text{ dimes} \\)", "\\( 10 \\text{ dimes} \\)", "\\( 12 \\text{ dimes} \\)"], ans: "\\( 8 \\text{ dimes} \\)", exp: "Let dimes = \\( d \\), quarters = \\( 15 - d \\). Value: \\( 0.10d + 0.25(15 - d) = 2.55 \\). \\( 0.10d + 3.75 - 0.25d = 2.55 \\). \\( -0.15d = -1.20 \\). \\( d = 8 \\). So there are 8 dimes. <span class='translation block'>Misalkan 10 sen = \\( d \\), 25 sen = \\( 15 - d \\). Nilai: \\( 0.10d + 0.25(15 - d) = 2.55 \\). \\( 0.10d + 3.75 - 0.25d = 2.55 \\). \\( -0.15d = -1.20 \\). \\( d = 8 \\). Jadi ada 8 koin 10 sen.</span>" },
+            "t3-task3": { type: "single", q: "Car A leaves at 60 km/h. Car B leaves 2 hours later from the same place, traveling at 80 km/h. How many hours does Car B need to catch up to Car A? <span class='translation block'>Mobil A berangkat dengan kecepatan 60 km/jam. Mobil B berangkat 2 jam kemudian dari tempat yang sama, melaju dengan kecepatan 80 km/jam. Berapa jam yang dibutuhkan Mobil B untuk menyusul Mobil A?</span>", opts: ["\\( 4 \\text{ hours} \\)", "\\( 5 \\text{ hours} \\)", "\\( 6 \\text{ hours} \\)", "\\( 7 \\text{ hours} \\)", "\\( 8 \\text{ hours} \\)"], ans: "\\( 6 \\text{ hours} \\)", exp: "Let time for B = \\( t \\). Time for A = \\( t + 2 \\). Distance equal: \\( 60(t + 2) = 80t \\). \\( 60t + 120 = 80t \\). \\( 20t = 120 \\). \\( t = 6 \\) hours. <span class='translation block'>Misalkan waktu untuk B = \\( t \\). Waktu untuk A = \\( t + 2 \\). Jarak sama: \\( 60(t + 2) = 80t \\). \\( 60t + 120 = 80t \\). \\( 20t = 120 \\). \\( t = 6 \\) jam.</span>" },
+            "t3-task4": { type: "single", q: "Solve for \\( x \\): \\( \\frac{x}{2} + \\frac{x}{3} = 10 \\). <span class='translation block'>Selesaikan untuk \\( x \\): \\( \\frac{x}{2} + \\frac{x}{3} = 10 \\).</span>", opts: ["\\( x = 5 \\)", "\\( x = 8 \\)", "\\( x = 10 \\)", "\\( x = 12 \\)", "\\( x = 15 \\)"], ans: "\\( x = 12 \\)", exp: "Common denominator is 6: \\( \\frac{3x}{6} + \\frac{2x}{6} = 10 \\). \\( \\frac{5x}{6} = 10 \\). Multiply by 6: \\( 5x = 60 \\). Divide by 5: \\( x = 12 \\). <span class='translation block'>Penyebut persekutuan adalah 6: \\( \\frac{3x}{6} + \\frac{2x}{6} = 10 \\). \\( \\frac{5x}{6} = 10 \\). Kalikan 6: \\( 5x = 60 \\). Bagi 5: \\( x = 12 \\).</span>" },
+            "t3-task5": { type: "single", q: "In a triangle, the first angle is \\( x \\), the second is \\( 2x \\), and the third is \\( x + 30^\\circ \\). What is the measure of the smallest angle? <span class='translation block'>Pada sebuah segitiga, sudut pertama adalah \\( x \\), sudut kedua \\( 2x \\), dan sudut ketiga \\( x + 30^\\circ \\). Berapakah ukuran sudut terkecil?</span>", opts: ["\\( 30^\\circ \\)", "\\( 37.5^\\circ \\)", "\\( 45^\\circ \\)", "\\( 75^\\circ \\)", "\\( 105^\\circ \\)"], ans: "\\( 37.5^\\circ \\)", exp: "Sum of angles = 180. \\( x + 2x + x + 30 = 180 \\). \\( 4x + 30 = 180 \\). Subtract 30: \\( 4x = 150 \\). \\( x = 37.5^\\circ \\). <span class='translation block'>Jumlah sudut = 180. \\( x + 2x + x + 30 = 180 \\). \\( 4x + 30 = 180 \\). Kurangi 30: \\( 4x = 150 \\). \\( x = 37.5^\\circ \\).</span>" },
+            "t3-task6": { type: "single", q: "You have \\(\\$20\\). You buy 3 pens that cost \\(\\$x\\) each and a candy bar for \\(\\$2.50\\). You have \\(\\$4.00\\) left. What is \\( x \\)? <span class='translation block'>Kamu punya \\(\\$20\\). Kamu membeli 3 pulpen seharga \\(\\$x\\) per buah dan sebuah permen seharga \\(\\$2.50\\). Kamu bersisa \\(\\$4.00\\). Berapakah \\( x \\)?</span>", opts: ["\\( x = \\$3.50 \\)", "\\( x = \\$4.00 \\)", "\\( x = \\$4.50 \\)", "\\( x = \\$5.00 \\)", "\\( x = \\$6.00 \\)"], ans: "\\( x = \\$4.50 \\)", exp: "Equation: \\( 3x + 2.50 + 4.00 = 20.00 \\). \\( 3x + 6.50 = 20 \\). Subtract 6.50: \\( 3x = 13.50 \\). Divide by 3: \\( x = 4.50 \\). <span class='translation block'>Persamaan: \\( 3x + 2.50 + 4.00 = 20.00 \\). \\( 3x + 6.50 = 20 \\). Kurangi 6.50: \\( 3x = 13.50 \\). Bagi 3: \\( x = 4.50 \\).</span>" },
+            "t3-task7": { type: "single", q: "A man is 5 times as old as his son. In 6 years, he will be 3 times as old as his son. How old is the man now? <span class='translation block'>Seorang pria berusia 5 kali lipat dari anaknya. Dalam 6 tahun, ia akan berusia 3 kali lipat dari anaknya. Berapakah umur pria tersebut sekarang?</span>", opts: ["\\( 20 \\text{ years old} \\)", "\\( 25 \\text{ years old} \\)", "\\( 30 \\text{ years old} \\)", "\\( 35 \\text{ years old} \\)", "\\( 40 \\text{ years old} \\)"], ans: "\\( 30 \\text{ years old} \\)", exp: "Let son = \\( y \\), man = \\( 5y \\). In 6 yrs: \\( 5y + 6 = 3(y + 6) \\). \\( 5y + 6 = 3y + 18 \\). \\( 2y = 12 \\). \\( y = 6 \\). Man = \\( 5(6) = 30 \\). <span class='translation block'>Misalkan anak = \\( y \\), pria = \\( 5y \\). Dalam 6 thn: \\( 5y + 6 = 3(y + 6) \\). \\( 5y + 6 = 3y + 18 \\). \\( 2y = 12 \\). \\( y = 6 \\). Pria = \\( 5(6) = 30 \\).</span>" },
+            "t3-task8": { type: "single", q: "A chemist has 5 liters of a 40% acid solution. How much pure acid (100%) must be added to make a 60% acid solution? <span class='translation block'>Seorang ahli kimia memiliki 5 liter larutan asam 40%. Berapa banyak asam murni (100%) yang harus ditambahkan untuk membuat larutan asam 60%?</span>", opts: ["\\( 1.5 \\text{ liters} \\)", "\\( 2 \\text{ liters} \\)", "\\( 2.5 \\text{ liters} \\)", "\\( 3 \\text{ liters} \\)", "\\( 3.5 \\text{ liters} \\)"], ans: "\\( 2.5 \\text{ liters} \\)", exp: "Let pure acid = \\( x \\). Equation: \\( 0.40(5) + 1.00x = 0.60(5 + x) \\). \\( 2 + x = 3 + 0.6x \\). Subtract \\( 0.6x \\) and 2: \\( 0.4x = 1 \\). \\( x = 2.5 \\) L. <span class='translation block'>Misalkan asam murni = \\( x \\). Persamaan: \\( 0.40(5) + 1.00x = 0.60(5 + x) \\). \\( 2 + x = 3 + 0.6x \\). Kurangi \\( 0.6x \\) dan 2: \\( 0.4x = 1 \\). \\( x = 2.5 \\) L.</span>" },
+            "t3-task9": { type: "single", q: "Solve for \\( x \\): \\( 0.5(x - 4) = 1.5 \\). <span class='translation block'>Selesaikan untuk \\( x \\): \\( 0.5(x - 4) = 1.5 \\).</span>", opts: ["\\( x = 3 \\)", "\\( x = 5 \\)", "\\( x = 6 \\)", "\\( x = 7 \\)", "\\( x = 8 \\)"], ans: "\\( x = 7 \\)", exp: "Multiply by 2 to clear decimals: \\( x - 4 = 3 \\). Add 4: \\( x = 7 \\). <span class='translation block'>Kalikan dengan 2 untuk menghilangkan desimal: \\( x - 4 = 3 \\). Tambah 4: \\( x = 7 \\).</span>" },
+            "t3-task10": { type: "single", q: "The sum of two numbers is 30. One number is 2 less than 3 times the other. What is the larger number? <span class='translation block'>Jumlah dua bilangan adalah 30. Satu bilangan 2 kurangnya dari 3 kali bilangan lainnya. Berapakah bilangan yang lebih besar?</span>", opts: ["\\( 8 \\)", "\\( 10 \\)", "\\( 18 \\)", "\\( 20 \\)", "\\( 22 \\)"], ans: "\\( 22 \\)", exp: "Let smaller = \\( x \\), larger = \\( 3x - 2 \\). Sum: \\( x + 3x - 2 = 30 \\). \\( 4x = 32 \\). \\( x = 8 \\). Larger = \\( 3(8) - 2 = 22 \\). <span class='translation block'>Misalkan kecil = \\( x \\), besar = \\( 3x - 2 \\). Jumlah: \\( x + 3x - 2 = 30 \\). \\( 4x = 32 \\). \\( x = 8 \\). Besar = \\( 3(8) - 2 = 22 \\).</span>" },
+
+            // TASK 4: Consecutive Integers, Work, and Percent Problems
+            "t4-task1": { type: "single", q: "Find two consecutive odd integers such that 3 times the first is 5 more than twice the second. <span class='translation block'>Temukan dua bilangan ganjil berurutan sedemikian hingga 3 kali bilangan pertama adalah 5 lebihnya dari dua kali bilangan kedua.</span>", opts: ["\\( 5 \\text{ and } 7 \\)", "\\( 7 \\text{ and } 9 \\)", "\\( 9 \\text{ and } 11 \\)", "\\( 11 \\text{ and } 13 \\)", "\\( 13 \\text{ and } 15 \\)"], ans: "\\( 9 \\text{ and } 11 \\)", exp: "Let integers be \\( x \\) and \\( x+2 \\). \\( 3x = 2(x + 2) + 5 \\). \\( 3x = 2x + 4 + 5 \\). Subtract \\( 2x \\): \\( x = 9 \\). Integers are 9 and 11. <span class='translation block'>Misalkan bilangan \\( x \\) dan \\( x+2 \\). \\( 3x = 2(x + 2) + 5 \\). \\( 3x = 2x + 4 + 5 \\). Kurangi \\( 2x \\): \\( x = 9 \\). Bilangan itu 9 dan 11.</span>" },
+            "t4-task2": { type: "single", q: "Pipe A can fill a pool in 4 hours. Pipe B can fill it in 6 hours. How long will it take if both pipes are open? <span class='translation block'>Pipa A dapat mengisi kolam dalam 4 jam. Pipa B dapat mengisinya dalam 6 jam. Berapa lama waktu yang dibutuhkan jika kedua pipa dibuka?</span>", opts: ["\\( 2.2 \\text{ hours} \\)", "\\( 2.4 \\text{ hours} \\)", "\\( 2.6 \\text{ hours} \\)", "\\( 3 \\text{ hours} \\)", "\\( 5 \\text{ hours} \\)"], ans: "\\( 2.4 \\text{ hours} \\)", exp: "Rate A = \\( \\frac{1}{4} \\), Rate B = \\( \\frac{1}{6} \\). Combined = \\( \\frac{1}{4} + \\frac{1}{6} = \\frac{3}{12} + \\frac{2}{12} = \\frac{5}{12} \\). Time = \\( \\frac{12}{5} = 2.4 \\) hours. <span class='translation block'>Kecepatan A = \\( \\frac{1}{4} \\), B = \\( \\frac{1}{6} \\). Gabungan = \\( \\frac{1}{4} + \\frac{1}{6} = \\frac{3}{12} + \\frac{2}{12} = \\frac{5}{12} \\). Waktu = \\( \\frac{12}{5} = 2.4 \\) jam.</span>" },
+            "t4-task3": { type: "single", q: "A shirt price is increased by 15% to \\(\\$46\\). What was the original price? <span class='translation block'>Harga sebuah kemeja dinaikkan 15% menjadi \\(\\$46\\). Berapakah harga awalnya?</span>", opts: ["\\( \\$39.10 \\)", "\\( \\$40.00 \\)", "\\( \\$41.40 \\)", "\\( \\$45.00 \\)", "\\( \\$52.90 \\)"], ans: "\\( \\$40.00 \\)", exp: "Let original = \\( p \\). \\( p + 0.15p = 46 \\). \\( 1.15p = 46 \\). Divide by 1.15: \\( p = 40 \\). <span class='translation block'>Misalkan harga awal = \\( p \\). \\( p + 0.15p = 46 \\). \\( 1.15p = 46 \\). Bagi 1.15: \\( p = 40 \\).</span>" },
+            "t4-task4": { type: "single", q: "The length of a rectangle is 5 cm more than its width. If the perimeter is 38 cm, what is the width? <span class='translation block'>Panjang sebuah persegi panjang 5 cm lebih dari lebarnya. Jika kelilingnya 38 cm, berapakah lebarnya?</span>", opts: ["\\( 5 \\text{ cm} \\)", "\\( 6 \\text{ cm} \\)", "\\( 7 \\text{ cm} \\)", "\\( 8 \\text{ cm} \\)", "\\( 10 \\text{ cm} \\)"], ans: "\\( 7 \\text{ cm} \\)", exp: "Let width = \\( w \\), length = \\( w + 5 \\). \\( 2(w + w + 5) = 38 \\). \\( 2w + 5 = 19 \\). \\( 2w = 14 \\). \\( w = 7 \\) cm. <span class='translation block'>Misalkan lebar = \\( w \\), panjang = \\( w + 5 \\). \\( 2(w + w + 5) = 38 \\). \\( 2w + 5 = 19 \\). \\( 2w = 14 \\). \\( w = 7 \\) cm.</span>" },
+            "t4-task5": { type: "single", q: "The sum of 4 consecutive integers is 50. What is the largest integer? <span class='translation block'>Jumlah 4 bilangan bulat berurutan adalah 50. Berapakah bilangan terbesarnya?</span>", opts: ["\\( 11 \\)", "\\( 12 \\)", "\\( 13 \\)", "\\( 14 \\)", "\\( 15 \\)"], ans: "\\( 14 \\)", exp: "Let integers be \\( x, x+1, x+2, x+3 \\). Sum: \\( 4x + 6 = 50 \\). Subtract 6: \\( 4x = 44 \\). \\( x = 11 \\). Largest = \\( 11 + 3 = 14 \\). <span class='translation block'>Misalkan bilangan \\( x, x+1, x+2, x+3 \\). Jumlah: \\( 4x + 6 = 50 \\). Kurangi 6: \\( 4x = 44 \\). \\( x = 11 \\). Terbesar = \\( 11 + 3 = 14 \\).</span>" },
+            "t4-task6": { type: "single", q: "Pipe A fills a tank in 10 minutes. Pipe B drains it in 15 minutes. If both are open, how long to fill the tank? <span class='translation block'>Pipa A mengisi tangki dalam 10 menit. Pipa B mengurasnya dalam 15 menit. Jika keduanya terbuka, berapa lama tangki akan penuh?</span>", opts: ["\\( 20 \\text{ min} \\)", "\\( 25 \\text{ min} \\)", "\\( 30 \\text{ min} \\)", "\\( 35 \\text{ min} \\)", "\\( 40 \\text{ min} \\)"], ans: "\\( 30 \\text{ min} \\)", exp: "Net rate = \\( \\frac{1}{10} - \\frac{1}{15} = \\frac{3}{30} - \\frac{2}{30} = \\frac{1}{30} \\). Time = 30 minutes. <span class='translation block'>Kecepatan bersih = \\( \\frac{1}{10} - \\frac{1}{15} = \\frac{3}{30} - \\frac{2}{30} = \\frac{1}{30} \\). Waktu = 30 menit.</span>" },
+            "t4-task7": { type: "single", q: "An investor invests \\(\\$500\\) - part at 5% and the rest at 8%. Total interest is \\(\\$31\\). How much was invested at 8%? <span class='translation block'>Seorang investor menginvestasikan \\(\\$500\\) - sebagian di 5% dan sisanya di 8%. Total bunga \\(\\$31\\). Berapa banyak yang diinvestasikan di 8%?</span>", opts: ["\\( \\$100 \\)", "\\( \\$150 \\)", "\\( \\$200 \\)", "\\( \\$250 \\)", "\\( \\$300 \\)"], ans: "\\( \\$200 \\)", exp: "Let \\( x \\) at 5%, \\( 500 - x \\) at 8%. \\( 0.05x + 0.08(500 - x) = 31 \\). \\( 0.05x + 40 - 0.08x = 31 \\). \\( -0.03x = -9 \\). \\( x = 300 \\) at 5%. At 8%: \\( 500 - 300 = 200 \\). <span class='translation block'>Misalkan \\( x \\) di 5%, \\( 500 - x \\) di 8%. \\( 0.05x + 0.08(500 - x) = 31 \\). \\( 0.05x + 40 - 0.08x = 31 \\). \\( -0.03x = -9 \\). \\( x = 300 \\) di 5%. Di 8%: \\( 500 - 300 = 200 \\).</span>" },
+            "t4-task8": { type: "single", q: "Solve for \\( x \\): \\( \\frac{3}{4}x - \\frac{1}{2} = \\frac{1}{4} \\). <span class='translation block'>Selesaikan untuk \\( x \\): \\( \\frac{3}{4}x - \\frac{1}{2} = \\frac{1}{4} \\).</span>", opts: ["\\( x = 0.5 \\)", "\\( x = 1 \\)", "\\( x = 1.5 \\)", "\\( x = 2 \\)", "\\( x = 2.5 \\)"], ans: "\\( x = 1 \\)", exp: "Add \\( \\frac{1}{2} \\) (which is \\( \\frac{2}{4} \\)): \\( \\frac{3}{4}x = \\frac{3}{4} \\). Multiply by \\( \\frac{4}{3} \\): \\( x = 1 \\). <span class='translation block'>Tambah \\( \\frac{1}{2} \\) (yaitu \\( \\frac{2}{4} \\)): \\( \\frac{3}{4}x = \\frac{3}{4} \\). Kalikan \\( \\frac{4}{3} \\): \\( x = 1 \\).</span>" },
+            "t4-task9": { type: "single", q: "A shirt is discounted by 20% to \\(\\$24\\). What was the original price? <span class='translation block'>Sebuah kemeja didiskon 20% menjadi \\(\\$24\\). Berapakah harga awalnya?</span>", opts: ["\\( \\$28 \\)", "\\( \\$30 \\)", "\\( \\$32 \\)", "\\( \\$36 \\)", "\\( \\$48 \\)"], ans: "\\( \\$30 \\)", exp: "Let original = \\( p \\). \\( p - 0.20p = 24 \\). \\( 0.80p = 24 \\). Divide by 0.80: \\( p = 30 \\). <span class='translation block'>Misalkan harga awal = \\( p \\). \\( p - 0.20p = 24 \\). \\( 0.80p = 24 \\). Bagi 0.80: \\( p = 30 \\).</span>" },
+            "t4-task10": { type: "single", q: "A boat travels 30 km upstream in 3 hours. If the current is 2 km/h, what is the boat's speed in still water? <span class='translation block'>Sebuah perahu menempuh 30 km ke hulu dalam 3 jam. Jika arusnya 2 km/jam, berapakah kecepatan perahu di air tenang?</span>", opts: ["\\( 8 \\text{ km/h} \\)", "\\( 10 \\text{ km/h} \\)", "\\( 12 \\text{ km/h} \\)", "\\( 14 \\text{ km/h} \\)", "\\( 16 \\text{ km/h} \\)"], ans: "\\( 12 \\text{ km/h} \\)", exp: "Upstream speed = boat - current = \\( x - 2 \\). Distance = rate \\( \\times \\) time: \\( 3(x - 2) = 30 \\). Divide by 3: \\( x - 2 = 10 \\). Add 2: \\( x = 12 \\). <span class='translation block'>Kecepatan ke hulu = perahu - arus = \\( x - 2 \\). Jarak = kecepatan \\( \\times \\) waktu: \\( 3(x - 2) = 30 \\). Bagi 3: \\( x - 2 = 10 \\). Tambah 2: \\( x = 12 \\).</span>" },
+
+            // TASK 5: Advanced Word Problems & Formulating Equations
+            "t5-task1": { type: "single", q: "Two trains start 300 km apart and move towards each other. One is 20 km/h faster than the other. They meet in 2 hours. What is the speed of the faster train? <span class='translation block'>Dua kereta api berangkat berjarak 300 km dan saling mendekati. Satu berkecepatan 20 km/jam lebih cepat dari yang lain. Mereka bertemu dalam 2 jam. Berapakah kecepatan kereta yang lebih cepat?</span>", opts: ["\\( 65 \\text{ km/h} \\)", "\\( 70 \\text{ km/h} \\)", "\\( 75 \\text{ km/h} \\)", "\\( 80 \\text{ km/h} \\)", "\\( 85 \\text{ km/h} \\)"], ans: "\\( 85 \\text{ km/h} \\)", exp: "Let slower = \\( x \\), faster = \\( x + 20 \\). \\( 2x + 2(x + 20) = 300 \\). \\( 4x + 40 = 300 \\). \\( 4x = 260 \\). \\( x = 65 \\). Faster = \\( 65 + 20 = 85 \\). <span class='translation block'>Misalkan lambat = \\( x \\), cepat = \\( x + 20 \\). \\( 2x + 2(x + 20) = 300 \\). \\( 4x + 40 = 300 \\). \\( 4x = 260 \\). \\( x = 65 \\). Cepat = \\( 65 + 20 = 85 \\).</span>" },
+            "t5-task2": { type: "single", q: "Alice is 12 years old. Bob is 5 years old. In how many years will Alice be twice as old as Bob? <span class='translation block'>Alice berusia 12 tahun. Bob berusia 5 tahun. Dalam berapa tahun umur Alice akan menjadi dua kali lipat umur Bob?</span>", opts: ["\\( 1 \\text{ year} \\)", "\\( 2 \\text{ years} \\)", "\\( 3 \\text{ years} \\)", "\\( 4 \\text{ years} \\)", "\\( 5 \\text{ years} \\)"], ans: "\\( 2 \\text{ years} \\)", exp: "Let years = \\( y \\). \\( 12 + y = 2(5 + y) \\). \\( 12 + y = 10 + 2y \\). Subtract \\( y \\) and 10: \\( 2 = y \\). <span class='translation block'>Misalkan tahun = \\( y \\). \\( 12 + y = 2(5 + y) \\). \\( 12 + y = 10 + 2y \\). Kurangi \\( y \\) dan 10: \\( 2 = y \\).</span>" },
+            "t5-task3": { type: "single", q: "A box has 10 coins (dimes and quarters) worth \\(\\$1.30\\). How many quarters are there? <span class='translation block'>Sebuah kotak berisi 10 koin (10 sen dan 25 sen) senilai \\(\\$1.30\\). Berapa banyak koin 25 sen yang ada?</span>", opts: ["\\( 2 \\text{ quarters} \\)", "\\( 3 \\text{ quarters} \\)", "\\( 4 \\text{ quarters} \\)", "\\( 5 \\text{ quarters} \\)", "\\( 6 \\text{ quarters} \\)"], ans: "\\( 2 \\text{ quarters} \\)", exp: "Let quarters = \\( q \\), dimes = \\( 10 - q \\). \\( 25q + 10(10 - q) = 130 \\). \\( 25q + 100 - 10q = 130 \\). \\( 15q = 30 \\). \\( q = 2 \\). <span class='translation block'>Misalkan 25 sen = \\( q \\), 10 sen = \\( 10 - q \\). \\( 25q + 10(10 - q) = 130 \\). \\( 25q + 100 - 10q = 130 \\). \\( 15q = 30 \\). \\( q = 2 \\).</span>" },
+            "t5-task4": { type: "single", q: "Two pipes fill a pool in 6 hours. One pipe alone takes 9 hours. How long does the other pipe take? <span class='translation block'>Dua pipa mengisi kolam dalam 6 jam. Satu pipa sendiri membutuhkan 9 jam. Berapa lama waktu yang dibutuhkan pipa lainnya?</span>", opts: ["\\( 12 \\text{ hours} \\)", "\\( 15 \\text{ hours} \\)", "\\( 18 \\text{ hours} \\)", "\\( 20 \\text{ hours} \\)", "\\( 24 \\text{ hours} \\)"], ans: "\\( 18 \\text{ hours} \\)", exp: "Let other pipe = \\( x \\). \\( \\frac{1}{9} + \\frac{1}{x} = \\frac{1}{6} \\). Subtract \\( \\frac{1}{9} \\): \\( \\frac{1}{x} = \\frac{1}{6} - \\frac{1}{9} = \\frac{3}{18} - \\frac{2}{18} = \\frac{1}{18} \\). So \\( x = 18 \\). <span class='translation block'>Misalkan pipa lain = \\( x \\). \\( \\frac{1}{9} + \\frac{1}{x} = \\frac{1}{6} \\). Kurangi \\( \\frac{1}{9} \\): \\( \\frac{1}{x} = \\frac{1}{6} - \\frac{1}{9} = \\frac{3}{18} - \\frac{2}{18} = \\frac{1}{18} \\). Jadi \\( x = 18 \\).</span>" },
+            "t5-task5": { type: "single", q: "20 kg of cashews costing \\(\\$8/kg\\) are mixed with peanuts costing \\(\\$3/kg\\) to make a mix costing \\(\\$5/kg\\). How many kg of peanuts are needed? <span class='translation block'>20 kg mete dengan harga \\(\\$8/kg\\) dicampur dengan kacang tanah seharga \\(\\$3/kg\\) untuk membuat campuran seharga \\(\\$5/kg\\). Berapa kg kacang tanah yang dibutuhkan?</span>", opts: ["\\( 20 \\text{ kg} \\)", "\\( 25 \\text{ kg} \\)", "\\( 30 \\text{ kg} \\)", "\\( 35 \\text{ kg} \\)", "\\( 40 \\text{ kg} \\)"], ans: "\\( 30 \\text{ kg} \\)", exp: "Let peanuts = \\( p \\). Cost: \\( 8(20) + 3p = 5(20 + p) \\). \\( 160 + 3p = 100 + 5p \\). Subtract \\( 3p \\) and 100: \\( 60 = 2p \\). \\( p = 30 \\) kg. <span class='translation block'>Misalkan kacang = \\( p \\). Biaya: \\( 8(20) + 3p = 5(20 + p) \\). \\( 160 + 3p = 100 + 5p \\). Kurangi \\( 3p \\) dan 100: \\( 60 = 2p \\). \\( p = 30 \\) kg.</span>" },
+            "t5-task6": { type: "single", q: "A number is increased by 10%, then the result is decreased by 10%. The final number is 990. What was the original number? <span class='translation block'>Sebuah bilangan dinaikkan 10%, lalu hasilnya diturunkan 10%. Bilangan akhirnya adalah 990. Berapakah bilangan aslinya?</span>", opts: ["\\( 980 \\)", "\\( 990 \\)", "\\( 1000 \\)", "\\( 1010 \\)", "\\( 1100 \\)"], ans: "\\( 1000 \\)", exp: "Let original = \\( x \\). \\( x(1.10)(0.90) = 990 \\). \\( 0.99x = 990 \\). Divide by 0.99: \\( x = 1000 \\). <span class='translation block'>Misalkan asli = \\( x \\). \\( x(1.10)(0.90) = 990 \\). \\( 0.99x = 990 \\). Bagi 0.99: \\( x = 1000 \\).</span>" },
+            "t5-task7": { type: "single", q: "A rectangle has a length that is twice its width. If the perimeter is 60 cm, what is the area? <span class='translation block'>Sebuah persegi panjang memiliki panjang dua kali lebarnya. Jika kelilingnya 60 cm, berapakah luasnya?</span>", opts: ["\\( 100 \\text{ cm}^2 \\)", "\\( 150 \\text{ cm}^2 \\)", "\\( 200 \\text{ cm}^2 \\)", "\\( 250 \\text{ cm}^2 \\)", "\\( 300 \\text{ cm}^2 \\)"], ans: "\\( 200 \\text{ cm}^2 \\)", exp: "Let width = \\( w \\), length = \\( 2w \\). Perimeter: \\( 2(w + 2w) = 60 \\). \\( 6w = 60 \\). \\( w = 10 \\). Length = 20. Area = \\( 10 \\times 20 = 200 \\). <span class='translation block'>Misalkan lebar = \\( w \\), panjang = \\( 2w \\). Keliling: \\( 2(w + 2w) = 60 \\). \\( 6w = 60 \\). \\( w = 10 \\). Panjang = 20. Luas = \\( 10 \\times 20 = 200 \\).</span>" },
+            "t5-task8": { type: "single", q: "Solve for \\( x \\): \\( 0.3(x - 5) + 0.2x = 1.5 \\). <span class='translation block'>Selesaikan untuk \\( x \\): \\( 0.3(x - 5) + 0.2x = 1.5 \\).</span>", opts: ["\\( x = 3 \\)", "\\( x = 4 \\)", "\\( x = 5 \\)", "\\( x = 6 \\)", "\\( x = 7 \\)"], ans: "\\( x = 6 \\)", exp: "Multiply by 10: \\( 3(x - 5) + 2x = 15 \\). \\( 3x - 15 + 2x = 15 \\). \\( 5x = 30 \\). \\( x = 6 \\). <span class='translation block'>Kalikan 10: \\( 3(x - 5) + 2x = 15 \\). \\( 3x - 15 + 2x = 15 \\). \\( 5x = 30 \\). \\( x = 6 \\).</span>" },
+            "t5-task9": { type: "single", q: "Alice is 3 times as old as Bob. 4 years ago, Alice was 5 times as old as Bob. How old is Bob now? <span class='translation block'>Alice berusia 3 kali lipat dari Bob. 4 tahun lalu, Alice berusia 5 kali lipat dari Bob. Berapakah umur Bob sekarang?</span>", opts: ["\\( 6 \\text{ years old} \\)", "\\( 8 \\text{ years old} \\)", "\\( 10 \\text{ years old} \\)", "\\( 12 \\text{ years old} \\)", "\\( 16 \\text{ years old} \\)"], ans: "\\( 8 \\text{ years old} \\)", exp: "Let Bob = \\( b \\), Alice = \\( 3b \\). 4 yrs ago: \\( 3b - 4 = 5(b - 4) \\). \\( 3b - 4 = 5b - 20 \\). Subtract \\( 3b \\) and add 20: \\( 16 = 2b \\). \\( b = 8 \\). <span class='translation block'>Misalkan Bob = \\( b \\), Alice = \\( 3b \\). 4 thn lalu: \\( 3b - 4 = 5(b - 4) \\). \\( 3b - 4 = 5b - 20 \\). Kurangi \\( 3b \\) dan tambah 20: \\( 16 = 2b \\). \\( b = 8 \\).</span>" },
+            "t5-task10": { type: "single", q: "A store buys a shirt for \\(\\$50\\). They mark it up by 40%, and then give a 10% discount on the selling price. What is the final selling price? <span class='translation block'>Sebuah toko membeli kemeja seharga \\(\\$50\\). Mereka menaikkan harga 40%, lalu memberikan diskon 10% pada harga jual. Berapakah harga jual akhirnya?</span>", opts: ["\\( \\$55 \\)", "\\( \\$60 \\)", "\\( \\$63 \\)", "\\( \\$65 \\)", "\\( \\$70 \\)"], ans: "\\( \\$63 \\)", exp: "Markup: \\( 50 \\times 1.40 = 70 \\). Discount: \\( 70 \\times 0.90 = 63 \\). Final price is \\( \\$63 \\). <span class='translation block'>Kenaikan: \\( 50 \\times 1.40 = 70 \\). Diskon: \\( 70 \\times 0.90 = 63 \\). Harga akhir \\( \\$63 \\).</span>" }
+        });
+        
+    </script>
+</body>
+</html>
