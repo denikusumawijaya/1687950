@@ -1,0 +1,1915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Math Tutoring by Deni - Pythagorean Theorem: Special Right Triangles</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--primary:#2563eb;--primary-dark:#1e40af;--secondary:#f59e0b;--success:#10b981;--danger:#ef4444;--bg:#f8fafc;--card:#fff;--text:#1e293b;--muted:#64748b;--border:#e2e8f0}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+.tr{font-style:italic;font-size:.82em;color:var(--muted);display:block;margin-top:2px}
+header{background:var(--primary);color:#fff;padding:10px 20px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 8px rgba(0,0,0,.12);position:sticky;top:0;z-index:100;flex-wrap:wrap;gap:8px}
+header .brand{font-weight:700;font-size:1.05em}
+header .topic{font-size:.88em;text-align:center;flex:1}
+header .topic .tr{color:rgba(255,255,255,.85)}
+header button{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:8px 14px;border-radius:6px;cursor:pointer;font-size:.85em;white-space:nowrap}
+header button:hover{background:rgba(255,255,255,.25)}
+.main-container{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 52px)}
+.sidebar{background:var(--card);border-right:1px solid var(--border);padding:14px;overflow-y:auto;position:sticky;top:52px;height:calc(100vh - 52px)}
+.sidebar h3{font-size:.72em;color:var(--muted);text-transform:uppercase;margin-bottom:8px;letter-spacing:1px}
+.nav-link{display:block;padding:8px 10px;border-radius:6px;cursor:pointer;margin-bottom:3px;font-size:.84em;border:1px solid transparent;transition:all .15s}
+.nav-link:hover{background:#eff6ff}
+.nav-link.active{background:var(--primary);color:#fff;pointer-events:none;cursor:default}
+.nav-link .nl-title{display:block;font-weight:600}
+.nav-link .time{font-size:.76em;color:var(--muted);display:block;margin-top:2px}
+.nav-link.active .time,.nav-link.active .tr{color:rgba(255,255,255,.85)}
+.nav-link.disabled{opacity:.45;cursor:not-allowed;font-size:.8em;padding:6px 10px}
+.content-area{padding:22px 28px;overflow-y:auto;max-width:1100px;margin:0 auto;width:100%}
+.page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding-bottom:12px;border-bottom:2px solid var(--border);flex-wrap:wrap;gap:8px}
+.page-header h2{color:var(--primary-dark);font-size:1.1em}
+.page-header .badge{background:var(--secondary);color:#fff;padding:4px 10px;border-radius:20px;font-size:.76em;font-weight:600}
+.card{background:var(--card);border-radius:10px;padding:22px;box-shadow:0 2px 8px rgba(0,0,0,.05);margin-bottom:16px;border:1px solid var(--border)}
+.card.explain{border-left:4px solid var(--primary)}
+.card.task{border-left:4px solid var(--secondary)}
+.card h3{color:var(--primary-dark);margin-bottom:12px;font-size:1.1em}
+.math-block{background:#f1f5f9;padding:12px 14px;border-radius:8px;margin:12px 0;overflow-x:auto}
+.example-box{background:#fef3c7;border-left:4px solid var(--secondary);padding:12px 16px;margin:12px 0;border-radius:6px}
+.example-box h4{color:#92400e;margin-bottom:6px;font-size:.95em}
+.tip-box{background:#dbeafe;border-left:4px solid var(--primary);padding:10px 14px;margin:10px 0;border-radius:6px}
+.tip-box h4{color:#1e40af;margin-bottom:4px;font-size:.9em}
+.illustration{text-align:center;margin:14px 0;padding:14px;background:#f1f5f9;border-radius:8px}
+.q-text{font-size:1em;margin-bottom:12px;line-height:1.7}
+.options{display:flex;flex-direction:column;gap:8px}
+.option{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border:2px solid var(--border);border-radius:8px;cursor:pointer;background:#fff;transition:all .15s}
+.option:hover{border-color:var(--primary);background:#eff6ff}
+.option.selected{border-color:var(--primary);background:#dbeafe}
+.option.correct{border-color:var(--success);background:#d1fae5}
+.option.incorrect{border-color:var(--danger);background:#fee2e2}
+.option .marker{min-width:18px;width:18px;height:18px;border:2px solid var(--muted);border-radius:50%;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:.7em;color:#fff}
+.option.selected .marker{background:var(--primary);border-color:var(--primary)}
+.option.correct .marker{background:var(--success);border-color:var(--success)}
+.option.incorrect .marker{background:var(--danger);border-color:var(--danger)}
+.option.checkbox .marker{border-radius:3px}
+.option .opt-text{flex:1}
+.fill-input{padding:8px 12px;border:2px solid var(--border);border-radius:6px;font-size:1em;width:100%;margin:8px 0;font-family:inherit}
+.fill-input:focus{border-color:var(--primary);outline:none}
+.btn-submit{background:var(--primary);color:#fff;border:none;padding:9px 20px;border-radius:6px;cursor:pointer;font-size:.88em;font-weight:600;margin-top:12px}
+.btn-submit:hover{background:var(--primary-dark)}
+.feedback{margin-top:12px;padding:14px;border-radius:8px;display:none}
+.feedback.show{display:block}
+.feedback.correct{background:#d1fae5;border:1px solid var(--success)}
+.feedback.incorrect{background:#fee2e2;border:1px solid var(--danger)}
+.feedback h4{margin-bottom:6px}
+.feedback ol,.feedback ul{margin:6px 0;padding-left:22px}
+.feedback li{margin:4px 0}
+.card ol, .card ul { padding-left: 26px; margin: 10px 0; }
+.card li { margin: 5px 0; }
+.example-box ol, .example-box ul { padding-left: 22px; margin: 8px 0; }
+.tip-box ol, .tip-box ul { padding-left: 22px; margin: 8px 0; }
+.math-block ol, .math-block ul { padding-left: 22px; margin: 8px 0; }
+.pagination{display:flex;justify-content:space-between;align-items:center;margin-top:18px;padding-top:14px;border-top:1px solid var(--border)}
+.pagination button{background:var(--primary);color:#fff;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;font-size:.84em}
+.pagination button:disabled{background:#cbd5e1;cursor:not-allowed}
+.pagination .indicator{font-size:.82em;color:var(--muted);text-align:center;flex:1;padding:0 10px}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;align-items:center;justify-content:center}
+.modal.active{display:flex}
+.modal-content{background:#fff;padding:22px;border-radius:12px;max-width:460px;width:90%}
+.modal-content h3{color:var(--primary-dark);margin-bottom:12px}
+.modal-content ul{list-style:none;padding-left:0}
+.modal-content li{padding:10px 0;border-bottom:1px solid var(--border)}
+.modal-content li:last-child{border-bottom:none}
+.modal-close{background:var(--primary);color:#fff;border:none;padding:8px 18px;border-radius:6px;cursor:pointer;margin-top:12px}
+.sort-list{display:flex;flex-direction:column;gap:6px}
+.sort-item{padding:10px 12px;border:2px solid var(--border);border-radius:8px;background:#fff;cursor:pointer;display:flex;align-items:center;gap:10px;transition:all .15s}
+.sort-item:hover{border-color:var(--primary)}
+.sort-item.selected{border-color:var(--primary);background:#dbeafe}
+.sort-item .pos{background:var(--primary);color:#fff;min-width:24px;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8em;flex-shrink:0}
+.sort-item .sort-text{flex:1}
+.pair-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pair-col h4{font-size:.85em;color:var(--muted);margin-bottom:6px;text-transform:uppercase}
+.pair-col{display:flex;flex-direction:column;gap:6px}
+.pair-item{padding:10px 12px;border:2px solid var(--border);border-radius:8px;background:#fff;cursor:pointer;text-align:center;font-size:.92em}
+.pair-item.selected{border-color:var(--primary);background:#dbeafe}
+.pair-item.paired{opacity:.5;cursor:default;border-color:var(--success);background:#d1fae5}
+.pairs-list{margin-top:10px}
+.pair-row{display:flex;justify-content:space-between;align-items:center;padding:6px 10px;background:#f1f5f9;border-radius:6px;margin-bottom:4px;font-size:.85em}
+.pair-row .remove{cursor:pointer;color:var(--danger);font-weight:700;margin-left:6px}
+.page-numbers { display: flex; gap: 3px; flex-wrap: nowrap; justify-content: center; flex: 1; overflow-x: auto; padding: 0 3px; }
+.page-num { min-width: 28px; height: 26px; border: 1px solid var(--border); background: #fff; border-radius: 4px; cursor: pointer; font-size: .7em; display: flex; align-items: center; justify-content: center; padding: 0 4px; white-space: nowrap; transition: all .15s; flex-shrink: 0; }
+.page-num.page-num-e { background: #eff6ff; border-color: #93c5fd; color: #1e40af; }
+.page-num.page-num-t { background: #fffbeb; border-color: #fcd34d; color: #92400e; }
+.page-num.page-num-e:hover { background: #dbeafe; border-color: var(--primary); }
+.page-num.page-num-t:hover { background: #fef3c7; border-color: var(--secondary); }
+.page-num.page-num-e.active { background: var(--primary); color: #fff; border-color: var(--primary); font-weight: 600; }
+.page-num.page-num-t.active { background: var(--secondary); color: #fff; border-color: var(--secondary); font-weight: 600; }
+.page-num:disabled { opacity: 1; cursor: default; }
+.page-num.page-num-e:disabled:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+.page-num.page-num-t:disabled:hover { background: var(--secondary); color: #fff; border-color: var(--secondary); }
+@media(max-width:1100px){.main-container{grid-template-columns:180px 1fr}.content-area{padding:18px 20px}}
+@media(max-width:760px){.main-container{grid-template-columns:1fr}.sidebar{display:none}.content-area{padding:16px}header{font-size:.9em}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">Math Tutoring by Deni</div>
+  <div class="topic">Topic: Pythagorean Theorem: Special Right Triangles <span class="tr">Topik: Teorema Pythagoras: Segitiga Istimewa</span></div>
+  <button id="classRulesBtn">Class Rules <span class="tr">Aturan Kelas</span></button>
+</header>
+<div class="main-container">
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content-area">
+    <div id="pageContent"></div>
+    <div class="pagination">
+      <button id="prevBtn">← Previous <span class="tr">Sebelumnya</span></button>
+      <div class="page-numbers" id="pageNums"></div>
+      <button id="nextBtn">Next <span class="tr">Berikutnya</span> →</button>
+    </div>
+  </main>
+</div>
+<div id="classRulesModal" class="modal">
+  <div class="modal-content">
+    <h3>Class Rules <span class="tr">Aturan Kelas</span></h3>
+    <ul>
+      <li>Speak in turn <span class="tr">Berbicara secara bergantian</span></li>
+      <li>Ask permission before leaving the class <span class="tr">Meminta izin jika ingin meninggalkan kelas</span></li>
+      <li>Turn on microphone and camera when needed <span class="tr">Menyalakan microphone dan camera jika diperlukan</span></li>
+    </ul>
+    <button class="modal-close">Close <span class="tr">Tutup</span></button>
+  </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  if(!window.renderMathInElement){setTimeout(arguments.callee,50);return;}
+  const sectionsData = {
+    a: {
+      title: 'Spiral Review Warm-up',
+      titleEn: 'Spiral Review Warm-up',
+      time: '00:00 - 00:10',
+      pages: [
+        { type:'explanation', pageTitle:'E1: The Pythagorean Theorem', pageTitleEn:'Teorema Pythagoras',
+          body:`
+            <p>The <strong>Pythagorean Theorem</strong> states that in a right triangle, the square of the length of the hypotenuse ($c$) is equal to the sum of the squares of the lengths of the legs ($a$ and $b$).
+              <span class="tr"><strong>Teorema Pythagoras</strong> menyatakan bahwa pada segitiga siku-siku, kuadrat panjang sisi miring ($c$) sama dengan jumlah kuadrat panjang sisi siku-sikunya ($a$ dan $b$).</span></p>
+            <div class="math-block"><strong>Formula:</strong> $$a^2 + b^2 = c^2$$ <span class="tr">Rumus: $$a^2 + b^2 = c^2$$</span></div>
+            <div class="illustration">
+              <svg width="180" height="140" viewBox="0 0 180 140">
+                <line x1="20" y1="120" x2="120" y2="120" stroke="#333" stroke-width="2"/>
+                <line x1="120" y1="120" x2="120" y2="20" stroke="#333" stroke-width="2"/>
+                <line x1="20" y1="120" x2="120" y2="20" stroke="#ef4444" stroke-width="2"/>
+                <rect x="110" y="110" width="20" height="20" fill="none" stroke="#333" stroke-width="1"/>
+                <text x="70" y="135" font-size="14" fill="#1e40af" font-weight="bold">b</text>
+                <text x="125" y="75" font-size="14" fill="#1e40af" font-weight="bold">a</text>
+                <text x="60" y="65" font-size="14" fill="#ef4444" font-weight="bold">c</text>
+                <text x="85" y="115" font-size="14" fill="#333">90°</text>
+              </svg>
+              <div style="font-size:.82em;color:var(--muted);margin-top:6px">Right Triangle <span class="tr">Segitiga Siku-siku</span></div>
+            </div>
+            <div class="example-box"><h4>Example <span class="tr">Contoh</span></h4>
+              If $a = 3$ and $b = 4$, find $c$.
+              <span class="tr">Jika $a = 3$ dan $b = 4$, cari $c$.</span>
+              <ol>
+                <li>$a^2 + b^2 = c^2$ <span class="tr">Rumus dasar</span></li>
+                <li>$3^2 + 4^2 = c^2$ <span class="tr">Substitusi nilai</span></li>
+                <li>$9 + 16 = c^2$ <span class="tr">Hitung kuadrat</span></li>
+                <li>$25 = c^2$ <span class="tr">Jumlahkan</span></li>
+                <li>$c = \\sqrt{25}$ <span class="tr">Akar pangkat dua</span></li>
+                <li>$c = 5$ <span class="tr">Hasil</span></li>
+              </ol>
+            </div>
+          `
+        },
+        { type:'task', pageTitle:'T1: Identify the Hypotenuse', pageTitleEn:'Identifikasi Sisi Miring', taskType:'radio',
+          question:'In a right triangle, the side opposite the right angle is called the...?', questionEn:'Pada segitiga siku-siku, sisi yang berhadapan dengan sudut siku-siku disebut...?',
+          options:[
+            {text:'Leg <span class="tr">Sisi Siku-siku</span>', correct:false},
+            {text:'Hypotenuse <span class="tr">Sisi Miring</span>', correct:true},
+            {text:'Base <span class="tr">Alas</span>', correct:false},
+            {text:'Altitude <span class="tr">Tinggi</span>', correct:false}
+          ],
+          explanation:`<p>The hypotenuse is always the longest side and is opposite the $90^\\circ$ angle. <span class="tr">Sisi miring selalu merupakan sisi terpanjang dan berhadapan dengan sudut $90^\\circ$.</span></p>`
+        },
+        { type:'task', pageTitle:'T2: Calculate Hypotenuse', pageTitleEn:'Hitung Sisi Miring', taskType:'fill',
+          question:'Given $a = 6$ and $b = 8$. Calculate the value of $c$.', questionEn:'Diketahui $a = 6$ dan $b = 8$. Hitung nilai $c$.',
+          correctAnswer:'10', acceptableAnswers:['10'],
+          explanation:`<ol><li>$a^2 + b^2 = c^2$</li><li>$6^2 + 8^2 = c^2$</li><li>$36 + 64 = c^2$</li><li>$100 = c^2$</li><li>$c = \\sqrt{100} = 10$</li></ol>`
+        },
+        { type:'task', pageTitle:'T3: True or False', pageTitleEn:'Benar atau Salah', taskType:'truefalse',
+          question:'True or False: The hypotenuse is always the shortest side of a right triangle. <span class="tr">Benar atau salah: Sisi miring selalu merupakan sisi terpendek pada segitiga siku-siku.</span>', questionEn:'True or False: The hypotenuse is always the shortest side of a right triangle. <span class="tr">Benar atau salah: Sisi miring selalu merupakan sisi terpendek pada segitiga siku-siku.</span>',
+          correctAnswer:'false',
+          explanation:`<p>The hypotenuse is the longest side. <span class="tr">Sisi miring adalah sisi terpanjang.</span></p>`
+        },
+        { type:'explanation', pageTitle:'E2: Perfect Squares & Square Roots', pageTitleEn:'Kuadrat Sempurna & Akar Kuadrat',
+          body:`
+            <p>A <strong>perfect square</strong> is a number that results from multiplying an integer by itself. For example, $3 \\times 3 = 9$, so $9$ is a perfect square.
+              <span class="tr"><strong>Kuadrat sempurna</strong> adalah angka yang dihasilkan dari perkalian suatu bilangan bulat dengan dirinya sendiri. Contohnya, $3 \\times 3 = 9$, jadi $9$ adalah kuadrat sempurna.</span></p>
+            <div class="math-block"><strong>Common Perfect Squares:</strong> $1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144, 169, 196, 225$ <span class="tr">Kuadrat Sempurna Umum: $1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144, 169, 196, 225$</span></div>
+            <p>The <strong>square root</strong> ($\\sqrt{x}$) is the inverse operation of squaring. $\\sqrt{25} = 5$ because $5^2 = 25$.
+              <span class="tr"><strong>Akar kuadrat</strong> ($\\sqrt{x}$) adalah operasi invers dari kuadrat. $\\sqrt{25} = 5$ karena $5^2 = 25$.</span></p>
+            <div class="example-box"><h4>Non-Perfect Squares <span class="tr">Bukan Kuadrat Sempurna</span></h4>
+              If a number is not a perfect square, we can simplify its square root. For example, $\\sqrt{20}$.
+              <span class="tr">Jika sebuah angka bukan kuadrat sempurna, kita dapat menyederhanakan akar kuadratnya. Contohnya, $\\sqrt{20}$.</span>
+              <ol>
+                <li>Find factors: $20 = 4 \\times 5$ <span class="tr">Cari faktor: $20 = 4 \\times 5$</span></li>
+                <li>$\\sqrt{20} = \\sqrt{4 \\times 5}$ <span class="tr">Faktorkan dalam akar</span></li>
+                <li>$\\sqrt{4} \\times \\sqrt{5}$ <span class="tr">Pisahkan akar</span></li>
+                <li>$= 2\\sqrt{5}$ <span class="tr">Sederhanakan $\\sqrt{4}$ menjadi $2$</span></li>
+              </ol>
+            </div>
+          `
+        },
+        { type:'task', pageTitle:'T4: Identify Perfect Square', pageTitleEn:'Identifikasi Kuadrat Sempurna', taskType:'radio',
+          question:'Which of the following is a perfect square?', questionEn:'Manakah dari berikut ini yang merupakan kuadrat sempurna?',
+          options:[
+            {text:'$12$ <span class="tr">$12$</span>', correct:false},
+            {text:'$20$ <span class="tr">$20$</span>', correct:false},
+            {text:'$49$ <span class="tr">$49$</span>', correct:true},
+            {text:'$50$ <span class="tr">$50$</span>', correct:false}
+          ],
+          explanation:`<p>$49$ is a perfect square because $7 \\times 7 = 49$. <span class="tr">$49$ adalah kuadrat sempurna karena $7 \\times 7 = 49$.</span></p>`
+        },
+        { type:'task', pageTitle:'T5: Calculate Square Root', pageTitleEn:'Hitung Akar Kuadrat', taskType:'fill',
+          question:'Calculate $\\sqrt{144}$.', questionEn:'Hitung $\\sqrt{144}$.',
+          correctAnswer:'12', acceptableAnswers:['12'],
+          explanation:`<p>Because $12 \\times 12 = 144$, then $\\sqrt{144} = 12$. <span class="tr">Karena $12 \\times 12 = 144$, maka $\\sqrt{144} = 12$.</span></p>`
+        },
+        { type:'task', pageTitle:'T6: Match Square Roots', pageTitleEn:'Pasangkan Akar Kuadrat', taskType:'pairing',
+          question:'Match the square root with its simplified form.', questionEn:'Pasangkan akar kuadrat dengan bentuk sederhananya.',
+          pairs:[
+            {left:'$\\sqrt{9}$', right:'$3$'},
+            {left:'$\\sqrt{16}$', right:'$4$'},
+            {left:'$\\sqrt{100}$', right:'$10$'},
+            {left:'$\\sqrt{8}$', right:'$2\\sqrt{2}$'}
+          ],
+          explanation:`<p>Break down numbers into perfect square factors. <span class="tr">Pecah angka menjadi faktor kuadrat sempurna.</span></p>`
+        },
+        { type:'explanation', pageTitle:'E3: Finding Missing Legs', pageTitleEn:'Mencari Sisi Siku-siku yang Hilang',
+          body:`
+            <p>If you know the hypotenuse ($c$) and one leg ($a$ or $b$), you can find the missing leg by rearranging the Pythagorean Theorem.
+              <span class="tr">Jika Anda mengetahui sisi miring ($c$) dan satu sisi siku-siku ($a$ atau $b$), Anda dapat mencari sisi yang hilang dengan menyusun ulang Teorema Pythagoras.</span></p>
+            <div class="math-block"><strong>Rearranged Formula:</strong> $$a^2 = c^2 - b^2 \\quad \\text{or} \\quad b^2 = c^2 - a^2$$ <span class="tr">Rumus yang Disusun Ulang: $$a^2 = c^2 - b^2 \\quad \\text{atau} \\quad b^2 = c^2 - a^2$$</span></div>
+            <div class="example-box"><h4>Example <span class="tr">Contoh</span></h4>
+              Given $c = 13$ and $a = 5$. Find $b$.
+              <span class="tr">Diketahui $c = 13$ dan $a = 5$. Cari $b$.</span>
+              <ol>
+                <li>$b^2 = c^2 - a^2$ <span class="tr">Rumus</span></li>
+                <li>$b^2 = 13^2 - 5^2$ <span class="tr">Substitusi nilai</span></li>
+                <li>$b^2 = 169 - 25$ <span class="tr">Hitung kuadrat</span></li>
+                <li>$b^2 = 144$ <span class="tr">Kurangkan</span></li>
+                <li>$b = \\sqrt{144}$ <span class="tr">Akar pangkat dua</span></li>
+                <li>$b = 12$ <span class="tr">Hasil</span></li>
+              </ol>
+            </div>
+          `
+        },
+        { type:'task', pageTitle:'T7: Find Missing Leg', pageTitleEn:'Cari Sisi yang Hilang', taskType:'fill',
+          question:'Given $a = 8$ and $c = 17$. Find $b$.', questionEn:'Diketahui $a = 8$ dan $c = 17$. Cari $b$.',
+          correctAnswer:'15', acceptableAnswers:['15'],
+          explanation:`<ol><li>$b^2 = c^2 - a^2$</li><li>$b^2 = 17^2 - 8^2$</li><li>$b^2 = 289 - 64$</li><li>$b^2 = 225$</li><li>$b = \\sqrt{225} = 15$</li></ol>`
+        },
+        { type:'task', pageTitle:'T8: Right Triangle Properties', pageTitleEn:'Properti Segitiga Siku-siku', taskType:'checkbox',
+          question:'Select all correct properties of a right triangle.', questionEn:'Pilih semua properti segitiga siku-siku yang benar.',
+          options:[
+            {text:'Has exactly one $90^\\circ$ angle <span class="tr">Memiliki tepat satu sudut $90^\\circ$</span>', correct:true},
+            {text:'The sum of all angles is $180^\\circ$ <span class="tr">Jumlah semua sudut adalah $180^\\circ$</span>', correct:true},
+            {text:'The side opposite the right angle is called the leg <span class="tr">Sisi yang berhadapan dengan sudut siku-siku disebut sisi siku-siku</span>', correct:false},
+            {text:'Follows $a^2 + b^2 = c^2$ <span class="tr">Mengikuti $a^2 + b^2 = c^2$</span>', correct:true}
+          ],
+          explanation:`<p>The side opposite the right angle is the hypotenuse, not a leg. <span class="tr">Sisi yang berhadapan dengan sudut siku-siku adalah sisi miring, bukan sisi siku-siku.</span></p>`
+        },
+        { type:'task', pageTitle:'T9: Order the Steps', pageTitleEn:'Urutkan Langkah', taskType:'sorting',
+          question:'Order the steps to find a missing leg when given $c=10$ and $a=6$.', questionEn:'Urutkan langkah untuk mencari sisi yang hilang jika diketahui $c=10$ dan $a=6$.',
+          items:[
+            '$b^2 = c^2 - a^2$',
+            '$b^2 = 10^2 - 6^2$',
+            '$b^2 = 100 - 36$',
+            '$b^2 = 64$',
+            '$b = 8$'
+          ],
+          correctOrder:[0,1,2,3,4],
+          explanation:`<p>Follow the algebraic sequence from formula to final root. <span class="tr">Ikuti urutan aljabar dari rumus hingga akar akhir.</span></p>`
+        },
+        { type:'task', pageTitle:'T10: Ladder Problem', pageTitleEn:'Soal Tangga', taskType:'fill',
+          question:'A ladder of length $15$ ft leans against a wall. The base of the ladder is $9$ ft from the wall. How high up the wall does the ladder reach? (in ft)', questionEn:'Sebuah tangga sepanjang $15$ kaki bersandar pada dinding. Pangkal tangga berjarak $9$ kaki dari dinding. Sampai berapa tinggi tangga menapak dinding? (dalam kaki)',
+          correctAnswer:'12', acceptableAnswers:['12'],
+          explanation:`<ol><li>$c = 15, a = 9$</li><li>$b^2 = 15^2 - 9^2$</li><li>$b^2 = 225 - 81$</li><li>$b^2 = 144$</li><li>$b = \\sqrt{144} = 12$ ft</li></ol>`
+        }
+      ]
+    },
+    b: {
+      title: 'Introduction & Real-World Connection',
+      titleEn: 'Introduction & Real-World Connection',
+      time: '00:10 - 00:15',
+      pages: [
+        { type:'explanation', pageTitle:'E1: Special Right Triangles', pageTitleEn:'Segitiga Istimewa',
+          body:`
+            <p>A <strong>Special Right Triangle</strong> is a right triangle whose side lengths follow a specific, consistent ratio. This means you can find the missing sides without always using the full Pythagorean Theorem, just by memorizing the pattern!
+              <span class="tr"><strong>Segitiga Istimewa</strong> adalah segitiga siku-siku yang panjang sisinya mengikuti rasio yang spesifik dan konsisten. Artinya, Anda bisa mencari sisi yang hilang tanpa selalu menggunakan Teorema Pythagoras lengkap, cukup dengan menghafal polanya!</span></p>
+            <div class="illustration">
+              <svg width="280" height="120" viewBox="0 0 280 120">
+                <line x1="20" y1="100" x2="100" y2="100" stroke="#333" stroke-width="3"/>
+                <line x1="100" y1="100" x2="100" y2="20" stroke="#333" stroke-width="3"/>
+                <line x1="20" y1="100" x2="100" y2="20" stroke="#10b981" stroke-width="3"/>
+                <rect x="90" y="90" width="10" height="10" fill="none" stroke="#333" stroke-width="2"/>
+                <text x="40" y="115" font-size="12" fill="#10b981">Leg</text>
+                <text x="105" y="60" font-size="12" fill="#10b981">Leg</text>
+                <text x="40" y="55" font-size="12" fill="#ef4444">Hypotenuse</text>
+                
+                <line x1="150" y1="100" x2="250" y2="100" stroke="#333" stroke-width="3"/>
+                <line x1="250" y1="100" x2="200" y2="20" stroke="#333" stroke-width="3"/>
+                <line x1="200" y1="20" x2="150" y2="100" stroke="#ef4444" stroke-width="3"/>
+                <rect x="240" y="90" width="10" height="10" fill="none" stroke="#333" stroke-width="2"/>
+              </svg>
+              <div style="font-size:.82em;color:var(--muted);margin-top:6px">Right Triangles in Real Life <span class="tr">Segitiga Siku-siku di Kehidupan Nyata</span></div>
+            </div>
+            <p>We will focus on two types:
+              <span class="tr">Kita akan fokus pada dua jenis:</span></p>
+            <ol>
+              <li><strong>45°-45°-90° Triangle</strong>: An isosceles right triangle. <span class="tr"><strong>Segitiga 45°-45°-90°</strong>: Segitiga siku-siku sama kaki.</span></li>
+              <li><strong>30°-60°-90° Triangle</strong>: A scalene right triangle. <span class="tr"><strong>Segitiga 30°-60°-90°</strong>: Segitiga siku-siku sembarang.</span></li>
+            </ol>
+          `
+        },
+        { type:'task', pageTitle:'T1: Identify Special Triangles', pageTitleEn:'Identifikasi Segitiga Istimewa', taskType:'radio',
+          question:'Which of the following is a special right triangle?', questionEn:'Manakah dari berikut ini yang merupakan segitiga siku-siku istimewa?',
+          options:[
+            {text:'$30^\\circ-60^\\circ-90^\\circ$ <span class="tr">$30^\\circ-60^\\circ-90^\\circ$</span>', correct:true},
+            {text:'$40^\\circ-50^\\circ-90^\\circ$ <span class="tr">$40^\\circ-50^\\circ-90^\\circ$</span>', correct:false},
+            {text:'$20^\\circ-70^\\circ-90^\\circ$ <span class="tr">$20^\\circ-70^\\circ-90^\\circ$</span>', correct:false},
+            {text:'$45^\\circ-45^\\circ-80^\\circ$ <span class="tr">$45^\\circ-45^\\circ-80^\\circ$</span>', correct:false}
+          ],
+          explanation:`<p>Only the $30^\\circ-60^\\circ-90^\\circ$ and $45^\\circ-45^\\circ-90^\\circ$ triangles are standard special right triangles. <span class="tr">Hanya segitiga $30^\\circ-60^\\circ-90^\\circ$ dan $45^\\circ-45^\\circ-90^\\circ$ yang merupakan segitiga siku-siku istimewa standar.</span></p>`
+        },
+        { type:'task', pageTitle:'T2: Real-World Example', pageTitleEn:'Contoh Dunia Nyata', taskType:'checkbox',
+          question:'Select all real-world objects that often form right triangles.', questionEn:'Pilih semua benda dunia nyata yang sering membentuk segitiga siku-siku.',
+          options:[
+            {text:'A ladder leaning against a wall <span class="tr">Tangga bersandar pada dinding</span>', correct:true},
+            {text:'The shadow of a tree <span class="tr">Bayangan pohon</span>', correct:true},
+            {text:'A perfectly round circle <span class="tr">Lingkaran yang sempurna bulat</span>', correct:false},
+            {text:'A roof truss <span class="tr">Kuda-kuda atap</span>', correct:true}
+          ],
+          explanation:`<p>Ladders, shadows, and roofs frequently form right triangles in geometry problems. <span class="tr">Tangga, bayangan, dan atap sering kali membentuk segitiga siku-siku pada masalah geometri.</span></p>`
+        },
+        { type:'task', pageTitle:'T3: Isosceles Right Triangle', pageTitleEn:'Segitiga Siku-siku Sama Kaki', taskType:'truefalse',
+          question:'True or False: A 45-45-90 triangle is an isosceles triangle because it has two equal sides and two equal angles. <span class="tr">Benar atau salah: Segitiga 45-45-90 adalah segitiga sama kaki karena memiliki dua sisi yang sama dan dua sudut yang sama.</span>', questionEn:'True or False: A 45-45-90 triangle is an isosceles triangle because it has two equal sides and two equal angles. <span class="tr">Benar atau salah: Segitiga 45-45-90 adalah segitiga sama kaki karena memiliki dua sisi yang sama dan dua sudut yang sama.</span>',
+          correctAnswer:'true',
+          explanation:`<p>Two $45^\\circ$ angles mean the opposite sides must be equal, making it isosceles. <span class="tr">Dua sudut $45^\\circ$ berarti sisi di hadapannya harus sama, menjadikannya sama kaki.</span></p>`
+        },
+        { type:'explanation', pageTitle:'E2: The 45-45-90 Pattern', pageTitleEn:'Pola 45-45-90',
+          body:`
+            <p>The <strong>45-45-90 triangle</strong> has a very simple pattern: the two legs are equal in length, and the hypotenuse is $\\sqrt{2}$ times the length of a leg.
+              <span class="tr"><strong>Segitiga 45-45-90</strong> memiliki pola yang sangat sederhana: kedua sisi siku-sikunya sama panjang, dan sisi miringnya adalah $\\sqrt{2}$ kali panjang sisi siku-sikunya.</span></p>
+            <div class="math-block"><strong>Formula:</strong> $$ \\text{Hypotenuse} = \\text{Leg} \\times \\sqrt{2} $$ <span class="tr">Rumus: $$ \\text{Sisi Miring} = \\text{Sisi Siku-siku} \\times \\sqrt{2} $$</span></div>
+            <div class="illustration">
+              <svg width="180" height="140" viewBox="0 0 180 140">
+                <line x1="20" y1="120" x2="120" y2="120" stroke="#1e40af" stroke-width="3"/>
+                <line x1="120" y1="120" x2="120" y2="20" stroke="#1e40af" stroke-width="3"/>
+                <line x1="20" y1="120" x2="120" y2="20" stroke="#ef4444" stroke-width="3"/>
+                <rect x="110" y="110" width="10" height="10" fill="none" stroke="#333" stroke-width="2"/>
+                <text x="60" y="135" font-size="14" fill="#1e40af">x</text>
+                <text x="125" y="75" font-size="14" fill="#1e40af">x</text>
+                <text x="55" y="65" font-size="14" fill="#ef4444">x√2</text>
+                <text x="50" y="115" font-size="12" fill="#333">45°</text>
+                <text x="105" y="35" font-size="12" fill="#333">45°</text>
+              </svg>
+              <div style="font-size:.82em;color:var(--muted);margin-top:6px">45-45-90 Triangle <span class="tr">Segitiga 45-45-90</span></div>
+            </div>
+            <div class="example-box"><h4>Example <span class="tr">Contoh</span></h4>
+              If a leg is $5$, find the hypotenuse.
+              <span class="tr">Jika sisi siku-siku adalah $5$, cari sisi miring.</span>
+              <ol>
+                <li>$c = 5\\sqrt{2}$ <span class="tr">Kalikan dengan $\\sqrt{2}$</span></li>
+              </ol>
+            </div>
+          `
+        },
+        { type:'task', pageTitle:'T4: Calculate 45-45-90 Hypotenuse', pageTitleEn:'Hitung Sisi Miring 45-45-90', taskType:'fill',
+          question:'Given a leg of $7$, find the hypotenuse (just the number outside the root).', questionEn:'Diketahui sisi siku-siku $7$, cari sisi miring (angka di luar akar saja).',
+          correctAnswer:'7', acceptableAnswers:['7'],
+          explanation:`<p>$c = 7\\sqrt{2}$. The number outside the root is $7$. <span class="tr">$c = 7\\sqrt{2}$. Angka di luar akar adalah $7$.</span></p>`
+        },
+        { type:'task', pageTitle:'T5: Find Leg from Hypotenuse', pageTitleEn:'Cari Sisi dari Sisi Miring', taskType:'fill',
+          question:'Given the hypotenuse is $4\\sqrt{2}$, find the length of one leg.', questionEn:'Diketahui sisi miring $4\\sqrt{2}$, cari panjang satu sisi siku-siku.',
+          correctAnswer:'4', acceptableAnswers:['4'],
+          explanation:`<p>To find the leg from the hypotenuse, divide by $\\sqrt{2}$: $\\frac{4\\sqrt{2}}{\\sqrt{2}} = 4$. <span class="tr">Untuk mencari sisi siku-siku dari sisi miring, bagi dengan $\\sqrt{2}$: $\\frac{4\\sqrt{2}}{\\sqrt{2}} = 4$.</span></p>`
+        },
+        { type:'task', pageTitle:'T6: Match the Formulas', pageTitleEn:'Pasangkan Rumus', taskType:'pairing',
+          question:'Match the side to find with the correct formula in a 45-45-90 triangle.', questionEn:'Pasangkan sisi yang dicari dengan rumus yang benar pada segitiga 45-45-90.',
+          pairs:[
+            {left:'Hypotenuse (from leg)', right:'$\\text{Leg} \\times \\sqrt{2}$'},
+            {left:'Leg (from hypotenuse)', right:'$\\frac{\\text{Hypotenuse}}{\\sqrt{2}}$'},
+            {left:'Leg 1 (if Leg 2 = 9)', right:'$9$'},
+            {left:'Hypotenuse (if Leg = 3)', right:'$3\\sqrt{2}$'}
+          ],
+          explanation:`<p>Legs are equal, hypotenuse is leg times $\\sqrt{2}$. <span class="tr">Sisi siku-siku sama, sisi miring adalah sisi siku-siku dikali $\\sqrt{2}$.</span></p>`
+        },
+        { type:'explanation', pageTitle:'E3: The 30-60-90 Pattern', pageTitleEn:'Pola 30-60-90',
+          body:`
+            <p>The <strong>30-60-90 triangle</strong> has sides in the ratio $1 : \\sqrt{3} : 2$. 
+              <span class="tr"><strong>Segitiga 30-60-90</strong> memiliki sisi dengan rasio $1 : \\sqrt{3} : 2$.</span></p>
+            <ul>
+              <li>The <strong>short leg</strong> (opposite $30^\\circ$) is $x$. <span class="tr"><strong>Sisi pendek</strong> (berhadapan $30^\\circ$) adalah $x$.</span></li>
+              <li>The <strong>long leg</strong> (opposite $60^\\circ$) is $x\\sqrt{3}$. <span class="tr"><strong>Sisi panjang</strong> (berhadapan $60^\\circ$) adalah $x\\sqrt{3}$.</span></li>
+              <li>The <strong>hypotenuse</strong> (opposite $90^\\circ$) is $2x$. <span class="tr"><strong>Sisi miring</strong> (berhadapan $90^\\circ$) adalah $2x$.</span></li>
+            </ul>
+            <div class="illustration">
+              <svg width="220" height="140" viewBox="0 0 220 140">
+                <line x1="20" y1="120" x2="180" y2="120" stroke="#1e40af" stroke-width="3"/>
+                <line x1="180" y1="120" x2="20" y2="120" stroke="#1e40af" stroke-width="3"/>
+                <line x1="20" y1="120" x2="180" y2="20" stroke="#1e40af" stroke-width="3"/>
+                <line x1="180" y1="120" x2="180" y2="20" stroke="#ef4444" stroke-width="3"/>
+                <rect x="170" y="110" width="10" height="10" fill="none" stroke="#333" stroke-width="2"/>
+                <text x="90" y="135" font-size="14" fill="#10b981">x√3</text>
+                <text x="185" y="75" font-size="14" fill="#ef4444">2x</text>
+                <text x="45" y="115" font-size="12" fill="#333">30°</text>
+                <text x="150" y="35" font-size="12" fill="#333">60°</text>
+              </svg>
+              <div style="font-size:.82em;color:var(--muted);margin-top:6px">30-60-90 Triangle <span class="tr">Segitiga 30-60-90</span></div>
+            </div>
+            <div class="tip-box"><h4>Golden Rule <span class="tr">Aturan Emas</span></h4>
+              Always find the <strong>short leg</strong> first. If you have the long leg, divide by $\\sqrt{3}$ to find $x$. If you have the hypotenuse, divide by $2$ to find $x$.
+              <span class="tr">Selalu cari <strong>sisi pendek</strong> pertama. Jika Anda memiliki sisi panjang, bagi dengan $\\sqrt{3}$ untuk mencari $x$. Jika Anda memiliki sisi miring, bagi dengan $2$ untuk mencari $x$.</span></div>
+          `
+        },
+        { type:'task', pageTitle:'T7: 30-60-90 Short Leg', pageTitleEn:'Sisi Pendek 30-60-90', taskType:'fill',
+          question:'If the hypotenuse is $10$, find the short leg.', questionEn:'Jika sisi miring adalah $10$, cari sisi pendek.',
+          correctAnswer:'5', acceptableAnswers:['5'],
+          explanation:`<p>Short leg = Hypotenuse / 2 = $10 / 2 = 5$. <span class="tr">Sisi pendek = Sisi miring / 2 = $10 / 2 = 5$.</span></p>`
+        },
+        { type:'task', pageTitle:'T8: 30-60-90 Long Leg', pageTitleEn:'Sisi Panjang 30-60-90', taskType:'fill',
+          question:'If the short leg is $4$, find the long leg (number outside the root).', questionEn:'Jika sisi pendek adalah $4$, cari sisi panjang (angka di luar akar).',
+          correctAnswer:'4', acceptableAnswers:['4'],
+          explanation:`<p>Long leg = $x\\sqrt{3} = 4\\sqrt{3}$. The number is $4$. <span class="tr">Sisi panjang = $x\\sqrt{3} = 4\\sqrt{3}$. Angkanya adalah $4$.</span></p>`
+        },
+        { type:'task', pageTitle:'T9: Find Hypotenuse from Long Leg', pageTitleEn:'Cari Sisi Miring dari Sisi Panjang', taskType:'fill',
+          question:'If the long leg is $5\\sqrt{3}$, find the hypotenuse.', questionEn:'Jika sisi panjang adalah $5\\sqrt{3}$, cari sisi miring.',
+          correctAnswer:'10', acceptableAnswers:['10'],
+          explanation:`<ol><li>Short leg $x = 5\\sqrt{3} / \\sqrt{3} = 5$</li><li>Hypotenuse $= 2x = 2(5) = 10$</li></ol>`
+        },
+        { type:'task', pageTitle:'T10: Apply 30-60-90', pageTitleEn:'Terapkan 30-60-90', taskType:'radio',
+          question:'In a 30-60-90 triangle, the hypotenuse is $14$. What is the length of the long leg?', questionEn:'Pada segitiga 30-60-90, sisi miringnya adalah $14$. Berapakah panjang sisi panjang?',
+          options:[
+            {text:'$7$ <span class="tr">$7$</span>', correct:false},
+            {text:'$14$ <span class="tr">$14$</span>', correct:false},
+            {text:'$7\\sqrt{3}$ <span class="tr">$7\\sqrt{3}$</span>', correct:true},
+            {text:'$14\\sqrt{3}$ <span class="tr">$14\\sqrt{3}$</span>', correct:false}
+          ],
+          explanation:`<ol><li>Short leg $= 14 / 2 = 7$</li><li>Long leg $= 7\\sqrt{3}$</li></ol>`
+        }
+      ]
+    },
+    c: {
+      title: 'Review of Prior Knowledge',
+      titleEn: 'Review of Prior Knowledge',
+      time: '00:15 - 00:20',
+      pages: [
+        { type:'explanation', pageTitle:'E1: Simplifying Radicals', pageTitleEn:'Menyederhanakan Akar',
+          body:`
+            <p>Before solving complex special right triangle problems, we must master <strong>simplifying radicals</strong> (square roots). A radical is in simplest form when the number under the square root has no perfect square factors other than 1.
+              <span class="tr">Sebelum menyelesaikan masalah segitiga istimewa yang kompleks, kita harus menguasai <strong>penyederhanaan akar</strong> (akar kuadrat). Sebuah akar berada dalam bentuk paling sederhana ketika angka di dalam akar kuadrat tidak memiliki faktor kuadrat sempurna selain 1.</span></p>
+            <div class="math-block"><strong>Product Property of Square Roots:</strong> $$ \\sqrt{ab} = \\sqrt{a} \\times \\sqrt{b} $$ <span class="tr">Sifat Perkalian Akar Kuadrat: $$ \\sqrt{ab} = \\sqrt{a} \\times \\sqrt{b} $$</span></div>
+            <div class="example-box"><h4>Example <span class="tr">Contoh</span></h4>
+              Simplify $\\sqrt{50}$.
+              <span class="tr">Sederhanakan $\\sqrt{50}$.</span>
+              <ol>
+                <li>Find the largest perfect square factor of 50. 50 = 25 $\\times$ 2. <span class="tr">Cari faktor kuadrat sempurna terbesar dari 50. 50 = 25 $\\times$ 2.</span></li>
+                <li>$\\sqrt{50} = \\sqrt{25 \\times 2}$ <span class="tr">Tulis ulang</span></li>
+                <li>$\\sqrt{25} \\times \\sqrt{2}$ <span class="tr">Pisahkan menggunakan sifat perkalian</span></li>
+                <li>$= 5\\sqrt{2}$ <span class="tr">Sederhanakan $\\sqrt{25}$ menjadi 5</span></li>
+              </ol>
+            </div>
+          `
+        },
+        { type:'task', pageTitle:'T1: Simplify Radical', pageTitleEn:'Sederhanakan Akar', taskType:'fill',
+          question:'Simplify $\\sqrt{72}$. What is the number outside the square root?', questionEn:'Sederhanakan $\\sqrt{72}$. Berapa angka di luar akar kuadrat?',
+          correctAnswer:'6', acceptableAnswers:['6'],
+          explanation:`<ol><li>72 = 36 $\\times$ 2</li><li>$\\sqrt{72} = \\sqrt{36} \\times \\sqrt{2}$</li><li>$= 6\\sqrt{2}$</li></ol><p>The number outside is 6. <span class="tr">Angka di luar adalah 6.</span></p>`
+        },
+        { type:'task', pageTitle:'T2: Identify Simplest Form', pageTitleEn:'Identifikasi Bentuk Tersederhana', taskType:'radio',
+          question:'Which of the following radicals is in its simplest form?', questionEn:'Manakah dari akar berikut yang berada dalam bentuk paling sederhana?',
+          options:[
+            {text:'$\\sqrt{12}$ <span class="tr">$\\sqrt{12}$</span>', correct:false},
+            {text:'$3\\sqrt{5}$ <span class="tr">$3\\sqrt{5}$</span>', correct:true},
+            {text:'$\\sqrt{18}$ <span class="tr">$\\sqrt{18}$</span>', correct:false},
+            {text:'$2\\sqrt{8}$ <span class="tr">$2\\sqrt{8}$</span>', correct:false}
+          ],
+          explanation:`<p>$3\\sqrt{5}$ cannot be simplified further because 5 has no perfect square factors. <span class="tr">$3\\sqrt{5}$ tidak dapat disederhanakan lagi karena 5 tidak memiliki faktor kuadrat sempurna.</span></p>`
+        },
+        { type:'task', pageTitle:'T3: True or False Radicals', pageTitleEn:'Benar atau Salah Akar', taskType:'truefalse',
+          question:'True or False: $\\sqrt{16 + 9} = \\sqrt{16} + \\sqrt{9}$. <span class="tr">Benar atau salah: $\\sqrt{16 + 9} = \\sqrt{16} + \\sqrt{9}$.</span>', questionEn:'True or False: $\\sqrt{16 + 9} = \\sqrt{16} + \\sqrt{9}$. <span class="tr">Benar atau salah: $\\sqrt{16 + 9} = \\sqrt{16} + \\sqrt{9}$.</span>',
+          correctAnswer:'false',
+          explanation:`<p>$\\sqrt{25} = 5$, but $\\sqrt{16} + \\sqrt{9} = 4 + 3 = 7$. They are not equal. <span class="tr">$\\sqrt{25} = 5$, tetapi $\\sqrt{16} + \\sqrt{9} = 4 + 3 = 7$. Keduanya tidak sama.</span></p>`
+        },
+        { type:'explanation', pageTitle:'E2: Solving Quadratic Equations', pageTitleEn:'Menyelesaikan Persamaan Kuadrat',
+          body:`
+            <p>In special right triangles, you might encounter equations where you need to find $x$ that is squared. To "undo" a square, you take the square root of both sides.
+              <span class="tr">Pada segitiga istimewa, Anda mungkin menemukan persamaan di mana Anda harus mencari $x$ yang dikuadratkan. Untuk "membatalkan" kuadrat, Anda mengambil akar kuadrat dari kedua sisi.</span></p>
+            <div class="math-block"><strong>Rule:</strong> If $x^2 = k$, then $x = \\sqrt{k}$ (in geometry, we only take the positive root). <span class="tr"><strong>Aturan:</strong> Jika $x^2 = k$, maka $x = \\sqrt{k}$ (dalam geometri, kita hanya mengambil akar positif).</span></div>
+            <div class="example-box"><h4>Example <span class="tr">Contoh</span></h4>
+              Solve $3x^2 = 27$.
+              <span class="tr">Selesaikan $3x^2 = 27$.</span>
+              <ol>
+                <li>$x^2 = \\frac{27}{3}$ <span class="tr">Bagi kedua sisi dengan 3</span></li>
+                <li>$x^2 = 9$ <span class="tr">Sederhanakan pecahan</span></li>
+                <li>$x = \\sqrt{9}$ <span class="tr">Akar kuadrat kedua sisi</span></li>
+                <li>$x = 3$ <span class="tr">Hasil</span></li>
+              </ol>
+            </div>
+          `
+        },
+        { type:'task', pageTitle:'T4: Solve for x', pageTitleEn:'Cari Nilai x', taskType:'fill',
+          question:'Solve $2x^2 = 50$ for $x$.', questionEn:'Selesaikan $2x^2 = 50$ untuk $x$.',
+          correctAnswer:'5', acceptableAnswers:['5'],
+          explanation:`<ol><li>$x^2 = 25$</li><li>$x = \\sqrt{25} = 5$</li></ol>`
+        },
+        { type:'task', pageTitle:'T5: Order the Solution', pageTitleEn:'Urutkan Penyelesaian', taskType:'sorting',
+          question:'Order the steps to solve $4x^2 = 64$.', questionEn:'Urutkan langkah untuk menyelesaikan $4x^2 = 64$.',
+          items:[
+            '$x^2 = \\frac{64}{4}$',
+            '$x^2 = 16$',
+            '$x = \\sqrt{16}$',
+            '$x = 4$'
+          ],
+          correctOrder:[0,1,2,3],
+          explanation:`<p>Divide first, then simplify, then take the square root. <span class="tr">Bagi dulu, lalu sederhanakan, lalu akar kuadrat.</span></p>`
+        },
+        { type:'task', pageTitle:'T6: Match Equations to Roots', pageTitleEn:'Pasangkan Persamaan ke Akar', taskType:'pairing',
+          question:'Match the equation to the value of $x$.', questionEn:'Pasangkan persamaan ke nilai $x$.',
+          pairs:[
+            {left:'$x^2 = 36$', right:'$x = 6$'},
+            {left:'$x^2 = 100$', right:'$x = 10$'},
+            {left:'$2x^2 = 32$', right:'$x = 4$'},
+            {left:'$3x^2 = 75$', right:'$x = 5$'}
+          ],
+          explanation:`<p>Isolate $x^2$ first, then take the square root. <span class="tr">Pisahkan $x^2$ dulu, lalu akar kuadrat.</span></p>`
+        },
+        { type:'explanation', pageTitle:'E3: Rationalizing Denominators', pageTitleEn:'Merasionalkan Penyebut',
+          body:`
+            <p>When a radical (like $\\sqrt{2}$) is in the denominator of a fraction, it is standard practice to <strong>rationalize</strong> it. This means eliminating the radical from the denominator by multiplying both the top and bottom by that same radical.
+              <span class="tr">Ketika akar (seperti $\\sqrt{2}$) ada di penyebut pecahan, ini adalah praktik standar untuk <strong>merasionalkannya</strong>. Artinya menghilangkan akar dari penyebut dengan mengalikan atas dan bawah dengan akar yang sama.</span></p>
+            <div class="example-box"><h4>Example <span class="tr">Contoh</span></h4>
+              Rationalize $\\frac{5}{\\sqrt{2}}$.
+              <span class="tr">Rasionalkan $\\frac{5}{\\sqrt{2}}$.</span>
+              <ol>
+                <li>$\\frac{5}{\\sqrt{2}} \\times \\frac{\\sqrt{2}}{\\sqrt{2}}$ <span class="tr">Kalikan atas dan bawah dengan $\\sqrt{2}$</span></li>
+                <li>$= \\frac{5\\sqrt{2}}{\\sqrt{4}}$ <span class="tr">Kalikan akar di atas dan bawah</span></li>
+                <li>$= \\frac{5\\sqrt{2}}{2}$ <span class="tr">Sederhanakan penyebut</span></li>
+              </ol>
+            </div>
+            <div class="tip-box"><h4>Why? <span class="tr">Mengapa?</span></h4>
+              It makes calculations easier and is the standard mathematical form. <span class="tr">Ini membuat perhitungan lebih mudah dan merupakan bentuk matematika standar.</span></div>
+          `
+        },
+        { type:'task', pageTitle:'T7: Rationalize Bottom', pageTitleEn:'Rasionalkan Penyebut', taskType:'fill',
+          question:'Rationalize $\\frac{6}{\\sqrt{3}}$. What is the number in the denominator?', questionEn:'Rasionalkan $\\frac{6}{\\sqrt{3}}$. Berapa angka di penyebut?',
+          correctAnswer:'3', acceptableAnswers:['3'],
+          explanation:`<p>$\\frac{6}{\\sqrt{3}} \\times \\frac{\\sqrt{3}}{\\sqrt{3}} = \\frac{6\\sqrt{3}}{3}$. The denominator is 3. <span class="tr">Penyebutnya adalah 3.</span></p>`
+        },
+        { type:'task', pageTitle:'T8: Select Rationalized Forms', pageTitleEn:'Pilih Bentuk Terasionalkan', taskType:'checkbox',
+          question:'Select all fractions that are properly rationalized.', questionEn:'Pilih semua pecahan yang sudah dirasionalkan dengan benar.',
+          options:[
+            {text:'$\\frac{4\\sqrt{2}}{2}$ <span class="tr">$\\frac{4\\sqrt{2}}{2}$</span>', correct:true},
+            {text:'$\\frac{7}{\\sqrt{3}}$ <span class="tr">$\\frac{7}{\\sqrt{3}}$</span>', correct:false},
+            {text:'$\\frac{5\\sqrt{6}}{6}$ <span class="tr">$\\frac{5\\sqrt{6}}{6}$</span>', correct:true},
+            {text:'$\\frac{2}{\\sqrt{5}}$ <span class="tr">$\\frac{2}{\\sqrt{5}}$</span>', correct:false}
+          ],
+          explanation:`<p>Rationalized denominators do not contain square roots. <span class="tr">Penyebut yang dirasionalkan tidak boleh mengandung akar kuadrat.</span></p>`
+        },
+        { type:'task', pageTitle:'T9: True or False Rationalization', pageTitleEn:'Benar atau Salah Merasionalkan', taskType:'truefalse',
+          question:'True or False: $\\frac{1}{\\sqrt{2}}$ is equal to $\\frac{\\sqrt{2}}{2}$. <span class="tr">Benar atau salah: $\\frac{1}{\\sqrt{2}}$ sama dengan $\\frac{\\sqrt{2}}{2}$.</span>', questionEn:'True or False: $\\frac{1}{\\sqrt{2}}$ is equal to $\\frac{\\sqrt{2}}{2}$. <span class="tr">Benar atau salah: $\\frac{1}{\\sqrt{2}}$ sama dengan $\\frac{\\sqrt{2}}{2}$.</span>',
+          correctAnswer:'true',
+          explanation:`<p>Multiply top and bottom by $\\sqrt{2}$: $\\frac{1 \\times \\sqrt{2}}{\\sqrt{2} \\times \\sqrt{2}} = \\frac{\\sqrt{2}}{2}$. <span class="tr">Kalikan atas dan bawah dengan $\\sqrt{2}$: $\\frac{1 \\times \\sqrt{2}}{\\sqrt{2} \\times \\sqrt{2}} = \\frac{\\sqrt{2}}{2}$.</span></p>`
+        },
+        { type:'task', pageTitle:'T10: Final Radical Problem', pageTitleEn:'Soal Akhir Akar', taskType:'radio',
+          question:'What is the simplified and rationalized form of $\\frac{10}{\\sqrt{5}}$?', questionEn:'Apa bentuk sederhana dan terasionalkan dari $\\frac{10}{\\sqrt{5}}$?',
+          options:[
+            {text:'$2$ <span class="tr">$2$</span>', correct:false},
+            {text:'$2\\sqrt{5}$ <span class="tr">$2\\sqrt{5}$</span>', correct:true},
+            {text:'$\\sqrt{5}$ <span class="tr">$\\sqrt{5}$</span>', correct:false},
+            {text:'$5\\sqrt{2}$ <span class="tr">$5\\sqrt{2}$</span>', correct:false}
+          ],
+          explanation:`<ol><li>$\\frac{10}{\\sqrt{5}} \\times \\frac{\\sqrt{5}}{\\sqrt{5}} = \\frac{10\\sqrt{5}}{5}$</li><li>Divide 10 by 5: $= 2\\sqrt{5}$</li></ol>`
+        }
+      ]
+    },
+    d: {
+      title: 'Problem Introduction',
+      titleEn: 'Problem Introduction',
+      time: '00:20 - 00:30',
+      pages: [
+        { type:'explanation', pageTitle:'E1: Derivation of 45-45-90', pageTitleEn:'Pengurangan 45-45-90',
+          body:`
+            <p>Why does the 45-45-90 triangle have the side ratio $1 : 1 : \\sqrt{2}$? It comes from a square!
+              <span class="tr">Mengapa segitiga 45-45-90 memiliki rasio sisi $1 : 1 : \\sqrt{2}$? Ini berasal dari persegi!</span></p>
+            <div class="illustration">
+              <svg width="220" height="140" viewBox="0 0 220 140">
+                <rect x="20" y="20" width="100" height="100" fill="none" stroke="#1e40af" stroke-width="3"/>
+                <line x1="20" y1="20" x2="120" y2="120" stroke="#ef4444" stroke-width="3" stroke-dasharray="5,5"/>
+                <text x="60" y="15" font-size="14" fill="#1e40af">x</text>
+                <text x="125" y="75" font-size="14" fill="#1e40af">x</text>
+                <text x="60" y="80" font-size="14" fill="#ef4444">diagonal</text>
+              </svg>
+              <div style="font-size:.82em;color:var(--muted);margin-top:6px">Diagonal of a Square <span class="tr">Diagonal Persegi</span></div>
+            </div>
+            <p>Imagine a square with side length $x$. If you cut it in half along the diagonal, you get two 45-45-90 triangles. The legs are $x$ and $x$. Using Pythagorean theorem:
+              <span class="tr">Bayangkan sebuah persegi dengan panjang sisi $x$. Jika Anda memotongnya separuh di sepanjang diagonal, Anda mendapatkan dua segitiga 45-45-90. Sisi siku-sikunya adalah $x$ dan $x$. Menggunakan teorema Pythagoras:</span></p>
+            <div class="math-block">
+              $$a^2 + b^2 = c^2$$               $$x^2 + x^2 = c^2$$               $$2x^2 = c^2$$               $$c = \\sqrt{2x^2} = x\\sqrt{2}$$               <span class="tr">Ini membuktikan sisi miringnya $x\\sqrt{2}$</span>
+            </div>
+          `
+        },
+        { type:'task', pageTitle:'T1: Find Hypotenuse from Square', pageTitleEn:'Cari Sisi Miring dari Persegi', taskType:'fill',
+          question:'A square has a side length of 7. What is the length of its diagonal?', questionEn:'Sebuah persegi memiliki panjang sisi 7. Berapakah panjang diagonalnya?',
+          correctAnswer:'7', acceptableAnswers:['7'],
+          explanation:`<p>$c = 7\\sqrt{2}$. The number outside is 7. <span class="tr">$c = 7\\sqrt{2}$. Angka di luarnya adalah 7.</span></p>`
+        },
+        { type:'task', pageTitle:'T2: Find Side from Diagonal', pageTitleEn:'Cari Sisi dari Diagonal', taskType:'fill',
+          question:'The diagonal of a square is $8\\sqrt{2}$. What is the side length?', questionEn:'Diagonal persegi adalah $8\\sqrt{2}$. Berapakah panjang sisinya?',
+          correctAnswer:'8', acceptableAnswers:['8'],
+          explanation:`<p>$c = x\\sqrt{2}$. So $8\\sqrt{2} = x\\sqrt{2} \\Rightarrow x = 8$. <span class="tr">$c = x\\sqrt{2}$. Jadi $8\\sqrt{2} = x\\sqrt{2} \\Rightarrow x = 8$.</span></p>`
+        },
+        { type:'task', pageTitle:'T3: True or False Diagonal', pageTitleEn:'Benar atau Salah Diagonal', taskType:'truefalse',
+          question:'True or False: The diagonal of a square is always $\\sqrt{2}$ times longer than its side. <span class="tr">Benar atau salah: Diagonal persegi selalu $\\sqrt{2}$ kali lebih panjang dari sisinya.</span>', questionEn:'True or False: The diagonal of a square is always $\\sqrt{2}$ times longer than its side. <span class="tr">Benar atau salah: Diagonal persegi selalu $\\sqrt{2}$ kali lebih panjang dari sisinya.</span>',
+          correctAnswer:'true',
+          explanation:`<p>Derived directly from the Pythagorean theorem: $c = x\\sqrt{2}$. <span class="tr">Berasal langsung dari teorema Pythagoras: $c = x\\sqrt{2}$.</span></p>`
+        },
+        { type:'explanation', pageTitle:'E2: Derivation of 30-60-90', pageTitleEn:'Pengurangan 30-60-90',
+          body:`
+            <p>How do we get the $1 : \\sqrt{3} : 2$ ratio? It comes from an equilateral triangle!
+              <span class="tr">Bagaimana kita mendapatkan rasio $1 : \\sqrt{3} : 2$? Ini berasal dari segitiga sama sisi!</span></p>
+            <div class="illustration">
+              <svg width="220" height="160" viewBox="0 0 220 160">
+                <line x1="20" y1="140" x2="180" y2="140" stroke="#1e40af" stroke-width="3"/>
+                <line x1="20" y1="140" x2="100" y2="20" stroke="#1e40af" stroke-width="3"/>
+                <line x1="180" y1="140" x2="100" y2="20" stroke="#1e40af" stroke-width="3"/>
+                <line x1="100" y1="20" x2="100" y2="140" stroke="#ef4444" stroke-width="3" stroke-dasharray="5,5"/>
+                <text x="90" y="150" font-size="14" fill="#1e40af">2x</text>
+                <text x="105" y="85" font-size="14" fill="#ef4444">altitude = x√3</text>
+                <text x="50" y="135" font-size="12" fill="#333">x</text>
+                <text x="140" y="135" font-size="12" fill="#333">x</text>
+              </svg>
+              <div style="font-size:.82em;color:var(--muted);margin-top:6px">Altitude of Equilateral Triangle <span class="tr">Tinggi Segitiga Sama Sisi</span></div>
+            </div>
+            <p>Imagine an equilateral triangle with all sides $2x$. If you drop an altitude down the middle, it bisects the base into two $x$ segments, forming two 30-60-90 triangles.
+              <span class="tr">Bayangkan segitiga sama sisi dengan semua sisi $2x$. Jika Anda menarik garis tinggi di tengah, ia membagi alas menjadi dua segmen $x$, membentuk dua segitiga 30-60-90.</span></p>
+            <div class="math-block">
+              The hypotenuse is $2x$, the short leg is $x$. To find the long leg (altitude):<br>
+              $$a^2 + b^2 = c^2$$               $$x^2 + b^2 = (2x)^2$$               $$x^2 + b^2 = 4x^2$$               $$b^2 = 3x^2$$               $$b = \\sqrt{3x^2} = x\\sqrt{3}$$               <span class="tr">Ini membuktikan sisi panjangnya $x\\sqrt{3}$</span>
+            </div>
+          `
+        },
+        { type:'task', pageTitle:'T4: 30-60-90 from Equilateral', pageTitleEn:'30-60-90 dari Sama Sisi', taskType:'fill',
+          question:'An equilateral triangle has a side length of 10. What is the length of its altitude?', questionEn:'Segitiga sama sisi memiliki panjang sisi 10. Berapakah panjang tingginya?',
+          correctAnswer:'5', acceptableAnswers:['5'],
+          explanation:`<ol><li>Altitude forms a 30-60-90 triangle.</li><li>Hypotenuse = 10, short leg = $10/2 = 5$.</li><li>Altitude (long leg) $= 5\\sqrt{3}$. The number is 5.</li></ol>`
+        },
+        { type:'task', pageTitle:'T5: True or False Bisector', pageTitleEn:'Benar atau Salah Pembagi', taskType:'truefalse',
+          question:'True or False: The altitude of an equilateral triangle bisects the base and the top angle. <span class="tr">Benar atau salah: Tinggi segitiga sama sisi membagi dua alas dan sudut atas.</span>', questionEn:'True or False: The altitude of an equilateral triangle bisects the base and the top angle. <span class="tr">Benar atau salah: Tinggi segitiga sama sisi membagi dua alas dan sudut atas.</span>',
+          correctAnswer:'true',
+          explanation:`<p>Yes, it creates two identical 30-60-90 triangles. <span class="tr">Ya, ini menciptakan dua segitiga 30-60-90 yang identik.</span></p>`
+        },
+        { type:'task', pageTitle:'T6: Match Parts to Values', pageTitleEn:'Pasangkan Bagian ke Nilai', taskType:'pairing',
+          question:'In a 30-60-90 derived from an equilateral triangle of side 12, match the parts.', questionEn:'Pada 30-60-90 dari segitiga sama sisi sisi 12, pasangkan bagiannya.',
+          pairs:[
+            {left:'Hypotenuse', right:'$12$'},
+            {left:'Short Leg', right:'$6$'},
+            {left:'Long Leg', right:'$6\\sqrt{3}$'},
+            {left:'Original Triangle', right:'Equilateral'}
+          ],
+          explanation:`<p>Hypotenuse is 12, short leg is half (6), long leg is $6\\sqrt{3}$. <span class="tr">Sisi miring 12, sisi pendek setengahnya (6), sisi panjang $6\\sqrt{3}$.</span></p>`
+        },
+        { type:'explanation', pageTitle:'E3: Algebraic Special Triangles', pageTitleEn:'Segitiga Istimewa Aljabar',
+          body:`
+            <p>Sometimes, side lengths are given as algebraic expressions like $3x$ or $x+5$. You can use the constant ratios to set up equations and solve for $x$.
+              <span class="tr">Terkadang, panjang sisi diberikan sebagai ekspresi aljabar seperti $3x$ atau $x+5$. Anda dapat menggunakan rasio konstan untuk membuat persamaan dan mencari nilai $x$.</span></p>
+            <div class="example-box"><h4>Example <span class="tr">Contoh</span></h4>
+              In a 45-45-90 triangle, leg 1 $= x+3$ and leg 2 $= 2x-4$. Find $x$.
+              <span class="tr">Pada segitiga 45-45-90, sisi siku-siku 1 $= x+3$ dan sisi siku-siku 2 $= 2x-4$. Cari $x$.</span>
+              <ol>
+                <li>$x + 3 = 2x - 4$ <span class="tr">Set legs equal to each other</span></li>
+                <li>$3 + 4 = 2x - x$ <span class="tr">Move variables to one side</span></li>
+                <li>$7 = x$ <span class="tr">Solution</span></li>
+              </ol>
+            </div>
+            <div class="tip-box"><h4>Tip <span class="tr">Tip</span></h4>
+              In a 30-60-90, if Hypotenuse $= 4x$ and Short Leg $= x+6$, set $4x = 2(x+6)$ because Hypotenuse is twice the short leg!
+              <span class="tr">Pada 30-60-90, jika Sisi Miring $= 4x$ dan Sisi Pendek $= x+6$, set $4x = 2(x+6)$ karena Sisi Miring dua kali sisi pendek!</span></div>
+          `
+        },
+        { type:'task', pageTitle:'T7: Solve for x in 45-45-90', pageTitleEn:'Cari x pada 45-45-90', taskType:'fill',
+          question:'In a 45-45-90 triangle, the legs are $3x$ and $x+8$. Find $x$.', questionEn:'Pada segitiga 45-45-90, sisi siku-sikunya $3x$ dan $x+8$. Cari $x$.',
+          correctAnswer:'4', acceptableAnswers:['4'],
+          explanation:`<ol><li>$3x = x + 8$</li><li>$2x = 8$</li><li>$x = 4$</li></ol>`
+        },
+        { type:'task', pageTitle:'T8: Solve for x in 30-60-90', pageTitleEn:'Cari x pada 30-60-90', taskType:'fill',
+          question:'In a 30-60-90 triangle, the hypotenuse is $5x$ and the short leg is $x+12$. Find $x$.', questionEn:'Pada segitiga 30-60-90, sisi miringnya $5x$ dan sisi pendeknya $x+12$. Cari $x$.',
+          correctAnswer:'8', acceptableAnswers:['8'],
+          explanation:`<ol><li>$5x = 2(x+12)$ (Hypotenuse is twice short leg)</li><li>$5x = 2x + 24$</li><li>$3x = 24$</li><li>$x = 8$</li></ol>`
+        },
+        { type:'task', pageTitle:'T9: True or False Algebra', pageTitleEn:'Benar atau Salah Aljabar', taskType:'truefalse',
+          question:'True or False: In a 30-60-90 triangle, if the hypotenuse is $6x$ and the short leg is $3x+1$, they are always equal. <span class="tr">Benar atau salah: Pada segitiga 30-60-90, jika sisi miring $6x$ dan sisi pendek $3x+1$, keduanya selalu sama.</span>', questionEn:'True or False: In a 30-60-90 triangle, if the hypotenuse is $6x$ and the short leg is $3x+1$, they are always equal. <span class="tr">Benar atau salah: Pada segitiga 30-60-90, jika sisi miring $6x$ dan sisi pendek $3x+1$, keduanya selalu sama.</span>',
+          correctAnswer:'false',
+          explanation:`<p>$6x = 2(3x+1) \\Rightarrow 6x = 6x + 2$. This means $0 = 2$, which is false. <span class="tr">$6x = 2(3x+1) \\Rightarrow 6x = 6x + 2$. Ini berarti $0 = 2$, yang salah.</span></p>`
+        },
+        { type:'task', pageTitle:'T10: Order Algebraic Steps', pageTitleEn:'Urutkan Langkah Aljabar', taskType:'sorting',
+          question:'Order steps to solve for $x$ if Hypotenuse $= 10x$ and Short Leg $= 3x+14$ in a 30-60-90 triangle.', questionEn:'Urutkan langkah mencari $x$ jika Sisi Miring $= 10x$ dan Sisi Pendek $= 3x+14$ pada segitiga 30-60-90.',
+          items:[
+            '$10x = 2(3x + 14)$',
+            '$10x = 6x + 28$',
+            '$4x = 28$',
+            '$x = 7$'
+          ],
+          correctOrder:[0,1,2,3],
+          explanation:`<p>Set up ratio equation, distribute, isolate $x$, divide. <span class="tr">Buat persamaan rasio, distribusi, pisahkan $x$, bagi.</span></p>`
+        }
+      ]
+    },
+    e: {
+      title: 'Guided Practice',
+      titleEn: 'Guided Practice',
+      time: '00:30 - 00:45',
+      pages: [
+        { type:'explanation', pageTitle:'E1: Perimeter of Special Triangles', pageTitleEn:'Keliling Segitiga Istimewa',
+          body:`
+            <p>To find the perimeter of any triangle, simply add all three sides together. For special right triangles, use the patterns to find the missing sides first!
+              <span class="tr">Untuk mencari keliling segitiga, jumlahkan ketiga sisinya. Untuk segitiga siku-siku istimewa, gunakan pola untuk mencari sisi yang hilang lebih dulu!</span></p>
+            <div class="example-box"><h4>Example: 45-45-90 <span class="tr">Contoh: 45-45-90</span></h4>
+              Given leg $= 5$, find the perimeter.
+              <span class="tr">Diketahui sisi siku-siku $= 5$, cari keliling.</span>
+              <ol>
+                <li>Leg 1 = $5$ <span class="tr">Sisi siku-siku 1</span></li>
+                <li>Leg 2 = $5$ (Isosceles) <span class="tr">Sisi siku-siku 2 (Sama kaki)</span></li>
+                <li>Hypotenuse = $5\\sqrt{2}$ <span class="tr">Sisi miring</span></li>
+                <li>Perimeter $= 5 + 5 + 5\\sqrt{2} = 10 + 5\\sqrt{2}$ <span class="tr">Jumlahkan semua</span></li>
+              </ol>
+            </div>
+            <div class="example-box"><h4>Example: 30-60-90 <span class="tr">Contoh: 30-60-90</span></h4>
+              Given short leg $= 4$, find the perimeter.
+              <span class="tr">Diketahui sisi pendek $= 4$, cari keliling.</span>
+              <ol>
+                <li>Short Leg $= 4$ <span class="tr">Sisi pendek</span></li>
+                <li>Long Leg $= 4\\sqrt{3}$ <span class="tr">Sisi panjang</span></li>
+                <li>Hypotenuse $= 8$ <span class="tr">Sisi miring</span></li>
+                <li>Perimeter $= 4 + 4\\sqrt{3} + 8 = 12 + 4\\sqrt{3}$ <span class="tr">Jumlahkan semua</span></li>
+              </ol>
+            </div>
+          `
+        },
+        { type:'task', pageTitle:'T1: Perimeter 45-45-90', pageTitleEn:'Keliling 45-45-90', taskType:'fill',
+          question:'In a 45-45-90 triangle, the leg is $7$. What is the perimeter? (Format: A + B√2. Just type the value for A)', questionEn:'Pada segitiga 45-45-90, sisi siku-sikunya $7$. Berapakah kelilingnya? (Format: A + B√2. Ketik nilai A saja)',
+          correctAnswer:'14', acceptableAnswers:['14'],
+          explanation:`<p>$P = 7 + 7 + 7\\sqrt{2} = 14 + 7\\sqrt{2}$. A = 14. <span class="tr">$P = 7 + 7 + 7\\sqrt{2} = 14 + 7\\sqrt{2}$. A = 14.</span></p>`
+        },
+        { type:'task', pageTitle:'T2: Perimeter 30-60-90', pageTitleEn:'Keliling 30-60-90', taskType:'radio',
+          question:'In a 30-60-90 triangle, the short leg is $3$. What is the perimeter?', questionEn:'Pada segitiga 30-60-90, sisi pendeknya $3$. Berapakah kelilingnya?',
+          options:[
+            {text:'$9 + 3\\sqrt{3}$ <span class="tr">$9 + 3\\sqrt{3}$</span>', correct:true},
+            {text:'$6 + 3\\sqrt{3}$ <span class="tr">$6 + 3\\sqrt{3}$</span>', correct:false},
+            {text:'$12 + 3\\sqrt{3}$ <span class="tr">$12 + 3\\sqrt{3}$</span>', correct:false},
+            {text:'$9 + 6\\sqrt{3}$ <span class="tr">$9 + 6\\sqrt{3}$</span>', correct:false}
+          ],
+          explanation:`<p>$P = 3 + 3\\sqrt{3} + 6 = 9 + 3\\sqrt{3}$. <span class="tr">$P = 3 + 3\\sqrt{3} + 6 = 9 + 3\\sqrt{3}$.</span></p>`
+        },
+        { type:'task', pageTitle:'T3: True or False Perimeter', pageTitleEn:'Benar atau Salah Keliling', taskType:'truefalse',
+          question:'True or False: To find perimeter, you must calculate all three sides first. <span class="tr">Benar atau salah: Untuk mencari keliling, Anda harus menghitung ketiga sisi lebih dulu.</span>', questionEn:'True or False: To find perimeter, you must calculate all three sides first. <span class="tr">Benar atau salah: Untuk mencari keliling, Anda harus menghitung ketiga sisi lebih dulu.</span>',
+          correctAnswer:'true',
+          explanation:`<p>Perimeter is the sum of all sides, so you need them all. <span class="tr">Keliling adalah jumlah semua sisi, jadi Anda membutuhkan semuanya.</span></p>`
+        },
+        { type:'explanation', pageTitle:'E2: Area of Special Triangles', pageTitleEn:'Luas Segitiga Istimewa',
+          body:`
+            <p>The area of a triangle is $$ Area = \\frac{1}{2} \\times \\text{base} \\times \\text{height} $$. In a right triangle, the two legs serve as the base and height.
+              <span class="tr">Luas segitiga adalah $$ Luas = \\frac{1}{2} \\times \\text{alas} \\times \\text{tinggi} $$. Pada segitiga siku-siku, kedua sisi siku-siku berfungsi sebagai alas dan tinggi.</span></p>
+            <div class="example-box"><h4>Example: 45-45-90 <span class="tr">Contoh: 45-45-90</span></h4>
+              Given leg $= 6$, find area.
+              <span class="tr">Diketahui sisi siku-siku $= 6$, cari luas.</span>
+              <ol>
+                <li>Base = $6$, Height = $6$ <span class="tr">Alas dan tinggi sama dengan sisi siku-siku</span></li>
+                <li>$Area = \\frac{1}{2} \\times 6 \\times 6$ <span class="tr">Substitusi</span></li>
+                <li>$Area = \\frac{1}{2} \\times 36 = 18$ <span class="tr">Hasil</span></li>
+              </ol>
+            </div>
+            <div class="example-box"><h4>Example: 30-60-90 <span class="tr">Contoh: 30-60-90</span></h4>
+              Given short leg $= 5$, find area.
+              <span class="tr">Diketahui sisi pendek $= 5$, cari luas.</span>
+              <ol>
+                <li>Base (short leg) $= 5$, Height (long leg) $= 5\\sqrt{3}$ <span class="tr">Identifikasi alas dan tinggi</span></li>
+                <li>$Area = \\frac{1}{2} \\times 5 \\times 5\\sqrt{3}$ <span class="tr">Substitusi</span></li>
+                <li>$Area = \\frac{25\\sqrt{3}}{2} = 12.5\\sqrt{3}$ <span class="tr">Hasil</span></li>
+              </ol>
+            </div>
+          `
+        },
+        { type:'task', pageTitle:'T4: Area 45-45-90', pageTitleEn:'Luas 45-45-90', taskType:'fill',
+          question:'In a 45-45-90 triangle, the leg is $8$. What is the area?', questionEn:'Pada segitiga 45-45-90, sisi siku-sikunya $8$. Berapakah luasnya?',
+          correctAnswer:'32', acceptableAnswers:['32'],
+          explanation:`<p>$Area = \\frac{1}{2} \\times 8 \\times 8 = 32$. <span class="tr">$Luas = \\frac{1}{2} \\times 8 \\times 8 = 32$.</span></p>`
+        },
+        { type:'task', pageTitle:'T5: Area 30-60-90', pageTitleEn:'Luas 30-60-90', taskType:'fill',
+          question:'In a 30-60-90 triangle, the short leg is $6$. What is the number outside the radical in the area?', questionEn:'Pada segitiga 30-60-90, sisi pendeknya $6$. Berapakah angka di luar akar pada luasnya?',
+          correctAnswer:'18', acceptableAnswers:['18'],
+          explanation:`<p>$Area = \\frac{1}{2} \\times 6 \\times 6\\sqrt{3} = \\frac{36\\sqrt{3}}{2} = 18\\sqrt{3}$. The number outside the radical is 18. <span class="tr">Angka di luar akar adalah 18.</span></p>`
+        },
+        { type:'task', pageTitle:'T6: Match Area Formulas', pageTitleEn:'Pasangkan Rumus Luas', taskType:'pairing',
+          question:'Match the triangle data to its area.', questionEn:'Pasangkan data segitiga ke luasnya.',
+          pairs:[
+            {left:'45-45-90 leg = 10', right:'$50$'},
+            {left:'45-45-90 leg = 4', right:'$8$'},
+            {left:'30-60-90 short = 6', right:'$18\\sqrt{3}$'},
+            {left:'30-60-90 short = 4', right:'$8\\sqrt{3}$'}
+          ],
+          explanation:`<p>Use $\\frac{1}{2}bh$ where $b$ and $h$ are the legs. <span class="tr">Gunakan $\\frac{1}{2}alas \\times tinggi$ di mana keduanya adalah sisi siku-siku.</span></p>`
+        },
+        { type:'explanation', pageTitle:'E3: Diagonals in Geometry', pageTitleEn:'Diagonal dalam Geometri',
+          body:`
+            <p>Special right triangles are heavily used to find <strong>diagonals</strong> of polygons, especially squares and rectangles.
+              <span class="tr">Segitiga siku-siku istimewa sangat digunakan untuk mencari <strong>diagonal</strong> poligon, terutama persegi dan persegi panjang.</span></p>
+            <div class="math-block"><strong>Square Diagonal:</strong> $$ d = s\\sqrt{2} $$ <span class="tr"><strong>Diagonal Persegi:</strong> $$ d = s\\sqrt{2} $$</span></div>
+            <div class="example-box"><h4>Example: Square Area <span class="tr">Contoh: Luas Persegi</span></h4>
+              If the diagonal of a square is $10\\sqrt{2}$, what is the area?
+              <span class="tr">Jika diagonal persegi adalah $10\\sqrt{2}$, berapakah luasnya?</span>
+              <ol>
+                <li>$d = s\\sqrt{2}$ means $10\\sqrt{2} = s\\sqrt{2} \\Rightarrow s = 10$ <span class="tr">Cari sisi</span></li>
+                <li>Area $= s^2 = 10^2 = 100$ <span class="tr">Kuadratkan sisi</span></li>
+              </ol>
+            </div>
+          `
+        },
+        { type:'task', pageTitle:'T7: Square Area from Diagonal', pageTitleEn:'Luas Persegi dari Diagonal', taskType:'fill',
+          question:'A square has a diagonal of $12\\sqrt{2}$. What is the area?', questionEn:'Sebuah persegi memiliki diagonal $12\\sqrt{2}$. Berapakah luasnya?',
+          correctAnswer:'144', acceptableAnswers:['144'],
+          explanation:`<p>$s = 12$, Area $= 12^2 = 144$. <span class="tr">$s = 12$, Luas $= 12^2 = 144$.</span></p>`
+        },
+        { type:'task', pageTitle:'T8: Order Area Calculation', pageTitleEn:'Urutkan Perhitungan Luas', taskType:'sorting',
+          question:'Order steps to find the area of a square given its diagonal is $8\\sqrt{2}$.', questionEn:'Urutkan langkah mencari luas persegi yang diagonalnya $8\\sqrt{2}$.',
+          items:[
+            '$d = s\\sqrt{2}$',
+            '$s = 8$',
+            '$Area = s^2$',
+            '$Area = 64$'
+          ],
+          correctOrder:[0,1,2,3],
+          explanation:`<p>Find the formula, isolate $s$, solve for $s$, then square it for area. <span class="tr">Cari rumus, pisahkan $s$, selesaikan $s$, lalu kuadratkan untuk luas.</span></p>`
+        },
+        { type:'task', pageTitle:'T9: True or False Square', pageTitleEn:'Benar atau Salah Persegi', taskType:'truefalse',
+          question:'True or False: The diagonal of a square is longer than its side. <span class="tr">Benar atau salah: Diagonal persegi lebih panjang dari sisinya.</span>', questionEn:'True or False: The diagonal of a square is longer than its side. <span class="tr">Benar atau salah: Diagonal persegi lebih panjang dari sisinya.</span>',
+          correctAnswer:'true',
+          explanation:`<p>Diagonal $= s\\sqrt{2} \\approx 1.414s$, which is greater than $s$. <span class="tr">Diagonal $= s\\sqrt{2} \\approx 1.414s$, yang lebih besar dari $s$.</span></p>`
+        },
+        { type:'task', pageTitle:'T10: Rectangle Diagonal', pageTitleEn:'Diagonal Persegi Panjang', taskType:'radio',
+          question:'A rectangle has sides 3 and 4. What is the length of its diagonal?', questionEn:'Persegi panjang memiliki sisi 3 dan 4. Berapakah panjang diagonalnya?',
+          options:[
+            {text:'$5$ <span class="tr">$5$</span>', correct:true},
+            {text:'$5\\sqrt{2}$ <span class="tr">$5\\sqrt{2}$</span>', correct:false},
+            {text:'$7$ <span class="tr">$7$</span>', correct:false},
+            {text:'$7\\sqrt{2}$ <span class="tr">$7\\sqrt{2}$</span>', correct:false}
+          ],
+          explanation:`<p>It's a basic 3-4-5 right triangle, not a special right triangle. $d = \\sqrt{3^2 + 4^2} = 5$. <span class="tr">Ini segitiga siku-siku 3-4-5 dasar, bukan istimewa. $d = \\sqrt{3^2 + 4^2} = 5$.</span></p>`
+        }
+      ]
+    },
+    f: {
+      title: 'Independent Practice',
+      titleEn: 'Independent Practice',
+      time: '00:45 - 00:55',
+      pages: [
+        { type:'explanation', pageTitle:'E1: Advanced 30-60-90', pageTitleEn:'30-60-90 Lanjutan',
+          body:`
+            <p>Sometimes you are given the <strong>long leg</strong> instead of the short leg. Remember the "Golden Rule": always find the short leg ($x$) first!
+              <span class="tr">Terkadang Anda diberikan <strong>sisi panjang</strong> alih-alih sisi pendek. Ingat "Aturan Emas": selalu cari sisi pendek ($x$) lebih dulu!</span></p>
+            <div class="math-block">
+              If Long Leg $= x\\sqrt{3}$, then Short Leg $= \\frac{\\text{Long Leg}}{\\sqrt{3}}$.
+              <span class="tr">Jika Sisi Panjang $= x\\sqrt{3}$, maka Sisi Pendek $= \\frac{\\text{Sisi Panjang}}{\\sqrt{3}}$.</span>
+            </div>
+            <div class="example-box"><h4>Example <span class="tr">Contoh</span></h4>
+              Given Long Leg $= 9\\sqrt{3}$, find all sides.
+              <span class="tr">Diketahui Sisi Panjang $= 9\\sqrt{3}$, cari semua sisi.</span>
+              <ol>
+                <li>Short Leg $x = \\frac{9\\sqrt{3}}{\\sqrt{3}} = 9$ <span class="tr">Bagi sisi panjang dengan $\\sqrt{3}$</span></li>
+                <li>Hypotenuse $= 2x = 2(9) = 18$ <span class="tr">Kalikan sisi pendek dengan 2</span></li>
+              </ol>
+            </div>
+          `
+        },
+        { type:'task', pageTitle:'T1: Find Short Leg from Long Leg', pageTitleEn:'Cari Sisi Pendek dari Sisi Panjang', taskType:'fill',
+          question:'In a 30-60-90 triangle, the long leg is $14\\sqrt{3}$. What is the short leg?', questionEn:'Pada segitiga 30-60-90, sisi panjangnya $14\\sqrt{3}$. Berapakah sisi pendeknya?',
+          correctAnswer:'14', acceptableAnswers:['14'],
+          explanation:`<p>Short Leg $= \\frac{14\\sqrt{3}}{\\sqrt{3}} = 14$. <span class="tr">Sisi Pendek $= \\frac{14\\sqrt{3}}{\\sqrt{3}} = 14$.</span></p>`
+        },
+        { type:'task', pageTitle:'T2: Find Hypotenuse from Long Leg', pageTitleEn:'Cari Sisi Miring dari Sisi Panjang', taskType:'fill',
+          question:'In a 30-60-90 triangle, the long leg is $5\\sqrt{3}$. What is the hypotenuse?', questionEn:'Pada segitiga 30-60-90, sisi panjangnya $5\\sqrt{3}$. Berapakah sisi miringnya?',
+          correctAnswer:'10', acceptableAnswers:['10'],
+          explanation:`<ol><li>Short Leg $= \\frac{5\\sqrt{3}}{\\sqrt{3}} = 5$</li><li>Hypotenuse $= 2 \\times 5 = 10$</li></ol>`
+        },
+        { type:'task', pageTitle:'T3: True or False Long Leg', pageTitleEn:'Benar atau Salah Sisi Panjang', taskType:'truefalse',
+          question:'True or False: To find the short leg from the long leg, you divide the long leg by $\\sqrt{3}$. <span class="tr">Benar atau salah: Untuk mencari sisi pendek dari sisi panjang, Anda membagi sisi panjang dengan $\\sqrt{3}$.</span>', questionEn:'True or False: To find the short leg from the long leg, you divide the long leg by $\\sqrt{3}$. <span class="tr">Benar atau salah: Untuk mencari sisi pendek dari sisi panjang, Anda membagi sisi panjang dengan $\\sqrt{3}$.</span>',
+          correctAnswer:'true',
+          explanation:`<p>Because Long Leg $= x\\sqrt{3}$, dividing by $\\sqrt{3}$ isolates $x$. <span class="tr">Karena Sisi Panjang $= x\\sqrt{3}$, membagi dengan $\\sqrt{3}$ memisahkan $x$.</span></p>`
+        },
+        { type:'explanation', pageTitle:'E2: Advanced 45-45-90', pageTitleEn:'45-45-90 Lanjutan',
+          body:`
+            <p>Sometimes the <strong>hypotenuse</strong> has a radical. Remember: to find the legs from the hypotenuse, you divide by $\\sqrt{2}$ and rationalize.
+              <span class="tr">Terkadang <strong>sisi miring</strong> memiliki akar. Ingat: untuk mencari sisi siku-siku dari sisi miring, Anda membagi dengan $\\sqrt{2}$ dan merasionalkannya.</span></p>
+            <div class="example-box"><h4>Example <span class="tr">Contoh</span></h4>
+              Given Hypotenuse $= 7\\sqrt{2}$, find the legs and perimeter.
+              <span class="tr">Diketahui Sisi Miring $= 7\\sqrt{2}$, cari sisi siku-siku dan keliling.</span>
+              <ol>
+                <li>Leg $= \\frac{7\\sqrt{2}}{\\sqrt{2}} = 7$ <span class="tr">Bagi dengan $\\sqrt{2}$</span></li>
+                <li>Perimeter $= 7 + 7 + 7\\sqrt{2} = 14 + 7\\sqrt{2}$ <span class="tr">Jumlahkan ketiga sisi</span></li>
+              </ol>
+            </div>
+            <div class="example-box"><h4>Tricky Example <span class="tr">Contoh Sulit</span></h4>
+              Given Hypotenuse $= 10$, find the legs.
+              <span class="tr">Diketahui Sisi Miring $= 10$, cari sisi siku-sikunya.</span>
+              <ol>
+                <li>Leg $= \\frac{10}{\\sqrt{2}}$ <span class="tr">Bagi dengan $\\sqrt{2}$</span></li>
+                <li>Leg $= \\frac{10}{\\sqrt{2}} \\times \\frac{\\sqrt{2}}{\\sqrt{2}} = \\frac{10\\sqrt{2}}{2} = 5\\sqrt{2}$ <span class="tr">Rasionalkan dan sederhanakan</span></li>
+              </ol>
+            </div>
+          `
+        },
+        { type:'task', pageTitle:'T4: Leg from Hypotenuse with Radical', pageTitleEn:'Sisi dari Sisi Miring Berakar', taskType:'fill',
+          question:'Given Hypotenuse $= 12\\sqrt{2}$. Find the leg.', questionEn:'Diketahui Sisi Miring $= 12\\sqrt{2}$. Cari sisi siku-sikunya.',
+          correctAnswer:'12', acceptableAnswers:['12'],
+          explanation:`<p>Leg $= \\frac{12\\sqrt{2}}{\\sqrt{2}} = 12$. <span class="tr">Sisi $= \\frac{12\\sqrt{2}}{\\sqrt{2}} = 12$.</span></p>`
+        },
+        { type:'task', pageTitle:'T5: Leg from Hypotenuse Whole Number', pageTitleEn:'Sisi dari Sisi Miring Bilangan Bulat', taskType:'radio',
+          question:'Given Hypotenuse $= 14$. What is the length of one leg?', questionEn:'Diketahui Sisi Miring $= 14$. Berapakah panjang satu sisi siku-sikunya?',
+          options:[
+            {text:'$7$ <span class="tr">$7$</span>', correct:false},
+            {text:'$14$ <span class="tr">$14$</span>', correct:false},
+            {text:'$7\\sqrt{2}$ <span class="tr">$7\\sqrt{2}$</span>', correct:true},
+            {text:'$14\\sqrt{2}$ <span class="tr">$14\\sqrt{2}$</span>', correct:false}
+          ],
+          explanation:`<p>Leg $= \\frac{14}{\\sqrt{2}} = \\frac{14\\sqrt{2}}{2} = 7\\sqrt{2}$. <span class="tr">Sisi $= \\frac{14}{\\sqrt{2}} = \\frac{14\\sqrt{2}}{2} = 7\\sqrt{2}$.</span></p>`
+        },
+        { type:'task', pageTitle:'T6: Match Sides to Hypotenuse', pageTitleEn:'Pasangkan Sisi ke Sisi Miring', taskType:'pairing',
+          question:'Match the given hypotenuse to the leg length.', questionEn:'Pasangkan sisi miring yang diketahui ke panjang sisi siku-sikunya.',
+          pairs:[
+            {left:'Hypotenuse = $8\\sqrt{2}$', right:'Leg = $8$'},
+            {left:'Hypotenuse = $16$', right:'Leg = $8\\sqrt{2}$'},
+            {left:'Hypotenuse = $6\\sqrt{2}$', right:'Leg = $6$'},
+            {left:'Hypotenuse = $12$', right:'Leg = $6\\sqrt{2}$'}
+          ],
+          explanation:`<p>Divide by $\\sqrt{2}$ and rationalize if necessary. <span class="tr">Bagi dengan $\\sqrt{2}$ dan rasionalkan jika perlu.</span></p>`
+        },
+        { type:'explanation', pageTitle:'E3: Mixed Applications', pageTitleEn:'Aplikasi Campuran',
+          body:`
+            <p>Let's combine everything. We will solve a multi-step problem involving area and perimeters of special triangles.
+              <span class="tr">Mari kita gabungkan semuanya. Kita akan menyelesaikan soal multi-langkah yang melibatkan luas dan keliling segitiga istimewa.</span></p>
+            <div class="example-box"><h4>Complex Example <span class="tr">Contoh Kompleks</span></h4>
+              A 30-60-90 triangle has a perimeter of $15 + 5\\sqrt{3}$. Find its area.
+              <span class="tr">Segitiga 30-60-90 memiliki keliling $15 + 5\\sqrt{3}$. Cari luasnya.</span>
+              <ol>
+                <li>Perimeter $= x + x\\sqrt{3} + 2x = 3x + x\\sqrt{3} = 15 + 5\\sqrt{3}$ <span class="tr">Bentuk persamaan keliling</span></li>
+                <li>Factor: $x(3 + \\sqrt{3}) = 5(3 + \\sqrt{3})$ <span class="tr">Faktorkan kedua sisi</span></li>
+                <li>$x = 5$ (Short Leg) <span class="tr">Sisi pendek ditemukan</span></li>
+                <li>Long Leg $= 5\\sqrt{3}$ <span class="tr">Sisi panjang</span></li>
+                <li>Area $= \\frac{1}{2} \\times 5 \\times 5\\sqrt{3} = \\frac{25\\sqrt{3}}{2}$ <span class="tr">Hitung luas</span></li>
+              </ol>
+            </div>
+          `
+        },
+        { type:'task', pageTitle:'T7: Find x from Perimeter', pageTitleEn:'Cari x dari Keliling', taskType:'fill',
+          question:'A 30-60-90 triangle has perimeter $9 + 3\\sqrt{3}$. What is the short leg $x$?', questionEn:'Segitiga 30-60-90 memiliki keliling $9 + 3\\sqrt{3}$. Berapakah sisi pendek $x$?',
+          correctAnswer:'3', acceptableAnswers:['3'],
+          explanation:`<p>$3x + x\\sqrt{3} = 9 + 3\\sqrt{3} \\Rightarrow x(3+\\sqrt{3}) = 3(3+\\sqrt{3}) \\Rightarrow x = 3$. <span class="tr">$3x + x\\sqrt{3} = 9 + 3\\sqrt{3} \\Rightarrow x(3+\\sqrt{3}) = 3(3+\\sqrt{3}) \\Rightarrow x = 3$.</span></p>`
+        },
+        { type:'task', pageTitle:'T8: Calculate Area from Perimeter', pageTitleEn:'Hitung Luas dari Keliling', taskType:'fill',
+          question:'Using the triangle from T7 (Short Leg $= 3$), what is the number outside the radical in the area?', questionEn:'Menggunakan segitiga di T7 (Sisi Pendek $= 3$), berapa angka di luar akar pada luasnya?',
+          correctAnswer:'9', acceptableAnswers:['9'],
+          explanation:`<p>Long Leg $= 3\\sqrt{3}$. Area $= \\frac{1}{2}(3)(3\\sqrt{3}) = \\frac{9\\sqrt{3}}{2}$. Number is 9. <span class="tr">Sisi Panjang $= 3\\sqrt{3}$. Luas $= \\frac{1}{2}(3)(3\\sqrt{3}) = \\frac{9\\sqrt{3}}{2}$. Angkanya 9.</span></p>`
+        },
+        { type:'task', pageTitle:'T9: True or False Area', pageTitleEn:'Benar atau Salah Luas', taskType:'truefalse',
+          question:'True or False: The area of a 45-45-90 triangle with leg $x$ is $\\frac{x^2}{2}$. <span class="tr">Benar atau salah: Luas segitiga 45-45-90 dengan sisi siku-siku $x$ adalah $\\frac{x^2}{2}$.</span>', questionEn:'True or False: The area of a 45-45-90 triangle with leg $x$ is $\\frac{x^2}{2}$. <span class="tr">Benar atau salah: Luas segitiga 45-45-90 dengan sisi siku-siku $x$ adalah $\\frac{x^2}{2}$.</span>',
+          correctAnswer:'true',
+          explanation:`<p>Area $= \\frac{1}{2} \\times x \\times x = \\frac{x^2}{2}$. <span class="tr">Luas $= \\frac{1}{2} \\times x \\times x = \\frac{x^2}{2}$.</span></p>`
+        },
+        { type:'task', pageTitle:'T10: Order Complex Steps', pageTitleEn:'Urutkan Langkah Kompleks', taskType:'sorting',
+          question:'Order the steps to find the area of a 30-60-90 triangle given its perimeter is $6 + 2\\sqrt{3}$.', questionEn:'Urutkan langkah mencari luas segitiga 30-60-90 dengan keliling $6 + 2\\sqrt{3}$.',
+          items:[
+            'Set up $3x + x\\sqrt{3} = 6 + 2\\sqrt{3}$',
+            'Solve for $x$ to get Short Leg $= 2$',
+            'Find Long Leg $= 2\\sqrt{3}$',
+            'Calculate Area $= \\frac{1}{2}(2)(2\\sqrt{3}) = 2\\sqrt{3}$'
+          ],
+          correctOrder:[0,1,2,3],
+          explanation:`<p>Set up equation, find $x$, find long leg, calculate area. <span class="tr">Buat persamaan, cari $x$, cari sisi panjang, hitung luas.</span></p>`
+        }
+      ]
+    },
+    g: {
+      title: 'Consolidation & Reflection',
+      titleEn: 'Consolidation & Reflection',
+      time: '00:55 - 01:00',
+      pages: [
+        { type:'explanation', pageTitle:'E1: Key Takeaways', pageTitleEn:'Poin Penting',
+          body:`
+            <div class="illustration">
+              <svg width="280" height="100" viewBox="0 0 280 100">
+                <line x1="20" y1="80" x2="80" y2="80" stroke="#1e40af" stroke-width="3"/>
+                <line x1="80" y1="80" x2="80" y2="20" stroke="#1e40af" stroke-width="3"/>
+                <line x1="20" y1="80" x2="80" y2="20" stroke="#ef4444" stroke-width="3"/>
+                <text x="40" y="95" font-size="12" fill="#1e40af">x</text>
+                <text x="85" y="55" font-size="12" fill="#1e40af">x</text>
+                <text x="40" y="45" font-size="12" fill="#ef4444">x√2</text>
+                
+                <line x1="120" y1="80" x2="220" y2="80" stroke="#1e40af" stroke-width="3"/>
+                <line x1="220" y1="80" x2="160" y2="20" stroke="#ef4444" stroke-width="3"/>
+                <line x1="160" y1="20" x2="120" y2="80" stroke="#1e40af" stroke-width="3"/>
+                <text x="160" y="95" font-size="12" fill="#1e40af">x√3</text>
+                <text x="185" y="55" font-size="12" fill="#ef4444">2x</text>
+                <text x="125" y="75" font-size="12" fill="#1e40af">x</text>
+              </svg>
+              <div style="font-size:.82em;color:var(--muted);margin-top:6px">45-45-90 & 30-60-90 Ratios <span class="tr">Rasio 45-45-90 & 30-60-90</span></div>
+            </div>
+            <p>Today we mastered <strong>Special Right Triangles</strong>. The key is memorizing the constant side ratios so you don't have to use the full Pythagorean theorem every time!
+              <span class="tr">Hari ini kita menguasai <strong>Segitiga Siku-siku Istimewa</strong>. Kuncinya adalah menghafal rasio sisi yang konstan sehingga Anda tidak perlu menggunakan teorema Pythagoras lengkap setiap saat!</span></p>
+            <div class="math-block">
+              <ol>
+                <li><strong>45-45-90 Triangle:</strong> Legs are $x$, Hypotenuse is $x\\sqrt{2}$. <span class="tr">Sisi siku-siku adalah $x$, Sisi miring $x\\sqrt{2}$.</span></li>
+                <li><strong>30-60-90 Triangle:</strong> Short leg is $x$, Long leg is $x\\sqrt{3}$, Hypotenuse is $2x$. <span class="tr">Sisi pendek $x$, Sisi panjang $x\\sqrt{3}$, Sisi miring $2x$.</span></li>
+              </ol>
+            </div>
+            <div class="tip-box"><h4>Golden Rule <span class="tr">Aturan Emas</span></h4>
+              Always find the <strong>short leg</strong> first in a 30-60-90 triangle! If you have the long leg, divide by $\\sqrt{3}$. If you have the hypotenuse, divide by 2.
+              <span class="tr">Selalu cari <strong>sisi pendek</strong> lebih dulu pada segitiga 30-60-90! Jika Anda punya sisi panjang, bagi dengan $\\sqrt{3}$. Jika punya sisi miring, bagi dengan 2.</span></div>
+          `
+        },
+        { type:'task', pageTitle:'T1: Reflection Question', pageTitleEn:'Pertanyaan Refleksi', taskType:'truefalse',
+          question:'True or False: I understand that in a 30-60-90 triangle, the hypotenuse is always twice the length of the short leg, and I can find the long leg by multiplying the short leg by $\\sqrt{3}$. <span class="tr">Benar atau salah: Saya mengerti bahwa pada segitiga 30-60-90, sisi miring selalu dua kali panjang sisi pendek, dan saya bisa mencari sisi panjang dengan mengalikan sisi pendek dengan $\\sqrt{3}$.</span>', questionEn:'True or False: I understand that in a 30-60-90 triangle, the hypotenuse is always twice the length of the short leg, and I can find the long leg by multiplying the short leg by $\\sqrt{3}$. <span class="tr">Benar atau salah: Saya mengerti bahwa pada segitiga 30-60-90, sisi miring selalu dua kali panjang sisi pendek, dan saya bisa mencari sisi panjang dengan mengalikan sisi pendek dengan $\\sqrt{3}$.</span>',
+          correctAnswer:'true',
+          explanation:`<p>If true, you are ready for the printable tasks! <span class="tr">Jika benar, Anda siap untuk tugas cetak!</span></p>`
+        },
+        { type:'task', pageTitle:'T2: Exit Ticket', pageTitleEn:'Tiket Keluar', taskType:'fill',
+          question:'In a 30-60-90 triangle, the short leg is $7$. What is the length of the hypotenuse?', questionEn:'Pada segitiga 30-60-90, sisi pendeknya $7$. Berapakah panjang sisi miringnya?',
+          correctAnswer:'14', acceptableAnswers:['14'],
+          explanation:`<p>Hypotenuse $= 2x = 2(7) = 14$. <span class="tr">Sisi miring $= 2x = 2(7) = 14$.</span></p>`
+        },
+        { type:'explanation', pageTitle:'E2: Follow-up Practice', pageTitleEn:'Latihan Lanjutan',
+          body:`
+            <p>Additional practice is available in <strong>Tasks 1–5 (Sections H–L)</strong>. Each section contains 10 questions:
+              <span class="tr">Latihan tambahan tersedia di <strong>Tugas 1–5 (Bagian H–L)</strong>. Setiap bagian berisi 10 soal:</span></p>
+            <div class="math-block">
+              <ul>
+                <li><strong>Task 1 (H):</strong> Basic identification & calculation <span class="tr">Identifikasi & perhitungan dasar</span></li>
+                <li><strong>Task 2 (I):</strong> Radicals & Algebra <span class="tr">Akar & Aljabar</span></li>
+                <li><strong>Task 3 (J):</strong> Perimeter & Area <span class="tr">Keliling & Luas</span></li>
+                <li><strong>Task 4 (K):</strong> Advanced multi-step problems <span class="tr">Soal multi-langkah lanjutan</span></li>
+                <li><strong>Task 5 (L):</strong> Word problems & logic <span class="tr">Soal cerita & logika</span></li>
+              </ul>
+            </div>
+            <div class="tip-box">
+              <h4>How to use <span class="tr">Cara menggunakan</span></h4>
+              <ol>
+                <li>Navigate to sections H–L from the left sidebar. <span class="tr">Buka bagian H–L dari sidebar kiri.</span></li>
+                <li>Answer the questions and click <strong>"Check Answer"</strong>. <span class="tr">Jawab soal dan klik <strong>"Periksa Jawaban"</strong>.</span></li>
+                <li>After finishing 10 questions, click the <strong>🖨 Print to PDF</strong> button at the top right. <span class="tr">Setelah selesai 10 soal, klik tombol <strong>🖨 Cetak ke PDF</strong> di kanan atas.</span></li>
+                <li>Print or save as PDF to submit to your tutor. <span class="tr">Cetak atau simpan sebagai PDF untuk diserahkan ke tutor Anda.</span></li>
+              </ol>
+            </div>
+          `
+        }
+      ]
+    },
+    h: {
+      title: 'Task 1',
+      titleEn: 'Task 1',
+      time: 'Printable',
+      pages: [
+        { type:'task', pageTitle:'T1: Identify 45-45-90 Ratio', pageTitleEn:'Identifikasi Rasio 45-45-90', taskType:'radio',
+          question:'What is the side ratio of a 45-45-90 triangle?', questionEn:'Apa rasio sisi segitiga 45-45-90?',
+          options:[
+            {text:'$1 : 1 : 2$ <span class="tr">$1 : 1 : 2$</span>', correct:false},
+            {text:'$1 : 1 : \\sqrt{2}$ <span class="tr">$1 : 1 : \\sqrt{2}$</span>', correct:true},
+            {text:'$1 : \\sqrt{3} : 2$ <span class="tr">$1 : \\sqrt{3} : 2$</span>', correct:false},
+            {text:'$1 : 2 : \\sqrt{3}$ <span class="tr">$1 : 2 : \\sqrt{3}$</span>', correct:false}
+          ],
+          explanation:`<p>The legs are equal (1), and the hypotenuse is $\\sqrt{2}$ times a leg. <span class="tr">Sisi siku-siku sama (1), dan sisi miring $\\sqrt{2}$ kali sisi siku-siku.</span></p>`},
+        { type:'task', pageTitle:'T2: Find Hypotenuse 30-60-90', pageTitleEn:'Cari Sisi Miring 30-60-90', taskType:'fill',
+          question:'In a 30-60-90 triangle, the short leg is $8$. Find the hypotenuse.', questionEn:'Pada segitiga 30-60-90, sisi pendeknya $8$. Cari sisi miringnya.',
+          correctAnswer:'16', acceptableAnswers:['16'],
+          explanation:`<p>Hypotenuse $= 2 \\times \\text{short leg} = 2(8) = 16$. <span class="tr">Sisi miring $= 2 \\times \\text{sisi pendek} = 2(8) = 16$.</span></p>`},
+        { type:'task', pageTitle:'T3: True or False 45-45-90', pageTitleEn:'Benar atau Salah 45-45-90', taskType:'truefalse',
+          question:'True or False: In a 45-45-90 triangle, the hypotenuse is $\\sqrt{3}$ times the leg. <span class="tr">Benar atau salah: Pada segitiga 45-45-90, sisi miring $\\sqrt{3}$ kali sisi siku-siku.</span>', questionEn:'True or False: In a 45-45-90 triangle, the hypotenuse is $\\sqrt{3}$ times the leg. <span class="tr">Benar atau salah: Pada segitiga 45-45-90, sisi miring $\\sqrt{3}$ kali sisi siku-siku.</span>',
+          correctAnswer:'false',
+          explanation:`<p>The hypotenuse is $\\sqrt{2}$ times the leg, not $\\sqrt{3}$. <span class="tr">Sisi miring $\\sqrt{2}$ kali sisi siku-siku, bukan $\\sqrt{3}$.</span></p>`},
+        { type:'task', pageTitle:'T4: Properties of 30-60-90', pageTitleEn:'Properti 30-60-90', taskType:'checkbox',
+          question:'Select all true statements about a 30-60-90 triangle.', questionEn:'Pilih semua pernyataan benar tentang segitiga 30-60-90.',
+          options:[
+            {text:'The hypotenuse is twice the short leg <span class="tr">Sisi miring dua kali sisi pendek</span>', correct:true},
+            {text:'The long leg is $\\sqrt{3}$ times the short leg <span class="tr">Sisi panjang $\\sqrt{3}$ kali sisi pendek</span>', correct:true},
+            {text:'The angles are $30^\\circ, 60^\\circ, 90^\\circ$ <span class="tr">Sudutnya $30^\\circ, 60^\\circ, 90^\\circ$</span>', correct:true},
+            {text:'The two legs are equal <span class="tr">Dua sisi siku-sikunya sama panjang</span>', correct:false}
+          ],
+          explanation:`<p>Only 45-45-90 triangles have equal legs. <span class="tr">Hanya segitiga 45-45-90 yang memiliki sisi siku-siku sama panjang.</span></p>`},
+        { type:'task', pageTitle:'T5: Find Hypotenuse 45-45-90', pageTitleEn:'Cari Sisi Miring 45-45-90', taskType:'fill',
+          question:'In a 45-45-90 triangle, the leg is $9$. What is the number outside the radical for the hypotenuse?', questionEn:'Pada segitiga 45-45-90, sisi siku-sikunya $9$. Berapa angka di luar akar untuk sisi miringnya?',
+          correctAnswer:'9', acceptableAnswers:['9'],
+          explanation:`<p>Hypotenuse $= 9\\sqrt{2}$. The number is 9. <span class="tr">Sisi miring $= 9\\sqrt{2}$. Angkanya 9.</span></p>`},
+        { type:'task', pageTitle:'T6: Order the Long Leg', pageTitleEn:'Urutkan Sisi Panjang', taskType:'sorting',
+          question:'Order the steps to find the long leg in a 30-60-90 triangle if the hypotenuse is $20$.', questionEn:'Urutkan langkah mencari sisi panjang pada segitiga 30-60-90 jika sisi miringnya $20$.',
+          items:['Short leg $= \\frac{20}{2}$','Short leg $= 10$','Long leg $= 10\\sqrt{3}$'],
+          correctOrder:[0,1,2],
+          explanation:`<p>Divide hypotenuse by 2 to find short leg, then multiply by $\\sqrt{3}$. <span class="tr">Bagi sisi miring dengan 2 untuk mencari sisi pendek, lalu kalikan dengan $\\sqrt{3}$.</span></p>`},
+        { type:'task', pageTitle:'T7: Match Sides', pageTitleEn:'Pasangkan Sisi', taskType:'pairing',
+          question:'In a 30-60-90 triangle with short leg $= 6$, match the sides to their values.', questionEn:'Pada segitiga 30-60-90 dengan sisi pendek $= 6$, pasangkan sisi ke nilainya.',
+          pairs:[
+            {left:'Short Leg', right:'$6$'},
+            {left:'Long Leg', right:'$6\\sqrt{3}$'},
+            {left:'Hypotenuse', right:'$12$'},
+            {left:'Angles', right:'$30-60-90^\\circ$'}
+          ],
+          explanation:`<p>Apply the $1 : \\sqrt{3} : 2$ ratio to the short leg. <span class="tr">Terapkan rasio $1 : \\sqrt{3} : 2$ ke sisi pendek.</span></p>`},
+        { type:'task', pageTitle:'T8: Find Short Leg', pageTitleEn:'Cari Sisi Pendek', taskType:'fill',
+          question:'In a 30-60-90 triangle, the long leg is $15\\sqrt{3}$. Find the short leg.', questionEn:'Pada segitiga 30-60-90, sisi panjangnya $15\\sqrt{3}$. Cari sisi pendeknya.',
+          correctAnswer:'15', acceptableAnswers:['15'],
+          explanation:`<p>Short leg $= \\frac{15\\sqrt{3}}{\\sqrt{3}} = 15$. <span class="tr">Sisi pendek $= \\frac{15\\sqrt{3}}{\\sqrt{3}} = 15$.</span></p>`},
+        { type:'task', pageTitle:'T9: Find Perimeter 45-45-90', pageTitleEn:'Cari Keliling 45-45-90', taskType:'radio',
+          question:'A 45-45-90 triangle has a hypotenuse of $10\\sqrt{2}$. What is its perimeter?', questionEn:'Segitiga 45-45-90 memiliki sisi miring $10\\sqrt{2}$. Berapakah kelilingnya?',
+          options:[
+            {text:'$10 + 10\\sqrt{2}$ <span class="tr">$10 + 10\\sqrt{2}$</span>', correct:false},
+            {text:'$20 + 10\\sqrt{2}$ <span class="tr">$20 + 10\\sqrt{2}$</span>', correct:true},
+            {text:'$30$ <span class="tr">$30$</span>', correct:false},
+            {text:'$20\\sqrt{2}$ <span class="tr">$20\\sqrt{2}$</span>', correct:false}
+          ],
+          explanation:`<p>Leg $= 10$. Perimeter $= 10 + 10 + 10\\sqrt{2} = 20 + 10\\sqrt{2}$. <span class="tr">Sisi siku-siku $= 10$. Keliling $= 10 + 10 + 10\\sqrt{2} = 20 + 10\\sqrt{2}$.</span></p>`},
+        { type:'task', pageTitle:'T10: Area of 30-60-90', pageTitleEn:'Luas 30-60-90', taskType:'fill',
+          question:'A 30-60-90 triangle has a short leg of $4$. What is the number outside the radical in its area?', questionEn:'Segitiga 30-60-90 memiliki sisi pendek $4$. Berapa angka di luar akar pada luasnya?',
+          correctAnswer:'8', acceptableAnswers:['8'],
+          explanation:`<p>Long leg $= 4\\sqrt{3}$. Area $= \\frac{1}{2}(4)(4\\sqrt{3}) = 8\\sqrt{3}$. Number is 8. <span class="tr">Sisi panjang $= 4\\sqrt{3}$. Luas $= \\frac{1}{2}(4)(4\\sqrt{3}) = 8\\sqrt{3}$. Angka 8.</span></p>`}
+      ]
+    },
+    i: {
+      title: 'Task 2',
+      titleEn: 'Task 2',
+      time: 'Printable',
+      pages: [
+        { type:'task', pageTitle:'T1: Simplify Radicals', pageTitleEn:'Sederhanakan Akar', taskType:'fill',
+          question:'Simplify $\\sqrt{48}$. What is the number outside the radical?', questionEn:'Sederhanakan $\\sqrt{48}$. Berapa angka di luar akar?',
+          correctAnswer:'4', acceptableAnswers:['4'],
+          explanation:`<p>$48 = 16 \\times 3$. $\\sqrt{48} = \\sqrt{16}\\sqrt{3} = 4\\sqrt{3}$. <span class="tr">$48 = 16 \\times 3$. $\\sqrt{48} = \\sqrt{16}\\sqrt{3} = 4\\sqrt{3}$.</span></p>`},
+        { type:'task', pageTitle:'T2: Rationalize Denominator', pageTitleEn:'Rasionalkan Penyebut', taskType:'radio',
+          question:'Rationalize $\\frac{10}{\\sqrt{5}}$. What is the simplified form?', questionEn:'Rasionalkan $\\frac{10}{\\sqrt{5}}$. Apa bentuk sederhananya?',
+          options:[
+            {text:'$2$ <span class="tr">$2$</span>', correct:false},
+            {text:'$2\\sqrt{5}$ <span class="tr">$2\\sqrt{5}$</span>', correct:true},
+            {text:'$5\\sqrt{2}$ <span class="tr">$5\\sqrt{2}$</span>', correct:false},
+            {text:'$10\\sqrt{5}$ <span class="tr">$10\\sqrt{5}$</span>', correct:false}
+          ],
+          explanation:`<p>$\\frac{10}{\\sqrt{5}} \\times \\frac{\\sqrt{5}}{\\sqrt{5}} = \\frac{10\\sqrt{5}}{5} = 2\\sqrt{5}$. <span class="tr">Kalikan dengan $\\sqrt{5}$ lalu sederhanakan.</span></p>`},
+        { type:'task', pageTitle:'T3: True or False Radicals', pageTitleEn:'Benar atau Salah Akar', taskType:'truefalse',
+          question:'True or False: $\\sqrt{18}$ simplifies to $3\\sqrt{2}$. <span class="tr">Benar atau salah: $\\sqrt{18}$ disederhanakan menjadi $3\\sqrt{2}$.</span>', questionEn:'True or False: $\\sqrt{18}$ simplifies to $3\\sqrt{2}$. <span class="tr">Benar atau salah: $\\sqrt{18}$ disederhanakan menjadi $3\\sqrt{2}$.</span>',
+          correctAnswer:'true',
+          explanation:`<p>$18 = 9 \\times 2$. $\\sqrt{18} = \\sqrt{9}\\sqrt{2} = 3\\sqrt{2}$. <span class="tr">$18 = 9 \\times 2$. $\\sqrt{18} = \\sqrt{9}\\sqrt{2} = 3\\sqrt{2}$.</span></p>`},
+        { type:'task', pageTitle:'T4: Select Simplified Forms', pageTitleEn:'Pilih Bentuk Sederhana', taskType:'checkbox',
+          question:'Select all expressions that are fully simplified and rationalized.', questionEn:'Pilih semua ekspresi yang sudah disederhanakan dan dirasionalkan sepenuhnya.',
+          options:[
+            {text:'$3\\sqrt{5}$ <span class="tr">$3\\sqrt{5}$</span>', correct:true},
+            {text:'$\\frac{6}{\\sqrt{3}}$ <span class="tr">$\\frac{6}{\\sqrt{3}}$</span>', correct:false},
+            {text:'$2\\sqrt{7}$ <span class="tr">$2\\sqrt{7}$</span>', correct:true},
+            {text:'$\\sqrt{20}$ <span class="tr">$\\sqrt{20}$</span>', correct:false}
+          ],
+          explanation:`<p>$\\frac{6}{\\sqrt{3}}$ has a radical in the denominator. $\\sqrt{20}$ has a perfect square factor (4). <span class="tr">$\\frac{6}{\\sqrt{3}}$ memiliki akar di penyebut. $\\sqrt{20}$ memiliki faktor kuadrat sempurna (4).</span></p>`},
+        { type:'task', pageTitle:'T5: Solve for x', pageTitleEn:'Cari Nilai x', taskType:'fill',
+          question:'Solve $3x^2 = 108$ for $x$.', questionEn:'Selesaikan $3x^2 = 108$ untuk $x$.',
+          correctAnswer:'6', acceptableAnswers:['6'],
+          explanation:`<p>$x^2 = 36 \\Rightarrow x = 6$. <span class="tr">$x^2 = 36 \\Rightarrow x = 6$.</span></p>`},
+        { type:'task', pageTitle:'T6: Order Algebra Steps', pageTitleEn:'Urutkan Langkah Aljabar', taskType:'sorting',
+          question:'Order the steps to solve for $x$ in a 45-45-90 triangle where Leg 1 $= 2x$ and Leg 2 $= x+5$.', questionEn:'Urutkan langkah mencari $x$ pada segitiga 45-45-90 di mana Sisi siku-siku 1 $= 2x$ dan Sisi siku-siku 2 $= x+5$.',
+          items:['$2x = x + 5$','$2x - x = 5$','$x = 5$'],
+          correctOrder:[0,1,2],
+          explanation:`<p>Set legs equal, move $x$ to one side, solve. <span class="tr">Samakan sisi siku-siku, pindahkan $x$, selesaikan.</span></p>`},
+        { type:'task', pageTitle:'T7: Match Equations', pageTitleEn:'Pasangkan Persamaan', taskType:'pairing',
+          question:'Match the equation to the value of $x$.', questionEn:'Pasangkan persamaan ke nilai $x$.',
+          pairs:[
+            {left:'$x^2 = 81$', right:'$x = 9$'},
+            {left:'$2x^2 = 50$', right:'$x = 5$'},
+            {left:'$3x^2 = 27$', right:'$x = 3$'},
+            {left:'$4x^2 = 144$', right:'$x = 6$'}
+          ],
+          explanation:`<p>Divide to isolate $x^2$, then take the square root. <span class="tr">Bagi untuk memisahkan $x^2$, lalu akar kuadrat.</span></p>`},
+        { type:'task', pageTitle:'T8: Solve 30-60-90 Algebra', pageTitleEn:'Selesaikan Aljabar 30-60-90', taskType:'fill',
+          question:'In a 30-60-90 triangle, the hypotenuse is $8x$ and the short leg is $2x+12$. Find $x$.', questionEn:'Pada segitiga 30-60-90, sisi miring $8x$ dan sisi pendek $2x+12$. Cari $x$.',
+          correctAnswer:'6', acceptableAnswers:['6'],
+          explanation:`<ol><li>$8x = 2(2x+12)$</li><li>$8x = 4x + 24$</li><li>$4x = 24$</li><li>$x = 6$</li></ol>`},
+        { type:'task', pageTitle:'T9: Perimeter with Algebra', pageTitleEn:'Keliling dengan Aljabar', taskType:'fill',
+          question:'A 45-45-90 triangle has a leg of $11$. What is the value of A in the perimeter $A + B\\sqrt{2}$?', questionEn:'Segitiga 45-45-90 memiliki sisi siku-siku $11$. Berapa nilai A pada keliling $A + B\\sqrt{2}$?',
+          correctAnswer:'22', acceptableAnswers:['22'],
+          explanation:`<p>Perimeter $= 11 + 11 + 11\\sqrt{2} = 22 + 11\\sqrt{2}$. A is 22. <span class="tr">Keliling $= 11 + 11 + 11\\sqrt{2} = 22 + 11\\sqrt{2}$. A adalah 22.</span></p>`},
+        { type:'task', pageTitle:'T10: Area with Algebra', pageTitleEn:'Luas dengan Aljabar', taskType:'fill',
+          question:'A 45-45-90 triangle has an area of $18$. What is the length of one leg?', questionEn:'Segitiga 45-45-90 memiliki luas $18$. Berapakah panjang satu sisi siku-sikunya?',
+          correctAnswer:'6', acceptableAnswers:['6'],
+          explanation:`<p>$\\frac{1}{2}x^2 = 18 \\Rightarrow x^2 = 36 \\Rightarrow x = 6$. <span class="tr">Selesaikan persamaan luas untuk mencari $x$.</span></p>`}
+      ]
+    },
+    j: {
+      title: 'Task 3',
+      titleEn: 'Task 3',
+      time: 'Printable',
+      pages: [
+        { type:'task', pageTitle:'T1: Perimeter of 45-45-90', pageTitleEn:'Keliling 45-45-90', taskType:'fill',
+          question:'A 45-45-90 triangle has a leg of $8$. What is the value of A in the perimeter $A + B\\sqrt{2}$?', questionEn:'Segitiga 45-45-90 memiliki sisi siku-siku $8$. Berapa nilai A pada keliling $A + B\\sqrt{2}$?',
+          correctAnswer:'16', acceptableAnswers:['16'],
+          explanation:`<p>Perimeter $= 8 + 8 + 8\\sqrt{2} = 16 + 8\\sqrt{2}$. A is 16. <span class="tr">Keliling $= 8 + 8 + 8\\sqrt{2} = 16 + 8\\sqrt{2}$. A adalah 16.</span></p>`},
+        { type:'task', pageTitle:'T2: Perimeter of 30-60-90', pageTitleEn:'Keliling 30-60-90', taskType:'radio',
+          question:'A 30-60-90 triangle has a short leg of $5$. What is its perimeter?', questionEn:'Segitiga 30-60-90 memiliki sisi pendek $5$. Berapakah kelilingnya?',
+          options:[
+            {text:'$15 + 5\\sqrt{3}$ <span class="tr">$15 + 5\\sqrt{3}$</span>', correct:true},
+            {text:'$10 + 5\\sqrt{3}$ <span class="tr">$10 + 5\\sqrt{3}$</span>', correct:false},
+            {text:'$15 + 10\\sqrt{3}$ <span class="tr">$15 + 10\\sqrt{3}$</span>', correct:false},
+            {text:'$20$ <span class="tr">$20$</span>', correct:false}
+          ],
+          explanation:`<p>$P = 5 + 5\\sqrt{3} + 10 = 15 + 5\\sqrt{3}$. <span class="tr">$P = 5 + 5\\sqrt{3} + 10 = 15 + 5\\sqrt{3}$.</span></p>`},
+        { type:'task', pageTitle:'T3: True or False Area', pageTitleEn:'Benar atau Salah Luas', taskType:'truefalse',
+          question:'True or False: The area of a 45-45-90 triangle with leg $x$ is $x^2$. <span class="tr">Benar atau salah: Luas segitiga 45-45-90 dengan sisi siku-siku $x$ adalah $x^2$.</span>', questionEn:'True or False: The area of a 45-45-90 triangle with leg $x$ is $x^2$. <span class="tr">Benar atau salah: Luas segitiga 45-45-90 dengan sisi siku-siku $x$ adalah $x^2$.</span>',
+          correctAnswer:'false',
+          explanation:`<p>Area is $\\frac{1}{2} \\times x \\times x = \\frac{x^2}{2}$. <span class="tr">Luasnya $\\frac{1}{2} \\times x \\times x = \\frac{x^2}{2}$.</span></p>`},
+        { type:'task', pageTitle:'T4: Area Formulas', pageTitleEn:'Rumus Luas', taskType:'checkbox',
+          question:'Select all correct formulas for the area of a right triangle.', questionEn:'Pilih semua rumus yang benar untuk luas segitiga siku-siku.',
+          options:[
+            {text:'$\\frac{1}{2} \\times \\text{base} \\times \\text{height}$ <span class="tr">$\\frac{1}{2} \\times \\text{alas} \\times \\text{tinggi}$</span>', correct:true},
+            {text:'$\\frac{1}{2} \\times \\text{leg}_1 \\times \\text{leg}_2$ <span class="tr">$\\frac{1}{2} \\times \\text{sisi siku-siku 1} \\times \\text{sisi siku-siku 2}$</span>', correct:true},
+            {text:'$\\text{base} \\times \\text{height}$ <span class="tr">$\\text{alas} \\times \\text{tinggi}$</span>', correct:false},
+            {text:'$\\text{leg} \\times \\text{hypotenuse}$ <span class="tr">$\\text{sisi siku-siku} \\times \\text{sisi miring}$</span>', correct:false}
+          ],
+          explanation:`<p>Area is always half the product of the base and height. For right triangles, legs are base/height. <span class="tr">Luas selalu setengah dari perkalian alas dan tinggi. Untuk segitiga siku-siku, kakinya adalah alas/tinggi.</span></p>`},
+        { type:'task', pageTitle:'T5: Area of 30-60-90', pageTitleEn:'Luas 30-60-90', taskType:'fill',
+          question:'A 30-60-90 triangle has a short leg of $6$. What is the number outside the radical in its area?', questionEn:'Segitiga 30-60-90 memiliki sisi pendek $6$. Berapa angka di luar akar pada luasnya?',
+          correctAnswer:'18', acceptableAnswers:['18'],
+          explanation:`<p>Long leg $= 6\\sqrt{3}$. Area $= \\frac{1}{2}(6)(6\\sqrt{3}) = 18\\sqrt{3}$. <span class="tr">Sisi panjang $= 6\\sqrt{3}$. Luas $= \\frac{1}{2}(6)(6\\sqrt{3}) = 18\\sqrt{3}$.</span></p>`},
+        { type:'task', pageTitle:'T6: Order Perimeter Steps', pageTitleEn:'Urutkan Langkah Keliling', taskType:'sorting',
+          question:'Order the steps to find the perimeter of a 30-60-90 triangle given its long leg is $9\\sqrt{3}$.', questionEn:'Urutkan langkah mencari keliling segitiga 30-60-90 yang diketahui sisi panjangnya $9\\sqrt{3}$.',
+          items:['Find short leg $= 9$','Find hypotenuse $= 18$','Add all three sides: $9 + 9\\sqrt{3} + 18$','Result: $27 + 9\\sqrt{3}$'],
+          correctOrder:[0,1,2,3],
+          explanation:`<p>Find short leg first, then hypotenuse, then sum them up. <span class="tr">Cari sisi pendek dulu, lalu sisi miring, lalu jumlahkan.</span></p>`},
+        { type:'task', pageTitle:'T7: Match Sides to Area', pageTitleEn:'Pasangkan Sisi ke Luas', taskType:'pairing',
+          question:'Match the special right triangle data to its area.', questionEn:'Pasangkan data segitiga siku-siku istimewa ke luasnya.',
+          pairs:[
+            {left:'45-45-90, leg = 6', right:'$18$'},
+            {left:'45-45-90, leg = 8', right:'$32$'},
+            {left:'30-60-90, short = 6', right:'$18\\sqrt{3}$'},
+            {left:'30-60-90, short = 4', right:'$8\\sqrt{3}$'}
+          ],
+          explanation:`<p>Use $\\frac{1}{2}bh$. For 45-45-90, $b=h=\\text{leg}$. For 30-60-90, $b=\\text{short}, h=\\text{long}$. <span class="tr">Gunakan $\\frac{1}{2}alas \\times tinggi$.</span></p>`},
+        { type:'task', pageTitle:'T8: Square Area from Diagonal', pageTitleEn:'Luas Persegi dari Diagonal', taskType:'fill',
+          question:'A square has a diagonal of $10\\sqrt{2}$. What is the area of the square?', questionEn:'Persegi memiliki diagonal $10\\sqrt{2}$. Berapakah luas perseginya?',
+          correctAnswer:'100', acceptableAnswers:['100'],
+          explanation:`<p>Side $s = 10$. Area $= s^2 = 100$. <span class="tr">Sisi $s = 10$. Luas $= s^2 = 100$.</span></p>`},
+        { type:'task', pageTitle:'T9: Equilateral Altitude', pageTitleEn:'Tinggi Segitiga Sama Sisi', taskType:'radio',
+          question:'An equilateral triangle has a perimeter of 30. What is the length of its altitude?', questionEn:'Segitiga sama sisi memiliki keliling 30. Berapakah panjang tingginya?',
+          options:[
+            {text:'$5\\sqrt{3}$ <span class="tr">$5\\sqrt{3}$</span>', correct:true},
+            {text:'$10\\sqrt{3}$ <span class="tr">$10\\sqrt{3}$</span>', correct:false},
+            {text:'$15\\sqrt{3}$ <span class="tr">$15\\sqrt{3}$</span>', correct:false},
+            {text:'$5$ <span class="tr">$5$</span>', correct:false}
+          ],
+          explanation:`<p>Side $= 10$. Altitude forms a 30-60-90 triangle with hypotenuse 10. Short leg $= 5$, Altitude (long leg) $= 5\\sqrt{3}$. <span class="tr">Sisi $= 10$. Tinggi membentuk segitiga 30-60-90 dengan sisi miring 10. Sisi pendek $= 5$, Tinggi (sisi panjang) $= 5\\sqrt{3}$.</span></p>`},
+        { type:'task', pageTitle:'T10: Square Area from Side', pageTitleEn:'Luas Persegi dari Sisi', taskType:'fill',
+          question:'A square has a diagonal of $6\\sqrt{2}$. What is the area?', questionEn:'Persegi memiliki diagonal $6\\sqrt{2}$. Berapakah luasnya?',
+          correctAnswer:'36', acceptableAnswers:['36'],
+          explanation:`<p>Side $= 6$. Area $= 6^2 = 36$. <span class="tr">Sisi $= 6$. Luas $= 6^2 = 36$.</span></p>`}
+      ]
+    },
+    k: {
+      title: 'Task 4',
+      titleEn: 'Task 4',
+      time: 'Printable',
+      pages: [
+        { type:'task', pageTitle:'T1: Find Short Leg from Perimeter', pageTitleEn:'Cari Sisi Pendek dari Keliling', taskType:'fill',
+          question:'A 30-60-90 triangle has a perimeter of $15 + 5\\sqrt{3}$. What is the short leg?', questionEn:'Segitiga 30-60-90 memiliki keliling $15 + 5\\sqrt{3}$. Berapakah sisi pendeknya?',
+          correctAnswer:'5', acceptableAnswers:['5'],
+          explanation:`<p>$3x + x\\sqrt{3} = 15 + 5\\sqrt{3} \\Rightarrow x=5$. <span class="tr">Sesuaikan koefisien dan konstanta.</span></p>`},
+        { type:'task', pageTitle:'T2: Find Leg from Perimeter', pageTitleEn:'Cari Sisi Siku-siku dari Keliling', taskType:'radio',
+          question:'A 45-45-90 triangle has a perimeter of $10 + 5\\sqrt{2}$. What is the length of one leg?', questionEn:'Segitiga 45-45-90 memiliki keliling $10 + 5\\sqrt{2}$. Berapakah panjang satu sisi siku-sikunya?',
+          options:[
+            {text:'$5$ <span class="tr">$5$</span>', correct:true},
+            {text:'$10$ <span class="tr">$10$</span>', correct:false},
+            {text:'$5\\sqrt{2}$ <span class="tr">$5\\sqrt{2}$</span>', correct:false},
+            {text:'$10\\sqrt{2}$ <span class="tr">$10\\sqrt{2}$</span>', correct:false}
+          ],
+          explanation:`<p>$2x + x\\sqrt{2} = 10 + 5\\sqrt{2} \\Rightarrow x=5$. <span class="tr">Samakan bagian rasional dan irasional.</span></p>`},
+        { type:'task', pageTitle:'T3: True or False Diagonal Area', pageTitleEn:'Benar atau Salah Luas Diagonal', taskType:'truefalse',
+          question:'True or False: If the diagonal of a square is $d$, its area is $\\frac{d^2}{2}$. <span class="tr">Benar atau salah: Jika diagonal persegi adalah $d$, luasnya adalah $\\frac{d^2}{2}$.</span>', questionEn:'True or False: If the diagonal of a square is $d$, its area is $\\frac{d^2}{2}$. <span class="tr">Benar atau salah: Jika diagonal persegi adalah $d$, luasnya adalah $\\frac{d^2}{2}$.</span>',
+          correctAnswer:'true',
+          explanation:`<p>Side $s = \\frac{d}{\\sqrt{2}}$. Area $= s^2 = \\frac{d^2}{2}$. <span class="tr">Sisi $s = \\frac{d}{\\sqrt{2}}$. Luas $= s^2 = \\frac{d^2}{2}$.</span></p>`},
+        { type:'task', pageTitle:'T4: Equilateral Properties', pageTitleEn:'Properti Segitiga Sama Sisi', taskType:'checkbox',
+          question:'Select all true statements about an equilateral triangle with side $s$.', questionEn:'Pilih semua pernyataan benar tentang segitiga sama sisi dengan sisi $s$.',
+          options:[
+            {text:'Altitude $= \\frac{s\\sqrt{3}}{2}$ <span class="tr">Tinggi $= \\frac{s\\sqrt{3}}{2}$</span>', correct:true},
+            {text:'Altitude bisects the base <span class="tr">Tinggi membagi dua alas</span>', correct:true},
+            {text:'Angles are $60^\\circ$ <span class="tr">Sudutnya $60^\\circ$</span>', correct:true},
+            {text:'It forms 45-45-90 triangles when cut <span class="tr">Membentuk segitiga 45-45-90 saat dipotong</span>', correct:false}
+          ],
+          explanation:`<p>Cutting an equilateral triangle forms two 30-60-90 triangles. <span class="tr">Memotong segitiga sama sisi membentuk dua segitiga 30-60-90.</span></p>`},
+        { type:'task', pageTitle:'T5: Area from Hypotenuse 45-45-90', pageTitleEn:'Luas dari Sisi Miring 45-45-90', taskType:'fill',
+          question:'A 45-45-90 triangle has a hypotenuse of $7\\sqrt{2}$. What is its area?', questionEn:'Segitiga 45-45-90 memiliki sisi miring $7\\sqrt{2}$. Berapakah luasnya?',
+          correctAnswer:'24.5', acceptableAnswers:['24.5','49/2'],
+          explanation:`<p>Leg $= 7$. Area $= \\frac{1}{2}(7)(7) = 24.5$. <span class="tr">Sisi siku-siku $= 7$. Luas $= \\frac{1}{2}(7)(7) = 24.5$.</span></p>`},
+        { type:'task', pageTitle:'T6: Order Area Calculation', pageTitleEn:'Urutkan Perhitungan Luas', taskType:'sorting',
+          question:'Order the steps to find the area of a 30-60-90 triangle given hypotenuse is $12$.', questionEn:'Urutkan langkah mencari luas segitiga 30-60-90 jika diketahui sisi miring $12$.',
+          items:['Short leg $= 6$','Long leg $= 6\\sqrt{3}$','Area $= \\frac{1}{2}(6)(6\\sqrt{3})$','Result $= 18\\sqrt{3}$'],
+          correctOrder:[0,1,2,3],
+          explanation:`<p>Find short leg, find long leg, apply area formula, solve. <span class="tr">Cari sisi pendek, sisi panjang, terapkan rumus luas, selesaikan.</span></p>`},
+        { type:'task', pageTitle:'T7: Match Algebra to Values', pageTitleEn:'Pasangkan Aljabar ke Nilai', taskType:'pairing',
+          question:'Match the algebraic description to the value of $x$.', questionEn:'Pasangkan deskripsi aljabar ke nilai $x$.',
+          pairs:[
+            {left:'30-60-90, Hyp $= 6x$, Short $= 2x+8$', right:'$x = 4$'},
+            {left:'45-45-90, Leg $= 3x$, Leg $= x+12$', right:'$x = 6$'},
+            {left:'30-60-90, Long $= 4x$, Long $= x\\sqrt{3}$', right:'$x = 4$'},
+            {left:'45-45-90, Hyp $= 5x\\sqrt{2}$, Leg $= 15$', right:'$x = 3$'}
+          ],
+          explanation:`<p>Set up the ratio equations and solve for $x$. <span class="tr">Buat persamaan rasio dan selesaikan untuk $x$.</span></p>`},
+        { type:'task', pageTitle:'T8: Side from Altitude', pageTitleEn:'Sisi dari Tinggi', taskType:'fill',
+          question:'The altitude of an equilateral triangle is $12\\sqrt{3}$. What is the side length?', questionEn:'Tinggi segitiga sama sisi adalah $12\\sqrt{3}$. Berapakah panjang sisi?',
+          correctAnswer:'24', acceptableAnswers:['24'],
+          explanation:`<p>Altitude is long leg. Short leg $= 12$. Hypotenuse (side) $= 2 \\times 12 = 24$. <span class="tr">Tinggi adalah sisi panjang. Sisi pendek $= 12$. Sisi miring (sisi) $= 2 \\times 12 = 24$.</span></p>`},
+        { type:'task', pageTitle:'T9: Perimeter from Hypotenuse', pageTitleEn:'Keliling dari Sisi Miring', taskType:'radio',
+          question:'A 45-45-90 triangle has a hypotenuse of $4\\sqrt{2}$. What is the perimeter?', questionEn:'Segitiga 45-45-90 memiliki sisi miring $4\\sqrt{2}$. Berapakah kelilingnya?',
+          options:[
+            {text:'$8 + 4\\sqrt{2}$ <span class="tr">$8 + 4\\sqrt{2}$</span>', correct:true},
+            {text:'$4 + 4\\sqrt{2}$ <span class="tr">$4 + 4\\sqrt{2}$</span>', correct:false},
+            {text:'$12$ <span class="tr">$12$</span>', correct:false},
+            {text:'$8\\sqrt{2}$ <span class="tr">$8\\sqrt{2}$</span>', correct:false}
+          ],
+          explanation:`<p>Leg $= 4$. Perimeter $= 4 + 4 + 4\\sqrt{2} = 8 + 4\\sqrt{2}$. <span class="tr">Sisi siku-siku $= 4$. Keliling $= 4 + 4 + 4\\sqrt{2} = 8 + 4\\sqrt{2}$.</span></p>`},
+        { type:'task', pageTitle:'T10: Area of Equilateral', pageTitleEn:'Luas Segitiga Sama Sisi', taskType:'fill',
+          question:'An equilateral triangle has a side length of $8$. What is the number outside the radical in its area?', questionEn:'Segitiga sama sisi memiliki panjang sisi $8$. Berapa angka di luar akar pada luasnya?',
+          correctAnswer:'16', acceptableAnswers:['16'],
+          explanation:`<p>Altitude $= 4\\sqrt{3}$. Area $= \\frac{1}{2}(8)(4\\sqrt{3}) = 16\\sqrt{3}$. <span class="tr">Tinggi $= 4\\sqrt{3}$. Luas $= \\frac{1}{2}(8)(4\\sqrt{3}) = 16\\sqrt{3}$.</span></p>`}
+      ]
+    },
+    l: {
+      title: 'Task 5',
+      titleEn: 'Task 5',
+      time: 'Printable',
+      pages: [
+        { type:'task', pageTitle:'T1: Ramp Problem', pageTitleEn:'Soal Ramp', taskType:'radio',
+          question:'A ramp forms a $30^\\circ$ angle with the ground. If the height is $2$ ft, how long is the ramp?', questionEn:'Sebuah ramp membentuk sudut $30^\\circ$ dengan tanah. Jika tingginya $2$ kaki, berapakah panjang ramp?',
+          options:[
+            {text:'$4$ ft <span class="tr">$4$ kaki</span>', correct:true},
+            {text:'$2\\sqrt{3}$ ft <span class="tr">$2\\sqrt{3}$ kaki</span>', correct:false},
+            {text:'$4\\sqrt{3}$ ft <span class="tr">$4\\sqrt{3}$ kaki</span>', correct:false},
+            {text:'$2$ ft <span class="tr">$2$ kaki</span>', correct:false}
+          ],
+          explanation:`<p>Height is short leg ($2$). Ramp is hypotenuse $= 2 \\times 2 = 4$. <span class="tr">Tinggi adalah sisi pendek. Ramp adalah sisi miring.</span></p>`},
+        { type:'task', pageTitle:'T2: Garden Diagonal', pageTitleEn:'Diagonal Kebun', taskType:'fill',
+          question:'A square garden has a side of $10$ m. What is the length of its diagonal?', questionEn:'Kebun persegi memiliki sisi $10$ m. Berapakah panjang diagonalnya?',
+          correctAnswer:'10', acceptableAnswers:['10'],
+          explanation:`<p>Diagonal $= 10\\sqrt{2}$. Number outside is 10. <span class="tr">Diagonal $= 10\\sqrt{2}$. Angka di luar adalah 10.</span></p>`},
+        { type:'task', pageTitle:'T3: True or False Diagonal Cut', pageTitleEn:'Benar atau Salah Potongan Diagonal', taskType:'truefalse',
+          question:'True or False: Cutting a square along its diagonal creates two 45-45-90 triangles. <span class="tr">Benar atau salah: Memotong persegi di sepanjang diagonalnya menciptakan dua segitiga 45-45-90.</span>', questionEn:'True or False: Cutting a square along its diagonal creates two 45-45-90 triangles. <span class="tr">Benar atau salah: Memotong persegi di sepanjang diagonalnya menciptakan dua segitiga 45-45-90.</span>',
+          correctAnswer:'true',
+          explanation:`<p>The corners are $90^\\circ$, and the diagonal bisects them into two $45^\\circ$ angles. <span class="tr">Sudutnya $90^\\circ$, dan diagonal membaginya menjadi dua sudut $45^\\circ$.</span></p>`},
+        { type:'task', pageTitle:'T4: Real World Objects', pageTitleEn:'Benda Dunia Nyata', taskType:'checkbox',
+          question:'Select all real-world scenarios that can be modeled by special right triangles.', questionEn:'Pilih semua skenario dunia nyata yang bisa dimodelkan dengan segitiga siku-siku istimewa.',
+          options:[
+            {text:'A staircase with $30^\\circ$ incline <span class="tr">Tangga dengan kemiringan $30^\\circ$</span>', correct:true},
+            {text:'A square folding table <span class="tr">Meja lipat persegi</span>', correct:true},
+            {text:'A perfectly circular pond <span class="tr">Kolam bundar sempurna</span>', correct:false},
+            {text:'An equilateral pyramid base <span class="tr">Alas piramida sama sisi</span>', correct:true}
+          ],
+          explanation:`<p>Stairs and squares involve 30-60-90 and 45-45-90. Pyramids often have equilateral triangular bases. <span class="tr">Tangga dan persegi melibatkan 30-60-90 dan 45-45-90. Piramida sering memiliki alas segitiga sama sisi.</span></p>`},
+        { type:'task', pageTitle:'T5: Find Long Leg Word', pageTitleEn:'Cari Sisi Panjang Kata', taskType:'fill',
+          question:'A $30$-ft wire stretches from a pole to the ground, forming a $30^\\circ$ angle. How far is the base of the pole from the wire\'s end on the ground?', questionEn:'Kawat sepanjang $30$ kaki membentang dari tiang ke tanah, membentuk sudut $30^\\circ$. Berapa jauh pangkal tiang dari ujung kawat di tanah?',
+          correctAnswer:'15', acceptableAnswers:['15'],
+          explanation:`<p>Wire is hypotenuse (30). Distance on ground is short leg $= 30/2 = 15$. <span class="tr">Kawat adalah sisi miring. Jarak di tanah adalah sisi pendek.</span></p>`},
+        { type:'task', pageTitle:'T6: Order Word Problem', pageTitleEn:'Urutkan Soal Cerita', taskType:'sorting',
+          question:'Order steps to solve: A ladder leans at $45^\\circ$ and reaches 10 ft up a wall. How long is the ladder?', questionEn:'Urutkan langkah menyelesaikan: Tangga bersandar $45^\\circ$ dan mencapai 10 kaki di dinding. Berapa panjang tangga?',
+          items:['Identify as 45-45-90 triangle','Leg = 10 ft','Hypotenuse = $10\\sqrt{2}$','Length is $10\\sqrt{2}$ ft'],
+          correctOrder:[0,1,2,3],
+          explanation:`<p>Classify, identify given side, apply formula, state answer. <span class="tr">Klasifikasi, identifikasi sisi, terapkan rumus, nyatakan jawaban.</span></p>`},
+        { type:'task', pageTitle:'T7: Match Objects to Triangles', pageTitleEn:'Pasangkan Benda ke Segitiga', taskType:'pairing',
+          question:'Match the real-world object to the triangle it forms.', questionEn:'Pasangkan benda dunia nyata ke segitiga yang terbentuk.',
+          pairs:[
+            {left:'Diagonal of a square', right:'45-45-90'},
+            {left:'Altitude of equilateral', right:'30-60-90'},
+            {left:'Isosceles right triangle ramp', right:'45-45-90'},
+            {left:'Bisected equilateral triangle', right:'30-60-90'}
+          ],
+          explanation:`<p>Squares create 45-45-90, equilateral triangles create 30-60-90. <span class="tr">Persegi menciptakan 45-45-90, segitiga sama sisi menciptakan 30-60-90.</span></p>`},
+        { type:'task', pageTitle:'T8: Table Perimeter', pageTitleEn:'Keliling Meja', taskType:'fill',
+          question:'A square table has a diagonal of $6\\sqrt{2}$ meters. What is its perimeter?', questionEn:'Meja persegi memiliki diagonal $6\\sqrt{2}$ meter. Berapakah kelilingnya?',
+          correctAnswer:'24', acceptableAnswers:['24'],
+          explanation:`<p>Side $= 6$. Perimeter $= 4 \\times 6 = 24$. <span class="tr">Sisi $= 6$. Keliling $= 4 \\times 6 = 24$.</span></p>`},
+        { type:'task', pageTitle:'T9: Equilateral Altitude Word', pageTitleEn:'Tinggi Segitiga Sama Sisi Kata', taskType:'radio',
+          question:'An equilateral triangle has sides of $10\\sqrt{2}$. What is its altitude?', questionEn:'Segitiga sama sisi memiliki sisi $10\\sqrt{2}$. Berapakah tingginya?',
+          options:[
+            {text:'$5\\sqrt{6}$ <span class="tr">$5\\sqrt{6}$</span>', correct:true},
+            {text:'$10\\sqrt{3}$ <span class="tr">$10\\sqrt{3}$</span>', correct:false},
+            {text:'$5\\sqrt{2}$ <span class="tr">$5\\sqrt{2}$</span>', correct:false},
+            {text:'$15\\sqrt{2}$ <span class="tr">$15\\sqrt{2}$</span>', correct:false}
+          ],
+          explanation:`<p>Short leg $= \\frac{10\\sqrt{2}}{2} = 5\\sqrt{2}$. Altitude (long) $= 5\\sqrt{2} \\times \\sqrt{3} = 5\\sqrt{6}$. <span class="tr">Sisi pendek $= \\frac{10\\sqrt{2}}{2} = 5\\sqrt{2}$. Tinggi (panjang) $= 5\\sqrt{2} \\times \\sqrt{3} = 5\\sqrt{6}$.</span></p>`},
+        { type:'task', pageTitle:'T10: Gate Area', pageTitleEn:'Luas Gerbang', taskType:'fill',
+          question:'A triangular gate is shaped like a 45-45-90 triangle. If the hypotenuse is $14\\sqrt{2}$ ft, what is its area?', questionEn:'Gerbang segitiga berbentuk 45-45-90. Jika sisi miringnya $14\\sqrt{2}$ kaki, berapakah luasnya?',
+          correctAnswer:'98', acceptableAnswers:['98'],
+          explanation:`<p>Leg $= 14$. Area $= \\frac{1}{2}(14)(14) = 98$. <span class="tr">Sisi siku-siku $= 14$. Luas $= \\frac{1}{2}(14)(14) = 98$.</span></p>`}
+      ]
+    }
+  };
+
+  // ================= STATE =================
+  let currentSection = 'a';
+  let currentPage = 0;
+  let userAnswers = {};
+
+  // ================= UTILITIES =================
+  function shuffle(arr){
+    const a = arr.slice();
+    for(let i = a.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+  function renderMath(el){
+    if(window.renderMathInElement){
+      renderMathInElement(el, {
+        delimiters: [
+          {left:'$$', right:'$$', display:true},
+          {left:'$', right:'$', display:false}
+        ],
+        throwOnError: false
+      });
+    }
+  }
+
+  // ================= SIDEBAR =================
+  function renderSidebar(){
+    const sidebar = document.getElementById('sidebar');
+    const sectionKeys = ['a','b','c','d','e','f','g','h','i','j','k','l'];
+    const meta = {
+      a:{t:'Spiral Review Warm-up', e:'Spiral Review Warm-up', time:'00:00-00:10'},
+      b:{t:'Intro & Real-World', e:'Intro & Real-World', time:'00:10-00:15'},
+      c:{t:'Review of Prior Knowledge', e:'Review of Prior Knowledge', time:'00:15-00:20'},
+      d:{t:'Problem Introduction', e:'Problem Introduction', time:'00:20-00:30'},
+      e:{t:'Guided Practice', e:'Guided Practice', time:'00:30-00:45'},
+      f:{t:'Independent Practice', e:'Independent Practice', time:'00:45-00:55'},
+      g:{t:'Consolidation & Reflection', e:'Consolidation & Reflection', time:'00:55-01:00'},
+      h:{t:'Task 1', e:'Task 1', time:'Printable'},
+      i:{t:'Task 2', e:'Task 2', time:'Printable'},
+      j:{t:'Task 3', e:'Task 3', time:'Printable'},
+      k:{t:'Task 4', e:'Task 4', time:'Printable'},
+      l:{t:'Task 5', e:'Task 5', time:'Printable'}
+    };
+    let html = '<h3>Sections <span class="tr">Bagian</span></h3>';
+    sectionKeys.forEach(key => {
+      const section = sectionsData[key];
+      const isActive = currentSection === key;
+      if(section){
+        html += `<div class="nav-link ${isActive?'active':''}" data-section="${key}">
+          <span class="nl-title">${key.toUpperCase()}. ${meta[key].t}</span>
+          <span class="tr">${meta[key].e}</span>
+          <span class="time">${meta[key].time}</span>
+        </div>`;
+      } else {
+        html += `<div class="nav-link disabled">${key.toUpperCase()}. ${meta[key].t}<br><span class="tr">${meta[key].e}</span><br><span class="time">${meta[key].time} (soon)</span></div>`;
+      }
+    });
+    sidebar.innerHTML = html;
+    sidebar.querySelectorAll('.nav-link[data-section]').forEach(el => {
+      el.addEventListener('click', () => {
+        currentSection = el.dataset.section;
+        currentPage = 0;
+        renderSidebar();
+        renderPage();
+      });
+    });
+  }
+
+  // ================= PAGE RENDER =================
+  function renderPage(){
+    const section = sectionsData[currentSection];
+    if(!section) return;
+    const page = section.pages[currentPage];
+    const contentEl = document.getElementById('pageContent');
+
+    let printBtnHtml = '';
+    if(['h','i','j','k','l'].includes(currentSection)){
+      printBtnHtml = '<button id="printBtnTop" style="background:var(--success);color:#fff;border:none;padding:7px 14px;border-radius:6px;cursor:pointer;font-size:.8em;font-weight:600;white-space:nowrap">🖨 Print to PDF <span class="tr">Cetak ke PDF</span></button>';
+    }
+
+    let html = '<div class="page-header"><h2>' + section.title + ' <span class="tr">' + section.titleEn + '</span></h2><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">' + printBtnHtml + '<span class="badge">' + page.pageTitle.split(':')[0] + '</span></div></div>';
+
+    if(page.type === 'explanation'){
+      html += '<div class="card explain"><h3>' + page.pageTitle + ' <span class="tr">' + page.pageTitleEn + '</span></h3>' + page.body + '</div>';
+    } else if(page.type === 'task'){
+      html += renderTask(page);
+    }
+    contentEl.innerHTML = html;
+    renderMath(contentEl);
+
+    const total = section.pages.length;
+    const pageNumsEl = document.getElementById('pageNums');
+    let pageNumHtml = '';
+    section.pages.forEach(function(p, i){
+      var raw = p.pageTitle.split(':')[0].trim();
+      var type = raw.charAt(0);
+      var num = parseInt(raw.substring(1));
+      var label = type + '-' + String(num).padStart(2, '0');
+      var typeClass = (type === 'E') ? 'page-num-e' : 'page-num-t';
+      var isActive = (i === currentPage);
+      pageNumHtml += '<button class="page-num ' + typeClass + ' ' + (isActive ? 'active' : '') + '" data-page="' + i + '"' + (isActive ? ' disabled' : '') + '>' + label + '</button>';
+    });
+    pageNumsEl.innerHTML = pageNumHtml;
+
+    pageNumsEl.querySelectorAll('.page-num').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        currentPage = parseInt(btn.dataset.page);
+        renderPage();
+      });
+    });
+
+    document.getElementById('prevBtn').disabled = (currentPage === 0);
+    document.getElementById('nextBtn').disabled = (currentPage === total - 1);
+
+    var printBtnTop = document.getElementById('printBtnTop');
+    if(printBtnTop){
+      printBtnTop.addEventListener('click', function(){ printTask(currentSection); });
+    }
+
+    if(page.type === 'task'){
+      attachTaskHandlers(page);
+    }
+  }
+
+  function renderTask(page){
+    let html = `<div class="card task"><h3>${page.pageTitle} <span class="tr">${page.pageTitleEn}</span></h3>`;
+    html += `<div class="q-text">${page.question} <span class="tr">${page.questionEn || ''}</span></div>`;
+
+    if(page.taskType === 'radio' || page.taskType === 'checkbox'){
+      const options = shuffle(page.options);
+      page._shuffledOptions = options;
+      html += '<div class="options">';
+      options.forEach((opt, i) => {
+        const cls = page.taskType === 'checkbox' ? 'option checkbox' : 'option radio';
+        html += `<div class="${cls}" data-idx="${i}">
+          <div class="marker"></div>
+          <div class="opt-text">${opt.text}</div>
+        </div>`;
+      });
+      html += '</div>';
+    } else if(page.taskType === 'fill'){
+      html += `<input type="text" class="fill-input" id="fillInput" placeholder="...">`;
+    } else if(page.taskType === 'truefalse'){
+      const opts = shuffle([
+        {text:'True <span class="tr">Benar</span>', val:'true'},
+        {text:'False <span class="tr">Salah</span>', val:'false'}
+      ]);
+      page._shuffledTF = opts;
+      html += '<div class="options">';
+      opts.forEach((o, i) => {
+        html += `<div class="option radio" data-val="${o.val}" data-idx="${i}"><div class="marker"></div><div class="opt-text">${o.text}</div></div>`;
+      });
+      html += '</div>';
+    } else if(page.taskType === 'sorting'){
+      const shuffled = shuffle(page.items.map((item, idx) => ({text:item, originalIdx:idx})));
+      page._shuffledItems = shuffled;
+      html += '<div class="sort-list">';
+      shuffled.forEach((it, i) => {
+        html += `<div class="sort-item" data-pos="${i}" data-orig="${it.originalIdx}">
+          <span class="pos">${i+1}</span>
+          <span class="sort-text">${it.text}</span>
+        </div>`;
+      });
+      html += '</div>';
+      html += '<p style="font-size:.82em;color:var(--muted);margin-top:6px">Click two items to swap. <span class="tr">Klik dua item untuk menukar.</span></p>';
+    } else if(page.taskType === 'pairing'){
+      const lefts = shuffle(page.pairs.map((p, idx) => ({text:p.left, originalIdx:idx})));
+      const rights = shuffle(page.pairs.map((p, idx) => ({text:p.right, originalIdx:idx})));
+      page._shuffledPairs = {lefts, rights};
+      html += '<div class="pair-grid">';
+      html += '<div class="pair-col"><h4>Left <span class="tr">Kiri</span></h4>';
+      lefts.forEach((l, i) => {
+        html += `<div class="pair-item" data-side="left" data-idx="${i}">${l.text}</div>`;
+      });
+      html += '</div>';
+      html += '<div class="pair-col"><h4>Right <span class="tr">Kanan</span></h4>';
+      rights.forEach((r, i) => {
+        html += `<div class="pair-item" data-side="right" data-idx="${i}">${r.text}</div>`;
+      });
+      html += '</div></div>';
+      html += '<div class="pairs-list" id="pairsList"></div>';
+      html += '<p style="font-size:.82em;color:var(--muted);margin-top:6px">Click left then right to pair. <span class="tr">Klik kiri lalu kanan untuk memasangkan.</span></p>';
+    }
+    html += `<button class="btn-submit" id="submitBtn">Check Answer <span class="tr">Periksa Jawaban</span></button>`;
+    html += `<div class="feedback" id="feedback"></div></div>`;
+    return html;
+  }
+
+  function attachTaskHandlers(page){
+    const taskType = page.taskType;
+    if(taskType === 'radio' || taskType === 'truefalse'){
+      document.querySelectorAll('.option').forEach(opt => {
+        opt.addEventListener('click', () => {
+          document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+          opt.classList.add('selected');
+        });
+      });
+    } else if(taskType === 'checkbox'){
+      document.querySelectorAll('.option').forEach(opt => {
+        opt.addEventListener('click', () => opt.classList.toggle('selected'));
+      });
+    } else if(taskType === 'sorting'){
+      let firstClick = null;
+      document.querySelectorAll('.sort-item').forEach(item => {
+        item.addEventListener('click', () => {
+          if(firstClick === null){
+            firstClick = item;
+            item.classList.add('selected');
+          } else if(firstClick === item){
+            item.classList.remove('selected');
+            firstClick = null;
+          } else {
+            const fText = firstClick.querySelector('.sort-text').innerHTML;
+            const sText = item.querySelector('.sort-text').innerHTML;
+            firstClick.querySelector('.sort-text').innerHTML = sText;
+            item.querySelector('.sort-text').innerHTML = fText;
+            const fOrig = firstClick.dataset.orig;
+            firstClick.dataset.orig = item.dataset.orig;
+            item.dataset.orig = fOrig;
+            firstClick.classList.remove('selected');
+            firstClick = null;
+          }
+        });
+      });
+    } else if(taskType === 'pairing'){
+      let selectedLeft = null;
+      document.querySelectorAll('.pair-item[data-side="left"]').forEach(item => {
+        item.addEventListener('click', () => {
+          if(item.classList.contains('paired')) return;
+          document.querySelectorAll('.pair-item[data-side="left"]').forEach(i => i.classList.remove('selected'));
+          item.classList.add('selected');
+          selectedLeft = item;
+        });
+      });
+      document.querySelectorAll('.pair-item[data-side="right"]').forEach(item => {
+        item.addEventListener('click', () => {
+          if(item.classList.contains('paired') || !selectedLeft) return;
+          const leftIdx = selectedLeft.dataset.idx;
+          const rightIdx = item.dataset.idx;
+          const pairList = document.getElementById('pairsList');
+          const pairRow = document.createElement('div');
+          pairRow.className = 'pair-row';
+          pairRow.dataset.leftIdx = leftIdx;
+          pairRow.dataset.rightIdx = rightIdx;
+          pairRow.innerHTML = `<span>${selectedLeft.innerHTML}</span> <span>↔</span> <span>${item.innerHTML}</span> <span class="remove" title="Hapus">×</span>`;
+          pairRow.querySelector('.remove').addEventListener('click', function() {
+            const lIdx = pairRow.dataset.leftIdx;
+            const rIdx = pairRow.dataset.rightIdx;
+            const lItem = document.querySelector(`.pair-item[data-side="left"][data-idx="${lIdx}"]`);
+            const rItem = document.querySelector(`.pair-item[data-side="right"][data-idx="${rIdx}"]`);
+            if(lItem) lItem.classList.remove('paired');
+            if(rItem) rItem.classList.remove('paired');
+            pairRow.remove();
+          });
+          pairList.appendChild(pairRow);
+          selectedLeft.classList.remove('selected');
+          selectedLeft.classList.add('paired');
+          item.classList.add('paired');
+          selectedLeft = null;
+        });
+      });
+    }
+    document.getElementById('submitBtn').addEventListener('click', () => checkAnswer(page));
+  }
+
+  function checkAnswer(page){
+    const taskType = page.taskType;
+    let isCorrect = false;
+    let userAnswerStr = '';
+
+    if(taskType === 'radio'){
+      let selected = null, selectedIdx = -1;
+      document.querySelectorAll('.option').forEach((opt, i) => {
+        if(opt.classList.contains('selected')){
+          selected = page._shuffledOptions[i];
+          selectedIdx = i;
+        }
+      });
+      if(!selected){
+        showFeedback(false, 'Please select an answer. <span class="tr">Silakan pilih jawaban.</span>', false);
+        return;
+      }
+      isCorrect = selected.correct;
+      userAnswerStr = selected.text;
+      document.querySelectorAll('.option').forEach((opt, i) => {
+        opt.classList.remove('selected');
+        if(page._shuffledOptions[i].correct) opt.classList.add('correct');
+        else if(i === selectedIdx && !selected.correct) opt.classList.add('incorrect');
+      });
+    } else if(taskType === 'checkbox'){
+      const selectedIdxs = [];
+      document.querySelectorAll('.option').forEach((opt, i) => {
+        if(opt.classList.contains('selected')) selectedIdxs.push(i);
+      });
+      if(selectedIdxs.length === 0){
+        showFeedback(false, 'Please select an answer. <span class="tr">Silakan pilih jawaban.</span>', false);
+        return;
+      }
+      const correctSet = new Set();
+      page._shuffledOptions.forEach((opt, i) => { if(opt.correct) correctSet.add(i); });
+      const selectedSet = new Set(selectedIdxs);
+      isCorrect = correctSet.size === selectedSet.size && [...correctSet].every(i => selectedSet.has(i));
+      userAnswerStr = selectedIdxs.map(i => page._shuffledOptions[i].text).join(', ');
+      document.querySelectorAll('.option').forEach((opt, i) => {
+        opt.classList.remove('selected');
+        if(page._shuffledOptions[i].correct) opt.classList.add('correct');
+        else if(selectedSet.has(i)) opt.classList.add('incorrect');
+      });
+    } else if(taskType === 'fill'){
+      const val = document.getElementById('fillInput').value.trim();
+      const acceptable = page.acceptableAnswers || [page.correctAnswer];
+      const norm = s => s.toLowerCase().replace(/\s+/g, '').replace(',', '.').trim();
+      isCorrect = acceptable.some(a => norm(a) === norm(val));
+      userAnswerStr = val;
+    } else if(taskType === 'truefalse'){
+      let selectedVal = null, selectedIdx = -1;
+      document.querySelectorAll('.option').forEach((opt, i) => {
+        if(opt.classList.contains('selected')){
+          selectedVal = opt.dataset.val;
+          selectedIdx = i;
+        }
+      });
+      if(!selectedVal){
+        showFeedback(false, 'Please select an answer. <span class="tr">Silakan pilih jawaban.</span>', false);
+        return;
+      }
+      isCorrect = selectedVal === page.correctAnswer;
+      userAnswerStr = selectedVal === 'true' ? 'True' : 'False';
+      document.querySelectorAll('.option').forEach((opt, i) => {
+        opt.classList.remove('selected');
+        if(opt.dataset.val === page.correctAnswer) opt.classList.add('correct');
+        else if(i === selectedIdx) opt.classList.add('incorrect');
+      });
+    } else if(taskType === 'sorting'){
+      const currentOrder = [];
+      document.querySelectorAll('.sort-item').forEach(item => {
+        currentOrder.push(parseInt(item.dataset.orig));
+      });
+      isCorrect = currentOrder.every((idx, i) => idx === page.correctOrder[i]);
+      userAnswerStr = currentOrder.map((idx, i) => `${i+1}. ${page.items[idx] || '?'}`).join('  |  ');
+      document.querySelectorAll('.sort-item').forEach((item, i) => {
+        if(currentOrder[i] === page.correctOrder[i]) item.style.borderColor = 'var(--success)';
+        else item.style.borderColor = 'var(--danger)';
+      });
+    } else if(taskType === 'pairing'){
+      const pairRows = document.querySelectorAll('.pair-row');
+      if(pairRows.length === 0){
+        showFeedback(false, 'Please make pairs. <span class="tr">Silakan buat pasangan.</span>', false);
+        return;
+      }
+      const userPairs = [];
+      pairRows.forEach(row => {
+        const lIdx = parseInt(row.dataset.leftIdx);
+        const rIdx = parseInt(row.dataset.rightIdx);
+        userPairs.push({
+          leftText: page._shuffledPairs.lefts[lIdx].text,
+          rightText: page._shuffledPairs.rights[rIdx].text
+        });
+      });
+      const correctPairs = page.pairs.map(p => ({left:p.left, right:p.right}));
+      const correctCount = userPairs.filter(up =>
+        correctPairs.some(cp => cp.left === up.leftText && cp.right === up.rightText)
+      ).length;
+      isCorrect = correctCount === correctPairs.length && userPairs.length === correctPairs.length;
+      userAnswerStr = userPairs.map(p => `${p.leftText}↔${p.rightText}`).join('  |  ');
+      pairRows.forEach(row => {
+        const lIdx = parseInt(row.dataset.leftIdx);
+        const rIdx = parseInt(row.dataset.rightIdx);
+        const lText = page._shuffledPairs.lefts[lIdx].text;
+        const rText = page._shuffledPairs.rights[rIdx].text;
+        const ok = correctPairs.some(cp => cp.left === lText && cp.right === rText);
+        row.style.background = ok ? '#d1fae5' : '#fee2e2';
+      });
+    }
+
+    const pageKey = `${currentSection}-${currentPage}`;
+    userAnswers[pageKey] = {userAnswer:userAnswerStr, correct:isCorrect, pageTitle:page.pageTitle};
+    showFeedback(isCorrect, page.explanation, true);
+  }
+
+  function showFeedback(isCorrect, explanation, showAnswer){
+    const feedback = document.getElementById('feedback');
+    feedback.className = `feedback show ${isCorrect?'correct':'incorrect'}`;
+    if(showAnswer){
+      feedback.innerHTML = `<h4>${isCorrect?'✓ Correct!':'✗ Incorrect'} <span class="tr">${isCorrect?'Benar!':'Salah'}</span></h4>${explanation}`;
+    } else {
+      feedback.innerHTML = `<h4>${isCorrect?'✓ Correct!':'✗ Incorrect'}</h4>`;
+    }
+    renderMath(feedback);
+  }
+
+  // ================= EVENT LISTENERS =================
+  document.getElementById('prevBtn').addEventListener('click', () => {
+    if(currentPage > 0){ currentPage--; renderPage(); }
+  });
+  document.getElementById('nextBtn').addEventListener('click', () => {
+    const total = sectionsData[currentSection].pages.length;
+    if(currentPage < total - 1){ currentPage++; renderPage(); }
+  });
+
+  const modal = document.getElementById('classRulesModal');
+  document.getElementById('classRulesBtn').addEventListener('click', () => modal.classList.add('active'));
+  document.querySelector('.modal-close').addEventListener('click', () => modal.classList.remove('active'));
+  modal.addEventListener('click', (e) => { if(e.target === modal) modal.classList.remove('active'); });
+
+  // ================= PRINT TO PDF =================
+  function getCorrectAnswer(task){
+    if(task.taskType === 'radio'){
+      const c = task.options.find(o => o.correct);
+      return c ? c.text : '';
+    }
+    if(task.taskType === 'checkbox'){
+      return task.options.filter(o => o.correct).map(o => o.text).join(', ');
+    }
+    if(task.taskType === 'fill'){
+      return task.correctAnswer || '';
+    }
+    if(task.taskType === 'truefalse'){
+      return task.correctAnswer === 'true' ? 'True' : 'False';
+    }
+    if(task.taskType === 'sorting'){
+      return task.correctOrder.map(i => task.items[i]).join(' → ');
+    }
+    if(task.taskType === 'pairing'){
+      return task.pairs.map(p => p.left + ' ↔ ' + p.right).join('; ');
+    }
+    return '';
+  }
+
+  function printTask(sectionKey){
+    const section = sectionsData[sectionKey];
+    if(!section) return;
+    const tasks = section.pages;
+    let correctCount = 0;
+
+    const rows = tasks.map((task, idx) => {
+      const pageKey = sectionKey + '-' + idx;
+      const ua = userAnswers[pageKey];
+      const isCorrect = ua ? ua.correct : false;
+      const userAns = ua ? ua.userAnswer : '(no answer)';
+      const correctAns = getCorrectAnswer(task);
+      if(ua && ua.correct) correctCount++;
+      return '<tr><td>' + (idx+1) + '</td><td>' + task.question + '</td><td>' + userAns + '</td><td>' + correctAns + '</td><td style="text-align:center;font-size:1.1em">' + (isCorrect ? '✓' : '✗') + '</td></tr>';
+    }).join('');
+
+    const score = correctCount + ' / ' + tasks.length;
+    const today = new Date().toLocaleDateString('en-US', {day:'numeric',month:'long',year:'numeric'});
+
+    const html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Print - ' + section.title + '</title>' +
+      '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">' +
+      '<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"><\/script>' +
+      '<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"><\/script>' +
+      '<style>' +
+      'body{font-family:Segoe UI,sans-serif;padding:30px;color:#1e293b;line-height:1.5}' +
+      'h1{font-size:1.2em;margin-bottom:5px}' +
+      '.info{margin-bottom:15px;font-size:.88em}' +
+      '.info div{margin:3px 0}' +
+      'table{width:100%;border-collapse:collapse;margin:15px 0;font-size:.82em}' +
+      'th,td{border:1px solid #cbd5e1;padding:6px 8px;text-align:left;vertical-align:top}' +
+      'th{background:#f1f5f9;font-weight:600}' +
+      '.checked-by{margin-top:30px;text-align:right;font-style:italic}' +
+      '.tr{font-style:italic;font-size:.85em;color:#64748b}' +
+      '@media print{body{padding:15px}}' +
+      '</style></head><body>' +
+      '<h1>Math Tutoring by Deni</h1>' +
+      '<div class="info">' +
+      '<div>Name: ____________________________ <span class="tr">Nama</span></div>' +
+      '<div>Date: ' + today + ' <span class="tr">Tanggal</span></div>' +
+      '<div>Topic: Pythagorean Theorem: Special Right Triangles <span class="tr">Topik: Teorema Pythagoras: Segitiga Istimewa</span></div>' +
+      '<div>Task Group: ' + section.title + ' <span class="tr">Grup Tugas</span></div>' +
+      '<div>Score: <strong>' + score + '</strong> <span class="tr">Skor</span></div>' +
+      '</div>' +
+      '<table><thead><tr>' +
+      '<th style="width:30px">No.</th>' +
+      '<th>Question <span class="tr">Pertanyaan</span></th>' +
+      '<th>Student Answer <span class="tr">Jawaban Siswa</span></th>' +
+      '<th>Correct Answer <span class="tr">Jawaban Benar</span></th>' +
+      '<th style="width:50px">Note <span class="tr">Ket.</span></th>' +
+      '</tr></thead><tbody>' + rows + '</tbody></table>' +
+      '<div class="checked-by">Checked by,<br>Deni</div>' +
+      '<script>document.addEventListener("DOMContentLoaded",function(){' +
+      'if(window.renderMathInElement){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:true},{left:"$",right:"$",display:false}],throwOnError:false});}' +
+      'setTimeout(function(){window.print();},500);});<\/script>' +
+      '</body></html>';
+
+    const w = window.open('', '_blank');
+    if(w){
+      w.document.write(html);
+      w.document.close();
+    } else {
+      alert('Please allow pop-ups to print. <span class="tr">Mohon izinkan pop-up untuk mencetak.</span>');
+    }
+  }
+
+  // ================= INIT =================
+  renderSidebar();
+  renderPage();
+});
+</script>
+</body>
+</html>
