@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Math Tutoring by Deni - Pythagorean Theorem</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--primary:#2563eb;--primary-dark:#1e40af;--secondary:#f59e0b;--success:#10b981;--danger:#ef4444;--bg:#f8fafc;--card:#fff;--text:#1e293b;--muted:#64748b;--border:#e2e8f0}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+.tr{font-style:italic;font-size:.82em;color:var(--muted);display:block;margin-top:2px}
+header{background:var(--primary);color:#fff;padding:10px 20px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 8px rgba(0,0,0,.12);position:sticky;top:0;z-index:100;flex-wrap:wrap;gap:8px}
+header .brand{font-weight:700;font-size:1.05em}
+header .topic{font-size:.88em;text-align:center;flex:1}
+header .topic .tr{color:rgba(255,255,255,.85)}
+header button{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:8px 14px;border-radius:6px;cursor:pointer;font-size:.85em;white-space:nowrap}
+header button:hover{background:rgba(255,255,255,.25)}
+.main-container{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 52px)}
+.sidebar{background:var(--card);border-right:1px solid var(--border);padding:14px;overflow-y:auto;position:sticky;top:52px;height:calc(100vh - 52px)}
+.sidebar h3{font-size:.72em;color:var(--muted);text-transform:uppercase;margin-bottom:8px;letter-spacing:1px}
+.nav-link{display:block;padding:8px 10px;border-radius:6px;cursor:pointer;margin-bottom:3px;font-size:.84em;border:1px solid transparent;transition:all .15s}
+.nav-link:hover{background:#eff6ff}
+.nav-link.active{background:var(--primary);color:#fff;pointer-events:none;cursor:default}
+.nav-link .nl-title{display:block;font-weight:600}
+.nav-link .time{font-size:.76em;color:var(--muted);display:block;margin-top:2px}
+.nav-link.active .time,.nav-link.active .tr{color:rgba(255,255,255,.85)}
+.nav-link.disabled{opacity:.45;cursor:not-allowed;font-size:.8em;padding:6px 10px}
+.content-area{padding:22px 28px;overflow-y:auto;max-width:1100px;margin:0 auto;width:100%}
+.page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding-bottom:12px;border-bottom:2px solid var(--border);flex-wrap:wrap;gap:8px}
+.page-header h2{color:var(--primary-dark);font-size:1.1em}
+.page-header .badge{background:var(--secondary);color:#fff;padding:4px 10px;border-radius:20px;font-size:.76em;font-weight:600}
+.card{background:var(--card);border-radius:10px;padding:22px;box-shadow:0 2px 8px rgba(0,0,0,.05);margin-bottom:16px;border:1px solid var(--border)}
+.card.explain{border-left:4px solid var(--primary)}
+.card.task{border-left:4px solid var(--secondary)}
+.card h3{color:var(--primary-dark);margin-bottom:12px;font-size:1.1em}
+.math-block{background:#f1f5f9;padding:12px 14px;border-radius:8px;margin:12px 0;overflow-x:auto}
+.example-box{background:#fef3c7;border-left:4px solid var(--secondary);padding:12px 16px;margin:12px 0;border-radius:6px}
+.example-box h4{color:#92400e;margin-bottom:6px;font-size:.95em}
+.tip-box{background:#dbeafe;border-left:4px solid var(--primary);padding:10px 14px;margin:10px 0;border-radius:6px}
+.tip-box h4{color:#1e40af;margin-bottom:4px;font-size:.9em}
+.illustration{text-align:center;margin:14px 0;padding:14px;background:#f1f5f9;border-radius:8px}
+.q-text{font-size:1em;margin-bottom:12px;line-height:1.7}
+.options{display:flex;flex-direction:column;gap:8px}
+.option{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border:2px solid var(--border);border-radius:8px;cursor:pointer;background:#fff;transition:all .15s}
+.option:hover{border-color:var(--primary);background:#eff6ff}
+.option.selected{border-color:var(--primary);background:#dbeafe}
+.option.correct{border-color:var(--success);background:#d1fae5}
+.option.incorrect{border-color:var(--danger);background:#fee2e2}
+.option .marker{min-width:18px;width:18px;height:18px;border:2px solid var(--muted);border-radius:50%;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:.7em;color:#fff}
+.option.selected .marker{background:var(--primary);border-color:var(--primary)}
+.option.correct .marker{background:var(--success);border-color:var(--success)}
+.option.incorrect .marker{background:var(--danger);border-color:var(--danger)}
+.option.checkbox .marker{border-radius:3px}
+.option .opt-text{flex:1}
+.fill-input{padding:8px 12px;border:2px solid var(--border);border-radius:6px;font-size:1em;width:100%;margin:8px 0;font-family:inherit}
+.fill-input:focus{border-color:var(--primary);outline:none}
+.btn-submit{background:var(--primary);color:#fff;border:none;padding:9px 20px;border-radius:6px;cursor:pointer;font-size:.88em;font-weight:600;margin-top:12px}
+.btn-submit:hover{background:var(--primary-dark)}
+.feedback{margin-top:12px;padding:14px;border-radius:8px;display:none}
+.feedback.show{display:block}
+.feedback.correct{background:#d1fae5;border:1px solid var(--success)}
+.feedback.incorrect{background:#fee2e2;border:1px solid var(--danger)}
+.feedback h4{margin-bottom:6px}
+.feedback ol,.feedback ul{margin:6px 0;padding-left:22px}
+.feedback li{margin:4px 0}
+.card ol, .card ul { padding-left: 26px; margin: 10px 0; }
+.card li { margin: 5px 0; }
+.example-box ol, .example-box ul { padding-left: 22px; margin: 8px 0; }
+.tip-box ol, .tip-box ul { padding-left: 22px; margin: 8px 0; }
+.math-block ol, .math-block ul { padding-left: 22px; margin: 8px 0; }
+.pagination{display:flex;justify-content:space-between;align-items:center;margin-top:18px;padding-top:14px;border-top:1px solid var(--border)}
+.pagination button{background:var(--primary);color:#fff;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;font-size:.84em}
+.pagination button:disabled{background:#cbd5e1;cursor:not-allowed}
+.pagination .indicator{font-size:.82em;color:var(--muted);text-align:center;flex:1;padding:0 10px}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;align-items:center;justify-content:center}
+.modal.active{display:flex}
+.modal-content{background:#fff;padding:22px;border-radius:12px;max-width:460px;width:90%}
+.modal-content h3{color:var(--primary-dark);margin-bottom:12px}
+.modal-content ul{list-style:none;padding-left:0}
+.modal-content li{padding:10px 0;border-bottom:1px solid var(--border)}
+.modal-content li:last-child{border-bottom:none}
+.modal-close{background:var(--primary);color:#fff;border:none;padding:8px 18px;border-radius:6px;cursor:pointer;margin-top:12px}
+.sort-list{display:flex;flex-direction:column;gap:6px}
+.sort-item{padding:10px 12px;border:2px solid var(--border);border-radius:8px;background:#fff;cursor:pointer;display:flex;align-items:center;gap:10px;transition:all .15s}
+.sort-item:hover{border-color:var(--primary)}
+.sort-item.selected{border-color:var(--primary);background:#dbeafe}
+.sort-item .pos{background:var(--primary);color:#fff;min-width:24px;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8em;flex-shrink:0}
+.sort-item .sort-text{flex:1}
+.pair-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pair-col h4{font-size:.85em;color:var(--muted);margin-bottom:6px;text-transform:uppercase}
+.pair-col{display:flex;flex-direction:column;gap:6px}
+.pair-item{padding:10px 12px;border:2px solid var(--border);border-radius:8px;background:#fff;cursor:pointer;text-align:center;font-size:.92em}
+.pair-item.selected{border-color:var(--primary);background:#dbeafe}
+.pair-item.paired{opacity:.5;cursor:default;border-color:var(--success);background:#d1fae5}
+.pairs-list{margin-top:10px}
+.pair-row{display:flex;justify-content:space-between;align-items:center;padding:6px 10px;background:#f1f5f9;border-radius:6px;margin-bottom:4px;font-size:.85em}
+.pair-row .remove{cursor:pointer;color:var(--danger);font-weight:700;margin-left:6px}
+.page-numbers {display:flex;gap:3px;flex-wrap:nowrap;justify-content:center;flex:1;overflow-x:auto;padding:0 3px;}
+.page-num {min-width:28px;height:26px;border:1px solid var(--border);background:#fff;border-radius:4px;cursor:pointer;font-size:.7em;display:flex;align-items:center;justify-content:center;padding:0 4px;white-space:nowrap;transition:all .15s;flex-shrink:0;}
+.page-num.page-num-e {background:#eff6ff;border-color:#93c5fd;color:#1e40af;}
+.page-num.page-num-t {background:#fffbeb;border-color:#fcd34d;color:#92400e;}
+.page-num.page-num-e:hover {background:#dbeafe;border-color:var(--primary);}
+.page-num.page-num-t:hover {background:#fef3c7;border-color:var(--secondary);}
+.page-num.page-num-e.active {background:var(--primary);color:#fff;border-color:var(--primary);font-weight:600;}
+.page-num.page-num-t.active {background:var(--secondary);color:#fff;border-color:var(--secondary);font-weight:600;}
+.page-num:disabled {opacity:1;cursor:default;}
+@media(max-width:1100px){.main-container{grid-template-columns:180px 1fr}.content-area{padding:18px 20px}}
+@media(max-width:760px){.main-container{grid-template-columns:1fr}.sidebar{display:none}.content-area{padding:16px}header{font-size:.9em}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">Math Tutoring by Deni</div>
+  <div class="topic">Topic: Pythagorean Theorem <span class="tr">Topik: Teorema Pythagoras</span></div>
+  <button id="classRulesBtn">Class Rules <span class="tr">Aturan Kelas</span></button>
+</header>
+<div class="main-container">
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content-area">
+    <div id="pageContent"></div>
+    <div class="pagination">
+      <button id="prevBtn">← Previous <span class="tr">Sebelumnya</span></button>
+      <div class="page-numbers" id="pageNums"></div>
+      <button id="nextBtn">Next <span class="tr">Berikutnya</span> →</button>
+    </div>
+  </main>
+</div>
+<div id="classRulesModal" class="modal">
+  <div class="modal-content">
+    <h3>Class Rules <span class="tr">Aturan Kelas</span></h3>
+    <ul>
+      <li>Speak in turn <span class="tr">Berbicara secara bergantian</span></li>
+      <li>Ask permission before leaving the class <span class="tr">Meminta izin jika ingin meninggalkan kelas</span></li>
+      <li>Turn on microphone and camera when needed <span class="tr">Menyalakan microphone dan camera jika diperlukan</span></li>
+    </ul>
+    <button class="modal-close">Close <span class="tr">Tutup</span></button>
+  </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  if(!window.renderMathInElement){setTimeout(arguments.callee,50);return;}
+  
+  // ================= SECTIONS DATA =================
+  const sectionsData = {
+    a: {
+      title: 'Spiral Review Warm-up', titleEn: 'Spiral Review Warm-up', time: '00:00 - 00:10',
+      pages: [
+        { type:'explanation', pageTitle:'E1: Square Roots & Perfect Squares', pageTitleEn:'Akar Kuadrat & Kuadrat Sempurna',
+          body:`<p>A <strong>perfect square</strong> is a number made by multiplying an integer by itself. <span class="tr"><strong>Kuadrat sempurna</strong> adalah angka yang dihasilkan dari perkalian bilangan bulat dengan dirinya sendiri.</span></p>
+          <div class="math-block">$a^2 = a \\times a$ <span class="tr">Kuadrat sempurna</span></div>
+          <p>The <strong>square root</strong> is the inverse operation of squaring a number. If $a^2 = b$, then $\\sqrt{b} = a$. <span class="tr"><strong>Akar kuadrat</strong> adalah operasi kebalikan dari kuadrat suatu bilangan.</span></p>
+          <div class="example-box"><h4>Example <span class="tr">Contoh</span></h4>Find $\\sqrt{49}$. <span class="tr">Cari $\\sqrt{49}$.</span>
+          <p>What number multiplied by itself equals 49? $7 \\times 7 = 49$. Therefore, $\\sqrt{49} = 7$. <span class="tr">Berapa bilangan yang dikalikan dengan dirinya sendiri menghasilkan 49? $7 \\times 7 = 49$. Maka, $\\sqrt{49} = 7$.</span></p></div>
+          <div class="illustration"><svg width="200" height="100" viewBox="0 0 200 100"><rect x="10" y="10" width="80" height="80" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/><text x="40" y="55" font-size="16" fill="#1e40af">7</text><text x="100" y="55" font-size="20" fill="#1e293b">= 49</text><text x="35" y="105" font-size="12" fill="#64748b">7^2</text><text x="100" y="100" font-size="12" fill="#64748b">Area = 49</text></svg><div style="font-size:.82em;color:var(--muted);margin-top:6px">Visual representation of $7^2 = 49$ <span class="tr">Visualisasi dari $7^2 = 49$</span></div></div>`
+        },
+        { type:'task', pageTitle:'T1: Calculate Square Root', pageTitleEn:'Hitung Akar Kuadrat', taskType:'fill',
+          question:'Calculate $\\sqrt{64}$. $\\sqrt{64} = \\dots$', questionEn:'Hitung $\\sqrt{64}$. $\\sqrt{64} = \\dots$',
+          correctAnswer:'8', acceptableAnswers:['8'],
+          explanation:`<ol><li>Ask: What number times itself equals 64? <span class="tr">Tanya: Berapa bilangan yang dikalikan dirinya sendiri menghasilkan 64?</span></li><li>$8 \\times 8 = 64$</li><li>Therefore, $\\sqrt{64} = 8$. <span class="tr">Maka, $\\sqrt{64} = 8$.</span></li></ol>`
+        },
+        { type:'task', pageTitle:'T2: Identify Perfect Square', pageTitleEn:'Identifikasi Kuadrat Sempurna', taskType:'radio',
+          question:'Which of the following is a perfect square?', questionEn:'Manakah dari berikut ini yang merupakan kuadrat sempurna?',
+          options:[{text:'$8$ <span class="tr">delapan</span>', correct:false},{text:'$12$ <span class="tr">dua belas</span>', correct:false},{text:'$25$ <span class="tr">dua puluh lima</span>', correct:true},{text:'$50$ <span class="tr">lima puluh</span>', correct:false}],
+          explanation:`<p>A perfect square is an integer multiplied by itself. $5 \\times 5 = 25$. <span class="tr">Kuadrat sempurna adalah bilangan bulat dikalikan dengan dirinya sendiri. $5 \\times 5 = 25$.</span></p>`
+        },
+        { type:'task', pageTitle:'T3: True or False Square Root', pageTitleEn:'Benar atau Salah Akar Kuadrat', taskType:'truefalse',
+          question:'True or false: $\\sqrt{144} = 12$.', questionEn:'Benar atau salah: $\\sqrt{144} = 12$.',
+          correctAnswer:'true',
+          explanation:`<p>$12 \\times 12 = 144$, so $\\sqrt{144} = 12$ is True. <span class="tr">$12 \\times 12 = 144$, jadi $\\sqrt{144} = 12$ adalah Benar.</span></p>`
+        },
+        { type:'explanation', pageTitle:'E2: Evaluating Exponents', pageTitleEn:'Mengevaluasi Eksponen',
+          body:`<p>An <strong>exponent</strong> tells you how many times to multiply a base number by itself. <span class="tr"><strong>Eksponen</strong> menunjukkan berapa kali sebuah bilangan pokok dikalikan dengan dirinya sendiri.</span></p>
+          <div class="math-block">$a^n = a \\times a \\times \\dots \\times a$ ($n$ times) <span class="tr">$a^n = a \\times a \\times \\dots \\times a$ ($n$ kali)</span></div>
+          <div class="example-box"><h4>Example <span class="tr">Contoh</span></h4>Calculate $3^3$. <span class="tr">Hitung $3^3$.</span>
+          <ol><li>Base is 3, exponent is 3. <span class="tr">Bilangan pokok 3, eksponen 3.</span></li><li>$3^3 = 3 \\times 3 \\times 3$</li><li>$3 \\times 3 = 9$</li><li>$9 \\times 3 = 27$</li><li>So, $3^3 = 27$. <span class="tr">Maka, $3^3 = 27$.</span></li></ol></div>`
+        },
+        { type:'task', pageTitle:'T4: Calculate Exponent', pageTitleEn:'Hitung Eksponen', taskType:'fill',
+          question:'Calculate $6^2$. $6^2 = \\dots$', questionEn:'Hitung $6^2$. $6^2 = \\dots$',
+          correctAnswer:'36', acceptableAnswers:['36'],
+          explanation:`<ol><li>Base is 6, exponent is 2. <span class="tr">Bilangan pokok 6, eksponen 2.</span></li><li>$6^2 = 6 \\times 6$</li><li>$6 \\times 6 = 36$</li><li>So, $6^2 = 36$. <span class="tr">Maka, $6^2 = 36$.</span></li></ol>`
+        },
+        { type:'task', pageTitle:'T5: Match Expressions', pageTitleEn:'Pasangkan Ekspresi', taskType:'pairing',
+          question:'Match the expression to its correct value.', questionEn:'Pasangkan ekspresi dengan nilai yang benar.',
+          pairs:[{left:'$2^3$', right:'$8$'},{left:'$4^2$', right:'$16$'},{left:'$5^2$', right:'$25$'},{left:'$3^3$', right:'$27$'}],
+          explanation:`<p>$2^3 = 2 \\times 2 \\times 2 = 8$. $4^2 = 4 \\times 4 = 16$. $5^2 = 5 \\times 5 = 25$. $3^3 = 3 \\times 3 \\times 3 = 27$. <span class="tr">Substitusi langsung ke dalam rumus eksponen.</span></p>`
+        },
+        { type:'task', pageTitle:'T6: Order of Operations', pageTitleEn:'Urutan Operasi', taskType:'sorting',
+          question:'Order the steps to evaluate $2 + 3^2$.', questionEn:'Urutkan langkah untuk menghitung $2 + 3^2$.',
+          items:['Identify exponent: $3^2$ <span class="tr">Identifikasi eksponen: $3^2$</span>','Calculate exponent: $3^2 = 9$ <span class="tr">Hitung eksponen: $3^2 = 9$</span>','Perform addition: $2 + 9$ <span class="tr">Lakukan penjumlahan: $2 + 9$</span>','Final result: $11$ <span class="tr">Hasil akhir: $11$</span>'], correctOrder:[0,1,2,3],
+          explanation:`<p>Following PEMDAS (Parentheses, Exponents, Multiplication/Division, Addition/Subtraction), exponents are calculated before addition. <span class="tr">Mengikuti aturan urutan operasi, eksponen dihitung sebelum penjumlahan.</span></p>`
+        },
+        { type:'explanation', pageTitle:'E3: Algebraic Substitution', pageTitleEn:'Substitusi Aljabar',
+          body:`<p>Substituting values into an algebraic expression means replacing the variables with given numbers, then calculating the result. <span class="tr">Menyubstitusikan nilai ke dalam ekspresi aljabar berarti mengganti variabel dengan bilangan yang diberikan, lalu menghitung hasilnya.</span></p>
+          <div class="example-box"><h4>Example <span class="tr">Contoh</span></h4>If $a = 3$ and $b = 4$, find $a^2 + b^2$. <span class="tr">Jika $a = 3$ dan $b = 4$, cari $a^2 + b^2$.</span>
+          <ol><li>Substitute: $3^2 + 4^2$ <span class="tr">Substitusi: $3^2 + 4^2$</span></li><li>Calculate squares: $9 + 16$ <span class="tr">Hitung kuadratnya: $9 + 16$</span></li><li>Add: $9 + 16 = 25$ <span class="tr">Jumlahkan: $9 + 16 = 25$</span></li></ol></div>`
+        },
+        { type:'task', pageTitle:'T7: Evaluate Expression', pageTitleEn:'Evaluasi Ekspresi', taskType:'fill',
+          question:'If $a = 2$ and $b = 5$, evaluate $a^2 + b^2$. $a^2 + b^2 = \\dots$', questionEn:'Jika $a = 2$ dan $b = 5$, hitung $a^2 + b^2$. $a^2 + b^2 = \\dots$',
+          correctAnswer:'29', acceptableAnswers:['29'],
+          explanation:`<ol><li>Substitute $a$ and $b$: $2^2 + 5^2$ <span class="tr">Substitusi $a$ dan $b$: $2^2 + 5^2$</span></li><li>Calculate squares: $4 + 25$ <span class="tr">Hitung kuadratnya: $4 + 25$</span></li><li>Add: $4 + 25 = 29$ <span class="tr">Jumlahkan: $4 + 25 = 29$</span></li></ol>`
+        },
+        { type:'task', pageTitle:'T8: Multiple Expressions', pageTitleEn:'Ekspresi Ganda', taskType:'checkbox',
+          question:'Select all expressions that equal 16.', questionEn:'Pilih semua ekspresi yang menghasilkan 16.',
+          options:[
+            {text:'$4^2$ <span class="tr">empat kuadrat</span>', correct:true},
+            {text:'$2^4$ <span class="tr">dua pangkat empat</span>', correct:true},
+            {text:'$10 + 6$ <span class="tr">sepuluh tambah enam</span>', correct:true},
+            {text:'$4^2 + 1$ <span class="tr">empat kuadrat tambah satu</span>', correct:false}
+          ],
+          explanation:`<p>$4^2 = 16$. $2^4 = 16$. $10 + 6 = 16$. However, $4^2 + 1 = 16 + 1 = 17 \\neq 16$. <span class="tr">$4^2 = 16$, $2^4 = 16$, $10 + 6 = 16$. Namun, $4^2 + 1 = 17 \\neq 16$.</span></p>`
+        },
+        { type:'task', pageTitle:'T9: Solve for x', pageTitleEn:'Cari nilai x', taskType:'radio',
+          question:'If $x^2 = 49$ and $x > 0$, what is $x$?', questionEn:'Jika $x^2 = 49$ dan $x > 0$, berapa nilai $x$?',
+          options:[{text:'$7$ <span class="tr">tujuh</span>', correct:true},{text:'$-7$ <span class="tr">negatif tujuh</span>', correct:false},{text:'$24.5$ <span class="tr">dua puluh empat koma lima</span>', correct:false},{text:'$49$ <span class="tr">empat puluh sembilan</span>', correct:false}],
+          explanation:`<p>Since $x > 0$, we need the positive square root of 49. $\\sqrt{49} = 7$. <span class="tr">Karena $x > 0$, kita butuh akar kuadrat positif dari 49. $\\sqrt{49} = 7$.</span></p>`
+        },
+        { type:'task', pageTitle:'T10: Combine Like Terms', pageTitleEn:'Gabungkan Suku Sejenis', taskType:'sorting',
+          question:'Order the steps to simplify $3^2 + 4^2 + 5$.', questionEn:'Urutkan langkah untuk menyederhanakan $3^2 + 4^2 + 5$.',
+          items:['Calculate $3^2 = 9$ <span class="tr">Hitung $3^2 = 9$</span>','Calculate $4^2 = 16$ <span class="tr">Hitung $4^2 = 16$</span>','Add the results: $9 + 16 + 5$ <span class="tr">Jumlahkan hasilnya: $9 + 16 + 5$</span>','Final result: $30$ <span class="tr">Hasil akhir: $30$</span>'], correctOrder:[0,1,2,3],
+          explanation:`<p>Calculate exponents first, then perform addition from left to right. $9 + 16 = 25$, $25 + 5 = 30$. <span class="tr">Hitung eksponen terlebih dahulu, lalu lakukan penjumlahan dari kiri ke kanan.</span></p>`
+        }
+      ]
+    },
+    b: {
+      title: 'Introduction & Real-World Connection', titleEn: 'Pengantar & Koneksi Dunia Nyata', time: '00:10 - 00:15',
+      pages: [
+        { type:'explanation', pageTitle:'E1: The Right Triangle', pageTitleEn:'Segitiga Siku-siku',
+          body:`<p>A <strong>right triangle</strong> is a triangle with exactly one $90^\\circ$ angle (right angle). The side opposite the right angle is the longest side, called the <strong>hypotenuse</strong>. The other two sides are called <strong>legs</strong>. <span class="tr"><strong>Segitiga siku-siku</strong> adalah segitiga dengan tepat satu sudut $90^\\circ$ (sudut siku-siku). Sisi di depan sudut siku-siku adalah sisi terpanjang, disebut <strong>hipotenusa</strong>. Dua sisi lainnya disebut <strong>alas dan tinggi (kaki)</strong>.</span></p>
+          <div class="illustration"><svg width="220" height="160" viewBox="0 0 220 160"><polygon points="20,140 180,140 20,40" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/><rect x="20" y="125" width="15" height="15" fill="none" stroke="#2563eb" stroke-width="2"/><text x="90" y="155" font-size="12" fill="#1e293b">Leg (b) <tspan class="tr" font-style="italic">Alas</tspan></text><text x="2" y="95" font-size="12" fill="#1e293b" transform="rotate(-90 10 95)">Leg (a) <tspan class="tr" font-style="italic">Tinggi</tspan></text><text x="115" y="80" font-size="12" fill="#ef4444" font-weight="bold">Hypotenuse (c)</text></svg><div style="font-size:.82em;color:var(--muted);margin-top:6px">Anatomy of a Right Triangle <span class="tr">Anatomi Segitiga Siku-siku</span></div></div>`
+        },
+        { type:'task', pageTitle:'T1: Identify Hypotenuse', pageTitleEn:'Identifikasi Hipotenusa', taskType:'radio',
+          question:'In a right triangle, the side opposite the $90^\\circ$ angle is called the...', questionEn:'Dalam segitiga siku-siku, sisi di depan sudut $90^\\circ$ disebut...',
+          options:[{text:'Base <span class="tr">Alas</span>', correct:false},{text:'Hypotenuse <span class="tr">Hipotenusa</span>', correct:true},{text:'Leg <span class="tr">Kaki</span>', correct:false},{text:'Vertex <span class="tr">Sudut</span>', correct:false}],
+          explanation:`<p>By definition, the side opposite the right angle is the hypotenuse, which is always the longest side. <span class="tr">Berdasarkan definisi, sisi di depan sudut siku-siku adalah hipotenusa, yang selalu merupakan sisi terpanjang.</span></p>`
+        },
+        { type:'task', pageTitle:'T2: Right Triangle Properties', pageTitleEn:'Sifat Segitiga Siku-siku', taskType:'checkbox',
+          question:'Select all true statements about right triangles.', questionEn:'Pilih semua pernyataan yang benar tentang segitiga siku-siku.',
+          options:[{text:'Has exactly one $90^\\circ$ angle <span class="tr">Memiliki tepat satu sudut $90^\\circ$</span>', correct:true},{text:'Hypotenuse is the longest side <span class="tr">Hipotenusa adalah sisi terpanjang</span>', correct:true},{text:'The sum of all angles is $180^\\circ$ <span class="tr">Jumlah semua sudut adalah $180^\\circ$</span>', correct:true},{text:'Has two $90^\\circ$ angles <span class="tr">Memiliki dua sudut $90^\\circ$</span>', correct:false}],
+          explanation:`<p>A right triangle has one $90^\\circ$ angle, and the other two acute angles sum to $90^\\circ$ (making the total $180^\\circ$). The hypotenuse is opposite the $90^\\circ$ angle. <span class="tr">Segitiga siku-siku memiliki satu sudut $90^\\circ$, dan dua sudut lainnya berjumlah $90^\\circ$. Hipotenusa berhadapan dengan sudut $90^\\circ$.</span></p>`
+        },
+        { type:'task', pageTitle:'T3: True or False Hypotenuse', pageTitleEn:'Benar atau Salah Hipotenusa', taskType:'truefalse',
+          question:'True or false: The legs of a right triangle are always longer than the hypotenuse.', questionEn:'Benar atau salah: Kaki segitiga siku-siku selalu lebih panjang dari hipotenusa.',
+          correctAnswer:'false',
+          explanation:`<p>The hypotenuse is always the longest side of a right triangle. <span class="tr">Hipotenusa selalu merupakan sisi terpanjang dari segitiga siku-siku.</span></p>`
+        },
+        { type:'explanation', pageTitle:'E2: Real-World Applications', pageTitleEn:'Aplikasi Dunia Nyata',
+          body:`<p>The Pythagorean Theorem is used in many real-world scenarios, such as finding the shortest distance, determining the length of a ladder needed to reach a window, or calculating the diagonal of a TV screen. <span class="tr">Teorema Pythagoras digunakan dalam banyak situasi dunia nyata, seperti mencari jarak terpendek, menentukan panjang tangga yang diperlukan untuk mencapai jendela, atau menghitung diagonal layar TV.</span></p>
+          <div class="example-box"><h4>Example <span class="tr">Contoh</span></h4>A ladder is placed against a wall. The base of the ladder is 3 meters from the wall, and it reaches 4 meters up the wall. The wall and ground meet at $90^\\circ$. <span class="tr">Sebuah tangga diletakkan menempel tembok. Bagian bawah tangga berjarak 3 meter dari tembok, dan mencapai 4 meter di atas tembok. Tembok dan tanah bertemu pada sudut $90^\\circ$.</span>
+          <p>This forms a right triangle. The distance along the ground and up the wall are the legs, and the ladder itself is the hypotenuse. <span class="tr">Ini membentuk segitiga siku-siku. Jarak di sepanjang tanah dan di atas tembok adalah kaki, dan tangga itu sendiri adalah hipotenusa.</span></p></div>`
+        },
+        { type:'task', pageTitle:'T4: Ladder Problem Setup', pageTitleEn:'Persiapan Soal Tangga', taskType:'sorting',
+          question:'Order the steps to identify the hypotenuse in the ladder problem.', questionEn:'Urutkan langkah untuk mengidentifikasi hipotenusa pada masalah tangga.',
+          items:['Identify the right angle (where ground meets wall) <span class="tr">Identifikasi sudut siku-siku (tempat tanah bertemu tembok)</span>','Identify the two legs (ground distance and wall height) <span class="tr">Identifikasi dua kaki (jarak tanah dan tinggi tembok)</span>','Identify the side opposite the right angle (the ladder) <span class="tr">Identifikasi sisi di depan sudut siku-siku (tangga)</span>','Conclude the ladder is the hypotenuse <span class="tr">Simpulkan tangga adalah hipotenusa</span>'], correctOrder:[0,1,2,3],
+          explanation:`<p>The side opposite the right angle is always the hypotenuse. <span class="tr">Sisi di depan sudut siku-siku selalu merupakan hipotenusa.</span></p>`
+        },
+        { type:'task', pageTitle:'T5: TV Screen Diagonal', pageTitleEn:'Diagonal Layar TV', taskType:'truefalse',
+          question:'True or false: When measuring the size of a TV screen (diagonal), we are finding the hypotenuse of a right triangle formed by the width and height.', questionEn:'Benar atau salah: Saat mengukur ukuran layar TV (diagonal), kita mencari hipotenusa dari segitiga siku-siku yang dibentuk oleh lebar dan tinggi.',
+          correctAnswer:'true',
+          explanation:`<p>The width and height of the screen form a $90^\\circ$ angle. The diagonal connecting their ends acts as the hypotenuse. <span class="tr">Lebar dan tinggi layar membentuk sudut $90^\\circ$. Diagonal yang menghubungkan ujungnya berfungsi sebagai hipotenusa.</span></p>`
+        },
+        { type:'task', pageTitle:'T6: Match Real-World Scenarios', pageTitleEn:'Pasangkan Skenario Dunia Nyata', taskType:'pairing',
+          question:'Match the real-world scenario to the hypotenuse.', questionEn:'Pasangkan skenario dunia nyata dengan hipotenusanya.',
+          pairs:[{left:'Ladder against wall <span class="tr">Tangga menempel tembok</span>', right:'Ladder length <span class="tr">Panjang tangga</span>'},{left:'TV screen size <span class="tr">Ukuran layar TV</span>', right:'Diagonal <span class="tr">Diagonal</span>'},{left:'Ramp on a truck <span class="tr">Ramp di truk</span>', right:'Ramp surface <span class="tr">Permukaan ramp</span>'},{left:'Distance across a park <span class="tr">Jarak menyeberangi taman</span>', right:'Diagonal shortcut <span class="tr">Jalan pintas diagonal</span>'}],
+          explanation:`<p>In any right triangle formed in these scenarios, the side representing the "longest diagonal" or "slanted surface" is the hypotenuse. <span class="tr">Dalam segitiga siku-siku yang terbentuk pada skenario ini, sisi yang merupakan "diagonal terpanjang" atau "permukaan miring" adalah hipotenusa.</span></p>`
+        },
+        { type:'explanation', pageTitle:'E3: The Pythagorean Theorem Concept', pageTitleEn:'Konsep Teorema Pythagoras',
+          body:`<p>The <strong>Pythagorean Theorem</strong> states that in a right triangle, the square of the hypotenuse ($c^2$) is equal to the sum of the squares of the other two legs ($a^2 + b^2$). <span class="tr"><strong>Teorema Pythagoras</strong> menyatakan bahwa dalam segitiga siku-siku, kuadrat dari hipotenusa ($c^2$) sama dengan jumlah kuadrat dari dua kaki yang lain ($a^2 + b^2$).</span></p>
+          <div class="math-block">$a^2 + b^2 = c^2$</div>
+          <div class="illustration"><svg width="280" height="140" viewBox="0 0 280 140"><polygon points="50,120 140,120 50,30" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/><rect x="140" y="80" width="40" height="40" fill="none" stroke="#ef4444" stroke-width="2"/><text x="150" y="105" font-size="10" fill="#ef4444">$c^2$</text><rect x="10" y="30" width="40" height="40" fill="none" stroke="#10b981" stroke-width="2" transform="rotate(90 30 50)"/><text x="2" y="55" font-size="10" fill="#10b981">$a^2$</text><rect x="50" y="120" width="40" height="40" fill="none" stroke="#f59e0b" stroke-width="2"/><text x="60" y="155" font-size="10" fill="#f59e0b">$b^2$</text></svg><div style="font-size:.82em;color:var(--muted);margin-top:6px">Visual proof: Area of square on hypotenuse = sum of areas on legs. <span class="tr">Bukti visual: Luas persegi di hipotenusa = jumlah luas di kaki.</span></div></div>
+          <div class="example-box"><h4>Example <span class="tr">Contoh</span></h4>If a right triangle has legs $a=3$ and $b=4$, we can find $c$. <span class="tr">Jika segitiga siku-siku memiliki kaki $a=3$ dan $b=4$, kita bisa mencari $c$.</span>
+          <ol><li>Calculate $a^2$: $3^2 = 9$</li><li>Calculate $b^2$: $4^2 = 16$</li><li>Add them: $9 + 16 = 25$</li><li>So, $c^2 = 25$. Since $c$ is a length, $c = \\sqrt{25} = 5$. <span class="tr">Karena $c$ adalah panjang, $c = \\sqrt{25} = 5$.</span></li></ol></div>`
+        },
+        { type:'task', pageTitle:'T7: Calculate c squared', pageTitleEn:'Hitung c kuadrat', taskType:'fill',
+          question:'A right triangle has legs $a=6$ and $b=8$. Calculate $c^2$. $c^2 = \\dots$', questionEn:'Segitiga siku-siku memiliki kaki $a=6$ dan $b=8$. Hitung $c^2$. $c^2 = \\dots$',
+          correctAnswer:'100', acceptableAnswers:['100'],
+          explanation:`<ol><li>$a^2 = 6^2 = 36$</li><li>$b^2 = 8^2 = 64$</li><li>$c^2 = a^2 + b^2 = 36 + 64 = 100$. <span class="tr">Jumlahkan kuadrat dari kedua kaki.</span></li></ol>`
+        },
+        { type:'task', pageTitle:'T8: Find the Hypotenuse', pageTitleEn:'Cari Hipotenusa', taskType:'radio',
+          question:'If $c^2 = 100$, what is the length of $c$?', questionEn:'Jika $c^2 = 100$, berapa panjang $c$?',
+          options:[{text:'$10$ <span class="tr">sepuluh</span>', correct:true},{text:'$50$ <span class="tr">lima puluh</span>', correct:false},{text:'$100$ <span class="tr">seratus</span>', correct:false},{text:'$\\sqrt{100}$ (leave as radical) <span class="tr">akar seratus (biarkan)</span>', correct:false}],
+          explanation:`<p>Since $c$ represents a physical length, we take the positive square root. $c = \\sqrt{100} = 10$. <span class="tr">Karena $c$ mewakili panjang fisik, kita ambil akar kuadrat positifnya. $c = \\sqrt{100} = 10$.</span></p>`
+        },
+        { type:'task', pageTitle:'T9: Apply to Real-World', pageTitleEn:'Terapkan ke Dunia Nyata', taskType:'truefalse',
+          question:'True or false: A ladder reaches 8 m up a wall, and its base is 6 m from the wall. If we calculate $8^2 + 6^2$, the result is the square of the ladder\'s length.', questionEn:'Benar atau salah: Sebuah tangga mencapai 8 m di atas tembok, dan alasnya 6 m dari tembok. Jika kita hitung $8^2 + 6^2$, hasilnya adalah kuadrat dari panjang tangga.',
+          correctAnswer:'true',
+          explanation:`<p>The ladder is the hypotenuse ($c$). The wall and ground distances are legs ($a$ and $b$). So $c^2 = 8^2 + 6^2$. <span class="tr">Tangga adalah hipotenusa ($c$). Jarak tembok dan tanah adalah kaki ($a$ dan $b$). Maka $c^2 = 8^2 + 6^2$.</span></p>`
+        },
+        { type:'task', pageTitle:'T10: Find Missing Length', pageTitleEn:'Cari Panjang yang Hilang', taskType:'fill',
+          question:'A right triangle has legs $5$ and $12$. Find the hypotenuse $c$. $c = \\dots$', questionEn:'Segitiga siku-siku memiliki kaki $5$ dan $12$. Cari hipotenusa $c$. $c = \\dots$',
+          correctAnswer:'13', acceptableAnswers:['13'],
+          explanation:`<ol><li>$a^2 = 5^2 = 25$</li><li>$b^2 = 12^2 = 144$</li><li>$c^2 = 25 + 144 = 169$</li><li>$c = \\sqrt{169} = 13$. <span class="tr">Ambil akar kuadrat positif dari 169.</span></li></ol>`
+        }
+      ]
+    },
+    c: {
+      title: 'Review of Prior Knowledge', titleEn: 'Tinjauan Pengetahuan Awal', time: '00:15 - 00:20',
+      pages: [
+        { type:'explanation', pageTitle:'E1: Area of Squares', pageTitleEn:'Luas Persegi',
+          body:`<p>The Pythagorean theorem heavily involves the concept of the <strong>area of squares</strong>. The area of a square is calculated by multiplying the side length by itself. <span class="tr">Teorema Pythagoras sangat berkaitan dengan konsep <strong>luas persegi</strong>. Luas persegi dihitung dengan mengalikan panjang sisi dengan dirinya sendiri.</span></p>
+          <div class="math-block">$\\text{Area} = \\text{side} \\times \\text{side} = s^2$ <span class="tr">Luas = sisi kali sisi</span></div>
+          <div class="example-box"><h4>Example <span class="tr">Contoh</span></h4>A square has a side length of $5$ cm. Find its area. <span class="tr">Sebuah persegi memiliki panjang sisi $5$ cm. Cari luasnya.</span>
+          <ol><li>Area = $5^2$</li><li>Area = $5 \\times 5 = 25$ cm$^2$. <span class="tr">Luasnya $25$ cm$^2$.</span></li></ol></div>`
+        },
+        { type:'task', pageTitle:'T1: Calculate Area', pageTitleEn:'Hitung Luas', taskType:'fill',
+          question:'A square has a side length of $9$ cm. Calculate its area. Area = $\\dots$ cm$^2$', questionEn:'Sebuah persegi memiliki panjang sisi $9$ cm. Hitung luasnya. Luas = $\\dots$ cm$^2$',
+          correctAnswer:'81', acceptableAnswers:['81'],
+          explanation:`<p>Area = $s^2 = 9^2 = 9 \\times 9 = 81$. <span class="tr">Luas persegi adalah sisi kuadrat.</span></p>`
+        },
+        { type:'task', pageTitle:'T2: Find Side from Area', pageTitleEn:'Cari Sisi dari Luas', taskType:'radio',
+          question:'If the area of a square is $144$ cm$^2$, what is the side length?', questionEn:'Jika luas persegi adalah $144$ cm$^2$, berapa panjang sisinya?',
+          options:[{text:'$12$ <span class="tr">dua belas</span>', correct:true},{text:'$144$ <span class="tr">seratus empat puluh empat</span>', correct:false},{text:'$72$ <span class="tr">tujuh puluh dua</span>', correct:false},{text:'$\\sqrt{12}$ <span class="tr">akar dua belas</span>', correct:false}],
+          explanation:`<p>Side = $\\sqrt{\\text{Area}} = \\sqrt{144} = 12$. <span class="tr">Sisi = akar kuadrat dari luas.</span></p>`
+        },
+        { type:'task', pageTitle:'T3: Order Area Steps', pageTitleEn:'Urutkan Langkah Luas', taskType:'sorting',
+          question:'Order the steps to find the side length of a square with Area $64$ cm$^2$.', questionEn:'Urutkan langkah mencari panjang sisi persegi dengan Luas $64$ cm$^2$.',
+          items:['Write formula: $s = \\sqrt{\\text{Area}}$ <span class="tr">Tulis rumus</span>','Substitute Area: $s = \\sqrt{64}$ <span class="tr">Substitusi luas</span>','Find square root: $\\sqrt{64} = 8$ <span class="tr">Cari akar kuadrat</span>','Final side length is $8$ cm <span class="tr">Panjang sisi akhir</span>'], correctOrder:[0,1,2,3],
+          explanation:`<p>The inverse operation of squaring a number is taking its square root. <span class="tr">Operasi kebalikan dari mengkuadratkan suatu bilangan adalah mencari akar kuadratnya.</span></p>`
+        },
+        { type:'explanation', pageTitle:'E2: Evaluating $a^2 + b^2$', pageTitleEn:'Mengevaluasi $a^2 + b^2$',
+          body:`<p>To use the Pythagorean theorem effectively, you must be comfortable evaluating expressions like $a^2 + b^2$. <span class="tr">Untuk menggunakan teorema Pythagoras secara efektif, Anda harus terbiasa mengevaluasi ekspresi seperti $a^2 + b^2$.</span></p>
+          <div class="example-box"><h4>Example <span class="tr">Contoh</span></h4>Let $a = 6$ and $b = 8$. Evaluate $a^2 + b^2$. <span class="tr">Misalkan $a = 6$ dan $b = 8$. Evaluasi $a^2 + b^2$.</span>
+          <ol><li>Calculate $a^2$: $6^2 = 6 \\times 6 = 36$</li><li>Calculate $b^2$: $8^2 = 8 \\times 8 = 64$</li><li>Add them: $36 + 64 = 100$</li></ol></div>
+          <div class="tip-box"><h4>Tip <span class="tr">Tips</span></h4>Always square the numbers before you add them! $a^2 + b^2$ is NOT $(a+b)^2$. <span class="tr">Selalu kuadratkan angka sebelum menjumlahkannya!</span></div>`
+        },
+        { type:'task', pageTitle:'T4: Evaluate Expression', pageTitleEn:'Evaluasi Ekspresi', taskType:'fill',
+          question:'Let $a = 7$ and $b = 24$. Evaluate $a^2 + b^2$. Result = $\\dots$', questionEn:'Misalkan $a = 7$ dan $b = 24$. Evaluasi $a^2 + b^2$. Hasil = $\\dots$',
+          correctAnswer:'625', acceptableAnswers:['625'],
+          explanation:`<ol><li>$a^2 = 7^2 = 49$</li><li>$b^2 = 24^2 = 576$</li><li>$a^2 + b^2 = 49 + 576 = 625$. <span class="tr">Kuadratkan dahulu masing-masing variabel lalu jumlahkan.</span></li></ol>`
+        },
+        { type:'task', pageTitle:'T5: Pair Expressions to Values', pageTitleEn:'Pasangkan Ekspresi ke Nilai', taskType:'pairing',
+          question:'Match the expression with its correct evaluated value.', questionEn:'Pasangkan ekspresi dengan nilai evaluasinya yang benar.',
+          pairs:[{left:'$3^2 + 4^2$', right:'$25$'},{left:'$5^2 + 12^2$', right:'$169$'},{left:'$8^2 + 15^2$', right:'$289$'},{left:'$9^2 + 40^2$', right:'$1681$'}],
+          explanation:`<p>Calculate each square individually, then sum them. For example, $8^2 = 64$, $15^2 = 225$. $64 + 225 = 289$. <span class="tr">Hitung masing-masing kuadrat, lalu jumlahkan.</span></p>`
+        },
+        { type:'task', pageTitle:'T6: Common Misconception', pageTitleEn:'Miskonsepsi Umum', taskType:'truefalse',
+          question:'True or false: $3^2 + 4^2$ is equal to $(3 + 4)^2$.', questionEn:'Benar atau salah: $3^2 + 4^2$ sama dengan $(3 + 4)^2$.',
+          correctAnswer:'false',
+          explanation:`<p>$3^2 + 4^2 = 9 + 16 = 25$. $(3 + 4)^2 = 7^2 = 49$. They are not the same! <span class="tr">Mereka tidak sama! Kuadratkan dahulu baru jumlahkan.</span></p>`
+        },
+        { type:'explanation', pageTitle:'E3: Solving for Variables', pageTitleEn:'Menyelesaikan Variabel',
+          body:`<p>Sometimes you will need to solve for a missing leg. If you know $c^2$ and one leg ($a^2$), you can find the other leg ($b^2$) by subtracting. <span class="tr">Terkadang Anda perlu mencari kaki yang hilang. Jika Anda tahu $c^2$ dan satu kaki ($a^2$), Anda bisa mencari kaki lainnya ($b^2$) dengan pengurangan.</span></p>
+          <div class="math-block">$b^2 = c^2 - a^2$ <span class="tr">Rumus mencari kaki yang hilang</span></div>
+          <div class="example-box"><h4>Example <span class="tr">Contoh</span></h4>Hypotenuse $c = 10$ and leg $a = 6$. Find $b^2$. <span class="tr">Hipotenusa $c = 10$ dan kaki $a = 6$. Cari $b^2$.</span>
+          <ol><li>$c^2 = 10^2 = 100$</li><li>$a^2 = 6^2 = 36$</li><li>$b^2 = c^2 - a^2 = 100 - 36 = 64$</li><li>So, $b = \\sqrt{64} = 8$. <span class="tr">Ambil akar kuadrat untuk mencari panjang $b$.</span></li></ol></div>`
+        },
+        { type:'task', pageTitle:'T7: Find Missing Leg Squared', pageTitleEn:'Cari Kaki yang Hilang Kuadrat', taskType:'fill',
+          question:'If $c = 13$ and $a = 5$, calculate $b^2$. $b^2 = \\dots$', questionEn:'Jika $c = 13$ dan $a = 5$, hitung $b^2$. $b^2 = \\dots$',
+          correctAnswer:'144', acceptableAnswers:['144'],
+          explanation:`<ol><li>$c^2 = 13^2 = 169$</li><li>$a^2 = 5^2 = 25$</li><li>$b^2 = 169 - 25 = 144$. <span class="tr">Kurangi kuadrat hipotenusa dengan kuadrat kaki yang diketahui.</span></li></ol>`
+        },
+        { type:'task', pageTitle:'T8: Select Perfect Squares', pageTitleEn:'Pilih Kuadrat Sempurna', taskType:'checkbox',
+          question:'Select all numbers from the list that are perfect squares (results of an integer squared).', questionEn:'Pilih semua bilangan dari daftar yang merupakan kuadrat sempurna.',
+          options:[{text:'$144$ <span class="tr">seratus empat puluh empat</span>', correct:true},{text:'$100$ <span class="tr">seratus</span>', correct:true},{text:'$150$ <span class="tr">seratus lima puluh</span>', correct:false},{text:'$196$ <span class="tr">seratus sembilan puluh enam</span>', correct:true}],
+          explanation:`<p>$12^2=144$, $10^2=100$, $14^2=196$. $150$ is not a perfect square. <span class="tr">$150$ bukan kuadrat sempurna.</span></p>`
+        },
+        { type:'task', pageTitle:'T9: Order Leg-Finding Steps', pageTitleEn:'Urutkan Langkah Mencari Kaki', taskType:'sorting',
+          question:'Order the steps to find $b$ if $c=15$ and $a=9$.', questionEn:'Urutkan langkah mencari $b$ jika $c=15$ dan $a=9$.',
+          items:['Calculate $c^2 = 15^2 = 225$ <span class="tr">Hitung $c^2$</span>','Calculate $a^2 = 9^2 = 81$ <span class="tr">Hitung $a^2$</span>','Subtract: $b^2 = 225 - 81 = 144$ <span class="tr">Kurangi</span>','Take square root: $b = 12$ <span class="tr">Akar kuadrat</span>'], correctOrder:[0,1,2,3],
+          explanation:`<p>Follow the formula $b^2 = c^2 - a^2$ sequentially. <span class="tr">Ikuti rumus secara berurutan.</span></p>`
+        },
+        { type:'task', pageTitle:'T10: Final Calculation', pageTitleEn:'Perhitungan Akhir', taskType:'radio',
+          question:'If $c = 17$ and $a = 8$, what is the length of $b$?', questionEn:'Jika $c = 17$ dan $a = 8$, berapa panjang $b$?',
+          options:[{text:'$15$ <span class="tr">lima belas</span>', correct:true},{text:'$225$ <span class="tr">dua ratus dua puluh lima</span>', correct:false},{text:'$25$ <span class="tr">dua puluh lima</span>', correct:false},{text:'$9$ <span class="tr">sembilan</span>', correct:false}],
+          explanation:`<p>$c^2 = 289$, $a^2 = 64$. $b^2 = 289 - 64 = 225$. $b = \\sqrt{225} = 15$. <span class="tr">$b^2 = 225$. Akar kuadrat dari 225 adalah 15.</span></p>`
+        }
+      ]
+    },
+    d: {
+      title: 'Problem Introduction', titleEn: 'Pengantar Masalah', time: '00:20 - 00:30',
+      pages: [
+        { type:'explanation', pageTitle:'E1: Proving the Theorem (Area Model)', pageTitleEn:'Membuktikan Teorema (Model Luas)',
+          body:`<p>The Pythagorean Theorem can be proven using squares. Imagine a large square with side length $(a+b)$. It can be filled in two ways. <span class="tr">Teorema Pythagoras dapat dibuktikan menggunakan persegi. Bayangkan sebuah persegi besar dengan panjang sisi $(a+b)$. Persegi ini bisa diisi dengan dua cara.</span></p>
+          <div class="math-block"><strong>Way 1:</strong> 4 right triangles (each area $\\frac{1}{2}ab$) + a small square in the middle (area $c^2$). <br>Total Area = $4(\\frac{1}{2}ab) + c^2 = 2ab + c^2$ <span class="tr">Cara 1: 4 segitiga siku-siku + persegi kecil di tengah.</span></div>
+          <div class="math-block"><strong>Way 2:</strong> 4 right triangles + two smaller squares (areas $a^2$ and $b^2$). <br>Total Area = $2ab + a^2 + b^2$ <span class="tr">Cara 2: 4 segitiga siku-siku + dua persegi lebih kecil.</span></div>
+          <p>Since both areas are equal to the area of the large square: <span class="tr">Karena kedua luas sama dengan luas persegi besar:</span></p>
+          <div class="math-block">$2ab + c^2 = 2ab + a^2 + b^2$ <br> $c^2 = a^2 + b^2$</div>
+          <div class="illustration"><svg width="280" height="150" viewBox="0 0 280 150"><rect x="10" y="10" width="130" height="130" fill="#f1f5f9" stroke="#333" stroke-width="2"/><polygon points="10,10 60,10 10,60" fill="#dbeafe" stroke="#2563eb"/><polygon points="60,10 140,10 140,90" fill="#dbeafe" stroke="#2563eb"/><polygon points="140,90 140,140 90,140" fill="#dbeafe" stroke="#2563eb"/><polygon points="90,140 10,140 10,60" fill="#dbeafe" stroke="#2563eb"/><rect x="60" y="60" width="80" height="80" fill="none" stroke="#ef4444" stroke-width="2" transform="rotate(-45 100 100) translate(-15, -15)"/><text x="85" y="105" font-size="14" fill="#ef4444">$c^2$</text><text x="160" y="80" font-size="12" fill="#64748b">Area = $2ab + c^2$</text></svg><div style="font-size:.82em;color:var(--muted);margin-top:6px">Visual proof of $a^2 + b^2 = c^2$ <span class="tr">Bukti visual $a^2 + b^2 = c^2$</span></div></div>`
+        },
+        { type:'task', pageTitle:'T1: Calculate Area Relationship', pageTitleEn:'Hitung Hubungan Luas', taskType:'fill',
+          question:'If $a=3$ and $b=4$, the area of the square on the hypotenuse is $c^2 = \\dots$', questionEn:'Jika $a=3$ dan $b=4$, luas persegi pada hipotenusa adalah $c^2 = \\dots$',
+          correctAnswer:'25', acceptableAnswers:['25'],
+          explanation:`<ol><li>$c^2 = a^2 + b^2$</li><li>$c^2 = 3^2 + 4^2$</li><li>$c^2 = 9 + 16 = 25$. <span class="tr">Jumlahkan luas persegi pada kedua kaki.</span></li></ol>`
+        },
+        { type:'task', pageTitle:'T2: Prove the Formula', pageTitleEn:'Buktikan Rumus', taskType:'radio',
+          question:'In the area proof, what cancels out from both sides of the equation?', questionEn:'Pada bukti luas, apa yang dicoret dari kedua sisi persamaan?',
+          options:[{text:'$a^2$ and $b^2$ <span class="tr">$a^2$ dan $b^2$</span>', correct:false},{text:'$c^2$ <span class="tr">$c^2$</span>', correct:false},{text:'$2ab$ <span class="tr">$2ab$</span>', correct:true},{text:'The 4 triangles <span class="tr">4 segitiga</span>', correct:false}],
+          explanation:`<p>Both ways of filling the large square include the 4 triangles (which have a total area of $2ab$). Subtracting $2ab$ from both sides leaves $c^2 = a^2 + b^2$. <span class="tr">Kedua cara memuat 4 segitiga (total luas $2ab$). Mengurangi $2ab$ dari kedua sisi menyisakan $c^2 = a^2 + b^2$.</span></p>`
+        },
+        { type:'task', pageTitle:'T3: True or False Theorem', pageTitleEn:'Benar atau Salah Teorema', taskType:'truefalse',
+          question:'True or false: The Pythagorean Theorem $a^2 + b^2 = c^2$ works for all types of triangles.', questionEn:'Benar atau salah: Teorema Pythagoras $a^2 + b^2 = c^2$ berlaku untuk semua jenis segitiga.',
+          correctAnswer:'false',
+          explanation:`<p>It only works for <strong>right triangles</strong> (triangles with one $90^\\circ$ angle). <span class="tr">Hanya berlaku untuk <strong>segitiga siku-siku</strong>.</span></p>`
+        },
+        { type:'explanation', pageTitle:'E2: Pythagorean Triples', pageTitleEn:'Tripel Pythagoras',
+          body:`<p>A <strong>Pythagorean Triple</strong> is a set of three positive integers $(a, b, c)$ that perfectly satisfy $a^2 + b^2 = c^2$. These are "ready-made" right triangles. <span class="tr"><strong>Tripel Pythagoras</strong> adalah himpunan tiga bilangan bulat positif $(a, b, c)$ yang memenuhi $a^2 + b^2 = c^2$. Ini adalah segitiga siku-siku yang "sudah jadi".</span></p>
+          <div class="math-block"><strong>Common Triples:</strong> <br>$(3, 4, 5)$ <span class="tr">Tripel dasar</span> <br>$(5, 12, 13)$ <br>$(8, 15, 17)$ <br>$(7, 24, 25)$</div>
+          <div class="example-box"><h4>Example <span class="tr">Contoh</span></h4>If you know a triangle has legs 5 and 12, you don't need to calculate $c^2 = 25 + 144 = 169 \\rightarrow c = 13$. You instantly know it's the $(5, 12, 13)$ triple! <span class="tr">Jika kaki 5 dan 12, Anda langsung tahu hipotenusanya 13!</span></div>
+          <div class="tip-box"><h4>Tip: Multiples <span class="tr">Tips: Kelipatan</span></h4>If you multiply a triple by any integer, it remains a triple. <span class="tr">Jika tripel dikalikan bilangan bulat, ia tetap menjadi tripel.</span> <br>Example: $3 \\times (3, 4, 5) = (9, 12, 15)$. Check: $9^2 + 12^2 = 81 + 144 = 225 = 15^2$.</div>`
+        },
+        { type:'task', pageTitle:'T4: Find the Hypotenuse', pageTitleEn:'Cari Hipotenusa', taskType:'fill',
+          question:'A right triangle has legs $5$ and $12$. Find the hypotenuse $c$. $c = \\dots$', questionEn:'Segitiga siku-siku memiliki kaki $5$ dan $12$. Cari hipotenusa $c$. $c = \\dots$',
+          correctAnswer:'13', acceptableAnswers:['13'],
+          explanation:`<p>Recognize the Pythagorean triple $(5, 12, 13)$. Or calculate: $c = \\sqrt{5^2 + 12^2} = \\sqrt{25 + 144} = \\sqrt{169} = 13$. <span class="tr">Kenali tripel Pythagoras atau hitung secara manual.</span></p>`
+        },
+        { type:'task', pageTitle:'T5: Match the Triples', pageTitleEn:'Pasangkan Tripel', taskType:'pairing',
+          question:'Match the first two legs to their corresponding hypotenuse to form a Pythagorean triple.', questionEn:'Pasangkan dua kaki pertama dengan hipotenusanya untuk membentuk tripel Pythagoras.',
+          pairs:[{left:'$3, 4$', right:'$5$'},{left:'$8, 15$', right:'$17$'},{left:'$7, 24$', right:'$25$'},{left:'$9, 40$', right:'$41$'}],
+          explanation:`<p>Memorizing common triples (and their multiples) saves time! $8^2+15^2=64+225=289=17^2$. <span class="tr">Menghafal tripel umum menghemat waktu!</span></p>`
+        },
+        { type:'task', pageTitle:'T6: Verify a Triple', pageTitleEn:'Verifikasi Tripel', taskType:'sorting',
+          question:'Order the steps to verify if $(6, 8, 10)$ is a Pythagorean triple.', questionEn:'Urutkan langkah memverifikasi apakah $(6, 8, 10)$ adalah tripel Pythagoras.',
+          items:['Calculate $6^2 = 36$ <span class="tr">Hitung $6^2$</span>','Calculate $8^2 = 64$ <span class="tr">Hitung $8^2$</span>','Sum them: $36 + 64 = 100$ <span class="tr">Jumlahkan</span>','Check if $10^2 = 100$. Yes, so it is a triple! <span class="tr">Cek apakah $10^2 = 100$. Ya, ini tripel!</span>'], correctOrder:[0,1,2,3],
+          explanation:`<p>Since $6^2 + 8^2 = 10^2$, the set $(6, 8, 10)$ is a valid Pythagorean triple. Notice it's just $2 \\times (3, 4, 5)$. <span class="tr">Ini adalah kelipatan dari tripel $(3,4,5)$.</span></p>`
+        },
+        { type:'explanation', pageTitle:'E3: Finding Missing Legs', pageTitleEn:'Mencari Kaki yang Hilang',
+          body:`<p>Sometimes the hypotenuse is known, but a leg is missing. We can rearrange the formula to solve for the missing leg. <span class="tr">Terkadang hipotenusa diketahui, tetapi satu kaki hilang. Kita bisa menyusun ulang rumus untuk mencari kaki yang hilang.</span></p>
+          <div class="math-block">If finding leg $a$: $a^2 = c^2 - b^2$ <br> If finding leg $b$: $b^2 = c^2 - a^2$ <span class="tr">Kuadrat hipotenusa dikurangi kuadrat kaki yang diketahui.</span></div>
+          <div class="example-box"><h4>Example <span class="tr">Contoh</span></h4>Find $a$ if $c = 15$ and $b = 12$. <span class="tr">Cari $a$ jika $c = 15$ dan $b = 12$.</span>
+          <ol><li>Write formula: $a^2 = c^2 - b^2$</li><li>Substitute: $a^2 = 15^2 - 12^2$</li><li>Calculate squares: $a^2 = 225 - 144$</li><li>Subtract: $a^2 = 81$</li><li>Take square root: $a = \\sqrt{81} = 9$. <span class="tr">Akar kuadrat dari 81 adalah 9.</span></li></ol></div>
+          <div class="illustration"><svg width="200" height="140" viewBox="0 0 200 140"><polygon points="20,120 140,120 20,20" fill="#f1f5f9" stroke="#2563eb" stroke-width="2"/><rect x="20" y="105" width="15" height="15" fill="none" stroke="#2563eb" stroke-width="2"/><text x="60" y="135" font-size="12">b=12</text><text x="2" y="70" font-size="12" transform="rotate(-90 10 70)">a=?</text><text x="90" y="70" font-size="12" fill="#ef4444" font-weight="bold">c=15</text></svg><div style="font-size:.82em;color:var(--muted);margin-top:6px">Finding the missing leg <span class="tr">Mencari kaki yang hilang</span></div></div>`
+        },
+        { type:'task', pageTitle:'T7: Find Missing Leg', pageTitleEn:'Cari Kaki yang Hilang', taskType:'fill',
+          question:'If $c = 17$ and $b = 8$, find $a$. $a = \\dots$', questionEn:'Jika $c = 17$ dan $b = 8$, cari $a$. $a = \\dots$',
+          correctAnswer:'15', acceptableAnswers:['15'],
+          explanation:`<ol><li>$a^2 = c^2 - b^2$</li><li>$a^2 = 17^2 - 8^2$</li><li>$a^2 = 289 - 64 = 225$</li><li>$a = \\sqrt{225} = 15$. <span class="tr">Ini adalah tripel $(8, 15, 17)$.</span></li></ol>`
+        },
+        { type:'task', pageTitle:'T8: Identify the Triple', pageTitleEn:'Identifikasi Tripel', taskType:'checkbox',
+          question:'Select all sets of numbers below that are Pythagorean triples.', questionEn:'Pilih semua himpunan bilangan di bawah ini yang merupakan tripel Pythagoras.',
+          options:[{text:'$(3, 4, 5)$ <span class="tr">dasar</span>', correct:true},{text:'$(5, 12, 13)$ <span class="tr">dasar</span>', correct:true},{text:'$(4, 5, 6)$ <span class="tr">bukan</span>', correct:false},{text:'$(9, 12, 15)$ <span class="tr">kelipatan</span>', correct:true}],
+          explanation:`<p>$(4, 5, 6)$ is not a triple because $16 + 25 = 41 \\neq 36$. The others perfectly satisfy $a^2 + b^2 = c^2$. <span class="tr">$(4, 5, 6)$ bukan tripel karena $16+25 \\neq 36$.</span></p>`
+        },
+        { type:'task', pageTitle:'T9: Scale Factor', pageTitleEn:'Faktor Skala', taskType:'radio',
+          question:'A right triangle has sides $6, 8, 10$. What basic triple was this scaled from?', questionEn:'Segitiga siku-siku memiliki sisi $6, 8, 10$. Tripel dasar apa yang menjadi dasar skala ini?',
+          options:[{text:'$(3, 4, 5)$ <span class="tr">tiga empat lima</span>', correct:true},{text:'$(5, 12, 13)$ <span class="tr">lima dua belas tiga belas</span>', correct:false},{text:'$(8, 15, 17)$ <span class="tr">delapan lima belas tujuh belas</span>', correct:false},{text:'$(9, 12, 15)$ <span class="tr">sembilan dua belas lima belas</span>', correct:false}],
+          explanation:`<p>Divide all sides by 2: $6/2=3$, $8/2=4$, $10/2=5$. The base triple is $(3, 4, 5)$. <span class="tr">Bagi semua sisi dengan 2 untuk menemukan tripel dasarnya.</span></p>`
+        },
+        { type:'task', pageTitle:'T10: Order Leg-Finding Steps', pageTitleEn:'Urutkan Langkah Mencari Kaki', taskType:'sorting',
+          question:'Order the steps to find $b$ if $c=25$ and $a=7$.', questionEn:'Urutkan langkah mencari $b$ jika $c=25$ dan $a=7$.',
+          items:['Write formula: $b^2 = c^2 - a^2$ <span class="tr">Tulis rumus</span>','Substitute: $b^2 = 25^2 - 7^2$ <span class="tr">Substitusi</span>','Calculate squares: $b^2 = 625 - 49$ <span class="tr">Hitung kuadrat</span>','Subtract & root: $b = \\sqrt{576} = 24$ <span class="tr">Kurangi lalu akar</span>'], correctOrder:[0,1,2,3],
+          explanation:`<p>This is the $(7, 24, 25)$ triple. Always isolate the missing squared term first, then take the square root at the very end. <span class="tr">Selalu isolasi suku kuadrat yang hilang dahulu, lalu ambil akar kuadratnya di akhir.</span></p>`
+        }
+      ]
+    },
+    e: {
+      title: 'Guided Practice', titleEn: 'Latihan Terbimbing', time: '00:30 - 00:45',
+      pages: [
+        { type:'explanation', pageTitle:'E1: Isosceles Right Triangle', pageTitleEn:'Segitiga Siku-siku Sama Kaki',
+          body:`<p>An <strong>Isosceles Right Triangle</strong> is a right triangle where the two legs are equal in length ($a = b$). Because of this, the two acute angles are both $45^\\circ$. <span class="tr"><strong>Segitiga siku-siku sama kaki</strong> adalah segitiga siku-siku di mana kedua kakinya sama panjang ($a = b$). Karena itu, kedua sudut lancipnya adalah $45^\\circ$.</span></p>
+          <p>If we apply the Pythagorean theorem where $a = b$: <span class="tr">Jika kita terapkan teorema Pythagoras di mana $a = b$:</span></p>
+          <div class="math-block">$c^2 = a^2 + a^2$ <br> $c^2 = 2a^2$ <br> $c = \\sqrt{2a^2} = a\\sqrt{2}$ <span class="tr">Hipotenusa = kaki kali akar dua</span></div>
+          <div class="example-box"><h4>Example <span class="tr">Contoh</span></h4>Find the hypotenuse if the legs are both $5$. <span class="tr">Cari hipotenusa jika kedua kaki adalah $5$.</span>
+          <ol><li>Use shortcut: $c = a\\sqrt{2}$</li><li>Substitute $a=5$: $c = 5\\sqrt{2}$</li></ol>
+          <p>This is the exact (surd) form. If you need a decimal, $c \\approx 5 \\times 1.414 = 7.07$. <span class="tr">Ini adalah bentuk eksak. Jika butuh desimal, $c \\approx 7.07$.</span></p></div>
+          <div class="illustration"><svg width="140" height="120" viewBox="0 0 140 120"><polygon points="20,100 120,100 20,20" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/><rect x="20" y="85" width="15" height="15" fill="none" stroke="#2563eb"/><text x="60" y="115" font-size="12">$a$</text><text x="2" y="60" font-size="12" transform="rotate(-90 10 60)">$a$</text><text x="75" y="55" font-size="12" fill="#ef4444">$a\\sqrt{2}$</text></svg><div style="font-size:.82em;color:var(--muted);margin-top:6px">$45^\\circ-45^\\circ-90^\\circ$ Triangle <span class="tr">Segitiga $45^\\circ-45^\\circ-90^\\circ$</span></div></div>`
+        },
+        { type:'task', pageTitle:'T1: Isosceles Hypotenuse', pageTitleEn:'Hipotenusa Sama Kaki', taskType:'fill',
+          question:'In a $45^\\circ-45^\\circ-90^\\circ$ triangle, the legs are $7$. Find the exact hypotenuse $c$. $c = \\dots\\sqrt{2}$', questionEn:'Dalam segitiga $45^\\circ-45^\\circ-90^\\circ$, kaki adalah $7$. Cari hipotenusa eksak $c$. $c = \\dots\\sqrt{2}$',
+          correctAnswer:'7', acceptableAnswers:['7'],
+          explanation:`<p>Using the rule $c = a\\sqrt{2}$, if $a = 7$, then $c = 7\\sqrt{2}$. <span class="tr">Menggunakan aturan $c = a\\sqrt{2}$, jika $a = 7$, maka $c = 7\\sqrt{2}$.</span></p>`
+        },
+        { type:'task', pageTitle:'T2: Isosceles Properties', pageTitleEn:'Sifat Sama Kaki', taskType:'radio',
+          question:'What are the angles of an isosceles right triangle?', questionEn:'Berapa sudut segitiga siku-siku sama kaki?',
+          options:[{text:'$30^\\circ, 60^\\circ, 90^\\circ$ <span class="tr">tiga puluh, enam puluh, sembilan puluh</span>', correct:false},{text:'$45^\\circ, 45^\\circ, 90^\\circ$ <span class="tr">empat puluh lima, empat puluh lima, sembilan puluh</span>', correct:true},{text:'$60^\\circ, 60^\\circ, 60^\\circ$ <span class="tr">enam puluh, enam puluh, enam puluh</span>', correct:false},{text:'$45^\\circ, 45^\\circ, 45^\\circ$ <span class="tr">empat puluh lima, empat puluh lima, empat puluh lima</span>', correct:false}],
+          explanation:`<p>A right triangle has one $90^\\circ$ angle. If it's isosceles, the other two angles must be equal and sum to $90^\\circ$, so they are $45^\\circ$ each. <span class="tr">Segitiga siku-siku memiliki satu sudut $90^\\circ$. Jika sama kaki, dua sudut lainnya sama dan berjumlah $90^\\circ$.</span></p>`
+        },
+        { type:'task', pageTitle:'T3: True or False Surd Form', pageTitleEn:'Benar atau Salah Bentuk Akar', taskType:'truefalse',
+          question:'True or false: In a $45^\\circ-45^\\circ-90^\\circ$ triangle with leg $3$, the hypotenuse is exactly $6$.', questionEn:'Benar atau salah: Pada segitiga $45^\\circ-45^\\circ-90^\\circ$ dengan kaki $3$, hipotenusanya tepat $6$.',
+          correctAnswer:'false',
+          explanation:`<p>The exact hypotenuse is $3\\sqrt{2} \\approx 4.24$. $6$ is only valid if the theorem was $a+a=c$, which is false. <span class="tr">Hipotenusa eksaknya adalah $3\\sqrt{2}$. $6$ salah karena $3^2+3^2 = 18 \\neq 36$.</span></p>`
+        },
+        { type:'explanation', pageTitle:'E2: Converse of Pythagoras', pageTitleEn:'Kebalikan Teorema Pythagoras',
+          body:`<p>The <strong>Converse of the Pythagorean Theorem</strong> states: If a triangle has sides $a, b, c$ such that $a^2 + b^2 = c^2$, then the triangle <strong>must</strong> be a right triangle. <span class="tr"><strong>Kebalikan Teorema Pythagoras</strong> menyatakan: Jika segitiga memiliki sisi $a, b, c$ sehingga $a^2 + b^2 = c^2$, maka segitiga tersebut <strong>harus</strong> berupa segitiga siku-siku.</span></p>
+          <div class="example-box"><h4>Example <span class="tr">Contoh</span></h4>Does a triangle with sides $4, 5, 6$ have a right angle? <span class="tr">Apakah segitiga dengan sisi $4, 5, 6$ memiliki sudut siku-siku?</span>
+          <ol><li>Identify the longest side (potential hypotenuse): $c=6$.</li><li>Calculate $a^2 + b^2$: $4^2 + 5^2 = 16 + 25 = 41$.</li><li>Calculate $c^2$: $6^2 = 36$.</li><li>Compare: $41 \\neq 36$. Therefore, it is NOT a right triangle. <span class="tr">Karena $41 \\neq 36$, ini BUKAN segitiga siku-siku.</span></li></ol></div>`
+        },
+        { type:'task', pageTitle:'T4: Test the Converse', pageTitleEn:'Uji Kebalikan', taskType:'fill',
+          question:'A triangle has sides $9, 12, 15$. Calculate $a^2 + b^2$ (using 9 and 12). Result = $\\dots$', questionEn:'Segitiga memiliki sisi $9, 12, 15$. Hitung $a^2 + b^2$ (menggunakan 9 dan 12). Hasil = $\\dots$',
+          correctAnswer:'225', acceptableAnswers:['225'],
+          explanation:`<p>$9^2 + 12^2 = 81 + 144 = 225$. Since $c^2 = 15^2 = 225$, and $225 = 225$, this is a right triangle. <span class="tr">Karena $a^2+b^2 = c^2$, ini adalah segitiga siku-siku.</span></p>`
+        },
+        { type:'task', pageTitle:'T5: Classify Triangles', pageTitleEn:'Klasifikasi Segitiga', taskType:'pairing',
+          question:'Match the side lengths to their correct classification.', questionEn:'Pasangkan panjang sisi dengan klasifikasinya yang benar.',
+          pairs:[{left:'$(5, 12, 13)$ <span class="tr">sisi</span>', right:'Right Triangle <span class="tr">Siku-siku</span>'},{left:'$(4, 5, 6)$ <span class="tr">sisi</span>', right:'Not Right Triangle <span class="tr">Bukan Siku-siku</span>'},{left:'$(6, 8, 10)$ <span class="tr">sisi</span>', right:'Right Triangle <span class="tr">Siku-siku</span>'},{left:'$(2, 3, 4)$ <span class="tr">sisi</span>', right:'Not Right Triangle <span class="tr">Bukan Siku-siku</span>'}],
+          explanation:`<p>For $(4,5,6)$: $16+25=41 \\neq 36$. For $(2,3,4)$: $4+9=13 \\neq 16$. The others perfectly satisfy the theorem. <span class="tr">Periksa apakah $a^2+b^2 = c^2$.</span></p>`
+        },
+        { type:'task', pageTitle:'T6: Order Converse Steps', pageTitleEn:'Urutkan Langkah Kebalikan', taskType:'sorting',
+          question:'Order the steps to check if a triangle with sides 7, 8, 9 is a right triangle.', questionEn:'Urutkan langkah mengecek apakah segitiga dengan sisi 7, 8, 9 adalah segitiga siku-siku.',
+          items:['Identify longest side as c=9 <span class="tr">Identifikasi sisi terpanjang c=9</span>','Calculate $a^2 + b^2$: $7^2 + 8^2$ <span class="tr">Hitung $a^2 + b^2$</span>','Evaluate: $49 + 64 = 113$ <span class="tr">Evaluasi penjumlahan</span>','Compare to $c^2=81$. Since $113 \\neq 81$, not a right triangle <span class="tr">Bandingkan dengan $c^2$. Tidak sama, bukan siku-siku</span>'], correctOrder:[0,1,2,3],
+          explanation:`<p>Always compare the sum of the two smaller squares against the largest square. <span class="tr">Selalu bandingkan jumlah dua kuadrat terkecil dengan kuadrat terbesar.</span></p>`
+        },
+        { type:'explanation', pageTitle:'E3: Diagonals of 2D Shapes', pageTitleEn:'Diagonal Bangun 2D',
+          body:`<p>The Pythagorean theorem is perfect for finding the diagonals of rectangles and squares. <span class="tr">Teorema Pythagoras sangat cocok untuk mencari diagonal persegi panjang dan persegi.</span></p>
+          <div class="math-block"><strong>Rectangle:</strong> $d^2 = l^2 + w^2$ <br> <strong>Square:</strong> $d^2 = s^2 + s^2 = 2s^2 \\rightarrow d = s\\sqrt{2}$ <span class="tr">Rumus diagonal persegi panjang dan persegi</span></div>
+          <div class="example-box"><h4>Example <span class="tr">Contoh</span></h4>Find the diagonal of a rectangle with length $12$ and width $5$. <span class="tr">Cari diagonal persegi panjang dengan panjang $12$ dan lebar $5$.</span>
+          <ol><li>$d^2 = 12^2 + 5^2$</li><li>$d^2 = 144 + 25 = 169$</li><li>$d = \\sqrt{169} = 13$.</li></ol></div>
+          <div class="illustration"><svg width="160" height="120" viewBox="0 0 160 120"><rect x="20" y="20" width="120" height="80" fill="#f1f5f9" stroke="#2563eb" stroke-width="2"/><line x1="20" y1="20" x2="140" y2="100" stroke="#ef4444" stroke-width="2"/><text x="70" y="115" font-size="12">Length (12)</text><text x="0" y="65" font-size="12" transform="rotate(-90 10 65)">Width (5)</text><text x="90" y="50" font-size="12" fill="#ef4444" font-weight="bold">d</text></svg><div style="font-size:.82em;color:var(--muted);margin-top:6px">Diagonal of a rectangle forms a right triangle <span class="tr">Diagonal persegi panjang membentuk segitiga siku-siku</span></div></div>`
+        },
+        { type:'task', pageTitle:'T7: Rectangle Diagonal', pageTitleEn:'Diagonal Persegi Panjang', taskType:'fill',
+          question:'A rectangle has length $8$ and width $6$. Find the exact length of its diagonal. $d = \\dots$', questionEn:'Persegi panjang memiliki panjang $8$ dan lebar $6$. Cari panjang diagonalnya. $d = \\dots$',
+          correctAnswer:'10', acceptableAnswers:['10'],
+          explanation:`<p>$d^2 = 8^2 + 6^2 = 64 + 36 = 100$. $d = \\sqrt{100} = 10$. <span class="tr">Diagonal adalah hipotenusa dari segitiga siku-siku yang terbentuk.</span></p>`
+        },
+        { type:'task', pageTitle:'T8: Square Diagonal', pageTitleEn:'Diagonal Persegi', taskType:'radio',
+          question:'A square has a side length of $4$. What is the exact length of its diagonal?', questionEn:'Persegi memiliki panjang sisi $4$. Berapa panjang diagonal eksaknya?',
+          options:[{text:'$4\\sqrt{2}$ <span class="tr">empat akar dua</span>', correct:true},{text:'$4\\sqrt{3}$ <span class="tr">empat akar tiga</span>', correct:false},{text:'$8$ <span class="tr">delapan</span>', correct:false},{text:'$16$ <span class="tr">enam belas</span>', correct:false}],
+          explanation:`<p>Using the square shortcut $d = s\\sqrt{2}$. If $s=4$, then $d = 4\\sqrt{2}$. <span class="tr">Menggunakan rumus diagonal persegi $d = s\\sqrt{2}$.</span></p>`
+        },
+        { type:'task', pageTitle:'T9: Isosceles Triangle Height', pageTitleEn:'Tinggi Segitiga Sama Kaki', taskType:'truefalse',
+          question:'True or false: To find the height of an isosceles triangle, the Pythagorean theorem can be used by splitting it into two right triangles.', questionEn:'Benar atau salah: Untuk mencari tinggi segitiga sama kaki, teorema Pythagoras dapat digunakan dengan membaginya menjadi dua segitiga siku-siku.',
+          correctAnswer:'true',
+          explanation:`<p>If you drop a perpendicular from the top vertex to the base, it splits the base in half. You now have a right triangle with the height as one leg. <span class="tr">Garis tinggi membagi alas dua sama panjang, membentuk segitiga siku-siku.</span></p>`
+        },
+        { type:'task', pageTitle:'T10: Apply to Isosceles Triangle', pageTitleEn:'Terapkan ke Segitiga Sama Kaki', taskType:'sorting',
+          question:'Order the steps to find the height ($h$) of an isosceles triangle with sides 5, 5, and base 6.', questionEn:'Urutkan langkah mencari tinggi ($h$) segitiga sama kaki dengan sisi 5, 5, dan alas 6.',
+          items:['Split the base: half of 6 is 3 <span class="tr">Bagi alas: setengah dari 6 adalah 3</span>','Form right triangle with legs $h$ and $3$, hypotenuse $5$ <span class="tr">Bentuk segitiga siku-siku dengan kaki $h$ dan $3$, hipotenusa $5$</span>','Use theorem: $h^2 = 5^2 - 3^2$ <span class="tr">Gunakan teorema</span>','Evaluate: $h^2 = 25 - 9 = 16$, so $h = 4$ <span class="tr">Evaluasi: $h = 4$</span>'], correctOrder:[0,1,2,3],
+          explanation:`<p>The height bisects the base. The right triangle formed has legs $h$ and $3$, and hypotenuse $5$ (the side of the isosceles triangle). <span class="tr">Tinggi membagi dua alas. Segitiga siku-siku yang terbentuk memiliki kaki $h$ dan $3$, serta hipotenusa $5$.</span></p>`
+        }
+      ]
+    },
+    f: {
+      title: 'Independent Practice', titleEn: 'Latihan Mandiri', time: '00:45 - 00:55',
+      pages: [
+        { type:'explanation', pageTitle:'E1: Applications in Word Problems', pageTitleEn:'Aplikasi dalam Soal Cerita',
+          body:`<p>Word problems require you to translate text into a right triangle. Look for keywords that form a right angle (like "perpendicular", "wall and ground", "height and shadow"). <span class="tr">Soal cerita mengharuskan Anda menerjemahkan teks menjadi segitiga siku-siku. Cari kata kunci yang membentuk sudut siku-siku.</span></p>
+          <div class="example-box"><h4>Example <span class="tr">Contoh</span></h4>A $15$ m ladder leans against a wall. The base is $9$ m from the wall. How high does it reach? <span class="tr">Tangga $15$ m bersandar di tembok. Alasnya $9$ m dari tembok. Seberapa tinggi ia menjangkau?</span>
+          <ol><li>Identify: $c = 15$ (ladder), $a = 9$ (ground), $b = ?$ (wall).</li><li>Formula: $b^2 = c^2 - a^2$</li><li>Substitute: $b^2 = 15^2 - 9^2$</li><li>Calculate: $b^2 = 225 - 81 = 144$</li><li>Root: $b = \\sqrt{144} = 12$ m. <span class="tr">Tangga mencapai ketinggian $12$ m.</span></li></ol></div>`
+        },
+        { type:'task', pageTitle:'T1: Ladder Word Problem', pageTitleEn:'Soal Cerita Tangga', taskType:'fill',
+          question:'A $10$ m ladder has its base $6$ m from a wall. How high up the wall does it reach? Height = $\\dots$ m.', questionEn:'Tangga $10$ m memiliki alas $6$ m dari tembok. Seberapa tinggi ia menjangkau tembok? Tinggi = $\\dots$ m.',
+          correctAnswer:'8', acceptableAnswers:['8'],
+          explanation:`<ol><li>$b^2 = c^2 - a^2$</li><li>$b^2 = 10^2 - 6^2$</li><li>$b^2 = 100 - 36 = 64$</li><li>$b = \\sqrt{64} = 8$ m. <span class="tr">Tangga mencapai $8$ m.</span></li></ol>`
+        },
+        { type:'task', pageTitle:'T2: Identify Components', pageTitleEn:'Identifikasi Komponen', taskType:'radio',
+          question:'In a word problem about a TV screen size, what represents the hypotenuse?', questionEn:'Dalam soal cerita tentang ukuran layar TV, apa yang mewakili hipotenusa?',
+          options:[{text:'The width of the screen <span class="tr">Lebar layar</span>', correct:false},{text:'The height of the screen <span class="tr">Tinggi layar</span>', correct:false},{text:'The diagonal of the screen <span class="tr">Diagonal layar</span>', correct:true},{text:'The area of the screen <span class="tr">Luas layar</span>', correct:false}],
+          explanation:`<p>TV screen size is measured diagonally from corner to corner, forming the hypotenuse of a right triangle. <span class="tr">Ukuran layar TV diukur secara diagonal dari sudut ke sudut, membentuk hipotenusa segitiga siku-siku.</span></p>`
+        },
+        { type:'task', pageTitle:'T3: TV Screen Size', pageTitleEn:'Ukuran Layar TV', taskType:'truefalse',
+          question:'True or false: A TV has a width of $40$ cm and a height of $30$ cm. The screen size (diagonal) is $50$ cm.', questionEn:'Benar atau salah: TV memiliki lebar $40$ cm dan tinggi $30$ cm. Ukuran layar (diagonal) adalah $50$ cm.',
+          correctAnswer:'true',
+          explanation:`<p>$c = \\sqrt{40^2 + 30^2} = \\sqrt{1600 + 900} = \\sqrt{2500} = 50$. The statement is True. <span class="tr">$c = \\sqrt{1600 + 900} = 50$. Pernyataan benar.</span></p>`
+        },
+        { type:'explanation', pageTitle:'E2: 3D Applications (Space Diagonals)', pageTitleEn:'Aplikasi 3D (Diagonal Ruang)',
+          body:`<p>The Pythagorean theorem can be extended into 3D to find the <strong>space diagonal</strong> of a rectangular prism (box). <span class="tr">Teorema Pythagoras dapat diperluas ke 3D untuk mencari <strong>diagonal ruang</strong> dari balok.</span></p>
+          <div class="math-block">$d^2 = l^2 + w^2 + h^2$ <span class="tr">Kuadrat diagonal ruang sama dengan jumlah kuadrat panjang, lebar, dan tinggi</span></div>
+          <div class="example-box"><h4>Example <span class="tr">Contoh</span></h4>A box has dimensions $l=2$, $w=3$, and $h=6$. Find the space diagonal. <span class="tr">Balok memiliki panjang $2$, lebar $3$, dan tinggi $6$. Cari diagonal ruangnya.</span>
+          <ol><li>Calculate squares: $2^2=4, 3^2=9, 6^2=36$</li><li>Add them: $4 + 9 + 36 = 49$</li><li>Take root: $d = \\sqrt{49} = 7$. <span class="tr">Diagonal ruangnya $7$.</span></li></ol></div>
+          <div class="illustration"><svg width="180" height="160" viewBox="0 0 180 160"><polygon points="20,120 120,120 120,40 20,40" fill="#f1f5f9" stroke="#2563eb" stroke-width="2"/><polygon points="120,120 150,90 150,10 120,40" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/><polygon points="20,120 50,90 150,90 120,120" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/><line x1="20" y1="120" x2="150" y2="90" stroke="#ef4444" stroke-width="2" stroke-dasharray="4"/><text x="60" y="115" font-size="11">w</text><text x="130" y="85" font-size="11">h</text><text x="15" y="85" font-size="11" transform="rotate(-90 15 85)">l</text><text x="75" y="100" font-size="11" fill="#ef4444" font-weight="bold">d</text></svg><div style="font-size:.82em;color:var(--muted);margin-top:6px">Space diagonal of a rectangular prism <span class="tr">Diagonal ruang balok</span></div></div>`
+        },
+        { type:'task', pageTitle:'T4: Calculate Space Diagonal', pageTitleEn:'Hitung Diagonal Ruang', taskType:'fill',
+          question:'A box has dimensions $3 \\times 4 \\times 12$. Find $d^2$. $d^2 = \\dots$', questionEn:'Balok memiliki dimensi $3 \\times 4 \\times 12$. Cari $d^2$. $d^2 = \\dots$',
+          correctAnswer:'169', acceptableAnswers:['169'],
+          explanation:`<ol><li>$d^2 = 3^2 + 4^2 + 12^2$</li><li>$d^2 = 9 + 16 + 144$</li><li>$d^2 = 169$. <span class="tr">Jumlahkan kuadrat dari ketiga dimensinya.</span></li></ol>`
+        },
+        { type:'task', pageTitle:'T5: Match Box Dimensions', pageTitleEn:'Pasangkan Dimensi Balok', taskType:'pairing',
+          question:'Match the box dimensions to their exact space diagonal $d$.', questionEn:'Pasangkan dimensi balok dengan diagonal ruang $d$ eksaknya.',
+          pairs:[{left:'$1, 2, 2$ <span class="tr">dimensi</span>', right:'$3$'},{left:'$2, 3, 6$ <span class="tr">dimensi</span>', right:'$7$'},{left:'$4, 3, 12$ <span class="tr">dimensi</span>', right:'$13$'},{left:'$6, 8, 24$ <span class="tr">dimensi</span>', right:'$26$'}],
+          explanation:`<p>For example: $6^2+8^2+24^2 = 36+64+576 = 676$. $\\sqrt{676} = 26$. <span class="tr">Akar kuadrat dari 676 adalah 26.</span></p>`
+        },
+        { type:'task', pageTitle:'T6: Order 3D Steps', pageTitleEn:'Urutkan Langkah 3D', taskType:'sorting',
+          question:'Order the steps to find $d$ for a box of $2, 3, 6$.', questionEn:'Urutkan langkah mencari $d$ untuk balok $2, 3, 6$.',
+          items:['Square dimensions: $4, 9, 36$ <span class="tr">Kuadratkan dimensi</span>','Sum them: $4 + 9 + 36 = 49$ <span class="tr">Jumlahkan</span>','Write $d^2 = 49$ <span class="tr">Tulis $d^2 = 49$</span>','Square root: $d = 7$ <span class="tr">Akar kuadrat</span>'], correctOrder:[0,1,2,3],
+          explanation:`<p>Follow the 3D diagonal formula sequentially. <span class="tr">Ikuti rumus diagonal 3D secara berurutan.</span></p>`
+        },
+        { type:'explanation', pageTitle:'E3: Distance Formula (Enrichment)', pageTitleEn:'Rumus Jarak (Pengayaan)',
+          body:`<p>The Pythagorean theorem can be used to find the distance between any two points on a coordinate plane. If points are $A(x_1, y_1)$ and $B(x_2, y_2)$, the horizontal distance is $\\Delta x = |x_2 - x_1|$ and vertical distance is $\\Delta y = |y_2 - y_1|$. These form the legs of a right triangle! <span class="tr">Teorema Pythagoras dapat digunakan untuk mencari jarak antara dua titik pada bidang koordinat. Ini membentuk kaki segitiga siku-siku!</span></p>
+          <div class="math-block">$d = \\sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}$</div>
+          <div class="example-box"><h4>Example <span class="tr">Contoh</span></h4>Find distance between $A(1, 2)$ and $B(4, 6)$. <span class="tr">Cari jarak antara $A(1, 2)$ dan $B(4, 6)$.</span>
+          <ol><li>Identify: $x_2-x_1 = 4-1 = 3$ and $y_2-y_1 = 6-2 = 4$.</li><li>Pythagorean check: $3^2 + 4^2 = 9 + 16 = 25$.</li><li>Take root: $d = \\sqrt{25} = 5$. <span class="tr">Jaraknya $5$ unit.</span></li></ol></div>
+          <div class="illustration"><svg width="200" height="160" viewBox="0 0 200 160"><line x1="20" y1="140" x2="180" y2="140" stroke="#333" stroke-width="1"/><line x1="40" y1="20" x2="40" y2="140" stroke="#333" stroke-width="1"/><line x1="40" y1="140" x2="160" y2="140" stroke="#10b981" stroke-width="3"/><line x1="160" y1="140" x2="160" y2="40" stroke="#f59e0b" stroke-width="3"/><line x1="40" y1="140" x2="160" y2="40" stroke="#ef4444" stroke-width="3"/><circle cx="40" cy="140" r="3" fill="#2563eb"/><circle cx="160" cy="40" r="3" fill="#2563eb"/><text x="10" y="145" font-size="12">A(1,2)</text><text x="140" y="35" font-size="12">B(4,6)</text></svg><div style="font-size:.82em;color:var(--muted);margin-top:6px">Distance formula derives directly from Pythagoras <span class="tr">Rumus jarak berasal langsung dari Pythagoras</span></div></div>`
+        },
+        { type:'task', pageTitle:'T7: Calculate Coordinate Distance', pageTitleEn:'Hitung Jarak Koordinat', taskType:'fill',
+          question:'Find the distance between $(1, 1)$ and $(4, 5)$. $d = \\dots$', questionEn:'Cari jarak antara $(1, 1)$ dan $(4, 5)$. $d = \\dots$',
+          correctAnswer:'5', acceptableAnswers:['5'],
+          explanation:`<ol><li>$\\Delta x = 4-1 = 3$, $\\Delta y = 5-1 = 4$.</li><li>$d^2 = 3^2 + 4^2 = 9 + 16 = 25$.</li><li>$d = \\sqrt{25} = 5$. <span class="tr">Perhatikan bahwa ini juga membentuk tripel $(3,4,5)$.</span></li></ol>`
+        },
+        { type:'task', pageTitle:'T8: Distance Formula Properties', pageTitleEn:'Sifat Rumus Jarak', taskType:'checkbox',
+          question:'Select all correct statements about the distance formula.', questionEn:'Pilih semua pernyataan yang benar tentang rumus jarak.',
+          options:[{text:'It is based on the Pythagorean theorem <span class="tr">Berbasis pada teorema Pythagoras</span>', correct:true},{text:'It only works for integer coordinates <span class="tr">Hanya berlaku untuk koordinat bilangan bulat</span>', correct:false},{text:'$\\Delta x$ and $\\Delta y$ are the legs of the right triangle <span class="tr">$\\Delta x$ dan $\\Delta y$ adalah kaki segitiga siku-siku</span>', correct:true},{text:'It can be used to find the length of a horizontal line <span class="tr">Dapat digunakan untuk mencari panjang garis horizontal</span>', correct:true}],
+          explanation:`<p>The distance formula is universal (works for all real numbers). For a horizontal line, $\\Delta y = 0$, so $d = \\sqrt{\\Delta x^2} = |\\Delta x|$. <span class="tr">Rumus jarak bersifat universal. Untuk garis horizontal, $\\Delta y = 0$.</span></p>`
+        },
+        { type:'task', pageTitle:'T9: Horizontal Distance', pageTitleEn:'Jarak Horizontal', taskType:'radio',
+          question:'What is the distance between $(2, 5)$ and $(7, 5)$?', questionEn:'Berapa jarak antara $(2, 5)$ dan $(7, 5)$?',
+          options:[
+            {text:'$5$ <span class="tr">lima</span>', correct:true},
+            {text:'$0$ <span class="tr">nol</span>', correct:false},
+            {text:'$9$ <span class="tr">sembilan</span>', correct:false},
+            {text:'$\\sqrt{29}$ <span class="tr">akar dua puluh sembilan</span>', correct:false}
+          ],
+          explanation:`<p>Since $y$-coordinates are same, it's a horizontal line. $d = |7-2| = 5$. <span class="tr">Karena $y$ sama, ini garis horizontal. Jarak adalah selisih $x$.</span></p>`
+        },
+        { type:'task', pageTitle:'T10: Order Distance Steps', pageTitleEn:'Urutkan Langkah Jarak', taskType:'sorting',
+          question:'Order the steps to find distance between $A(1,2)$ and $B(4,6)$.', questionEn:'Urutkan langkah mencari jarak antara $A(1,2)$ dan $B(4,6)$.',
+          items:['Find $\\Delta x = 4-1=3$ and $\\Delta y = 6-2=4$ <span class="tr">Cari $\\Delta x$ dan $\\Delta y$</span>','Set up equation: $d = \\sqrt{3^2 + 4^2}$ <span class="tr">Susun persamaan</span>','Simplify inside root: $\\sqrt{9+16} = \\sqrt{25}$ <span class="tr">Sederhanakan dalam akar</span>','Final root: $d = 5$ <span class="tr">Akar akhir</span>'], correctOrder:[0,1,2,3],
+          explanation:`<p>Follow algebraic steps of the distance formula sequentially. <span class="tr">Ikuti langkah aljabar rumus jarak secara berurutan.</span></p>`
+        }
+      ]
+    },
+    g: {
+      title: 'Consolidation & Reflection', titleEn: 'Konsolidasi & Refleksi', time: '00:55 - 01:00',
+      pages: [
+        { type:'explanation', pageTitle:'E1: Key Takeaways', pageTitleEn:'Poin Penting',
+          body:`<div class="illustration"><svg width="240" height="80" viewBox="0 0 240 80"><polygon points="20,70 80,70 20,20" fill="none" stroke="#2563eb" stroke-width="2"/><rect x="17" y="67" width="6" height="6" fill="#2563eb"/><text x="50" y="68" font-size="12">Right Triangle</text><text x="100" y="68" font-size="12">$a^2+b^2=c^2$</text></svg><div style="font-size:.82em;color:var(--muted);margin-top:4px">The Core Concept <span class="tr">Konsep Inti</span></div></div>
+          <p>Today we learned the <strong>Pythagorean Theorem</strong> and its applications. Here are the key formulas: <span class="tr">Hari ini kita belajar <strong>Teorema Pythagoras</strong> dan aplikasinya. Berikut rumus utamanya:</span></p>
+          <div class="math-block"><ol><li><strong>Pythagorean Theorem:</strong> $a^2 + b^2 = c^2$ <span class="tr">Teorema Pythagoras</span></li><li><strong>Missing Leg:</strong> $a^2 = c^2 - b^2$ <span class="tr">Mencari kaki yang hilang</span></li><li><strong>Isosceles Right Triangle:</strong> $c = a\\sqrt{2}$ <span class="tr">Segitiga siku-siku sama kaki</span></li><li><strong>Space Diagonal:</strong> $d^2 = l^2 + w^2 + h^2$ <span class="tr">Diagonal ruang balok</span></li><li><strong>Distance Formula:</strong> $d = \\sqrt{(x_2-x_1)^2 + (y_2-y_1)^2}$ <span class="tr">Rumus jarak</span></li></ol></div>`
+        },
+        { type:'task', pageTitle:'T1: Reflection Question', pageTitleEn:'Pertanyaan Refleksi', taskType:'truefalse',
+          question:'True or false: I understand that the Pythagorean theorem is essentially a geometric rule stating that the area of the square on the hypotenuse is equal to the sum of the areas of the squares on the legs.', questionEn:'Benar atau salah: Saya mengerti bahwa teorema Pythagoras pada dasarnya adalah aturan geometris yang menyatakan bahwa luas persegi pada hipotenusa sama dengan jumlah luas persegi pada kaki-kakinya.',
+          correctAnswer:'true',
+          explanation:`<p>Yes! The theorem connects algebra ($a^2+b^2=c^2$) with geometry (areas of squares). <span class="tr">Ya! Teorema ini menghubungkan aljabar dengan geometri (luas persegi).</span></p>`
+        },
+        { type:'task', pageTitle:'T2: Exit Ticket', pageTitleEn:'Exit Ticket', taskType:'fill',
+          question:'A right triangle has legs $9$ and $12$. Calculate the hypotenuse. $c = \\dots$', questionEn:'Segitiga siku-siku memiliki kaki $9$ dan $12$. Hitung hipotenusanya. $c = \\dots$',
+          correctAnswer:'15', acceptableAnswers:['15'],
+          explanation:`<p>$c = \\sqrt{9^2 + 12^2} = \\sqrt{81 + 144} = \\sqrt{225} = 15$. <span class="tr">Ini adalah kelipatan dari tripel $(3,4,5)$ dikali $3$.</span></p>`
+        },
+        { type:'explanation', pageTitle:'E2: Follow-up Practice', pageTitleEn:'Latihan Lanjutan',
+          body:`<p>Additional practice is available in <strong>Sections H–L (Tasks 1–5)</strong>. Each section contains 10 questions of various types (Multiple choice, True/False, Fill-in, Sorting, Pairing). <span class="tr">Latihan tambahan tersedia di Bagian H–L. Setiap bagian berisi 10 soal dengan berbagai tipe.</span></p>
+          <div class="math-block"><ul><li><strong>Task 1 (H):</strong> Basic Pythagorean Calculations <span class="tr">Perhitungan Pythagoras Dasar</span></li><li><strong>Task 2 (I):</strong> Triples & Converse <span class="tr">Tripel & Kebalikan</span></li><li><strong>Task 3 (J):</strong> Isosceles & Special Triangles <span class="tr">Sama Kaki & Segitiga Istimewa</span></li><li><strong>Task 4 (K):</strong> Word Problems <span class="tr">Soal Cerita</span></li><li><strong>Task 5 (L):</strong> 3D & Distance Formula <span class="tr">3D & Rumus Jarak</span></li></ul></div>`
+        }
+      ]
+    },
+    h: {
+      title: 'Task 1', titleEn: 'Tugas 1', time: 'Printable',
+      pages: [
+        { type:'task', pageTitle:'T1: Find Hypotenuse', pageTitleEn:'Cari Hipotenusa', taskType:'fill',
+          question:'A right triangle has legs $8$ and $15$. Find the hypotenuse $c$. $c = \\dots$', questionEn:'Segitiga siku-siku memiliki kaki $8$ dan $15$. Cari hipotenusa $c$. $c = \\dots$',
+          correctAnswer:'17', acceptableAnswers:['17'],
+          explanation:`<ol><li>$c^2 = 8^2 + 15^2$</li><li>$c^2 = 64 + 225 = 289$</li><li>$c = \\sqrt{289} = 17$. <span class="tr">Ini adalah tripel $(8, 15, 17)$.</span></li></ol>`},
+        { type:'task', pageTitle:'T2: Hypotenuse Formula', pageTitleEn:'Rumus Hipotenusa', taskType:'radio',
+          question:'Which formula correctly finds the hypotenuse $c$?', questionEn:'Rumus mana yang benar untuk mencari hipotenusa $c$?',
+          options:[{text:'$c = a^2 + b^2$ <span class="tr">jumlah kaki</span>', correct:false},{text:'$c = \\sqrt{a^2 + b^2}$ <span class="tr">akar dari jumlah kuadrat kaki</span>', correct:true},{text:'$c = \\sqrt{a^2 - b^2}$ <span class="tr">akar dari selisih kuadrat</span>', correct:false},{text:'$c = a + b$ <span class="tr">jumlah langsung kaki</span>', correct:false}],
+          explanation:`<p>To find the hypotenuse, you must square the legs, sum them, and then take the square root. <span class="tr">Untuk mencari hipotenusa, kuadratkan kakinya, jumlahkan, lalu ambil akar kuadratnya.</span></p>`},
+        { type:'task', pageTitle:'T3: Right Triangle Angle', pageTitleEn:'Sudut Segitiga Siku-siku', taskType:'truefalse',
+          question:'True or false: The hypotenuse is always opposite the largest angle ($90^\\circ$).', questionEn:'Benar atau salah: Hipotenusa selalu berhadapan dengan sudut terbesar ($90^\\circ$).',
+          correctAnswer:'true',
+          explanation:`<p>Yes, in a right triangle, the $90^\\circ$ angle is the largest angle, and the side opposite to it is the hypotenuse. <span class="tr">Ya, sudut $90^\\circ$ adalah sudut terbesar, dan sisi di depannya adalah hipotenusa.</span></p>`},
+        { type:'task', pageTitle:'T4: Order Hypotenuse Steps', pageTitleEn:'Urutkan Langkah Hipotenusa', taskType:'sorting',
+          question:'Order the steps to find $c$ if $a=6$ and $b=8$.', questionEn:'Urutkan langkah mencari $c$ jika $a=6$ dan $b=8$.',
+          items:['Square the legs: $6^2=36, 8^2=64$ <span class="tr">Kuadratkan kaki</span>','Add them: $36 + 64 = 100$ <span class="tr">Jumlahkan</span>','Write $c^2 = 100$ <span class="tr">Tulis $c^2 = 100$</span>','Square root: $c = 10$ <span class="tr">Akar kuadrat</span>'], correctOrder:[0,1,2,3],
+          explanation:`<p>Follow the theorem sequentially: square, add, root. <span class="tr">Ikuti teorema berurutan: kuadrat, jumlah, akar.</span></p>`},
+        { type:'task', pageTitle:'T5: Correct Equations', pageTitleEn:'Persamaan yang Benar', taskType:'checkbox',
+          question:'Select all correct equations for a right triangle with legs 3, 4, and hypotenuse 5.', questionEn:'Pilih semua persamaan yang benar untuk segitiga siku-siku dengan kaki 3, 4, dan hipotenusa 5.',
+          options:[{text:'$3^2 + 4^2 = 5^2$ <span class="tr">persamaan dasar</span>', correct:true},{text:'$9 + 16 = 25$ <span class="tr">persamaan nilai</span>', correct:true},{text:'$5^2 - 3^2 = 4^2$ <span class="tr">kebalikan kaki</span>', correct:true},{text:'$3 + 4 = 5$ <span class="tr">jumlah langsung</span>', correct:false}],
+          explanation:`<p>$3+4=7 \\neq 5$. The others are mathematically equivalent rearrangements of the theorem. <span class="tr">$3+4=7 \\neq 5$. Lainnya adalah penataan ulang yang ekuivalen.</span></p>`},
+        { type:'task', pageTitle:'T6: Match Triples', pageTitleEn:'Pasangkan Tripel', taskType:'pairing',
+          question:'Match the first two legs to their hypotenuse.', questionEn:'Pasangkan dua kaki pertama dengan hipotenusanya.',
+          pairs:[{left:'$7, 24$ <span class="tr">kaki</span>', right:'$25$'},{left:'$8, 15$ <span class="tr">kaki</span>', right:'$17$'},{left:'$20, 21$ <span class="tr">kaki</span>', right:'$29$'},{left:'$9, 12$ <span class="tr">kaki</span>', right:'$15$'}],
+          explanation:`<p>Recognize standard triples or calculate: $20^2+21^2 = 400+441=841=29^2$. <span class="tr">$20^2+21^2 = 841=29^2$.</span></p>`},
+        { type:'task', pageTitle:'T7: Find Missing Leg', pageTitleEn:'Cari Kaki yang Hilang', taskType:'fill',
+          question:'If $c=10$ and $b=6$, find $a$. $a = \\dots$', questionEn:'Jika $c=10$ dan $b=6$, cari $a$. $a = \\dots$',
+          correctAnswer:'8', acceptableAnswers:['8'],
+          explanation:`<p>$a^2 = c^2 - b^2 = 10^2 - 6^2 = 100 - 36 = 64$. $a = \\sqrt{64} = 8$. <span class="tr">Kurangi kuadrat hipotenusa dengan kaki yang diketahui.</span></p>`},
+        { type:'task', pageTitle:'T8: Calculate Leg', pageTitleEn:'Hitung Kaki', taskType:'radio',
+          question:'If $c=13$ and $a=5$, what is $b$?', questionEn:'Jika $c=13$ dan $a=5$, berapa $b$?',
+          options:[{text:'$12$ <span class="tr">dua belas</span>', correct:true},{text:'$8$ <span class="tr">delapan</span>', correct:false},{text:'$144$ <span class="tr">seratus empat puluh empat</span>', correct:false},{text:'$169$ <span class="tr">seratus enam puluh sembilan</span>', correct:false}],
+          explanation:`<p>$b^2 = 13^2 - 5^2 = 169 - 25 = 144$. $b = \\sqrt{144} = 12$. <span class="tr">Ini adalah tripel $(5, 12, 13)$.</span></p>`},
+        { type:'task', pageTitle:'T9: Verify Right Triangle', pageTitleEn:'Verifikasi Segitiga Siku-siku', taskType:'truefalse',
+          question:'True or false: If $a^2 + b^2 \\neq c^2$, the triangle is NOT a right triangle.', questionEn:'Benar atau salah: Jika $a^2 + b^2 \\neq c^2$, segitiga itu BUKAN segitiga siku-siku.',
+          correctAnswer:'true',
+          explanation:`<p>This is the Converse of the Pythagorean Theorem. If the sum of squares of the shorter sides doesn't equal the square of the longest, it's not a right triangle. <span class="tr">Ini adalah kebalikan teorema Pythagoras.</span></p>`},
+        { type:'task', pageTitle:'T10: Order Leg-Finding Steps', pageTitleEn:'Urutkan Langkah Mencari Kaki', taskType:'sorting',
+          question:'Order the steps to find $b$ if $c=15$ and $a=9$.', questionEn:'Urutkan langkah mencari $b$ jika $c=15$ dan $a=9$.',
+          items:['Write $b^2 = c^2 - a^2$ <span class="tr">Tulis rumus</span>','Substitute: $b^2 = 15^2 - 9^2$ <span class="tr">Substitusi</span>','Calculate: $b^2 = 225 - 81 = 144$ <span class="tr">Hitung</span>','Root: $b = 12$ <span class="tr">Akar</span>'], correctOrder:[0,1,2,3],
+          explanation:`<p>Follow algebraic rearrangement sequentially. <span class="tr">Ikuti penataan ulang aljabar secara berurutan.</span></p>`}
+      ]
+    },
+    i: {
+      title: 'Task 2', titleEn: 'Tugas 2', time: 'Printable',
+      pages: [
+        { type:'task', pageTitle:'T1: Complete the Triple', pageTitleEn:'Lengkapi Tripel', taskType:'fill',
+          question:'A Pythagorean triple starts with $5$ and $12$. Find the hypotenuse. $c = \\dots$', questionEn:'Tripel Pythagoras dimulai dengan $5$ dan $12$. Cari hipotenusa. $c = \\dots$',
+          correctAnswer:'13', acceptableAnswers:['13'],
+          explanation:`<p>$5^2 + 12^2 = 25 + 144 = 169$. $c = \\sqrt{169} = 13$. <span class="tr">Hitung akar kuadrat dari 169.</span></p>`},
+        { type:'task', pageTitle:'T2: Identify the Triple', pageTitleEn:'Identifikasi Tripel', taskType:'radio',
+          question:'Which of the following is a Pythagorean triple?', questionEn:'Manakah dari berikut ini yang merupakan tripel Pythagoras?',
+          options:[{text:'$(1, 2, 3)$ <span class="tr">satu dua tiga</span>', correct:false},{text:'$(4, 5, 6)$ <span class="tr">empat lima enam</span>', correct:false},{text:'$(9, 40, 41)$ <span class="tr">sembilan empat puluh empat puluh satu</span>', correct:true},{text:'$(2, 3, 4)$ <span class="tr">dua tiga empat</span>', correct:false}],
+          explanation:`<p>$9^2 + 40^2 = 81 + 1600 = 1681$. $41^2 = 1681$. It matches! <span class="tr">$9^2 + 40^2 = 1681 = 41^2$. Cocok!</span></p>`},
+        { type:'task', pageTitle:'T3: Scaled Triples', pageTitleEn:'Tripel Ter-skala', taskType:'truefalse',
+          question:'True or false: $(6, 8, 10)$ is a scaled version of the $(3, 4, 5)$ triple.', questionEn:'Benar atau salah: $(6, 8, 10)$ adalah versi ter-skala dari tripel $(3, 4, 5)$.',
+          correctAnswer:'true',
+          explanation:`<p>Yes, multiplying each side of $(3, 4, 5)$ by $2$ gives $(6, 8, 10)$. <span class="tr">Mengalikan setiap sisi $(3, 4, 5)$ dengan $2$ menghasilkan $(6, 8, 10)$.</span></p>`},
+        { type:'task', pageTitle:'T4: Verify the Triple', pageTitleEn:'Verifikasi Tripel', taskType:'sorting',
+          question:'Order the steps to verify if $(7, 24, 25)$ is a triple.', questionEn:'Urutkan langkah verifikasi apakah $(7, 24, 25)$ adalah tripel.',
+          items:['Calculate $7^2 = 49$ <span class="tr">Hitung $7^2$</span>','Calculate $24^2 = 576$ <span class="tr">Hitung $24^2$</span>','Add: $49 + 576 = 625$ <span class="tr">Jumlahkan</span>','Check $25^2 = 625$. It matches! <span class="tr">Cek $25^2 = 625$. Cocok!</span>'], correctOrder:[0,1,2,3],
+          explanation:`<p>Follow sequential calculation to test the theorem. <span class="tr">Ikuti perhitungan berurutan untuk menguji teorema.</span></p>`},
+        { type:'task', pageTitle:'T5: Select Triples', pageTitleEn:'Pilih Tripel', taskType:'checkbox',
+          question:'Select all sets that are valid Pythagorean triples.', questionEn:'Pilih semua himpunan yang merupakan tripel Pythagoras yang valid.',
+          options:[{text:'$(3, 4, 5)$ <span class="tr">tiga empat lima</span>', correct:true},{text:'$(8, 15, 17)$ <span class="tr">delapan lima belas tujuh belas</span>', correct:true},{text:'$(5, 7, 9)$ <span class="tr">lima tujuh sembilan</span>', correct:false},{text:'$(20, 21, 29)$ <span class="tr">dua puluh dua puluh satu dua puluh sembilan</span>', correct:true}],
+          explanation:`<p>For $(5,7,9)$: $25+49=74 \\neq 81$. For $(20,21,29)$: $400+441=841=29^2$. <span class="tr">$(5,7,9)$ salah. $(20,21,29)$ benar.</span></p>`},
+        { type:'task', pageTitle:'T6: Match Scaled Triples', pageTitleEn:'Pasangkan Tripel Ter-skala', taskType:'pairing',
+          question:'Match the scaled triple to its base triple.', questionEn:'Pasangkan tripel ter-skala dengan tripel dasarnya.',
+          pairs:[{left:'$(9, 12, 15)$ <span class="tr">skala</span>', right:'$(3, 4, 5)$'},{left:'$(12, 16, 20)$ <span class="tr">skala</span>', right:'$(3, 4, 5)$'},{left:'$(15, 20, 25)$ <span class="tr">skala</span>', right:'$(3, 4, 5)$'},{left:'$(10, 24, 26)$ <span class="tr">skala</span>', right:'$(5, 12, 13)$'}],
+          explanation:`<p>Divide by the greatest common factor to find the base. $15,20,25 \\div 5 = (3,4,5)$. $10,24,26 \\div 2 = (5,12,13)$. <span class="tr">Bagi dengan FPB untuk mencari tripel dasar.</span></p>`},
+        { type:'task', pageTitle:'T7: Use the Converse', pageTitleEn:'Gunakan Kebalikan', taskType:'fill',
+          question:'A triangle has sides $5, 7, 9$. Calculate $a^2 + b^2$ (using 5 and 7). Result = $\\dots$', questionEn:'Segitiga memiliki sisi $5, 7, 9$. Hitung $a^2 + b^2$ (menggunakan 5 dan 7). Hasil = $\\dots$',
+          correctAnswer:'74', acceptableAnswers:['74'],
+          explanation:`<p>$5^2 + 7^2 = 25 + 49 = 74$. Since $c^2 = 9^2 = 81$ and $74 \\neq 81$, it is NOT a right triangle. <span class="tr">$5^2 + 7^2 = 74$. Karena $74 \\neq 81$, ini bukan segitiga siku-siku.</span></p>`},
+        { type:'task', pageTitle:'T8: Apply Converse', pageTitleEn:'Terapkan Kebalikan', taskType:'radio',
+          question:'Using the converse, which set forms a right triangle?', questionEn:'Menggunakan kebalikan, himpunan manakah yang membentuk segitiga siku-siku?',
+          options:[{text:'$(4, 5, 6)$ <span class="tr">empat lima enam</span>', correct:false},{text:'$(10, 15, 20)$ <span class="tr">sepuluh lima belas dua puluh</span>', correct:false},{text:'$(12, 16, 20)$ <span class="tr">dua belas enam belas dua puluh</span>', correct:true},{text:'$(7, 8, 10)$ <span class="tr">tujuh delapan sepuluh</span>', correct:false}],
+          explanation:`<p>For $(12, 16, 20)$: $144 + 256 = 400 = 20^2$. It is a right triangle (scaled $3,4,5$). <span class="tr">$144 + 256 = 400 = 20^2$. Ini segitiga siku-siku.</span></p>`},
+        { type:'task', pageTitle:'T9: Non-Right Triangle', pageTitleEn:'Segitiga Bukan Siku-siku', taskType:'truefalse',
+          question:'True or false: A triangle with sides $4, 5, 6$ is a right triangle.', questionEn:'Benar atau salah: Segitiga dengan sisi $4, 5, 6$ adalah segitiga siku-siku.',
+          correctAnswer:'false',
+          explanation:`<p>$4^2 + 5^2 = 16 + 25 = 41$. $6^2 = 36$. $41 \\neq 36$, so it is false. <span class="tr">$4^2 + 5^2 = 41 \\neq 36$. Pernyataan salah.</span></p>`},
+        { type:'task', pageTitle:'T10: Order Converse Steps', pageTitleEn:'Urutkan Langkah Kebalikan', taskType:'sorting',
+          question:'Order the steps to verify if a triangle with sides $6, 9, 11$ is a right triangle.', questionEn:'Urutkan langkah memverifikasi apakah segitiga dengan sisi $6, 9, 11$ adalah segitiga siku-siku.',
+          items:['Identify longest side $c=11$ <span class="tr">Identifikasi sisi terpanjang</span>','Calculate $a^2+b^2$: $6^2+9^2 = 36+81=117$ <span class="tr">Hitung jumlah kuadrat kaki</span>','Calculate $c^2$: $11^2 = 121$ <span class="tr">Hitung kuadrat sisi terpanjang</span>','Compare: $117 \\neq 121$, so NOT a right triangle <span class="tr">Bandingkan: tidak sama, BUKAN siku-siku</span>'], correctOrder:[0,1,2,3],
+          explanation:`<p>Sequential comparison proves the converse. <span class="tr">Perbandingan berurutan membuktikan kebalikannya.</span></p>`}
+      ]
+    },
+    j: {
+      title: 'Task 3', titleEn: 'Tugas 3', time: 'Printable',
+      pages: [
+        { type:'task', pageTitle:'T1: Isosceles c squared', pageTitleEn:'Sama Kaki c kuadrat', taskType:'fill',
+          question:'In an isosceles right triangle, legs are $4$. Find $c^2$. $c^2 = \\dots$', questionEn:'Pada segitiga siku-siku sama kaki, kaki adalah $4$. Cari $c^2$. $c^2 = \\dots$',
+          correctAnswer:'32', acceptableAnswers:['32'],
+          explanation:`<p>$c^2 = a^2 + a^2 = 4^2 + 4^2 = 16 + 16 = 32$. <span class="tr">Jumlahkan kuadrat dari kedua kaki yang sama.</span></p>`},
+        { type:'task', pageTitle:'T2: Isosceles Angles', pageTitleEn:'Sudut Sama Kaki', taskType:'radio',
+          question:'What are the acute angles in an isosceles right triangle?', questionEn:'Berapa sudut lancip pada segitiga siku-siku sama kaki?',
+          options:[{text:'$30^\\circ$ and $60^\\circ$ <span class="tr">tiga puluh dan enam puluh</span>', correct:false},{text:'$45^\\circ$ and $45^\\circ$ <span class="tr">empat puluh lima dan empat puluh lima</span>', correct:true},{text:'$60^\\circ$ and $60^\\circ$ <span class="tr">enam puluh dan enam puluh</span>', correct:false},{text:'$50^\\circ$ and $40^\\circ$ <span class="tr">lima puluh dan empat puluh</span>', correct:false}],
+          explanation:`<p>Sum of angles is $180^\\circ$. $180 - 90 = 90^\\circ$ left. Equal legs mean equal angles, so $90 / 2 = 45^\\circ$. <span class="tr">Sisa $90^\\circ$ dibagi dua sama rata menjadi $45^\\circ$.</span></p>`},
+        { type:'task', pageTitle:'T3: Square Diagonal Property', pageTitleEn:'Sifat Diagonal Persegi', taskType:'truefalse',
+          question:'True or false: The diagonal of a square with side $5$ is exactly $5\\sqrt{2}$.', questionEn:'Benar atau salah: Diagonal persegi dengan sisi $5$ adalah tepat $5\\sqrt{2}$.',
+          correctAnswer:'true',
+          explanation:`<p>A square forms an isosceles right triangle. $d = s\\sqrt{2} = 5\\sqrt{2}$. <span class="tr">Persegi membentuk segitiga siku-siku sama kaki.</span></p>`},
+        { type:'task', pageTitle:'T4: Order Square Diagonal', pageTitleEn:'Urutkan Langkah Diagonal Persegi', taskType:'sorting',
+          question:'Order the steps to find the diagonal of a square with side $6$.', questionEn:'Urutkan langkah mencari diagonal persegi dengan sisi $6$.',
+          items:['Recognize it as isosceles right triangle: $a=b=6$ <span class="tr">Kenali sebagai sama kaki</span>','Use formula: $d^2 = 6^2 + 6^2$ <span class="tr">Gunakan rumus</span>','Add: $d^2 = 36 + 36 = 72$ <span class="tr">Jumlahkan</span>','Root: $d = \\sqrt{72} = 6\\sqrt{2}$ <span class="tr">Akar kuadrat</span>'], correctOrder:[0,1,2,3],
+          explanation:`<p>Apply standard isosceles diagonal logic sequentially. <span class="tr">Terapkan logika diagonal sama kaki standar.</span></p>`},
+        { type:'task', pageTitle:'T5: Isosceles Properties', pageTitleEn:'Sifat Sama Kaki', taskType:'checkbox',
+          question:'Select all properties of an isosceles right triangle.', questionEn:'Pilih semua sifat segitiga siku-siku sama kaki.',
+          options:[{text:'Two legs are equal in length <span class="tr">Dua kaki sama panjang</span>', correct:true},{text:'Two angles are $45^\\circ$ <span class="tr">Dua sudut $45^\\circ$</span>', correct:true},{text:'Hypotenuse is $a\\sqrt{2}$ <span class="tr">Hipotenusa $a\\sqrt{2}$</span>', correct:true},{text:'Hypotenuse is $a\\sqrt{3}$ <span class="tr">Hipotenusa $a\\sqrt{3}$</span>', correct:false}],
+          explanation:`<p>$a\\sqrt{3}$ belongs to the $30^\\circ-60^\\circ-90^\\circ$ triangle, not the isosceles right triangle. <span class="tr">$a\\sqrt{3}$ milik segitiga $30-60-90$.</span></p>`},
+        { type:'task', pageTitle:'T6: Match Leg to c squared', pageTitleEn:'Pasangkan Kaki ke c kuadrat', taskType:'pairing',
+          question:'Match the leg of an isosceles right triangle to its $c^2$.', questionEn:'Pasangkan kaki segitiga siku-siku sama kaki dengan $c^2$-nya.',
+          pairs:[{left:'Leg = $2$', right:'$c^2 = 8$'},{left:'Leg = $3$', right:'$c^2 = 18$'},{left:'Leg = $4$', right:'$c^2 = 32$'},{left:'Leg = $5$', right:'$c^2 = 50$'}],
+          explanation:`<p>Formula is $c^2 = 2a^2$. E.g., $2(5^2) = 2(25) = 50$. <span class="tr">Rumusnya $c^2 = 2a^2$.</span></p>`},
+        { type:'task', pageTitle:'T7: Square d squared', pageTitleEn:'d kuadrat Persegi', taskType:'fill',
+          question:'A square has side $3$. Find the exact value of $d^2$. $d^2 = \\dots$', questionEn:'Persegi memiliki sisi $3$. Cari nilai eksak $d^2$. $d^2 = \\dots$',
+          correctAnswer:'18', acceptableAnswers:['18'],
+          explanation:`<p>$d^2 = s^2 + s^2 = 3^2 + 3^2 = 9 + 9 = 18$. <span class="tr">Jumlahkan kuadrat dari sisi yang sama.</span></p>`},
+        { type:'task', pageTitle:'T8: Rectangle Diagonal', pageTitleEn:'Diagonal Persegi Panjang', taskType:'radio',
+          question:'A rectangle has sides $8$ and $6$. What is its diagonal?', questionEn:'Persegi panjang memiliki sisi $8$ dan $6$. Berapa diagonalnya?',
+          options:[{text:'$10$ <span class="tr">sepuluh</span>', correct:true},{text:'$14$ <span class="tr">empat belas</span>', correct:false},{text:'$100$ <span class="tr">seratus</span>', correct:false},{text:'$\\sqrt{14}$ <span class="tr">akar empat belas</span>', correct:false}],
+          explanation:`<p>$d = \\sqrt{8^2 + 6^2} = \\sqrt{64 + 36} = \\sqrt{100} = 10$. <span class="tr">Substitusi ke teorema Pythagoras.</span></p>`},
+        { type:'task', pageTitle:'T9: Rectangle Properties', pageTitleEn:'Sifat Persegi Panjang', taskType:'truefalse',
+          question:'True or false: A diagonal of a rectangle creates two right triangles.', questionEn:'Benar atau salah: Diagonal persegi panjang menciptakan dua segitiga siku-siku.',
+          correctAnswer:'true',
+          explanation:`<p>The angles of a rectangle are $90^\\circ$. A diagonal splits it into two identical right triangles. <span class="tr">Sudut persegi panjang $90^\\circ$. Diagonal membaginya jadi 2 segitiga siku-siku.</span></p>`},
+        { type:'task', pageTitle:'T10: Order Isosceles Steps', pageTitleEn:'Urutkan Langkah Sama Kaki', taskType:'sorting',
+          question:'Order the steps to find height of an isosceles triangle with sides $5, 5$, base $6$.', questionEn:'Urutkan langkah mencari tinggi segitiga sama kaki dengan sisi $5, 5$, alas $6$.',
+          items:['Split base in half: $6/2 = 3$ <span class="tr">Bagi alas dua</span>','Form right triangle: legs $h$ and $3$, hypotenuse $5$ <span class="tr">Bentuk segitiga siku-siku</span>','Use theorem: $h^2 = 5^2 - 3^2$ <span class="tr">Gunakan teorema</span>','Calculate: $h^2 = 25-9 = 16$, $h=4$ <span class="tr">Hitung</span>'], correctOrder:[0,1,2,3],
+          explanation:`<p>The altitude of an isosceles triangle bisects the base. <span class="tr">Garis tinggi segitiga sama kaki membagi dua alasnya.</span></p>`}
+      ]
+    },
+    k: {
+      title: 'Task 4', titleEn: 'Tugas 4', time: 'Printable',
+      pages: [
+        { type:'task', pageTitle:'T1: Ladder Height', pageTitleEn:'Tinggi Tangga', taskType:'fill',
+          question:'A $10$ m ladder has base $8$ m from wall. Height = $\\dots$ m.', questionEn:'Tangga $10$ m memiliki alas $8$ m dari tembok. Tinggi = $\\dots$ m.',
+          correctAnswer:'6', acceptableAnswers:['6'],
+          explanation:`<p>$b = \\sqrt{10^2 - 8^2} = \\sqrt{100 - 64} = \\sqrt{36} = 6$. <span class="tr">Hitung selisih kuadrat lalu diakar.</span></p>`},
+        { type:'task', pageTitle:'T2: Direct Distance', pageTitleEn:'Jarak Langsung', taskType:'radio',
+          question:'What represents the hypotenuse in a distance problem between two points?', questionEn:'Apa yang mewakili hipotenusa pada masalah jarak antara dua titik?',
+          options:[{text:'The horizontal distance <span class="tr">Jarak horizontal</span>', correct:false},{text:'The vertical distance <span class="tr">Jarak vertikal</span>', correct:false},{text:'The straight line connecting them <span class="tr">Garis lurus yang menghubungkan</span>', correct:true},{text:'The sum of horizontal and vertical <span class="tr">Jumlah horizontal dan vertikal</span>', correct:false}],
+          explanation:`<p>The straight line (diagonal) is always the hypotenuse in coordinate geometry. <span class="tr">Garis lurus selalu menjadi hipotenusa.</span></p>`},
+        { type:'task', pageTitle:'T3: Ladder Check', pageTitleEn:'Cek Tangga', taskType:'truefalse',
+          question:'True or false: A $15$ m ladder reaches $9$ m up a wall. The base is $12$ m from the wall.', questionEn:'Benar atau salah: Tangga $15$ m menjangkau $9$ m di tembok. Alasnya $12$ m dari tembok.',
+          correctAnswer:'true',
+          explanation:`<p>Check: $9^2 + 12^2 = 81 + 144 = 225 = 15^2$. True. <span class="tr">Cek: $9^2 + 12^2 = 225 = 15^2$. Benar.</span></p>`},
+        { type:'task', pageTitle:'T4: Order Word Problem', pageTitleEn:'Urutkan Soal Cerita', taskType:'sorting',
+          question:'Order the steps to solve: A $13$ m ramp reaches $5$ m up. Find base distance.', questionEn:'Urutkan langkah menyelesaikan: Ramp $13$ m menjangkau $5$ m. Cari jarak alas.',
+          items:['Identify: $c=13, b=5, a=?$ <span class="tr">Identifikasi variabel</span>','Write: $a^2 = c^2 - b^2$ <span class="tr">Tulis rumus</span>','Substitute: $a^2 = 13^2 - 5^2$ <span class="tr">Substitusi</span>','Calculate: $a^2 = 169 - 25 = 144$, $a=12$ <span class="tr">Hitung</span>'], correctOrder:[0,1,2,3],
+          explanation:`<p>Extract variables from text, then apply algebra sequentially. <span class="tr">Ekstrak variabel, lalu terapkan aljabar.</span></p>`},
+        { type:'task', pageTitle:'T5: Identify Keywords', pageTitleEn:'Identifikasi Kata Kunci', taskType:'checkbox',
+          question:'Select all keywords that usually indicate a right angle in a word problem.', questionEn:'Pilih semua kata kunci yang biasanya menunjukkan sudut siku-siku dalam soal cerita.',
+          options:[{text:'Perpendicular <span class="tr">Tegak lurus</span>', correct:true},{text:'Wall and ground <span class="tr">Tembok dan tanah</span>', correct:true},{text:'Foot of the ladder <span class="tr">Bagian bawah tangga</span>', correct:true},{text:'Slanted <span class="tr">Miring</span>', correct:false}],
+          explanation:`<p>"Slanted" usually refers to the hypotenuse, not the right angle. The others imply a $90^\\circ$ intersection. <span class="tr">"Miring" merujuk pada hipotenusa. Lainnya merujuk pada $90^\\circ$.</span></p>`},
+        { type:'task', pageTitle:'T6: Match Scenarios', pageTitleEn:'Pasangkan Skenario', taskType:'pairing',
+          question:'Match the real-world object to its triangle component.', questionEn:'Pasangkan objek dunia nyata dengan komponen segitiganya.',
+          pairs:[{left:'Ladder <span class="tr">Tangga</span>', right:'Hypotenuse'},{left:'Wall height <span class="tr">Tinggi tembok</span>', right:'Leg'},{left:'Distance on ground <span class="tr">Jarak di tanah</span>', right:'Leg'},{left:'TV screen size <span class="tr">Ukuran layar TV</span>', right:'Hypotenuse'}],
+          explanation:`<p>Objects that span across the diagonal are the hypotenuse. <span class="tr">Objek yang membentang di diagonal adalah hipotenusa.</span></p>`},
+        { type:'task', pageTitle:'T7: TV Screen', pageTitleEn:'Layar TV', taskType:'fill',
+          question:'A TV is $40$ wide and $30$ high. Diagonal = $\\dots$', questionEn:'TV memiliki lebar $40$ dan tinggi $30$. Diagonal = $\\dots$',
+          correctAnswer:'50', acceptableAnswers:['50'],
+          explanation:`<p>$d = \\sqrt{40^2 + 30^2} = \\sqrt{1600 + 900} = \\sqrt{2500} = 50$. <span class="tr">Tripel $(3,4,5)$ dikali $10$.</span></p>`},
+        { type:'task', pageTitle:'T8: Navigation', pageTitleEn:'Navigasi', taskType:'radio',
+          question:'A ship sails $3$ km East, then $4$ km North. Direct distance from start?', questionEn:'Kapal berlayar $3$ km Timur, lalu $4$ km Utara. Jarak langsung dari awal?',
+          options:[{text:'$5$ km <span class="tr">lima km</span>', correct:true},{text:'$7$ km <span class="tr">tujuh km</span>', correct:false},{text:'$12$ km <span class="tr">dua belas km</span>', correct:false},{text:'$1$ km <span class="tr">satu km</span>', correct:false}],
+          explanation:`<p>East and North are perpendicular. $d = \\sqrt{3^2+4^2} = 5$ km. <span class="tr">Timur dan Utara tegak lurus. $d = 5$ km.</span></p>`},
+        { type:'task', pageTitle:'T9: Direct Path', pageTitleEn:'Jalur Langsung', taskType:'truefalse',
+          question:'True or false: If you walk $3$ m North and $4$ m West, you are $7$ m away from the start.', questionEn:'Benar atau salah: Jika Anda berjalan $3$ m Utara dan $4$ m Barat, Anda berjarak $7$ m dari awal.',
+          correctAnswer:'false',
+          explanation:`<p>The direct distance is the hypotenuse: $\\sqrt{3^2+4^2} = 5$ m, not $7$ m. <span class="tr">Jarak langsung adalah hipotenusa: $5$ m, bukan $7$ m.</span></p>`},
+        { type:'task', pageTitle:'T10: Order Navigation', pageTitleEn:'Urutkan Navigasi', taskType:'sorting',
+          question:'Order the steps for the ship problem (3 East, 4 North).', questionEn:'Urutkan langkah masalah kapal (3 Timur, 4 Utara).',
+          items:['Identify perpendicular legs $3$ and $4$ <span class="tr">Identifikasi kaki tegak lurus</span>','Write $d^2 = 3^2 + 4^2$ <span class="tr">Tulis rumus</span>','Add: $d^2 = 9 + 16 = 25$ <span class="tr">Jumlahkan</span>','Root: $d = 5$ <span class="tr">Akar</span>'], correctOrder:[0,1,2,3],
+          explanation:`<p>Translate directions into perpendicular vectors, then apply the theorem. <span class="tr">Terjemahkan arah menjadi vektor tegak lurus, lalu terapkan teorema.</span></p>`}
+      ]
+    },
+    l: {
+      title: 'Task 5', titleEn: 'Tugas 5', time: 'Printable',
+      pages: [
+        { type:'task', pageTitle:'T1: Space Diagonal', pageTitleEn:'Diagonal Ruang', taskType:'fill',
+          question:'A box has dimensions $4, 3, 12$. Find its space diagonal $d$. $d = \\dots$', questionEn:'Balok memiliki dimensi $4, 3, 12$. Cari diagonal ruangnya $d$. $d = \\dots$',
+          correctAnswer:'13', acceptableAnswers:['13'],
+          explanation:`<p>$d = \\sqrt{4^2 + 3^2 + 12^2} = \\sqrt{16 + 9 + 144} = \\sqrt{169} = 13$. <span class="tr">Jumlahkan kuadrat ketiga dimensi.</span></p>`},
+        { type:'task', pageTitle:'T2: Distance Formula', pageTitleEn:'Rumus Jarak', taskType:'radio',
+          question:'Which formula finds the distance between $A(x_1,y_1)$ and $B(x_2,y_2)$?', questionEn:'Rumus mana yang mencari jarak antara $A(x_1,y_1)$ dan $B(x_2,y_2)$?',
+          options:[{text:'$d = x_2 - x_1 + y_2 - y_1$ <span class="tr">selisih biasa</span>', correct:false},{text:'$d = \\sqrt{(x_2-x_1)^2 + (y_2-y_1)^2}$ <span class="tr">akar dari jumlah kuadrat selisih</span>', correct:true},{text:'$d = (x_2-x_1)(y_2-y_1)$ <span class="tr">perkalian selisih</span>', correct:false},{text:'$d = \\sqrt{x^2 + y^2}$ <span class="tr">hanya kuadrat positif</span>', correct:false}],
+          explanation:`<p>The distance formula is a direct application of $a^2 + b^2 = c^2$ on coordinate differences. <span class="tr">Rumus jarak aplikasi langsung teorema Pythagoras.</span></p>`},
+        { type:'task', pageTitle:'T3: Derivation', pageTitleEn:'Derivasi', taskType:'truefalse',
+          question:'True or false: The distance formula is derived from the Pythagorean theorem.', questionEn:'Benar atau salah: Rumus jarak diturunkan dari teorema Pythagoras.',
+          correctAnswer:'true',
+          explanation:`<p>Yes, $\\Delta x$ and $\\Delta y$ are the legs of a right triangle on a coordinate plane. <span class="tr">$\\Delta x$ dan $\\Delta y$ adalah kaki segitiga siku-siku.</span></p>`},
+        { type:'task', pageTitle:'T4: Order 3D Steps', pageTitleEn:'Urutkan Langkah 3D', taskType:'sorting',
+          question:'Order the steps to find space diagonal of box $2, 3, 6$.', questionEn:'Urutkan langkah mencari diagonal ruang balok $2, 3, 6$.',
+          items:['Square dimensions: $4, 9, 36$ <span class="tr">Kuadratkan dimensi</span>','Add them: $4 + 9 + 36 = 49$ <span class="tr">Jumlahkan</span>','Write $d^2 = 49$ <span class="tr">Tulis $d^2 = 49$</span>','Square root: $d = 7$ <span class="tr">Akar kuadrat</span>'], correctOrder:[0,1,2,3],
+          explanation:`<p>Apply 3D diagonal formula sequentially. <span class="tr">Terapkan rumus diagonal 3D berurutan.</span></p>`},
+        { type:'task', pageTitle:'T5: Pythagoras Applications', pageTitleEn:'Aplikasi Pythagoras', taskType:'checkbox',
+          question:'Select all valid applications of the Pythagorean theorem.', questionEn:'Pilih semua aplikasi teorema Pythagoras yang valid.',
+          options:[{text:'Finding rectangle diagonals <span class="tr">Mencari diagonal persegi panjang</span>', correct:true},{text:'Finding distance between two points <span class="tr">Mencari jarak dua titik</span>', correct:true},{text:'Finding space diagonals of prisms <span class="tr">Mencari diagonal ruang prisma</span>', correct:true},{text:'Finding the area of a circle <span class="tr">Mencari luas lingkaran</span>', correct:false}],
+          explanation:`<p>Pythagoras deals with right angles and distances, not circular area ($\\pi r^2$). <span class="tr">Pythagoras berhubungan dengan sudut siku-siku, bukan luas lingkaran.</span></p>`},
+        { type:'task', pageTitle:'T6: Match Points to Distance', pageTitleEn:'Pasangkan Titik ke Jarak', taskType:'pairing',
+          question:'Match the coordinate points to their exact distance.', questionEn:'Pasangkan titik koordinat dengan jarak eksaknya.',
+          pairs:[{left:'$(0,0)$ to $(6,8)$ <span class="tr">ke</span>', right:'$10$'},{left:'$(1,1)$ to $(4,5)$ <span class="tr">ke</span>', right:'$5$'},{left:'$(0,0)$ to $(3,4)$ <span class="tr">ke</span>', right:'$5$'},{left:'$(-1,-1)$ to $(2,3)$ <span class="tr">ke</span>', right:'$5$'}],
+          explanation:`<p>$\\Delta x = 3, \\Delta y = 4$ for all pairs! $3^2+4^2 = 25 \\rightarrow 5$. <span class="tr">Semua pasangan memiliki $\\Delta x = 3$ dan $\\Delta y = 4$.</span></p>`},
+        { type:'task', pageTitle:'T7: Vertical Distance', pageTitleEn:'Jarak Vertikal', taskType:'fill',
+          question:'Find distance between $(0,0)$ and $(0,9)$. $d = \\dots$', questionEn:'Cari jarak antara $(0,0)$ dan $(0,9)$. $d = \\dots$',
+          correctAnswer:'9', acceptableAnswers:['9'],
+          explanation:`<p>Since $x$-coordinates are same, $\\Delta x = 0$. $d = \\sqrt{0^2 + 9^2} = \\sqrt{81} = 9$. <span class="tr">Untuk garis vertikal, jarak adalah selisih $y$.</span></p>`},
+        { type:'task', pageTitle:'T8: Small Box', pageTitleEn:'Balok Kecil', taskType:'radio',
+          question:'A box is $1 \\times 2 \\times 2$. What is its space diagonal?', questionEn:'Balok berukuran $1 \\times 2 \\times 2$. Berapa diagonal ruangnya?',
+          options:[{text:'$3$ <span class="tr">tiga</span>', correct:true},{text:'$5$ <span class="tr">lima</span>', correct:false},{text:'$9$ <span class="tr">sembilan</span>', correct:false},{text:'$\\sqrt{5}$ <span class="tr">akar lima</span>', correct:false}],
+          explanation:`<p>$d = \\sqrt{1^2 + 2^2 + 2^2} = \\sqrt{1 + 4 + 4} = \\sqrt{9} = 3$. <span class="tr">Substitusi ke rumus 3D.</span></p>`},
+        { type:'task', pageTitle:'T9: Horizontal Line', pageTitleEn:'Garis Horizontal', taskType:'truefalse',
+          question:'True or false: Distance between $(5, 0)$ and $(0, 0)$ is $5$.', questionEn:'Benar atau salah: Jarak antara $(5, 0)$ dan $(0, 0)$ adalah $5$.',
+          correctAnswer:'true',
+          explanation:`<p>Points lie on x-axis. $d = |5 - 0| = 5$. Using formula: $\\sqrt{5^2 + 0^2} = 5$. <span class="tr">Titik berada pada sumbu-$x$. Jarak adalah selisih $x$.</span></p>`},
+        { type:'task', pageTitle:'T10: Order Coordinate Distance', pageTitleEn:'Urutkan Jarak Koordinat', taskType:'sorting',
+          question:'Order the steps to find distance between $(1,1)$ and $(4,5)$.', questionEn:'Urutkan langkah mencari jarak antara $(1,1)$ dan $(4,5)$.',
+          items:['Find $\\Delta x = 3, \\Delta y = 4$ <span class="tr">Cari selisih</span>','Set up $d = \\sqrt{3^2 + 4^2}$ <span class="tr">Susun persamaan</span>','Simplify inside root: $\\sqrt{9+16} = \\sqrt{25}$ <span class="tr">Sederhanakan akar</span>','Final root: $d = 5$ <span class="tr">Akar akhir</span>'], correctOrder:[0,1,2,3],
+          explanation:`<p>Sequential algebra of the distance formula. <span class="tr">Aljabar berurutan dari rumus jarak.</span></p>`}
+      ]
+    }
+  };
+
+  // ================= STATE =================
+  let currentSection = 'a';
+  let currentPage = 0;
+  let userAnswers = {};
+
+  // ================= UTILITIES =================
+  function shuffle(arr){
+    const a = arr.slice();
+    for(let i = a.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+  function renderMath(el){
+    if(window.renderMathInElement){
+      renderMathInElement(el, {
+        delimiters: [
+          {left:'$$', right:'$$', display:true},
+          {left:'$', right:'$', display:false}
+        ],
+        throwOnError: false
+      });
+    }
+  }
+
+  // ================= SIDEBAR =================
+  function renderSidebar(){
+    const sidebar = document.getElementById('sidebar');
+    const sectionKeys = ['a','b','c','d','e','f','g','h','i','j','k','l'];
+    const meta = {
+      a:{t:'Spiral Review', e:'Spiral Review', time:'00:00-00:10'},
+      b:{t:'Intro & Real-World', e:'Pengantar & Dunia Nyata', time:'00:10-00:15'},
+      c:{t:'Prior Knowledge', e:'Pengetahuan Awal', time:'00:15-00:20'},
+      d:{t:'Problem Intro', e:'Pengantar Masalah', time:'00:20-00:30'},
+      e:{t:'Guided Practice', e:'Latihan Terbimbing', time:'00:30-00:45'},
+      f:{t:'Independent Prac', e:'Latihan Mandiri', time:'00:45-00:55'},
+      g:{t:'Consolidation', e:'Konsolidasi', time:'00:55-01:00'},
+      h:{t:'Task 1', e:'Tugas 1', time:'Printable'},
+      i:{t:'Task 2', e:'Tugas 2', time:'Printable'},
+      j:{t:'Task 3', e:'Tugas 3', time:'Printable'},
+      k:{t:'Task 4', e:'Tugas 4', time:'Printable'},
+      l:{t:'Task 5', e:'Tugas 5', time:'Printable'}
+    };
+    let html = '<h3>Sections <span class="tr">Bagian</span></h3>';
+    sectionKeys.forEach(key => {
+      const section = sectionsData[key];
+      const isActive = currentSection === key;
+      if(section && section.pages && section.pages.length > 0){
+        html += `<div class="nav-link ${isActive?'active':''}" data-section="${key}">
+          <span class="nl-title">${key.toUpperCase()}. ${meta[key].t}</span>
+          <span class="tr">${meta[key].e}</span>
+          <span class="time">${meta[key].time}</span>
+        </div>`;
+      } else {
+        html += `<div class="nav-link disabled">${key.toUpperCase()}. ${meta[key].t}<br><span class="tr">${meta[key].e}</span><br><span class="time">${meta[key].time} (segera)</span></div>`;
+      }
+    });
+    sidebar.innerHTML = html;
+    sidebar.querySelectorAll('.nav-link[data-section]').forEach(el => {
+      el.addEventListener('click', () => {
+        currentSection = el.dataset.section;
+        currentPage = 0;
+        renderSidebar();
+        renderPage();
+      });
+    });
+  }
+
+  // ================= PAGE RENDER =================
+  function renderPage(){
+    const section = sectionsData[currentSection];
+    if(!section || !section.pages || section.pages.length === 0) {
+      document.getElementById('pageContent').innerHTML = '<div class="card"><p>Halaman ini sedang disiapkan. <span class="tr">This page is under preparation.</span></p></div>';
+      document.getElementById('pageNums').innerHTML = '';
+      document.getElementById('prevBtn').disabled = true;
+      document.getElementById('nextBtn').disabled = true;
+      return;
+    }
+    const page = section.pages[currentPage];
+    const contentEl = document.getElementById('pageContent');
+
+    let printBtnHtml = '';
+    if(['h','i','j','k','l'].includes(currentSection)){
+      printBtnHtml = '<button id="printBtnTop" style="background:var(--success);color:#fff;border:none;padding:7px 14px;border-radius:6px;cursor:pointer;font-size:.8em;font-weight:600;white-space:nowrap">🖨 Print to PDF <span class="tr">Cetak ke PDF</span></button>';
+    }
+
+    let html = '<div class="page-header"><h2>' + section.title + ' <span class="tr">' + section.titleEn + '</span></h2><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">' + printBtnHtml + '<span class="badge">' + page.pageTitle.split(':')[0] + '</span></div></div>';
+
+    if(page.type === 'explanation'){
+      html += '<div class="card explain"><h3>' + page.pageTitle + ' <span class="tr">' + page.pageTitleEn + '</span></h3>' + page.body + '</div>';
+    } else if(page.type === 'task'){
+      html += renderTask(page);
+    }
+    contentEl.innerHTML = html;
+    renderMath(contentEl);
+
+    const total = section.pages.length;
+    const pageNumsEl = document.getElementById('pageNums');
+    let pageNumHtml = '';
+    section.pages.forEach(function(p, i){
+      var raw = p.pageTitle.split(':')[0].trim();
+      var type = raw.charAt(0);
+      var num = parseInt(raw.substring(1));
+      var label = type + '-' + String(num).padStart(2, '0');
+      var typeClass = (type === 'E') ? 'page-num-e' : 'page-num-t';
+      var isActive = (i === currentPage);
+      pageNumHtml += '<button class="page-num ' + typeClass + ' ' + (isActive ? 'active' : '') + '" data-page="' + i + '"' + (isActive ? ' disabled' : '') + '>' + label + '</button>';
+    });
+    pageNumsEl.innerHTML = pageNumHtml;
+
+    pageNumsEl.querySelectorAll('.page-num').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        currentPage = parseInt(btn.dataset.page);
+        renderPage();
+      });
+    });
+
+    document.getElementById('prevBtn').disabled = (currentPage === 0);
+    document.getElementById('nextBtn').disabled = (currentPage === total - 1);
+
+    var printBtnTop = document.getElementById('printBtnTop');
+    if(printBtnTop){
+      printBtnTop.addEventListener('click', function(){ printTask(currentSection); });
+    }
+
+    if(page.type === 'task'){
+      attachTaskHandlers(page);
+    }
+  }
+
+  function renderTask(page){
+    let html = `<div class="card task"><h3>${page.pageTitle} <span class="tr">${page.pageTitleEn}</span></h3>`;
+    html += `<div class="q-text">${page.question} <span class="tr">${page.questionEn || ''}</span></div>`;
+
+    if(page.taskType === 'radio' || page.taskType === 'checkbox'){
+      const options = shuffle(page.options);
+      page._shuffledOptions = options;
+      html += '<div class="options">';
+      options.forEach((opt, i) => {
+        const cls = page.taskType === 'checkbox' ? 'option checkbox' : 'option radio';
+        html += `<div class="${cls}" data-idx="${i}">
+          <div class="marker"></div>
+          <div class="opt-text">${opt.text}</div>
+        </div>`;
+      });
+      html += '</div>';
+    } else if(page.taskType === 'fill'){
+      html += `<input type="text" class="fill-input" id="fillInput" placeholder="...">`;
+    } else if(page.taskType === 'truefalse'){
+      const opts = shuffle([
+        {text:'True <span class="tr">Benar</span>', val:'true'},
+        {text:'False <span class="tr">Salah</span>', val:'false'}
+      ]);
+      page._shuffledTF = opts;
+      html += '<div class="options">';
+      opts.forEach((o, i) => {
+        html += `<div class="option radio" data-val="${o.val}" data-idx="${i}"><div class="marker"></div><div class="opt-text">${o.text}</div></div>`;
+      });
+      html += '</div>';
+    } else if(page.taskType === 'sorting'){
+      const shuffled = shuffle(page.items.map((item, idx) => ({text:item, originalIdx:idx})));
+      page._shuffledItems = shuffled;
+      html += '<div class="sort-list">';
+      shuffled.forEach((it, i) => {
+        html += `<div class="sort-item" data-pos="${i}" data-orig="${it.originalIdx}">
+          <span class="pos">${i+1}</span>
+          <span class="sort-text">${it.text}</span>
+        </div>`;
+      });
+      html += '</div>';
+      html += '<p style="font-size:.82em;color:var(--muted);margin-top:6px">Click two items to swap. <span class="tr">Klik dua item untuk menukar.</span></p>';
+    } else if(page.taskType === 'pairing'){
+      const lefts = shuffle(page.pairs.map((p, idx) => ({text:p.left, originalIdx:idx})));
+      const rights = shuffle(page.pairs.map((p, idx) => ({text:p.right, originalIdx:idx})));
+      page._shuffledPairs = {lefts, rights};
+      html += '<div class="pair-grid">';
+      html += '<div class="pair-col"><h4>Left <span class="tr">Kiri</span></h4>';
+      lefts.forEach((l, i) => {
+        html += `<div class="pair-item" data-side="left" data-idx="${i}">${l.text}</div>`;
+      });
+      html += '</div>';
+      html += '<div class="pair-col"><h4>Right <span class="tr">Kanan</span></h4>';
+      rights.forEach((r, i) => {
+        html += `<div class="pair-item" data-side="right" data-idx="${i}">${r.text}</div>`;
+      });
+      html += '</div></div>';
+      html += '<div class="pairs-list" id="pairsList"></div>';
+      html += '<p style="font-size:.82em;color:var(--muted);margin-top:6px">Click left then right to pair. <span class="tr">Klik kiri lalu kanan untuk memasangkan.</span></p>';
+    }
+    html += `<button class="btn-submit" id="submitBtn">Check Answer <span class="tr">Periksa Jawaban</span></button>`;
+    html += `<div class="feedback" id="feedback"></div></div>`;
+    return html;
+  }
+
+  function attachTaskHandlers(page){
+    const taskType = page.taskType;
+
+    if(taskType === 'radio' || taskType === 'truefalse'){
+      document.querySelectorAll('.option').forEach(opt => {
+        opt.addEventListener('click', () => {
+          document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+          opt.classList.add('selected');
+        });
+      });
+    } else if(taskType === 'checkbox'){
+      document.querySelectorAll('.option').forEach(opt => {
+        opt.addEventListener('click', () => opt.classList.toggle('selected'));
+      });
+    } else if(taskType === 'sorting'){
+      let firstClick = null;
+      document.querySelectorAll('.sort-item').forEach(item => {
+        item.addEventListener('click', () => {
+          if(firstClick === null){
+            firstClick = item;
+            item.classList.add('selected');
+          } else if(firstClick === item){
+            item.classList.remove('selected');
+            firstClick = null;
+          } else {
+            const fText = firstClick.querySelector('.sort-text').innerHTML;
+            const sText = item.querySelector('.sort-text').innerHTML;
+            firstClick.querySelector('.sort-text').innerHTML = sText;
+            item.querySelector('.sort-text').innerHTML = fText;
+            const fOrig = firstClick.dataset.orig;
+            firstClick.dataset.orig = item.dataset.orig;
+            item.dataset.orig = fOrig;
+            firstClick.classList.remove('selected');
+            firstClick = null;
+          }
+        });
+      });
+    } else if(taskType === 'pairing'){
+      let selectedLeft = null;
+      document.querySelectorAll('.pair-item[data-side="left"]').forEach(item => {
+        item.addEventListener('click', () => {
+          if(item.classList.contains('paired')) return;
+          document.querySelectorAll('.pair-item[data-side="left"]').forEach(i => i.classList.remove('selected'));
+          item.classList.add('selected');
+          selectedLeft = item;
+        });
+      });
+      document.querySelectorAll('.pair-item[data-side="right"]').forEach(item => {
+        item.addEventListener('click', () => {
+          if(item.classList.contains('paired') || !selectedLeft) return;
+          const leftIdx = selectedLeft.dataset.idx;
+          const rightIdx = item.dataset.idx;
+          const pairList = document.getElementById('pairsList');
+          const pairRow = document.createElement('div');
+          pairRow.className = 'pair-row';
+          pairRow.dataset.leftIdx = leftIdx;
+          pairRow.dataset.rightIdx = rightIdx;
+          pairRow.innerHTML = `<span>${selectedLeft.innerHTML}</span> <span>↔</span> <span>${item.innerHTML}</span> <span class="remove" title="Remove">×</span>`;
+          pairRow.querySelector('.remove').addEventListener('click', function() {
+            const lIdx = pairRow.dataset.leftIdx;
+            const rIdx = pairRow.dataset.rightIdx;
+            const lItem = document.querySelector(`.pair-item[data-side="left"][data-idx="${lIdx}"]`);
+            const rItem = document.querySelector(`.pair-item[data-side="right"][data-idx="${rIdx}"]`);
+            if(lItem) lItem.classList.remove('paired');
+            if(rItem) rItem.classList.remove('paired');
+            pairRow.remove();
+          });
+          pairList.appendChild(pairRow);
+          selectedLeft.classList.remove('selected');
+          selectedLeft.classList.add('paired');
+          item.classList.add('paired');
+          selectedLeft = null;
+        });
+      });
+    }
+
+    document.getElementById('submitBtn').addEventListener('click', () => checkAnswer(page));
+  }
+
+  function checkAnswer(page){
+    const taskType = page.taskType;
+    let isCorrect = false;
+    let userAnswerStr = '';
+
+    if(taskType === 'radio'){
+      let selected = null, selectedIdx = -1;
+      document.querySelectorAll('.option').forEach((opt, i) => {
+        if(opt.classList.contains('selected')){
+          selected = page._shuffledOptions[i];
+          selectedIdx = i;
+        }
+      });
+      if(!selected){
+        showFeedback(false, 'Please select an answer. <span class="tr">Silakan pilih jawaban.</span>', false);
+        return;
+      }
+      isCorrect = selected.correct;
+      userAnswerStr = selected.text;
+      document.querySelectorAll('.option').forEach((opt, i) => {
+        opt.classList.remove('selected');
+        if(page._shuffledOptions[i].correct) opt.classList.add('correct');
+        else if(i === selectedIdx && !selected.correct) opt.classList.add('incorrect');
+      });
+    } else if(taskType === 'checkbox'){
+      const selectedIdxs = [];
+      document.querySelectorAll('.option').forEach((opt, i) => {
+        if(opt.classList.contains('selected')) selectedIdxs.push(i);
+      });
+      if(selectedIdxs.length === 0){
+        showFeedback(false, 'Please select an answer. <span class="tr">Silakan pilih jawaban.</span>', false);
+        return;
+      }
+      const correctSet = new Set();
+      page._shuffledOptions.forEach((opt, i) => { if(opt.correct) correctSet.add(i); });
+      const selectedSet = new Set(selectedIdxs);
+      isCorrect = correctSet.size === selectedSet.size && [...correctSet].every(i => selectedSet.has(i));
+      userAnswerStr = selectedIdxs.map(i => page._shuffledOptions[i].text).join(', ');
+      document.querySelectorAll('.option').forEach((opt, i) => {
+        opt.classList.remove('selected');
+        if(page._shuffledOptions[i].correct) opt.classList.add('correct');
+        else if(selectedSet.has(i)) opt.classList.add('incorrect');
+      });
+    } else if(taskType === 'fill'){
+      const val = document.getElementById('fillInput').value.trim();
+      const acceptable = page.acceptableAnswers || [page.correctAnswer];
+      const norm = s => s.toLowerCase().replace(/\s+/g, '').trim();
+      isCorrect = acceptable.some(a => norm(a) === norm(val));
+      userAnswerStr = val;
+    } else if(taskType === 'truefalse'){
+      let selectedVal = null, selectedIdx = -1;
+      document.querySelectorAll('.option').forEach((opt, i) => {
+        if(opt.classList.contains('selected')){
+          selectedVal = opt.dataset.val;
+          selectedIdx = i;
+        }
+      });
+      if(!selectedVal){
+        showFeedback(false, 'Please select an answer. <span class="tr">Silakan pilih jawaban.</span>', false);
+        return;
+      }
+      isCorrect = selectedVal === page.correctAnswer;
+      userAnswerStr = selectedVal === 'true' ? 'True' : 'False';
+      document.querySelectorAll('.option').forEach((opt, i) => {
+        opt.classList.remove('selected');
+        if(opt.dataset.val === page.correctAnswer) opt.classList.add('correct');
+        else if(i === selectedIdx) opt.classList.add('incorrect');
+      });
+    } else if(taskType === 'sorting'){
+      const currentOrder = [];
+      document.querySelectorAll('.sort-item').forEach(item => {
+        currentOrder.push(parseInt(item.dataset.orig));
+      });
+      isCorrect = currentOrder.every((idx, i) => idx === page.correctOrder[i]);
+      userAnswerStr = currentOrder.map((idx, i) => `${i+1}. ${page.items[idx] || '?'}`).join('  |  ');
+      document.querySelectorAll('.sort-item').forEach((item, i) => {
+        if(currentOrder[i] === page.correctOrder[i]) item.style.borderColor = 'var(--success)';
+        else item.style.borderColor = 'var(--danger)';
+      });
+    } else if(taskType === 'pairing'){
+      const pairRows = document.querySelectorAll('.pair-row');
+      if(pairRows.length === 0){
+        showFeedback(false, 'Please make pairs. <span class="tr">Silakan buat pasangan.</span>', false);
+        return;
+      }
+      const userPairs = [];
+      pairRows.forEach(row => {
+        const lIdx = parseInt(row.dataset.leftIdx);
+        const rIdx = parseInt(row.dataset.rightIdx);
+        userPairs.push({
+          leftText: page._shuffledPairs.lefts[lIdx].text,
+          rightText: page._shuffledPairs.rights[rIdx].text
+        });
+      });
+      const correctPairs = page.pairs.map(p => ({left:p.left, right:p.right}));
+      const correctCount = userPairs.filter(up =>
+        correctPairs.some(cp => cp.left === up.leftText && cp.right === up.rightText)
+      ).length;
+      isCorrect = correctCount === correctPairs.length && userPairs.length === correctPairs.length;
+      userAnswerStr = userPairs.map(p => `${p.leftText}↔${p.rightText}`).join('  |  ');
+      pairRows.forEach(row => {
+        const lIdx = parseInt(row.dataset.leftIdx);
+        const rIdx = parseInt(row.dataset.rightIdx);
+        const lText = page._shuffledPairs.lefts[lIdx].text;
+        const rText = page._shuffledPairs.rights[rIdx].text;
+        const ok = correctPairs.some(cp => cp.left === lText && cp.right === rText);
+        row.style.background = ok ? '#d1fae5' : '#fee2e2';
+      });
+    }
+
+    const pageKey = `${currentSection}-${currentPage}`;
+    userAnswers[pageKey] = {userAnswer:userAnswerStr, correct:isCorrect, pageTitle:page.pageTitle};
+    showFeedback(isCorrect, page.explanation, true);
+  }
+
+  function showFeedback(isCorrect, explanation, showAnswer){
+    const feedback = document.getElementById('feedback');
+    feedback.className = `feedback show ${isCorrect?'correct':'incorrect'}`;
+    if(showAnswer){
+      feedback.innerHTML = `<h4>${isCorrect?'✓ Correct!':'✗ Incorrect'} <span class="tr">${isCorrect?'Benar!':'Salah'}</span></h4>${explanation}`;
+    } else {
+      feedback.innerHTML = `<h4>${isCorrect?'✓ Correct!':'✗ Incorrect'}</h4>`;
+    }
+    renderMath(feedback);
+  }
+
+  // ================= EVENT LISTENERS =================
+  document.getElementById('prevBtn').addEventListener('click', () => {
+    if(currentPage > 0){ currentPage--; renderPage(); }
+  });
+  document.getElementById('nextBtn').addEventListener('click', () => {
+    const total = sectionsData[currentSection].pages.length;
+    if(currentPage < total - 1){ currentPage++; renderPage(); }
+  });
+
+  const modal = document.getElementById('classRulesModal');
+  document.getElementById('classRulesBtn').addEventListener('click', () => modal.classList.add('active'));
+  document.querySelector('.modal-close').addEventListener('click', () => modal.classList.remove('active'));
+  modal.addEventListener('click', (e) => { if(e.target === modal) modal.classList.remove('active'); });
+
+  // ================= PRINT TO PDF =================
+  function getCorrectAnswer(task){
+    if(task.taskType === 'radio'){
+      const c = task.options.find(o => o.correct);
+      return c ? c.text : '';
+    }
+    if(task.taskType === 'checkbox'){
+      return task.options.filter(o => o.correct).map(o => o.text).join(', ');
+    }
+    if(task.taskType === 'fill'){
+      return task.correctAnswer || '';
+    }
+    if(task.taskType === 'truefalse'){
+      return task.correctAnswer === 'true' ? 'True' : 'False';
+    }
+    if(task.taskType === 'sorting'){
+      return task.correctOrder.map(i => task.items[i]).join(' → ');
+    }
+    if(task.taskType === 'pairing'){
+      return task.pairs.map(p => p.left + ' ↔ ' + p.right).join('; ');
+    }
+    return '';
+  }
+
+  function printTask(sectionKey){
+    const section = sectionsData[sectionKey];
+    if(!section) return;
+    const tasks = section.pages;
+    let correctCount = 0;
+
+    const rows = tasks.map((task, idx) => {
+      const pageKey = sectionKey + '-' + idx;
+      const ua = userAnswers[pageKey];
+      const isCorrect = ua ? ua.correct : false;
+      const userAns = ua ? ua.userAnswer : '(not answered)';
+      const correctAns = getCorrectAnswer(task);
+      if(ua && ua.correct) correctCount++;
+      return '<tr><td>' + (idx+1) + '</td><td>' + task.question + '<br><span class="tr">' + (task.questionEn || '') + '</span></td><td>' + userAns + '</td><td>' + correctAns + '</td><td style="text-align:center;font-size:1.1em">' + (isCorrect ? '✓' : '✗') + '</td></tr>';
+    }).join('');
+
+    const score = correctCount + ' / ' + tasks.length;
+    const today = new Date().toLocaleDateString('en-US', {day:'numeric',month:'long',year:'numeric'});
+
+    const html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Print - ' + section.title + '</title>' +
+      '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">' +
+      '<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"><\/script>' +
+      '<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"><\/script>' +
+      '<style>' +
+      'body{font-family:Segoe UI,sans-serif;padding:30px;color:#1e293b;line-height:1.5}' +
+      'h1{font-size:1.2em;margin-bottom:5px}' +
+      '.info{margin-bottom:15px;font-size:.88em}' +
+      '.info div{margin:3px 0}' +
+      'table{width:100%;border-collapse:collapse;margin:15px 0;font-size:.82em}' +
+      'th,td{border:1px solid #cbd5e1;padding:6px 8px;text-align:left;vertical-align:top}' +
+      'th{background:#f1f5f9;font-weight:600}' +
+      '.checked-by{margin-top:30px;text-align:right;font-style:italic}' +
+      '.tr{font-style:italic;font-size:.85em;color:#64748b}' +
+      '@media print{body{padding:15px}}' +
+      '</style></head><body>' +
+      '<h1>Math Tutoring by Deni</h1>' +
+      '<div class="info">' +
+      '<div>Name: ____________________________ <span class="tr">Nama</span></div>' +
+      '<div>Date: ' + today + ' <span class="tr">Tanggal</span></div>' +
+      '<div>Topic: Pythagorean Theorem <span class="tr">Topik: Teorema Pythagoras</span></div>' +
+      '<div>Task Group: ' + section.title + ' <span class="tr">Grup Task</span></div>' +
+      '<div>Score: <strong>' + score + '</strong> <span class="tr">Skor</span></div>' +
+      '</div>' +
+      '<table><thead><tr>' +
+      '<th style="width:30px">No.</th>' +
+      '<th>Question <span class="tr">Pertanyaan</span></th>' +
+      '<th>Student Answer <span class="tr">Jawaban Siswa</span></th>' +
+      '<th>Correct Answer <span class="tr">Jawaban Benar</span></th>' +
+      '<th style="width:50px">Note <span class="tr">Ket.</span></th>' +
+      '</tr></thead><tbody>' + rows + '</tbody></table>' +
+      '<div class="checked-by">Checked by, <span class="tr">Diperiksa oleh,</span><br>Deni</div>' +
+      '<script>document.addEventListener("DOMContentLoaded",function(){' +
+      'if(window.renderMathInElement){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:true},{left:"$",right:"$",display:false}],throwOnError:false});}' +
+      'setTimeout(function(){window.print();},500);});<\/script>' +
+      '</body></html>';
+
+    const w = window.open('', '_blank');
+    if(w){
+      w.document.write(html);
+      w.document.close();
+    } else {
+      alert('Please allow pop-ups to print. <span class="tr">Mohon izinkan pop-up untuk mencetak.</span>');
+    }
+  }
+
+  // ================= INIT =================
+  renderSidebar();
+  renderPage();
+});
+</script>
+</body>
+</html>
