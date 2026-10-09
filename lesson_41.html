@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Tutoring by Deni - Pythagoras</title>
+	<!-- KaTeX CSS -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+	<!-- Tailwind CSS -->
+	<script src="https://cdn.tailwindcss.com"></script>
+	<!-- KaTeX JS -->
+	<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+	<!-- KaTeX Auto-render -->
+	<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .translation { font-style: italic; color: #6b7280; font-size: 0.9em; display: block; margin-top: 2px; }
+        .nav-item.active { background-color: #3b82f6; color: white; }
+        @media print {
+            body * { visibility: hidden; }
+            #printArea, #printArea * { visibility: visible; }
+            #printArea { position: absolute; left: 0; top: 0; width: 100%; }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 flex flex-col h-screen">
+
+    <!-- Header -->
+    <header class="bg-white shadow-md z-10">
+        <div class="flex justify-between items-center p-4">
+            <div>
+                <h1 class="text-xl font-bold text-blue-600">Math Tutoring by Deni</h1>
+                <p class="text-sm">Topic: Pythagorean Theorem</p>
+                <p class="translation">Topik: Teorema Pythagoras</p>
+            </div>
+            <div>
+                <button id="classRulesBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Class Rules
+                    <span class="translation" style="color: #e0e7ff;">Aturan Kelas</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Class Rules Modal -->
+    <div id="classRulesModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 w-80 shadow-xl">
+            <h3 class="text-lg font-bold mb-4 border-b pb-2">Class Rules <span class="translation">Aturan Kelas</span></h3>
+            <ul class="list-disc pl-5 space-y-2">
+                <li>Take turns speaking. <span class="translation">Berbicara secara bergantian.</span></li>
+                <li>Ask permission if you want to leave the class. <span class="translation">Meminta izin jika ingin meninggalkan kelas.</span></li>
+                <li>Turn on microphone and camera if needed. <span class="translation">Menyalakan microphone dan camera jika diperlukan.</span></li>
+            </ul>
+            <button id="closeModalBtn" class="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded w-full">Close / Tutup</button>
+        </div>
+    </div>
+
+    <!-- Content Grid 1:3 -->
+    <div class="flex flex-1 overflow-hidden">
+        <!-- Navbar Left -->
+        <nav class="bg-gray-800 text-white w-64 flex-shrink-0 overflow-y-auto">
+            <ul class="py-4">
+                <li><a href="#" class="nav-item block py-2 px-4 hover:bg-gray-700 active" data-target="a">a. Spiral Review (00:00-00:10)</a></li>
+                <li><a href="#" class="nav-item block py-2 px-4 hover:bg-gray-700" data-target="b">b. Intro (00:10-00:15)</a></li>
+                <li><a href="#" class="nav-item block py-2 px-4 hover:bg-gray-700" data-target="c">c. Prior Knowledge (00:15-00:20)</a></li>
+                <li><a href="#" class="nav-item block py-2 px-4 hover:bg-gray-700" data-target="d">d. Problem Intro (00:20-00:25)</a></li>
+                <li><a href="#" class="nav-item block py-2 px-4 hover:bg-gray-700" data-target="e">e. Guided Practice (00:25-00:40)</a></li>
+                <li><a href="#" class="nav-item block py-2 px-4 hover:bg-gray-700" data-target="f">f. Indep. Practice (00:40-00:55)</a></li>
+                <li><a href="#" class="nav-item block py-2 px-4 hover:bg-gray-700" data-target="g">g. Consolidation (00:55-01:00)</a></li>
+                <li><a href="#" class="nav-item block py-2 px-4 hover:bg-gray-700" data-target="h">h. Task 1</a></li>
+                <li><a href="#" class="nav-item block py-2 px-4 hover:bg-gray-700" data-target="i">i. Task 2</a></li>
+                <li><a href="#" class="nav-item block py-2 px-4 hover:bg-gray-700" data-target="j">j. Task 3</a></li>
+                <li><a href="#" class="nav-item block py-2 px-4 hover:bg-gray-700" data-target="k">k. Task 4</a></li>
+                <li><a href="#" class="nav-item block py-2 px-4 hover:bg-gray-700" data-target="l">l. Task 5</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content Right -->
+        <main class="flex-1 overflow-y-auto p-6">
+            <!-- PRINT AREA START -->
+            <div id="printArea" class="hidden"></div>
+            <!-- PRINT AREA END -->
+
+            <div id="contentWrapper">
+                <!-- SECTION A: Spiral Review Warm-up -->
+                <section id="a" class="content-section">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-2xl font-bold text-blue-600 mb-2">Spiral Review Warm-up (00:00-00:10)</h2>
+                        <p class="translation mb-4">Tinjauan Ulang Berbentuk Spiral</p>
+                        
+                        <div class="border-l-4 border-blue-500 pl-4 mb-6 bg-gray-50 p-4 rounded">
+                            <h3 class="font-bold text-lg mb-2">📖 Explanation</h3>
+                            <p class="mb-2">Before we learn about the Pythagorean Theorem, we need to review basic exponents and finding the square root of a number. <span class="translation">Sebelum kita belajar tentang Teorema Pythagoras, kita perlu meninjau pangkat dasar dan mencari akar kuadrat dari suatu bilangan.</span></p>
+                            <p class="mb-2"><strong>1. Exponents (Squares):</strong> <span class="translation">Pangkat (Kuadrat)</span></p>
+                            <p>When we multiply a number by itself, we square it. The formula is: <span class="translation">Ketika kita mengalikan suatu bilangan dengan bilangan itu sendiri, kita mengkuadratkannya. Rumusnya adalah:</span></p>
+                            <p class="text-center my-2">$$ a^2 = a \times a $$</p>
+                            <p>Example: $3^2 = 3 \times 3 = 9$. <span class="translation">Contoh: $3^2 = 3 \times 3 = 9$.</span></p>
+                            
+                            <p class="mb-2 mt-4"><strong>2. Square Roots:</strong> <span class="translation">Akar Kuadrat</span></p>
+                            <p>The square root of a number is the value that, when multiplied by itself, gives the original number. <span class="translation">Akar kuadrat dari suatu bilangan adalah nilai yang ketika dikalikan dengan dirinya sendiri, menghasilkan bilangan asal.</span></p>
+                            <p class="text-center my-2">$$ \sqrt{x} = y \text{ if } y^2 = x $$</p>
+                            <p>Example: $\sqrt{25} = 5$ because $5 \times 5 = 25$. <span class="translation">Contoh: $\sqrt{25} = 5$ karena $5 \times 5 = 25$.</span></p>
+                            
+                            <div class="mt-4 p-3 bg-yellow-100 border border-yellow-300 rounded text-yellow-800">
+                                <p>💡 <strong>Illustration:</strong> Think of a square shape. If one side is 4, the area is $4 \times 4 = 16$. If the area is 16, the side is $\sqrt{16} = 4$.</p>
+                                <p class="translation">💡 <strong>Ilustrasi:</strong> Bayangkan bentuk persegi. Jika satu sisi 4, luasnya adalah $4 \times 4 = 16$. Jika luasnya 16, sisinya adalah $\sqrt{16} = 4$.</p>
+                                <div class="text-center mt-2">
+                                    <svg width="80" height="80" viewBox="0 0 100 100" class="inline-block">
+                                        <rect x="10" y="10" width="80" height="80" fill="#fbbf24" stroke="#d97706" stroke-width="3"/>
+                                        <text x="50" y="55" text-anchor="middle" fill="#92400e" font-size="14">Area=16</text>
+                                        <text x="5" y="55" text-anchor="middle" fill="#92400e" font-size="10">4</text>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3 class="font-bold text-lg mb-2">📝 Task 1 (5 Questions)</h3>
+                        <div class="space-y-4">
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold">1. Calculate $2^2 + 3^2$. <span class="translation">Hitung $2^2 + 3^2$.</span></summary>
+                                <p class="mt-2 p-2 border-t"><strong>Solution:</strong> $2^2 = 4$, $3^2 = 9$. Total = $4 + 9 = 13$. <span class="translation">Penyelesaian: $2^2 = 4$, $3^2 = 9$. Total = $4 + 9 = 13$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold">2. What is $\sqrt{49}$? <span class="translation">Berapakah $\sqrt{49}$?</span></summary>
+                                <p class="mt-2 p-2 border-t"><strong>Solution:</strong> $\sqrt{49} = 7$ because $7 \times 7 = 49$. <span class="translation">Penyelesaian: $\sqrt{49} = 7$ karena $7 \times 7 = 49$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold">3. Calculate $5^2$. <span class="translation">Hitung $5^2$.</span></summary>
+                                <p class="mt-2 p-2 border-t"><strong>Solution:</strong> $5 \times 5 = 25$. <span class="translation">Penyelesaian: $5 \times 5 = 25$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold">4. Find the side of a square if its area is 64. <span class="translation">Cari sisi persegi jika luasnya 64.</span></summary>
+                                <p class="mt-2 p-2 border-t"><strong>Solution:</strong> Side = $\sqrt{64} = 8$. <span class="translation">Penyelesaian: Sisi = $\sqrt{64} = 8$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold">5. Calculate $6^2 - 4^2$. <span class="translation">Hitung $6^2 - 4^2$.</span></summary>
+                                <p class="mt-2 p-2 border-t"><strong>Solution:</strong> $36 - 16 = 20$. <span class="translation">Penyelesaian: $36 - 16 = 20$.</span></p>
+                            </details>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION B: Introduction & Real-World Connection -->
+                <section id="b" class="content-section hidden">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-2xl font-bold text-blue-600 mb-2">Introduction & Real-World Connection (00:10-00:15)</h2>
+                        <p class="translation mb-4">Pengantar & Koneksi Dunia Nyata</p>
+                        
+                        <div class="border-l-4 border-green-500 pl-4 mb-6 bg-gray-50 p-4 rounded">
+                            <h3 class="font-bold text-lg mb-2">📖 Explanation</h3>
+                            <p class="mb-2">Imagine a ladder leaning against a wall. The wall is vertical, the ground is horizontal, and the ladder forms a diagonal line. This forms a <strong>Right Triangle</strong>. <span class="translation">Bayangkan tangga bersandar pada dinding. Dinding tegak, lantai mendatar, dan tangga membentuk garis diagonal. Ini membentuk <strong>Segitiga Siku-siku</strong>.</span></p>
+                            
+                            <div class="flex justify-center my-4">
+                                <svg width="200" height="200" viewBox="0 0 200 200">
+                                    <!-- Ground -->
+                                    <rect x="20" y="160" width="160" height="10" fill="#a0aec0"/>
+                                    <!-- Wall -->
+                                    <rect x="20" y="30" width="10" height="130" fill="#a0aec0"/>
+                                    <!-- Ladder -->
+                                    <line x1="30" y1="160" x2="160" y2="30" stroke="#3182ce" stroke-width="5"/>
+                                    <!-- Right Angle Square -->
+                                    <rect x="30" y="150" width="10" height="10" fill="#e53e3e"/>
+                                    <!-- Labels -->
+                                    <text x="80" y="180" text-anchor="middle" fill="#2d3748">Horizontal</text>
+                                    <text x="15" y="100" text-anchor="middle" fill="#2d3748" transform="rotate(-90 15,100)">Vertical</text>
+                                    <text x="110" y="90" text-anchor="middle" fill="#3182ce">Hypotenuse</text>
+                                </svg>
+                            </div>
+
+                            <p class="mb-2"><strong>Key Terms:</strong> <span class="translation">Istilah Kunci</span></p>
+                            <ul class="list-disc pl-5 mb-2">
+                                <li><strong>Hypotenuse:</strong> The longest side, opposite the $90^\circ$ angle. <span class="translation">Sisi terpanjang, di hadapan sudut $90^\circ$.</span></li>
+                                <li><strong>Legs:</strong> The two shorter sides that form the right angle. <span class="translation">Dua sisi yang lebih pendek yang membentuk sudut siku-siku.</span></li>
+                            </ul>
+                            <p>This is where the Pythagorean Theorem comes in, to relate these three sides. <span class="translation">Di sinilah Teorema Pythagoras digunakan, untuk menghubungkan ketiga sisi tersebut.</span></p>
+                        </div>
+
+                        <h3 class="font-bold text-lg mb-2">📝 Task 2 (5 Questions)</h3>
+                        <div class="space-y-4">
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold">1. What is the longest side of a right triangle called? <span class="translation">Apa nama sisi terpanjang pada segitiga siku-siku?</span></summary>
+                                <p class="mt-2 p-2 border-t"><strong>Solution:</strong> Hypotenuse. <span class="translation">Hipotenusa.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold">2. What angle must a right triangle have? <span class="translation">Sudut berapa yang harus dimiliki segitiga siku-siku?</span></summary>
+                                <p class="mt-2 p-2 border-t"><strong>Solution:</strong> $90^\circ$ (Right angle). <span class="translation">$90^\circ$ (Sudut siku-siku).</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold">3. In a ladder scenario, which part represents the hypotenuse? <span class="translation">Pada skenario tangga, bagian mana yang mewakili hipotenusa?</span></summary>
+                                <p class="mt-2 p-2 border-t"><strong>Solution:</strong> The ladder itself. <span class="translation">Tangga itu sendiri.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold">4. Can a triangle with angles $100^\circ, 40^\circ, 40^\circ$ have a hypotenuse? Why? <span class="translation">Apakah segitiga dengan sudut $100^\circ, 40^\circ, 40^\circ$ memiliki hipotenusa? Mengapa?</span></summary>
+                                <p class="mt-2 p-2 border-t"><strong>Solution:</strong> No, it doesn't have a $90^\circ$ angle. <span class="translation">Tidak, karena tidak memiliki sudut $90^\circ$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold">5. If a triangle has sides 3, 4, and 5, which one is the hypotenuse? <span class="translation">Jika segitiga memiliki sisi 3, 4, dan 5, mana yang menjadi hipotenusa?</span></summary>
+                                <p class="mt-2 p-2 border-t"><strong>Solution:</strong> 5, because it is the longest number. <span class="translation">5, karena merupakan bilangan terbesar.</span></p>
+                            </details>
+                        </div>
+                    </div>
+                </section>
+				
+                <!-- SECTION C: Review of Prior Knowledge -->
+                <section id="c" class="content-section hidden">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-2xl font-bold text-blue-600 mb-2">Review of Prior Knowledge (00:15-00:20)</h2>
+                        <p class="translation mb-4">Tinjauan Pengetahuan Sebelumnya</p>
+                        
+                        <div class="border-l-4 border-yellow-500 pl-4 mb-6 bg-gray-50 p-4 rounded">
+                            <h3 class="font-bold text-lg mb-2">📖 Explanation</h3>
+                            <p class="mb-2">Let's recall how to find the area of a square. If we draw squares on each side of a right triangle, there is a special geometric relationship between their areas. <span class="translation">Mari kita ingat kembali cara mencari luas persegi. Jika kita menggambar persegi pada setiap sisi segitiga siku-siku, ada hubungan geometris yang khusus antara luas mereka.</span></p>
+                            <p class="text-center my-2">$$ \text{Area of Square} = \text{side} \times \text{side} = s^2 $$</p>
+                            <div class="flex justify-center my-4">
+                                <svg width="300" height="250" viewBox="0 0 300 250">
+                                    <!-- Hypotenuse square (rotated) -->
+                                    <polygon points="150,50 200,100 150,150 100,100" fill="#fbd38d" stroke="#dd6b20" stroke-width="2"/>
+                                    <!-- Vertical square -->
+                                    <rect x="150" y="150" width="50" height="50" fill="#90cdf4" stroke="#2b6cb0" stroke-width="2"/>
+                                    <!-- Horizontal square -->
+                                    <rect x="100" y="150" width="50" height="50" fill="#68d391" stroke="#2f855a" stroke-width="2"/>
+                                    <!-- Triangle -->
+                                    <polygon points="100,200 150,200 150,150" fill="#f7fafc" stroke="#1a202c" stroke-width="2"/>
+                                    <!-- Right angle mark -->
+                                    <polygon points="145,200 150,200 150,195" fill="none" stroke="#e53e3e" stroke-width="2"/>
+                                    <!-- Texts -->
+                                    <text x="125" y="180" text-anchor="middle" font-size="12">b²</text>
+                                    <text x="175" y="180" text-anchor="middle" font-size="12">a²</text>
+                                    <text x="150" y="110" text-anchor="middle" font-size="12">c²</text>
+                                </svg>
+                            </div>
+                            <p>The area of the square on the hypotenuse ($c^2$) is equal to the sum of the areas of the squares on the legs ($a^2$ and $b^2$). This is the core concept of the Pythagorean Theorem. <span class="translation">Luas persegi pada hipotenusa ($c^2$) sama dengan jumlah luas persegi pada sisi siku-sikunya ($a^2$ dan $b^2$). Ini adalah konsep inti dari Teorema Pythagoras.</span></p>
+                        </div>
+
+                        <h3 class="font-bold text-lg mb-2">📝 Task 3 (5 Questions)</h3>
+                        <div class="space-y-4">
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold">1. What is the area of a square with a side length of 6? <span class="translation">Berapakah luas persegi dengan panjang sisi 6?</span></summary>
+                                <p class="mt-2 p-2 border-t"><strong>Solution:</strong> $6^2 = 6 \times 6 = 36$. <span class="translation">Penyelesaian: $6^2 = 6 \times 6 = 36$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold">2. If a square has an area of 81, what is the side length? <span class="translation">Jika sebuah persegi memiliki luas 81, berapakah panjang sisinya?</span></summary>
+                                <p class="mt-2 p-2 border-t"><strong>Solution:</strong> Side = $\sqrt{81} = 9$. <span class="translation">Penyelesaian: Sisi = $\sqrt{81} = 9$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold">3. In the equation $a^2 + b^2 = c^2$, what does $c$ represent? <span class="translation">Pada persamaan $a^2 + b^2 = c^2$, apakah yang diwakili oleh $c$?</span></summary>
+                                <p class="mt-2 p-2 border-t"><strong>Solution:</strong> $c$ represents the hypotenuse (longest side). <span class="translation">Penyelesaian: $c$ mewakili hipotenusa (sisi terpanjang).</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold">4. If $a^2 = 16$ and $b^2 = 9$, what is $c^2$? <span class="translation">Jika $a^2 = 16$ dan $b^2 = 9$, berapakah $c^2$?</span></summary>
+                                <p class="mt-2 p-2 border-t"><strong>Solution:</strong> $c^2 = 16 + 9 = 25$. <span class="translation">Penyelesaian: $c^2 = 16 + 9 = 25$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold">5. Based on question 4, what is the length of $c$? <span class="translation">Berdasarkan soal nomor 4, berapakah panjang $c$?</span></summary>
+                                <p class="mt-2 p-2 border-t"><strong>Solution:</strong> $c = \sqrt{25} = 5$. <span class="translation">Penyelesaian: $c = \sqrt{25} = 5$.</span></p>
+                            </details>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION D: Problem Introduction -->
+                <section id="d" class="content-section hidden">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-2xl font-bold text-blue-600 mb-2">Problem Introduction (00:20-00:25)</h2>
+                        <p class="translation mb-4">Pengenalan Masalah</p>
+                        
+                        <div class="border-l-4 border-purple-500 pl-4 mb-6 bg-gray-50 p-4 rounded">
+                            <h3 class="font-bold text-lg mb-2">📖 Explanation</h3>
+                            <p class="mb-2">The <strong>Pythagorean Theorem</strong> states that in a right triangle, the square of the length of the hypotenuse is equal to the sum of the squares of the lengths of the other two sides (legs). <span class="translation"><strong>Teorema Pythagoras</strong> menyatakan bahwa pada segitiga siku-siku, kuadrat panjang hipotenusa sama dengan jumlah kuadrat panjang dua sisi lainnya (sisi siku-siku).</span></p>
+                            <p class="text-center my-4 text-2xl font-bold">$$ a^2 + b^2 = c^2 $$</p>
+                            
+                            <p class="mb-2"><strong>How to use it:</strong> <span class="translation">Cara menggunakannya:</span></p>
+                            <ul class="list-disc pl-5 mb-3">
+                                <li>Identify the hypotenuse ($c$). It is always opposite the $90^\circ$ angle. <span class="translation">Identifikasi hipotenusa ($c$). Selalu berlawanan dengan sudut $90^\circ$.</span></li>
+                                <li>The other two sides are $a$ and $b$. It doesn't matter which is which. <span class="translation">Dua sisi lainnya adalah $a$ dan $b$. Bebas mana yang mana.</span></li>
+                            </ul>
+
+                            <div class="mt-4 p-3 bg-blue-100 border border-blue-300 rounded text-blue-800">
+                                <p><strong>Example Problem:</strong> A right triangle has legs of 3 cm and 4 cm. What is the hypotenuse? <span class="translation"><strong>Contoh Soal:</strong> Segitiga siku-siku memiliki sisi siku-siku 3 cm dan 4 cm. Berapakah hipotenusanya?</span></p>
+                                <p class="mt-2"><strong>Step 1:</strong> Write the formula: $a^2 + b^2 = c^2$</p>
+                                <p><strong>Step 2:</strong> Plug in the numbers: $3^2 + 4^2 = c^2$</p>
+                                <p><strong>Step 3:</strong> Calculate squares: $9 + 16 = c^2$</p>
+                                <p><strong>Step 4:</strong> Add them up: $25 = c^2$</p>
+                                <p><strong>Step 5:</strong> Find $c$ (square root both sides): $c = \sqrt{25} = 5 \text{ cm}$</p>
+                            </div>
+                        </div>
+
+                        <h3 class="font-bold text-lg mb-2">📝 Task 4 (5 Questions)</h3>
+                        <div class="space-y-4">
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold">1. Write down the Pythagorean Theorem formula. <span class="translation">Tuliskan rumus Teorema Pythagoras.</span></summary>
+                                <p class="mt-2 p-2 border-t"><strong>Solution:</strong> $a^2 + b^2 = c^2$. <span class="translation">Penyelesaian: $a^2 + b^2 = c^2$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold">2. In the formula, what does $c$ stand for? <span class="translation">Pada rumus, apakah yang dimaksud dengan $c$?</span></summary>
+                                <p class="mt-2 p-2 border-t"><strong>Solution:</strong> The hypotenuse. <span class="translation">Penyelesaian: Hipotenusa.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold">3. If a triangle has legs 6 and 8, write the setup to find $c$. (Don't solve it). <span class="translation">Jika segitiga memiliki sisi siku-siku 6 dan 8, tuliskan susunannya untuk mencari $c$. (Tidak perlu dihitung).</span></summary>
+                                <p class="mt-2 p-2 border-t"><strong>Solution:</strong> $6^2 + 8^2 = c^2$. <span class="translation">Penyelesaian: $6^2 + 8^2 = c^2$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold">4. Calculate $9^2 + 12^2$. <span class="translation">Hitung $9^2 + 12^2$.</span></summary>
+                                <p class="mt-2 p-2 border-t"><strong>Solution:</strong> $81 + 144 = 225$. <span class="translation">Penyelesaian: $81 + 144 = 225$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold">5. If $c^2 = 100$, what is $c$? <span class="translation">Jika $c^2 = 100$, berapakah $c$?</span></summary>
+                                <p class="mt-2 p-2 border-t"><strong>Solution:</strong> $c = \sqrt{100} = 10$. <span class="translation">Penyelesaian: $c = \sqrt{100} = 10$.</span></p>
+                            </details>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION E: Guided Practice -->
+                <section id="e" class="content-section hidden">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-2xl font-bold text-blue-600 mb-2">Guided Practice (00:25-00:40)</h2>
+                        <p class="translation mb-4">Latihan Terbimbing</p>
+                        
+                        <div class="border-l-4 border-red-500 pl-4 mb-6 bg-gray-50 p-4 rounded">
+                            <h3 class="font-bold text-lg mb-2">📖 Explanation</h3>
+                            <p>There are two main types of problems you will solve: <span class="translation">Ada dua jenis utama soal yang akan kamu selesaikan:</span></p>
+                            
+                            <p class="mb-2 mt-3"><strong>Case 1: Finding the Hypotenuse ($c$)</strong> <span class="translation">Kasus 1: Mencari Hipotenusa ($c$)</span></p>
+                            <p>Given two legs ($a$ and $b$), find $c$. <span class="translation">Diketahui dua sisi siku-siku ($a$ dan $b$), cari $c$.</span></p>
+                            <p class="ml-4">Formula: $c = \sqrt{a^2 + b^2}$</p>
+                            <div class="ml-4 mt-2 p-2 bg-white rounded border">
+                                <p><strong>Example:</strong> $a = 5, b = 12$. Find $c$. <span class="translation">Contoh: $a = 5, b = 12$. Cari $c$.</span></p>
+                                <p>$c = \sqrt{5^2 + 12^2}$</p>
+                                <p>$c = \sqrt{25 + 144}$</p>
+                                <p>$c = \sqrt{169}$</p>
+                                <p>$c = 13$</p>
+                            </div>
+
+                            <p class="mb-2 mt-4"><strong>Case 2: Finding a Leg ($a$ or $b$)</strong> <span class="translation">Kasus 2: Mencari Sisi Siku-siku ($a$ atau $b$)</span></p>
+                            <p>Given the hypotenuse ($c$) and one leg ($b$), find $a$. <span class="translation">Diketahui hipotenusa ($c$) dan satu sisi siku-siku ($b$), cari $a$.</span></p>
+                            <p class="ml-4">Formula: $a = \sqrt{c^2 - b^2}$</p>
+                            <div class="ml-4 mt-2 p-2 bg-white rounded border">
+                                <p><strong>Example:</strong> $c = 10, b = 6$. Find $a$. <span class="translation">Contoh: $c = 10, b = 6$. Cari $a$.</span></p>
+                                <p>$a = \sqrt{10^2 - 6^2}$</p>
+                                <p>$a = \sqrt{100 - 36}$</p>
+                                <p>$a = \sqrt{64}$</p>
+                                <p>$a = 8$</p>
+                            </div>
+                        </div>
+
+                        <h3 class="font-bold text-lg mb-2">📝 Task 5 (5 Questions)</h3>
+                        <div class="space-y-4">
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold">1. Find $c$ if $a = 8$ and $b = 15$. <span class="translation">Cari $c$ jika $a = 8$ dan $b = 15$.</span></summary>
+                                <p class="mt-2 p-2 border-t"><strong>Solution:</strong> $c = \sqrt{8^2 + 15^2} = \sqrt{64 + 225} = \sqrt{289} = 17$. <span class="translation">Penyelesaian: $c = \sqrt{8^2 + 15^2} = \sqrt{64 + 225} = \sqrt{289} = 17$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold">2. Find $a$ if $c = 13$ and $b = 5$. <span class="translation">Cari $a$ jika $c = 13$ dan $b = 5$.</span></summary>
+                                <p class="mt-2 p-2 border-t"><strong>Solution:</strong> $a = \sqrt{13^2 - 5^2} = \sqrt{169 - 25} = \sqrt{144} = 12$. <span class="translation">Penyelesaian: $a = \sqrt{13^2 - 5^2} = \sqrt{169 - 25} = \sqrt{144} = 12$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold">3. Find $b$ if $c = 17$ and $a = 8$. <span class="translation">Cari $b$ jika $c = 17$ dan $a = 8$.</span></summary>
+                                <p class="mt-2 p-2 border-t"><strong>Solution:</strong> $b = \sqrt{17^2 - 8^2} = \sqrt{289 - 64} = \sqrt{225} = 15$. <span class="translation">Penyelesaian: $b = \sqrt{17^2 - 8^2} = \sqrt{289 - 64} = \sqrt{225} = 15$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold">4. Find $c$ if $a = 9$ and $b = 12$. <span class="translation">Cari $c$ jika $a = 9$ dan $b = 12$.</span></summary>
+                                <p class="mt-2 p-2 border-t"><strong>Solution:</strong> $c = \sqrt{9^2 + 12^2} = \sqrt{81 + 144} = \sqrt{225} = 15$. <span class="translation">Penyelesaian: $c = \sqrt{9^2 + 12^2} = \sqrt{81 + 144} = \sqrt{225} = 15$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold">5. Find $a$ if $c = 25$ and $b = 24$. <span class="translation">Cari $a$ jika $c = 25$ dan $b = 24$.</span></summary>
+                                <p class="mt-2 p-2 border-t"><strong>Solution:</strong> $a = \sqrt{25^2 - 24^2} = \sqrt{625 - 576} = \sqrt{49} = 7$. <span class="translation">Penyelesaian: $a = \sqrt{25^2 - 24^2} = \sqrt{625 - 576} = \sqrt{49} = 7$.</span></p>
+                            </details>
+                        </div>
+                    </div>
+                </section>
+				
+                <!-- SECTION F: Independent Practice -->
+                <section id="f" class="content-section hidden">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-2xl font-bold text-blue-600 mb-2">Independent Practice (00:40-00:55)</h2>
+                        <p class="translation mb-4">Latihan Mandiri</p>
+                        
+                        <div class="border-l-4 border-indigo-500 pl-4 mb-6 bg-gray-50 p-4 rounded">
+                            <h3 class="font-bold text-lg mb-2">📖 Explanation</h3>
+                            <p class="mb-2">In real life, Pythagoras is often used to find the shortest distance, the length of a diagonal, or the height of an object. <span class="translation">Dalam kehidupan nyata, Pythagoras sering digunakan untuk mencari jarak terpendek, panjang diagonal, atau tinggi suatu benda.</span></p>
+                            
+                            <div class="flex justify-center my-4">
+                                <svg width="150" height="120" viewBox="0 0 150 120">
+                                    <!-- Rectangle representing a TV or field -->
+                                    <rect x="10" y="10" width="130" height="100" fill="#e2e8f0" stroke="#4a5568" stroke-width="2"/>
+                                    <!-- Diagonal -->
+                                    <line x1="10" y1="110" x2="140" y2="10" stroke="#e53e3e" stroke-width="3" stroke-dasharray="5,2"/>
+                                    <!-- Texts -->
+                                    <text x="75" y="125" text-anchor="middle" font-size="12">Width (w)</text>
+                                    <text x="0" y="60" text-anchor="middle" font-size="12" transform="rotate(-90 0,60)">Length (l)</text>
+                                    <text x="85" y="55" text-anchor="middle" font-size="12" fill="#e53e3e">Diag</text>
+                                </svg>
+                            </div>
+
+                            <p>For a rectangle, the diagonal forms a right triangle with the sides. <span class="translation">Pada persegi panjang, diagonal membentuk segitiga siku-siku dengan sisi-sisinya.</span></p>
+                            <p class="text-center my-2">$$ \text{Diagonal} = \sqrt{l^2 + w^2} $$</p>
+                            
+                            <p class="mt-4"><strong>Example:</strong> A TV screen is 16 inches wide and 9 inches high. What is the diagonal size? <span class="translation"><strong>Contoh:</strong> Layar TV selebar 16 inci dan tinggi 9 inci. Berapakah ukuran diagonalnya?</span></p>
+                            <p class="ml-4">$c = \sqrt{16^2 + 9^2}$</p>
+                            <p class="ml-4">$c = \sqrt{256 + 81}$</p>
+                            <p class="ml-4">$c = \sqrt{337} \approx 18.36 \text{ inches}$</p>
+                        </div>
+
+                        <h3 class="font-bold text-lg mb-2">📝 Task 6 (5 Questions)</h3>
+                        <div class="space-y-4">
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold">1. Find the diagonal of a rectangle with length 12 and width 5. <span class="translation">Cari diagonal persegi panjang dengan panjang 12 dan lebar 5.</span></summary>
+                                <p class="mt-2 p-2 border-t"><strong>Solution:</strong> $c = \sqrt{12^2 + 5^2} = \sqrt{144 + 25} = \sqrt{169} = 13$. <span class="translation">Penyelesaian: $c = \sqrt{12^2 + 5^2} = \sqrt{144 + 25} = \sqrt{169} = 13$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold">2. A ladder is placed against a wall. The ladder is 15m long, and its base is 9m from the wall. How high up the wall does it reach? <span class="translation">Sebuah tangga disandarkan ke dinding. Tangga tersebut panjangnya 15m, dan alasnya berjarak 9m dari dinding. Sampai berapa tinggi tangga itu di dinding?</span></summary>
+                                <p class="mt-2 p-2 border-t"><strong>Solution:</strong> $a = \sqrt{15^2 - 9^2} = \sqrt{225 - 81} = \sqrt{144} = 12 \text{ m}$. <span class="translation">Penyelesaian: $a = \sqrt{15^2 - 9^2} = \sqrt{225 - 81} = \sqrt{144} = 12 \text{ m}$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold">3. Is a triangle with sides 5, 12, and 13 a right triangle? Prove it. <span class="translation">Apakah segitiga dengan sisi 5, 12, dan 13 adalah segitiga siku-siku? Buktikan.</span></summary>
+                                <p class="mt-2 p-2 border-t"><strong>Solution:</strong> Check if $5^2 + 12^2 = 13^2$. $25 + 144 = 169$. $13^2 = 169$. Yes, it is. <span class="translation">Penyelesaian: Cek apakah $5^2 + 12^2 = 13^2$. $25 + 144 = 169$. $13^2 = 169$. Ya, benar.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold">4. What is the diagonal of a square with an area of 49? <span class="translation">Berapakah diagonal persegi dengan luas 49?</span></summary>
+                                <p class="mt-2 p-2 border-t"><strong>Solution:</strong> Side = $\sqrt{49} = 7$. Diagonal = $\sqrt{7^2 + 7^2} = \sqrt{49 + 49} = \sqrt{98} = 7\sqrt{2}$. <span class="translation">Penyelesaian: Sisi = $\sqrt{49} = 7$. Diagonal = $\sqrt{7^2 + 7^2} = \sqrt{49 + 49} = \sqrt{98} = 7\sqrt{2}$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold">5. Two ships leave a port. Ship A sails 8 km North, Ship B sails 15 km East. How far apart are they? <span class="translation">Dua kapal meninggalkan pelabuhan. Kapal A berlayar 8 km ke Utara, Kapal B berlayar 15 km ke Timur. Seberapa jauh jarak mereka?</span></summary>
+                                <p class="mt-2 p-2 border-t"><strong>Solution:</strong> $c = \sqrt{8^2 + 15^2} = \sqrt{64 + 225} = \sqrt{289} = 17 \text{ km}$. <span class="translation">Penyelesaian: $c = \sqrt{8^2 + 15^2} = \sqrt{64 + 225} = \sqrt{289} = 17 \text{ km}$.</span></p>
+                            </details>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION G: Consolidation & Reflection -->
+                <section id="g" class="content-section hidden">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-2xl font-bold text-blue-600 mb-2">Consolidation & Reflection (00:55-01:00)</h2>
+                        <p class="translation mb-4">Konsolidasi & Refleksi</p>
+                        
+                        <!-- Pagination for Section G -->
+                        <div class="flex space-x-2 border-b mb-4">
+                            <button class="g-nav active flex-1 py-2 px-4 bg-blue-500 text-white rounded-t" data-target="g1">Key Points <span class="translation">Poin Penting</span></button>
+                            <button class="g-nav flex-1 py-2 px-4 bg-gray-200 text-gray-700 rounded-t" data-target="g2">Reflection <span class="translation">Refleksi</span></button>
+                            <button class="g-nav flex-1 py-2 px-4 bg-gray-200 text-gray-700 rounded-t" data-target="g3">Exit Ticket</button>
+                            <button class="g-nav flex-1 py-2 px-4 bg-gray-200 text-gray-700 rounded-t" data-target="g4">Follow-up <span class="translation">Tindak Lanjut</span></button>
+                        </div>
+
+                        <div id="g1" class="g-content">
+                            <ul class="list-disc pl-5 space-y-2 bg-gray-50 p-4 rounded">
+                                <li><strong>Formula:</strong> $a^2 + b^2 = c^2$ <span class="translation">Rumus: $a^2 + b^2 = c^2$</span></li>
+                                <li><strong>Hypotenuse ($c$)</strong> is always the longest side, opposite the right angle. <span class="translation">Hipotenusa ($c$) selalu merupakan sisi terpanjang, berlawanan dengan sudut siku-siku.</span></li>
+                                <li><strong>Finding Hypotenuse:</strong> $c = \sqrt{a^2 + b^2}$ <span class="translation">Mencari Hipotenusa: $c = \sqrt{a^2 + b^2}$</span></li>
+                                <li><strong>Finding Leg:</strong> $a = \sqrt{c^2 - b^2}$ <span class="translation">Mencari Sisi Siku-siku: $a = \sqrt{c^2 - b^2}$</span></li>
+                            </ul>
+                        </div>
+
+                        <div id="g2" class="g-content hidden">
+                            <div class="space-y-3">
+                                <p>1. How do you identify which side is the hypotenuse in a right triangle? <span class="translation">Bagaimana kamu mengidentifikasi sisi mana yang merupakan hipotenusa pada segitiga siku-siku?</span></p>
+                                <p>2. Explain the difference between finding the hypotenuse vs finding a leg. <span class="translation">Jelaskan perbedaan antara mencari hipotenusa vs mencari sisi siku-siku.</span></p>
+                                <p>3. Can Pythagorean Theorem be used on a triangle with a $100^\circ$ angle? Why? <span class="translation">Apakah Teorema Pythagoras bisa digunakan pada segitiga dengan sudut $100^\circ$? Mengapa?</span></p>
+                            </div>
+                        </div>
+
+                        <div id="g3" class="g-content hidden">
+                            <p><strong>Quick Question:</strong> A right triangle has legs of 7 cm and 24 cm. Write down the exact steps to find the hypotenuse. <span class="translation"><strong>Pertanyaan Cepat:</strong> Segitiga siku-siku memiliki sisi siku-siku 7 cm dan 24 cm. Tuliskan langkah-langkah tepat untuk mencari hipotenusa.</span></p>
+                            <textarea class="w-full mt-2 p-2 border rounded" rows="3" placeholder="Your answer here..."></textarea>
+                        </div>
+
+                        <div id="g4" class="g-content hidden">
+                            <p>Try these at home! <span class="translation">Coba ini di rumah!</span></p>
+                            <ul class="list-disc pl-5 mt-2">
+                                <li>Find the diagonal of your TV or laptop screen using a ruler, then verify with Pythagoras. <span class="translation">Cari diagonal layar TV atau laptopmu menggunakan penggaris, lalu verifikasi dengan Pythagoras.</span></li>
+                                <li>Solve: A rope is tied from the top of a 20m pole to the ground 15m away. How long is the rope? <span class="translation">Selesaikan: Tali diikat dari atas tiang 20m ke tanah berjarak 15m. Berapa panjang talinya?</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+				
+                <!-- SECTION H: Task 1 -->
+                <section id="h" class="content-section hidden">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <div class="flex justify-between items-center mb-4 border-b pb-2">
+                            <h2 class="text-2xl font-bold text-blue-600">Task 1 (10 Questions)</h2>
+                            <button onclick="printTask('h', 'Task 1')" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded flex items-center">
+                                🖨️ Print to PDF
+                            </button>
+                        </div>
+
+                        <!-- Pagination for Task 1 -->
+                        <div class="flex justify-center space-x-2 mb-4">
+                            <button onclick="showPage('h', 1)" id="h-page1-btn" class="px-3 py-1 bg-blue-500 text-white rounded">Page 1</button>
+                            <button onclick="showPage('h', 2)" id="h-page2-btn" class="px-3 py-1 bg-gray-200 text-gray-700 rounded">Page 2</button>
+                        </div>
+
+                        <div id="h-page1" class="space-y-4">
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">1. Find $c$ if $a = 9$ and $b = 12$. <span class="translation">Cari $c$ jika $a = 9$ dan $b = 12$.</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> $c = \sqrt{9^2 + 12^2} = \sqrt{81 + 144} = \sqrt{225} = 15$. <span class="translation">Penyelesaian: $c = \sqrt{9^2 + 12^2} = \sqrt{81 + 144} = \sqrt{225} = 15$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">2. Find $a$ if $b = 8$ and $c = 17$. <span class="translation">Cari $a$ jika $b = 8$ dan $c = 17$.</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> $a = \sqrt{17^2 - 8^2} = \sqrt{289 - 64} = \sqrt{225} = 15$. <span class="translation">Penyelesaian: $a = \sqrt{17^2 - 8^2} = \sqrt{289 - 64} = \sqrt{225} = 15$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">3. Find the diagonal of a rectangle with length 15 and width 8. <span class="translation">Cari diagonal persegi panjang dengan panjang 15 dan lebar 8.</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> $c = \sqrt{15^2 + 8^2} = \sqrt{225 + 64} = \sqrt{289} = 17$. <span class="translation">Penyelesaian: $c = \sqrt{15^2 + 8^2} = \sqrt{225 + 64} = \sqrt{289} = 17$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">4. A ladder is 10m long. Its base is 6m from a wall. How high does it reach? <span class="translation">Tangga panjangnya 10m. Alasnya 6m dari dinding. Sampai berapa tingginya?</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> $a = \sqrt{10^2 - 6^2} = \sqrt{100 - 36} = \sqrt{64} = 8 \text{ m}$. <span class="translation">Penyelesaian: $a = \sqrt{10^2 - 6^2} = \sqrt{100 - 36} = \sqrt{64} = 8 \text{ m}$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">5. Is a triangle with sides 7, 24, and 25 a right triangle? Show why. <span class="translation">Apakah segitiga dengan sisi 7, 24, dan 25 adalah segitiga siku-siku? Tunjukkan mengapa.</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> $7^2 + 24^2 = 49 + 576 = 625$. $25^2 = 625$. Yes, because $a^2 + b^2 = c^2$. <span class="translation">Penyelesaian: $7^2 + 24^2 = 49 + 576 = 625$. $25^2 = 625$. Ya, karena $a^2 + b^2 = c^2$.</span></p>
+                            </details>
+                        </div>
+
+                        <div id="h-page2" class="space-y-4 hidden">
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">6. Find $c$ if $a = 10$ and $b = 24$. <span class="translation">Cari $c$ jika $a = 10$ dan $b = 24$.</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> $c = \sqrt{10^2 + 24^2} = \sqrt{100 + 576} = \sqrt{676} = 26$. <span class="translation">Penyelesaian: $c = \sqrt{10^2 + 24^2} = \sqrt{100 + 576} = \sqrt{676} = 26$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">7. Find $b$ if $a = 15$ and $c = 39$. <span class="translation">Cari $b$ jika $a = 15$ dan $c = 39$.</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> $b = \sqrt{39^2 - 15^2} = \sqrt{1521 - 225} = \sqrt{1296} = 36$. <span class="translation">Penyelesaian: $b = \sqrt{39^2 - 15^2} = \sqrt{1521 - 225} = \sqrt{1296} = 36$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">8. A kite is flying 40m high. The string is 41m long. How far away is the person holding it? <span class="translation">Layangan terbang 40m tinggi. Tali panjangnya 41m. Orang yang memegangnya berjarak berapa?</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> $b = \sqrt{41^2 - 40^2} = \sqrt{1681 - 1600} = \sqrt{81} = 9 \text{ m}$. <span class="translation">Penyelesaian: $b = \sqrt{41^2 - 40^2} = \sqrt{1681 - 1600} = \sqrt{81} = 9 \text{ m}$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">9. Find the diagonal of a square with side length 12. <span class="translation">Cari diagonal persegi dengan panjang sisi 12.</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> $d = \sqrt{12^2 + 12^2} = \sqrt{144 + 144} = \sqrt{288} = 12\sqrt{2}$. <span class="translation">Penyelesaian: $d = \sqrt{12^2 + 12^2} = \sqrt{144 + 144} = \sqrt{288} = 12\sqrt{2}$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">10. Find the diagonal of a rectangle with length 24 and width 10. <span class="translation">Cari diagonal persegi panjang dengan panjang 24 dan lebar 10.</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> $c = \sqrt{24^2 + 10^2} = \sqrt{576 + 100} = \sqrt{676} = 26$. <span class="translation">Penyelesaian: $c = \sqrt{24^2 + 10^2} = \sqrt{576 + 100} = \sqrt{676} = 26$.</span></p>
+                            </details>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION I: Task 2 -->
+                <section id="i" class="content-section hidden">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <div class="flex justify-between items-center mb-4 border-b pb-2">
+                            <h2 class="text-2xl font-bold text-blue-600">Task 2 (10 Questions)</h2>
+                            <button onclick="printTask('i', 'Task 2')" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded flex items-center">
+                                🖨️ Print to PDF
+                            </button>
+                        </div>
+
+                        <div class="flex justify-center space-x-2 mb-4">
+                            <button onclick="showPage('i', 1)" id="i-page1-btn" class="px-3 py-1 bg-blue-500 text-white rounded">Page 1</button>
+                            <button onclick="showPage('i', 2)" id="i-page2-btn" class="px-3 py-1 bg-gray-200 text-gray-700 rounded">Page 2</button>
+                        </div>
+
+                        <div id="i-page1" class="space-y-4">
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">1. Find $c$ if $a = 14$ and $b = 48$. <span class="translation">Cari $c$ jika $a = 14$ dan $b = 48$.</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> $c = \sqrt{14^2 + 48^2} = \sqrt{196 + 2304} = \sqrt{2500} = 50$. <span class="translation">Penyelesaian: $c = \sqrt{14^2 + 48^2} = \sqrt{196 + 2304} = \sqrt{2500} = 50$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">2. Find $a$ if $b = 21$ and $c = 29$. <span class="translation">Cari $a$ jika $b = 21$ dan $c = 29$.</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> $a = \sqrt{29^2 - 21^2} = \sqrt{841 - 441} = \sqrt{400} = 20$. <span class="translation">Penyelesaian: $a = \sqrt{29^2 - 21^2} = \sqrt{841 - 441} = \sqrt{400} = 20$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">3. Ship A goes 15 km North, Ship B goes 20 km East. How far apart are they? <span class="translation">Kapal A berlayar 15 km Utara, Kapal B berlayar 20 km Timur. Berapa jauh jarak mereka?</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> $c = \sqrt{15^2 + 20^2} = \sqrt{225 + 400} = \sqrt{625} = 25 \text{ km}$. <span class="translation">Penyelesaian: $c = \sqrt{15^2 + 20^2} = \sqrt{225 + 400} = \sqrt{625} = 25 \text{ km}$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">4. A ladder is 26m long. Its base is 10m from a wall. How high does it reach? <span class="translation">Tangga panjangnya 26m. Alasnya 10m dari dinding. Sampai berapa tingginya?</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> $a = \sqrt{26^2 - 10^2} = \sqrt{676 - 100} = \sqrt{576} = 24 \text{ m}$. <span class="translation">Penyelesaian: $a = \sqrt{26^2 - 10^2} = \sqrt{676 - 100} = \sqrt{576} = 24 \text{ m}$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">5. Is a triangle with sides 16, 30, and 34 a right triangle? Show why. <span class="translation">Apakah segitiga dengan sisi 16, 30, dan 34 adalah segitiga siku-siku? Tunjukkan mengapa.</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> $16^2 + 30^2 = 256 + 900 = 1156$. $34^2 = 1156$. Yes. <span class="translation">Penyelesaian: $16^2 + 30^2 = 256 + 900 = 1156$. $34^2 = 1156$. Ya.</span></p>
+                            </details>
+                        </div>
+
+                        <div id="i-page2" class="space-y-4 hidden">
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">6. Find $c$ if $a = 11$ and $b = 60$. <span class="translation">Cari $c$ jika $a = 11$ dan $b = 60$.</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> $c = \sqrt{11^2 + 60^2} = \sqrt{121 + 3600} = \sqrt{3721} = 61$. <span class="translation">Penyelesaian: $c = \sqrt{11^2 + 60^2} = \sqrt{121 + 3600} = \sqrt{3721} = 61$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">7. Find $b$ if $a = 16$ and $c = 34$. <span class="translation">Cari $b$ jika $a = 16$ dan $c = 34$.</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> $b = \sqrt{34^2 - 16^2} = \sqrt{1156 - 256} = \sqrt{900} = 30$. <span class="translation">Penyelesaian: $b = \sqrt{34^2 - 16^2} = \sqrt{1156 - 256} = \sqrt{900} = 30$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">8. A pole breaks and falls. The top hits the ground 6m from the base. The broken part is 10m long. How tall was the original pole? <span class="translation">Sebuah tiang patah dan jatuh. Puncaknya menyentuh tanah 6m dari alas. Bagian patahan panjangnya 10m. Berapa tinggi tiang aslinya?</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> Standing part $b = \sqrt{10^2 - 6^2} = \sqrt{100 - 36} = \sqrt{64} = 8 \text{ m}$. Total = $10 + 8 = 18 \text{ m}$. <span class="translation">Penyelesaian: Bagian berdiri $b = \sqrt{10^2 - 6^2} = \sqrt{100 - 36} = \sqrt{64} = 8 \text{ m}$. Total = $10 + 8 = 18 \text{ m}$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">9. Find the diagonal of a square with an area of 81. <span class="translation">Cari diagonal persegi dengan luas 81.</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> Side = $\sqrt{81} = 9$. Diagonal = $\sqrt{9^2 + 9^2} = \sqrt{81 + 81} = \sqrt{162} = 9\sqrt{2}$. <span class="translation">Penyelesaian: Sisi = $\sqrt{81} = 9$. Diagonal = $\sqrt{9^2 + 9^2} = \sqrt{81 + 81} = \sqrt{162} = 9\sqrt{2}$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">10. A TV screen is 50 inches diagonal. The width is 30 inches. Find the height. <span class="translation">Layar TV diagonalnya 50 inci. Lebar 30 inci. Cari tingginya.</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> $a = \sqrt{50^2 - 30^2} = \sqrt{2500 - 900} = \sqrt{1600} = 40 \text{ inches}$. <span class="translation">Penyelesaian: $a = \sqrt{50^2 - 30^2} = \sqrt{2500 - 900} = \sqrt{1600} = 40 \text{ inci}$.</span></p>
+                            </details>
+                        </div>
+                    </div>
+                </section>
+				
+                <!-- SECTION J: Task 3 -->
+                <section id="j" class="content-section hidden">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <div class="flex justify-between items-center mb-4 border-b pb-2">
+                            <h2 class="text-2xl font-bold text-blue-600">Task 3 (10 Questions)</h2>
+                            <button onclick="printTask('j', 'Task 3')" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded flex items-center">
+                                🖨️ Print to PDF
+                            </button>
+                        </div>
+
+                        <div class="flex justify-center space-x-2 mb-4">
+                            <button onclick="showPage('j', 1)" id="j-page1-btn" class="px-3 py-1 bg-blue-500 text-white rounded">Page 1</button>
+                            <button onclick="showPage('j', 2)" id="j-page2-btn" class="px-3 py-1 bg-gray-200 text-gray-700 rounded">Page 2</button>
+                        </div>
+
+                        <div id="j-page1" class="space-y-4">
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">1. Find $c$ if $a = 18$ and $b = 24$. <span class="translation">Cari $c$ jika $a = 18$ dan $b = 24$.</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> $c = \sqrt{18^2 + 24^2} = \sqrt{324 + 576} = \sqrt{900} = 30$. <span class="translation">Penyelesaian: $c = \sqrt{18^2 + 24^2} = \sqrt{324 + 576} = \sqrt{900} = 30$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">2. Find $a$ if $b = 33$ and $c = 65$. <span class="translation">Cari $a$ jika $b = 33$ dan $c = 65$.</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> $a = \sqrt{65^2 - 33^2} = \sqrt{4225 - 1089} = \sqrt{3136} = 56$. <span class="translation">Penyelesaian: $a = \sqrt{65^2 - 33^2} = \sqrt{4225 - 1089} = \sqrt{3136} = 56$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">3. A rectangle has a length of 2.4m and a width of 0.7m. Find the exact diagonal. <span class="translation">Persegi panjang memiliki panjang 2.4m dan lebar 0.7m. Cari diagonal yang tepat.</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> $c = \sqrt{2.4^2 + 0.7^2} = \sqrt{5.76 + 0.49} = \sqrt{6.25} = 2.5 \text{ m}$. <span class="translation">Penyelesaian: $c = \sqrt{2.4^2 + 0.7^2} = \sqrt{5.76 + 0.49} = \sqrt{6.25} = 2.5 \text{ m}$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">4. An isosceles right triangle has a hypotenuse of 10. Find the length of the legs. <span class="translation">Segitiga siku-siku sama kaki memiliki hipotenusa 10. Cari panjang sisi siku-sikunya.</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> $2a^2 = 10^2 \rightarrow 2a^2 = 100 \rightarrow a^2 = 50 \rightarrow a = \sqrt{50} = 5\sqrt{2}$. <span class="translation">Penyelesaian: $2a^2 = 10^2 \rightarrow 2a^2 = 100 \rightarrow a^2 = 50 \rightarrow a = \sqrt{50} = 5\sqrt{2}$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">5. A right triangle has legs $a = \sqrt{3}$ and $b = \sqrt{6}$. Find $c$. <span class="translation">Segitiga siku-siku memiliki sisi siku-siku $a = \sqrt{3}$ dan $b = \sqrt{6}$. Cari $c$.</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> $c = \sqrt{(\sqrt{3})^2 + (\sqrt{6})^2} = \sqrt{3 + 6} = \sqrt{9} = 3$. <span class="translation">Penyelesaian: $c = \sqrt{(\sqrt{3})^2 + (\sqrt{6})^2} = \sqrt{3 + 6} = \sqrt{9} = 3$.</span></p>
+                            </details>
+                        </div>
+
+                        <div id="j-page2" class="space-y-4 hidden">
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">6. Find $c$ if $a = 27$ and $b = 36$. <span class="translation">Cari $c$ jika $a = 27$ dan $b = 36$.</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> $c = \sqrt{27^2 + 36^2} = \sqrt{729 + 1296} = \sqrt{2025} = 45$. <span class="translation">Penyelesaian: $c = \sqrt{27^2 + 36^2} = \sqrt{729 + 1296} = \sqrt{2025} = 45$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">7. Find $b$ if $a = 48$ and $c = 73$. <span class="translation">Cari $b$ jika $a = 48$ dan $c = 73$.</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> $b = \sqrt{73^2 - 48^2} = \sqrt{5329 - 2304} = \sqrt{3025} = 55$. <span class="translation">Penyelesaian: $b = \sqrt{73^2 - 48^2} = \sqrt{5329 - 2304} = \sqrt{3025} = 55$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">8. A guy wire is attached to a pole 21m above the ground. The wire is 35m long. How far from the base of the pole is the wire anchored? <span class="translation">Sebuah kawat penyangga dilekatkan pada tiang 21m di atas tanah. Kawat tersebut panjangnya 35m. Seberapa jauh dari alas tiang kawat tersebut dijangkar?</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> $b = \sqrt{35^2 - 21^2} = \sqrt{1225 - 441} = \sqrt{784} = 28 \text{ m}$. <span class="translation">Penyelesaian: $b = \sqrt{35^2 - 21^2} = \sqrt{1225 - 441} = \sqrt{784} = 28 \text{ m}$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">9. A right triangle has an area of 6. If one leg is 3, what is the hypotenuse? <span class="translation">Segitiga siku-siku memiliki luas 6. Jika satu sisi siku-siku 3, berapakah hipotenusanya?</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> Area $= \frac{1}{2} \times 3 \times b = 6 \rightarrow 1.5b = 6 \rightarrow b = 4$. $c = \sqrt{3^2 + 4^2} = \sqrt{9 + 16} = \sqrt{25} = 5$. <span class="translation">Penyelesaian: Luas $= \frac{1}{2} \times 3 \times b = 6 \rightarrow 1.5b = 6 \rightarrow b = 4$. $c = \sqrt{3^2 + 4^2} = \sqrt{9 + 16} = \sqrt{25} = 5$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">10. A square has a diagonal of $14\sqrt{2}$. Find the side length. <span class="translation">Persegi memiliki diagonal $14\sqrt{2}$. Cari panjang sisinya.</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> $d = s\sqrt{2} \rightarrow 14\sqrt{2} = s\sqrt{2} \rightarrow s = 14$. <span class="translation">Penyelesaian: $d = s\sqrt{2} \rightarrow 14\sqrt{2} = s\sqrt{2} \rightarrow s = 14$.</span></p>
+                            </details>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION K: Task 4 -->
+                <section id="k" class="content-section hidden">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <div class="flex justify-between items-center mb-4 border-b pb-2">
+                            <h2 class="text-2xl font-bold text-blue-600">Task 4 (10 Questions)</h2>
+                            <button onclick="printTask('k', 'Task 4')" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded flex items-center">
+                                🖨️ Print to PDF
+                            </button>
+                        </div>
+
+                        <div class="flex justify-center space-x-2 mb-4">
+                            <button onclick="showPage('k', 1)" id="k-page1-btn" class="px-3 py-1 bg-blue-500 text-white rounded">Page 1</button>
+                            <button onclick="showPage('k', 2)" id="k-page2-btn" class="px-3 py-1 bg-gray-200 text-gray-700 rounded">Page 2</button>
+                        </div>
+
+                        <div id="k-page1" class="space-y-4">
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">1. An equilateral triangle has a side length of 6. What is its height? <span class="translation">Segitiga sama sisi memiliki panjang sisi 6. Berapakah tingginya?</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> $h = \sqrt{6^2 - 3^2} = \sqrt{36 - 9} = \sqrt{27} = 3\sqrt{3}$. <span class="translation">Penyelesaian: $h = \sqrt{6^2 - 3^2} = \sqrt{36 - 9} = \sqrt{27} = 3\sqrt{3}$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">2. A baseball diamond is a square with 90 ft sides. What is the distance from home plate to second base? <span class="translation">Lapangan bisbol berbentuk persegi dengan sisi 90 kaki. Berapakah jarak dari home plate ke base kedua?</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> $d = \sqrt{90^2 + 90^2} = \sqrt{8100 + 8100} = \sqrt{16200} = 90\sqrt{2} \text{ ft}$. <span class="translation">Penyelesaian: $d = \sqrt{90^2 + 90^2} = \sqrt{8100 + 8100} = \sqrt{16200} = 90\sqrt{2} \text{ kaki}$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">3. A ramp is 17m long and reaches a height of 8m. How long is the horizontal base? <span class="translation">Sebuah juring panjangnya 17m dan mencapai ketinggian 8m. Berapa panjang alas horizontalnya?</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> $b = \sqrt{17^2 - 8^2} = \sqrt{289 - 64} = \sqrt{225} = 15 \text{ m}$. <span class="translation">Penyelesaian: $b = \sqrt{17^2 - 8^2} = \sqrt{289 - 64} = \sqrt{225} = 15 \text{ m}$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">4. Find $c$ if $a = 1.5$ and $b = 2.0$. <span class="translation">Cari $c$ jika $a = 1.5$ dan $b = 2.0$.</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> $c = \sqrt{1.5^2 + 2.0^2} = \sqrt{2.25 + 4.00} = \sqrt{6.25} = 2.5$. <span class="translation">Penyelesaian: $c = \sqrt{1.5^2 + 2.0^2} = \sqrt{2.25 + 4.00} = \sqrt{6.25} = 2.5$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">5. A right triangle has legs $a = 5$ and $b = 12$. Find the perimeter. <span class="translation">Segitiga siku-siku memiliki sisi siku-siku $a = 5$ dan $b = 12$. Cari kelilingnya.</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> $c = \sqrt{25+144} = 13$. Perimeter $= 5 + 12 + 13 = 30$. <span class="translation">Penyelesaian: $c = \sqrt{25+144} = 13$. Keliling $= 5 + 12 + 13 = 30$.</span></p>
+                            </details>
+                        </div>
+
+                        <div id="k-page2" class="space-y-4 hidden">
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">6. The diagonal of a rectangle is 26 cm. The width is 10 cm. Find the length. <span class="translation">Diagonal persegi panjang adalah 26 cm. Lebar 10 cm. Cari panjangnya.</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> $l = \sqrt{26^2 - 10^2} = \sqrt{676 - 100} = \sqrt{576} = 24 \text{ cm}$. <span class="translation">Penyelesaian: $l = \sqrt{26^2 - 10^2} = \sqrt{676 - 100} = \sqrt{576} = 24 \text{ cm}$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">7. Two paths form a right angle. One path is 20m, the other is 21m. How long is the shortcut connecting their ends? <span class="translation">Dua jalan membentuk sudut siku-siku. Satu jalan 20m, yang lain 21m. Berapa panjang jalan pintas yang menghubungkan ujungnya?</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> $c = \sqrt{20^2 + 21^2} = \sqrt{400 + 441} = \sqrt{841} = 29 \text{ m}$. <span class="translation">Penyelesaian: $c = \sqrt{20^2 + 21^2} = \sqrt{400 + 441} = \sqrt{841} = 29 \text{ m}$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">8. A tree is broken by the wind. The top touches the ground 8m away from the stump. The trunk is 6m high. How tall was the tree originally? <span class="translation">Pohon patah tertiup angin. Pucuknya menyentuh tanah 8m dari pangkal. Batang 6m tingginya. Berapa tinggi pohon aslinya?</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> Broken part $c = \sqrt{8^2 + 6^2} = \sqrt{64+36} = 10 \text{ m}$. Total height $= 6 + 10 = 16 \text{ m}$. <span class="translation">Penyelesaian: Bagian patah $c = \sqrt{8^2 + 6^2} = \sqrt{64+36} = 10 \text{ m}$. Tinggi total $= 6 + 10 = 16 \text{ m}$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">9. Find the diagonal of a rectangle with an area of 48 and one side of 6. <span class="translation">Cari diagonal persegi panjang dengan luas 48 dan satu sisi 6.</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> Side $b = 48 / 6 = 8$. $c = \sqrt{6^2 + 8^2} = \sqrt{36 + 64} = \sqrt{100} = 10$. <span class="translation">Penyelesaian: Sisi $b = 48 / 6 = 8$. $c = \sqrt{6^2 + 8^2} = \sqrt{36 + 64} = \sqrt{100} = 10$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">10. Find $c$ if $a = 24$ and $b = 32$. <span class="translation">Cari $c$ jika $a = 24$ dan $b = 32$.</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> $c = \sqrt{24^2 + 32^2} = \sqrt{576 + 1024} = \sqrt{1600} = 40$. <span class="translation">Penyelesaian: $c = \sqrt{24^2 + 32^2} = \sqrt{576 + 1024} = \sqrt{1600} = 40$.</span></p>
+                            </details>
+                        </div>
+                    </div>
+                </section>
+				
+                <!-- SECTION L: Task 5 -->
+                <section id="l" class="content-section hidden">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <div class="flex justify-between items-center mb-4 border-b pb-2">
+                            <h2 class="text-2xl font-bold text-blue-600">Task 5 (10 Questions)</h2>
+                            <button onclick="printTask('l', 'Task 5')" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded flex items-center">
+                                🖨️ Print to PDF
+                            </button>
+                        </div>
+
+                        <div class="flex justify-center space-x-2 mb-4">
+                            <button onclick="showPage('l', 1)" id="l-page1-btn" class="px-3 py-1 bg-blue-500 text-white rounded">Page 1</button>
+                            <button onclick="showPage('l', 2)" id="l-page2-btn" class="px-3 py-1 bg-gray-200 text-gray-700 rounded">Page 2</button>
+                        </div>
+
+                        <div id="l-page1" class="space-y-4">
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">1. Find $c$ if $a = 16$ and $b = 63$. <span class="translation">Cari $c$ jika $a = 16$ dan $b = 63$.</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> $c = \sqrt{16^2 + 63^2} = \sqrt{256 + 3969} = \sqrt{4225} = 65$. <span class="translation">Penyelesaian: $c = \sqrt{16^2 + 63^2} = \sqrt{256 + 3969} = \sqrt{4225} = 65$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">2. Find $b$ if $a = 28$ and $c = 53$. <span class="translation">Cari $b$ jika $a = 28$ dan $c = 53$.</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> $b = \sqrt{53^2 - 28^2} = \sqrt{2809 - 784} = \sqrt{2025} = 45$. <span class="translation">Penyelesaian: $b = \sqrt{53^2 - 28^2} = \sqrt{2809 - 784} = \sqrt{2025} = 45$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">3. A wire is stretched from the top of a 24m pole to a point on the ground 10m from the base. How long is the wire? <span class="translation">Sebuah kawat direntangkan dari puncak tiang 24m ke titik di tanah 10m dari alas. Berapa panjang kawat itu?</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> $c = \sqrt{24^2 + 10^2} = \sqrt{576 + 100} = \sqrt{676} = 26 \text{ m}$. <span class="translation">Penyelesaian: $c = \sqrt{24^2 + 10^2} = \sqrt{576 + 100} = \sqrt{676} = 26 \text{ m}$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">4. Find the height of an equilateral triangle with a side length of 10. <span class="translation">Cari tinggi segitiga sama sisi dengan panjang sisi 10.</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> $h = \sqrt{10^2 - 5^2} = \sqrt{100 - 25} = \sqrt{75} = 5\sqrt{3}$. <span class="translation">Penyelesaian: $h = \sqrt{10^2 - 5^2} = \sqrt{100 - 25} = \sqrt{75} = 5\sqrt{3}$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">5. A rectangle has a perimeter of 34. If the length is 13, find the diagonal. <span class="translation">Persegi panjang memiliki keliling 34. Jika panjang 13, cari diagonalnya.</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> Perimeter $= 2(l+w) \rightarrow 34 = 2(13+w) \rightarrow 17 = 13+w \rightarrow w=4$. $c = \sqrt{13^2 + 4^2} = \sqrt{169 + 16} = \sqrt{185}$. <span class="translation">Penyelesaian: Keliling $= 2(l+w) \rightarrow 34 = 2(13+w) \rightarrow 17 = 13+w \rightarrow w=4$. $c = \sqrt{13^2 + 4^2} = \sqrt{169 + 16} = \sqrt{185}$.</span></p>
+                            </details>
+                        </div>
+
+                        <div id="l-page2" class="space-y-4 hidden">
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">6. Find $c$ if $a = 1.2$ and $b = 0.5$. <span class="translation">Cari $c$ jika $a = 1.2$ dan $b = 0.5$.</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> $c = \sqrt{1.2^2 + 0.5^2} = \sqrt{1.44 + 0.25} = \sqrt{1.69} = 1.3$. <span class="translation">Penyelesaian: $c = \sqrt{1.2^2 + 0.5^2} = \sqrt{1.44 + 0.25} = \sqrt{1.69} = 1.3$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">7. A triangle has sides 9, 40, and 41. Is it a right triangle? Show why. <span class="translation">Segitiga memiliki sisi 9, 40, dan 41. Apakah ini segitiga siku-siku? Buktikan.</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> $9^2 + 40^2 = 81 + 1600 = 1681$. $41^2 = 1681$. Yes, it is. <span class="translation">Penyelesaian: $9^2 + 40^2 = 81 + 1600 = 1681$. $41^2 = 1681$. Ya, benar.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">8. In a right triangle, one leg is $3x$ and the other is $4x$. If the hypotenuse is 15, find $x$ and the lengths of the legs. <span class="translation">Pada segitiga siku-siku, satu sisi siku-siku $3x$ dan yang lain $4x$. Jika hipotenusa 15, cari $x$ dan panjang sisi siku-sikunya.</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> $(3x)^2 + (4x)^2 = 15^2 \rightarrow 9x^2 + 16x^2 = 225 \rightarrow 25x^2 = 225 \rightarrow x^2 = 9 \rightarrow x = 3$. Legs are $3(3)=9$ and $4(3)=12$. <span class="translation">Penyelesaian: $(3x)^2 + (4x)^2 = 15^2 \rightarrow 9x^2 + 16x^2 = 225 \rightarrow 25x^2 = 225 \rightarrow x^2 = 9 \rightarrow x = 3$. Sisi siku-siku adalah $3(3)=9$ dan $4(3)=12$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">9. The diagonal of a square is $8\sqrt{2}$. Find its area. <span class="translation">Diagonal persegi adalah $8\sqrt{2}$. Cari luasnya.</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> Diagonal $= s\sqrt{2} \rightarrow s = 8$. Area $= s^2 = 8^2 = 64$. <span class="translation">Penyelesaian: Diagonal $= s\sqrt{2} \rightarrow s = 8$. Luas $= s^2 = 8^2 = 64$.</span></p>
+                            </details>
+                            <details class="bg-gray-50 p-3 rounded border">
+                                <summary class="cursor-pointer font-semibold q-text">10. A man walks 15m East, then 8m North. How far is he from his starting point? <span class="translation">Seseorang berjalan 15m ke Timur, lalu 8m ke Utara. Seberapa jauh ia dari titik awalnya?</span></summary>
+                                <p class="mt-2 p-2 border-t a-text"><strong>Solution:</strong> $c = \sqrt{15^2 + 8^2} = \sqrt{225 + 64} = \sqrt{289} = 17 \text{ m}$. <span class="translation">Penyelesaian: $c = \sqrt{15^2 + 8^2} = \sqrt{225 + 64} = \sqrt{289} = 17 \text{ m}$.</span></p>
+                            </details>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Consolidated Script for Navigation, Modal, Pagination, and Print Logic -->
+    <script>
+        // 1. Modal Logic
+        const modal = document.getElementById('classRulesModal');
+        document.getElementById('classRulesBtn').onclick = () => modal.classList.remove('hidden');
+        document.getElementById('closeModalBtn').onclick = () => modal.classList.add('hidden');
+
+        // 2. Navigation Logic
+        const navItems = document.querySelectorAll('.nav-item');
+        const contentSections = document.querySelectorAll('.content-section');
+
+        navItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = item.dataset.target;
+
+                // Hide all sections
+                contentSections.forEach(sec => sec.classList.add('hidden'));
+                // Show target section
+                document.getElementById(target).classList.remove('hidden');
+
+                // Update active state
+                navItems.forEach(nav => nav.classList.remove('active'));
+                item.classList.add('active');
+            });
+        });
+
+        // 3. Section G Pagination Logic
+        const gNavs = document.querySelectorAll('.g-nav');
+        const gContents = document.querySelectorAll('.g-content');
+
+        gNavs.forEach(nav => {
+            nav.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = nav.dataset.target;
+
+                gContents.forEach(con => con.classList.add('hidden'));
+                document.getElementById(target).classList.remove('hidden');
+
+                gNavs.forEach(n => {
+                    n.classList.remove('bg-blue-500', 'text-white');
+                    n.classList.add('bg-gray-200', 'text-gray-700');
+                });
+                nav.classList.remove('bg-gray-200', 'text-gray-700');
+                nav.classList.add('bg-blue-500', 'text-white');
+            });
+        });
+
+        // 4. Task Pagination Logic (H, I, J, K, L)
+        function showPage(sectionId, pageNum) {
+            document.getElementById(sectionId + '-page1').classList.add('hidden');
+            document.getElementById(sectionId + '-page2').classList.add('hidden');
+            document.getElementById(sectionId + '-page' + pageNum).classList.remove('hidden');
+
+            document.getElementById(sectionId + '-page1-btn').classList.remove('bg-blue-500', 'text-white');
+            document.getElementById(sectionId + '-page1-btn').classList.add('bg-gray-200', 'text-gray-700');
+            
+            document.getElementById(sectionId + '-page2-btn').classList.remove('bg-blue-500', 'text-white');
+            document.getElementById(sectionId + '-page2-btn').classList.add('bg-gray-200', 'text-gray-700');
+
+            document.getElementById(sectionId + '-page' + pageNum + '-btn').classList.remove('bg-gray-200', 'text-gray-700');
+            document.getElementById(sectionId + '-page' + pageNum + '-btn').classList.add('bg-blue-500', 'text-white');
+        }
+
+        // 5. Print to PDF Logic (Fixed timing for KaTeX rendering)
+        function printTask(sectionId, taskName) {
+            const area = document.getElementById('printArea');
+            let html = `
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <h1 style="margin: 0;">Math Tutoring by Deni</h1>
+                </div>
+                <div style="margin-bottom: 20px; font-size: 16px;">
+                    <p style="margin: 2px 0;">Nama: .........................</p>
+                    <p style="margin: 2px 0;">Tanggal: .........................</p>
+                    <p style="margin: 2px 0;">Topic: Pythagorean Theorem</p>
+                    <p style="margin: 2px 0;">Grup task: ${taskName}</p>
+                    <p style="margin: 2px 0;">Skor: ...... / 100</p>
+                </div>
+                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                    <thead>
+                        <tr style="background: #f3f4f6;">
+                            <th style="border: 1px solid #000; padding: 8px; width: 5%;">No.</th>
+                            <th style="border: 1px solid #000; padding: 8px; width: 40%;">Pertanyaan</th>
+                            <th style="border: 1px solid #000; padding: 8px; width: 25%;">Jawaban Siswa</th>
+                            <th style="border: 1px solid #000; padding: 8px; width: 20%;">Jawaban Benar</th>
+                            <th style="border: 1px solid #000; padding: 8px; width: 10%;">Keterangan (✓ / ✗)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            const details = document.querySelectorAll('#' + sectionId + ' details');
+            details.forEach((d, i) => {
+                const qHTML = d.querySelector('.q-text').innerHTML;
+                const aHTML = d.querySelector('.a-text').innerHTML;
+                html += `
+                    <tr>
+                        <td style="border: 1px solid #000; padding: 8px; text-align: center;">${i + 1}</td>
+                        <td style="border: 1px solid #000; padding: 8px;">${qHTML}</td>
+                        <td style="border: 1px solid #000; padding: 8px;"></td>
+                        <td style="border: 1px solid #000; padding: 8px;">${aHTML}</td>
+                        <td style="border: 1px solid #000; padding: 8px; text-align: center;"></td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                    </tbody>
+                </table>
+                <div style="margin-top: 40px; text-align: right;">
+                    <p>Checked by,</p>
+                    <br><br>
+                    <p><strong>Deni</strong></p>
+                </div>
+            `;
+            
+            area.innerHTML = html;
+            area.classList.remove('hidden');
+            
+            // Render KaTeX in the print area
+            if (typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(area, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false}
+                    ]
+                });
+            }
+
+            // PERBAIKAN: Beri jeda 300ms agar browser sempat merender KaTeX sebelum dialog Print muncul
+            setTimeout(function() {
+                window.print();
+                
+                // Cleanup setelah dialog print ditutup
+                area.innerHTML = '';
+                area.classList.add('hidden');
+            }, 300);
+        }
+
+        // 6. Initial KaTeX Rendering for the whole page
+        document.addEventListener("DOMContentLoaded", function() {
+            if (typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false}
+                    ]
+                });
+            }
+        });
+    </script>
+</body>
+</html>
