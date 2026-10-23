@@ -1,0 +1,1910 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>PLSV Lesson · Grade 8</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@500;700&family=Lexend:wght@300;400;500;600&family=Noto+Sans+Math&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+/* Layout: brand header band, then a 1:3 grid — lesson timeline (sticky) beside one lesson panel at a time */
+:root{
+  --paper:#F1F4F7; --card:#FFFFFF; --ink:#14223A; --muted:#56667B; --line:#D2DBE4; --grid:rgba(20,34,58,.05);
+  --accent:#0A7680; --accent-ink:#FFFFFF; --accent-soft:#DCEEF0;
+  --amber:#B97C0C; --amber-soft:#FBEFD4;
+  --ok:#1C7C45; --ok-soft:#DCF1E4; --bad:#B8361F; --bad-soft:#FADED8; --warn:#8A5D00; --warn-soft:#FFF3D6;
+  --p1:#0A7680; --p2:#B97C0C; --p3:#6447C4; --p4:#BC3B74; --p5:#2C7F39;
+  --shadow:0 1px 2px rgba(20,34,58,.06),0 6px 18px rgba(20,34,58,.06);
+  --f-display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --f-body:"Lexend",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  --f-math:"Noto Sans Math","Cambria Math","STIX Two Math","Latin Modern Math",math,serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E151D; --card:#16202B; --ink:#E4ECF3; --muted:#97A8BA; --line:#2A3847; --grid:rgba(228,236,243,.04);
+    --accent:#3CBDC6; --accent-ink:#06191C; --accent-soft:#12343A;
+    --amber:#EDB34B; --amber-soft:#3A2D12;
+    --ok:#56C985; --ok-soft:#143120; --bad:#F2806A; --bad-soft:#3B1D18; --warn:#F0C25A; --warn-soft:#3A2F12;
+    --p1:#3CBDC6; --p2:#EDB34B; --p3:#A792F2; --p4:#F27DB0; --p5:#6FCF7C;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 18px rgba(0,0,0,.25);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E151D; --card:#16202B; --ink:#E4ECF3; --muted:#97A8BA; --line:#2A3847; --grid:rgba(228,236,243,.04);
+  --accent:#3CBDC6; --accent-ink:#06191C; --accent-soft:#12343A;
+  --amber:#EDB34B; --amber-soft:#3A2D12;
+  --ok:#56C985; --ok-soft:#143120; --bad:#F2806A; --bad-soft:#3B1D18; --warn:#F0C25A; --warn-soft:#3A2F12;
+  --p1:#3CBDC6; --p2:#EDB34B; --p3:#A792F2; --p4:#F27DB0; --p5:#6FCF7C;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 18px rgba(0,0,0,.25);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6;font-weight:400;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:26px 26px}
+.wrap{max-width:1320px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 56px}
+h1,h2,h3,h4{font-family:var(--f-display);line-height:1.2;text-wrap:balance;margin:0}
+p{margin:0}
+math{font-family:var(--f-math);font-size:1.1em}
+.tr{display:block;font-style:italic;color:var(--muted);font-weight:300;font-size:.93em}
+.en{display:block}
+.mx{display:block;margin-top:4px}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--amber);outline-offset:2px;border-radius:6px}
+
+/* ---------- header ---------- */
+header.top{display:flex;justify-content:space-between;align-items:center;gap:16px 24px;flex-wrap:wrap;padding-block:22px 18px;border-bottom:2px solid var(--ink)}
+.brand-block{display:grid;gap:6px;min-width:0}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--f-display);font-weight:800;font-size:clamp(1.35rem,2.4vw,1.75rem);letter-spacing:-.01em}
+.brand small{font-weight:500;color:var(--accent);font-size:.8em}
+.brand svg{width:38px;height:38px;flex:none}
+.topic{font-size:.95rem;line-height:1.45}
+.topic b{font-weight:600}
+.topic.tr-line{font-style:italic;color:var(--muted);font-weight:300}
+.lbl{display:inline-block;font-family:var(--f-mono);font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-ink);background:var(--accent);padding:1px 7px;border-radius:4px;margin-right:6px;vertical-align:2px;font-style:normal}
+.topic.tr-line .lbl{background:var(--amber);color:var(--card)}
+.meta{font-family:var(--f-mono);font-size:.72rem;color:var(--muted);letter-spacing:.04em}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:0;border:2px solid var(--ink);background:var(--ink);color:var(--card);padding:8px 16px;border-radius:10px;font-weight:600;font-size:.92rem;line-height:1.2;cursor:pointer;transition:transform .12s,background .12s}
+.btn i{font-weight:300;font-size:.78em;opacity:.85}
+.btn:hover{transform:translateY(-1px)}
+.btn:active{transform:translateY(0)}
+.btn-ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn-accent{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn-rules{background:var(--amber);border-color:var(--amber);color:var(--card);flex-direction:row;gap:10px;padding:10px 18px}
+.btn-rules span{display:flex;flex-direction:column;align-items:flex-start}
+.btn-rules svg{width:22px;height:22px}
+
+/* ---------- modal ---------- */
+.modal{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:20px max(16px,env(safe-area-inset-left,0px));background:rgba(8,14,22,.55)}
+.modal-card{background:var(--card);color:var(--ink);border-radius:16px;max-width:520px;width:100%;padding:24px;box-shadow:0 20px 50px rgba(0,0,0,.3);max-height:90vh;overflow:auto}
+.modal-card h2{font-size:1.4rem;display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.modal-card h2 .tr{font-family:var(--f-body);font-size:.9rem;margin-top:2px}
+.rules{list-style:none;padding:0;margin:18px 0 20px;display:grid;gap:12px;counter-reset:r}
+.rules li{display:grid;grid-template-columns:44px 1fr;gap:12px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:12px}
+.rules li svg{width:44px;height:44px}
+.rules b{font-weight:600}
+.x-close{border:0;background:var(--paper);width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:1.2rem;flex:none}
+
+/* ---------- layout ---------- */
+.layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,3fr);gap:28px;margin-top:24px;align-items:start}
+nav.side{position:sticky;top:16px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 12px;box-shadow:var(--shadow);max-height:calc(100vh - 32px);overflow:auto}
+.nav-h{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:4px 10px 8px}
+.nav-h .tr{display:inline;font-size:1em}
+.navlist{list-style:none;margin:0 0 14px;padding:0;display:grid;gap:2px}
+.navlink{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;width:100%;text-align:left;background:none;border:0;border-radius:10px;padding:8px 10px;cursor:pointer;color:var(--ink)}
+.navlink:hover{background:var(--paper)}
+.navlink .t{grid-row:span 2;font-family:var(--f-mono);font-size:.68rem;font-weight:700;color:var(--accent);background:var(--accent-soft);border-radius:6px;padding:3px 6px;align-self:start;margin-top:2px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.navlink .n{font-weight:500;font-size:.9rem;line-height:1.3}
+.navlink .ni{font-size:.78rem;font-style:italic;color:var(--muted);font-weight:300;line-height:1.3}
+.navlink[aria-current="step"]{background:var(--ink);color:var(--card)}
+.navlink[aria-current="step"] .ni{color:var(--card);opacity:.75}
+.navlink[aria-current="step"] .t{background:var(--amber);color:var(--card)}
+.navlink.task .t{color:var(--amber);background:var(--amber-soft)}
+main{min-width:0}
+
+/* ---------- lesson panels ---------- */
+section.lesson{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:clamp(18px,3vw,36px);box-shadow:var(--shadow);display:grid;gap:22px;min-width:0}
+.sec-head{display:grid;gap:8px;padding-bottom:18px;border-bottom:1px dashed var(--line)}
+.time{font-family:var(--f-mono);font-weight:700;font-size:.78rem;letter-spacing:.06em;color:var(--accent);font-variant-numeric:tabular-nums}
+.sec-head h2{font-size:clamp(1.6rem,3.2vw,2.3rem);font-weight:800;letter-spacing:-.015em}
+.sec-head h2 .tr{font-family:var(--f-display);font-weight:500;font-size:.55em;margin-top:4px;letter-spacing:0}
+.goal{display:flex;gap:10px;align-items:flex-start;background:var(--accent-soft);padding:12px 14px;border-radius:12px;font-size:.95rem}
+.goal svg{width:22px;height:22px;flex:none;margin-top:2px}
+.block{display:grid;gap:12px;min-width:0}
+.block h3{font-size:1.25rem;font-weight:700;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.block h3 .tr{display:inline;font-family:var(--f-body);font-size:.75em;font-weight:300}
+.block h3 .k{font-family:var(--f-mono);font-size:.7rem;color:var(--card);background:var(--accent);border-radius:5px;padding:2px 7px;letter-spacing:.06em}
+.prose{display:grid;gap:10px;max-width:72ch}
+.key{border:2px solid var(--accent);border-radius:14px;padding:16px 18px;display:grid;gap:8px;background:color-mix(in srgb,var(--accent-soft) 55%,var(--card))}
+.key .kh{font-family:var(--f-mono);font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.key math[display="block"]{font-size:1.35em}
+.warnbox{border-left:0;border:1px solid color-mix(in srgb,var(--bad) 40%,var(--line));background:var(--bad-soft);border-radius:12px;padding:12px 14px;display:flex;gap:10px;font-size:.94rem}
+.warnbox svg{width:22px;height:22px;flex:none;margin-top:2px}
+.tipbox{border:1px solid color-mix(in srgb,var(--amber) 45%,var(--line));background:var(--amber-soft);border-radius:12px;padding:12px 14px;display:flex;gap:10px;font-size:.94rem}
+.tipbox svg{width:22px;height:22px;flex:none;margin-top:2px}
+.mline{font-size:1.08rem;padding:2px 0;overflow-x:auto;overflow-y:hidden}
+.mline math{font-size:1.15em}
+.worked{border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:grid;gap:12px;background:var(--card)}
+.wk-label{font-family:var(--f-mono);font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--amber)}
+.wk-q{font-weight:500}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:10px;counter-reset:st}
+.steps>li{display:grid;grid-template-columns:28px minmax(0,1fr);gap:4px 12px;counter-increment:st}
+.steps>li::before{content:counter(st);grid-row:span 2;width:28px;height:28px;border-radius:50%;background:var(--ink);color:var(--card);font-family:var(--f-mono);font-weight:700;font-size:.8rem;display:grid;place-items:center}
+.steps>li>p{font-size:.94rem}
+.steps>li .mline{grid-column:2}
+.check{display:flex;gap:8px;align-items:flex-start;color:var(--ok);font-weight:500;font-size:.94rem;background:var(--ok-soft);padding:8px 12px;border-radius:10px}
+.check .tr{color:var(--ok);opacity:.85}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:14px}
+.tile{border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:6px;align-content:start}
+.tile .big{font-size:1.25rem}
+.tile .cap{font-family:var(--f-mono);font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.tile.yes{background:var(--ok-soft);border-color:color-mix(in srgb,var(--ok) 35%,var(--line))}
+.tile.yes .cap{color:var(--ok)}
+.tile.no{background:var(--bad-soft);border-color:color-mix(in srgb,var(--bad) 35%,var(--line))}
+.tile.no .cap{color:var(--bad)}
+.scroll{overflow-x:auto;max-width:100%}
+table.tbl{border-collapse:collapse;width:100%;min-width:480px;font-size:.93rem}
+.tbl th,.tbl td{border-bottom:1px solid var(--line);padding:9px 10px;text-align:left;vertical-align:top}
+.tbl th{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.tbl td .tr{font-size:.88em}
+.anatomy{display:flex;flex-wrap:wrap;gap:10px;align-items:stretch}
+.anatomy div{border:2px dashed var(--line);border-radius:12px;padding:10px 14px;text-align:center;display:grid;gap:2px;min-width:110px}
+.anatomy .m{font-size:1.6rem}
+.anatomy .c1{border-color:var(--p1)} .anatomy .c2{border-color:var(--p2)} .anatomy .c3{border-color:var(--p3)}
+.anatomy small{font-size:.8rem;font-weight:600}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;list-style:none;padding:0;margin:0}
+.flow li{border:1.5px solid var(--ink);border-radius:999px;padding:6px 14px;font-size:.88rem;line-height:1.3;background:var(--card)}
+.flow li b{font-family:var(--f-mono);color:var(--accent);margin-right:4px}
+.flow li .tr{font-size:.85em}
+figure{margin:0}
+.fig{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:8px;justify-items:center;overflow-x:auto}
+.fig svg{width:100%;max-width:440px;height:auto}
+.fig.wide svg{max-width:620px;min-width:480px}
+.fig figcaption{font-size:.85rem;color:var(--muted);text-align:center}
+
+/* svg classes */
+.sv-ink{fill:var(--ink)} .sv-str{stroke:var(--muted);stroke-width:2;fill:none} .sv-pan{fill:var(--ink)} .sv-base{fill:var(--accent)}
+.sv-box{fill:var(--amber-soft);stroke:var(--amber);stroke-width:2} .sv-tb{fill:var(--ink);font:italic 600 14px var(--f-body)}
+.sv-w{fill:var(--accent-soft);stroke:var(--accent);stroke-width:2} .sv-tw{fill:var(--ink);font:600 11px var(--f-body)}
+.sv-cap{fill:var(--muted);font:500 12px var(--f-body)} .sv-fill{fill:var(--accent-soft);stroke:var(--accent);stroke-width:2.5}
+.sv-lab{fill:var(--ink);font:600 15px var(--f-body)} .sv-big{fill:var(--ink);font:800 34px var(--f-display)}
+.sv-win{fill:var(--card);stroke:var(--accent);stroke-width:1.5} .sv-amb{fill:var(--amber-soft);stroke:var(--amber);stroke-width:2.5}
+.sv-arrow{stroke:var(--ink);stroke-width:2;fill:none} .sv-arrow2{stroke:var(--amber);stroke-width:2;fill:none;stroke-dasharray:5 4}
+.sv-op{fill:var(--card);stroke:var(--ink);stroke-width:2} .sv-op2{fill:var(--amber-soft);stroke:var(--amber);stroke-width:2}
+.sv-mk{fill:var(--ink)} .sv-mk2{fill:var(--amber)}
+
+/* ---------- questions ---------- */
+.ex-title{font-size:1.4rem;font-weight:800;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;padding-top:6px;border-top:2px solid var(--ink);margin-top:6px}
+.ex-title .tr{display:inline;font-family:var(--f-body);font-weight:300;font-size:.7em}
+.qset{display:grid;gap:18px;counter-reset:q}
+.q{border:1.5px solid var(--line);border-radius:16px;padding:18px;display:grid;gap:12px;background:var(--card);min-width:0;transition:border-color .2s}
+.q.ok{border-color:var(--ok)} .q.bad{border-color:var(--bad)}
+.q-head{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.q-num{font-family:var(--f-display);font-weight:800;font-size:1.05rem;min-width:34px;height:34px;padding:0 8px;display:grid;place-items:center;border-radius:10px;background:var(--ink);color:var(--card)}
+.q-type{font-family:var(--f-mono);font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);display:flex;gap:6px;flex-wrap:wrap}
+.q-type i{font-style:italic;font-weight:500;color:var(--muted);text-transform:none;letter-spacing:0}
+.q-text{font-size:1.02rem;font-weight:500}
+.q-hint{font-size:.82rem;color:var(--muted)}
+.q-hint .en,.q-hint .tr{display:inline}
+.q-hint .tr::before{content:" · "}
+.q-fig{background:var(--paper);border-radius:12px;padding:10px;display:grid;justify-items:center}
+.q-fig svg{width:100%;max-width:380px;height:auto}
+.q-body{min-width:0}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:10px}
+.opt{display:flex;gap:12px;align-items:center;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;cursor:pointer;transition:border-color .15s,background .15s}
+.opt:hover{border-color:var(--accent)}
+.opt input{position:absolute;opacity:0;pointer-events:none}
+.opt .mark{width:20px;height:20px;border:2px solid var(--muted);border-radius:50%;flex:none;display:grid;place-items:center}
+.opt.cb .mark{border-radius:5px}
+.opt input:checked + .mark{border-color:var(--accent);background:var(--accent)}
+.opt input:checked + .mark::after{content:"";width:8px;height:8px;border-radius:50%;background:var(--card)}
+.opt.cb input:checked + .mark::after{width:10px;height:5px;border-radius:0;background:none;border-left:2.5px solid var(--card);border-bottom:2.5px solid var(--card);transform:rotate(-45deg) translate(1px,-1px)}
+.opt:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+.opt:has(input:focus-visible){outline:3px solid var(--amber);outline-offset:2px}
+.otext{min-width:0}
+.is-ok{border-color:var(--ok)!important;background:var(--ok-soft)!important}
+.is-bad{border-color:var(--bad)!important;background:var(--bad-soft)!important}
+.tfrow{display:flex;gap:10px;flex-wrap:wrap}
+.tfrow .opt{flex:1 1 160px;justify-content:flex-start}
+.blank-line{display:flex;flex-wrap:wrap;gap:10px 8px;align-items:center;font-size:1.05rem;line-height:2}
+input.blank{width:7.5em;max-width:100%;font:600 1rem var(--f-mono);padding:6px 10px;border:2px solid var(--line);border-bottom-color:var(--accent);border-radius:8px;background:var(--paper);color:var(--ink);text-align:center}
+input.blank:focus{outline:none;border-color:var(--accent);background:var(--card)}
+.sortlist{list-style:none;margin:0;padding:0;display:grid;gap:8px;counter-reset:so}
+.sitem{display:grid;grid-template-columns:auto auto minmax(0,1fr) auto;gap:10px;align-items:center;border:1.5px solid var(--line);border-radius:12px;padding:8px 10px;background:var(--card);cursor:grab;counter-increment:so}
+.sitem::before{content:counter(so);font-family:var(--f-mono);font-weight:700;font-size:.8rem;width:24px;height:24px;border-radius:6px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center}
+.sitem.dragging{opacity:.45}
+.grip{color:var(--muted);letter-spacing:-2px;font-weight:700}
+.sbtns{display:flex;gap:4px}
+.mv{border:1px solid var(--line);background:var(--paper);border-radius:8px;width:34px;height:34px;cursor:pointer;font-size:.75rem}
+.mv:hover{border-color:var(--accent)}
+.pairs{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+.pcol{display:grid;gap:8px;align-content:start}
+.pitem{display:flex;gap:10px;align-items:center;text-align:left;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--card);cursor:pointer;min-height:52px;min-width:0}
+.pitem:hover{border-color:var(--accent)}
+.pitem.sel{border-color:var(--ink);box-shadow:0 0 0 3px color-mix(in srgb,var(--ink) 25%,transparent)}
+.pbadge{width:24px;height:24px;border-radius:50%;flex:none;border:2px dashed var(--line);display:grid;place-items:center;font:700 .75rem var(--f-mono);color:var(--card)}
+.ptext{min-width:0}
+.pitem[data-c="1"]{border-color:var(--p1);background:color-mix(in srgb,var(--p1) 12%,var(--card))} .pitem[data-c="1"] .pbadge{background:var(--p1);border:0}
+.pitem[data-c="2"]{border-color:var(--p2);background:color-mix(in srgb,var(--p2) 12%,var(--card))} .pitem[data-c="2"] .pbadge{background:var(--p2);border:0}
+.pitem[data-c="3"]{border-color:var(--p3);background:color-mix(in srgb,var(--p3) 12%,var(--card))} .pitem[data-c="3"] .pbadge{background:var(--p3);border:0}
+.pitem[data-c="4"]{border-color:var(--p4);background:color-mix(in srgb,var(--p4) 12%,var(--card))} .pitem[data-c="4"] .pbadge{background:var(--p4);border:0}
+.pitem[data-c="5"]{border-color:var(--p5);background:color-mix(in srgb,var(--p5) 12%,var(--card))} .pitem[data-c="5"] .pbadge{background:var(--p5);border:0}
+.zone{border:2px dashed var(--line);border-radius:14px;padding:10px;display:grid;gap:8px;align-content:start;transition:border-color .15s,background .15s}
+.zone.over,.zone.target{border-color:var(--accent);background:var(--accent-soft)}
+.zlabel{font-weight:600;font-size:.9rem}
+.pool .zlabel{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.zitems{display:flex;flex-wrap:wrap;gap:8px;min-height:46px}
+.buckets{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:10px;margin-top:10px}
+.bucket{background:color-mix(in srgb,var(--paper) 60%,var(--card));min-height:120px}
+.chip{border:1.5px solid var(--ink);background:var(--card);border-radius:10px;padding:6px 12px;cursor:grab;user-select:none;font-size:.95rem;max-width:100%}
+.chip.sel{background:var(--ink);color:var(--card)}
+.chip .tr{font-size:.85em}
+.chip.sel .tr{color:var(--card);opacity:.8}
+.q-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.fb{font-size:.9rem;font-weight:500;flex:1 1 220px}
+.fb.good{color:var(--ok)} .fb.nope{color:var(--bad)} .fb.warn{color:var(--warn)}
+.fb .tr{color:inherit;opacity:.85}
+details.sol{border:1px solid var(--line);border-radius:12px;background:var(--paper)}
+details.sol summary{cursor:pointer;padding:10px 14px;font-weight:600;font-size:.92rem;list-style:none;display:flex;gap:8px;align-items:center}
+details.sol summary::-webkit-details-marker{display:none}
+details.sol summary::before{content:"+";font-family:var(--f-mono);width:22px;height:22px;border-radius:6px;background:var(--amber);color:var(--card);display:grid;place-items:center;font-weight:700}
+details[open].sol summary::before{content:"−"}
+details.sol summary i{font-weight:300;color:var(--muted)}
+.sol-body{padding:4px 16px 16px;display:grid;gap:8px}
+.snote{font-size:.93rem}
+.sline{font-size:1.05rem;padding:4px 12px;border-left:3px solid var(--amber);background:var(--card);border-radius:0 8px 8px 0;overflow-x:auto;overflow-y:hidden}
+.scorebar{display:flex;gap:16px;align-items:center;flex-wrap:wrap;padding:16px;border-radius:14px;background:var(--ink);color:var(--card)}
+.scorebar .btn{background:var(--amber);border-color:var(--amber);color:var(--card)}
+.score{font-size:1.05rem}
+.score .tr{color:var(--card);opacity:.75}
+.score b{font-family:var(--f-display);font-size:1.4rem}
+.secnav{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding-top:10px;border-top:1px dashed var(--line)}
+.secnav .btn{flex-direction:column}
+textarea{width:100%;min-height:72px;font:inherit;font-size:.95rem;border:1.5px solid var(--line);border-radius:10px;padding:10px;background:var(--paper);color:var(--ink);resize:vertical}
+.refl{display:grid;gap:14px;list-style:none;padding:0;margin:0}
+.refl li{display:grid;gap:6px}
+.keylist{display:grid;gap:10px;list-style:none;padding:0;margin:0}
+.keylist li{display:grid;grid-template-columns:30px minmax(0,1fr);gap:12px;align-items:start;padding:12px;border:1px solid var(--line);border-radius:12px}
+.keylist li svg{width:30px;height:30px}
+details.fu{border:1px solid var(--line);border-radius:12px;padding:0}
+details.fu summary{padding:12px 14px;cursor:pointer;font-weight:500;list-style:none;display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px}
+details.fu summary::-webkit-details-marker{display:none}
+details.fu summary .no{font-family:var(--f-mono);font-weight:700;color:var(--amber)}
+details.fu .sol-body{border-top:1px dashed var(--line);padding-top:12px}
+details.remind{border:2px solid var(--accent);border-radius:14px;background:color-mix(in srgb,var(--accent-soft) 50%,var(--card))}
+details.remind summary{padding:12px 16px;cursor:pointer;font-weight:600;list-style:none}
+details.remind summary::-webkit-details-marker{display:none}
+details.remind summary::before{content:"▸ ";color:var(--accent)}
+details.remind[open] summary::before{content:"▾ "}
+details.remind summary i{font-weight:300;color:var(--muted)}
+details.remind .sol-body{padding-top:0}
+
+section.lesson,.block,.prose,.worked,.key,.qset,.q,.sol-body,.sec-head,.refl li{grid-template-columns:minmax(0,1fr)}
+math[display="block"]{max-width:100%;overflow-x:auto;overflow-y:hidden;padding-block:2px}
+.key{overflow-x:auto}
+.q-hint{display:block}
+.tipbox>*,.warnbox>*,.goal>*,.check>*{min-width:0}
+.flow li{max-width:100%}
+.wk-q,.snote,.prose p{overflow-wrap:anywhere}
+@media (max-width:900px){
+  .layout{grid-template-columns:minmax(0,1fr)}
+  nav.side{position:static;max-height:none;padding:12px}
+  .navlist{display:flex;overflow-x:auto;gap:6px;padding-bottom:6px;scroll-snap-type:x proximity}
+  .navlist li{flex:0 0 200px;scroll-snap-align:start}
+  .navlink{height:100%;border:1px solid var(--line)}
+}
+@media (max-width:560px){
+  .pairs{gap:8px;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr)}
+  .pitem{padding:8px;gap:6px}
+  .sitem{grid-template-columns:auto minmax(0,1fr) auto}
+  .grip{display:none}
+  .btn-rules{width:100%;justify-content:center}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+<div class="wrap">
+<header class="top">
+  <div class="brand-block">
+    <div class="brand">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><rect x="1" y="1" width="38" height="38" rx="10" fill="var(--ink)"/><rect x="9" y="15" width="22" height="3.5" rx="1.5" fill="var(--amber)"/><rect x="9" y="22" width="22" height="3.5" rx="1.5" fill="var(--amber)"/><circle cx="20" cy="9" r="2.4" fill="var(--card)"/><circle cx="20" cy="31.5" r="2.4" fill="var(--card)"/></svg>
+      <span>Math Tutoring <small>by Deni</small></span>
+    </div>
+    <p class="topic"><span class="lbl">Topic</span>Linear Equations and Inequalities in One Variable — <b>Linear Equations in One Variable</b></p>
+    <p class="topic tr-line"><span class="lbl">Topik</span>Persamaan dan Pertidaksamaan Linear Satu Variabel — <b>Persamaan Linear Satu Variabel</b></p>
+    <p class="meta">Kurikulum Merdeka · Grade 8 / Kelas 8 SMP · 60 minutes / 60 menit</p>
+  </div>
+  <button type="button" class="btn btn-rules" id="openRules" aria-haspopup="dialog">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 8h8M8 12h8M8 16h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <span>Class rules <i>Aturan kelas</i></span>
+  </button>
+</header>
+
+<div class="modal" id="rulesModal" role="dialog" aria-modal="true" aria-labelledby="rulesTitle" hidden>
+  <div class="modal-card">
+    <h2 id="rulesTitle"><span>Class rules<span class="tr">Aturan kelas</span></span><button type="button" class="x-close" id="closeRules" aria-label="Close / Tutup">×</button></h2>
+    <ol class="rules">
+      <li><svg viewBox="0 0 44 44" aria-hidden="true"><rect width="44" height="44" rx="12" fill="var(--accent-soft)"/><path d="M10 14h16a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3h-9l-5 4v-4h-2a3 3 0 0 1-3-3v-6a3 3 0 0 1 3-3z" fill="var(--accent)"/><path d="M31 20h3a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-1v3l-4-3h-6" fill="none" stroke="var(--accent)" stroke-width="2"/></svg>
+        <div><b>Take turns when speaking.</b><span class="tr">Berbicara secara bergantian.</span></div></li>
+      <li><svg viewBox="0 0 44 44" aria-hidden="true"><rect width="44" height="44" rx="12" fill="var(--amber-soft)"/><path d="M14 10h12v24H14z" fill="none" stroke="var(--amber)" stroke-width="2.5"/><path d="M24 22h12m-4-4 4 4-4 4" fill="none" stroke="var(--amber)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div><b>Ask permission if you want to leave the class.</b><span class="tr">Meminta izin jika ingin meninggalkan kelas.</span></div></li>
+      <li><svg viewBox="0 0 44 44" aria-hidden="true"><rect width="44" height="44" rx="12" fill="var(--accent-soft)"/><rect x="8" y="15" width="18" height="14" rx="3" fill="var(--accent)"/><path d="M26 20l7-4v12l-7-4z" fill="var(--accent)"/><rect x="33" y="9" width="5" height="9" rx="2.5" fill="none" stroke="var(--accent)" stroke-width="1.8"/></svg>
+        <div><b>Turn on your microphone and camera when needed.</b><span class="tr">Menyalakan microphone dan camera jika diperlukan.</span></div></li>
+    </ol>
+    <button type="button" class="btn btn-accent" id="okRules">I understand <i>Saya mengerti</i></button>
+  </div>
+</div>
+
+<div class="layout">
+<nav class="side" aria-label="Lesson sections / Bagian pelajaran">
+  <p class="nav-h">Lesson flow <span class="tr">· Alur pelajaran</span></p>
+  <ul class="navlist">
+    <li><button type="button" class="navlink" data-t="s1"><span class="t">00:00–00:10</span><span class="n">Spiral Review Warm-up</span><span class="ni">Pemanasan: ulasan spiral</span></button></li>
+    <li><button type="button" class="navlink" data-t="s2"><span class="t">00:10–00:15</span><span class="n">Introduction &amp; Real-World Connection</span><span class="ni">Pengenalan &amp; kaitan dunia nyata</span></button></li>
+    <li><button type="button" class="navlink" data-t="s3"><span class="t">00:15–00:20</span><span class="n">Review of Prior Knowledge</span><span class="ni">Mengulang pengetahuan prasyarat</span></button></li>
+    <li><button type="button" class="navlink" data-t="s4"><span class="t">00:20–00:25</span><span class="n">Problem Introduction</span><span class="ni">Pengenalan masalah</span></button></li>
+    <li><button type="button" class="navlink" data-t="s5"><span class="t">00:25–00:40</span><span class="n">Guided Practice</span><span class="ni">Latihan terbimbing</span></button></li>
+    <li><button type="button" class="navlink" data-t="s6"><span class="t">00:40–00:55</span><span class="n">Independent Practice</span><span class="ni">Latihan mandiri</span></button></li>
+    <li><button type="button" class="navlink" data-t="s7"><span class="t">00:55–01:00</span><span class="n">Consolidation &amp; Reflection</span><span class="ni">Penguatan &amp; refleksi</span></button></li>
+  </ul>
+  <p class="nav-h">Tasks <span class="tr">· Tugas</span></p>
+  <ul class="navlist">
+    <li><button type="button" class="navlink task" data-t="t1"><span class="t">10 Q</span><span class="n">Task 1 · Concepts &amp; Basics</span><span class="ni">Tugas 1 · Konsep &amp; dasar</span></button></li>
+    <li><button type="button" class="navlink task" data-t="t2"><span class="t">10 Q</span><span class="n">Task 2 · Both Sides &amp; Brackets</span><span class="ni">Tugas 2 · Dua ruas &amp; kurung</span></button></li>
+    <li><button type="button" class="navlink task" data-t="t3"><span class="t">10 Q</span><span class="n">Task 3 · Fractions &amp; Decimals</span><span class="ni">Tugas 3 · Pecahan &amp; desimal</span></button></li>
+    <li><button type="button" class="navlink task" data-t="t4"><span class="t">10 Q</span><span class="n">Task 4 · Word Problems</span><span class="ni">Tugas 4 · Soal cerita</span></button></li>
+    <li><button type="button" class="navlink task" data-t="t5"><span class="t">10 Q</span><span class="n">Task 5 · Challenge (HOTS)</span><span class="ni">Tugas 5 · Tantangan (HOTS)</span></button></li>
+  </ul>
+</nav>
+
+<main id="main">
+
+<!-- ===================== S1 ===================== -->
+<section class="lesson" id="s1" aria-labelledby="h-s1">
+  <div class="sec-head">
+    <span class="time">00:00 – 00:10</span>
+    <h2 id="h-s1">Spiral Review Warm-up<span class="tr">Pemanasan: Mengulang Materi Sebelumnya</span></h2>
+    <p class="goal"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="var(--accent)" stroke-width="2"/><circle cx="12" cy="12" r="4.5" fill="none" stroke="var(--accent)" stroke-width="2"/><circle cx="12" cy="12" r="1.5" fill="var(--accent)"/></svg>
+      <span>Goal: refresh the algebra skills we need today — naming parts of an expression, combining like terms, expanding brackets, and substituting values.<span class="tr">Tujuan: mengingat kembali keterampilan aljabar yang kita perlukan hari ini — bagian-bagian bentuk aljabar, menjumlahkan suku sejenis, menjabarkan kurung, dan substitusi nilai.</span></span></p>
+  </div>
+
+  <div class="block">
+    <h3><span class="k">A</span>Parts of an algebraic expression <span class="tr">Bagian-bagian bentuk aljabar</span></h3>
+    <p>Look at the expression $5x - 7$.<span class="tr">Perhatikan bentuk aljabar $5x - 7$.</span></p>
+    <div class="anatomy">
+      <div class="c1"><span class="m">$5$</span><small>coefficient</small><span class="tr">koefisien</span></div>
+      <div class="c2"><span class="m">$x$</span><small>variable</small><span class="tr">variabel</span></div>
+      <div class="c3"><span class="m">$-7$</span><small>constant</small><span class="tr">konstanta</span></div>
+    </div>
+    <div class="prose">
+      <p>A <b>variable</b> is a letter that stands for an unknown number. A <b>coefficient</b> is the number multiplied by the variable. A <b>constant</b> is a number without a variable. The sign in front of a term belongs to that term.<span class="tr"><b>Variabel</b> adalah huruf yang mewakili bilangan yang belum diketahui. <b>Koefisien</b> adalah bilangan yang dikalikan dengan variabel. <b>Konstanta</b> adalah bilangan tanpa variabel. Tanda di depan suatu suku ikut menjadi milik suku itu.</span></p>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3><span class="k">B</span>Like terms <span class="tr">Suku sejenis</span></h3>
+    <div class="prose"><p><b>Like terms</b> have the same variable raised to the same power. Only like terms can be added or subtracted.<span class="tr"><b>Suku sejenis</b> memiliki variabel dan pangkat yang sama. Hanya suku sejenis yang dapat dijumlahkan atau dikurangkan.</span></p></div>
+    <div class="cols">
+      <div class="tile yes"><span class="cap">Like terms ✓ Sejenis</span><span class="big">$3x$ and $-5x$</span><span class="big">$\frac{1}{2}y$ and $y$</span><span class="big">$4$ and $-9$</span></div>
+      <div class="tile no"><span class="cap">Not like terms ✗ Tidak sejenis</span><span class="big">$3x$ and $3x^2$</span><span class="big">$2x$ and $2y$</span><span class="big">$6x$ and $6$</span></div>
+    </div>
+    <div class="worked">
+      <p class="wk-label">Example 1 · Contoh 1</p>
+      <p class="wk-q">Simplify $4x + 6 - x - 9$.<span class="tr">Sederhanakan $4x + 6 - x - 9$.</span></p>
+      <ol class="steps">
+        <li><p>Group the like terms. Keep each sign with its term. Remember $-x$ means $-1x$.<span class="tr">Kelompokkan suku sejenis. Tanda ikut sukunya. Ingat $-x$ artinya $-1x$.</span></p><div class="mline">$4x + 6 - x - 9 = (4x - x) + (6 - 9)$</div></li>
+        <li><p>Calculate each group.<span class="tr">Hitung setiap kelompok.</span></p><div class="mline">$= 3x + (-3) = 3x - 3$</div></li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3><span class="k">C</span>Distributive property <span class="tr">Sifat distributif</span></h3>
+    <div class="key"><span class="kh">Formula · Rumus</span>$$a(b + c) = ab + ac \qquad a(b - c) = ab - ac$$<p>Multiply the number outside by <b>every</b> term inside the bracket.<span class="tr">Kalikan bilangan di luar kurung dengan <b>setiap</b> suku di dalam kurung.</span></p></div>
+    <div class="cols">
+      <div class="worked">
+        <p class="wk-label">Example 2 · Contoh 2</p>
+        <p class="wk-q">Expand $3(2x + 5)$.<span class="tr">Jabarkan $3(2x + 5)$.</span></p>
+        <ol class="steps">
+          <li><p>Multiply 3 by each term.<span class="tr">Kalikan 3 dengan setiap suku.</span></p><div class="mline">$3 \times 2x + 3 \times 5$</div></li>
+          <li><p>Simplify.<span class="tr">Sederhanakan.</span></p><div class="mline">$= 6x + 15$</div></li>
+        </ol>
+      </div>
+      <div class="worked">
+        <p class="wk-label">Example 3 · Contoh 3</p>
+        <p class="wk-q">Expand $-2(x - 4)$ and $-(x - 5)$.<span class="tr">Jabarkan $-2(x - 4)$ dan $-(x - 5)$.</span></p>
+        <ol class="steps">
+          <li><p>Negative × negative = positive.<span class="tr">Negatif × negatif = positif.</span></p><div class="mline">$-2(x - 4) = -2x + 8$</div></li>
+          <li><p>A minus sign before a bracket means $\times(-1)$.<span class="tr">Tanda minus di depan kurung berarti $\times(-1)$.</span></p><div class="mline">$-(x - 5) = -x + 5$</div></li>
+        </ol>
+      </div>
+    </div>
+    <div class="warnbox"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 21h20z" fill="none" stroke="var(--bad)" stroke-width="2" stroke-linejoin="round"/><path d="M12 10v5" stroke="var(--bad)" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="18" r="1.2" fill="var(--bad)"/></svg>
+      <p>Common mistake: $-2(x - 4) = -2x - 8$ ✗. The second term must also be multiplied: $(-2)(-4) = +8$.<span class="tr">Kesalahan umum: $-2(x - 4) = -2x - 8$ ✗. Suku kedua juga harus dikalikan: $(-2)(-4) = +8$.</span></p></div>
+  </div>
+
+  <div class="block">
+    <h3><span class="k">D</span>Substitution <span class="tr">Substitusi</span></h3>
+    <div class="worked">
+      <p class="wk-label">Example 4 · Contoh 4</p>
+      <p class="wk-q">Find the value of $3x - 4$ when $x = 5$.<span class="tr">Tentukan nilai $3x - 4$ jika $x = 5$.</span></p>
+      <ol class="steps">
+        <li><p>Replace $x$ with $5$. Use brackets.<span class="tr">Ganti $x$ dengan $5$. Gunakan tanda kurung.</span></p><div class="mline">$3(5) - 4$</div></li>
+        <li><p>Multiply first, then subtract.<span class="tr">Kalikan dulu, lalu kurangkan.</span></p><div class="mline">$= 15 - 4 = 11$</div></li>
+      </ol>
+    </div>
+  </div>
+
+  <h3 class="ex-title">Exercises <span class="tr">Latihan</span></h3>
+  <div class="qset" data-set="s1"></div>
+</section>
+
+<!-- ===================== S2 ===================== -->
+<section class="lesson" id="s2" aria-labelledby="h-s2" hidden>
+  <div class="sec-head">
+    <span class="time">00:10 – 00:15</span>
+    <h2 id="h-s2">Introduction &amp; Real-World Connection<span class="tr">Pengenalan &amp; Kaitan dengan Dunia Nyata</span></h2>
+    <p class="goal"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="var(--accent)" stroke-width="2"/><circle cx="12" cy="12" r="4.5" fill="none" stroke="var(--accent)" stroke-width="2"/><circle cx="12" cy="12" r="1.5" fill="var(--accent)"/></svg>
+      <span>Goal: recognise a linear equation in one variable (PLSV), name its parts, and write one from a real-life story.<span class="tr">Tujuan: mengenali persamaan linear satu variabel (PLSV), menyebutkan bagian-bagiannya, dan menyusunnya dari cerita sehari-hari.</span></span></p>
+  </div>
+
+  <div class="block">
+    <h3><span class="k">A</span>What is an equation? <span class="tr">Apa itu persamaan?</span></h3>
+    <div class="prose">
+      <p>An <b>equation</b> is a mathematical sentence that uses the sign "$=$" to show that two expressions have the same value. If it contains a variable, it is an <b>open sentence</b>: it becomes true or false only after we replace the variable with a number.<span class="tr"><b>Persamaan</b> adalah kalimat matematika yang memakai tanda "$=$" untuk menunjukkan bahwa dua bentuk bernilai sama. Jika memuat variabel, persamaan itu adalah <b>kalimat terbuka</b>: baru bernilai benar atau salah setelah variabelnya diganti bilangan.</span></p>
+      <p>Example: $x + 4 = 9$ is true when $x = 5$, and false when $x = 2$. The value that makes it true is the <b>solution</b> (penyelesaian).<span class="tr">Contoh: $x + 4 = 9$ benar jika $x = 5$, dan salah jika $x = 2$. Nilai yang membuatnya benar disebut <b>penyelesaian</b>.</span></p>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3><span class="k">B</span>Linear equation in one variable (PLSV) <span class="tr">Persamaan linear satu variabel</span></h3>
+    <div class="key"><span class="kh">General form · Bentuk umum</span>$$ax + b = c, \qquad a \neq 0$$
+      <p>$a$ = coefficient, $x$ = variable, $b$ and $c$ = constants. Three conditions: ① has the sign "$=$", ② exactly <b>one</b> variable, ③ the variable has power <b>1</b>.<span class="tr">$a$ = koefisien, $x$ = variabel, $b$ dan $c$ = konstanta. Tiga syarat: ① ada tanda "$=$", ② hanya <b>satu</b> variabel, ③ pangkat variabel <b>1</b>.</span></p></div>
+    <div class="cols">
+      <div class="tile yes"><span class="cap">PLSV ✓</span><span class="big">$2x + 3 = 9$</span><span class="big">$5 = 3 - y$</span><span class="big">$\frac{m}{2} = 7$</span></div>
+      <div class="tile no"><span class="cap">Not PLSV ✗ Bukan PLSV</span>
+        <span>$x^2 + 2 = 6$ — power 2 <i class="tr" style="display:inline">pangkat 2</i></span>
+        <span>$a + b = 8$ — two variables <i class="tr" style="display:inline">dua variabel</i></span>
+        <span>$3x - 1 \gt 5$ — inequality <i class="tr" style="display:inline">pertidaksamaan</i></span>
+        <span>$4x + 1$ — no "=" sign <i class="tr" style="display:inline">tanpa tanda "="</i></span></div>
+    </div>
+    <div class="worked">
+      <p class="wk-label">Example 1 · Contoh 1</p>
+      <p class="wk-q">Name the parts of $5p + 2 = 17$.<span class="tr">Sebutkan bagian-bagian dari $5p + 2 = 17$.</span></p>
+      <ol class="steps">
+        <li><p>Variable (the letter): $p$. Coefficient of $p$: $5$.<span class="tr">Variabel (hurufnya): $p$. Koefisien $p$: $5$.</span></p></li>
+        <li><p>Constants: $2$ on the left side and $17$ on the right side.<span class="tr">Konstanta: $2$ di ruas kiri dan $17$ di ruas kanan.</span></p></li>
+        <li><p>Left side (ruas kiri) is $5p + 2$; right side (ruas kanan) is $17$.<span class="tr">Ruas kiri adalah $5p + 2$; ruas kanan adalah $17$.</span></p></li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3><span class="k">C</span>An equation is a balance <span class="tr">Persamaan itu seperti timbangan</span></h3>
+    <figure class="fig"><div data-svg='["scale",2,3,0,9]'></div><figcaption>$2x + 3 = 9$ · Each box weighs $x$ kg, each circle 1 kg.<span class="tr">Setiap kotak beratnya $x$ kg, setiap lingkaran 1 kg.</span></figcaption></figure>
+    <div class="prose"><p>The scale is level, so both sides are equal. If we take away 3 circles from <b>both</b> sides, it stays level: $2x = 6$. Split into 2 equal groups: $x = 3$. Whatever we do to one side, we must do to the other side.<span class="tr">Timbangan seimbang, jadi kedua sisi sama berat. Jika 3 lingkaran diambil dari <b>kedua</b> sisi, timbangan tetap seimbang: $2x = 6$. Bagi menjadi 2 kelompok sama: $x = 3$. Apa pun yang dilakukan pada satu ruas harus dilakukan juga pada ruas lainnya.</span></p></div>
+  </div>
+
+  <div class="block">
+    <h3><span class="k">D</span>From story to equation <span class="tr">Dari cerita ke persamaan</span></h3>
+    <div class="scroll"><table class="tbl">
+      <thead><tr><th>Words · Kata</th><th>Symbol · Simbol</th></tr></thead>
+      <tbody>
+        <tr><td>plus, more than, increased by, total<span class="tr">ditambah, lebih dari, bertambah, jumlah</span></td><td>$+$</td></tr>
+        <tr><td>minus, less than, decreased by, change (money back)<span class="tr">dikurangi, kurang dari, berkurang, kembalian</span></td><td>$-$</td></tr>
+        <tr><td>times, twice, each, per<span class="tr">kali, dua kali, setiap, per</span></td><td>$\times$ (e.g. $3x$, $2x$)</td></tr>
+        <tr><td>half of, divided by, shared equally<span class="tr">setengah dari, dibagi, dibagi rata</span></td><td>$\div$ (e.g. $\frac{x}{2}$)</td></tr>
+        <tr><td>is, equals, is the same as, pays<span class="tr">adalah, sama dengan, membayar</span></td><td>$=$</td></tr>
+      </tbody></table></div>
+    <div class="cols">
+      <div class="worked">
+        <p class="wk-label">Example 2 · Contoh 2</p>
+        <p class="wk-q">Dina buys 3 notebooks of the same price and one pen for Rp5.000. She pays Rp20.000 in total. Write an equation.<span class="tr">Dina membeli 3 buku tulis yang harganya sama dan satu pulpen seharga Rp5.000. Total yang dibayar Rp20.000. Tuliskan persamaannya.</span></p>
+        <ol class="steps">
+          <li><p>Choose a variable for the unknown: $x$ = price of one notebook (rupiah).<span class="tr">Pilih variabel untuk yang belum diketahui: $x$ = harga satu buku tulis (rupiah).</span></p></li>
+          <li><p>3 notebooks cost $3x$; add the pen; the total is 20000.<span class="tr">3 buku harganya $3x$; ditambah pulpen; totalnya 20000.</span></p><div class="mline">$3x + 5000 = 20000$</div></li>
+        </ol>
+      </div>
+      <div class="worked">
+        <p class="wk-label">Example 3 · Contoh 3</p>
+        <p class="wk-q">Bayu buys 2 drinks at $y$ rupiah each, pays with Rp20.000, and gets Rp6.000 change.<span class="tr">Bayu membeli 2 minuman seharga $y$ rupiah per botol, membayar Rp20.000, dan mendapat kembalian Rp6.000.</span></p>
+        <ol class="steps">
+          <li><p>Cost of 2 drinks: $2y$.<span class="tr">Harga 2 minuman: $2y$.</span></p></li>
+          <li><p>Change = money paid − cost.<span class="tr">Kembalian = uang yang dibayar − harga belanja.</span></p><div class="mline">$20000 - 2y = 6000$</div></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="ex-title">Exercises <span class="tr">Latihan</span></h3>
+  <div class="qset" data-set="s2"></div>
+</section>
+
+<!-- ===================== S3 ===================== -->
+<section class="lesson" id="s3" aria-labelledby="h-s3" hidden>
+  <div class="sec-head">
+    <span class="time">00:15 – 00:20</span>
+    <h2 id="h-s3">Review of Prior Knowledge<span class="tr">Mengulang Pengetahuan Prasyarat</span></h2>
+    <p class="goal"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="var(--accent)" stroke-width="2"/><circle cx="12" cy="12" r="4.5" fill="none" stroke="var(--accent)" stroke-width="2"/><circle cx="12" cy="12" r="1.5" fill="var(--accent)"/></svg>
+      <span>Goal: use inverse operations, integer rules, and the LCM — the three tools for solving equations.<span class="tr">Tujuan: menggunakan operasi invers, aturan bilangan bulat, dan KPK — tiga alat untuk menyelesaikan persamaan.</span></span></p>
+  </div>
+
+  <div class="block">
+    <h3><span class="k">A</span>Inverse operations <span class="tr">Operasi invers (kebalikan)</span></h3>
+    <div class="prose"><p>An inverse operation <b>undoes</b> another operation. Adding and subtracting undo each other; multiplying and dividing undo each other.<span class="tr">Operasi invers <b>membatalkan</b> operasi lain. Penjumlahan dan pengurangan saling membatalkan; perkalian dan pembagian saling membatalkan.</span></p></div>
+    <div class="cols">
+      <div class="tile"><span class="cap">Operation ⟷ Inverse</span><span class="big">$+\,a \;\longleftrightarrow\; -\,a$</span><span class="big">$\times\, a \;\longleftrightarrow\; \div\, a$</span><span class="tr">Operasi ⟷ Inversnya ($a \neq 0$ untuk pembagian)</span></div>
+    </div>
+    <figure class="fig wide"><div class="scroll" style="width:100%">
+      <svg viewBox="0 0 600 190" role="img" aria-label="Function machine forward and backward">
+        <defs><marker id="ah1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 10 5 0 10z" class="sv-mk"/></marker><marker id="ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 10 5 0 10z" class="sv-mk2"/></marker></defs>
+        <text class="sv-cap" x="10" y="18">Forward (do) · Maju (lakukan)</text>
+        <rect class="sv-fill" x="10" y="32" width="70" height="44" rx="10"/><text class="sv-lab" x="45" y="60" text-anchor="middle" font-style="italic">n</text>
+        <line class="sv-arrow" x1="84" y1="54" x2="140" y2="54" marker-end="url(#ah1)"/>
+        <rect class="sv-op" x="146" y="32" width="110" height="44" rx="10"/><text class="sv-lab" x="201" y="60" text-anchor="middle">× 4</text>
+        <line class="sv-arrow" x1="260" y1="54" x2="316" y2="54" marker-end="url(#ah1)"/>
+        <rect class="sv-op" x="322" y="32" width="110" height="44" rx="10"/><text class="sv-lab" x="377" y="60" text-anchor="middle">− 3</text>
+        <line class="sv-arrow" x1="436" y1="54" x2="492" y2="54" marker-end="url(#ah1)"/>
+        <rect class="sv-amb" x="498" y="32" width="90" height="44" rx="10"/><text class="sv-lab" x="543" y="60" text-anchor="middle">25</text>
+        <text class="sv-cap" x="10" y="112">Backward (undo, reverse order) · Mundur (batalkan, urutan terbalik)</text>
+        <rect class="sv-amb" x="498" y="126" width="90" height="44" rx="10"/><text class="sv-lab" x="543" y="154" text-anchor="middle">25</text>
+        <line class="sv-arrow2" x1="494" y1="148" x2="438" y2="148" marker-end="url(#ah2)"/>
+        <rect class="sv-op2" x="322" y="126" width="110" height="44" rx="10"/><text class="sv-lab" x="377" y="154" text-anchor="middle">+ 3 → 28</text>
+        <line class="sv-arrow2" x1="318" y1="148" x2="262" y2="148" marker-end="url(#ah2)"/>
+        <rect class="sv-op2" x="146" y="126" width="110" height="44" rx="10"/><text class="sv-lab" x="201" y="154" text-anchor="middle">÷ 4 → 7</text>
+        <line class="sv-arrow2" x1="142" y1="148" x2="86" y2="148" marker-end="url(#ah2)"/>
+        <rect class="sv-fill" x="10" y="126" width="70" height="44" rx="10"/><text class="sv-lab" x="45" y="154" text-anchor="middle">7</text>
+      </svg></div>
+      <figcaption>To undo, go backwards and use inverse operations in <b>reverse order</b>.<span class="tr">Untuk membatalkan, mundur dan gunakan operasi invers dengan <b>urutan terbalik</b>.</span></figcaption></figure>
+    <div class="worked">
+      <p class="wk-label">Example 1 · Contoh 1</p>
+      <p class="wk-q">"I think of a number, multiply it by 3, then add 5. The result is 26." Find the number.<span class="tr">"Aku memikirkan suatu bilangan, mengalikannya dengan 3, lalu menambah 5. Hasilnya 26." Tentukan bilangannya.</span></p>
+      <ol class="steps">
+        <li><p>Write the equation.<span class="tr">Tulis persamaannya.</span></p><div class="mline">$3n + 5 = 26$</div></li>
+        <li><p>The last operation was "+5", so undo it first: subtract 5.<span class="tr">Operasi terakhir adalah "+5", jadi batalkan lebih dulu: kurangi 5.</span></p><div class="mline">$3n = 26 - 5 = 21$</div></li>
+        <li><p>Undo "×3": divide by 3.<span class="tr">Batalkan "×3": bagi dengan 3.</span></p><div class="mline">$n = 21 \div 3 = 7$</div></li>
+      </ol>
+      <p class="check">✓ Check: $3(7) + 5 = 21 + 5 = 26$<span class="tr">Cek: benar.</span></p>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3><span class="k">B</span>Integer rules <span class="tr">Aturan bilangan bulat</span></h3>
+    <div class="scroll"><table class="tbl">
+      <thead><tr><th>Rule · Aturan</th><th>Example · Contoh</th></tr></thead>
+      <tbody>
+        <tr><td>Different signs (add): subtract the sizes, keep the sign of the larger size.<span class="tr">Tanda berbeda (jumlah): kurangkan nilai mutlaknya, pakai tanda yang nilai mutlaknya lebih besar.</span></td><td>$-9 + 4 = -5$<br>$-3 + 10 = 7$</td></tr>
+        <tr><td>Same signs (× or ÷): result is positive.<span class="tr">Tanda sama (× atau ÷): hasilnya positif.</span></td><td>$(-12) \div (-4) = 3$<br>$(-5) \times (-2) = 10$</td></tr>
+        <tr><td>Different signs (× or ÷): result is negative.<span class="tr">Tanda berbeda (× atau ÷): hasilnya negatif.</span></td><td>$(-6) \times 3 = -18$<br>$20 \div (-5) = -4$</td></tr>
+        <tr><td>Subtracting a negative = adding.<span class="tr">Mengurangi bilangan negatif = menambah.</span></td><td>$4 - (-3) = 4 + 3 = 7$</td></tr>
+      </tbody></table></div>
+  </div>
+
+  <div class="block">
+    <h3><span class="k">C</span>Least common multiple (LCM / KPK) <span class="tr">Kelipatan persekutuan terkecil</span></h3>
+    <div class="worked">
+      <p class="wk-label">Example 2 · Contoh 2</p>
+      <p class="wk-q">Find the LCM of $6$ and $8$.<span class="tr">Tentukan KPK dari $6$ dan $8$.</span></p>
+      <ol class="steps">
+        <li><p>List multiples of each number.<span class="tr">Tuliskan kelipatan masing-masing.</span></p><div class="mline">$6: 6, 12, 18, \mathbf{24}, 30, \dots$</div><div class="mline">$8: 8, 16, \mathbf{24}, 32, \dots$</div></li>
+        <li><p>The smallest number in both lists is the LCM.<span class="tr">Bilangan terkecil yang ada di kedua daftar adalah KPK.</span></p><div class="mline">$\text{LCM}(6, 8) = 24$</div></li>
+      </ol>
+    </div>
+    <div class="worked">
+      <p class="wk-label">Example 3 · Contoh 3</p>
+      <p class="wk-q">Remove the fractions in $\frac{x}{4} + \frac{x}{6} = 5$.<span class="tr">Hilangkan pecahan pada $\frac{x}{4} + \frac{x}{6} = 5$.</span></p>
+      <ol class="steps">
+        <li><p>LCM of the denominators 4 and 6 is 12. Multiply <b>every</b> term (both sides) by 12.<span class="tr">KPK penyebut 4 dan 6 adalah 12. Kalikan <b>setiap</b> suku (kedua ruas) dengan 12.</span></p><div class="mline">$12 \cdot \frac{x}{4} + 12 \cdot \frac{x}{6} = 12 \cdot 5$</div></li>
+        <li><p>Simplify: $12 \div 4 = 3$ and $12 \div 6 = 2$.<span class="tr">Sederhanakan: $12 \div 4 = 3$ dan $12 \div 6 = 2$.</span></p><div class="mline">$3x + 2x = 60$</div></li>
+      </ol>
+    </div>
+  </div>
+
+  <h3 class="ex-title">Exercises <span class="tr">Latihan</span></h3>
+  <div class="qset" data-set="s3"></div>
+</section>
+
+<!-- ===================== S4 ===================== -->
+<section class="lesson" id="s4" aria-labelledby="h-s4" hidden>
+  <div class="sec-head">
+    <span class="time">00:20 – 00:25</span>
+    <h2 id="h-s4">Problem Introduction<span class="tr">Pengenalan Masalah</span></h2>
+    <p class="goal"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="var(--accent)" stroke-width="2"/><circle cx="12" cy="12" r="4.5" fill="none" stroke="var(--accent)" stroke-width="2"/><circle cx="12" cy="12" r="1.5" fill="var(--accent)"/></svg>
+      <span>Goal: understand equivalent equations and use a 4-step plan to solve a real problem.<span class="tr">Tujuan: memahami persamaan ekuivalen dan menggunakan rencana 4 langkah untuk menyelesaikan masalah nyata.</span></span></p>
+  </div>
+
+  <div class="block">
+    <h3><span class="k">!</span>Today's problem: the museum trip <span class="tr">Masalah hari ini: karyawisata ke museum</span></h3>
+    <div class="prose"><p>Class 8A is planning a trip to a museum. The bus rental costs <b>Rp200.000</b> (paid once). Each museum ticket costs <b>Rp15.000</b> per student. The class budget is <b>Rp650.000</b>. How many students can go?<span class="tr">Kelas 8A merencanakan karyawisata ke museum. Sewa bus <b>Rp200.000</b> (dibayar sekali). Tiket museum <b>Rp15.000</b> per siswa. Anggaran kelas <b>Rp650.000</b>. Berapa banyak siswa yang dapat ikut?</span></p></div>
+    <figure class="fig wide"><div class="scroll" style="width:100%">
+      <svg viewBox="0 0 600 170" role="img" aria-label="Bus plus tickets equals budget">
+        <g transform="translate(10,22)">
+          <rect class="sv-fill" x="0" y="0" width="150" height="66" rx="12"/>
+          <rect class="sv-win" x="12" y="11" width="28" height="22" rx="4"/><rect class="sv-win" x="48" y="11" width="28" height="22" rx="4"/><rect class="sv-win" x="84" y="11" width="28" height="22" rx="4"/><rect class="sv-win" x="120" y="11" width="20" height="38" rx="4"/>
+          <circle class="sv-ink" cx="35" cy="68" r="11"/><circle class="sv-ink" cx="115" cy="68" r="11"/>
+          <text class="sv-lab" x="75" y="106" text-anchor="middle">Bus Rp200.000</text>
+          <text class="sv-cap" x="75" y="124" text-anchor="middle">once · sekali</text>
+        </g>
+        <text class="sv-big" x="182" y="78">+</text>
+        <g transform="translate(222,26)">
+          <path class="sv-amb" d="M0 0h140v22a10 10 0 0 0 0 20v22H0V42a10 10 0 0 0 0-20z"/>
+          <line class="sv-arrow2" x1="100" y1="4" x2="100" y2="60"/>
+          <text class="sv-lab" x="50" y="38" text-anchor="middle">Rp15.000</text>
+          <text class="sv-lab" x="70" y="102" text-anchor="middle">× n students</text>
+          <text class="sv-cap" x="70" y="120" text-anchor="middle">× n siswa</text>
+        </g>
+        <text class="sv-big" x="384" y="78">=</text>
+        <g transform="translate(420,22)">
+          <rect class="sv-op" x="0" y="4" width="160" height="66" rx="12"/><rect class="sv-amb" x="118" y="24" width="42" height="26" rx="6"/><circle class="sv-ink" cx="134" cy="37" r="4"/>
+          <text class="sv-lab" x="58" y="43" text-anchor="middle">Rp650.000</text>
+          <text class="sv-cap" x="80" y="106" text-anchor="middle">budget · anggaran</text>
+        </g>
+      </svg></div></figure>
+  </div>
+
+  <div class="block">
+    <h3><span class="k">A</span>A 4-step plan (Polya) <span class="tr">Rencana 4 langkah (Polya)</span></h3>
+    <ol class="flow">
+      <li><b>1</b>Understand<span class="tr">Memahami masalah</span></li>
+      <li><b>2</b>Variable + equation<span class="tr">Variabel + persamaan</span></li>
+      <li><b>3</b>Solve<span class="tr">Menyelesaikan</span></li>
+      <li><b>4</b>Check<span class="tr">Memeriksa kembali</span></li>
+    </ol>
+  </div>
+
+  <div class="block">
+    <h3><span class="k">B</span>Equivalent equations <span class="tr">Persamaan ekuivalen</span></h3>
+    <div class="prose"><p>Two equations are <b>equivalent</b> (⇔) if they have the same solution. We get an equivalent equation when we do the <b>same</b> operation to <b>both sides</b>:<span class="tr">Dua persamaan <b>ekuivalen</b> (⇔) jika penyelesaiannya sama. Persamaan ekuivalen diperoleh dengan melakukan operasi yang <b>sama</b> pada <b>kedua ruas</b>:</span></p></div>
+    <div class="key"><span class="kh">Rules · Aturan</span>
+      $$A = B \iff A + c = B + c \iff A - c = B - c$$
+      $$A = B \iff A \times c = B \times c \iff \frac{A}{c} = \frac{B}{c} \quad (c \neq 0)$$
+      <p>Never divide or multiply by $0$.<span class="tr">Jangan pernah membagi atau mengalikan dengan $0$.</span></p></div>
+    <div class="worked">
+      <p class="wk-label">Example 1 · Contoh 1</p>
+      <p class="wk-q">Show a chain of equivalent equations for $2x + 4 = 10$.<span class="tr">Tunjukkan rantai persamaan ekuivalen untuk $2x + 4 = 10$.</span></p>
+      <ol class="steps">
+        <li><p>Divide both sides by 2.<span class="tr">Bagi kedua ruas dengan 2.</span></p><div class="mline">$2x + 4 = 10 \iff x + 2 = 5$</div></li>
+        <li><p>Or subtract 4 from both sides of the original.<span class="tr">Atau kurangi kedua ruas persamaan awal dengan 4.</span></p><div class="mline">$2x + 4 = 10 \iff 2x = 6$</div></li>
+        <li><p>All of them lead to the same solution.<span class="tr">Semuanya menghasilkan penyelesaian yang sama.</span></p><div class="mline">$x = 3$</div></li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3><span class="k">C</span>Solving the museum problem <span class="tr">Menyelesaikan masalah museum</span></h3>
+    <div class="worked">
+      <ol class="steps">
+        <li><p><b>Understand.</b> Known: bus Rp200.000, ticket Rp15.000 per student, budget Rp650.000. Asked: number of students.<span class="tr"><b>Memahami.</b> Diketahui: bus Rp200.000, tiket Rp15.000 per siswa, anggaran Rp650.000. Ditanya: banyak siswa.</span></p></li>
+        <li><p><b>Variable + equation.</b> Let $n$ = number of students. Tickets cost $15000n$.<span class="tr"><b>Variabel + persamaan.</b> Misalkan $n$ = banyak siswa. Biaya tiket $15000n$.</span></p><div class="mline">$15000n + 200000 = 650000$</div></li>
+        <li><p><b>Solve.</b> Divide every term by 1000 (equivalent), then subtract 200, then divide by 15.<span class="tr"><b>Menyelesaikan.</b> Bagi setiap suku dengan 1000 (ekuivalen), lalu kurangi 200, lalu bagi 15.</span></p>
+          <div class="mline">$15n + 200 = 650$</div><div class="mline">$15n = 650 - 200 = 450$</div><div class="mline">$n = \frac{450}{15} = 30$</div></li>
+        <li><p><b>Check.</b> Put $n = 30$ back into the story.<span class="tr"><b>Memeriksa.</b> Masukkan $n = 30$ ke dalam cerita.</span></p><div class="mline">$15000(30) + 200000 = 450000 + 200000 = 650000$ ✓</div></li>
+      </ol>
+      <p class="check">Answer: 30 students can go on the trip.<span class="tr">Jawaban: 30 siswa dapat ikut karyawisata.</span></p>
+    </div>
+  </div>
+
+  <h3 class="ex-title">Exercises <span class="tr">Latihan</span></h3>
+  <div class="qset" data-set="s4"></div>
+</section>
+
+<!-- ===================== S5 ===================== -->
+<section class="lesson" id="s5" aria-labelledby="h-s5" hidden>
+  <div class="sec-head">
+    <span class="time">00:25 – 00:40</span>
+    <h2 id="h-s5">Guided Practice<span class="tr">Latihan Terbimbing</span></h2>
+    <p class="goal"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="var(--accent)" stroke-width="2"/><circle cx="12" cy="12" r="4.5" fill="none" stroke="var(--accent)" stroke-width="2"/><circle cx="12" cy="12" r="1.5" fill="var(--accent)"/></svg>
+      <span>Goal: solve every common type of PLSV step by step, and check the answer.<span class="tr">Tujuan: menyelesaikan setiap jenis PLSV yang umum langkah demi langkah, lalu memeriksa jawabannya.</span></span></p>
+  </div>
+
+  <div class="block">
+    <h3><span class="k">★</span>The solving routine <span class="tr">Langkah baku penyelesaian</span></h3>
+    <ol class="flow">
+      <li><b>1</b>Expand brackets<span class="tr">Jabarkan kurung</span></li>
+      <li><b>2</b>Clear fractions (× LCM)<span class="tr">Hilangkan pecahan (× KPK)</span></li>
+      <li><b>3</b>$x$-terms on one side, numbers on the other<span class="tr">Suku $x$ di satu ruas, bilangan di ruas lain</span></li>
+      <li><b>4</b>Divide by the coefficient<span class="tr">Bagi dengan koefisien</span></li>
+      <li><b>5</b>Check<span class="tr">Periksa</span></li>
+    </ol>
+    <div class="tipbox"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z" fill="none" stroke="var(--amber)" stroke-width="2" stroke-linejoin="round"/></svg>
+      <p>Shortcut "move to the other side, change the sign" (pindah ruas, ganti tanda) is just adding or subtracting the same term on both sides. Example: $x + 7 = 12 \Rightarrow x = 12 - 7$.<span class="tr">Cara cepat "pindah ruas, ganti tanda" sebenarnya adalah menambah atau mengurangi suku yang sama pada kedua ruas. Contoh: $x + 7 = 12 \Rightarrow x = 12 - 7$.</span></p></div>
+  </div>
+
+  <div class="block">
+    <h3><span class="k">A</span>Type $ax + b = c$ <span class="tr">Bentuk $ax + b = c$</span></h3>
+    <div class="worked">
+      <p class="wk-label">Example A · Contoh A</p>
+      <p class="wk-q">Solve $3x + 7 = 22$.<span class="tr">Selesaikan $3x + 7 = 22$.</span></p>
+      <ol class="steps">
+        <li><p>Subtract 7 from both sides.<span class="tr">Kurangi kedua ruas dengan 7.</span></p><div class="mline">$3x + 7 - 7 = 22 - 7 \Rightarrow 3x = 15$</div></li>
+        <li><p>Divide both sides by 3.<span class="tr">Bagi kedua ruas dengan 3.</span></p><div class="mline">$\frac{3x}{3} = \frac{15}{3} \Rightarrow x = 5$</div></li>
+      </ol>
+      <p class="check">✓ Check: $3(5) + 7 = 15 + 7 = 22$<span class="tr">Cek: benar.</span></p>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3><span class="k">B</span>Variables on both sides <span class="tr">Variabel di kedua ruas</span></h3>
+    <figure class="fig"><div data-svg='["scale",5,0,2,15]'></div><figcaption>$5x - 4 = 2x + 11$ is like this balance after adding 4 to both sides: $5x = 2x + 15$.<span class="tr">$5x - 4 = 2x + 11$ sama seperti timbangan ini setelah kedua ruas ditambah 4: $5x = 2x + 15$.</span></figcaption></figure>
+    <div class="worked">
+      <p class="wk-label">Example B · Contoh B</p>
+      <p class="wk-q">Solve $5x - 4 = 2x + 11$.<span class="tr">Selesaikan $5x - 4 = 2x + 11$.</span></p>
+      <ol class="steps">
+        <li><p>Subtract $2x$ from both sides (collect $x$-terms on the left).<span class="tr">Kurangi kedua ruas dengan $2x$ (kumpulkan suku $x$ di kiri).</span></p><div class="mline">$5x - 2x - 4 = 11 \Rightarrow 3x - 4 = 11$</div></li>
+        <li><p>Add 4 to both sides.<span class="tr">Tambahkan 4 ke kedua ruas.</span></p><div class="mline">$3x = 15$</div></li>
+        <li><p>Divide by 3.<span class="tr">Bagi dengan 3.</span></p><div class="mline">$x = 5$</div></li>
+      </ol>
+      <p class="check">✓ Check: left $5(5) - 4 = 21$, right $2(5) + 11 = 21$<span class="tr">Cek: ruas kiri = ruas kanan = 21.</span></p>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3><span class="k">C</span>Equations with brackets <span class="tr">Persamaan dengan tanda kurung</span></h3>
+    <div class="worked">
+      <p class="wk-label">Example C · Contoh C</p>
+      <p class="wk-q">Solve $3(2x - 1) = 2(x + 5) + 1$.<span class="tr">Selesaikan $3(2x - 1) = 2(x + 5) + 1$.</span></p>
+      <ol class="steps">
+        <li><p>Expand both brackets.<span class="tr">Jabarkan kedua kurung.</span></p><div class="mline">$6x - 3 = 2x + 10 + 1 \Rightarrow 6x - 3 = 2x + 11$</div></li>
+        <li><p>Subtract $2x$ and add 3 on both sides.<span class="tr">Kurangi $2x$ dan tambahkan 3 pada kedua ruas.</span></p><div class="mline">$6x - 2x = 11 + 3 \Rightarrow 4x = 14$</div></li>
+        <li><p>Divide by 4 and simplify the fraction.<span class="tr">Bagi dengan 4 dan sederhanakan pecahannya.</span></p><div class="mline">$x = \frac{14}{4} = \frac{7}{2} = 3\tfrac{1}{2}$</div></li>
+      </ol>
+      <p class="check">✓ Check: $3(7 - 1) = 18$ and $2\left(\frac{7}{2} + 5\right) + 1$ $= 2 \cdot \frac{17}{2} + 1 = 18$<span class="tr">Cek: kedua ruas bernilai 18.</span></p>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3><span class="k">D</span>Equations with fractions <span class="tr">Persamaan dengan pecahan</span></h3>
+    <div class="worked">
+      <p class="wk-label">Example D · Contoh D</p>
+      <p class="wk-q">Solve $\frac{x + 1}{2} + \frac{x - 2}{3} = 4$.<span class="tr">Selesaikan $\frac{x + 1}{2} + \frac{x - 2}{3} = 4$.</span></p>
+      <ol class="steps">
+        <li><p>LCM of 2 and 3 is 6. Multiply every term by 6. Keep the numerators in brackets.<span class="tr">KPK dari 2 dan 3 adalah 6. Kalikan setiap suku dengan 6. Tulis pembilang di dalam kurung.</span></p><div class="mline">$3(x + 1) + 2(x - 2) = 24$</div></li>
+        <li><p>Expand and collect like terms.<span class="tr">Jabarkan dan jumlahkan suku sejenis.</span></p><div class="mline">$3x + 3 + 2x - 4 = 24 \Rightarrow 5x - 1 = 24$</div></li>
+        <li><p>Add 1, then divide by 5.<span class="tr">Tambah 1, lalu bagi 5.</span></p><div class="mline">$5x = 25 \Rightarrow x = 5$</div></li>
+      </ol>
+      <p class="check">✓ Check: $\frac{6}{2} + \frac{3}{3} = 3 + 1 = 4$<span class="tr">Cek: benar.</span></p>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3><span class="k">E</span>Negative coefficient <span class="tr">Koefisien negatif</span></h3>
+    <div class="worked">
+      <p class="wk-label">Example E · Contoh E</p>
+      <p class="wk-q">Solve $8 - 3x = 2$.<span class="tr">Selesaikan $8 - 3x = 2$.</span></p>
+      <ol class="steps">
+        <li><p>Subtract 8 from both sides.<span class="tr">Kurangi kedua ruas dengan 8.</span></p><div class="mline">$-3x = 2 - 8 = -6$</div></li>
+        <li><p>Divide by $-3$ (negative ÷ negative = positive).<span class="tr">Bagi dengan $-3$ (negatif ÷ negatif = positif).</span></p><div class="mline">$x = \frac{-6}{-3} = 2$</div></li>
+      </ol>
+      <p class="check">✓ Check: $8 - 3(2) = 8 - 6 = 2$<span class="tr">Cek: benar.</span></p>
+    </div>
+  </div>
+
+  <h3 class="ex-title">Exercises <span class="tr">Latihan</span></h3>
+  <div class="qset" data-set="s5"></div>
+</section>
+
+<!-- ===================== S6 ===================== -->
+<section class="lesson" id="s6" aria-labelledby="h-s6" hidden>
+  <div class="sec-head">
+    <span class="time">00:40 – 00:55</span>
+    <h2 id="h-s6">Independent Practice<span class="tr">Latihan Mandiri</span></h2>
+    <p class="goal"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="var(--accent)" stroke-width="2"/><circle cx="12" cy="12" r="4.5" fill="none" stroke="var(--accent)" stroke-width="2"/><circle cx="12" cy="12" r="1.5" fill="var(--accent)"/></svg>
+      <span>Goal: translate word problems into PLSV, solve them on your own, and answer in the context of the story.<span class="tr">Tujuan: mengubah soal cerita menjadi PLSV, menyelesaikannya secara mandiri, dan menjawab sesuai konteks cerita.</span></span></p>
+  </div>
+
+  <div class="block">
+    <h3><span class="k">A</span>Useful templates <span class="tr">Pola yang sering dipakai</span></h3>
+    <div class="scroll"><table class="tbl">
+      <thead><tr><th>Situation · Situasi</th><th>Write · Tulis</th></tr></thead>
+      <tbody>
+        <tr><td>Consecutive integers<span class="tr">Bilangan bulat berurutan</span></td><td>$n,\ n + 1,\ n + 2$</td></tr>
+        <tr><td>Consecutive even / odd numbers<span class="tr">Bilangan genap / ganjil berurutan</span></td><td>$n,\ n + 2,\ n + 4$</td></tr>
+        <tr><td>Age now, in $t$ years, $t$ years ago<span class="tr">Usia sekarang, $t$ tahun lagi, $t$ tahun lalu</span></td><td>$x,\ x + t,\ x - t$</td></tr>
+        <tr><td>"$a$ more than" / "$a$ less than" a number<span class="tr">"$a$ lebih dari" / "$a$ kurang dari" suatu bilangan</span></td><td>$x + a$ / $x - a$</td></tr>
+        <tr><td>Perimeter of a rectangle (panjang $p$, lebar $l$)<span class="tr">Keliling persegi panjang</span></td><td>$K = 2(p + l)$</td></tr>
+      </tbody></table></div>
+  </div>
+
+  <div class="block">
+    <h3><span class="k">B</span>Worked examples <span class="tr">Contoh soal</span></h3>
+    <div class="worked">
+      <p class="wk-label">Example 1 · Contoh 1 — consecutive numbers</p>
+      <p class="wk-q">The sum of three consecutive integers is 51. Find them.<span class="tr">Jumlah tiga bilangan bulat berurutan adalah 51. Tentukan bilangan-bilangan itu.</span></p>
+      <ol class="steps">
+        <li><p>Let the smallest be $n$; the others are $n + 1$ and $n + 2$.<span class="tr">Misalkan yang terkecil $n$; berikutnya $n + 1$ dan $n + 2$.</span></p><div class="mline">$n + (n + 1) + (n + 2) = 51$</div></li>
+        <li><p>Collect like terms and solve.<span class="tr">Jumlahkan suku sejenis lalu selesaikan.</span></p><div class="mline">$3n + 3 = 51 \Rightarrow 3n = 48 \Rightarrow n = 16$</div></li>
+      </ol>
+      <p class="check">Answer: 16, 17, 18. ✓ $16 + 17 + 18 = 51$<span class="tr">Jawaban: 16, 17, 18.</span></p>
+    </div>
+    <div class="worked">
+      <p class="wk-label">Example 2 · Contoh 2 — ages</p>
+      <p class="wk-q">A father is 3 times as old as his son. In 12 years, the father will be twice as old as his son. How old are they now?<span class="tr">Usia ayah 3 kali usia anaknya. 12 tahun lagi, usia ayah menjadi 2 kali usia anaknya. Berapa usia mereka sekarang?</span></p>
+      <div class="scroll"><table class="tbl">
+        <thead><tr><th></th><th>Now · Sekarang</th><th>In 12 years · 12 tahun lagi</th></tr></thead>
+        <tbody><tr><td>Son · Anak</td><td>$x$</td><td>$x + 12$</td></tr><tr><td>Father · Ayah</td><td>$3x$</td><td>$3x + 12$</td></tr></tbody></table></div>
+      <ol class="steps">
+        <li><p>"In 12 years, father = 2 × son".<span class="tr">"12 tahun lagi, ayah = 2 × anak".</span></p><div class="mline">$3x + 12 = 2(x + 12)$</div></li>
+        <li><p>Expand, then collect.<span class="tr">Jabarkan, lalu kumpulkan.</span></p><div class="mline">$3x + 12 = 2x + 24 \Rightarrow 3x - 2x = 24 - 12 \Rightarrow x = 12$</div></li>
+      </ol>
+      <p class="check">Son 12 years, father 36 years. ✓ In 12 years: $48 = 2 \times 24$<span class="tr">Anak 12 tahun, ayah 36 tahun.</span></p>
+    </div>
+    <div class="worked">
+      <p class="wk-label">Example 3 · Contoh 3 — rectangle</p>
+      <p class="wk-q">A rectangle's length is 4 cm more than its width. Its perimeter is 48 cm. Find the length and width.<span class="tr">Panjang sebuah persegi panjang 4 cm lebih dari lebarnya. Kelilingnya 48 cm. Tentukan panjang dan lebarnya.</span></p>
+      <figure class="fig"><div data-svg='["rect","length / panjang = (w + 4) cm","w cm","Perimeter / Keliling = 48 cm"]'></div></figure>
+      <ol class="steps">
+        <li><p>Width $= w$, length $= w + 4$. Use $K = 2(p + l)$.<span class="tr">Lebar $= w$, panjang $= w + 4$. Gunakan $K = 2(p + l)$.</span></p><div class="mline">$2\big((w + 4) + w\big) = 48$</div></li>
+        <li><p>Simplify and solve.<span class="tr">Sederhanakan dan selesaikan.</span></p><div class="mline">$2(2w + 4) = 48 \Rightarrow 4w + 8 = 48 \Rightarrow 4w = 40 \Rightarrow w = 10$</div></li>
+      </ol>
+      <p class="check">Width 10 cm, length 14 cm. ✓ $2(14 + 10) = 48$<span class="tr">Lebar 10 cm, panjang 14 cm.</span></p>
+    </div>
+    <div class="worked">
+      <p class="wk-label">Example 4 · Contoh 4 — money</p>
+      <p class="wk-q">Ani has Rp3.000 more than Bima. Together they have Rp25.000. How much does each have?<span class="tr">Uang Ani Rp3.000 lebih banyak dari uang Bima. Jumlah uang mereka Rp25.000. Berapa uang masing-masing?</span></p>
+      <ol class="steps">
+        <li><p>Bima $= x$, Ani $= x + 3000$.<span class="tr">Bima $= x$, Ani $= x + 3000$.</span></p><div class="mline">$x + (x + 3000) = 25000$</div></li>
+        <li><p>Solve.<span class="tr">Selesaikan.</span></p><div class="mline">$2x + 3000 = 25000 \Rightarrow 2x = 22000 \Rightarrow x = 11000$</div></li>
+      </ol>
+      <p class="check">Bima Rp11.000, Ani Rp14.000. ✓ $11000 + 14000 = 25000$<span class="tr">Bima Rp11.000, Ani Rp14.000.</span></p>
+    </div>
+  </div>
+
+  <h3 class="ex-title">Exercises <span class="tr">Latihan</span></h3>
+  <div class="qset" data-set="s6"></div>
+</section>
+
+<!-- ===================== S7 ===================== -->
+<section class="lesson" id="s7" aria-labelledby="h-s7" hidden>
+  <div class="sec-head">
+    <span class="time">00:55 – 01:00</span>
+    <h2 id="h-s7">Consolidation &amp; Reflection<span class="tr">Penguatan &amp; Refleksi</span></h2>
+  </div>
+
+  <div class="block">
+    <h3><span class="k">1</span>Key points <span class="tr">Poin penting</span></h3>
+    <ul class="keylist">
+      <li><svg viewBox="0 0 30 30" aria-hidden="true"><rect width="30" height="30" rx="8" fill="var(--accent)"/><path d="M8 12h14M8 18h14" stroke="var(--card)" stroke-width="2.5" stroke-linecap="round"/></svg><div>A PLSV has one variable with power 1 and the sign "=": $ax + b = c$, $a \neq 0$.<span class="tr">PLSV memiliki satu variabel berpangkat 1 dan tanda "=": $ax + b = c$, $a \neq 0$.</span></div></li>
+      <li><svg viewBox="0 0 30 30" aria-hidden="true"><rect width="30" height="30" rx="8" fill="var(--amber)"/><path d="M15 7v16M7 13l8-6 8 6" stroke="var(--card)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><div>Keep the balance: do the same operation on both sides (never multiply or divide by 0). The result is an equivalent equation.<span class="tr">Jaga keseimbangan: lakukan operasi yang sama pada kedua ruas (jangan kali atau bagi dengan 0). Hasilnya persamaan ekuivalen.</span></div></li>
+      <li><svg viewBox="0 0 30 30" aria-hidden="true"><rect width="30" height="30" rx="8" fill="var(--p3)"/><path d="M8 10h6M8 15h10M8 20h14" stroke="var(--card)" stroke-width="2.5" stroke-linecap="round"/></svg><div>Routine: expand brackets → multiply by the LCM → $x$-terms on one side → divide by the coefficient → check.<span class="tr">Langkah: jabarkan kurung → kalikan KPK → suku $x$ di satu ruas → bagi koefisien → periksa.</span></div></li>
+      <li><svg viewBox="0 0 30 30" aria-hidden="true"><rect width="30" height="30" rx="8" fill="var(--p5)"/><path d="M8 16l5 5 9-11" stroke="var(--card)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><div>Word problems: define the variable, translate, solve, check in the story, and write the answer with units.<span class="tr">Soal cerita: tentukan variabel, terjemahkan, selesaikan, periksa pada cerita, dan tulis jawaban dengan satuannya.</span></div></li>
+      <li><svg viewBox="0 0 30 30" aria-hidden="true"><rect width="30" height="30" rx="8" fill="var(--p4)"/><path d="M10 10l10 10M20 10 10 20" stroke="var(--card)" stroke-width="2.5" stroke-linecap="round"/></svg><div>Special cases: if $x$ disappears and you get a true statement (like $6 = 6$), there are <b>infinitely many</b> solutions; if you get a false statement (like $4 = 7$), there is <b>no</b> solution.<span class="tr">Kasus khusus: jika $x$ hilang dan hasilnya pernyataan benar (seperti $6 = 6$), penyelesaiannya <b>tak hingga banyak</b>; jika hasilnya pernyataan salah (seperti $4 = 7$), <b>tidak ada</b> penyelesaian.</span></div></li>
+    </ul>
+  </div>
+
+  <div class="block">
+    <h3><span class="k">2</span>Reflection questions <span class="tr">Pertanyaan refleksi</span></h3>
+    <ol class="refl">
+      <li><label for="r1">Why must we do the same operation on both sides of an equation?<span class="tr">Mengapa kita harus melakukan operasi yang sama pada kedua ruas persamaan?</span></label><textarea id="r1" placeholder="My answer / Jawabanku…"></textarea></li>
+      <li><label for="r2">Which step was the hardest for you today: brackets, fractions, or word problems? Why?<span class="tr">Langkah mana yang paling sulit bagimu hari ini: kurung, pecahan, atau soal cerita? Mengapa?</span></label><textarea id="r2" placeholder="My answer / Jawabanku…"></textarea></li>
+      <li><label for="r3">How can you check that your solution is correct without asking anyone?<span class="tr">Bagaimana kamu dapat memeriksa bahwa jawabanmu benar tanpa bertanya kepada orang lain?</span></label><textarea id="r3" placeholder="My answer / Jawabanku…"></textarea></li>
+      <li><label for="r4">Write one real-life situation that can be modelled by a PLSV.<span class="tr">Tuliskan satu situasi sehari-hari yang dapat dimodelkan dengan PLSV.</span></label><textarea id="r4" placeholder="My answer / Jawabanku…"></textarea></li>
+    </ol>
+  </div>
+
+  <div class="block">
+    <h3><span class="k">3</span>Exit ticket <span class="tr">Tiket keluar</span></h3>
+    <p>Answer these 3 questions before you leave.<span class="tr">Jawab 3 soal ini sebelum meninggalkan kelas.</span></p>
+    <div class="qset" data-set="exit" data-score></div>
+  </div>
+
+  <div class="block">
+    <h3><span class="k">4</span>Follow-up practice <span class="tr">Latihan lanjutan</span></h3>
+    <p>Try these at home. Open each one to see the full solution.<span class="tr">Kerjakan di rumah. Buka setiap soal untuk melihat penyelesaian lengkap.</span></p>
+    <details class="fu"><summary><span class="no">1</span><span>Solve $9 - 2x = 3x - 11$.<span class="tr">Selesaikan $9 - 2x = 3x - 11$.</span></span></summary>
+      <div class="sol-body"><p class="snote">Add $2x$ and add $11$ on both sides.<span class="tr">Tambahkan $2x$ dan $11$ pada kedua ruas.</span></p><div class="sline">$9 + 11 = 3x + 2x$</div><div class="sline">$20 = 5x \Rightarrow x = 4$</div><p class="snote">Check: $9 - 8 = 1$ and $12 - 11 = 1$ ✓<span class="tr">Cek: kedua ruas bernilai 1.</span></p></div></details>
+    <details class="fu"><summary><span class="no">2</span><span>Solve $\frac{2x - 1}{3} = \frac{x + 4}{2}$.<span class="tr">Selesaikan $\frac{2x - 1}{3} = \frac{x + 4}{2}$.</span></span></summary>
+      <div class="sol-body"><p class="snote">Multiply both sides by the LCM 6 (or cross-multiply).<span class="tr">Kalikan kedua ruas dengan KPK 6 (atau kali silang).</span></p><div class="sline">$2(2x - 1) = 3(x + 4)$</div><div class="sline">$4x - 2 = 3x + 12 \Rightarrow 4x - 3x = 12 + 2 \Rightarrow x = 14$</div><p class="snote">Check: $\frac{27}{3} = 9$ and $\frac{18}{2} = 9$ ✓<span class="tr">Cek: kedua ruas bernilai 9.</span></p></div></details>
+    <details class="fu"><summary><span class="no">3</span><span>Solve $0.5x + 1.2 = 3.7$.<span class="tr">Selesaikan $0{,}5x + 1{,}2 = 3{,}7$.</span></span></summary>
+      <div class="sol-body"><p class="snote">Multiply every term by 10 to remove decimals.<span class="tr">Kalikan setiap suku dengan 10 untuk menghilangkan desimal.</span></p><div class="sline">$5x + 12 = 37 \Rightarrow 5x = 25 \Rightarrow x = 5$</div><p class="snote">Check: $0.5(5) + 1.2 = 2.5 + 1.2 = 3.7$ ✓<span class="tr">Cek: benar.</span></p></div></details>
+    <details class="fu"><summary><span class="no">4</span><span>The sum of three consecutive odd numbers is 63. Find them.<span class="tr">Jumlah tiga bilangan ganjil berurutan adalah 63. Tentukan bilangan-bilangan itu.</span></span></summary>
+      <div class="sol-body"><p class="snote">Consecutive odd numbers differ by 2: $n,\ n + 2,\ n + 4$.<span class="tr">Bilangan ganjil berurutan selisihnya 2: $n,\ n + 2,\ n + 4$.</span></p><div class="sline">$n + (n + 2) + (n + 4) = 63$</div><div class="sline">$3n + 6 = 63 \Rightarrow 3n = 57 \Rightarrow n = 19$</div><p class="snote">The numbers are 19, 21, 23. Check: $19 + 21 + 23 = 63$ ✓<span class="tr">Bilangannya 19, 21, 23.</span></p></div></details>
+    <details class="fu"><summary><span class="no">5</span><span>A taxi charges Rp7.000 to start plus Rp4.000 per km. A ride costs Rp43.000. How far was the ride?<span class="tr">Tarif taksi Rp7.000 untuk buka pintu ditambah Rp4.000 per km. Ongkos perjalanan Rp43.000. Berapa jauh perjalanannya?</span></span></summary>
+      <div class="sol-body"><p class="snote">Let $k$ = distance in km.<span class="tr">Misalkan $k$ = jarak dalam km.</span></p><div class="sline">$7000 + 4000k = 43000$</div><div class="sline">$4000k = 36000 \Rightarrow k = 9$</div><p class="snote">The ride was 9 km. Check: $7000 + 36000 = 43000$ ✓<span class="tr">Jaraknya 9 km.</span></p></div></details>
+  </div>
+</section>
+
+<!-- ===================== TASKS ===================== -->
+<section class="lesson" id="t1" aria-labelledby="h-t1" hidden>
+  <div class="sec-head"><span class="time">Task 1 · Tugas 1 · 10 questions</span><h2 id="h-t1">Concepts &amp; Basic Solving<span class="tr">Konsep &amp; Penyelesaian Dasar</span></h2></div>
+  <details class="remind"><summary>Quick reminder <i>· Pengingat singkat</i></summary><div class="sol-body">
+    <p class="snote">PLSV: one variable, power 1, has "=". Undo operations with inverses: $x + a = b \Rightarrow x = b - a$, $\;ax = b \Rightarrow x = \frac{b}{a}$, $\;\frac{x}{a} = b \Rightarrow x = ab$.<span class="tr">PLSV: satu variabel, pangkat 1, ada "=". Batalkan operasi dengan inversnya.</span></p>
+    <p class="snote">To test a solution, substitute it and see if both sides are equal.<span class="tr">Untuk menguji penyelesaian, substitusikan nilainya dan lihat apakah kedua ruas sama.</span></p></div></details>
+  <div class="qset" data-set="t1" data-score></div>
+</section>
+
+<section class="lesson" id="t2" aria-labelledby="h-t2" hidden>
+  <div class="sec-head"><span class="time">Task 2 · Tugas 2 · 10 questions</span><h2 id="h-t2">Variables on Both Sides &amp; Brackets<span class="tr">Variabel di Kedua Ruas &amp; Tanda Kurung</span></h2></div>
+  <details class="remind"><summary>Quick reminder <i>· Pengingat singkat</i></summary><div class="sol-body">
+    <p class="snote">Expand brackets first: $a(b + c) = ab + ac$. Then move $x$-terms to one side and numbers to the other, changing the sign when a term crosses "=".<span class="tr">Jabarkan kurung dulu. Lalu pindahkan suku $x$ ke satu ruas dan bilangan ke ruas lain, ganti tanda saat suku pindah ruas.</span></p>
+    <div class="sline">$5x - 4 = 2x + 11 \Rightarrow 5x - 2x = 11 + 4 \Rightarrow 3x = 15 \Rightarrow x = 5$</div></div></details>
+  <div class="qset" data-set="t2" data-score></div>
+</section>
+
+<section class="lesson" id="t3" aria-labelledby="h-t3" hidden>
+  <div class="sec-head"><span class="time">Task 3 · Tugas 3 · 10 questions</span><h2 id="h-t3">Fractions &amp; Decimals<span class="tr">Pecahan &amp; Desimal</span></h2></div>
+  <details class="remind"><summary>Quick reminder <i>· Pengingat singkat</i></summary><div class="sol-body">
+    <p class="snote">Fractions: multiply EVERY term on both sides by the LCM of the denominators. Put each numerator in brackets.<span class="tr">Pecahan: kalikan SETIAP suku di kedua ruas dengan KPK penyebut. Tulis setiap pembilang di dalam kurung.</span></p>
+    <div class="sline">$\frac{x + 1}{2} + \frac{x - 2}{3} = 4 \;\overset{\times 6}{\Longrightarrow}\; 3(x + 1) + 2(x - 2) = 24$</div>
+    <p class="snote">Decimals: multiply every term by 10 (one decimal place) or 100 (two decimal places).<span class="tr">Desimal: kalikan setiap suku dengan 10 (satu angka desimal) atau 100 (dua angka desimal).</span></p></div></details>
+  <div class="qset" data-set="t3" data-score></div>
+</section>
+
+<section class="lesson" id="t4" aria-labelledby="h-t4" hidden>
+  <div class="sec-head"><span class="time">Task 4 · Tugas 4 · 10 questions</span><h2 id="h-t4">Word Problems &amp; Pictures<span class="tr">Soal Cerita &amp; Gambar</span></h2></div>
+  <details class="remind"><summary>Quick reminder <i>· Pengingat singkat</i></summary><div class="sol-body">
+    <p class="snote">Steps: Understand → Variable + equation → Solve → Check in the story.<span class="tr">Langkah: Memahami → Variabel + persamaan → Menyelesaikan → Memeriksa pada cerita.</span></p>
+    <p class="snote">Formulas: rectangle perimeter $K = 2(p + l)$; square perimeter $K = 4s$; the angles of a triangle add up to $180^\circ$.<span class="tr">Rumus: keliling persegi panjang $K = 2(p + l)$; keliling persegi $K = 4s$; jumlah sudut segitiga $180^\circ$.</span></p></div></details>
+  <div class="qset" data-set="t4" data-score></div>
+</section>
+
+<section class="lesson" id="t5" aria-labelledby="h-t5" hidden>
+  <div class="sec-head"><span class="time">Task 5 · Tugas 5 · 10 questions</span><h2 id="h-t5">Challenge Problems (HOTS)<span class="tr">Soal Tantangan (HOTS)</span></h2></div>
+  <details class="remind"><summary>Quick reminder <i>· Pengingat singkat</i></summary><div class="sol-body">
+    <p class="snote">Find $x$ first, then substitute into the other expression.<span class="tr">Cari $x$ dulu, lalu substitusikan ke bentuk aljabar yang lain.</span></p>
+    <p class="snote">If a solution is given (e.g. $x = 2$) and a constant $k$ is unknown, substitute $x$ and solve for $k$.<span class="tr">Jika penyelesaian diketahui (misal $x = 2$) dan konstanta $k$ belum diketahui, substitusikan $x$ lalu cari $k$.</span></p>
+    <div class="sline">$2(x + 3) = 2x + 6 \Rightarrow 6 = 6$ (always true · selalu benar) → infinitely many solutions · tak hingga banyak</div>
+    <div class="sline">$3x + 4 = 3x + 7 \Rightarrow 4 = 7$ (false · salah) → no solution · tidak ada penyelesaian</div></div></details>
+  <div class="qset" data-set="t5" data-score></div>
+</section>
+
+</main>
+</div>
+</div>
+<script>
+const R = String.raw;
+/* Question data.
+   q: [english, indonesian]   opts/items: math string, [en, id] or [en, id, math]
+   mcq: correct option is listed first (ans defaults to 0); options are shuffled on screen.
+   ex: explanation steps — [en, id] = note, string = math line */
+const SETS = {
+
+/* ================= S1 : Spiral review ================= */
+s1: [
+{type:'mcq', q:[R`Simplify $5x + 3 - 2x + 7$.`, R`Sederhanakan $5x + 3 - 2x + 7$.`],
+ opts:[R`$3x + 10$`, R`$7x + 10$`, R`$3x + 4$`, R`$13x$`],
+ ex:[[R`Group the like terms: $x$-terms together, constants together.`, R`Kelompokkan suku sejenis: suku $x$ bersama, konstanta bersama.`],
+  R`$5x + 3 - 2x + 7 = (5x - 2x) + (3 + 7)$`,
+  [R`Calculate each group.`, R`Hitung setiap kelompok.`],
+  R`$= 3x + 10$`,
+  [R`$13x$ is wrong: $3x$ and $10$ are not like terms, so they cannot be added together.`, R`$13x$ salah: $3x$ dan $10$ bukan suku sejenis, jadi tidak dapat dijumlahkan.`]]},
+
+{type:'fill', q:[R`Expand using the distributive property.`, R`Jabarkan menggunakan sifat distributif.`],
+ blank:R`$4(2x - 3) =$ [[]] $x\; -$ [[]]`, ans:['8','12'],
+ ex:[[R`Multiply $4$ by every term inside the bracket.`, R`Kalikan $4$ dengan setiap suku di dalam kurung.`],
+  R`$4(2x - 3) = 4 \times 2x - 4 \times 3$`, R`$= 8x - 12$`,
+  [R`So the blanks are $8$ and $12$.`, R`Jadi isiannya $8$ dan $12$.`]]},
+
+{type:'tf', q:[R`When $x = 3$, the value of $4x - 5$ is $7$.`, R`Jika $x = 3$, nilai $4x - 5$ adalah $7$.`], ans:true,
+ ex:[[R`Substitute $x = 3$ (use brackets).`, R`Substitusikan $x = 3$ (gunakan kurung).`],
+  R`$4(3) - 5 = 12 - 5 = 7$`,
+  [R`The value is $7$, so the statement is TRUE.`, R`Nilainya $7$, jadi pernyataan BENAR.`]]},
+
+{type:'pair', q:[R`Match each expression with its simplest form.`, R`Pasangkan setiap bentuk aljabar dengan bentuk paling sederhananya.`],
+ pairs:[[R`$2(x + 1)$`, R`$2x + 2$`], [R`$7x - 3x$`, R`$4x$`], [R`$-(x - 5)$`, R`$-x + 5$`], [R`$3x + 2 - x + 1$`, R`$2x + 3$`], [R`$5(x - 1) + 5$`, R`$5x$`]],
+ ex:[R`$2(x + 1) = 2x + 2$`, R`$7x - 3x = 4x$`,
+  [R`A minus sign before a bracket means multiply by $-1$:`, R`Tanda minus di depan kurung berarti dikali $-1$:`],
+  R`$-(x - 5) = -x + 5$`,
+  R`$3x + 2 - x + 1 = (3x - x) + (2 + 1) = 2x + 3$`,
+  R`$5(x - 1) + 5 = 5x - 5 + 5 = 5x$`]},
+
+{type:'multi', q:[R`Select ALL terms that are like terms with $6x$.`, R`Pilih SEMUA suku yang sejenis dengan $6x$.`],
+ opts:[R`$-2x$`, R`$x$`, R`$\frac{1}{2}x$`, R`$6x^2$`, R`$6$`, R`$6y$`], ans:[0,1,2],
+ ex:[[R`Like terms have the same variable with the same power. $6x$ has the variable $x$ with power $1$.`, R`Suku sejenis memiliki variabel dan pangkat yang sama. $6x$ memuat variabel $x$ berpangkat $1$.`],
+  [R`$-2x$, $x$ and $\frac{1}{2}x$ all contain $x^1$ → like terms ✓.`, R`$-2x$, $x$, dan $\frac{1}{2}x$ semuanya memuat $x^1$ → sejenis ✓.`],
+  [R`$6x^2$ has power $2$; $6$ has no variable; $6y$ has a different variable → not like terms ✗.`, R`$6x^2$ berpangkat $2$; $6$ tidak memuat variabel; $6y$ variabelnya berbeda → tidak sejenis ✗.`]]}
+],
+
+/* ================= S2 : Introduction ================= */
+s2: [
+{type:'multi', q:[R`Select ALL linear equations in one variable (PLSV).`, R`Pilih SEMUA persamaan linear satu variabel (PLSV).`],
+ opts:[R`$2x + 5 = 11$`, R`$3y - 7 = 2y$`, R`$4p = 20$`, R`$x^2 + 1 = 5$`, R`$x + y = 10$`, R`$5x + 3$`], ans:[0,1,2],
+ ex:[[R`Check the three conditions: has "=", exactly one variable, power of the variable is $1$.`, R`Periksa tiga syarat: ada "=", hanya satu variabel, pangkat variabel $1$.`],
+  [R`$2x + 5 = 11$, $3y - 7 = 2y$ and $4p = 20$ meet all three ✓.`, R`$2x + 5 = 11$, $3y - 7 = 2y$, dan $4p = 20$ memenuhi ketiganya ✓.`],
+  [R`$x^2 + 1 = 5$: power $2$. $x + y = 10$: two variables. $5x + 3$: no "=" (only an expression) ✗.`, R`$x^2 + 1 = 5$: pangkat $2$. $x + y = 10$: dua variabel. $5x + 3$: tidak ada "=" (hanya bentuk aljabar) ✗.`]]},
+
+{type:'mcq', q:[R`Andi buys 4 pencils at $x$ rupiah each. He pays with Rp10.000 and receives Rp2.000 change. Which equation models the story?`, R`Andi membeli 4 pensil seharga $x$ rupiah per buah. Ia membayar dengan Rp10.000 dan menerima kembalian Rp2.000. Persamaan mana yang sesuai dengan cerita?`],
+ opts:[R`$10000 - 4x = 2000$`, R`$4x - 10000 = 2000$`, R`$10000 + 4x = 2000$`, R`$4 + x = 8000$`],
+ ex:[[R`Cost of 4 pencils $= 4x$.`, R`Harga 4 pensil $= 4x$.`],
+  [R`Change = money paid − cost.`, R`Kembalian = uang yang dibayar − harga belanja.`],
+  R`$10000 - 4x = 2000$`,
+  [R`(Solving it: $4x = 8000$, so $x = 2000$. One pencil costs Rp2.000.)`, R`(Jika diselesaikan: $4x = 8000$, jadi $x = 2000$. Harga satu pensil Rp2.000.)`]]},
+
+{type:'tf', q:[R`$2x + 3 \gt 7$ is an equation.`, R`$2x + 3 \gt 7$ adalah sebuah persamaan.`], ans:false,
+ ex:[[R`An equation must use the sign "$=$". The sign "$\gt$" makes it an inequality (pertidaksamaan). The statement is FALSE.`, R`Persamaan harus memakai tanda "$=$". Tanda "$\gt$" membuatnya menjadi pertidaksamaan. Pernyataan SALAH.`]]},
+
+{type:'pair', q:[R`Match each sentence with its equation.`, R`Pasangkan setiap kalimat dengan persamaannya.`],
+ pairs:[[[R`A number plus 6 equals 15`, R`Suatu bilangan ditambah 6 sama dengan 15`], R`$x + 6 = 15$`],
+  [[R`Three times a number is 21`, R`Tiga kali suatu bilangan adalah 21`], R`$3x = 21$`],
+  [[R`A number minus 4 equals 10`, R`Suatu bilangan dikurangi 4 sama dengan 10`], R`$x - 4 = 10$`],
+  [[R`Half of a number is 9`, R`Setengah dari suatu bilangan adalah 9`], R`$\frac{x}{2} = 9$`]],
+ ex:[[R`Let the number be $x$ and translate word by word (see the table in section D):`, R`Misalkan bilangan itu $x$ lalu terjemahkan kata demi kata (lihat tabel di bagian D):`],
+  [R`"plus 6" → $+6$; "three times" → $3x$; "minus 4" → $-4$; "half of" → $\frac{x}{2}$; "equals / is" → $=$.`, R`"ditambah 6" → $+6$; "tiga kali" → $3x$; "dikurangi 4" → $-4$; "setengah dari" → $\frac{x}{2}$; "sama dengan / adalah" → $=$.`]]},
+
+{type:'fill', q:[R`Name the parts of the equation $7x - 4 = 24$.`, R`Sebutkan bagian-bagian persamaan $7x - 4 = 24$.`],
+ blank:R`Variable / Variabel: [[]] &nbsp; Coefficient of $x$ / Koefisien $x$: [[]] &nbsp; Constant on the left side / Konstanta ruas kiri: [[]]`, ans:['x','7','-4'],
+ ex:[[R`The variable is the letter for the unknown: $x$.`, R`Variabel adalah huruf untuk nilai yang belum diketahui: $x$.`],
+  [R`The coefficient is the number multiplied by the variable: $7$.`, R`Koefisien adalah bilangan yang dikalikan dengan variabel: $7$.`],
+  [R`The constant on the left side is the number without a variable, with its sign: $-4$.`, R`Konstanta di ruas kiri adalah bilangan tanpa variabel beserta tandanya: $-4$.`]]}
+],
+
+/* ================= S3 : Prior knowledge ================= */
+s3: [
+{type:'pair', q:[R`Match each operation with its inverse (the operation that undoes it).`, R`Pasangkan setiap operasi dengan inversnya (operasi yang membatalkannya).`],
+ pairs:[[[R`Add 8`, R`Tambah 8`], [R`Subtract 8`, R`Kurangi 8`]], [[R`Subtract 5`, R`Kurangi 5`], [R`Add 5`, R`Tambah 5`]], [[R`Multiply by 3`, R`Kali 3`], [R`Divide by 3`, R`Bagi 3`]], [[R`Divide by 2`, R`Bagi 2`], [R`Multiply by 2`, R`Kali 2`]]],
+ ex:[[R`Addition and subtraction undo each other; multiplication and division undo each other.`, R`Penjumlahan dan pengurangan saling membatalkan; perkalian dan pembagian saling membatalkan.`],
+  R`$+8 \leftrightarrow -8, \quad -5 \leftrightarrow +5, \quad \times 3 \leftrightarrow \div 3, \quad \div 2 \leftrightarrow \times 2$`]},
+
+{type:'mcq', q:[R`What is the least common multiple (LCM / KPK) of $4$ and $6$?`, R`Berapakah KPK (kelipatan persekutuan terkecil) dari $4$ dan $6$?`],
+ opts:[R`$12$`, R`$24$`, R`$2$`, R`$10$`],
+ ex:[[R`List the multiples of each number.`, R`Tuliskan kelipatan setiap bilangan.`],
+  R`$4: 4, 8, \mathbf{12}, 16, 20, 24, \dots$`, R`$6: 6, \mathbf{12}, 18, 24, \dots$`,
+  [R`The smallest common multiple is $12$. ($24$ is common but not the smallest; $2$ is the GCD/FPB, not the LCM.)`, R`Kelipatan bersama terkecil adalah $12$. ($24$ juga kelipatan bersama tetapi bukan yang terkecil; $2$ adalah FPB, bukan KPK.)`]]},
+
+{type:'fill', q:[R`Calculate.`, R`Hitunglah.`],
+ blank:R`$-18 \div 3 =$ [[]] &nbsp;&nbsp; $-7 + 15 =$ [[]]`, ans:['-6','8'],
+ ex:[[R`Dividing numbers with different signs gives a negative result.`, R`Pembagian bilangan berbeda tanda hasilnya negatif.`],
+  R`$-18 \div 3 = -6$`,
+  [R`Adding numbers with different signs: subtract the sizes and keep the sign of the larger one ($15 \gt 7$, so the answer is positive).`, R`Menjumlahkan bilangan berbeda tanda: kurangkan nilai mutlaknya dan pakai tanda bilangan yang lebih besar ($15 \gt 7$, jadi hasilnya positif).`],
+  R`$-7 + 15 = 15 - 7 = 8$`]},
+
+{type:'tf', q:[R`Multiplying both sides of $\frac{x}{2} + \frac{x}{3} = 5$ by $6$ gives $3x + 2x = 30$.`, R`Mengalikan kedua ruas $\frac{x}{2} + \frac{x}{3} = 5$ dengan $6$ menghasilkan $3x + 2x = 30$.`], ans:true,
+ ex:[[R`$6$ is the LCM of $2$ and $3$. Multiply EVERY term by $6$.`, R`$6$ adalah KPK dari $2$ dan $3$. Kalikan SETIAP suku dengan $6$.`],
+  R`$6 \cdot \frac{x}{2} + 6 \cdot \frac{x}{3} = 6 \cdot 5$`, R`$3x + 2x = 30$`,
+  [R`The statement is TRUE.`, R`Pernyataan BENAR.`]]},
+
+{type:'sort', q:[R`Number trick: "I think of a number $n$, multiply it by 4, then subtract 3. The result is 25." Put the steps for finding $n$ in order.`, R`Tebak angka: "Aku memikirkan bilangan $n$, mengalikannya dengan 4, lalu mengurangi 3. Hasilnya 25." Urutkan langkah untuk menemukan $n$.`],
+ items:[[R`Write the equation`, R`Tulis persamaannya`, R`$4n - 3 = 25$`],
+  [R`Undo "subtract 3"`, R`Batalkan "kurangi 3"`, R`$4n = 25 + 3 = 28$`],
+  [R`Undo "multiply by 4"`, R`Batalkan "kali 4"`, R`$n = 28 \div 4$`],
+  [R`Answer`, R`Jawaban`, R`$n = 7$`]],
+ ex:[[R`Undo the operations in REVERSE order: the last operation (subtract 3) is undone first.`, R`Batalkan operasi dengan urutan TERBALIK: operasi terakhir (kurangi 3) dibatalkan lebih dulu.`],
+  R`$4n - 3 = 25 \Rightarrow 4n = 28 \Rightarrow n = 7$`,
+  [R`Check: $4(7) - 3 = 28 - 3 = 25$ ✓`, R`Cek: $4(7) - 3 = 28 - 3 = 25$ ✓`]]}
+],
+
+/* ================= S4 : Problem introduction ================= */
+s4: [
+{type:'mcq', q:[R`In the museum problem, what does the variable $n$ represent?`, R`Pada masalah museum, variabel $n$ mewakili apa?`],
+ opts:[[R`The number of students who go`, R`Banyak siswa yang ikut`], [R`The price of one ticket`, R`Harga satu tiket`], [R`The total budget`, R`Total anggaran`], [R`The bus rental cost`, R`Biaya sewa bus`]],
+ ex:[[R`The question asks "how many students can go?", so the unknown is the number of students. The ticket price (Rp15.000), bus rental (Rp200.000) and budget (Rp650.000) are already known.`, R`Pertanyaannya "berapa banyak siswa yang dapat ikut?", jadi yang belum diketahui adalah banyak siswa. Harga tiket (Rp15.000), sewa bus (Rp200.000), dan anggaran (Rp650.000) sudah diketahui.`]]},
+
+{type:'sort', q:[R`Put the four problem-solving steps in the correct order.`, R`Urutkan empat langkah pemecahan masalah dengan benar.`],
+ items:[[R`Understand the problem: what is known and what is asked?`, R`Memahami masalah: apa yang diketahui dan ditanyakan?`],
+  [R`Choose a variable and write an equation`, R`Memilih variabel dan menyusun persamaan`],
+  [R`Solve the equation`, R`Menyelesaikan persamaan`],
+  [R`Check the answer in the story`, R`Memeriksa kembali jawaban pada cerita`]],
+ ex:[[R`This is Polya's method: Understand → Plan (variable + equation) → Solve → Look back (check).`, R`Ini adalah langkah Polya: Memahami → Merencanakan (variabel + persamaan) → Menyelesaikan → Memeriksa kembali.`]]},
+
+{type:'fill', q:[R`Suppose the class budget is Rp800.000 (bus Rp200.000, ticket Rp15.000 per student). Working in thousands of rupiah, complete the solution.`, R`Misalkan anggaran kelas Rp800.000 (bus Rp200.000, tiket Rp15.000 per siswa). Dengan satuan ribuan rupiah, lengkapi penyelesaiannya.`],
+ blank:R`$15n + 200 = 800$ &nbsp;⟶&nbsp; $15n =$ [[]] &nbsp;⟶&nbsp; $n =$ [[]]`, ans:['600','40'],
+ ex:[[R`Subtract $200$ from both sides.`, R`Kurangi kedua ruas dengan $200$.`],
+  R`$15n + 200 - 200 = 800 - 200 \Rightarrow 15n = 600$`,
+  [R`Divide both sides by $15$.`, R`Bagi kedua ruas dengan $15$.`],
+  R`$n = \frac{600}{15} = 40$`,
+  [R`Check: $15(40) + 200 = 600 + 200 = 800$ ✓. So 40 students can go.`, R`Cek: $15(40) + 200 = 600 + 200 = 800$ ✓. Jadi 40 siswa dapat ikut.`]]},
+
+{type:'tf', q:[R`Dividing both sides of an equation by $0$ gives an equivalent equation.`, R`Membagi kedua ruas persamaan dengan $0$ menghasilkan persamaan yang ekuivalen.`], ans:false,
+ ex:[[R`Division by $0$ is undefined. Both sides may only be multiplied or divided by the same NON-ZERO number. The statement is FALSE.`, R`Pembagian dengan $0$ tidak terdefinisi. Kedua ruas hanya boleh dikali atau dibagi dengan bilangan yang sama dan TIDAK NOL. Pernyataan SALAH.`]]},
+
+{type:'multi', q:[R`Select ALL equations that are equivalent to $2x + 6 = 14$.`, R`Pilih SEMUA persamaan yang ekuivalen dengan $2x + 6 = 14$.`],
+ opts:[R`$x + 3 = 7$`, R`$2x = 8$`, R`$x = 4$`, R`$2x = 20$`, R`$x + 6 = 7$`], ans:[0,1,2],
+ ex:[[R`Equivalent equations have the same solution. First solve the original:`, R`Persamaan ekuivalen memiliki penyelesaian yang sama. Selesaikan dulu persamaan aslinya:`],
+  R`$2x + 6 = 14 \Rightarrow 2x = 8 \Rightarrow x = 4$`,
+  [R`$x + 3 = 7$ is the original with every term divided by $2$ → $x = 4$ ✓. $2x = 8$ ✓. $x = 4$ ✓.`, R`$x + 3 = 7$ adalah persamaan asli yang setiap sukunya dibagi $2$ → $x = 4$ ✓. $2x = 8$ ✓. $x = 4$ ✓.`],
+  [R`$2x = 20$ gives $x = 10$ ✗ (6 was added instead of subtracted). $x + 6 = 7$ gives $x = 1$ ✗ (only some terms were divided by 2).`, R`$2x = 20$ menghasilkan $x = 10$ ✗ (6 ditambahkan, bukan dikurangkan). $x + 6 = 7$ menghasilkan $x = 1$ ✗ (hanya sebagian suku yang dibagi 2).`]]}
+],
+
+/* ================= S5 : Guided practice ================= */
+s5: [
+{type:'mcq', q:[R`Solve $4x - 9 = 15$.`, R`Selesaikan $4x - 9 = 15$.`],
+ opts:[R`$x = 6$`, R`$x = \frac{3}{2}$`, R`$x = -6$`, R`$x = 24$`],
+ ex:[[R`Add $9$ to both sides.`, R`Tambahkan $9$ ke kedua ruas.`],
+  R`$4x - 9 + 9 = 15 + 9 \Rightarrow 4x = 24$`,
+  [R`Divide both sides by $4$.`, R`Bagi kedua ruas dengan $4$.`],
+  R`$x = \frac{24}{4} = 6$`,
+  [R`Check: $4(6) - 9 = 24 - 9 = 15$ ✓. ($\frac{3}{2}$ comes from subtracting 9 instead of adding.)`, R`Cek: $4(6) - 9 = 24 - 9 = 15$ ✓. ($\frac{3}{2}$ muncul jika 9 dikurangkan, bukan ditambahkan.)`]]},
+
+{type:'fill', q:[R`Solve $7x + 2 = 3x + 18$.`, R`Selesaikan $7x + 2 = 3x + 18$.`],
+ blank:R`$4x =$ [[]] &nbsp;⟶&nbsp; $x =$ [[]]`, ans:['16','4'],
+ ex:[[R`Subtract $3x$ from both sides (collect $x$-terms on the left).`, R`Kurangi kedua ruas dengan $3x$ (kumpulkan suku $x$ di kiri).`],
+  R`$7x - 3x + 2 = 18 \Rightarrow 4x + 2 = 18$`,
+  [R`Subtract $2$ from both sides.`, R`Kurangi kedua ruas dengan $2$.`],
+  R`$4x = 16$`,
+  [R`Divide by $4$.`, R`Bagi dengan $4$.`],
+  R`$x = 4$`,
+  [R`Check: $7(4) + 2 = 30$ and $3(4) + 18 = 30$ ✓`, R`Cek: $7(4) + 2 = 30$ dan $3(4) + 18 = 30$ ✓`]]},
+
+{type:'sort', q:[R`Put the steps for solving $2(x + 3) = 4x - 8$ in order.`, R`Urutkan langkah penyelesaian $2(x + 3) = 4x - 8$.`],
+ items:[[R`Expand the bracket`, R`Jabarkan kurung`, R`$2x + 6 = 4x - 8$`],
+  [R`Variables to the right, numbers to the left`, R`Variabel ke kanan, bilangan ke kiri`, R`$6 + 8 = 4x - 2x$`],
+  [R`Simplify both sides`, R`Sederhanakan kedua ruas`, R`$14 = 2x$`],
+  [R`Divide by 2`, R`Bagi dengan 2`, R`$x = 7$`]],
+ ex:[R`$2(x + 3) = 4x - 8$`,
+  [R`Expand: $2 \cdot x + 2 \cdot 3$.`, R`Jabarkan: $2 \cdot x + 2 \cdot 3$.`],
+  R`$2x + 6 = 4x - 8$`,
+  [R`Subtract $2x$ and add $8$ on both sides.`, R`Kurangi $2x$ dan tambahkan $8$ pada kedua ruas.`],
+  R`$6 + 8 = 4x - 2x \Rightarrow 14 = 2x$`,
+  R`$x = 7$`,
+  [R`Check: $2(7 + 3) = 20$ and $4(7) - 8 = 20$ ✓`, R`Cek: $2(7 + 3) = 20$ dan $4(7) - 8 = 20$ ✓`]]},
+
+{type:'dnd', q:[R`Drag each equation into the box that shows its solution.`, R`Seret setiap persamaan ke kotak yang menunjukkan penyelesaiannya.`],
+ buckets:[R`$x = 2$`, R`$x = 3$`],
+ items:[[R`$3x - 1 = 5$`,0], [R`$2x + 4 = 10$`,1], [R`$5 - x = 3$`,0], [R`$4x = 12$`,1], [R`$\frac{x}{2} + 1 = 2$`,0], [R`$3(x - 1) = 6$`,1]],
+ ex:[R`$3x - 1 = 5 \Rightarrow 3x = 6 \Rightarrow x = 2$`,
+  R`$2x + 4 = 10 \Rightarrow 2x = 6 \Rightarrow x = 3$`,
+  R`$5 - x = 3 \Rightarrow -x = -2 \Rightarrow x = 2$`,
+  R`$4x = 12 \Rightarrow x = 3$`,
+  R`$\frac{x}{2} + 1 = 2 \Rightarrow \frac{x}{2} = 1 \Rightarrow x = 2$`,
+  R`$3(x - 1) = 6 \Rightarrow 3x - 3 = 6 \Rightarrow 3x = 9 \Rightarrow x = 3$`]},
+
+{type:'fill', q:[R`Solve $\frac{x}{3} + \frac{x}{4} = 7$.`, R`Selesaikan $\frac{x}{3} + \frac{x}{4} = 7$.`],
+ blank:R`Multiply by the LCM / Kalikan dengan KPK: [[]] &nbsp;⟶&nbsp; $7x =$ [[]] &nbsp;⟶&nbsp; $x =$ [[]]`, ans:['12','84','12'],
+ ex:[[R`The LCM of $3$ and $4$ is $12$. Multiply every term by $12$.`, R`KPK dari $3$ dan $4$ adalah $12$. Kalikan setiap suku dengan $12$.`],
+  R`$12 \cdot \frac{x}{3} + 12 \cdot \frac{x}{4} = 12 \cdot 7$`,
+  R`$4x + 3x = 84 \Rightarrow 7x = 84$`,
+  R`$x = \frac{84}{7} = 12$`,
+  [R`Check: $\frac{12}{3} + \frac{12}{4} = 4 + 3 = 7$ ✓`, R`Cek: $\frac{12}{3} + \frac{12}{4} = 4 + 3 = 7$ ✓`]]}
+],
+
+/* ================= S6 : Independent practice ================= */
+s6: [
+{type:'fill', q:[R`The sum of two consecutive even numbers is $46$. Find the two numbers.`, R`Jumlah dua bilangan genap berurutan adalah $46$. Tentukan kedua bilangan itu.`],
+ blank:R`Smaller / Lebih kecil: [[]] &nbsp;&nbsp; Larger / Lebih besar: [[]]`, ans:['22','24'],
+ ex:[[R`Consecutive even numbers differ by $2$. Let the smaller be $n$ and the larger $n + 2$.`, R`Bilangan genap berurutan selisihnya $2$. Misalkan yang kecil $n$ dan yang besar $n + 2$.`],
+  R`$n + (n + 2) = 46$`,
+  R`$2n + 2 = 46 \Rightarrow 2n = 44 \Rightarrow n = 22$`,
+  [R`The numbers are $22$ and $24$. Check: $22 + 24 = 46$ ✓`, R`Bilangannya $22$ dan $24$. Cek: $22 + 24 = 46$ ✓`]]},
+
+{type:'mcq', svg:['rect','length / panjang = 2x','x','Perimeter / Keliling = 36 cm'],
+ q:[R`The length of a rectangle is twice its width. Its perimeter is $36$ cm. What is the length?`, R`Panjang sebuah persegi panjang dua kali lebarnya. Kelilingnya $36$ cm. Berapakah panjangnya?`],
+ opts:[R`$12$ cm`, R`$6$ cm`, R`$18$ cm`, R`$9$ cm`],
+ ex:[[R`Let the width $= x$, so the length $= 2x$. Use the perimeter formula:`, R`Misalkan lebar $= x$, maka panjang $= 2x$. Gunakan rumus keliling:`],
+  R`$K = 2(p + l)$`,
+  R`$2(2x + x) = 36 \Rightarrow 2(3x) = 36 \Rightarrow 6x = 36 \Rightarrow x = 6$`,
+  [R`Width $= 6$ cm, so length $= 2(6) = 12$ cm. ($6$ cm is the width, not the length.)`, R`Lebar $= 6$ cm, jadi panjang $= 2(6) = 12$ cm. ($6$ cm adalah lebar, bukan panjang.)`],
+  [R`Check: $2(12 + 6) = 36$ ✓`, R`Cek: $2(12 + 6) = 36$ ✓`]]},
+
+{type:'tf', q:[R`Sinta has Rp5.000 more than Budi. Together they have Rp45.000. So Budi has Rp20.000.`, R`Uang Sinta Rp5.000 lebih banyak daripada uang Budi. Jumlah uang mereka Rp45.000. Jadi uang Budi Rp20.000.`], ans:true,
+ ex:[[R`Let Budi's money $= x$ rupiah. Then Sinta's money $= x + 5000$.`, R`Misalkan uang Budi $= x$ rupiah. Maka uang Sinta $= x + 5000$.`],
+  R`$x + (x + 5000) = 45000$`,
+  R`$2x + 5000 = 45000 \Rightarrow 2x = 40000 \Rightarrow x = 20000$`,
+  [R`Budi has Rp20.000 and Sinta has Rp25.000. The statement is TRUE.`, R`Uang Budi Rp20.000 dan uang Sinta Rp25.000. Pernyataan BENAR.`]]},
+
+{type:'pair', q:[R`Match each phrase with the correct algebraic expression.`, R`Pasangkan setiap frasa dengan bentuk aljabar yang benar.`],
+ pairs:[[[R`5 more than a number`, R`5 lebih dari suatu bilangan`], R`$x + 5$`],
+  [[R`5 less than a number`, R`5 kurang dari suatu bilangan`], R`$x - 5$`],
+  [[R`A number subtracted from 5`, R`5 dikurangi suatu bilangan`], R`$5 - x$`],
+  [[R`Twice a number`, R`Dua kali suatu bilangan`], R`$2x$`],
+  [[R`Half of a number`, R`Setengah dari suatu bilangan`], R`$\frac{x}{2}$`]],
+ ex:[[R`"5 more than $x$": start from $x$ and add 5 → $x + 5$.`, R`"5 lebih dari $x$": mulai dari $x$ lalu tambah 5 → $x + 5$.`],
+  [R`"5 less than $x$": start from $x$ and take away 5 → $x - 5$ (the order is reversed from the words).`, R`"5 kurang dari $x$": mulai dari $x$ lalu kurangi 5 → $x - 5$ (urutannya terbalik dari kata-katanya).`],
+  [R`"$x$ subtracted from 5" → $5 - x$. "Twice" → $\times 2$. "Half of" → $\div 2$.`, R`"5 dikurangi $x$" → $5 - x$. "Dua kali" → $\times 2$. "Setengah dari" → $\div 2$.`]]},
+
+{type:'mcq', q:[R`A mother is $28$ years older than her child. In $4$ years, the mother's age will be $3$ times the child's age. How old is the child now?`, R`Usia ibu $28$ tahun lebih tua daripada anaknya. $4$ tahun lagi, usia ibu akan menjadi $3$ kali usia anaknya. Berapa usia anak sekarang?`],
+ opts:[R`$10$ years / tahun`, R`$14$ years / tahun`, R`$6$ years / tahun`, R`$12$ years / tahun`],
+ ex:[[R`Let the child's age now $= x$, so the mother's age now $= x + 28$.`, R`Misalkan usia anak sekarang $= x$, maka usia ibu sekarang $= x + 28$.`],
+  [R`In 4 years: child $= x + 4$, mother $= x + 28 + 4 = x + 32$.`, R`4 tahun lagi: anak $= x + 4$, ibu $= x + 28 + 4 = x + 32$.`],
+  R`$x + 32 = 3(x + 4)$`,
+  R`$x + 32 = 3x + 12 \Rightarrow 32 - 12 = 3x - x \Rightarrow 20 = 2x \Rightarrow x = 10$`,
+  [R`The child is $10$ years old now ($14$ is the age in 4 years). Check: mother $38$; in 4 years $42 = 3 \times 14$ ✓`, R`Usia anak sekarang $10$ tahun ($14$ adalah usianya 4 tahun lagi). Cek: ibu $38$; 4 tahun lagi $42 = 3 \times 14$ ✓`]]}
+],
+
+/* ================= Exit ticket ================= */
+exit: [
+{type:'fill', q:[R`Solve $6x - 5 = 2x + 15$.`, R`Selesaikan $6x - 5 = 2x + 15$.`],
+ blank:R`$x =$ [[]]`, ans:['5'],
+ ex:[[R`Subtract $2x$ and add $5$ on both sides.`, R`Kurangi $2x$ dan tambahkan $5$ pada kedua ruas.`],
+  R`$6x - 2x = 15 + 5$`, R`$4x = 20 \Rightarrow x = 5$`,
+  [R`Check: $6(5) - 5 = 25$ and $2(5) + 15 = 25$ ✓`, R`Cek: $6(5) - 5 = 25$ dan $2(5) + 15 = 25$ ✓`]]},
+
+{type:'mcq', q:[R`Which is a correct first step for solving $2(x - 3) = 10$?`, R`Manakah langkah pertama yang benar untuk menyelesaikan $2(x - 3) = 10$?`],
+ opts:[R`$x - 3 = 5$`, R`$2x - 3 = 10$`, R`$x - 3 = 20$`, R`$2x = 13$`],
+ ex:[[R`Divide both sides by $2$:`, R`Bagi kedua ruas dengan $2$:`],
+  R`$\frac{2(x - 3)}{2} = \frac{10}{2} \Rightarrow x - 3 = 5 \Rightarrow x = 8$`,
+  [R`$2x - 3 = 10$ is wrong: the $2$ must multiply BOTH terms, giving $2x - 6 = 10$ (which also leads to $x = 8$).`, R`$2x - 3 = 10$ salah: angka $2$ harus mengalikan KEDUA suku, menjadi $2x - 6 = 10$ (yang juga menghasilkan $x = 8$).`]]},
+
+{type:'tf', q:[R`$x = -2$ is the solution of $3x + 10 = 4$.`, R`$x = -2$ adalah penyelesaian dari $3x + 10 = 4$.`], ans:true,
+ ex:[[R`Substitute $x = -2$:`, R`Substitusikan $x = -2$:`],
+  R`$3(-2) + 10 = -6 + 10 = 4$`,
+  [R`Both sides equal $4$, so the statement is TRUE.`, R`Kedua ruas bernilai $4$, jadi pernyataan BENAR.`]]}
+],
+
+/* ================= TASK 1 ================= */
+t1: [
+{type:'mcq', q:[R`Which of the following is a linear equation in one variable?`, R`Manakah yang merupakan persamaan linear satu variabel?`],
+ opts:[R`$3x - 7 = 11$`, R`$x^2 - 4 = 0$`, R`$2x + y = 8$`, R`$5x - 3 \gt 7$`],
+ ex:[[R`$3x - 7 = 11$ has "=", one variable, power 1 ✓.`, R`$3x - 7 = 11$ memiliki "=", satu variabel, pangkat 1 ✓.`],
+  [R`$x^2 - 4 = 0$ has power 2; $2x + y = 8$ has two variables; $5x - 3 \gt 7$ is an inequality ✗.`, R`$x^2 - 4 = 0$ berpangkat 2; $2x + y = 8$ memiliki dua variabel; $5x - 3 \gt 7$ adalah pertidaksamaan ✗.`]]},
+
+{type:'tf', q:[R`$x = 4$ is a solution of $5x - 8 = 12$.`, R`$x = 4$ adalah penyelesaian dari $5x - 8 = 12$.`], ans:true,
+ ex:[[R`Substitute $x = 4$ into the left side.`, R`Substitusikan $x = 4$ ke ruas kiri.`],
+  R`$5(4) - 8 = 20 - 8 = 12$`,
+  [R`Left side = right side = $12$, so it is TRUE.`, R`Ruas kiri = ruas kanan = $12$, jadi BENAR.`]]},
+
+{type:'fill', q:[R`Solve $x + 9 = 23$.`, R`Selesaikan $x + 9 = 23$.`], blank:R`$x =$ [[]]`, ans:['14'],
+ ex:[[R`Subtract $9$ from both sides.`, R`Kurangi kedua ruas dengan $9$.`],
+  R`$x + 9 - 9 = 23 - 9 \Rightarrow x = 14$`,
+  [R`Check: $14 + 9 = 23$ ✓`, R`Cek: $14 + 9 = 23$ ✓`]]},
+
+{type:'fill', q:[R`Solve $6x = -42$.`, R`Selesaikan $6x = -42$.`], blank:R`$x =$ [[]]`, ans:['-7'],
+ ex:[[R`Divide both sides by $6$. Negative ÷ positive = negative.`, R`Bagi kedua ruas dengan $6$. Negatif ÷ positif = negatif.`],
+  R`$x = \frac{-42}{6} = -7$`,
+  [R`Check: $6(-7) = -42$ ✓`, R`Cek: $6(-7) = -42$ ✓`]]},
+
+{type:'mcq', q:[R`Solve $\frac{x}{5} = 3$.`, R`Selesaikan $\frac{x}{5} = 3$.`],
+ opts:[R`$x = 15$`, R`$x = 8$`, R`$x = -2$`, R`$x = \frac{3}{5}$`],
+ ex:[[R`The inverse of "divide by 5" is "multiply by 5". Multiply both sides by $5$.`, R`Invers dari "bagi 5" adalah "kali 5". Kalikan kedua ruas dengan $5$.`],
+  R`$5 \cdot \frac{x}{5} = 5 \cdot 3 \Rightarrow x = 15$`,
+  [R`Check: $\frac{15}{5} = 3$ ✓`, R`Cek: $\frac{15}{5} = 3$ ✓`]]},
+
+{type:'multi', q:[R`Select ALL equations that have the solution $x = 3$.`, R`Pilih SEMUA persamaan yang penyelesaiannya $x = 3$.`],
+ opts:[R`$2x + 1 = 7$`, R`$4x - 5 = 7$`, R`$10 - x = 7$`, R`$x - 3 = 1$`, R`$3x = 6$`], ans:[0,1,2],
+ ex:[[R`Substitute $x = 3$ into each equation:`, R`Substitusikan $x = 3$ ke setiap persamaan:`],
+  R`$2(3) + 1 = 7 \;\checkmark \qquad 4(3) - 5 = 7 \;\checkmark \qquad 10 - 3 = 7 \;\checkmark$`,
+  R`$3 - 3 = 0 \neq 1 \;\text{✗} \qquad 3(3) = 9 \neq 6 \;\text{✗}$`]},
+
+{type:'pair', q:[R`Match each equation with its solution.`, R`Pasangkan setiap persamaan dengan penyelesaiannya.`],
+ pairs:[[R`$x - 5 = 2$`, R`$x = 7$`], [R`$3x = -12$`, R`$x = -4$`], [R`$x + 8 = 8$`, R`$x = 0$`], [R`$\frac{x}{4} = 2$`, R`$x = 8$`], [R`$2x + 1 = -1$`, R`$x = -1$`]],
+ ex:[R`$x - 5 = 2 \Rightarrow x = 2 + 5 = 7$`,
+  R`$3x = -12 \Rightarrow x = \frac{-12}{3} = -4$`,
+  R`$x + 8 = 8 \Rightarrow x = 8 - 8 = 0$`,
+  R`$\frac{x}{4} = 2 \Rightarrow x = 2 \times 4 = 8$`,
+  R`$2x + 1 = -1 \Rightarrow 2x = -2 \Rightarrow x = -1$`]},
+
+{type:'dnd', q:[R`Sort each card: is it a PLSV or not?`, R`Kelompokkan setiap kartu: PLSV atau bukan?`],
+ buckets:[[R`PLSV`, R`Persamaan linear satu variabel`], [R`Not PLSV`, R`Bukan PLSV`]],
+ items:[[R`$4a - 1 = 11$`,0], [R`$7 = 2m + 3$`,0], [R`$2(k + 1) = k$`,0], [R`$x^2 = 9$`,1], [R`$p + q = 5$`,1], [R`$3x - 2$`,1]],
+ ex:[[R`$4a - 1 = 11$, $7 = 2m + 3$, $2(k + 1) = k$: one variable, power 1, has "=" → PLSV. (The variable may be on the right side or inside brackets.)`, R`$4a - 1 = 11$, $7 = 2m + 3$, $2(k + 1) = k$: satu variabel, pangkat 1, ada "=" → PLSV. (Variabel boleh di ruas kanan atau di dalam kurung.)`],
+  [R`$x^2 = 9$: power 2. $p + q = 5$: two variables. $3x - 2$: no "=" sign → not PLSV.`, R`$x^2 = 9$: pangkat 2. $p + q = 5$: dua variabel. $3x - 2$: tidak ada "=" → bukan PLSV.`]]},
+
+{type:'sort', q:[R`Put the steps for solving $3x - 4 = 11$ in order.`, R`Urutkan langkah penyelesaian $3x - 4 = 11$.`],
+ items:[[R`Add 4 to both sides`, R`Tambahkan 4 ke kedua ruas`, R`$3x - 4 + 4 = 11 + 4$`],
+  [R`Simplify`, R`Sederhanakan`, R`$3x = 15$`],
+  [R`Divide both sides by 3`, R`Bagi kedua ruas dengan 3`, R`$\frac{3x}{3} = \frac{15}{3}$`],
+  [R`Solution`, R`Penyelesaian`, R`$x = 5$`]],
+ ex:[[R`First undo "−4" by adding 4, then undo "×3" by dividing by 3.`, R`Pertama batalkan "−4" dengan menambah 4, lalu batalkan "×3" dengan membagi 3.`],
+  R`$3x - 4 = 11 \Rightarrow 3x = 15 \Rightarrow x = 5$`,
+  [R`Check: $3(5) - 4 = 11$ ✓`, R`Cek: $3(5) - 4 = 11$ ✓`]]},
+
+{type:'tf', q:[R`The solution of $8 - x = 3$ is $x = -5$.`, R`Penyelesaian dari $8 - x = 3$ adalah $x = -5$.`], ans:false,
+ ex:[[R`Subtract $8$ from both sides.`, R`Kurangi kedua ruas dengan $8$.`],
+  R`$-x = 3 - 8 = -5$`,
+  [R`Multiply both sides by $-1$.`, R`Kalikan kedua ruas dengan $-1$.`],
+  R`$x = 5$`,
+  [R`Check: $8 - 5 = 3$ ✓, but $8 - (-5) = 13 \neq 3$. The statement is FALSE.`, R`Cek: $8 - 5 = 3$ ✓, tetapi $8 - (-5) = 13 \neq 3$. Pernyataan SALAH.`]]}
+],
+
+/* ================= TASK 2 ================= */
+t2: [
+{type:'fill', q:[R`Solve $5x + 3 = 2x + 18$.`, R`Selesaikan $5x + 3 = 2x + 18$.`], blank:R`$x =$ [[]]`, ans:['5'],
+ ex:[[R`Subtract $2x$ and subtract $3$ on both sides.`, R`Kurangi $2x$ dan kurangi $3$ pada kedua ruas.`],
+  R`$5x - 2x = 18 - 3 \Rightarrow 3x = 15 \Rightarrow x = 5$`,
+  [R`Check: $5(5) + 3 = 28$ and $2(5) + 18 = 28$ ✓`, R`Cek: $5(5) + 3 = 28$ dan $2(5) + 18 = 28$ ✓`]]},
+
+{type:'mcq', q:[R`Solve $7x - 4 = 3x + 12$.`, R`Selesaikan $7x - 4 = 3x + 12$.`],
+ opts:[R`$x = 4$`, R`$x = 2$`, R`$x = 8$`, R`$x = -4$`],
+ ex:[[R`Collect $x$-terms on the left and numbers on the right.`, R`Kumpulkan suku $x$ di kiri dan bilangan di kanan.`],
+  R`$7x - 3x = 12 + 4 \Rightarrow 4x = 16 \Rightarrow x = 4$`,
+  [R`Check: $7(4) - 4 = 24$ and $3(4) + 12 = 24$ ✓. ($x = 2$ comes from the sign error $12 - 4$.)`, R`Cek: $7(4) - 4 = 24$ dan $3(4) + 12 = 24$ ✓. ($x = 2$ muncul dari kesalahan tanda $12 - 4$.)`]]},
+
+{type:'fill', q:[R`Solve $3(x + 2) = 21$.`, R`Selesaikan $3(x + 2) = 21$.`], blank:R`$x =$ [[]]`, ans:['5'],
+ ex:[[R`Expand the bracket.`, R`Jabarkan kurung.`],
+  R`$3x + 6 = 21$`,
+  R`$3x = 21 - 6 = 15 \Rightarrow x = 5$`,
+  [R`(Another way: divide both sides by 3 first: $x + 2 = 7$, so $x = 5$.)`, R`(Cara lain: bagi kedua ruas dengan 3 dulu: $x + 2 = 7$, jadi $x = 5$.)`]]},
+
+{type:'mcq', q:[R`Solve $4(x - 1) = 2(x + 3)$.`, R`Selesaikan $4(x - 1) = 2(x + 3)$.`],
+ opts:[R`$x = 5$`, R`$x = 2$`, R`$x = -5$`, R`$x = 1$`],
+ ex:[[R`Expand both sides.`, R`Jabarkan kedua ruas.`],
+  R`$4x - 4 = 2x + 6$`,
+  R`$4x - 2x = 6 + 4 \Rightarrow 2x = 10 \Rightarrow x = 5$`,
+  [R`Check: $4(5 - 1) = 16$ and $2(5 + 3) = 16$ ✓`, R`Cek: $4(5 - 1) = 16$ dan $2(5 + 3) = 16$ ✓`]]},
+
+{type:'tf', q:[R`The solution of $2(x - 3) = x + 1$ is $x = 7$.`, R`Penyelesaian dari $2(x - 3) = x + 1$ adalah $x = 7$.`], ans:true,
+ ex:[R`$2x - 6 = x + 1$`,
+  R`$2x - x = 1 + 6 \Rightarrow x = 7$`,
+  [R`Check: $2(7 - 3) = 8$ and $7 + 1 = 8$ ✓. The statement is TRUE.`, R`Cek: $2(7 - 3) = 8$ dan $7 + 1 = 8$ ✓. Pernyataan BENAR.`]]},
+
+{type:'sort', q:[R`Put the steps for solving $6x - 7 = 2x + 9$ in order.`, R`Urutkan langkah penyelesaian $6x - 7 = 2x + 9$.`],
+ items:[[R`Subtract $2x$ from both sides`, R`Kurangi kedua ruas dengan $2x$`, R`$4x - 7 = 9$`],
+  [R`Add 7 to both sides`, R`Tambahkan 7 ke kedua ruas`, R`$4x = 16$`],
+  [R`Divide by 4`, R`Bagi dengan 4`, R`$x = 4$`],
+  [R`Check`, R`Periksa`, R`$6(4) - 7 = 17 = 2(4) + 9$`]],
+ ex:[R`$6x - 7 = 2x + 9$`,
+  R`$6x - 2x - 7 = 9 \Rightarrow 4x - 7 = 9$`,
+  R`$4x = 16 \Rightarrow x = 4$`,
+  [R`Check: both sides equal $17$ ✓. Checking is always the last step.`, R`Cek: kedua ruas bernilai $17$ ✓. Memeriksa selalu menjadi langkah terakhir.`]]},
+
+{type:'multi', q:[R`Rina solves $9 - 2x = x + 3$. Select ALL lines that are correct steps.`, R`Rina menyelesaikan $9 - 2x = x + 3$. Pilih SEMUA baris yang merupakan langkah benar.`],
+ opts:[R`$9 - 3 = x + 2x$`, R`$6 = 3x$`, R`$x = 2$`, R`$-2x - x = 3 + 9$`, R`$x = 3$`, R`$x = 4$`], ans:[0,1,2],
+ ex:[[R`Add $2x$ and subtract $3$ on both sides.`, R`Tambahkan $2x$ dan kurangi $3$ pada kedua ruas.`],
+  R`$9 - 3 = x + 2x \Rightarrow 6 = 3x \Rightarrow x = 2$`,
+  [R`$-2x - x = 3 + 9$ is wrong: moving $9$ to the right side makes it $-9$, so it should be $-2x - x = 3 - 9$.`, R`$-2x - x = 3 + 9$ salah: $9$ yang pindah ke ruas kanan menjadi $-9$, seharusnya $-2x - x = 3 - 9$.`],
+  [R`Check: $9 - 2(2) = 5$ and $2 + 3 = 5$ ✓`, R`Cek: $9 - 2(2) = 5$ dan $2 + 3 = 5$ ✓`]]},
+
+{type:'pair', q:[R`Match each equation with its solution.`, R`Pasangkan setiap persamaan dengan penyelesaiannya.`],
+ pairs:[[R`$2x + 5 = x + 9$`, R`$x = 4$`], [R`$5x - 1 = 3x + 5$`, R`$x = 3$`], [R`$2(x + 1) = x + 8$`, R`$x = 6$`], [R`$3x + 7 = x - 1$`, R`$x = -4$`], [R`$10 - x = x$`, R`$x = 5$`]],
+ ex:[R`$2x + 5 = x + 9 \Rightarrow x = 4$`,
+  R`$5x - 1 = 3x + 5 \Rightarrow 2x = 6 \Rightarrow x = 3$`,
+  R`$2x + 2 = x + 8 \Rightarrow x = 6$`,
+  R`$3x + 7 = x - 1 \Rightarrow 2x = -8 \Rightarrow x = -4$`,
+  R`$10 - x = x \Rightarrow 10 = 2x \Rightarrow x = 5$`]},
+
+{type:'dnd', q:[R`Solve each equation, then drag it to the correct box.`, R`Selesaikan setiap persamaan, lalu seret ke kotak yang benar.`],
+ buckets:[[R`Solution is positive`, R`Penyelesaian positif`], [R`Solution is negative`, R`Penyelesaian negatif`]],
+ items:[[R`$2x - 8 = 0$`,0], [R`$4(x - 2) = x + 1$`,0], [R`$2(x + 5) = 16$`,0], [R`$3x + 12 = 0$`,1], [R`$5x + 2 = 3x - 6$`,1], [R`$7 - x = 10$`,1]],
+ ex:[R`$2x - 8 = 0 \Rightarrow x = 4$ (+)`,
+  R`$4x - 8 = x + 1 \Rightarrow 3x = 9 \Rightarrow x = 3$ (+)`,
+  R`$2x + 10 = 16 \Rightarrow 2x = 6 \Rightarrow x = 3$ (+)`,
+  R`$3x + 12 = 0 \Rightarrow 3x = -12 \Rightarrow x = -4$ (−)`,
+  R`$5x - 3x = -6 - 2 \Rightarrow 2x = -8 \Rightarrow x = -4$ (−)`,
+  R`$7 - x = 10 \Rightarrow -x = 3 \Rightarrow x = -3$ (−)`]},
+
+{type:'fill', q:[R`Solve $5(2x - 1) - 3(x + 2) = 10$.`, R`Selesaikan $5(2x - 1) - 3(x + 2) = 10$.`],
+ blank:R`$7x -$ [[]] $= 10$ &nbsp;⟶&nbsp; $x =$ [[]]`, ans:['11','3'],
+ ex:[[R`Expand each bracket. Careful: $-3$ multiplies both $x$ and $2$.`, R`Jabarkan setiap kurung. Hati-hati: $-3$ mengalikan $x$ dan $2$.`],
+  R`$10x - 5 - 3x - 6 = 10$`,
+  [R`Collect like terms.`, R`Jumlahkan suku sejenis.`],
+  R`$7x - 11 = 10$`,
+  R`$7x = 21 \Rightarrow x = 3$`,
+  [R`Check: $5(5) - 3(5) = 25 - 15 = 10$ ✓`, R`Cek: $5(5) - 3(5) = 25 - 15 = 10$ ✓`]]}
+],
+
+/* ================= TASK 3 ================= */
+t3: [
+{type:'fill', q:[R`Solve $\frac{x}{4} + 3 = 7$.`, R`Selesaikan $\frac{x}{4} + 3 = 7$.`], blank:R`$x =$ [[]]`, ans:['16'],
+ ex:[[R`Subtract $3$ first, then multiply by $4$.`, R`Kurangi $3$ dulu, lalu kalikan $4$.`],
+  R`$\frac{x}{4} = 4 \Rightarrow x = 4 \times 4 = 16$`,
+  [R`Check: $\frac{16}{4} + 3 = 4 + 3 = 7$ ✓`, R`Cek: $\frac{16}{4} + 3 = 4 + 3 = 7$ ✓`]]},
+
+{type:'mcq', q:[R`Solve $\frac{x - 2}{3} = 4$.`, R`Selesaikan $\frac{x - 2}{3} = 4$.`],
+ opts:[R`$x = 14$`, R`$x = 10$`, R`$x = 6$`, R`$x = 2$`],
+ ex:[[R`Multiply both sides by $3$.`, R`Kalikan kedua ruas dengan $3$.`],
+  R`$x - 2 = 12$`,
+  [R`Add $2$ to both sides.`, R`Tambahkan $2$ ke kedua ruas.`],
+  R`$x = 14$`,
+  [R`Check: $\frac{14 - 2}{3} = \frac{12}{3} = 4$ ✓`, R`Cek: $\frac{14 - 2}{3} = \frac{12}{3} = 4$ ✓`]]},
+
+{type:'fill', q:[R`Solve $\frac{x}{2} + \frac{x}{3} = 10$.`, R`Selesaikan $\frac{x}{2} + \frac{x}{3} = 10$.`],
+ blank:R`$3x + 2x =$ [[]] &nbsp;⟶&nbsp; $x =$ [[]]`, ans:['60','12'],
+ ex:[[R`Multiply every term by the LCM $6$.`, R`Kalikan setiap suku dengan KPK $6$.`],
+  R`$6 \cdot \frac{x}{2} + 6 \cdot \frac{x}{3} = 6 \cdot 10 \Rightarrow 3x + 2x = 60$`,
+  R`$5x = 60 \Rightarrow x = 12$`,
+  [R`Check: $\frac{12}{2} + \frac{12}{3} = 6 + 4 = 10$ ✓`, R`Cek: $\frac{12}{2} + \frac{12}{3} = 6 + 4 = 10$ ✓`]]},
+
+{type:'tf', q:[R`To clear the fractions in $\frac{x}{4} - \frac{x}{6} = 1$, we can multiply both sides by $12$.`, R`Untuk menghilangkan pecahan pada $\frac{x}{4} - \frac{x}{6} = 1$, kedua ruas dapat dikalikan $12$.`], ans:true,
+ ex:[[R`The LCM of $4$ and $6$ is $12$, so the statement is TRUE.`, R`KPK dari $4$ dan $6$ adalah $12$, jadi pernyataan BENAR.`],
+  R`$12 \cdot \frac{x}{4} - 12 \cdot \frac{x}{6} = 12 \Rightarrow 3x - 2x = 12 \Rightarrow x = 12$`]},
+
+{type:'mcq', q:[R`Solve $\frac{2x + 1}{5} = \frac{x + 2}{3}$.`, R`Selesaikan $\frac{2x + 1}{5} = \frac{x + 2}{3}$.`],
+ opts:[R`$x = 7$`, R`$x = 13$`, R`$x = 1$`, R`$x = -7$`],
+ ex:[[R`Multiply both sides by the LCM $15$ (this is the same as cross-multiplying).`, R`Kalikan kedua ruas dengan KPK $15$ (sama dengan kali silang).`],
+  R`$3(2x + 1) = 5(x + 2)$`,
+  R`$6x + 3 = 5x + 10$`,
+  R`$6x - 5x = 10 - 3 \Rightarrow x = 7$`,
+  [R`Check: $\frac{15}{5} = 3$ and $\frac{9}{3} = 3$ ✓`, R`Cek: $\frac{15}{5} = 3$ dan $\frac{9}{3} = 3$ ✓`]]},
+
+{type:'fill', q:[R`Solve $0.4x + 1.5 = 3.5$.`, R`Selesaikan $0{,}4x + 1{,}5 = 3{,}5$.`], blank:R`$x =$ [[]]`, ans:['5'],
+ ex:[[R`Multiply every term by $10$ to remove the decimals.`, R`Kalikan setiap suku dengan $10$ untuk menghilangkan desimal.`],
+  R`$4x + 15 = 35$`,
+  R`$4x = 20 \Rightarrow x = 5$`,
+  [R`Check: $0.4(5) + 1.5 = 2 + 1.5 = 3.5$ ✓`, R`Cek: $0{,}4(5) + 1{,}5 = 2 + 1{,}5 = 3{,}5$ ✓`]]},
+
+{type:'multi', q:[R`Select ALL equations that have the solution $x = 6$.`, R`Pilih SEMUA persamaan yang penyelesaiannya $x = 6$.`],
+ opts:[R`$\frac{x}{2} + 1 = 4$`, R`$\frac{x}{3} - 1 = 1$`, R`$\frac{x + 4}{5} = 2$`, R`$\frac{x}{6} = 6$`, R`$0.5x = 2$`], ans:[0,1,2],
+ ex:[[R`Substitute $x = 6$ into each equation:`, R`Substitusikan $x = 6$ ke setiap persamaan:`],
+  R`$\frac{6}{2} + 1 = 4 \;\checkmark \qquad \frac{6}{3} - 1 = 1 \;\checkmark \qquad \frac{6 + 4}{5} = 2 \;\checkmark$`,
+  R`$\frac{6}{6} = 1 \neq 6 \;\text{✗} \qquad 0.5(6) = 3 \neq 2 \;\text{✗}$`]},
+
+{type:'sort', q:[R`Put the steps for solving $\frac{x + 1}{2} - \frac{x - 1}{3} = 2$ in order.`, R`Urutkan langkah penyelesaian $\frac{x + 1}{2} - \frac{x - 1}{3} = 2$.`],
+ items:[[R`Multiply every term by 6`, R`Kalikan setiap suku dengan 6`, R`$3(x + 1) - 2(x - 1) = 12$`],
+  [R`Expand the brackets`, R`Jabarkan kurung`, R`$3x + 3 - 2x + 2 = 12$`],
+  [R`Collect like terms`, R`Jumlahkan suku sejenis`, R`$x + 5 = 12$`],
+  [R`Subtract 5`, R`Kurangi 5`, R`$x = 7$`]],
+ ex:[[R`Watch the sign: $-2(x - 1) = -2x + 2$.`, R`Perhatikan tanda: $-2(x - 1) = -2x + 2$.`],
+  R`$3(x + 1) - 2(x - 1) = 12 \Rightarrow 3x + 3 - 2x + 2 = 12 \Rightarrow x + 5 = 12 \Rightarrow x = 7$`,
+  [R`Check: $\frac{8}{2} - \frac{6}{3} = 4 - 2 = 2$ ✓`, R`Cek: $\frac{8}{2} - \frac{6}{3} = 4 - 2 = 2$ ✓`]]},
+
+{type:'pair', q:[R`Match each equation with the number (LCM) you should multiply both sides by.`, R`Pasangkan setiap persamaan dengan bilangan (KPK) pengali kedua ruas.`],
+ pairs:[[R`$\frac{x}{2} + \frac{x}{5} = 7$`, R`$\times\, 10$`], [R`$\frac{x}{3} - \frac{x}{4} = 1$`, R`$\times\, 12$`], [R`$\frac{x}{6} + \frac{x}{9} = 5$`, R`$\times\, 18$`], [R`$\frac{x}{4} + \frac{x}{8} = 3$`, R`$\times\, 8$`], [R`$\frac{x}{3} + \frac{x}{5} = 8$`, R`$\times\, 15$`]],
+ ex:[R`$\text{LCM}(2,5) = 10 \qquad \text{LCM}(3,4) = 12 \qquad \text{LCM}(6,9) = 18$`,
+  R`$\text{LCM}(4,8) = 8 \qquad \text{LCM}(3,5) = 15$`,
+  [R`Tip: if one denominator is a multiple of the other (8 is a multiple of 4), the larger one is the LCM.`, R`Tips: jika satu penyebut adalah kelipatan penyebut lain (8 kelipatan 4), maka penyebut yang lebih besar adalah KPK-nya.`]]},
+
+{type:'tf', q:[R`The solution of $1.2x - 0.5 = 0.7x + 2$ is $x = 5$.`, R`Penyelesaian dari $1{,}2x - 0{,}5 = 0{,}7x + 2$ adalah $x = 5$.`], ans:true,
+ ex:[[R`Multiply every term by $10$.`, R`Kalikan setiap suku dengan $10$.`],
+  R`$12x - 5 = 7x + 20$`,
+  R`$12x - 7x = 20 + 5 \Rightarrow 5x = 25 \Rightarrow x = 5$`,
+  [R`Check: $1.2(5) - 0.5 = 5.5$ and $0.7(5) + 2 = 5.5$ ✓. TRUE.`, R`Cek: $1{,}2(5) - 0{,}5 = 5{,}5$ dan $0{,}7(5) + 2 = 5{,}5$ ✓. BENAR.`]]}
+],
+
+/* ================= TASK 4 ================= */
+t4: [
+{type:'mcq', svg:['scale',3,2,0,11],
+ q:[R`The balance is level. Each box has mass $x$ kg and each circle is $1$ kg. Find $x$.`, R`Timbangan dalam keadaan seimbang. Setiap kotak bermassa $x$ kg dan setiap lingkaran $1$ kg. Tentukan $x$.`],
+ opts:[R`$x = 3$`, R`$x = 4$`, R`$x = \frac{11}{3}$`, R`$x = 9$`],
+ ex:[[R`Left side: 3 boxes and 2 circles. Right side: 11 circles.`, R`Sisi kiri: 3 kotak dan 2 lingkaran. Sisi kanan: 11 lingkaran.`],
+  R`$3x + 2 = 11$`,
+  [R`Remove 2 circles from both sides, then split into 3 equal groups.`, R`Ambil 2 lingkaran dari kedua sisi, lalu bagi menjadi 3 kelompok sama.`],
+  R`$3x = 9 \Rightarrow x = 3$`,
+  [R`Each box is $3$ kg. ($9$ is the mass of all 3 boxes together.)`, R`Setiap kotak $3$ kg. ($9$ adalah massa ketiga kotak bersama-sama.)`]]},
+
+{type:'fill', svg:['rect','length / panjang = (x + 5) cm','x cm','Perimeter / Keliling = 42 cm'],
+ q:[R`Find the width and the length of the rectangle.`, R`Tentukan lebar dan panjang persegi panjang tersebut.`],
+ blank:R`Width / Lebar $x =$ [[]] cm &nbsp;&nbsp; Length / Panjang $=$ [[]] cm`, ans:['8','13'],
+ ex:[[R`Use $K = 2(p + l)$ with $p = x + 5$ and $l = x$.`, R`Gunakan $K = 2(p + l)$ dengan $p = x + 5$ dan $l = x$.`],
+  R`$2\big((x + 5) + x\big) = 42$`,
+  R`$2(2x + 5) = 42 \Rightarrow 4x + 10 = 42 \Rightarrow 4x = 32 \Rightarrow x = 8$`,
+  [R`Width $= 8$ cm, length $= 8 + 5 = 13$ cm. Check: $2(13 + 8) = 42$ ✓`, R`Lebar $= 8$ cm, panjang $= 8 + 5 = 13$ cm. Cek: $2(13 + 8) = 42$ ✓`]]},
+
+{type:'mcq', q:[R`The sum of three consecutive integers is $72$. What is the largest of the three?`, R`Jumlah tiga bilangan bulat berurutan adalah $72$. Berapakah bilangan yang terbesar?`],
+ opts:[R`$25$`, R`$24$`, R`$23$`, R`$26$`],
+ ex:[R`$n + (n + 1) + (n + 2) = 72$`,
+  R`$3n + 3 = 72 \Rightarrow 3n = 69 \Rightarrow n = 23$`,
+  [R`The numbers are $23, 24, 25$, so the largest is $25$. Check: $23 + 24 + 25 = 72$ ✓`, R`Bilangannya $23, 24, 25$, jadi yang terbesar $25$. Cek: $23 + 24 + 25 = 72$ ✓`]]},
+
+{type:'fill', q:[R`Rina buys 3 books of the same price and one pen for Rp4.000. She pays Rp40.000 in total. What is the price of one book? (Answer in thousands of rupiah.)`, R`Rina membeli 3 buku yang harganya sama dan satu pulpen seharga Rp4.000. Total yang dibayar Rp40.000. Berapa harga satu buku? (Jawab dalam ribuan rupiah.)`],
+ blank:R`Price of one book / Harga satu buku $=$ Rp [[]] thousand / ribu`, ans:['12'],
+ ex:[[R`Let $b$ = price of one book in thousands of rupiah.`, R`Misalkan $b$ = harga satu buku dalam ribuan rupiah.`],
+  R`$3b + 4 = 40$`,
+  R`$3b = 36 \Rightarrow b = 12$`,
+  [R`One book costs Rp12.000. Check: $3(12) + 4 = 40$ ✓`, R`Harga satu buku Rp12.000. Cek: $3(12) + 4 = 40$ ✓`]]},
+
+{type:'tf', q:[R`A father is 4 times as old as his son. In 5 years, the sum of their ages will be 60. So the son is now 10 years old.`, R`Usia ayah 4 kali usia anaknya. 5 tahun lagi, jumlah usia mereka 60 tahun. Jadi usia anak sekarang 10 tahun.`], ans:true,
+ ex:[[R`Son now $= x$, father now $= 4x$. In 5 years: $x + 5$ and $4x + 5$.`, R`Anak sekarang $= x$, ayah sekarang $= 4x$. 5 tahun lagi: $x + 5$ dan $4x + 5$.`],
+  R`$(x + 5) + (4x + 5) = 60$`,
+  R`$5x + 10 = 60 \Rightarrow 5x = 50 \Rightarrow x = 10$`,
+  [R`The son is 10 and the father is 40. Check: $15 + 45 = 60$ ✓. TRUE.`, R`Anak 10 tahun dan ayah 40 tahun. Cek: $15 + 45 = 60$ ✓. BENAR.`]]},
+
+{type:'sort', svg:['tri','x','2x','3x'],
+ q:[R`The angles of a triangle are $x$, $2x$ and $3x$. Put the steps for finding the angles in order.`, R`Sudut-sudut sebuah segitiga adalah $x$, $2x$, dan $3x$. Urutkan langkah untuk menentukan besar sudutnya.`],
+ items:[[R`Angle sum of a triangle`, R`Jumlah sudut segitiga`, R`$x + 2x + 3x = 180^\circ$`],
+  [R`Combine like terms`, R`Jumlahkan suku sejenis`, R`$6x = 180^\circ$`],
+  [R`Divide by 6`, R`Bagi dengan 6`, R`$x = 30^\circ$`],
+  [R`Find each angle`, R`Tentukan setiap sudut`, R`$30^\circ,\ 60^\circ,\ 90^\circ$`]],
+ ex:[R`$x + 2x + 3x = 180^\circ \Rightarrow 6x = 180^\circ \Rightarrow x = 30^\circ$`,
+  R`$2x = 60^\circ, \quad 3x = 90^\circ$`,
+  [R`Check: $30^\circ + 60^\circ + 90^\circ = 180^\circ$ ✓ (it is a right triangle).`, R`Cek: $30^\circ + 60^\circ + 90^\circ = 180^\circ$ ✓ (segitiga siku-siku).`]]},
+
+{type:'pair', q:[R`Match each sentence with its equation.`, R`Pasangkan setiap kalimat dengan persamaannya.`],
+ pairs:[[[R`A number increased by 7 is 20`, R`Suatu bilangan ditambah 7 hasilnya 20`], R`$x + 7 = 20$`],
+  [[R`Twice a number decreased by 3 is 11`, R`Dua kali suatu bilangan dikurangi 3 hasilnya 11`], R`$2x - 3 = 11$`],
+  [[R`Three times a number equals the number plus 10`, R`Tiga kali suatu bilangan sama dengan bilangan itu ditambah 10`], R`$3x = x + 10$`],
+  [[R`Half a number plus 4 is 9`, R`Setengah suatu bilangan ditambah 4 hasilnya 9`], R`$\frac{x}{2} + 4 = 9$`],
+  [[R`5 less than 4 times a number is 15`, R`5 kurang dari 4 kali suatu bilangan hasilnya 15`], R`$4x - 5 = 15$`]],
+ ex:[[R`Translate piece by piece. "Twice a number" = $2x$; "decreased by 3" = $-3$; "the number plus 10" = $x + 10$; "half a number" = $\frac{x}{2}$; "5 less than $4x$" = $4x - 5$.`, R`Terjemahkan bagian demi bagian. "Dua kali suatu bilangan" = $2x$; "dikurangi 3" = $-3$; "bilangan itu ditambah 10" = $x + 10$; "setengah suatu bilangan" = $\frac{x}{2}$; "5 kurang dari $4x$" = $4x - 5$.`]]},
+
+{type:'multi', q:[R`Dimas has $x$ marbles. Eko has 3 more than twice Dimas's marbles. Together they have 45 marbles. Select ALL true statements.`, R`Dimas memiliki $x$ kelereng. Kelereng Eko 3 lebih banyak dari dua kali kelereng Dimas. Jumlah kelereng mereka 45. Pilih SEMUA pernyataan yang benar.`],
+ opts:[[R`The equation is`, R`Persamaannya`, R`$x + (2x + 3) = 45$`], R`$3x = 42$`, R`$x = 14$`, [R`Eko has 31 marbles`, R`Eko memiliki 31 kelereng`], [R`Eko has 28 marbles`, R`Eko memiliki 28 kelereng`], R`$x = 16$`], ans:[0,1,2,3],
+ ex:[[R`Eko $= 2x + 3$. Total:`, R`Eko $= 2x + 3$. Jumlah:`],
+  R`$x + (2x + 3) = 45 \Rightarrow 3x + 3 = 45 \Rightarrow 3x = 42 \Rightarrow x = 14$`,
+  [R`Eko $= 2(14) + 3 = 31$. Check: $14 + 31 = 45$ ✓. ($28 = 2 \times 14$ forgets the "+3".)`, R`Eko $= 2(14) + 3 = 31$. Cek: $14 + 31 = 45$ ✓. ($28 = 2 \times 14$ lupa "+3".)`]]},
+
+{type:'dnd', q:[R`Drag each phrase into the box with the matching expression.`, R`Seret setiap frasa ke kotak dengan bentuk aljabar yang sesuai.`],
+ buckets:[R`$x + 5$`, R`$x - 5$`, R`$5 - x$`],
+ items:[[[R`5 more than x`, R`5 lebih dari x`],0], [[R`x increased by 5`, R`x ditambah 5`],0], [[R`5 less than x`, R`5 kurang dari x`],1], [[R`x decreased by 5`, R`x dikurangi 5`],1], [[R`x subtracted from 5`, R`5 dikurangi x`],2], [[R`5 minus x`, R`lima kurang x`],2]],
+ ex:[[R`"more than" and "increased by" → add: $x + 5$.`, R`"lebih dari" dan "ditambah" → jumlah: $x + 5$.`],
+  [R`"5 less than $x$" and "$x$ decreased by 5" → start at $x$, take away 5: $x - 5$.`, R`"5 kurang dari $x$" dan "$x$ dikurangi 5" → mulai dari $x$, kurangi 5: $x - 5$.`],
+  [R`"$x$ subtracted from 5" and "5 minus $x$" → start at 5, take away $x$: $5 - x$.`, R`"5 dikurangi $x$" dan "lima kurang $x$" → mulai dari 5, kurangi $x$: $5 - x$.`]]},
+
+{type:'fill', q:[R`A taxi charges Rp6.000 to start and Rp5.000 per km. Pak Budi pays Rp51.000. How many km did he travel?`, R`Tarif taksi Rp6.000 untuk buka pintu dan Rp5.000 per km. Pak Budi membayar Rp51.000. Berapa km jarak yang ditempuh?`],
+ blank:R`Distance / Jarak $=$ [[]] km`, ans:['9'],
+ ex:[[R`Let $k$ = distance in km.`, R`Misalkan $k$ = jarak dalam km.`],
+  R`$6000 + 5000k = 51000$`,
+  R`$5000k = 45000 \Rightarrow k = \frac{45000}{5000} = 9$`,
+  [R`He travelled 9 km. Check: $6000 + 45000 = 51000$ ✓`, R`Jaraknya 9 km. Cek: $6000 + 45000 = 51000$ ✓`]]}
+],
+
+/* ================= TASK 5 ================= */
+t5: [
+{type:'mcq', q:[R`If $3x - 5 = 16$, what is the value of $2x + 1$?`, R`Jika $3x - 5 = 16$, berapakah nilai $2x + 1$?`],
+ opts:[R`$15$`, R`$7$`, R`$13$`, R`$17$`],
+ ex:[[R`Step 1: solve for $x$.`, R`Langkah 1: cari nilai $x$.`],
+  R`$3x = 21 \Rightarrow x = 7$`,
+  [R`Step 2: substitute into $2x + 1$.`, R`Langkah 2: substitusikan ke $2x + 1$.`],
+  R`$2(7) + 1 = 15$`,
+  [R`($7$ is the value of $x$, not of $2x + 1$.)`, R`($7$ adalah nilai $x$, bukan nilai $2x + 1$.)`]]},
+
+{type:'fill', q:[R`$x = 2$ is the solution of $3x + k = 11$. Find $k$.`, R`$x = 2$ adalah penyelesaian dari $3x + k = 11$. Tentukan $k$.`], blank:R`$k =$ [[]]`, ans:['5'],
+ ex:[[R`Substitute $x = 2$; now $k$ is the unknown.`, R`Substitusikan $x = 2$; sekarang $k$ yang dicari.`],
+  R`$3(2) + k = 11 \Rightarrow 6 + k = 11 \Rightarrow k = 5$`]},
+
+{type:'tf', q:[R`The equation $2(x + 3) = 2x + 6$ has exactly one solution.`, R`Persamaan $2(x + 3) = 2x + 6$ tepat memiliki satu penyelesaian.`], ans:false,
+ ex:[R`$2x + 6 = 2x + 6 \Rightarrow 6 = 6$`,
+  [R`The variable disappears and the result is always true. Every value of $x$ works, so there are infinitely many solutions. FALSE.`, R`Variabelnya hilang dan hasilnya selalu benar. Semua nilai $x$ memenuhi, jadi penyelesaiannya tak hingga banyak. SALAH.`]]},
+
+{type:'tf', q:[R`The equation $3x + 4 = 3x + 7$ has no solution.`, R`Persamaan $3x + 4 = 3x + 7$ tidak memiliki penyelesaian.`], ans:true,
+ ex:[R`$3x - 3x = 7 - 4 \Rightarrow 0 = 3$`,
+  [R`$0 = 3$ is never true, so no value of $x$ works. TRUE.`, R`$0 = 3$ tidak pernah benar, jadi tidak ada nilai $x$ yang memenuhi. BENAR.`]]},
+
+{type:'multi', q:[R`Select ALL equations that are equivalent to $4x - 8 = 12$.`, R`Pilih SEMUA persamaan yang ekuivalen dengan $4x - 8 = 12$.`],
+ opts:[R`$x - 2 = 3$`, R`$4x = 20$`, R`$x = 5$`, R`$2x - 4 = 6$`, R`$4x = 4$`, R`$x - 8 = 3$`], ans:[0,1,2,3],
+ ex:[R`$4x - 8 = 12 \Rightarrow 4x = 20 \Rightarrow x = 5$`,
+  [R`$x - 2 = 3$ is the original ÷ 4 ✓; $2x - 4 = 6$ is the original ÷ 2 ✓; both give $x = 5$.`, R`$x - 2 = 3$ adalah persamaan asli ÷ 4 ✓; $2x - 4 = 6$ adalah persamaan asli ÷ 2 ✓; keduanya menghasilkan $x = 5$.`],
+  [R`$4x = 4$ gives $x = 1$ ✗. $x - 8 = 3$ gives $x = 11$ ✗ (not every term was divided by 4).`, R`$4x = 4$ menghasilkan $x = 1$ ✗. $x - 8 = 3$ menghasilkan $x = 11$ ✗ (tidak semua suku dibagi 4).`]]},
+
+{type:'sort', q:[R`Order the equations by their solutions, from SMALLEST (top) to LARGEST (bottom).`, R`Urutkan persamaan berdasarkan penyelesaiannya, dari yang TERKECIL (atas) ke TERBESAR (bawah).`],
+ items:[R`$2x = -8$`, R`$x + 3 = 2$`, R`$5x = 0$`, R`$x - 1 = 2$`, R`$\frac{x}{2} = 4$`],
+ ex:[R`$2x = -8 \Rightarrow x = -4$`, R`$x + 3 = 2 \Rightarrow x = -1$`, R`$5x = 0 \Rightarrow x = 0$`, R`$x - 1 = 2 \Rightarrow x = 3$`, R`$\frac{x}{2} = 4 \Rightarrow x = 8$`,
+  [R`Order: $-4 \lt -1 \lt 0 \lt 3 \lt 8$.`, R`Urutan: $-4 \lt -1 \lt 0 \lt 3 \lt 8$.`]]},
+
+{type:'pair', q:[R`Match each equation with its solution.`, R`Pasangkan setiap persamaan dengan penyelesaiannya.`],
+ pairs:[[R`$\frac{x - 3}{2} = x - 4$`, R`$x = 5$`], [R`$0.2x + 3 = 0.5x$`, R`$x = 10$`], [R`$2(3x - 1) = 4(x + 1)$`, R`$x = 3$`], [R`$\frac{x}{3} + 2 = x - 4$`, R`$x = 9$`], [R`$5 - 2(x - 1) = x - 5$`, R`$x = 4$`]],
+ ex:[R`$\frac{x - 3}{2} = x - 4 \overset{\times 2}{\Longrightarrow} x - 3 = 2x - 8 \Rightarrow 5 = x$`,
+  R`$0.2x + 3 = 0.5x \overset{\times 10}{\Longrightarrow} 2x + 30 = 5x \Rightarrow 30 = 3x \Rightarrow x = 10$`,
+  R`$6x - 2 = 4x + 4 \Rightarrow 2x = 6 \Rightarrow x = 3$`,
+  R`$\frac{x}{3} + 2 = x - 4 \overset{\times 3}{\Longrightarrow} x + 6 = 3x - 12 \Rightarrow 18 = 2x \Rightarrow x = 9$`,
+  R`$5 - 2x + 2 = x - 5 \Rightarrow 7 + 5 = 3x \Rightarrow x = 4$`]},
+
+{type:'dnd', q:[R`How many solutions does each equation have? Drag each card to the correct box.`, R`Berapa banyak penyelesaian setiap persamaan? Seret setiap kartu ke kotak yang benar.`],
+ buckets:[[R`Exactly one solution`, R`Tepat satu penyelesaian`], [R`No solution`, R`Tidak ada penyelesaian`], [R`Infinitely many`, R`Tak hingga banyak`]],
+ items:[[R`$2x + 1 = x + 4$`,0], [R`$7x = 0$`,0], [R`$3x - 1 = 3x + 2$`,1], [R`$5x = 5x + 1$`,1], [R`$4x + 1 = 4x + 1$`,2], [R`$2(x + 2) = 2x + 4$`,2]],
+ ex:[R`$2x + 1 = x + 4 \Rightarrow x = 3$ (one / satu)`,
+  R`$7x = 0 \Rightarrow x = 0$ (one / satu — $0$ is a real solution)`,
+  R`$3x - 1 = 3x + 2 \Rightarrow -1 = 2$ (false / salah → none)`,
+  R`$5x = 5x + 1 \Rightarrow 0 = 1$ (false / salah → none)`,
+  R`$4x + 1 = 4x + 1 \Rightarrow 1 = 1$ (true / benar → infinitely many)`,
+  R`$2x + 4 = 2x + 4 \Rightarrow 4 = 4$ (true / benar → infinitely many)`]},
+
+{type:'fill', q:[R`Rudi solved $5x - 3 = 2x + 9$ like this: "$5x - 2x = 9 - 3$, so $3x = 6$ and $x = 2$." His answer is wrong. What is the correct value of $x$?`, R`Rudi menyelesaikan $5x - 3 = 2x + 9$ seperti ini: "$5x - 2x = 9 - 3$, jadi $3x = 6$ dan $x = 2$." Jawabannya salah. Berapakah nilai $x$ yang benar?`],
+ blank:R`$x =$ [[]]`, ans:['4'],
+ ex:[[R`Rudi's mistake: when $-3$ moves to the right side, it becomes $+3$, not $-3$.`, R`Kesalahan Rudi: saat $-3$ pindah ke ruas kanan, menjadi $+3$, bukan $-3$.`],
+  R`$5x - 2x = 9 + 3 \Rightarrow 3x = 12 \Rightarrow x = 4$`,
+  [R`Check: $5(4) - 3 = 17$ and $2(4) + 9 = 17$ ✓`, R`Cek: $5(4) - 3 = 17$ dan $2(4) + 9 = 17$ ✓`]]},
+
+{type:'mcq', svg:['square','(2x − 3) cm','Perimeter / Keliling = 36 cm'],
+ q:[R`A square has side $(2x - 3)$ cm and perimeter $36$ cm. Find $x$.`, R`Sebuah persegi memiliki sisi $(2x - 3)$ cm dan keliling $36$ cm. Tentukan $x$.`],
+ opts:[R`$x = 6$`, R`$x = 4.5$`, R`$x = 7.5$`, R`$x = 3$`],
+ ex:[[R`Perimeter of a square: $K = 4s$.`, R`Keliling persegi: $K = 4s$.`],
+  R`$4(2x - 3) = 36$`,
+  R`$8x - 12 = 36 \Rightarrow 8x = 48 \Rightarrow x = 6$`,
+  [R`Side $= 2(6) - 3 = 9$ cm. Check: $4 \times 9 = 36$ ✓. ($4.5$ comes from forgetting the $-12$.)`, R`Sisi $= 2(6) - 3 = 9$ cm. Cek: $4 \times 9 = 36$ ✓. ($4{,}5$ muncul jika lupa $-12$.)`]]}
+]
+};
+
+/* ================= ENGINE ================= */
+(function(){
+const TYPES = {
+  mcq:['Multiple choice','Pilihan ganda'], multi:['Choose all correct answers','Pilih semua jawaban benar'],
+  fill:['Fill in the blank','Isian singkat'], tf:['True or false','Benar atau salah'],
+  sort:['Put in order','Urutkan'], pair:['Match the pairs','Pasangkan'], dnd:['Drag and drop','Seret dan lepas']
+};
+const HINT = {
+  mcq:['Choose one answer.','Pilih satu jawaban.'],
+  multi:['There may be more than one correct answer.','Jawaban benar bisa lebih dari satu.'],
+  fill:['Type your answer in each box. Use - for negative numbers.','Ketik jawaban di setiap kotak. Gunakan - untuk bilangan negatif.'],
+  tf:['Decide if the statement is true or false.','Tentukan apakah pernyataan benar atau salah.'],
+  sort:['Drag the cards, or use the arrows, to put them in order (top = first).','Seret kartu, atau pakai tombol panah, untuk mengurutkan (atas = pertama).'],
+  pair:['Tap an item on the left, then its partner on the right. Tap again to undo.','Ketuk item di kiri, lalu pasangannya di kanan. Ketuk lagi untuk membatalkan.'],
+  dnd:['Drag each card into a box. On a phone: tap a card, then tap a box.','Seret setiap kartu ke kotak. Di ponsel: ketuk kartu, lalu ketuk kotak.']
+};
+let uid = 0;
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const disp = s => String(s).replace(/\$([^$]+)\$/g, (m, a) => '$\\displaystyle ' + a + '$');
+const B = x => {
+  if (Array.isArray(x)) return `<span class="en">${x[0]}</span><span class="tr">${x[1]}</span>` + (x[2] ? `<span class="mx">${disp(x[2])}</span>` : '');
+  return x;
+};
+const BI = x => Array.isArray(x) ? B(x) : disp(x);   /* item text: bigger fractions */
+
+function toNum(s){
+  s = String(s).replace(/\s+/g,'').replace(/[−–—]/g,'-').replace(/^[a-z]=/i,'').replace(/,/g,'.');
+  if (/^[-+]?\d+(\.\d+)?$/.test(s)) return parseFloat(s);
+  const m = s.match(/^([-+]?\d+(?:\.\d+)?)\/([-+]?\d+(?:\.\d+)?)$/);
+  if (m && +m[2] !== 0) return +m[1] / +m[2];
+  return null;
+}
+function same(a, b){
+  const x = toNum(a), y = toNum(b);
+  if (x !== null && y !== null) return Math.abs(x - y) < 1e-9;
+  return String(a).trim().toLowerCase().replace(/\s+/g,'') === String(b).trim().toLowerCase().replace(/\s+/g,'');
+}
+
+/* ---------- SVG illustrations ---------- */
+const SVG = {
+  scale(lb, lw, rb, rw){
+    const pan = (cx, b, w) => {
+      const items = [...Array(b).fill('b'), ...Array(w).fill('w')];
+      let s = '';
+      items.forEach((t, k) => {
+        const row = Math.floor(k / 6), col = k % 6, inRow = Math.min(6, items.length - row * 6);
+        const x = cx - (inRow - 1) * 11 + col * 22, y = 135 - row * 23;
+        s += t === 'b'
+          ? `<rect class="sv-box" x="${x-10}" y="${y-10}" width="20" height="20" rx="3"/><text class="sv-tb" x="${x}" y="${y+5}" text-anchor="middle">x</text>`
+          : `<circle class="sv-w" cx="${x}" cy="${y}" r="9"/><text class="sv-tw" x="${x}" y="${y+4}" text-anchor="middle">1</text>`;
+      });
+      return s;
+    };
+    return `<svg viewBox="0 0 360 215" role="img" aria-label="Balance scale"><polygon class="sv-base" points="180,64 152,182 208,182"/><rect class="sv-ink" x="120" y="182" width="120" height="8" rx="3"/><rect class="sv-ink" x="20" y="54" width="320" height="7" rx="3"/><circle class="sv-ink" cx="180" cy="58" r="7"/>
+<line class="sv-str" x1="90" y1="60" x2="26" y2="146"/><line class="sv-str" x1="90" y1="60" x2="154" y2="146"/><line class="sv-str" x1="270" y1="60" x2="206" y2="146"/><line class="sv-str" x1="270" y1="60" x2="334" y2="146"/>
+<rect class="sv-pan" x="24" y="146" width="132" height="7" rx="3"/><rect class="sv-pan" x="204" y="146" width="132" height="7" rx="3"/>${pan(90, lb, lw)}${pan(270, rb, rw)}
+<g transform="translate(70,208)"><rect class="sv-box" x="0" y="-12" width="14" height="14" rx="2"/><text class="sv-cap" x="20" y="0">= x kg</text><circle class="sv-w" cx="120" cy="-5" r="7"/><text class="sv-cap" x="132" y="0">= 1 kg</text></g></svg>`;
+  },
+  rect(top, side, note){
+    return `<svg viewBox="0 0 360 190" role="img" aria-label="Rectangle"><rect class="sv-fill" x="90" y="40" width="200" height="96" rx="2"/><path class="sv-str" d="M90 128h8v8M282 136v-8h8"/><text class="sv-lab" x="190" y="30" text-anchor="middle">${top}</text><text class="sv-lab" x="80" y="93" text-anchor="end">${side}</text><text class="sv-cap" x="190" y="170" text-anchor="middle">${note}</text></svg>`;
+  },
+  square(side, note){
+    return `<svg viewBox="0 0 360 200" role="img" aria-label="Square"><rect class="sv-fill" x="125" y="30" width="120" height="120" rx="2"/><text class="sv-lab" x="185" y="22" text-anchor="middle">${side}</text><text class="sv-lab" x="117" y="95" text-anchor="end">${side}</text><path class="sv-str" d="M185 26v0"/><text class="sv-cap" x="185" y="182" text-anchor="middle">${note}</text></svg>`;
+  },
+  tri(a, b, c){
+    return `<svg viewBox="0 0 360 200" role="img" aria-label="Triangle"><polygon class="sv-fill" points="40,170 320,170 120,40"/><path class="sv-arrow2" d="M72 170a32 32 0 0 0-14-28"/><path class="sv-arrow2" d="M286 170a34 34 0 0 1 8-20"/><path class="sv-arrow2" d="M108 60a24 24 0 0 0 28 2"/>
+<text class="sv-lab" x="80" y="160">${a}</text><text class="sv-lab" x="262" y="160">${b}</text><text class="sv-lab" x="112" y="86">${c}</text><text class="sv-cap" x="180" y="194" text-anchor="middle">x + 2x + 3x = 180°</text></svg>`;
+  }
+};
+
+/* ---------- question builders: each returns a check() -> true | false | null (unanswered) ---------- */
+const BUILD = {
+  mcq(body, q){
+    const n = 'q' + (++uid), ans = q.ans ?? 0;
+    const order = shuffle(q.opts.map((_, i) => i));
+    body.innerHTML = `<div class="opts" role="radiogroup">${order.map(i => `<label class="opt" for="${n}_${i}"><input type="radio" id="${n}_${i}" name="${n}" value="${i}"><span class="mark"></span><span class="otext">${BI(q.opts[i])}</span></label>`).join('')}</div>`;
+    return () => {
+      const s = body.querySelector('input:checked');
+      if (!s) return null;
+      const ok = +s.value === ans;
+      s.closest('.opt').classList.add(ok ? 'is-ok' : 'is-bad');
+      return ok;
+    };
+  },
+  multi(body, q){
+    const n = 'q' + (++uid);
+    const order = shuffle(q.opts.map((_, i) => i));
+    body.innerHTML = `<div class="opts">${order.map(i => `<label class="opt cb" for="${n}_${i}"><input type="checkbox" id="${n}_${i}" value="${i}"><span class="mark"></span><span class="otext">${BI(q.opts[i])}</span></label>`).join('')}</div>`;
+    return () => {
+      const boxes = [...body.querySelectorAll('input')];
+      if (!boxes.some(b => b.checked)) return null;
+      let all = true;
+      boxes.forEach(b => {
+        const should = q.ans.includes(+b.value);
+        if (b.checked !== should) all = false;
+        if (b.checked) b.closest('.opt').classList.add(should ? 'is-ok' : 'is-bad');
+      });
+      return all;
+    };
+  },
+  tf(body, q){
+    const n = 'q' + (++uid);
+    const order = shuffle([['t','True','Benar'], ['f','False','Salah']]);
+    body.innerHTML = `<div class="tfrow" role="radiogroup">${order.map(o => `<label class="opt" for="${n}_${o[0]}"><input type="radio" id="${n}_${o[0]}" name="${n}" value="${o[0]}"><span class="mark"></span><span class="otext"><span class="en">${o[1]}</span><span class="tr">${o[2]}</span></span></label>`).join('')}</div>`;
+    return () => {
+      const s = body.querySelector('input:checked');
+      if (!s) return null;
+      const ok = (s.value === 't') === q.ans;
+      s.closest('.opt').classList.add(ok ? 'is-ok' : 'is-bad');
+      return ok;
+    };
+  },
+  fill(body, q){
+    let k = 0;
+    const tpl = q.blank || 'Answer / Jawaban: [[]]';
+    body.innerHTML = `<div class="blank-line">${tpl.replace(/\[\[\]\]/g, () => { const id = 'q' + (++uid); return `<input class="blank" id="${id}" data-k="${k}" autocomplete="off" spellcheck="false" aria-label="Blank ${++k}">`; })}</div>`;
+    return () => {
+      const ins = [...body.querySelectorAll('input.blank')];
+      if (ins.some(i => !i.value.trim())) return null;
+      let all = true;
+      ins.forEach(i => { const ok = same(i.value, q.ans[+i.dataset.k]); i.classList.add(ok ? 'is-ok' : 'is-bad'); if (!ok) all = false; });
+      return all;
+    };
+  },
+  sort(body, q){
+    let order;
+    do { order = shuffle(q.items.map((_, i) => i)); } while (q.items.length > 1 && order.every((v, i) => v === i));
+    body.innerHTML = `<ol class="sortlist">${order.map(i => `<li class="sitem" draggable="true" data-i="${i}"><span class="grip" aria-hidden="true">⋮⋮</span><div class="stext">${BI(q.items[i])}</div><span class="sbtns"><button type="button" class="mv up" aria-label="Move up / Naikkan">▲</button><button type="button" class="mv dn" aria-label="Move down / Turunkan">▼</button></span></li>`).join('')}</ol>`;
+    const ol = body.querySelector('ol');
+    ol.addEventListener('click', e => {
+      const b = e.target.closest('.mv'); if (!b) return;
+      const li = b.closest('li');
+      if (b.classList.contains('up') && li.previousElementSibling) ol.insertBefore(li, li.previousElementSibling);
+      else if (b.classList.contains('dn') && li.nextElementSibling) ol.insertBefore(li.nextElementSibling, li);
+      b.focus();
+    });
+    let drag = null;
+    ol.addEventListener('dragstart', e => { drag = e.target.closest && e.target.closest('li'); if (!drag) return; drag.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; try { e.dataTransfer.setData('text/plain', 'x'); } catch(_){} });
+    ol.addEventListener('dragend', () => { if (drag) drag.classList.remove('dragging'); drag = null; });
+    ol.addEventListener('dragover', e => {
+      if (!drag) return; e.preventDefault();
+      const after = [...ol.querySelectorAll('li:not(.dragging)')].find(li => { const r = li.getBoundingClientRect(); return e.clientY < r.top + r.height / 2; });
+      if (after) ol.insertBefore(drag, after); else ol.appendChild(drag);
+    });
+    return () => {
+      let all = true;
+      [...ol.children].forEach((li, pos) => { const ok = +li.dataset.i === pos; li.classList.add(ok ? 'is-ok' : 'is-bad'); if (!ok) all = false; });
+      return all;
+    };
+  },
+  pair(body, q){
+    const L = shuffle(q.pairs.map((_, i) => i)), Rr = shuffle(q.pairs.map((_, i) => i));
+    const m = {}; let sel = null;
+    body.innerHTML = `<div class="pairs"><div class="pcol">${L.map(i => `<button type="button" class="pitem pl" data-i="${i}"><span class="pbadge"></span><span class="ptext">${BI(q.pairs[i][0])}</span></button>`).join('')}</div><div class="pcol">${Rr.map(i => `<button type="button" class="pitem pr" data-i="${i}"><span class="pbadge"></span><span class="ptext">${BI(q.pairs[i][1])}</span></button>`).join('')}</div></div>`;
+    const paint = () => {
+      body.querySelectorAll('.pitem').forEach(b => { b.classList.remove('sel'); delete b.dataset.c; b.querySelector('.pbadge').textContent = ''; });
+      let c = 0;
+      L.forEach(li => {
+        if (m[li] === undefined) return;
+        c++;
+        const lb = body.querySelector(`.pl[data-i="${li}"]`), rb = body.querySelector(`.pr[data-i="${m[li]}"]`);
+        lb.dataset.c = rb.dataset.c = c;
+        lb.querySelector('.pbadge').textContent = rb.querySelector('.pbadge').textContent = c;
+      });
+      if (sel !== null) body.querySelector(`.pl[data-i="${sel}"]`).classList.add('sel');
+    };
+    body.addEventListener('click', e => {
+      const b = e.target.closest('.pitem'); if (!b) return;
+      const i = +b.dataset.i;
+      if (b.classList.contains('pl')) {
+        if (m[i] !== undefined) { delete m[i]; sel = i; }
+        else sel = (sel === i ? null : i);
+      } else {
+        const owner = Object.keys(m).find(k => m[k] === i);
+        if (sel === null) { if (owner !== undefined) delete m[owner]; }
+        else { if (owner !== undefined) delete m[owner]; m[sel] = i; sel = null; }
+      }
+      paint();
+    });
+    return () => {
+      if (Object.keys(m).length < q.pairs.length) return null;
+      let all = true;
+      L.forEach(li => {
+        const ok = m[li] === li;
+        body.querySelector(`.pl[data-i="${li}"]`).classList.add(ok ? 'is-ok' : 'is-bad');
+        body.querySelector(`.pr[data-i="${m[li]}"]`).classList.add(ok ? 'is-ok' : 'is-bad');
+        if (!ok) all = false;
+      });
+      return all;
+    };
+  },
+  dnd(body, q){
+    const order = shuffle(q.items.map((_, i) => i));
+    let sel = null, drag = null;
+    body.innerHTML = `<div class="zone pool" data-z="-1"><span class="zlabel">Cards · Kartu</span><div class="zitems">${order.map(i => `<div class="chip" draggable="true" tabindex="0" role="button" data-i="${i}">${BI(q.items[i][0])}</div>`).join('')}</div></div><div class="buckets">${q.buckets.map((b, k) => `<div class="zone bucket" data-z="${k}" tabindex="0" role="button"><span class="zlabel">${BI(b)}</span><div class="zitems"></div></div>`).join('')}</div>`;
+    const zones = [...body.querySelectorAll('.zone')];
+    const mark = () => { body.querySelectorAll('.chip').forEach(c => c.classList.toggle('sel', c === sel)); zones.forEach(z => z.classList.toggle('target', !!sel)); };
+    const move = (chip, zone) => { zone.querySelector('.zitems').appendChild(chip); sel = null; mark(); };
+    body.addEventListener('click', e => {
+      const chip = e.target.closest('.chip');
+      const zone = e.target.closest('.zone');
+      if (chip) { sel = (sel === chip ? null : chip); mark(); return; }
+      if (sel && zone) move(sel, zone);
+    });
+    body.addEventListener('keydown', e => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      const chip = e.target.closest('.chip'), zone = e.target.closest('.zone');
+      if (chip) { e.preventDefault(); sel = (sel === chip ? null : chip); mark(); }
+      else if (zone && sel) { e.preventDefault(); move(sel, zone); }
+    });
+    body.addEventListener('dragstart', e => { const c = e.target.closest && e.target.closest('.chip'); if (!c) return; drag = c; e.dataTransfer.effectAllowed = 'move'; try { e.dataTransfer.setData('text/plain', 'x'); } catch(_){} });
+    body.addEventListener('dragend', () => { drag = null; zones.forEach(z => z.classList.remove('over')); });
+    zones.forEach(z => {
+      z.addEventListener('dragover', e => { if (!drag) return; e.preventDefault(); z.classList.add('over'); });
+      z.addEventListener('dragleave', () => z.classList.remove('over'));
+      z.addEventListener('drop', e => { if (!drag) return; e.preventDefault(); z.classList.remove('over'); move(drag, z); drag = null; });
+    });
+    return () => {
+      if (body.querySelector('.pool .chip')) return null;
+      let all = true;
+      body.querySelectorAll('.bucket').forEach(z => {
+        const k = +z.dataset.z;
+        z.querySelectorAll('.chip').forEach(c => { const ok = q.items[+c.dataset.i][1] === k; c.classList.add(ok ? 'is-ok' : 'is-bad'); if (!ok) all = false; });
+      });
+      return all;
+    };
+  }
+};
+
+function renderMath(el){
+  if (!window.renderMathInElement) return;
+  try {
+    renderMathInElement(el, {
+      delimiters:[{left:'$$', right:'$$', display:true}, {left:'$', right:'$', display:false}],
+      output:'mathml', throwOnError:false, strict:'ignore',
+      ignoredTags:['script','noscript','style','textarea','pre','code','option']
+    });
+  } catch(err){ console.error(err); }
+}
+
+function clearMarks(card){
+  card.querySelectorAll('.is-ok,.is-bad').forEach(x => x.classList.remove('is-ok','is-bad'));
+  card.classList.remove('ok','bad');
+  const fb = card.querySelector('.fb'); fb.textContent = ''; fb.className = 'fb';
+}
+
+function makeQ(q, num){
+  const card = document.createElement('article');
+  card.className = 'q';
+  const T = TYPES[q.type];
+  card.innerHTML = `<div class="q-head"><span class="q-num">${num}</span><span class="q-type">${T[0]}<i>${T[1]}</i></span></div>
+<div class="q-text">${B(q.q)}</div>
+${q.svg ? `<figure class="q-fig">${SVG[q.svg[0]](...q.svg.slice(1))}</figure>` : ''}
+<p class="q-hint">${B(HINT[q.type])}</p>
+<div class="q-body"></div>
+<div class="q-actions"><button type="button" class="btn btn-check">Check <i>Periksa</i></button><button type="button" class="btn btn-ghost btn-redo">Shuffle &amp; retry <i>Acak &amp; ulangi</i></button><p class="fb" role="status" aria-live="polite"></p></div>
+<details class="sol"><summary>Explanation <i>· Pembahasan</i></summary><div class="sol-body">${q.ex.map(s => Array.isArray(s) ? `<p class="snote">${B(s)}</p>` : `<div class="sline">${disp(s)}</div>`).join('')}</div></details>`;
+  const body = card.querySelector('.q-body');
+  let check = BUILD[q.type](body, q);
+  ['click','input','dragstart'].forEach(ev => body.addEventListener(ev, () => { if (card.classList.contains('ok') || card.classList.contains('bad') || card.querySelector('.fb').textContent) clearMarks(card); }, true));
+  card.check = () => {
+    clearMarks(card);
+    const r = check();
+    const fb = card.querySelector('.fb');
+    if (r === null) { fb.className = 'fb warn'; fb.innerHTML = B(['Answer every part first.','Jawab semua bagian terlebih dahulu.']); return false; }
+    card.classList.add(r ? 'ok' : 'bad');
+    fb.className = 'fb ' + (r ? 'good' : 'nope');
+    fb.innerHTML = r ? B(['Correct! Well done.','Benar! Kerja bagus.']) : B(['Not yet. Look at the red parts, try again, or open the explanation.','Belum tepat. Perhatikan bagian merah, coba lagi, atau buka pembahasan.']);
+    return r;
+  };
+  card.querySelector('.btn-check').addEventListener('click', () => card.check());
+  card.querySelector('.btn-redo').addEventListener('click', () => { check = BUILD[q.type](body, q); clearMarks(card); renderMath(body); });
+  return card;
+}
+
+/* ---------- build all sets ---------- */
+document.querySelectorAll('[data-set]').forEach(el => {
+  const list = SETS[el.dataset.set]; if (!list) return;
+  list.forEach((q, i) => el.appendChild(makeQ(q, i + 1)));
+  if (el.hasAttribute('data-score')) {
+    const bar = document.createElement('div');
+    bar.className = 'scorebar';
+    bar.innerHTML = `<button type="button" class="btn">Check all &amp; score <i>Periksa semua &amp; hitung nilai</i></button><p class="score" role="status" aria-live="polite"></p>`;
+    el.appendChild(bar);
+    bar.querySelector('button').addEventListener('click', () => {
+      let s = 0;
+      el.querySelectorAll('.q').forEach(c => { if (c.check()) s++; });
+      const pct = Math.round(s / list.length * 100);
+      const msg = pct === 100 ? ['Perfect!','Sempurna!'] : pct >= 70 ? ['Great work — review the red ones.','Bagus — pelajari lagi yang merah.'] : ['Open the explanations and try again.','Buka pembahasan lalu coba lagi.'];
+      bar.querySelector('.score').innerHTML = `Score: <b>${s}/${list.length}</b> (${pct}) · ${msg[0]}<span class="tr">Nilai: ${s}/${list.length} (${pct}) · ${msg[1]}</span>`;
+    });
+  }
+});
+
+/* static illustrations */
+document.querySelectorAll('[data-svg]').forEach(el => { try { const a = JSON.parse(el.dataset.svg); el.innerHTML = SVG[a[0]](...a.slice(1)); } catch(err){ console.error(err); } });
+document.querySelectorAll('.mline, .sol-body .sline').forEach(el => { if (!el.closest('.q')) el.innerHTML = disp(el.innerHTML); });
+
+/* ---------- navigation ---------- */
+const secs = [...document.querySelectorAll('section.lesson')];
+const links = [...document.querySelectorAll('.navlink')];
+const titles = {};
+links.forEach(a => titles[a.dataset.t] = [a.querySelector('.n').textContent, a.querySelector('.ni').textContent]);
+secs.forEach((s, i) => {
+  const nav = document.createElement('div');
+  nav.className = 'secnav';
+  const prev = secs[i - 1], next = secs[i + 1];
+  nav.innerHTML = (prev ? `<button type="button" class="btn btn-ghost" data-go="${prev.id}">← ${titles[prev.id][0]} <i>${titles[prev.id][1]}</i></button>` : '<span></span>') +
+                  (next ? `<button type="button" class="btn" data-go="${next.id}">${titles[next.id][0]} → <i>${titles[next.id][1]}</i></button>` : '');
+  s.appendChild(nav);
+});
+function show(id, scroll){
+  if (!document.getElementById(id)) id = 's1';
+  secs.forEach(s => s.hidden = s.id !== id);
+  links.forEach(a => a.setAttribute('aria-current', a.dataset.t === id ? 'step' : 'false'));
+  const cur = links.find(a => a.dataset.t === id);
+  if (cur && window.matchMedia('(max-width:900px)').matches) cur.scrollIntoView({block:'nearest', inline:'center'});
+  try { localStorage.setItem('plsv-section', id); } catch(_){}
+  if (scroll) document.getElementById('main').scrollIntoView({block:'start'});
+}
+links.forEach(a => a.addEventListener('click', () => show(a.dataset.t, true)));
+document.addEventListener('click', e => { const g = e.target.closest('[data-go]'); if (g) show(g.dataset.go, true); });
+let start = 's1';
+const h = (location.hash || '').slice(1);
+if (/^(s[1-7]|t[1-5])$/.test(h)) start = h;
+else { try { start = localStorage.getItem('plsv-section') || 's1'; } catch(_){} }
+show(start, false);
+
+/* ---------- class rules modal ---------- */
+const modal = document.getElementById('rulesModal');
+const opener = document.getElementById('openRules');
+const close = () => { modal.hidden = true; opener.focus(); };
+opener.addEventListener('click', () => { modal.hidden = false; document.getElementById('closeRules').focus(); });
+document.getElementById('closeRules').addEventListener('click', close);
+document.getElementById('okRules').addEventListener('click', close);
+modal.addEventListener('click', e => { if (e.target === modal) close(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !modal.hidden) close(); });
+
+renderMath(document.body);
+})();
+</script>
+
+</body></html>
