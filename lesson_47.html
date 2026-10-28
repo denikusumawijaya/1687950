@@ -1,0 +1,2303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Linear Inequalities in One Variable</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+:root{
+  --bg:#f5f3ec; --card:#ffffff; --ink:#1c2333; --muted:#5d6676; --line:#e4dfd3;
+  --teal:#0f766e; --teal2:#14b8a6; --tealbg:#e6f6f3;
+  --amber:#c2410c; --amberbg:#fff3e6; --gold:#f59e0b;
+  --violet:#6d28d9; --violetbg:#f1ebff;
+  --ok:#15803d; --okbg:#dcfce7; --bad:#b91c1c; --badbg:#fee2e2;
+  --radius:14px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Plus Jakarta Sans",system-ui,sans-serif;font-size:16px;line-height:1.6}
+.tr{display:block;font-style:italic;font-size:.86em;color:var(--muted);font-weight:400;line-height:1.45;margin-top:1px}
+.tr.in{display:inline;margin-left:.3em}
+.katex{font-size:1.08em}
+.katex-display{margin:.6em 0;overflow-x:auto;overflow-y:hidden;padding:4px 0}
+
+/* ===== header ===== */
+header.top{position:sticky;top:0;z-index:50;background:linear-gradient(100deg,#0b4f4a,#0f766e 55%,#138a7f);color:#fff;box-shadow:0 2px 14px rgba(0,0,0,.18)}
+.top-in{max-width:1440px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:14px;min-width:0}
+.logo{width:48px;height:48px;flex:none;border-radius:12px;background:#fff;display:grid;place-items:center}
+.brand-name{font-weight:800;font-size:1.12rem;letter-spacing:.2px}
+.brand-topic{font-size:.84rem;opacity:.95;line-height:1.35}
+.brand-topic b{font-weight:700}
+.brand-topic .tr{color:#d4f3ee;font-size:.8rem}
+.btn-rules{flex:none;background:#fff;color:var(--teal);border:0;border-radius:999px;padding:10px 18px;font:700 .92rem "Plus Jakarta Sans",system-ui,sans-serif;cursor:pointer;display:flex;align-items:center;gap:8px;box-shadow:0 2px 0 rgba(0,0,0,.15)}
+.btn-rules:hover{background:#fef3c7}
+
+/* ===== modal ===== */
+.modal-bg{position:fixed;inset:0;background:rgba(10,20,30,.55);display:none;align-items:center;justify-content:center;z-index:100;padding:16px}
+.modal-bg.show{display:flex}
+.modal{background:#fff;border-radius:18px;max-width:520px;width:100%;padding:24px 26px;box-shadow:0 20px 60px rgba(0,0,0,.3);animation:pop .2s ease}
+@keyframes pop{from{transform:scale(.94);opacity:0}to{transform:none;opacity:1}}
+.modal h3{margin:0 0 4px;color:var(--teal);font-size:1.3rem}
+.modal ol{padding:0;margin:16px 0;list-style:none;counter-reset:r}
+.modal li{counter-increment:r;display:flex;gap:12px;align-items:flex-start;padding:12px;border-radius:12px;background:var(--tealbg);margin-bottom:10px;font-weight:600}
+.modal li::before{content:counter(r);flex:none;width:30px;height:30px;border-radius:50%;background:var(--teal);color:#fff;display:grid;place-items:center;font-weight:800}
+.modal .close{background:var(--teal);color:#fff;border:0;border-radius:10px;padding:10px 18px;font:700 .95rem "Plus Jakarta Sans",system-ui,sans-serif;cursor:pointer;width:100%}
+
+/* ===== layout ===== */
+.layout{max-width:1440px;margin:0 auto;padding:20px;display:grid;grid-template-columns:1fr 3fr;gap:22px;align-items:start}
+nav.side{position:sticky;top:92px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:12px;max-height:calc(100vh - 110px);overflow:auto}
+.side h4{margin:4px 8px 10px;font-size:.78rem;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+.side h4 .tr{display:inline;text-transform:none;letter-spacing:0}
+.navbtn{display:flex;gap:10px;width:100%;text-align:left;background:none;border:0;border-radius:10px;padding:9px 10px;cursor:pointer;font:600 .9rem "Plus Jakarta Sans",system-ui,sans-serif;color:var(--ink);align-items:flex-start;margin-bottom:2px}
+.navbtn:hover{background:#f3f1ea}
+.navbtn.active{background:var(--teal);color:#fff}
+.navbtn.active .tr,.navbtn.active .nt{color:#d6f5ef}
+.navbtn .ic{flex:none;width:28px;height:28px;border-radius:8px;background:var(--tealbg);display:grid;place-items:center;font-size:.95rem}
+.navbtn.active .ic{background:rgba(255,255,255,.2)}
+.navbtn .nt{display:block;font-size:.72rem;color:var(--amber);font-weight:700}
+.navbtn .tr{font-size:.76rem}
+.navbtn .badge{margin-left:auto;flex:none;font-size:.7rem;background:#eee;color:var(--muted);border-radius:999px;padding:1px 7px;font-weight:700}
+.navbtn .badge.full{background:var(--okbg);color:var(--ok)}
+.side .sep{height:1px;background:var(--line);margin:10px 6px}
+
+main{min-width:0}
+.sec{display:none;animation:fade .25s ease}
+.sec.show{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.sec-head{background:linear-gradient(120deg,#ffffff,#fffaf0);border:1px solid var(--line);border-radius:var(--radius);padding:20px 24px;margin-bottom:18px;position:relative;overflow:hidden}
+.sec-head::after{content:"";position:absolute;right:-40px;top:-40px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,#ccfbf1,transparent 70%)}
+.time{display:inline-block;background:var(--amberbg);color:var(--amber);font-weight:800;font-size:.8rem;padding:3px 10px;border-radius:999px;margin-bottom:6px}
+.sec-head h2{margin:0;font-size:1.6rem;line-height:1.25;position:relative;z-index:1}
+.sec-head h2 .tr{font-size:.6em;margin-top:4px}
+.goal{margin:10px 0 0;position:relative;z-index:1}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px 24px;margin-bottom:16px}
+.card h3{margin:0 0 10px;font-size:1.18rem;color:var(--teal);display:flex;gap:10px;align-items:flex-start}
+.card h3 .tr{font-size:.78em}
+.card h3 .hic{flex:none;width:34px;height:34px;border-radius:10px;background:var(--tealbg);display:grid;place-items:center;font-size:1.1rem}
+.card p{margin:.4em 0 .7em}
+.card ul,.card ol{padding-left:22px;margin:.3em 0 .8em}
+.card li{margin-bottom:6px}
+
+.box{border-radius:12px;padding:14px 16px;margin:12px 0}
+.box.key{background:var(--tealbg);border-left:5px solid var(--teal)}
+.box.warn{background:var(--amberbg);border-left:5px solid var(--amber)}
+.box.idea{background:var(--violetbg);border-left:5px solid var(--violet)}
+.box b.lbl{display:block;margin-bottom:4px}
+
+.ex{border:1.5px dashed #c9c2b2;border-radius:12px;padding:14px 16px;margin:14px 0;background:#fffdf8}
+.ex-title{font-weight:800;color:var(--amber);margin-bottom:4px}
+.ex-title .tr{display:inline;color:var(--muted)}
+.steps{display:grid;gap:6px;margin:8px 0}
+.st{display:grid;grid-template-columns:minmax(180px,1.1fr) 1.4fr;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 12px}
+.st .m{overflow-x:auto}
+.st .t{font-size:.92rem;border-left:3px solid var(--teal2);padding-left:10px}
+.ans{display:inline-block;background:var(--okbg);color:var(--ok);font-weight:700;padding:4px 12px;border-radius:8px;margin-top:6px}
+
+table.tb{border-collapse:collapse;width:100%;margin:10px 0;font-size:.95rem}
+.tb th,.tb td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.tb th{background:var(--tealbg);color:#0b4f4a}
+.tb td.c{text-align:center}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.rw{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center;font-size:.9rem}
+.rw svg{display:block;margin:0 auto 6px;height:80px}
+.rw .rm{font-weight:700;margin-top:4px}
+.ill{display:flex;justify-content:center;margin:8px 0}
+.ill svg{max-width:100%;height:auto}
+
+/* number lines */
+.nl{display:block;max-width:340px}
+.nl svg{width:100%;height:auto;display:block}
+.nlrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;margin:10px 0}
+.nlcap{font-size:.9rem;text-align:center;background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px}
+
+/* ===== questions ===== */
+.qset{margin-top:8px}
+.qset-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:22px 0 12px;flex-wrap:wrap}
+.qset-head h3{margin:0;font-size:1.3rem}
+.qset-head h3 .tr{font-size:.7em}
+.score{background:var(--ink);color:#fff;border-radius:999px;padding:6px 14px;font-weight:700;font-size:.88rem}
+.howto{font-size:.9rem;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin-bottom:12px}
+.q{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;margin-bottom:14px;border-top:4px solid #d9d3c4;transition:border-color .2s}
+.q.is-ok{border-top-color:var(--ok)}
+.q.is-bad{border-top-color:var(--bad)}
+.qh{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+.qn{width:32px;height:32px;border-radius:50%;background:var(--teal);color:#fff;font-weight:800;display:grid;place-items:center;flex:none}
+.qt{font-size:.78rem;font-weight:700;background:var(--violetbg);color:var(--violet);padding:3px 10px;border-radius:999px}
+.qt i{font-weight:500}
+.stem p{margin:.3em 0 .6em}
+.opts{display:grid;gap:8px;margin:10px 0}
+.opts.cols2{grid-template-columns:1fr 1fr}
+label.opt{display:flex;gap:10px;align-items:center;border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;background:#fff;transition:.15s}
+label.opt:hover{border-color:var(--teal2);background:#f7fdfc}
+label.opt input{accent-color:var(--teal);width:18px;height:18px;flex:none}
+label.opt .oc{flex:1;min-width:0}
+label.opt.ok{border-color:var(--ok);background:var(--okbg)}
+label.opt.bad{border-color:var(--bad);background:var(--badbg)}
+.tfbox{display:flex;gap:10px;margin:10px 0;flex-wrap:wrap}
+.tfbtn{border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:10px 22px;font:700 .95rem "Plus Jakarta Sans",system-ui,sans-serif;cursor:pointer;min-width:140px}
+.tfbtn i{font-weight:500;color:var(--muted)}
+.tfbtn.sel{border-color:var(--teal);background:var(--tealbg)}
+.tfbtn.ok{border-color:var(--ok);background:var(--okbg)}
+.tfbtn.bad{border-color:var(--bad);background:var(--badbg)}
+input.blank{width:90px;padding:6px 8px;border:1.5px solid #bfb8a8;border-radius:8px;font:600 1rem "Plus Jakarta Sans",system-ui,sans-serif;text-align:center;margin:0 4px;background:#fffef6}
+input.blank.wide{width:130px}
+input.blank:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px #ccfbf1}
+input.blank.ok{border-color:var(--ok);background:var(--okbg)}
+input.blank.bad{border-color:var(--bad);background:var(--badbg)}
+.fillline{background:#faf8f2;border-radius:10px;padding:10px 14px;margin:8px 0;line-height:2.4}
+
+ol.sortlist{list-style:none;padding:0;margin:10px 0;display:grid;gap:8px}
+ol.sortlist li{display:flex;align-items:center;gap:10px;background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:8px 10px;cursor:grab;user-select:none}
+ol.sortlist li.drag{opacity:.4}
+ol.sortlist li.over{border-color:var(--teal);border-style:dashed}
+ol.sortlist li .pos{flex:none;width:26px;height:26px;border-radius:7px;background:var(--amberbg);color:var(--amber);font-weight:800;display:grid;place-items:center;font-size:.85rem}
+ol.sortlist li .sc{flex:1;min-width:0}
+ol.sortlist li .mv{display:flex;flex-direction:column;gap:2px}
+ol.sortlist li .mv button{border:1px solid var(--line);background:#f7f5ef;border-radius:5px;cursor:pointer;font-size:.7rem;line-height:1;padding:3px 7px}
+ol.sortlist li.ok{border-color:var(--ok);background:var(--okbg)}
+ol.sortlist li.bad{border-color:var(--bad);background:var(--badbg)}
+
+.pairgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:10px 0}
+.pcol{display:grid;gap:8px;align-content:start}
+.pcol .ph{font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.pcol .ph i{text-transform:none}
+.pit{border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;background:#fff;cursor:pointer;display:flex;align-items:center;gap:10px;min-height:52px}
+.pit:hover{border-color:var(--teal2)}
+.pit .tag{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:.8rem;background:#eee;color:#888}
+.pit .pc{flex:1;min-width:0}
+.pit.sel{border-color:var(--teal);box-shadow:0 0 0 3px #ccfbf1}
+.pit.ok{border-color:var(--ok);background:var(--okbg)}
+.pit.bad{border-color:var(--bad);background:var(--badbg)}
+.c0{background:#0f766e!important;color:#fff!important}.c1{background:#c2410c!important;color:#fff!important}.c2{background:#6d28d9!important;color:#fff!important}.c3{background:#be185d!important;color:#fff!important}.c4{background:#1d4ed8!important;color:#fff!important}
+
+.dndwrap{margin:10px 0}
+.pool{min-height:58px;border:2px dashed #c9c2b2;border-radius:12px;padding:10px;display:flex;flex-wrap:wrap;gap:8px;background:#faf8f2;margin-bottom:10px}
+.pool .ph,.bin .bl{width:100%;font-size:.78rem;font-weight:700;color:var(--muted)}
+.bins{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.bin{border:2px solid var(--line);border-radius:12px;padding:10px;min-height:110px;background:#fff;display:flex;flex-wrap:wrap;gap:8px;align-content:flex-start}
+.bin .bl{color:var(--teal);font-size:.88rem;border-bottom:1px solid var(--line);padding-bottom:6px;margin-bottom:2px}
+.bin.over,.pool.over{border-color:var(--teal);background:#f0fdfa}
+.chip{background:#fff;border:1.5px solid #bfb8a8;border-radius:9px;padding:6px 10px;cursor:grab;user-select:none;font-size:.92rem;line-height:1.3;box-shadow:0 1px 0 rgba(0,0,0,.06)}
+.chip .tr{font-size:.8em}
+.chip.sel{border-color:var(--teal);box-shadow:0 0 0 3px #ccfbf1}
+.chip.ok{border-color:var(--ok);background:var(--okbg)}
+.chip.bad{border-color:var(--bad);background:var(--badbg)}
+
+.qctl{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px}
+.bt{border:0;border-radius:10px;padding:9px 16px;font:700 .9rem "Plus Jakarta Sans",system-ui,sans-serif;cursor:pointer}
+.bt i{font-weight:500}
+.bt.chk{background:var(--teal);color:#fff}
+.bt.chk:hover{background:#0b5f58}
+.bt.rst{background:#eeebe2;color:var(--ink)}
+.fb{font-weight:700;font-size:.92rem;padding:6px 12px;border-radius:8px;display:none}
+.fb.ok{display:inline-block;background:var(--okbg);color:var(--ok)}
+.fb.bad{display:inline-block;background:var(--badbg);color:var(--bad)}
+.fb.warn{display:inline-block;background:var(--amberbg);color:var(--amber)}
+.fb i{font-weight:500}
+details.exp{margin-top:12px;border:1px solid var(--line);border-radius:10px;background:#fbfaf6}
+details.exp summary{cursor:pointer;padding:10px 14px;font-weight:700;color:var(--violet);list-style:none;display:flex;gap:8px;align-items:center}
+details.exp summary::-webkit-details-marker{display:none}
+details.exp summary::before{content:"▸";transition:.2s}
+details.exp[open] summary::before{transform:rotate(90deg)}
+details.exp summary i{font-weight:500}
+details.exp .expc{padding:2px 16px 14px}
+
+.reflect textarea{width:100%;min-height:70px;border:1.5px solid var(--line);border-radius:10px;padding:10px;font:inherit;margin-top:6px;resize:vertical}
+.pnav{display:flex;justify-content:space-between;gap:10px;margin:24px 0 10px}
+.pnav button{background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:10px 16px;font:700 .9rem "Plus Jakarta Sans",system-ui,sans-serif;cursor:pointer;color:var(--teal)}
+.pnav button:hover{border-color:var(--teal)}
+.pnav button i{font-weight:500;color:var(--muted)}
+details.fu{border:1px solid var(--line);border-radius:12px;margin:10px 0;background:#fff}
+details.fu summary{padding:12px 14px;cursor:pointer;font-weight:600}
+details.fu .fuc{padding:0 16px 14px}
+footer{text-align:center;color:var(--muted);font-size:.85rem;padding:20px}
+
+@media (max-width:900px){
+  header.top{position:static}
+  .brand-topic{font-size:.78rem}
+  .layout{grid-template-columns:1fr;padding:12px 16px}
+  nav.side{position:static;max-height:none;display:flex;overflow-x:auto;gap:6px;padding:8px}
+  nav.side h4,.side .sep{display:none}
+  .navbtn{min-width:180px}
+  .grid2,.grid4{grid-template-columns:1fr 1fr}
+  .st{grid-template-columns:1fr}
+  .top-in{flex-wrap:wrap}
+}
+@media (max-width:560px){
+  .grid2,.grid4,.pairgrid,.opts.cols2{grid-template-columns:1fr}
+  .card,.q,.sec-head{padding:14px}
+  .sec-head h2{font-size:1.3rem}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <div class="brand">
+      <div class="logo" aria-hidden="true">
+        <svg width="34" height="34" viewBox="0 0 40 40"><rect x="4" y="18" width="32" height="4" rx="2" fill="#0f766e"/><circle cx="20" cy="20" r="6" fill="#fff" stroke="#c2410c" stroke-width="3"/><path d="M26 20h10l-4-4M36 20l-4 4" stroke="#c2410c" stroke-width="3" fill="none" stroke-linecap="round"/><text x="5" y="13" font-size="12" font-weight="800" fill="#0f766e" font-family="serif">x&gt;</text></svg>
+      </div>
+      <div>
+        <div class="brand-name">Math Tutoring by Deni</div>
+        <div class="brand-topic"><b>Topic:</b> Linear Equations and Inequalities in One Variable — Linear Inequalities in One Variable
+          <span class="tr"><b>Topik:</b> Persamaan dan Pertidaksamaan Linear Satu Variabel — Pertidaksamaan Linear Satu Variabel</span></div>
+      </div>
+    </div>
+    <button class="btn-rules" id="openRules">📋 Class rules <span style="font-weight:500;font-style:italic">/ Aturan kelas</span></button>
+  </div>
+</header>
+
+<div class="modal-bg" id="rulesModal" role="dialog" aria-modal="true" aria-labelledby="rulesTitle">
+  <div class="modal">
+    <h3 id="rulesTitle">Class Rules <span class="tr">Aturan Kelas</span></h3>
+    <ol>
+      <li><div>Speak in turns.<span class="tr">Berbicara secara bergantian.</span></div></li>
+      <li><div>Ask for permission if you want to leave the class.<span class="tr">Meminta izin jika ingin meninggalkan kelas.</span></div></li>
+      <li><div>Turn on your microphone and camera when needed.<span class="tr">Menyalakan microphone dan camera jika diperlukan.</span></div></li>
+    </ol>
+    <button class="close" id="closeRules">Got it! <i style="font-weight:500">/ Mengerti!</i></button>
+  </div>
+</div>
+
+<div class="layout">
+<nav class="side" id="sidenav">
+  <h4>Lesson Flow <span class="tr">/ Alur Pelajaran</span></h4>
+  <button class="navbtn" data-go="s1"><span class="ic">🔁</span><span><span class="nt">00:00 – 00:10</span>Spiral Review Warm-up<span class="tr">Pemanasan Tinjauan Spiral</span></span></button>
+  <button class="navbtn" data-go="s2"><span class="ic">🌏</span><span><span class="nt">00:10 – 00:15</span>Introduction &amp; Real-World Connection<span class="tr">Pengantar &amp; Kaitan Dunia Nyata</span></span></button>
+  <button class="navbtn" data-go="s3"><span class="ic">🧠</span><span><span class="nt">00:15 – 00:20</span>Review of Prior Knowledge<span class="tr">Mengulas Pengetahuan Sebelumnya</span></span></button>
+  <button class="navbtn" data-go="s4"><span class="ic">❓</span><span><span class="nt">00:20 – 00:25</span>Problem Introduction<span class="tr">Pengenalan Masalah</span></span></button>
+  <button class="navbtn" data-go="s5"><span class="ic">🤝</span><span><span class="nt">00:25 – 00:40</span>Guided Practice<span class="tr">Latihan Terbimbing</span></span></button>
+  <button class="navbtn" data-go="s6"><span class="ic">✍️</span><span><span class="nt">00:40 – 00:55</span>Independent Practice<span class="tr">Latihan Mandiri</span></span></button>
+  <button class="navbtn" data-go="s7"><span class="ic">🏁</span><span><span class="nt">00:55 – 01:00</span>Consolidation &amp; Reflection<span class="tr">Konsolidasi &amp; Refleksi</span></span></button>
+  <div class="sep"></div>
+  <h4>Tasks <span class="tr">/ Tugas</span></h4>
+  <button class="navbtn" data-go="t1"><span class="ic">1</span><span>Task 1<span class="tr">Tugas 1 · Concepts / Konsep</span></span><span class="badge" data-badge="t1">0/10</span></button>
+  <button class="navbtn" data-go="t2"><span class="ic">2</span><span>Task 2<span class="tr">Tugas 2 · Properties / Sifat</span></span><span class="badge" data-badge="t2">0/10</span></button>
+  <button class="navbtn" data-go="t3"><span class="ic">3</span><span>Task 3<span class="tr">Tugas 3 · Multi-step / Bertahap</span></span><span class="badge" data-badge="t3">0/10</span></button>
+  <button class="navbtn" data-go="t4"><span class="ic">4</span><span>Task 4<span class="tr">Tugas 4 · Solution Sets / HP</span></span><span class="badge" data-badge="t4">0/10</span></button>
+  <button class="navbtn" data-go="t5"><span class="ic">5</span><span>Task 5<span class="tr">Tugas 5 · Word Problems / Soal Cerita</span></span><span class="badge" data-badge="t5">0/10</span></button>
+</nav>
+
+<main id="main">
+
+<!-- ===================== S1 SPIRAL REVIEW ===================== -->
+<section class="sec" id="s1">
+  <div class="sec-head">
+    <span class="time">⏱ 00:00 – 00:10</span>
+    <h2>Spiral Review Warm-up<span class="tr">Pemanasan: Tinjauan Spiral</span></h2>
+    <p class="goal">🎯 <b>Goal:</b> Refresh how to solve linear equations in one variable, because solving inequalities uses almost the same steps.
+      <span class="tr">Tujuan: Mengingat kembali cara menyelesaikan persamaan linear satu variabel, karena menyelesaikan pertidaksamaan memakai langkah yang hampir sama.</span></p>
+  </div>
+
+  <div class="card">
+    <h3><span class="hic">⚖️</span><span>What is a Linear Equation in One Variable?<span class="tr">Apa itu Persamaan Linear Satu Variabel (PLSV)?</span></span></h3>
+    <p>A <b>linear equation in one variable</b> is an equation that has <b>one variable</b> and the highest power of the variable is <b>1</b>. It always uses the equal sign \(=\).
+      <span class="tr">Persamaan linear satu variabel adalah persamaan yang memiliki satu variabel dan pangkat tertinggi variabelnya adalah 1. Persamaan selalu memakai tanda sama dengan \(=\).</span></p>
+    <p>General form <span class="tr in">/ Bentuk umum</span>: \(\;ax + b = c,\quad a \neq 0\)</p>
+    <div class="ill">
+      <svg width="420" height="170" viewBox="0 0 420 170" role="img" aria-label="Balance scale">
+        <rect x="200" y="40" width="20" height="110" rx="4" fill="#94a3b8"/>
+        <rect x="150" y="148" width="120" height="14" rx="6" fill="#64748b"/>
+        <rect x="40" y="36" width="340" height="8" rx="4" fill="#0f766e"/>
+        <circle cx="210" cy="40" r="10" fill="#c2410c"/>
+        <line x1="80" y1="44" x2="60" y2="96" stroke="#475569" stroke-width="2"/><line x1="80" y1="44" x2="140" y2="96" stroke="#475569" stroke-width="2"/>
+        <line x1="340" y1="44" x2="280" y2="96" stroke="#475569" stroke-width="2"/><line x1="340" y1="44" x2="360" y2="96" stroke="#475569" stroke-width="2"/>
+        <path d="M50 96h100a50 14 0 0 1-100 0z" fill="#fcd34d"/><path d="M270 96h100a50 14 0 0 1-100 0z" fill="#fcd34d"/>
+        <rect x="62" y="66" width="26" height="30" rx="4" fill="#0f766e"/><text x="75" y="86" fill="#fff" font-size="15" text-anchor="middle" font-style="italic" font-family="serif">x</text>
+        <rect x="92" y="66" width="26" height="30" rx="4" fill="#0f766e"/><text x="105" y="86" fill="#fff" font-size="15" text-anchor="middle" font-style="italic" font-family="serif">x</text>
+        <circle cx="128" cy="84" r="9" fill="#c2410c"/><text x="128" y="89" fill="#fff" font-size="11" text-anchor="middle">5</text>
+        <rect x="292" y="60" width="56" height="36" rx="5" fill="#c2410c"/><text x="320" y="84" fill="#fff" font-size="18" text-anchor="middle" font-weight="700">17</text>
+        <text x="100" y="134" font-size="14" text-anchor="middle" fill="#1c2333" font-family="serif" font-style="italic">2x + 5</text>
+        <text x="320" y="134" font-size="14" text-anchor="middle" fill="#1c2333" font-family="serif">17</text>
+      </svg>
+    </div>
+    <div class="box key"><b class="lbl">⚖️ Balance principle <span class="tr in">/ Prinsip keseimbangan</span></b>
+      Whatever you do to one side, you must do the same to the other side, so the equation stays balanced.
+      <span class="tr">Apa pun yang kamu lakukan pada satu ruas, harus dilakukan juga pada ruas yang lain, agar persamaan tetap seimbang.</span></div>
+  </div>
+
+  <div class="card">
+    <h3><span class="hic">🔄</span><span>Inverse Operations<span class="tr">Operasi Invers (Kebalikan)</span></span></h3>
+    <table class="tb">
+      <tr><th>If the equation has… <span class="tr">Jika persamaan memuat…</span></th><th>Do this to both sides <span class="tr">Lakukan ini pada kedua ruas</span></th><th>Example <span class="tr">Contoh</span></th></tr>
+      <tr><td>Addition \(+\,b\) <span class="tr">Penjumlahan</span></td><td>Subtract \(b\) <span class="tr">Kurangi dengan \(b\)</span></td><td>\(x+4=9 \Rightarrow x=9-4=5\)</td></tr>
+      <tr><td>Subtraction \(-\,b\) <span class="tr">Pengurangan</span></td><td>Add \(b\) <span class="tr">Tambah dengan \(b\)</span></td><td>\(x-3=2 \Rightarrow x=2+3=5\)</td></tr>
+      <tr><td>Multiplication \(a\cdot x\) <span class="tr">Perkalian</span></td><td>Divide by \(a\) <span class="tr">Bagi dengan \(a\)</span></td><td>\(3x=15 \Rightarrow x=\frac{15}{3}=5\)</td></tr>
+      <tr><td>Division \(\frac{x}{a}\) <span class="tr">Pembagian</span></td><td>Multiply by \(a\) <span class="tr">Kali dengan \(a\)</span></td><td>\(\frac{x}{2}=4 \Rightarrow x=4\times 2=8\)</td></tr>
+    </table>
+    <div class="box idea"><b class="lbl">🪜 General steps <span class="tr in">/ Langkah umum</span></b>
+      <ol style="margin:0">
+        <li>Remove brackets (use the distributive property). <span class="tr">Hilangkan tanda kurung (pakai sifat distributif).</span></li>
+        <li>Move variable terms to one side and constants to the other side (inverse operations). <span class="tr">Pindahkan suku bervariabel ke satu ruas dan konstanta ke ruas lain (operasi invers).</span></li>
+        <li>Divide both sides by the coefficient of the variable. <span class="tr">Bagi kedua ruas dengan koefisien variabel.</span></li>
+        <li>Check by substituting the answer into the original equation. <span class="tr">Periksa dengan mensubstitusikan jawaban ke persamaan awal.</span></li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="hic">📝</span><span>Worked Examples<span class="tr">Contoh Soal dan Penyelesaian</span></span></h3>
+
+    <div class="ex"><div class="ex-title">Example 1 — Two-step equation <span class="tr">/ Contoh 1 — Persamaan dua langkah</span></div>
+      <p>Solve \(2x + 5 = 17\). <span class="tr">Selesaikan \(2x + 5 = 17\).</span></p>
+      <div class="steps">
+        <div class="st"><div class="m">\(2x + 5 - 5 = 17 - 5\)</div><div class="t">Subtract 5 from both sides. <span class="tr">Kurangi kedua ruas dengan 5.</span></div></div>
+        <div class="st"><div class="m">\(2x = 12\)</div><div class="t">Simplify. <span class="tr">Sederhanakan.</span></div></div>
+        <div class="st"><div class="m">\(\dfrac{2x}{2} = \dfrac{12}{2} \Rightarrow x = 6\)</div><div class="t">Divide both sides by 2. <span class="tr">Bagi kedua ruas dengan 2.</span></div></div>
+        <div class="st"><div class="m">\(2(6)+5 = 17 \;\checkmark\)</div><div class="t">Check. <span class="tr">Periksa.</span></div></div>
+      </div>
+    </div>
+
+    <div class="ex"><div class="ex-title">Example 2 — Variables on both sides <span class="tr">/ Contoh 2 — Variabel di kedua ruas</span></div>
+      <p>Solve \(7x - 4 = 3x + 12\). <span class="tr">Selesaikan \(7x - 4 = 3x + 12\).</span></p>
+      <div class="steps">
+        <div class="st"><div class="m">\(7x - 3x - 4 = 12\)</div><div class="t">Subtract \(3x\) from both sides. <span class="tr">Kurangi kedua ruas dengan \(3x\).</span></div></div>
+        <div class="st"><div class="m">\(4x = 12 + 4 = 16\)</div><div class="t">Add 4 to both sides. <span class="tr">Tambahkan 4 pada kedua ruas.</span></div></div>
+        <div class="st"><div class="m">\(x = \dfrac{16}{4} = 4\)</div><div class="t">Divide by 4. <span class="tr">Bagi dengan 4.</span></div></div>
+      </div>
+    </div>
+
+    <div class="ex"><div class="ex-title">Example 3 — With brackets <span class="tr">/ Contoh 3 — Dengan tanda kurung</span></div>
+      <p>Solve \(2(x + 3) = 10\). <span class="tr">Selesaikan \(2(x + 3) = 10\).</span></p>
+      <div class="steps">
+        <div class="st"><div class="m">\(2x + 6 = 10\)</div><div class="t">Distribute: \(2\cdot x + 2\cdot 3\). <span class="tr">Distributif: \(2\cdot x + 2\cdot 3\).</span></div></div>
+        <div class="st"><div class="m">\(2x = 4\)</div><div class="t">Subtract 6 from both sides. <span class="tr">Kurangi kedua ruas dengan 6.</span></div></div>
+        <div class="st"><div class="m">\(x = 2\)</div><div class="t">Divide by 2. <span class="tr">Bagi dengan 2.</span></div></div>
+      </div>
+    </div>
+
+    <div class="ex"><div class="ex-title">Example 4 — With a fraction <span class="tr">/ Contoh 4 — Dengan pecahan</span></div>
+      <p>Solve \(\dfrac{x}{4} + 3 = 5\). <span class="tr">Selesaikan \(\dfrac{x}{4} + 3 = 5\).</span></p>
+      <div class="steps">
+        <div class="st"><div class="m">\(\dfrac{x}{4} + 3 - 3 = 5 - 3\)</div><div class="t">Subtract 3 from both sides. <span class="tr">Kurangi kedua ruas dengan 3.</span></div></div>
+        <div class="st"><div class="m">\(\dfrac{x}{4} = 2\)</div><div class="t">Simplify. <span class="tr">Sederhanakan.</span></div></div>
+        <div class="st"><div class="m">\(x = 2 \times 4 = 8\)</div><div class="t">Multiply both sides by 4. <span class="tr">Kalikan kedua ruas dengan 4.</span></div></div>
+      </div>
+    </div>
+
+    <div class="ex"><div class="ex-title">Example 5 — Negative coefficient &amp; checking <span class="tr">/ Contoh 5 — Koefisien negatif &amp; pengecekan</span></div>
+      <p>Solve \(10 - x = 4\), then check whether \(x = 6\) is correct. <span class="tr">Selesaikan \(10 - x = 4\), lalu periksa apakah \(x = 6\) benar.</span></p>
+      <div class="steps">
+        <div class="st"><div class="m">\(-x = 4 - 10 = -6\)</div><div class="t">Subtract 10 from both sides. <span class="tr">Kurangi kedua ruas dengan 10.</span></div></div>
+        <div class="st"><div class="m">\(x = \dfrac{-6}{-1} = 6\)</div><div class="t">Divide both sides by \(-1\). <span class="tr">Bagi kedua ruas dengan \(-1\).</span></div></div>
+        <div class="st"><div class="m">\(10 - 6 = 4 \;\checkmark\)</div><div class="t">Substitute to check: left side = right side, so it is correct. <span class="tr">Substitusi untuk memeriksa: ruas kiri = ruas kanan, jadi benar.</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qset">
+    <div class="qset-head"><h3>✏️ Exercises <span class="tr">Latihan</span></h3><span class="score"></span></div>
+
+    <div class="q" data-type="mc">
+      <div class="stem"><p>Solve \(4x - 7 = 21\). <span class="tr">Selesaikan \(4x - 7 = 21\).</span></p></div>
+      <div class="opts cols2"><div class="o" data-c>\(x = 7\)</div><div class="o">\(x = 3.5\)</div><div class="o">\(x = 5\)</div><div class="o">\(x = -7\)</div></div>
+      <div class="exp">
+        <div class="steps">
+          <div class="st"><div class="m">\(4x - 7 + 7 = 21 + 7\)</div><div class="t">Add 7 to both sides (inverse of \(-7\)). <span class="tr">Tambahkan 7 pada kedua ruas (invers dari \(-7\)).</span></div></div>
+          <div class="st"><div class="m">\(4x = 28\)</div><div class="t">Simplify. <span class="tr">Sederhanakan.</span></div></div>
+          <div class="st"><div class="m">\(x = \dfrac{28}{4} = 7\)</div><div class="t">Divide both sides by 4. <span class="tr">Bagi kedua ruas dengan 4.</span></div></div>
+          <div class="st"><div class="m">\(4(7) - 7 = 28 - 7 = 21\;\checkmark\)</div><div class="t">Check. <span class="tr">Periksa.</span></div></div>
+        </div>
+        <span class="ans">Answer / Jawaban: \(x = 7\)</span>
+      </div>
+    </div>
+
+    <div class="q" data-type="fill">
+      <div class="stem"><p>Solve \(5x + 3 = 2x + 18\). Type the value of \(x\). <span class="tr">Selesaikan \(5x + 3 = 2x + 18\). Ketik nilai \(x\).</span></p>
+        <div class="fillline">\(x = \) <input class="blank" data-ans="5"></div></div>
+      <div class="exp">
+        <div class="steps">
+          <div class="st"><div class="m">\(5x - 2x + 3 = 18\)</div><div class="t">Subtract \(2x\) from both sides. <span class="tr">Kurangi kedua ruas dengan \(2x\).</span></div></div>
+          <div class="st"><div class="m">\(3x = 18 - 3 = 15\)</div><div class="t">Subtract 3 from both sides. <span class="tr">Kurangi kedua ruas dengan 3.</span></div></div>
+          <div class="st"><div class="m">\(x = \dfrac{15}{3} = 5\)</div><div class="t">Divide by 3. <span class="tr">Bagi dengan 3.</span></div></div>
+        </div>
+        <span class="ans">Answer / Jawaban: \(x = 5\)</span>
+      </div>
+    </div>
+
+    <div class="q" data-type="tf" data-ans="T">
+      <div class="stem"><p>\(x = -2\) is the solution of \(3(x + 4) = 6\). <span class="tr">\(x = -2\) adalah penyelesaian dari \(3(x + 4) = 6\).</span></p></div>
+      <div class="exp">
+        <div class="steps">
+          <div class="st"><div class="m">\(3x + 12 = 6\)</div><div class="t">Distribute 3. <span class="tr">Distributifkan 3.</span></div></div>
+          <div class="st"><div class="m">\(3x = 6 - 12 = -6\)</div><div class="t">Subtract 12 from both sides. <span class="tr">Kurangi kedua ruas dengan 12.</span></div></div>
+          <div class="st"><div class="m">\(x = \dfrac{-6}{3} = -2\)</div><div class="t">Divide by 3. <span class="tr">Bagi dengan 3.</span></div></div>
+        </div>
+        <span class="ans">TRUE / BENAR</span>
+      </div>
+    </div>
+
+    <div class="q" data-type="sort">
+      <div class="stem"><p>Arrange the steps to solve \(\dfrac{x}{3} - 2 = 4\) in the correct order (drag or use ▲▼). <span class="tr">Urutkan langkah-langkah untuk menyelesaikan \(\dfrac{x}{3} - 2 = 4\) dengan benar (seret atau gunakan ▲▼).</span></p></div>
+      <ol class="sortlist">
+        <li>\(\dfrac{x}{3} - 2 = 4\)</li>
+        <li>\(\dfrac{x}{3} - 2 + 2 = 4 + 2\)</li>
+        <li>\(\dfrac{x}{3} = 6\)</li>
+        <li>\(x = 6 \times 3 = 18\)</li>
+      </ol>
+      <div class="exp">
+        <p>Start from the original equation, add 2 to both sides (inverse of \(-2\)), simplify, then multiply both sides by 3 (inverse of \(\div 3\)). <span class="tr">Mulai dari persamaan awal, tambahkan 2 pada kedua ruas (invers dari \(-2\)), sederhanakan, lalu kalikan kedua ruas dengan 3 (invers dari \(\div 3\)).</span></p>
+        \[\frac{x}{3}-2=4 \;\to\; \frac{x}{3}-2+2=4+2 \;\to\; \frac{x}{3}=6 \;\to\; x=18\]
+      </div>
+    </div>
+
+    <div class="q" data-type="pair">
+      <div class="stem"><p>Match each equation with its solution. Click an item on the left, then click its partner on the right. <span class="tr">Pasangkan setiap persamaan dengan penyelesaiannya. Klik item di kiri, lalu klik pasangannya di kanan.</span></p></div>
+      <div class="pairs">
+        <div class="pp"><div>\(2x = 14\)</div><div>\(x = 7\)</div></div>
+        <div class="pp"><div>\(x + 9 = 4\)</div><div>\(x = -5\)</div></div>
+        <div class="pp"><div>\(3x - 1 = 11\)</div><div>\(x = 4\)</div></div>
+        <div class="pp"><div>\(6 - x = 8\)</div><div>\(x = -2\)</div></div>
+      </div>
+      <div class="exp">
+        <ul>
+          <li>\(2x = 14 \Rightarrow x = \frac{14}{2} = 7\)</li>
+          <li>\(x + 9 = 4 \Rightarrow x = 4 - 9 = -5\)</li>
+          <li>\(3x - 1 = 11 \Rightarrow 3x = 12 \Rightarrow x = 4\)</li>
+          <li>\(6 - x = 8 \Rightarrow -x = 2 \Rightarrow x = -2\) <span class="tr">(divide by \(-1\) / bagi dengan \(-1\))</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== S2 INTRODUCTION ===================== -->
+<section class="sec" id="s2">
+  <div class="sec-head">
+    <span class="time">⏱ 00:10 – 00:15</span>
+    <h2>Introduction &amp; Real-World Connection<span class="tr">Pengantar &amp; Kaitan dengan Dunia Nyata</span></h2>
+    <p class="goal">🎯 <b>Goal:</b> Recognise linear inequalities in daily life and translate words into inequality symbols.
+      <span class="tr">Tujuan: Mengenali pertidaksamaan linear dalam kehidupan sehari-hari dan menerjemahkan kalimat menjadi simbol pertidaksamaan.</span></p>
+  </div>
+
+  <div class="card">
+    <h3><span class="hic">🌏</span><span>Inequalities Are Everywhere!<span class="tr">Pertidaksamaan Ada di Mana-mana!</span></span></h3>
+    <p>Not everything in life is "exactly equal". Very often we talk about limits: <i>maximum</i>, <i>minimum</i>, <i>more than</i>, <i>less than</i>.
+      <span class="tr">Tidak semua hal dalam hidup "tepat sama dengan". Sering kali kita membicarakan batas: maksimum, minimum, lebih dari, kurang dari.</span></p>
+    <div class="grid4">
+      <div class="rw">
+        <svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="36" fill="#fff" stroke="#dc2626" stroke-width="8"/><text x="40" y="50" text-anchor="middle" font-size="28" font-weight="800" fill="#111">60</text></svg>
+        Speed limit 60 km/h<span class="tr">Batas kecepatan 60 km/jam</span>
+        <div class="rm">\(v \le 60\)</div>
+      </div>
+      <div class="rw">
+        <svg viewBox="0 0 80 80"><rect x="10" y="16" width="60" height="44" rx="6" fill="#1d4ed8"/><circle cx="28" cy="36" r="9" fill="#fde68a"/><rect x="42" y="28" width="22" height="4" rx="2" fill="#fff"/><rect x="42" y="36" width="18" height="4" rx="2" fill="#fff"/><rect x="42" y="44" width="14" height="4" rx="2" fill="#fff"/><text x="40" y="74" text-anchor="middle" font-size="11" font-weight="800" fill="#1d4ed8">SIM 17+</text></svg>
+        Minimum age for a driving licence is 17<span class="tr">Usia minimal untuk SIM adalah 17 tahun</span>
+        <div class="rm">\(u \ge 17\)</div>
+      </div>
+      <div class="rw">
+        <svg viewBox="0 0 80 80"><rect x="16" y="6" width="48" height="68" rx="4" fill="#cbd5e1"/><rect x="20" y="16" width="19" height="54" fill="#94a3b8"/><rect x="41" y="16" width="19" height="54" fill="#94a3b8"/><rect x="26" y="8" width="28" height="7" rx="2" fill="#111"/><text x="40" y="14" text-anchor="middle" font-size="6" fill="#4ade80">MAX 800kg</text><path d="M66 30l6 6h-12z M66 50l6-6h-12z" fill="#0f766e"/></svg>
+        Lift capacity at most 800 kg<span class="tr">Kapasitas lift paling banyak 800 kg</span>
+        <div class="rm">\(w \le 800\)</div>
+      </div>
+      <div class="rw">
+        <svg viewBox="0 0 80 80"><rect x="34" y="8" width="12" height="52" rx="6" fill="#fff" stroke="#334155" stroke-width="3"/><circle cx="40" cy="64" r="10" fill="#ef4444" stroke="#334155" stroke-width="3"/><rect x="37" y="26" width="6" height="36" fill="#ef4444"/><line x1="50" y1="20" x2="58" y2="20" stroke="#334155" stroke-width="2"/><line x1="50" y1="30" x2="58" y2="30" stroke="#334155" stroke-width="2"/><line x1="50" y1="40" x2="58" y2="40" stroke="#334155" stroke-width="2"/></svg>
+        Temperature above 30 °C<span class="tr">Suhu di atas 30 °C</span>
+        <div class="rm">\(t \gt 30\)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="hic">📘</span><span>Definition<span class="tr">Definisi</span></span></h3>
+    <p>A <b>linear inequality in one variable</b> (Indonesian: <i>PtLSV</i>) is an open sentence that has <b>exactly one variable</b>, the power of the variable is <b>1</b>, and it is connected by one of the signs \(\lt,\ \gt,\ \le,\ \ge\).
+      <span class="tr">Pertidaksamaan linear satu variabel (PtLSV) adalah kalimat terbuka yang memiliki tepat satu variabel, pangkat variabelnya 1, dan dihubungkan oleh salah satu tanda \(\lt,\ \gt,\ \le,\ \ge\).</span></p>
+    <div class="box key"><b class="lbl">General forms <span class="tr in">/ Bentuk umum</span> (\(a \neq 0\))</b>
+      \[ax + b \lt c \qquad ax + b \gt c \qquad ax + b \le c \qquad ax + b \ge c\]</div>
+    <table class="tb">
+      <tr><th class="c">Symbol <span class="tr">Simbol</span></th><th>Read as <span class="tr">Dibaca</span></th><th>Key phrases <span class="tr">Kata kunci</span></th></tr>
+      <tr><td class="c">\(\gt\)</td><td>greater than <span class="tr">lebih dari</span></td><td>more than, above, exceeds, older than <span class="tr">lebih dari, di atas, melebihi, lebih tua dari</span></td></tr>
+      <tr><td class="c">\(\lt\)</td><td>less than <span class="tr">kurang dari</span></td><td>fewer than, below, under, younger than <span class="tr">kurang dari, di bawah, lebih muda dari</span></td></tr>
+      <tr><td class="c">\(\ge\)</td><td>greater than or equal to <span class="tr">lebih dari atau sama dengan</span></td><td>at least, minimum, no less than <span class="tr">paling sedikit, minimal, tidak kurang dari</span></td></tr>
+      <tr><td class="c">\(\le\)</td><td>less than or equal to <span class="tr">kurang dari atau sama dengan</span></td><td>at most, maximum, no more than, not exceeding <span class="tr">paling banyak, maksimal, tidak lebih dari, tidak melebihi</span></td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3><span class="hic">🔍</span><span>Is it a Linear Inequality in One Variable?<span class="tr">Apakah Termasuk PtLSV?</span></span></h3>
+    <p>Check three things: (1) there is an inequality sign, (2) there is only one variable, (3) the power of the variable is 1.
+      <span class="tr">Periksa tiga hal: (1) ada tanda pertidaksamaan, (2) hanya ada satu variabel, (3) pangkat variabelnya 1.</span></p>
+    <table class="tb">
+      <tr><th>Sentence <span class="tr">Kalimat</span></th><th class="c">PtLSV?</th><th>Reason <span class="tr">Alasan</span></th></tr>
+      <tr><td>\(3x - 5 \gt 7\)</td><td class="c">✅</td><td>One variable \(x\), power 1, sign \(\gt\). <span class="tr">Satu variabel \(x\), pangkat 1, tanda \(\gt\).</span></td></tr>
+      <tr><td>\(2x + 1 = 9\)</td><td class="c">❌</td><td>Uses \(=\), so it is an equation. <span class="tr">Memakai \(=\), jadi ini persamaan.</span></td></tr>
+      <tr><td>\(x^2 \le 4\)</td><td class="c">❌</td><td>Power of \(x\) is 2. <span class="tr">Pangkat \(x\) adalah 2.</span></td></tr>
+      <tr><td>\(x + y \lt 5\)</td><td class="c">❌</td><td>Two variables. <span class="tr">Ada dua variabel.</span></td></tr>
+      <tr><td>\(10 \gt 6\)</td><td class="c">❌</td><td>No variable (a closed statement). <span class="tr">Tidak ada variabel (kalimat tertutup).</span></td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3><span class="hic">🗣️</span><span>From Words to Inequalities<span class="tr">Dari Kalimat ke Pertidaksamaan</span></span></h3>
+    <div class="box idea"><b class="lbl">4 steps <span class="tr in">/ 4 langkah</span></b>
+      <ol style="margin:0">
+        <li>Read and identify the unknown quantity. <span class="tr">Baca dan tentukan besaran yang belum diketahui.</span></li>
+        <li>Choose a variable for it. <span class="tr">Pilih sebuah variabel untuknya.</span></li>
+        <li>Find the key phrase (at least, at most, more than, less than). <span class="tr">Temukan kata kunci (paling sedikit, paling banyak, lebih dari, kurang dari).</span></li>
+        <li>Write the inequality. <span class="tr">Tuliskan pertidaksamaannya.</span></li>
+      </ol>
+    </div>
+    <div class="ex"><div class="ex-title">Example 1 <span class="tr">/ Contoh 1</span></div>
+      <p>"To pass, a student must score <b>at least</b> 70." <span class="tr">"Untuk lulus, siswa harus mendapat nilai paling sedikit 70."</span></p>
+      <div class="steps">
+        <div class="st"><div class="m">Unknown: score \(\to s\)</div><div class="t">Let \(s\) = the score. <span class="tr">Misalkan \(s\) = nilai.</span></div></div>
+        <div class="st"><div class="m">"at least" \(\to \ge\)</div><div class="t">"At least 70" means 70 or more. <span class="tr">"Paling sedikit 70" berarti 70 atau lebih.</span></div></div>
+        <div class="st"><div class="m">\(s \ge 70\)</div><div class="t">The inequality. <span class="tr">Pertidaksamaannya.</span></div></div>
+      </div>
+    </div>
+    <div class="ex"><div class="ex-title">Example 2 — Lift problem <span class="tr">/ Contoh 2 — Masalah lift</span></div>
+      <p>A goods lift can carry <b>at most</b> 500 kg. The operator weighs 70 kg and each box weighs 20 kg. Write an inequality for the number of boxes \(x\).
+        <span class="tr">Sebuah lift barang dapat mengangkut paling banyak 500 kg. Berat operator 70 kg dan setiap kotak beratnya 20 kg. Tuliskan pertidaksamaan untuk banyak kotak \(x\).</span></p>
+      <div class="steps">
+        <div class="st"><div class="m">\(20x\)</div><div class="t">Total weight of \(x\) boxes. <span class="tr">Berat total \(x\) kotak.</span></div></div>
+        <div class="st"><div class="m">\(70 + 20x\)</div><div class="t">Total load = operator + boxes. <span class="tr">Beban total = operator + kotak.</span></div></div>
+        <div class="st"><div class="m">\(70 + 20x \le 500\)</div><div class="t">"At most 500" \(\to \le 500\). <span class="tr">"Paling banyak 500" \(\to \le 500\).</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qset">
+    <div class="qset-head"><h3>✏️ Exercises <span class="tr">Latihan</span></h3><span class="score"></span></div>
+
+    <div class="q" data-type="mc">
+      <div class="stem"><p>"Students must score <b>at least</b> 75 to join the math club." If \(s\) is the score, which inequality is correct? <span class="tr">"Siswa harus mendapat nilai paling sedikit 75 untuk bergabung dengan klub matematika." Jika \(s\) adalah nilai, pertidaksamaan mana yang benar?</span></p></div>
+      <div class="opts cols2"><div class="o" data-c>\(s \ge 75\)</div><div class="o">\(s \gt 75\)</div><div class="o">\(s \le 75\)</div><div class="o">\(s \lt 75\)</div></div>
+      <div class="exp"><p>"At least 75" means 75 is allowed, and anything bigger is also allowed. So we use "greater than or equal to": \(s \ge 75\).
+        <span class="tr">"Paling sedikit 75" berarti 75 boleh, dan yang lebih besar juga boleh. Jadi kita pakai "lebih dari atau sama dengan": \(s \ge 75\).</span></p></div>
+    </div>
+
+    <div class="q" data-type="dnd">
+      <div class="stem"><p>Drag each phrase into the correct symbol box (or tap a phrase, then tap a box). <span class="tr">Seret setiap frasa ke kotak simbol yang benar (atau ketuk frasa, lalu ketuk kotak).</span></p></div>
+      <div class="dnd">
+        <div class="bin" data-bin="gt">\(\gt\)</div>
+        <div class="bin" data-bin="lt">\(\lt\)</div>
+        <div class="bin" data-bin="ge">\(\ge\)</div>
+        <div class="bin" data-bin="le">\(\le\)</div>
+        <span class="chip" data-bin="gt">more than<span class="tr">lebih dari</span></span>
+        <span class="chip" data-bin="gt">exceeds<span class="tr">melebihi</span></span>
+        <span class="chip" data-bin="lt">less than<span class="tr">kurang dari</span></span>
+        <span class="chip" data-bin="lt">under<span class="tr">di bawah</span></span>
+        <span class="chip" data-bin="ge">at least<span class="tr">paling sedikit</span></span>
+        <span class="chip" data-bin="ge">minimum<span class="tr">minimal</span></span>
+        <span class="chip" data-bin="le">at most<span class="tr">paling banyak</span></span>
+        <span class="chip" data-bin="le">no more than<span class="tr">tidak lebih dari</span></span>
+      </div>
+      <div class="exp">
+        <ul>
+          <li>\(\gt\): more than, exceeds <span class="tr">lebih dari, melebihi</span></li>
+          <li>\(\lt\): less than, under <span class="tr">kurang dari, di bawah</span></li>
+          <li>\(\ge\): at least, minimum (the boundary value is included) <span class="tr">paling sedikit, minimal (nilai batas termasuk)</span></li>
+          <li>\(\le\): at most, no more than (the boundary value is included) <span class="tr">paling banyak, tidak lebih dari (nilai batas termasuk)</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="q" data-type="multi">
+      <div class="stem"><p>Select <b>all</b> linear inequalities in one variable. <span class="tr">Pilih semua pertidaksamaan linear satu variabel.</span></p></div>
+      <div class="opts cols2">
+        <div class="o" data-c>\(3x - 5 \gt 7\)</div>
+        <div class="o">\(2x + 1 = 9\)</div>
+        <div class="o">\(x^2 \le 4\)</div>
+        <div class="o" data-c>\(4 - y \ge 1\)</div>
+        <div class="o">\(x + y \lt 5\)</div>
+        <div class="o" data-c>\(\dfrac{p}{2} \le 6\)</div>
+      </div>
+      <div class="exp">
+        <ul>
+          <li>\(3x - 5 \gt 7\) ✅ one variable, power 1. <span class="tr">satu variabel, pangkat 1.</span></li>
+          <li>\(2x + 1 = 9\) ❌ equation (uses \(=\)). <span class="tr">persamaan (memakai \(=\)).</span></li>
+          <li>\(x^2 \le 4\) ❌ power 2. <span class="tr">pangkat 2.</span></li>
+          <li>\(4 - y \ge 1\) ✅ one variable \(y\), power 1. <span class="tr">satu variabel \(y\), pangkat 1.</span></li>
+          <li>\(x + y \lt 5\) ❌ two variables. <span class="tr">dua variabel.</span></li>
+          <li>\(\frac{p}{2} \le 6\) ✅ \(\frac{p}{2} = \frac12 p\), power 1. <span class="tr">\(\frac{p}{2} = \frac12 p\), pangkat 1.</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="q" data-type="tf" data-ans="T">
+      <div class="stem">
+        <div class="ill"><svg width="90" height="90" viewBox="0 0 80 80"><circle cx="40" cy="40" r="36" fill="#fff" stroke="#dc2626" stroke-width="8"/><text x="40" y="50" text-anchor="middle" font-size="28" font-weight="800" fill="#111">80</text></svg></div>
+        <p>A road sign shows a speed limit of 80 km/h. The allowed speed \(v\) satisfies \(v \le 80\). <span class="tr">Rambu jalan menunjukkan batas kecepatan 80 km/jam. Kecepatan yang diizinkan \(v\) memenuhi \(v \le 80\).</span></p></div>
+      <div class="exp"><p>A speed limit is a <b>maximum</b>: driving at exactly 80 km/h is allowed, faster is not. "Maximum" \(\to \le\), so \(v \le 80\) is correct.
+        <span class="tr">Batas kecepatan adalah nilai maksimum: berkendara tepat 80 km/jam diperbolehkan, lebih cepat tidak. "Maksimum" \(\to \le\), jadi \(v \le 80\) benar.</span></p><span class="ans">TRUE / BENAR</span></div>
+    </div>
+
+    <div class="q" data-type="fill">
+      <div class="stem"><p>A lift can carry at most 600 kg. The operator weighs 60 kg and each box weighs 30 kg. Complete the inequality for \(n\) boxes. <span class="tr">Sebuah lift dapat mengangkut paling banyak 600 kg. Berat operator 60 kg dan setiap kotak beratnya 30 kg. Lengkapi pertidaksamaan untuk \(n\) kotak.</span></p>
+        <div class="fillline">\(60 + \) <input class="blank" data-ans="30"> \(n \le\) <input class="blank" data-ans="600"></div></div>
+      <div class="exp">
+        <div class="steps">
+          <div class="st"><div class="m">\(30n\)</div><div class="t">Weight of \(n\) boxes (30 kg each). <span class="tr">Berat \(n\) kotak (masing-masing 30 kg).</span></div></div>
+          <div class="st"><div class="m">\(60 + 30n\)</div><div class="t">Add the operator's weight. <span class="tr">Tambahkan berat operator.</span></div></div>
+          <div class="st"><div class="m">\(60 + 30n \le 600\)</div><div class="t">"At most 600" \(\to \le 600\). <span class="tr">"Paling banyak 600" \(\to \le 600\).</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== S3 PRIOR KNOWLEDGE ===================== -->
+<section class="sec" id="s3">
+  <div class="sec-head">
+    <span class="time">⏱ 00:15 – 00:20</span>
+    <h2>Review of Prior Knowledge<span class="tr">Mengulas Pengetahuan Sebelumnya</span></h2>
+    <p class="goal">🎯 <b>Goal:</b> Compare numbers, test whether a number is a solution, and draw inequalities on a number line.
+      <span class="tr">Tujuan: Membandingkan bilangan, menguji apakah suatu bilangan merupakan penyelesaian, dan menggambar pertidaksamaan pada garis bilangan.</span></p>
+  </div>
+
+  <div class="card">
+    <h3><span class="hic">↔️</span><span>Comparing Numbers on a Number Line<span class="tr">Membandingkan Bilangan pada Garis Bilangan</span></span></h3>
+    <p>On a number line, a number on the <b>right</b> is always <b>greater</b> than a number on the left.
+      <span class="tr">Pada garis bilangan, bilangan yang berada di sebelah kanan selalu lebih besar daripada bilangan di sebelah kiri.</span></p>
+    <div class="ill">
+      <svg width="560" height="90" viewBox="0 0 560 90">
+        <line x1="20" y1="45" x2="540" y2="45" stroke="#1c2333" stroke-width="2"/>
+        <path d="M540 45l-10-6v12z M20 45l10-6v12z" fill="#1c2333"/>
+        <g font-size="13" text-anchor="middle" fill="#1c2333">
+          <line x1="50" y1="38" x2="50" y2="52" stroke="#1c2333"/><text x="50" y="70">−8</text>
+          <line x1="104" y1="38" x2="104" y2="52" stroke="#1c2333"/><text x="104" y="70">−7</text>
+          <line x1="158" y1="38" x2="158" y2="52" stroke="#1c2333"/><text x="158" y="70">−6</text>
+          <line x1="212" y1="38" x2="212" y2="52" stroke="#1c2333"/><text x="212" y="70">−5</text>
+          <line x1="266" y1="38" x2="266" y2="52" stroke="#1c2333"/><text x="266" y="70">−4</text>
+          <line x1="320" y1="38" x2="320" y2="52" stroke="#1c2333"/><text x="320" y="70">−3</text>
+          <line x1="374" y1="38" x2="374" y2="52" stroke="#1c2333"/><text x="374" y="70">−2</text>
+          <line x1="428" y1="38" x2="428" y2="52" stroke="#1c2333"/><text x="428" y="70">−1</text>
+          <line x1="482" y1="38" x2="482" y2="52" stroke="#1c2333"/><text x="482" y="70">0</text>
+        </g>
+        <circle cx="104" cy="45" r="7" fill="#c2410c"/><circle cx="320" cy="45" r="7" fill="#0f766e"/>
+        <path d="M110 22 Q212 0 314 22" stroke="#6d28d9" stroke-width="2" fill="none"/><path d="M314 22l-9-1 5-7z" fill="#6d28d9"/>
+        <text x="212" y="14" font-size="12" text-anchor="middle" fill="#6d28d9" font-weight="700">greater → / lebih besar →</text>
+      </svg>
+    </div>
+    <p>So \(-7 \lt -3\), because \(-7\) is to the left of \(-3\). Be careful: for negative numbers, the bigger the number after the minus sign, the <b>smaller</b> the value.
+      <span class="tr">Jadi \(-7 \lt -3\), karena \(-7\) berada di sebelah kiri \(-3\). Hati-hati: untuk bilangan negatif, semakin besar angka setelah tanda minus, nilainya semakin kecil.</span></p>
+    <div class="box idea"><b class="lbl">Fractions and decimals <span class="tr in">/ Pecahan dan desimal</span></b>
+      To compare, change them into decimals: \(\frac{2}{3} \approx 0.67\), \(-1\frac{1}{2} = -1.5\), \(\frac{1}{4} = 0.25\). Example: \(-2 \lt -1.5 \lt 0 \lt 0.25 \lt \frac{2}{3}\).
+      <span class="tr">Untuk membandingkan, ubah menjadi desimal: \(\frac{2}{3} \approx 0{,}67\), \(-1\frac{1}{2} = -1{,}5\), \(\frac{1}{4} = 0{,}25\). Contoh: \(-2 \lt -1{,}5 \lt 0 \lt 0{,}25 \lt \frac{2}{3}\).</span></div>
+  </div>
+
+  <div class="card">
+    <h3><span class="hic">🧪</span><span>Is the Number a Solution? (Substitution)<span class="tr">Apakah Bilangan Itu Penyelesaian? (Substitusi)</span></span></h3>
+    <p>A <b>solution</b> of an inequality is any value of the variable that makes the inequality <b>true</b>. To test a value, substitute it and compare.
+      <span class="tr">Penyelesaian pertidaksamaan adalah setiap nilai variabel yang membuat pertidaksamaan bernilai benar. Untuk menguji suatu nilai, substitusikan lalu bandingkan.</span></p>
+    <div class="ex"><div class="ex-title">Example <span class="tr">/ Contoh</span></div>
+      <p>Is \(x = 3\) or \(x = 5\) a solution of \(2x - 1 \gt 7\)? <span class="tr">Apakah \(x = 3\) atau \(x = 5\) penyelesaian dari \(2x - 1 \gt 7\)?</span></p>
+      <table class="tb">
+        <tr><th>\(x\)</th><th>Substitute <span class="tr">Substitusi</span></th><th>True? <span class="tr">Benar?</span></th></tr>
+        <tr><td>\(3\)</td><td>\(2(3) - 1 = 5\), is \(5 \gt 7\)?</td><td>❌ No / Tidak</td></tr>
+        <tr><td>\(4\)</td><td>\(2(4) - 1 = 7\), is \(7 \gt 7\)?</td><td>❌ No, 7 is not greater than 7 <span class="tr">Tidak, 7 tidak lebih dari 7</span></td></tr>
+        <tr><td>\(5\)</td><td>\(2(5) - 1 = 9\), is \(9 \gt 7\)?</td><td>✅ Yes / Ya</td></tr>
+      </table>
+      <p>So \(x = 5\) is a solution, but \(x = 3\) and \(x = 4\) are not. <span class="tr">Jadi \(x = 5\) adalah penyelesaian, tetapi \(x = 3\) dan \(x = 4\) bukan.</span></p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="hic">📏</span><span>Inequalities on a Number Line<span class="tr">Pertidaksamaan pada Garis Bilangan</span></span></h3>
+    <table class="tb">
+      <tr><th>Sign <span class="tr">Tanda</span></th><th>Circle <span class="tr">Bulatan</span></th><th>Direction <span class="tr">Arah</span></th></tr>
+      <tr><td>\(x \gt a\)</td><td>○ open (\(a\) NOT included) <span class="tr">kosong/terbuka (\(a\) TIDAK termasuk)</span></td><td>to the right → <span class="tr">ke kanan</span></td></tr>
+      <tr><td>\(x \ge a\)</td><td>● closed (\(a\) included) <span class="tr">penuh/tertutup (\(a\) termasuk)</span></td><td>to the right → <span class="tr">ke kanan</span></td></tr>
+      <tr><td>\(x \lt a\)</td><td>○ open <span class="tr">kosong/terbuka</span></td><td>← to the left <span class="tr">ke kiri</span></td></tr>
+      <tr><td>\(x \le a\)</td><td>● closed <span class="tr">penuh/tertutup</span></td><td>← to the left <span class="tr">ke kiri</span></td></tr>
+    </table>
+    <div class="nlrow">
+      <div class="nlcap"><div class="nl" data-min="-1" data-max="6" data-p="2" data-dir="R" data-closed="0"></div>\(x \gt 2\)</div>
+      <div class="nlcap"><div class="nl" data-min="-1" data-max="6" data-p="2" data-dir="R" data-closed="1"></div>\(x \ge 2\)</div>
+      <div class="nlcap"><div class="nl" data-min="-1" data-max="6" data-p="2" data-dir="L" data-closed="0"></div>\(x \lt 2\)</div>
+      <div class="nlcap"><div class="nl" data-min="-1" data-max="6" data-p="2" data-dir="L" data-closed="1"></div>\(x \le 2\)</div>
+    </div>
+    <div class="box idea"><b class="lbl">How to draw <span class="tr in">/ Cara menggambar</span></b>
+      <ol style="margin:0">
+        <li>Draw a number line with a scale. <span class="tr">Gambar garis bilangan dengan skala.</span></li>
+        <li>Locate the boundary number. <span class="tr">Tentukan letak bilangan batas.</span></li>
+        <li>Draw an open circle (\(\lt, \gt\)) or a closed circle (\(\le, \ge\)) at that number. <span class="tr">Gambar bulatan kosong (\(\lt, \gt\)) atau bulatan penuh (\(\le, \ge\)) pada bilangan itu.</span></li>
+        <li>Shade / draw an arrow in the direction of the solutions. <span class="tr">Arsir / gambar panah ke arah penyelesaian.</span></li>
+      </ol>
+    </div>
+    <div class="box warn"><b class="lbl">Reading a number line <span class="tr in">/ Membaca garis bilangan</span></b>
+      A closed circle at \(-1\) with an arrow to the right means \(x \ge -1\). An open circle at \(4\) with an arrow to the left means \(x \lt 4\).
+      <span class="tr">Bulatan penuh di \(-1\) dengan panah ke kanan berarti \(x \ge -1\). Bulatan kosong di \(4\) dengan panah ke kiri berarti \(x \lt 4\).</span></div>
+  </div>
+
+  <div class="qset">
+    <div class="qset-head"><h3>✏️ Exercises <span class="tr">Latihan</span></h3><span class="score"></span></div>
+
+    <div class="q" data-type="mc">
+      <div class="stem"><p>Which number line shows \(x \lt 2\)? <span class="tr">Garis bilangan mana yang menunjukkan \(x \lt 2\)?</span></p></div>
+      <div class="opts cols2">
+        <div class="o" data-c><div class="nl" data-min="-2" data-max="5" data-p="2" data-dir="L" data-closed="0"></div></div>
+        <div class="o"><div class="nl" data-min="-2" data-max="5" data-p="2" data-dir="L" data-closed="1"></div></div>
+        <div class="o"><div class="nl" data-min="-2" data-max="5" data-p="2" data-dir="R" data-closed="0"></div></div>
+        <div class="o"><div class="nl" data-min="-2" data-max="5" data-p="2" data-dir="R" data-closed="1"></div></div>
+      </div>
+      <div class="exp"><p>\(x \lt 2\): the sign \(\lt\) does not include 2, so the circle is <b>open</b> (○). "Less than" means numbers to the <b>left</b>.
+        <span class="tr">\(x \lt 2\): tanda \(\lt\) tidak memuat 2, jadi bulatannya kosong (○). "Kurang dari" berarti bilangan di sebelah kiri.</span></p>
+        <div class="nl" data-min="-2" data-max="5" data-p="2" data-dir="L" data-closed="0"></div></div>
+    </div>
+
+    <div class="q" data-type="tf" data-ans="F">
+      <div class="stem"><p>\(-7 \gt -3\)</p><p class="tr">Tentukan benar atau salah pernyataan di atas. (Decide whether the statement is true or false.)</p></div>
+      <div class="exp"><p>On the number line, \(-7\) is to the <b>left</b> of \(-3\), so \(-7\) is smaller: \(-7 \lt -3\). The statement is false.
+        <span class="tr">Pada garis bilangan, \(-7\) berada di sebelah kiri \(-3\), jadi \(-7\) lebih kecil: \(-7 \lt -3\). Pernyataan salah.</span></p><span class="ans">FALSE / SALAH</span></div>
+    </div>
+
+    <div class="q" data-type="multi">
+      <div class="stem"><p>Select <b>all</b> values of \(x\) that are solutions of \(2x - 1 \gt 5\). <span class="tr">Pilih semua nilai \(x\) yang merupakan penyelesaian dari \(2x - 1 \gt 5\).</span></p></div>
+      <div class="opts cols2">
+        <div class="o">\(x = 2\)</div><div class="o">\(x = 3\)</div><div class="o" data-c>\(x = 4\)</div>
+        <div class="o" data-c>\(x = 5\)</div><div class="o" data-c>\(x = 10\)</div><div class="o">\(x = -4\)</div>
+      </div>
+      <div class="exp">
+        <table class="tb">
+          <tr><th>\(x\)</th><th>\(2x - 1\)</th><th>\(\gt 5\)?</th></tr>
+          <tr><td>\(2\)</td><td>\(2(2)-1 = 3\)</td><td>❌</td></tr>
+          <tr><td>\(3\)</td><td>\(2(3)-1 = 5\)</td><td>❌ \(5 \gt 5\) is false / salah</td></tr>
+          <tr><td>\(4\)</td><td>\(2(4)-1 = 7\)</td><td>✅</td></tr>
+          <tr><td>\(5\)</td><td>\(2(5)-1 = 9\)</td><td>✅</td></tr>
+          <tr><td>\(10\)</td><td>\(2(10)-1 = 19\)</td><td>✅</td></tr>
+          <tr><td>\(-4\)</td><td>\(2(-4)-1 = -9\)</td><td>❌</td></tr>
+        </table>
+        <span class="ans">Answer / Jawaban: \(4,\ 5,\ 10\)</span>
+      </div>
+    </div>
+
+    <div class="q" data-type="fill">
+      <div class="stem"><p>Look at the number line. Complete the inequality and the type of circle (type <i>open</i> or <i>closed</i>). <span class="tr">Perhatikan garis bilangan. Lengkapi pertidaksamaan dan jenis bulatannya (ketik <i>open</i>/<i>terbuka</i> atau <i>closed</i>/<i>tertutup</i>).</span></p>
+        <div class="nl" data-min="-4" data-max="3" data-p="-1" data-dir="R" data-closed="1"></div>
+        <div class="fillline">\(x \ge\) <input class="blank" data-ans="-1"> &nbsp; Circle / Bulatan: <input class="blank wide" data-ans="closed|tertutup|penuh|filled"></div></div>
+      <div class="exp"><p>The circle is at \(-1\) and it is filled in (closed), so \(-1\) is included. The arrow points right, so the values are \(\ge -1\): \(x \ge -1\).
+        <span class="tr">Bulatan berada di \(-1\) dan terisi penuh (tertutup), jadi \(-1\) termasuk. Panah mengarah ke kanan, jadi nilainya \(\ge -1\): \(x \ge -1\).</span></p></div>
+    </div>
+
+    <div class="q" data-type="sort">
+      <div class="stem"><p>Arrange the numbers from the <b>smallest</b> to the <b>largest</b>. <span class="tr">Urutkan bilangan dari yang terkecil ke yang terbesar.</span></p></div>
+      <ol class="sortlist">
+        <li>\(-4\)</li><li>\(-1.5\)</li><li>\(0\)</li><li>\(\dfrac{2}{3}\)</li><li>\(3\)</li>
+      </ol>
+      <div class="exp"><p>Change to decimals: \(\frac{2}{3} \approx 0.67\). Negative numbers are smaller than 0, and \(-4\) is further left than \(-1.5\).
+        <span class="tr">Ubah ke desimal: \(\frac{2}{3} \approx 0{,}67\). Bilangan negatif lebih kecil dari 0, dan \(-4\) lebih jauh di kiri daripada \(-1{,}5\).</span></p>
+        \[-4 \lt -1.5 \lt 0 \lt \tfrac{2}{3} \lt 3\]</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== S4 PROBLEM INTRODUCTION ===================== -->
+<section class="sec" id="s4">
+  <div class="sec-head">
+    <span class="time">⏱ 00:20 – 00:25</span>
+    <h2>Problem Introduction<span class="tr">Pengenalan Masalah</span></h2>
+    <p class="goal">🎯 <b>Goal:</b> Discover the properties of inequalities, especially what happens when we multiply or divide by a negative number.
+      <span class="tr">Tujuan: Menemukan sifat-sifat pertidaksamaan, terutama apa yang terjadi saat kita mengalikan atau membagi dengan bilangan negatif.</span></p>
+  </div>
+
+  <div class="card">
+    <h3><span class="hic">🛍️</span><span>The Problem<span class="tr">Masalahnya</span></span></h3>
+    <div class="grid2" style="align-items:center">
+      <div>
+        <p>Rina has <b>Rp45.000</b>. She buys one notebook for Rp8.000 and some pens for Rp3.500 each. What is the <b>maximum</b> number of pens she can buy?
+          <span class="tr">Rina punya Rp45.000. Ia membeli satu buku tulis seharga Rp8.000 dan beberapa pulpen seharga Rp3.500 per buah. Berapa paling banyak pulpen yang dapat ia beli?</span></p>
+        <p>Let \(p\) = number of pens. The total cost must not exceed her money: <span class="tr">Misalkan \(p\) = banyak pulpen. Total harga tidak boleh melebihi uangnya:</span></p>
+        \[8000 + 3500p \le 45000\]
+        <p>To answer, we need to <b>solve</b> an inequality. Can we use the same steps as equations? Mostly yes — but there is <b>one important exception</b>!
+          <span class="tr">Untuk menjawabnya, kita perlu menyelesaikan pertidaksamaan. Bisakah kita memakai langkah yang sama seperti persamaan? Sebagian besar bisa — tetapi ada satu pengecualian penting!</span></p>
+        <p class="tr" style="font-style:normal;color:var(--teal);font-weight:600">(We will solve this problem in Guided Practice. / Kita akan menyelesaikan masalah ini di Latihan Terbimbing.)</p>
+      </div>
+      <div class="ill">
+        <svg width="240" height="170" viewBox="0 0 240 170">
+          <rect x="18" y="30" width="96" height="120" rx="8" fill="#0f766e"/><rect x="26" y="38" width="80" height="104" rx="4" fill="#ccfbf1"/>
+          <line x1="34" y1="58" x2="98" y2="58" stroke="#0f766e" stroke-width="2"/><line x1="34" y1="74" x2="98" y2="74" stroke="#0f766e" stroke-width="2"/><line x1="34" y1="90" x2="98" y2="90" stroke="#0f766e" stroke-width="2"/>
+          <text x="66" y="126" text-anchor="middle" font-size="14" font-weight="800" fill="#0f766e">Rp8.000</text>
+          <g transform="rotate(-25 175 90)"><rect x="165" y="20" width="16" height="120" rx="4" fill="#c2410c"/><path d="M165 140l8 22 8-22z" fill="#fcd34d"/><rect x="165" y="20" width="16" height="16" fill="#7c2d12"/></g>
+          <text x="190" y="164" text-anchor="middle" font-size="13" font-weight="800" fill="#c2410c">Rp3.500</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="hic">🔬</span><span>Investigation: Start with \(3 \gt 1\)<span class="tr">Penyelidikan: Mulai dari \(3 \gt 1\)</span></span></h3>
+    <p>Do the same operation on both sides and see whether the sign is still true. <span class="tr">Lakukan operasi yang sama pada kedua ruas dan lihat apakah tandanya masih benar.</span></p>
+    <table class="tb">
+      <tr><th>Operation on both sides <span class="tr">Operasi pada kedua ruas</span></th><th>Result <span class="tr">Hasil</span></th><th>Sign <span class="tr">Tanda</span></th></tr>
+      <tr><td>Add 4 <span class="tr">Tambah 4</span></td><td>\(7 \;?\; 5\)</td><td>\(7 \gt 5\) ✅ stays / tetap</td></tr>
+      <tr><td>Subtract 4 <span class="tr">Kurang 4</span></td><td>\(-1 \;?\; -3\)</td><td>\(-1 \gt -3\) ✅ stays / tetap</td></tr>
+      <tr><td>Multiply by 2 <span class="tr">Kali 2</span></td><td>\(6 \;?\; 2\)</td><td>\(6 \gt 2\) ✅ stays / tetap</td></tr>
+      <tr><td>Divide by 2 <span class="tr">Bagi 2</span></td><td>\(1.5 \;?\; 0.5\)</td><td>\(1.5 \gt 0.5\) ✅ stays / tetap</td></tr>
+      <tr style="background:#fff3e6"><td><b>Multiply by \(-2\)</b> <span class="tr">Kali \(-2\)</span></td><td>\(-6 \;?\; -2\)</td><td>\(-6 \lt -2\) 🔄 <b>reverses / dibalik</b></td></tr>
+      <tr style="background:#fff3e6"><td><b>Divide by \(-1\)</b> <span class="tr">Bagi \(-1\)</span></td><td>\(-3 \;?\; -1\)</td><td>\(-3 \lt -1\) 🔄 <b>reverses / dibalik</b></td></tr>
+    </table>
+    <div class="ill">
+      <svg width="520" height="96" viewBox="0 0 520 96">
+        <line x1="20" y1="40" x2="500" y2="40" stroke="#1c2333" stroke-width="2"/>
+        <g font-size="12" text-anchor="middle" fill="#1c2333">
+          <line x1="60" y1="34" x2="60" y2="46" stroke="#1c2333"/><text x="60" y="62">−6</text>
+          <line x1="160" y1="34" x2="160" y2="46" stroke="#1c2333"/><text x="160" y="62">−2</text>
+          <line x1="210" y1="34" x2="210" y2="46" stroke="#1c2333"/><text x="210" y="62">0</text>
+          <line x1="260" y1="34" x2="260" y2="46" stroke="#1c2333"/><text x="260" y="62">2</text>
+          <line x1="235" y1="34" x2="235" y2="46" stroke="#1c2333"/><text x="235" y="62">1</text>
+          <line x1="285" y1="34" x2="285" y2="46" stroke="#1c2333"/><text x="285" y="62">3</text>
+          <line x1="360" y1="34" x2="360" y2="46" stroke="#1c2333"/><text x="360" y="62">6</text>
+        </g>
+        <circle cx="235" cy="40" r="6" fill="#0f766e"/><circle cx="285" cy="40" r="6" fill="#0f766e"/>
+        <circle cx="160" cy="40" r="6" fill="#c2410c"/><circle cx="60" cy="40" r="6" fill="#c2410c"/>
+        <path d="M285 30 Q170 -6 64 30" stroke="#c2410c" stroke-width="1.6" fill="none" stroke-dasharray="4 3"/>
+        <path d="M235 32 Q200 10 164 32" stroke="#c2410c" stroke-width="1.6" fill="none" stroke-dasharray="4 3"/>
+        <text x="260" y="88" text-anchor="middle" font-size="12" fill="#1c2333">×(−2): 3 → −6 and 1 → −2. The order flips! / Urutannya terbalik!</text>
+      </svg>
+    </div>
+    <p>Multiplying by a negative number "flips" the numbers to the other side of zero, so the bigger one becomes the smaller one.
+      <span class="tr">Mengalikan dengan bilangan negatif "membalik" bilangan ke sisi lain dari nol, sehingga yang lebih besar menjadi yang lebih kecil.</span></p>
+  </div>
+
+  <div class="card">
+    <h3><span class="hic">📜</span><span>Properties of Inequalities<span class="tr">Sifat-sifat Pertidaksamaan</span></span></h3>
+    <div class="box key"><b class="lbl">1. Adding / subtracting <span class="tr in">/ Menambah / mengurangi</span></b>
+      \[a \lt b \;\Rightarrow\; a + c \lt b + c \quad\text{and}\quad a - c \lt b - c\]
+      The sign <b>stays the same</b>. <span class="tr">Tanda tetap.</span></div>
+    <div class="box key"><b class="lbl">2. Multiplying / dividing by a POSITIVE number <span class="tr in">/ Mengali / membagi dengan bilangan POSITIF</span> (\(c \gt 0\))</b>
+      \[a \lt b \;\Rightarrow\; ac \lt bc \quad\text{and}\quad \frac{a}{c} \lt \frac{b}{c}\]
+      The sign <b>stays the same</b>. <span class="tr">Tanda tetap.</span></div>
+    <div class="box warn"><b class="lbl">3. Multiplying / dividing by a NEGATIVE number <span class="tr in">/ Mengali / membagi dengan bilangan NEGATIF</span> (\(c \lt 0\)) ⚠️</b>
+      \[a \lt b \;\Rightarrow\; ac \gt bc \quad\text{and}\quad \frac{a}{c} \gt \frac{b}{c}\]
+      The sign <b>must be reversed</b>: \(\lt\) becomes \(\gt\), \(\le\) becomes \(\ge\), and vice versa. <span class="tr">Tanda harus dibalik: \(\lt\) menjadi \(\gt\), \(\le\) menjadi \(\ge\), dan sebaliknya.</span></div>
+    <div class="box idea"><b class="lbl">4. Swapping the two sides <span class="tr in">/ Menukar kedua ruas</span></b>
+      \[a \lt b \;\Longleftrightarrow\; b \gt a \qquad\text{e.g. } 6 \lt 2x \;\Longleftrightarrow\; 2x \gt 6\]
+      If you swap the left and right sides, the sign also turns around (the "mouth" still opens to the bigger side). <span class="tr">Jika ruas kiri dan kanan ditukar, tandanya juga berbalik ("mulut" tanda tetap menghadap ke sisi yang lebih besar).</span></div>
+  </div>
+
+  <div class="card">
+    <h3><span class="hic">📝</span><span>Worked Examples<span class="tr">Contoh Soal</span></span></h3>
+    <div class="ex"><div class="ex-title">Example 1 <span class="tr">/ Contoh 1</span></div>
+      <div class="steps">
+        <div class="st"><div class="m">\(x - 3 \gt 2\)</div><div class="t">Original. <span class="tr">Soal awal.</span></div></div>
+        <div class="st"><div class="m">\(x \gt 2 + 3 \Rightarrow x \gt 5\)</div><div class="t">Add 3 to both sides: sign stays. <span class="tr">Tambah 3 pada kedua ruas: tanda tetap.</span></div></div>
+      </div></div>
+    <div class="ex"><div class="ex-title">Example 2 <span class="tr">/ Contoh 2</span></div>
+      <div class="steps">
+        <div class="st"><div class="m">\(3x \le -12\)</div><div class="t">Original. <span class="tr">Soal awal.</span></div></div>
+        <div class="st"><div class="m">\(x \le \dfrac{-12}{3} \Rightarrow x \le -4\)</div><div class="t">Divide by \(+3\) (positive): sign stays. <span class="tr">Bagi dengan \(+3\) (positif): tanda tetap.</span></div></div>
+      </div></div>
+    <div class="ex"><div class="ex-title">Example 3 — Negative coefficient <span class="tr">/ Contoh 3 — Koefisien negatif</span></div>
+      <div class="steps">
+        <div class="st"><div class="m">\(-2x \gt 10\)</div><div class="t">Original. <span class="tr">Soal awal.</span></div></div>
+        <div class="st"><div class="m">\(\dfrac{-2x}{-2} \lt \dfrac{10}{-2}\)</div><div class="t">Divide by \(-2\) (negative): <b>reverse</b> \(\gt\) to \(\lt\). <span class="tr">Bagi dengan \(-2\) (negatif): balik \(\gt\) menjadi \(\lt\).</span></div></div>
+        <div class="st"><div class="m">\(x \lt -5\)</div><div class="t">Result. <span class="tr">Hasil.</span></div></div>
+      </div></div>
+    <div class="ex"><div class="ex-title">Example 4 <span class="tr">/ Contoh 4</span></div>
+      <div class="steps">
+        <div class="st"><div class="m">\(-x \lt 4\)</div><div class="t">\(-x\) means \(-1 \cdot x\). <span class="tr">\(-x\) artinya \(-1 \cdot x\).</span></div></div>
+        <div class="st"><div class="m">\(x \gt -4\)</div><div class="t">Divide by \(-1\): reverse the sign. <span class="tr">Bagi dengan \(-1\): balik tandanya.</span></div></div>
+      </div></div>
+    <div class="ex"><div class="ex-title">Example 5 <span class="tr">/ Contoh 5</span></div>
+      <div class="steps">
+        <div class="st"><div class="m">\(-4x \ge 8\)</div><div class="t">Original. <span class="tr">Soal awal.</span></div></div>
+        <div class="st"><div class="m">\(x \le \dfrac{8}{-4} \Rightarrow x \le -2\)</div><div class="t">Divide by \(-4\): \(\ge\) becomes \(\le\). <span class="tr">Bagi dengan \(-4\): \(\ge\) menjadi \(\le\).</span></div></div>
+      </div></div>
+    <div class="ex"><div class="ex-title">Example 6 — Testing the rule with numbers <span class="tr">/ Contoh 6 — Menguji aturan dengan bilangan</span></div>
+      <p>\(3 \gt 1\). Multiply both sides by \(-2\): \(3 \times (-2) = -6\) and \(1 \times (-2) = -2\). Since \(-6\) is left of \(-2\), we write \(-6 \lt -2\).
+        <span class="tr">\(3 \gt 1\). Kalikan kedua ruas dengan \(-2\): \(3 \times (-2) = -6\) dan \(1 \times (-2) = -2\). Karena \(-6\) di kiri \(-2\), kita tulis \(-6 \lt -2\).</span></p></div>
+  </div>
+
+  <div class="qset">
+    <div class="qset-head"><h3>✏️ Exercises <span class="tr">Latihan</span></h3><span class="score"></span></div>
+
+    <div class="q" data-type="mc">
+      <div class="stem"><p>If \(-3x \gt 12\), then … <span class="tr">Jika \(-3x \gt 12\), maka …</span></p></div>
+      <div class="opts cols2"><div class="o" data-c>\(x \lt -4\)</div><div class="o">\(x \gt -4\)</div><div class="o">\(x \lt 4\)</div><div class="o">\(x \gt 4\)</div></div>
+      <div class="exp">
+        <div class="steps">
+          <div class="st"><div class="m">\(\dfrac{-3x}{-3} \lt \dfrac{12}{-3}\)</div><div class="t">Divide by \(-3\) (negative) → reverse \(\gt\) to \(\lt\). <span class="tr">Bagi dengan \(-3\) (negatif) → balik \(\gt\) menjadi \(\lt\).</span></div></div>
+          <div class="st"><div class="m">\(x \lt -4\)</div><div class="t">Check with \(x=-5\): \(-3(-5)=15 \gt 12\) ✓ <span class="tr">Cek dengan \(x=-5\): \(-3(-5)=15 \gt 12\) ✓</span></div></div>
+        </div></div>
+    </div>
+
+    <div class="q" data-type="tf" data-ans="T">
+      <div class="stem"><p>If \(a \lt b\), then \(a - 5 \lt b - 5\). <span class="tr">Jika \(a \lt b\), maka \(a - 5 \lt b - 5\).</span></p></div>
+      <div class="exp"><p>Subtracting the same number from both sides does <b>not</b> change the sign (Property 1). Example: \(2 \lt 7 \Rightarrow -3 \lt 2\) ✓.
+        <span class="tr">Mengurangi kedua ruas dengan bilangan yang sama tidak mengubah tanda (Sifat 1). Contoh: \(2 \lt 7 \Rightarrow -3 \lt 2\) ✓.</span></p><span class="ans">TRUE / BENAR</span></div>
+    </div>
+
+    <div class="q" data-type="pair">
+      <div class="stem"><p>Match each inequality with its simplified form. <span class="tr">Pasangkan setiap pertidaksamaan dengan bentuk sederhananya.</span></p></div>
+      <div class="pairs">
+        <div class="pp"><div>\(x + 4 \gt 9\)</div><div>\(x \gt 5\)</div></div>
+        <div class="pp"><div>\(-x \lt 3\)</div><div>\(x \gt -3\)</div></div>
+        <div class="pp"><div>\(2x \le -8\)</div><div>\(x \le -4\)</div></div>
+        <div class="pp"><div>\(-5x \ge 10\)</div><div>\(x \le -2\)</div></div>
+      </div>
+      <div class="exp"><ul>
+        <li>\(x + 4 \gt 9 \Rightarrow x \gt 9 - 4 = 5\) (subtract 4, sign stays / kurangi 4, tanda tetap)</li>
+        <li>\(-x \lt 3 \Rightarrow x \gt -3\) (divide by \(-1\), reverse / bagi \(-1\), dibalik)</li>
+        <li>\(2x \le -8 \Rightarrow x \le -4\) (divide by 2, sign stays / bagi 2, tanda tetap)</li>
+        <li>\(-5x \ge 10 \Rightarrow x \le -2\) (divide by \(-5\), reverse / bagi \(-5\), dibalik)</li>
+      </ul></div>
+    </div>
+
+    <div class="q" data-type="dnd">
+      <div class="stem"><p>Sort each operation (done on both sides of an inequality): does the sign stay the same or must it be reversed? <span class="tr">Kelompokkan setiap operasi (dilakukan pada kedua ruas pertidaksamaan): apakah tandanya tetap atau harus dibalik?</span></p></div>
+      <div class="dnd">
+        <div class="bin" data-bin="k">✅ Sign stays<span class="tr">Tanda tetap</span></div>
+        <div class="bin" data-bin="r">🔄 Sign reverses<span class="tr">Tanda dibalik</span></div>
+        <span class="chip" data-bin="k">Add \(-3\)<span class="tr">Tambah \(-3\)</span></span>
+        <span class="chip" data-bin="k">Multiply by \(5\)<span class="tr">Kali \(5\)</span></span>
+        <span class="chip" data-bin="k">Subtract \(10\)<span class="tr">Kurang \(10\)</span></span>
+        <span class="chip" data-bin="k">Divide by \(\tfrac{1}{2}\)<span class="tr">Bagi \(\tfrac{1}{2}\)</span></span>
+        <span class="chip" data-bin="r">Divide by \(-4\)<span class="tr">Bagi \(-4\)</span></span>
+        <span class="chip" data-bin="r">Multiply by \(-1\)<span class="tr">Kali \(-1\)</span></span>
+        <span class="chip" data-bin="r">Multiply by \(-\tfrac{1}{3}\)<span class="tr">Kali \(-\tfrac{1}{3}\)</span></span>
+        <span class="chip" data-bin="r">Swap left and right sides<span class="tr">Tukar ruas kiri dan kanan</span></span>
+      </div>
+      <div class="exp"><ul>
+        <li>Adding or subtracting <b>any</b> number (even a negative one like \(-3\)) never changes the sign. <span class="tr">Menambah atau mengurangi bilangan apa pun (bahkan negatif seperti \(-3\)) tidak pernah mengubah tanda.</span></li>
+        <li>Multiplying/dividing by a <b>positive</b> number (\(5\), \(\frac12\)) keeps the sign. <span class="tr">Mengali/membagi dengan bilangan positif (\(5\), \(\frac12\)) membuat tanda tetap.</span></li>
+        <li>Multiplying/dividing by a <b>negative</b> number (\(-4\), \(-1\), \(-\frac13\)) reverses the sign. <span class="tr">Mengali/membagi dengan bilangan negatif (\(-4\), \(-1\), \(-\frac13\)) membalik tanda.</span></li>
+        <li>Swapping sides: \(a \lt b\) becomes \(b \gt a\), the sign turns around. <span class="tr">Menukar ruas: \(a \lt b\) menjadi \(b \gt a\), tanda berbalik.</span></li>
+      </ul></div>
+    </div>
+
+    <div class="q" data-type="fill">
+      <div class="stem"><p>Start with \(6 \gt 2\). Multiply both sides by \(-3\). Type the correct sign (<b>&lt;</b> or <b>&gt;</b>). <span class="tr">Mulai dari \(6 \gt 2\). Kalikan kedua ruas dengan \(-3\). Ketik tanda yang benar (<b>&lt;</b> atau <b>&gt;</b>).</span></p>
+        <div class="fillline">\(-18\) <input class="blank" data-ans="&lt;"> \(-6\)</div></div>
+      <div class="exp"><p>\(6 \times (-3) = -18\) and \(2 \times (-3) = -6\). Because we multiplied by a negative number, the sign reverses: \(-18 \lt -6\). (Check: \(-18\) is to the left of \(-6\).)
+        <span class="tr">\(6 \times (-3) = -18\) dan \(2 \times (-3) = -6\). Karena dikali bilangan negatif, tanda dibalik: \(-18 \lt -6\). (Cek: \(-18\) berada di kiri \(-6\).)</span></p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== S5 GUIDED PRACTICE ===================== -->
+<section class="sec" id="s5">
+  <div class="sec-head">
+    <span class="time">⏱ 00:25 – 00:40</span>
+    <h2>Guided Practice<span class="tr">Latihan Terbimbing</span></h2>
+    <p class="goal">🎯 <b>Goal:</b> Solve linear inequalities step by step, write the solution set, and solve a real problem.
+      <span class="tr">Tujuan: Menyelesaikan pertidaksamaan linear langkah demi langkah, menulis himpunan penyelesaian, dan menyelesaikan masalah nyata.</span></p>
+  </div>
+
+  <div class="card">
+    <h3><span class="hic">🪜</span><span>Steps to Solve a Linear Inequality<span class="tr">Langkah Menyelesaikan Pertidaksamaan Linear</span></span></h3>
+    <ol>
+      <li><b>Remove brackets</b> using the distributive property: \(a(b + c) = ab + ac\). <span class="tr">Hilangkan tanda kurung dengan sifat distributif: \(a(b + c) = ab + ac\).</span></li>
+      <li><b>Clear fractions</b> (if any) by multiplying both sides by the LCM of the denominators (a positive number, so the sign stays). <span class="tr">Hilangkan pecahan (jika ada) dengan mengalikan kedua ruas dengan KPK penyebut (bilangan positif, jadi tanda tetap).</span></li>
+      <li><b>Collect</b> variable terms on one side and constants on the other side. <span class="tr">Kumpulkan suku bervariabel di satu ruas dan konstanta di ruas lain.</span></li>
+      <li><b>Divide</b> by the coefficient of the variable. If the coefficient is <b>negative</b>, <b>reverse</b> the sign! <span class="tr">Bagi dengan koefisien variabel. Jika koefisiennya negatif, balik tandanya!</span></li>
+      <li><b>Write the solution set</b> (consider the type of number allowed) and draw it on a number line. <span class="tr">Tuliskan himpunan penyelesaian (perhatikan jenis bilangan yang diizinkan) dan gambarkan pada garis bilangan.</span></li>
+    </ol>
+    <table class="tb">
+      <tr><th>Set of numbers <span class="tr">Himpunan bilangan</span></th><th>Members <span class="tr">Anggota</span></th></tr>
+      <tr><td>Natural numbers <span class="tr">Bilangan asli</span></td><td>\(\{1, 2, 3, 4, \dots\}\) (does not include 0 / tidak termasuk 0)</td></tr>
+      <tr><td>Whole numbers <span class="tr">Bilangan cacah</span></td><td>\(\{0, 1, 2, 3, \dots\}\)</td></tr>
+      <tr><td>Integers <span class="tr">Bilangan bulat</span></td><td>\(\{\dots, -2, -1, 0, 1, 2, \dots\}\)</td></tr>
+      <tr><td>Real numbers <span class="tr">Bilangan real</span></td><td>All numbers on the number line (including fractions and decimals) <span class="tr">Semua bilangan pada garis bilangan (termasuk pecahan dan desimal)</span></td></tr>
+    </table>
+    <p>Solution set notation <span class="tr in">/ Notasi himpunan penyelesaian (HP)</span>: \(\;\text{HP} = \{x \mid x \gt 5,\ x \in \mathbb{R}\}\) — read: "the set of all \(x\) such that \(x\) is greater than 5, \(x\) is a real number".
+      <span class="tr">dibaca: "himpunan semua \(x\) sedemikian sehingga \(x\) lebih dari 5, \(x\) bilangan real".</span></p>
+  </div>
+
+  <div class="card">
+    <h3><span class="hic">📝</span><span>Worked Examples<span class="tr">Contoh Soal dan Penyelesaian</span></span></h3>
+
+    <div class="ex"><div class="ex-title">Example 1 — Two steps <span class="tr">/ Contoh 1 — Dua langkah</span></div>
+      <p>Solve \(3x + 4 \gt 19\), \(x \in \mathbb{R}\). <span class="tr">Selesaikan \(3x + 4 \gt 19\), \(x \in \mathbb{R}\).</span></p>
+      <div class="steps">
+        <div class="st"><div class="m">\(3x + 4 - 4 \gt 19 - 4\)</div><div class="t">Subtract 4 from both sides. <span class="tr">Kurangi kedua ruas dengan 4.</span></div></div>
+        <div class="st"><div class="m">\(3x \gt 15\)</div><div class="t">Simplify. <span class="tr">Sederhanakan.</span></div></div>
+        <div class="st"><div class="m">\(x \gt 5\)</div><div class="t">Divide by \(+3\): sign stays. <span class="tr">Bagi dengan \(+3\): tanda tetap.</span></div></div>
+        <div class="st"><div class="m">\(\text{HP} = \{x \mid x \gt 5,\ x \in \mathbb{R}\}\)</div><div class="t">Solution set. <span class="tr">Himpunan penyelesaian.</span></div></div>
+      </div>
+      <div class="nl" data-min="1" data-max="9" data-p="5" data-dir="R" data-closed="0"></div>
+    </div>
+
+    <div class="ex"><div class="ex-title">Example 2 — Negative coefficient <span class="tr">/ Contoh 2 — Koefisien negatif</span></div>
+      <p>Solve \(5 - 2x \le 11\). <span class="tr">Selesaikan \(5 - 2x \le 11\).</span></p>
+      <div class="steps">
+        <div class="st"><div class="m">\(-2x \le 11 - 5\)</div><div class="t">Subtract 5 from both sides. <span class="tr">Kurangi kedua ruas dengan 5.</span></div></div>
+        <div class="st"><div class="m">\(-2x \le 6\)</div><div class="t">Simplify. <span class="tr">Sederhanakan.</span></div></div>
+        <div class="st"><div class="m">\(x \ge \dfrac{6}{-2} \Rightarrow x \ge -3\)</div><div class="t">Divide by \(-2\): <b>reverse</b> \(\le\) to \(\ge\). <span class="tr">Bagi dengan \(-2\): balik \(\le\) menjadi \(\ge\).</span></div></div>
+        <div class="st"><div class="m">\(x = 0:\ 5 - 0 = 5 \le 11\ \checkmark\)</div><div class="t">Check with a value in the answer. <span class="tr">Cek dengan nilai di dalam jawaban.</span></div></div>
+      </div>
+    </div>
+
+    <div class="ex"><div class="ex-title">Example 3 — Brackets &amp; natural numbers <span class="tr">/ Contoh 3 — Kurung &amp; bilangan asli</span></div>
+      <p>Find the solution set of \(4(x - 1) \lt 2x + 6\), \(x\) natural numbers. <span class="tr">Tentukan HP dari \(4(x - 1) \lt 2x + 6\), \(x\) bilangan asli.</span></p>
+      <div class="steps">
+        <div class="st"><div class="m">\(4x - 4 \lt 2x + 6\)</div><div class="t">Distribute 4. <span class="tr">Distributifkan 4.</span></div></div>
+        <div class="st"><div class="m">\(4x - 2x \lt 6 + 4\)</div><div class="t">Subtract \(2x\) and add 4 on both sides. <span class="tr">Kurangi \(2x\) dan tambah 4 pada kedua ruas.</span></div></div>
+        <div class="st"><div class="m">\(2x \lt 10 \Rightarrow x \lt 5\)</div><div class="t">Divide by 2: sign stays. <span class="tr">Bagi dengan 2: tanda tetap.</span></div></div>
+        <div class="st"><div class="m">\(\text{HP} = \{1, 2, 3, 4\}\)</div><div class="t">Natural numbers less than 5 (5 is not included). <span class="tr">Bilangan asli kurang dari 5 (5 tidak termasuk).</span></div></div>
+      </div>
+    </div>
+
+    <div class="ex"><div class="ex-title">Example 4 — Fractions <span class="tr">/ Contoh 4 — Pecahan</span></div>
+      <p>Solve \(\dfrac{x + 2}{3} \ge \dfrac{x - 1}{2}\). <span class="tr">Selesaikan \(\dfrac{x + 2}{3} \ge \dfrac{x - 1}{2}\).</span></p>
+      <div class="steps">
+        <div class="st"><div class="m">\(6 \cdot \dfrac{x+2}{3} \ge 6 \cdot \dfrac{x-1}{2}\)</div><div class="t">LCM of 3 and 2 is 6. Multiply both sides by 6. <span class="tr">KPK dari 3 dan 2 adalah 6. Kalikan kedua ruas dengan 6.</span></div></div>
+        <div class="st"><div class="m">\(2(x + 2) \ge 3(x - 1)\)</div><div class="t">Simplify. <span class="tr">Sederhanakan.</span></div></div>
+        <div class="st"><div class="m">\(2x + 4 \ge 3x - 3\)</div><div class="t">Distribute. <span class="tr">Distributifkan.</span></div></div>
+        <div class="st"><div class="m">\(2x - 3x \ge -3 - 4 \Rightarrow -x \ge -7\)</div><div class="t">Collect terms. <span class="tr">Kumpulkan suku sejenis.</span></div></div>
+        <div class="st"><div class="m">\(x \le 7\)</div><div class="t">Divide by \(-1\): reverse the sign. <span class="tr">Bagi dengan \(-1\): balik tandanya.</span></div></div>
+      </div>
+    </div>
+
+    <div class="ex"><div class="ex-title">Example 5 — Solving Rina's problem <span class="tr">/ Contoh 5 — Menyelesaikan masalah Rina</span></div>
+      <p>\(8000 + 3500p \le 45000\), where \(p\) is the number of pens. <span class="tr">\(8000 + 3500p \le 45000\), dengan \(p\) banyak pulpen.</span></p>
+      <div class="steps">
+        <div class="st"><div class="m">\(3500p \le 45000 - 8000\)</div><div class="t">Subtract 8000 from both sides. <span class="tr">Kurangi kedua ruas dengan 8000.</span></div></div>
+        <div class="st"><div class="m">\(3500p \le 37000\)</div><div class="t">Simplify. <span class="tr">Sederhanakan.</span></div></div>
+        <div class="st"><div class="m">\(p \le \dfrac{37000}{3500} \approx 10.57\)</div><div class="t">Divide by 3500. <span class="tr">Bagi dengan 3500.</span></div></div>
+        <div class="st"><div class="m">\(p_{\max} = 10\)</div><div class="t">Pens must be whole numbers. "At most" → round <b>down</b>. <span class="tr">Banyak pulpen harus bilangan cacah. "Paling banyak" → bulatkan ke bawah.</span></div></div>
+        <div class="st"><div class="m">\(8000 + 3500(10) = 43000 \le 45000\ \checkmark\)</div><div class="t">Check: 11 pens cost \(8000 + 38500 = 46500\), too much. <span class="tr">Cek: 11 pulpen menjadi \(8000 + 38500 = 46500\), terlalu mahal.</span></div></div>
+      </div>
+      <span class="ans">Rina can buy at most 10 pens. / Rina dapat membeli paling banyak 10 pulpen.</span>
+    </div>
+  </div>
+
+  <div class="qset">
+    <div class="qset-head"><h3>✏️ Exercises <span class="tr">Latihan</span></h3><span class="score"></span></div>
+
+    <div class="q" data-type="mc">
+      <div class="stem"><p>Solve \(2x + 7 \gt 15\). <span class="tr">Selesaikan \(2x + 7 \gt 15\).</span></p></div>
+      <div class="opts cols2"><div class="o" data-c>\(x \gt 4\)</div><div class="o">\(x \gt 11\)</div><div class="o">\(x \lt 4\)</div><div class="o">\(x \gt -4\)</div></div>
+      <div class="exp"><div class="steps">
+        <div class="st"><div class="m">\(2x \gt 15 - 7\)</div><div class="t">Subtract 7 from both sides. <span class="tr">Kurangi kedua ruas dengan 7.</span></div></div>
+        <div class="st"><div class="m">\(2x \gt 8\)</div><div class="t">Simplify. <span class="tr">Sederhanakan.</span></div></div>
+        <div class="st"><div class="m">\(x \gt 4\)</div><div class="t">Divide by \(+2\): sign stays. <span class="tr">Bagi dengan \(+2\): tanda tetap.</span></div></div>
+      </div></div>
+    </div>
+
+    <div class="q" data-type="fill">
+      <div class="stem"><p>Solve \(7 - 3x \ge -8\). <span class="tr">Selesaikan \(7 - 3x \ge -8\).</span></p>
+        <div class="fillline">\(x \le\) <input class="blank" data-ans="5"></div></div>
+      <div class="exp"><div class="steps">
+        <div class="st"><div class="m">\(-3x \ge -8 - 7\)</div><div class="t">Subtract 7 from both sides. <span class="tr">Kurangi kedua ruas dengan 7.</span></div></div>
+        <div class="st"><div class="m">\(-3x \ge -15\)</div><div class="t">Simplify. <span class="tr">Sederhanakan.</span></div></div>
+        <div class="st"><div class="m">\(x \le \dfrac{-15}{-3} = 5\)</div><div class="t">Divide by \(-3\): reverse \(\ge\) to \(\le\). <span class="tr">Bagi dengan \(-3\): balik \(\ge\) menjadi \(\le\).</span></div></div>
+      </div><span class="ans">\(x \le 5\)</span></div>
+    </div>
+
+    <div class="q" data-type="sort">
+      <div class="stem"><p>Put the steps for solving \(3(x + 2) \lt x + 14\) in the correct order. <span class="tr">Urutkan langkah-langkah penyelesaian \(3(x + 2) \lt x + 14\) dengan benar.</span></p></div>
+      <ol class="sortlist">
+        <li>\(3x + 6 \lt x + 14\)</li>
+        <li>\(3x - x \lt 14 - 6\)</li>
+        <li>\(2x \lt 8\)</li>
+        <li>\(x \lt 4\)</li>
+      </ol>
+      <div class="exp"><p>1) Distribute 3 → 2) collect \(x\)-terms on the left and numbers on the right → 3) simplify → 4) divide by 2 (positive, sign stays).
+        <span class="tr">1) Distributifkan 3 → 2) kumpulkan suku \(x\) di kiri dan bilangan di kanan → 3) sederhanakan → 4) bagi dengan 2 (positif, tanda tetap).</span></p></div>
+    </div>
+
+    <div class="q" data-type="multi">
+      <div class="stem"><p>\(2(x - 3) \le 4\), \(x\) is a <b>natural number</b>. Select <b>all</b> numbers that are members of the solution set. <span class="tr">\(2(x - 3) \le 4\), \(x\) bilangan asli. Pilih semua bilangan yang merupakan anggota himpunan penyelesaian.</span></p></div>
+      <div class="opts cols2">
+        <div class="o">\(0\)</div><div class="o" data-c>\(1\)</div><div class="o" data-c>\(3\)</div>
+        <div class="o" data-c>\(5\)</div><div class="o">\(6\)</div><div class="o">\(-1\)</div>
+      </div>
+      <div class="exp"><div class="steps">
+        <div class="st"><div class="m">\(2x - 6 \le 4\)</div><div class="t">Distribute 2. <span class="tr">Distributifkan 2.</span></div></div>
+        <div class="st"><div class="m">\(2x \le 10 \Rightarrow x \le 5\)</div><div class="t">Add 6, then divide by 2. <span class="tr">Tambah 6, lalu bagi dengan 2.</span></div></div>
+        <div class="st"><div class="m">\(\text{HP} = \{1, 2, 3, 4, 5\}\)</div><div class="t">Natural numbers start from 1, so 0 and \(-1\) are not included; 6 is greater than 5. <span class="tr">Bilangan asli dimulai dari 1, jadi 0 dan \(-1\) tidak termasuk; 6 lebih dari 5.</span></div></div>
+      </div><span class="ans">\(1,\ 3,\ 5\)</span></div>
+    </div>
+
+    <div class="q" data-type="fill">
+      <div class="stem"><p>Budi has Rp100.000 at an amusement park. The entrance ticket is Rp20.000 and each ride costs Rp15.000. What is the <b>maximum</b> number of rides he can take? <span class="tr">Budi membawa Rp100.000 ke taman bermain. Tiket masuk Rp20.000 dan setiap wahana Rp15.000. Berapa paling banyak wahana yang dapat ia naiki?</span></p>
+        <div class="fillline">Maximum rides / Wahana maksimum = <input class="blank" data-ans="5"></div></div>
+      <div class="exp"><div class="steps">
+        <div class="st"><div class="m">\(20000 + 15000r \le 100000\)</div><div class="t">Let \(r\) = number of rides; total cost at most 100000. <span class="tr">Misalkan \(r\) = banyak wahana; total biaya paling banyak 100000.</span></div></div>
+        <div class="st"><div class="m">\(15000r \le 80000\)</div><div class="t">Subtract 20000. <span class="tr">Kurangi 20000.</span></div></div>
+        <div class="st"><div class="m">\(r \le \dfrac{80000}{15000} \approx 5.33\)</div><div class="t">Divide by 15000. <span class="tr">Bagi dengan 15000.</span></div></div>
+        <div class="st"><div class="m">\(r_{\max} = 5\)</div><div class="t">Round down (at most). Check: \(20000 + 75000 = 95000 \le 100000\) ✓; 6 rides \(= 110000\) ✗. <span class="tr">Bulatkan ke bawah (paling banyak). Cek: 6 wahana \(= 110000\) ✗.</span></div></div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== S6 INDEPENDENT PRACTICE ===================== -->
+<section class="sec" id="s6">
+  <div class="sec-head">
+    <span class="time">⏱ 00:40 – 00:55</span>
+    <h2>Independent Practice<span class="tr">Latihan Mandiri</span></h2>
+    <p class="goal">🎯 <b>Goal:</b> Solve more challenging inequalities (fractions, decimals, variables on both sides) and real-life problems on your own.
+      <span class="tr">Tujuan: Menyelesaikan pertidaksamaan yang lebih menantang (pecahan, desimal, variabel di kedua ruas) dan masalah sehari-hari secara mandiri.</span></p>
+  </div>
+
+  <div class="card">
+    <h3><span class="hic">🧰</span><span>Strategy Toolbox<span class="tr">Kotak Strategi</span></span></h3>
+    <div class="grid2">
+      <div class="box key" style="margin:0"><b class="lbl">🍰 Fractions <span class="tr in">/ Pecahan</span></b>Multiply every term by the LCM of the denominators. <span class="tr">Kalikan setiap suku dengan KPK penyebut.</span></div>
+      <div class="box key" style="margin:0"><b class="lbl">🔢 Decimals <span class="tr in">/ Desimal</span></b>Multiply both sides by 10 or 100. <span class="tr">Kalikan kedua ruas dengan 10 atau 100.</span></div>
+      <div class="box warn" style="margin:0"><b class="lbl">➖ Negative coefficient <span class="tr in">/ Koefisien negatif</span></b>Reverse the sign when dividing by it. <span class="tr">Balik tanda saat membagi dengannya.</span></div>
+      <div class="box idea" style="margin:0"><b class="lbl">🔁 Rounding in context <span class="tr in">/ Pembulatan sesuai konteks</span></b>"At most" → round down; "at least" → round up. <span class="tr">"Paling banyak" → bulatkan ke bawah; "paling sedikit" → bulatkan ke atas.</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="hic">📝</span><span>Worked Examples<span class="tr">Contoh Soal dan Penyelesaian</span></span></h3>
+
+    <div class="ex"><div class="ex-title">Example A — Fractions on both sides <span class="tr">/ Contoh A — Pecahan di kedua ruas</span></div>
+      <p>Solve \(\dfrac{x}{2} - 1 \gt \dfrac{x}{3}\). <span class="tr">Selesaikan \(\dfrac{x}{2} - 1 \gt \dfrac{x}{3}\).</span></p>
+      <div class="steps">
+        <div class="st"><div class="m">\(6\left(\dfrac{x}{2}\right) - 6(1) \gt 6\left(\dfrac{x}{3}\right)\)</div><div class="t">LCM of 2 and 3 is 6; multiply <b>every</b> term by 6. <span class="tr">KPK 2 dan 3 adalah 6; kalikan setiap suku dengan 6.</span></div></div>
+        <div class="st"><div class="m">\(3x - 6 \gt 2x\)</div><div class="t">Simplify. <span class="tr">Sederhanakan.</span></div></div>
+        <div class="st"><div class="m">\(3x - 2x \gt 6 \Rightarrow x \gt 6\)</div><div class="t">Subtract \(2x\), add 6. <span class="tr">Kurangi \(2x\), tambah 6.</span></div></div>
+      </div>
+    </div>
+
+    <div class="ex"><div class="ex-title">Example B — Variables on both sides, negative result <span class="tr">/ Contoh B — Variabel di kedua ruas, hasil negatif</span></div>
+      <p>Solve \(-4x + 3 \ge 2x - 9\). Then decide whether \(-1\), \(2\), and \(2.5\) are solutions. <span class="tr">Selesaikan \(-4x + 3 \ge 2x - 9\). Lalu tentukan apakah \(-1\), \(2\), dan \(2{,}5\) merupakan penyelesaian.</span></p>
+      <div class="steps">
+        <div class="st"><div class="m">\(-4x - 2x \ge -9 - 3\)</div><div class="t">Subtract \(2x\) and subtract 3 on both sides. <span class="tr">Kurangi \(2x\) dan kurangi 3 pada kedua ruas.</span></div></div>
+        <div class="st"><div class="m">\(-6x \ge -12\)</div><div class="t">Simplify. <span class="tr">Sederhanakan.</span></div></div>
+        <div class="st"><div class="m">\(x \le 2\)</div><div class="t">Divide by \(-6\): reverse the sign. <span class="tr">Bagi dengan \(-6\): balik tanda.</span></div></div>
+        <div class="st"><div class="m">\(-1 \le 2\) ✅ &nbsp; \(2 \le 2\) ✅ &nbsp; \(2.5 \le 2\) ❌</div><div class="t">2 is included because of "\(\le\)"; 2.5 is to the right of 2. <span class="tr">2 termasuk karena "\(\le\)"; 2,5 berada di kanan 2.</span></div></div>
+      </div>
+    </div>
+
+    <div class="ex"><div class="ex-title">Example C — Decimals <span class="tr">/ Contoh C — Desimal</span></div>
+      <p>Solve \(0.3x + 1 \gt 0.1x + 2\). <span class="tr">Selesaikan \(0{,}3x + 1 \gt 0{,}1x + 2\).</span></p>
+      <div class="steps">
+        <div class="st"><div class="m">\(3x + 10 \gt x + 20\)</div><div class="t">Multiply both sides by 10. <span class="tr">Kalikan kedua ruas dengan 10.</span></div></div>
+        <div class="st"><div class="m">\(2x \gt 10 \Rightarrow x \gt 5\)</div><div class="t">Collect terms, divide by 2. <span class="tr">Kumpulkan suku, bagi dengan 2.</span></div></div>
+      </div>
+    </div>
+
+    <div class="ex"><div class="ex-title">Example D — Whole numbers solution set <span class="tr">/ Contoh D — HP bilangan cacah</span></div>
+      <p>Find the solution set of \(3x - 2 \lt 10\), \(x\) whole numbers. <span class="tr">Tentukan HP dari \(3x - 2 \lt 10\), \(x\) bilangan cacah.</span></p>
+      <div class="steps">
+        <div class="st"><div class="m">\(3x \lt 12 \Rightarrow x \lt 4\)</div><div class="t">Add 2, divide by 3. <span class="tr">Tambah 2, bagi dengan 3.</span></div></div>
+        <div class="st"><div class="m">\(\text{HP} = \{0, 1, 2, 3\}\)</div><div class="t">Whole numbers start from 0. <span class="tr">Bilangan cacah dimulai dari 0.</span></div></div>
+      </div>
+    </div>
+
+    <div class="ex"><div class="ex-title">Example E — Average score ("at least") <span class="tr">/ Contoh E — Nilai rata-rata ("paling sedikit")</span></div>
+      <p>Dina's first two test scores are 70 and 85. What score \(x\) does she need on the third test so that her average is <b>at least</b> 80? <span class="tr">Nilai dua ulangan pertama Dina adalah 70 dan 85. Berapa nilai \(x\) yang ia perlukan pada ulangan ketiga agar rata-ratanya paling sedikit 80?</span></p>
+      <div class="steps">
+        <div class="st"><div class="m">\(\dfrac{70 + 85 + x}{3} \ge 80\)</div><div class="t">Average = sum ÷ number of tests. <span class="tr">Rata-rata = jumlah ÷ banyak ulangan.</span></div></div>
+        <div class="st"><div class="m">\(155 + x \ge 240\)</div><div class="t">Multiply both sides by 3. <span class="tr">Kalikan kedua ruas dengan 3.</span></div></div>
+        <div class="st"><div class="m">\(x \ge 85\)</div><div class="t">Subtract 155. Minimum score = 85. <span class="tr">Kurangi 155. Nilai minimal = 85.</span></div></div>
+      </div>
+    </div>
+
+    <div class="ex"><div class="ex-title">Example F — Rectangle perimeter <span class="tr">/ Contoh F — Keliling persegi panjang</span></div>
+      <div class="grid2" style="align-items:center">
+        <div><p>A rectangle has length \((x + 5)\) cm and width \(x\) cm. Its perimeter is <b>at most</b> 50 cm. Find the maximum width. <span class="tr">Sebuah persegi panjang memiliki panjang \((x + 5)\) cm dan lebar \(x\) cm. Kelilingnya paling banyak 50 cm. Tentukan lebar maksimum.</span></p></div>
+        <div class="ill"><svg width="220" height="120" viewBox="0 0 220 120"><rect x="30" y="20" width="160" height="70" fill="#ccfbf1" stroke="#0f766e" stroke-width="3"/><text x="110" y="110" text-anchor="middle" font-size="15" font-family="serif" font-style="italic">x + 5</text><text x="16" y="60" text-anchor="middle" font-size="15" font-family="serif" font-style="italic">x</text></svg></div>
+      </div>
+      <div class="steps">
+        <div class="st"><div class="m">\(K = 2(p + l) = 2(x + 5 + x)\)</div><div class="t">Perimeter formula. <span class="tr">Rumus keliling.</span></div></div>
+        <div class="st"><div class="m">\(2(2x + 5) \le 50 \Rightarrow 4x + 10 \le 50\)</div><div class="t">At most 50; distribute. <span class="tr">Paling banyak 50; distributifkan.</span></div></div>
+        <div class="st"><div class="m">\(4x \le 40 \Rightarrow x \le 10\)</div><div class="t">Maximum width = 10 cm. <span class="tr">Lebar maksimum = 10 cm.</span></div></div>
+      </div>
+    </div>
+
+    <div class="ex"><div class="ex-title">Example G — Savings ("at least", round up) <span class="tr">/ Contoh G — Tabungan ("paling sedikit", bulatkan ke atas)</span></div>
+      <p>Andi has Rp30.000 and saves Rp12.000 every week. After how many weeks will he have <b>at least</b> Rp100.000? <span class="tr">Andi punya Rp30.000 dan menabung Rp12.000 setiap minggu. Setelah berapa minggu tabungannya paling sedikit Rp100.000?</span></p>
+      <div class="steps">
+        <div class="st"><div class="m">\(30000 + 12000w \ge 100000\)</div><div class="t">\(w\) = number of weeks. <span class="tr">\(w\) = banyak minggu.</span></div></div>
+        <div class="st"><div class="m">\(12000w \ge 70000 \Rightarrow w \ge 5.83\)</div><div class="t">Subtract 30000, divide by 12000. <span class="tr">Kurangi 30000, bagi 12000.</span></div></div>
+        <div class="st"><div class="m">\(w_{\min} = 6\)</div><div class="t">Round <b>up</b>: after 5 weeks he has only 90000. <span class="tr">Bulatkan ke atas: setelah 5 minggu ia baru punya 90000.</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qset">
+    <div class="qset-head"><h3>✏️ Exercises <span class="tr">Latihan</span></h3><span class="score"></span></div>
+
+    <div class="q" data-type="mc">
+      <div class="stem"><p>Solve \(\dfrac{x}{4} + 2 \le \dfrac{x}{2}\). <span class="tr">Selesaikan \(\dfrac{x}{4} + 2 \le \dfrac{x}{2}\).</span></p></div>
+      <div class="opts cols2"><div class="o" data-c>\(x \ge 8\)</div><div class="o">\(x \le 8\)</div><div class="o">\(x \ge -8\)</div><div class="o">\(x \le 4\)</div></div>
+      <div class="exp"><div class="steps">
+        <div class="st"><div class="m">\(4\cdot\dfrac{x}{4} + 4\cdot 2 \le 4\cdot\dfrac{x}{2}\)</div><div class="t">LCM of 4 and 2 is 4; multiply every term by 4. <span class="tr">KPK 4 dan 2 adalah 4; kalikan setiap suku dengan 4.</span></div></div>
+        <div class="st"><div class="m">\(x + 8 \le 2x\)</div><div class="t">Simplify. <span class="tr">Sederhanakan.</span></div></div>
+        <div class="st"><div class="m">\(8 \le 2x - x \Rightarrow 8 \le x\)</div><div class="t">Subtract \(x\) from both sides. <span class="tr">Kurangi kedua ruas dengan \(x\).</span></div></div>
+        <div class="st"><div class="m">\(x \ge 8\)</div><div class="t">Swap sides (the sign turns around). <span class="tr">Tukar ruas (tanda berbalik).</span></div></div>
+      </div></div>
+    </div>
+
+    <div class="q" data-type="fill">
+      <div class="stem"><p>Solve \(2 - 5x \gt 3x - 14\). <span class="tr">Selesaikan \(2 - 5x \gt 3x - 14\).</span></p>
+        <div class="fillline">\(x \lt\) <input class="blank" data-ans="2"></div></div>
+      <div class="exp"><div class="steps">
+        <div class="st"><div class="m">\(-5x - 3x \gt -14 - 2\)</div><div class="t">Subtract \(3x\) and subtract 2 on both sides. <span class="tr">Kurangi \(3x\) dan kurangi 2 pada kedua ruas.</span></div></div>
+        <div class="st"><div class="m">\(-8x \gt -16\)</div><div class="t">Simplify. <span class="tr">Sederhanakan.</span></div></div>
+        <div class="st"><div class="m">\(x \lt \dfrac{-16}{-8} = 2\)</div><div class="t">Divide by \(-8\): reverse \(\gt\) to \(\lt\). <span class="tr">Bagi dengan \(-8\): balik \(\gt\) menjadi \(\lt\).</span></div></div>
+      </div></div>
+    </div>
+
+    <div class="q" data-type="dnd">
+      <div class="stem"><p>First solve \(4x + 1 \ge 2x - 5\) (\(x \in \mathbb{R}\)). Then drag each number into the correct box. <span class="tr">Selesaikan dulu \(4x + 1 \ge 2x - 5\) (\(x \in \mathbb{R}\)). Lalu seret setiap bilangan ke kotak yang benar.</span></p></div>
+      <div class="dnd">
+        <div class="bin" data-bin="y">✅ Solution<span class="tr">Penyelesaian</span></div>
+        <div class="bin" data-bin="n">❌ Not a solution<span class="tr">Bukan penyelesaian</span></div>
+        <span class="chip" data-bin="n">\(-5\)</span><span class="chip" data-bin="n">\(-4\)</span><span class="chip" data-bin="n">\(-3.5\)</span>
+        <span class="chip" data-bin="y">\(-3\)</span><span class="chip" data-bin="y">\(-1\)</span><span class="chip" data-bin="y">\(0\)</span>
+        <span class="chip" data-bin="y">\(2\)</span><span class="chip" data-bin="y">\(7\)</span>
+      </div>
+      <div class="exp"><div class="steps">
+        <div class="st"><div class="m">\(4x - 2x \ge -5 - 1\)</div><div class="t">Collect terms. <span class="tr">Kumpulkan suku sejenis.</span></div></div>
+        <div class="st"><div class="m">\(2x \ge -6 \Rightarrow x \ge -3\)</div><div class="t">Divide by 2. <span class="tr">Bagi dengan 2.</span></div></div>
+      </div>
+      <p>Solutions are \(-3\) or greater: \(-3, -1, 0, 2, 7\). Not solutions: \(-5, -4, -3.5\) (all are to the left of \(-3\)). <span class="tr">Penyelesaiannya adalah \(-3\) atau lebih: \(-3, -1, 0, 2, 7\). Bukan penyelesaian: \(-5, -4, -3{,}5\) (semuanya di kiri \(-3\)).</span></p>
+      <div class="nl" data-min="-6" data-max="3" data-p="-3" data-dir="R" data-closed="1"></div></div>
+    </div>
+
+    <div class="q" data-type="fill">
+      <div class="stem"><p>Tono's first two test scores are 78 and 82. What is the <b>minimum</b> score on the third test so that his average is <b>at least</b> 80? <span class="tr">Nilai dua ulangan pertama Tono adalah 78 dan 82. Berapa nilai minimal ulangan ketiga agar rata-ratanya paling sedikit 80?</span></p>
+        <div class="fillline">Minimum score / Nilai minimal = <input class="blank" data-ans="80"></div></div>
+      <div class="exp"><div class="steps">
+        <div class="st"><div class="m">\(\dfrac{78 + 82 + x}{3} \ge 80\)</div><div class="t">Average at least 80. <span class="tr">Rata-rata paling sedikit 80.</span></div></div>
+        <div class="st"><div class="m">\(160 + x \ge 240\)</div><div class="t">Multiply by 3; \(78 + 82 = 160\). <span class="tr">Kalikan 3; \(78 + 82 = 160\).</span></div></div>
+        <div class="st"><div class="m">\(x \ge 80\)</div><div class="t">Subtract 160. <span class="tr">Kurangi 160.</span></div></div>
+      </div></div>
+    </div>
+
+    <div class="q" data-type="pair">
+      <div class="stem"><p>Match each inequality with its solution. <span class="tr">Pasangkan setiap pertidaksamaan dengan penyelesaiannya.</span></p></div>
+      <div class="pairs">
+        <div class="pp"><div>\(\dfrac{x}{3} \gt 2\)</div><div>\(x \gt 6\)</div></div>
+        <div class="pp"><div>\(-2x + 1 \lt 7\)</div><div>\(x \gt -3\)</div></div>
+        <div class="pp"><div>\(5x - 3 \le 2x + 9\)</div><div>\(x \le 4\)</div></div>
+        <div class="pp"><div>\(6 - x \ge 8\)</div><div>\(x \le -2\)</div></div>
+      </div>
+      <div class="exp"><ul>
+        <li>\(\frac{x}{3} \gt 2 \Rightarrow x \gt 2 \times 3 = 6\)</li>
+        <li>\(-2x + 1 \lt 7 \Rightarrow -2x \lt 6 \Rightarrow x \gt -3\) (reverse / dibalik)</li>
+        <li>\(5x - 3 \le 2x + 9 \Rightarrow 3x \le 12 \Rightarrow x \le 4\)</li>
+        <li>\(6 - x \ge 8 \Rightarrow -x \ge 2 \Rightarrow x \le -2\) (reverse / dibalik)</li>
+      </ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== S7 CONSOLIDATION ===================== -->
+<section class="sec" id="s7">
+  <div class="sec-head">
+    <span class="time">⏱ 00:55 – 01:00</span>
+    <h2>Consolidation &amp; Reflection<span class="tr">Konsolidasi &amp; Refleksi</span></h2>
+    <p class="goal">🎯 <b>Goal:</b> Summarise what we learned, reflect, and check understanding.
+      <span class="tr">Tujuan: Merangkum apa yang telah dipelajari, merefleksikan, dan memeriksa pemahaman.</span></p>
+  </div>
+
+  <div class="card">
+    <h3><span class="hic">⭐</span><span>Key Points<span class="tr">Poin Penting</span></span></h3>
+    <ol>
+      <li>A linear inequality in one variable has one variable with power 1 and one of the signs \(\lt, \gt, \le, \ge\). <span class="tr">PtLSV memiliki satu variabel berpangkat 1 dan salah satu tanda \(\lt, \gt, \le, \ge\).</span></li>
+      <li>"At least" \(\to \ge\), "at most" \(\to \le\), "more than" \(\to \gt\), "less than" \(\to \lt\). <span class="tr">"Paling sedikit" \(\to \ge\), "paling banyak" \(\to \le\), "lebih dari" \(\to \gt\), "kurang dari" \(\to \lt\).</span></li>
+      <li>Adding or subtracting the same number on both sides keeps the sign. <span class="tr">Menambah atau mengurangi kedua ruas dengan bilangan yang sama tidak mengubah tanda.</span></li>
+      <li>Multiplying or dividing by a positive number keeps the sign. <span class="tr">Mengali atau membagi dengan bilangan positif tidak mengubah tanda.</span></li>
+      <li>⚠️ Multiplying or dividing by a <b>negative</b> number <b>reverses</b> the sign. <span class="tr">Mengali atau membagi dengan bilangan negatif membalik tanda.</span></li>
+      <li>On a number line: open circle ○ for \(\lt, \gt\); closed circle ● for \(\le, \ge\). <span class="tr">Pada garis bilangan: bulatan kosong ○ untuk \(\lt, \gt\); bulatan penuh ● untuk \(\le, \ge\).</span></li>
+      <li>The solution set depends on the allowed numbers (natural, whole, integers, real). <span class="tr">Himpunan penyelesaian bergantung pada bilangan yang diizinkan (asli, cacah, bulat, real).</span></li>
+      <li>In word problems, interpret the answer: round down for "at most", round up for "at least". <span class="tr">Pada soal cerita, tafsirkan jawabannya: bulatkan ke bawah untuk "paling banyak", ke atas untuk "paling sedikit".</span></li>
+    </ol>
+  </div>
+
+  <div class="card reflect">
+    <h3><span class="hic">💭</span><span>Reflection Questions<span class="tr">Pertanyaan Refleksi</span></span></h3>
+    <p><b>1.</b> What is the biggest difference between solving an equation and solving an inequality? <span class="tr">Apa perbedaan terbesar antara menyelesaikan persamaan dan pertidaksamaan?</span></p>
+    <textarea placeholder="Write your answer… / Tulis jawabanmu…"></textarea>
+    <p><b>2.</b> Why does the sign reverse when we multiply by a negative number? Give a number example. <span class="tr">Mengapa tanda dibalik saat kita mengalikan dengan bilangan negatif? Berikan contoh dengan bilangan.</span></p>
+    <textarea placeholder="Write your answer… / Tulis jawabanmu…"></textarea>
+    <p><b>3.</b> Describe one situation in your daily life that can be written as an inequality. <span class="tr">Ceritakan satu situasi dalam kehidupanmu sehari-hari yang dapat ditulis sebagai pertidaksamaan.</span></p>
+    <textarea placeholder="Write your answer… / Tulis jawabanmu…"></textarea>
+    <p class="tr" style="font-style:normal">✍️ Your answers are not saved; share them with your tutor. / Jawabanmu tidak disimpan; sampaikan kepada tutormu.</p>
+  </div>
+
+  <div class="qset">
+    <div class="qset-head"><h3>🎟️ Exit Ticket <span class="tr">Tiket Keluar</span></h3><span class="score"></span></div>
+
+    <div class="q" data-type="mc">
+      <div class="stem"><p>Solve \(-2x + 5 \lt 11\). <span class="tr">Selesaikan \(-2x + 5 \lt 11\).</span></p></div>
+      <div class="opts cols2"><div class="o" data-c>\(x \gt -3\)</div><div class="o">\(x \lt -3\)</div><div class="o">\(x \gt 3\)</div><div class="o">\(x \lt 8\)</div></div>
+      <div class="exp"><p>\(-2x \lt 11 - 5 = 6\). Divide by \(-2\) and reverse: \(x \gt -3\). <span class="tr">\(-2x \lt 11 - 5 = 6\). Bagi dengan \(-2\) dan balik tanda: \(x \gt -3\).</span></p></div>
+    </div>
+
+    <div class="q" data-type="mc">
+      <div class="stem"><p>"A classroom can hold <b>at most</b> 40 students." If \(s\) is the number of students: <span class="tr">"Sebuah ruang kelas dapat menampung paling banyak 40 siswa." Jika \(s\) banyak siswa:</span></p></div>
+      <div class="opts cols2"><div class="o" data-c>\(s \le 40\)</div><div class="o">\(s \lt 40\)</div><div class="o">\(s \ge 40\)</div><div class="o">\(s \gt 40\)</div></div>
+      <div class="exp"><p>"At most 40" means 40 is allowed but not more: \(s \le 40\). <span class="tr">"Paling banyak 40" berarti 40 boleh tetapi tidak lebih: \(s \le 40\).</span></p></div>
+    </div>
+
+    <div class="q" data-type="fill">
+      <div class="stem"><p>\(x + 3 \le 6\), \(x\) natural numbers. How many members does the solution set have? <span class="tr">\(x + 3 \le 6\), \(x\) bilangan asli. Berapa banyak anggota himpunan penyelesaiannya?</span></p>
+        <div class="fillline">Number of members / Banyak anggota = <input class="blank" data-ans="3"></div></div>
+      <div class="exp"><p>\(x \le 6 - 3 = 3\). Natural numbers \(\le 3\): \(\{1, 2, 3\}\) → 3 members. <span class="tr">\(x \le 3\). Bilangan asli \(\le 3\): \(\{1, 2, 3\}\) → 3 anggota.</span></p></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h3><span class="hic">🏠</span><span>Follow-Up Practice<span class="tr">Latihan Lanjutan</span></span></h3>
+    <p>Try these at home. Click each problem to see the full solution. <span class="tr">Coba kerjakan di rumah. Klik setiap soal untuk melihat penyelesaian lengkap.</span></p>
+    <details class="fu"><summary>1. Solve \(4x - 9 \ge 3\). <span class="tr">Selesaikan \(4x - 9 \ge 3\).</span></summary><div class="fuc">
+      \[4x \ge 3 + 9 \;\Rightarrow\; 4x \ge 12 \;\Rightarrow\; x \ge 3\]</div></details>
+    <details class="fu"><summary>2. Solve \(3 - 2x \lt x + 12\). <span class="tr">Selesaikan \(3 - 2x \lt x + 12\).</span></summary><div class="fuc">
+      \[-2x - x \lt 12 - 3 \;\Rightarrow\; -3x \lt 9 \;\Rightarrow\; x \gt -3\]
+      <p>Divide by \(-3\), so the sign is reversed. <span class="tr">Dibagi \(-3\), sehingga tanda dibalik.</span></p></div></details>
+    <details class="fu"><summary>3. Solve \(\dfrac{2x - 1}{3} \le \dfrac{x + 2}{2}\). <span class="tr">Selesaikan \(\dfrac{2x - 1}{3} \le \dfrac{x + 2}{2}\).</span></summary><div class="fuc">
+      \[\begin{aligned} 6\cdot\frac{2x-1}{3} &\le 6\cdot\frac{x+2}{2} \\ 2(2x - 1) &\le 3(x + 2) \\ 4x - 2 &\le 3x + 6 \\ x &\le 8 \end{aligned}\]</div></details>
+    <details class="fu"><summary>4. Find the solution set of \(5x + 2 \lt 3x + 10\), \(x\) natural numbers. <span class="tr">Tentukan HP dari \(5x + 2 \lt 3x + 10\), \(x\) bilangan asli.</span></summary><div class="fuc">
+      \[2x \lt 8 \;\Rightarrow\; x \lt 4 \;\Rightarrow\; \text{HP} = \{1, 2, 3\}\]</div></details>
+    <details class="fu"><summary>5. Parking costs Rp5.000 for the first hour and Rp3.000 for each additional hour. Pak Ali has Rp20.000. What is the longest time he can park? <span class="tr">Biaya parkir Rp5.000 untuk jam pertama dan Rp3.000 untuk setiap jam berikutnya. Pak Ali punya Rp20.000. Berapa lama paling lama ia dapat parkir?</span></summary><div class="fuc">
+      \[5000 + 3000h \le 20000 \;\Rightarrow\; 3000h \le 15000 \;\Rightarrow\; h \le 5\]
+      <p>\(h\) = additional hours, so the total time is \(1 + 5 = 6\) hours. <span class="tr">\(h\) = jam tambahan, jadi total waktu \(1 + 5 = 6\) jam.</span></p></div></details>
+  </div>
+</section>
+
+<!-- ===================== TASK 1 ===================== -->
+<section class="sec" id="t1">
+  <div class="sec-head">
+    <span class="time">📒 Task 1 · 10 questions</span>
+    <h2>Task 1 — Concepts, Symbols &amp; Translating Words<span class="tr">Tugas 1 — Konsep, Simbol &amp; Menerjemahkan Kalimat</span></h2>
+    <p class="goal">Answer all 10 questions. Press <b>Check</b> after each one. Open <b>Explanation</b> if you need help.
+      <span class="tr">Jawab semua 10 soal. Tekan <b>Periksa</b> setelah setiap soal. Buka <b>Pembahasan</b> jika perlu bantuan.</span></p>
+  </div>
+  <div class="qset" data-task="t1">
+    <div class="qset-head"><h3>Questions <span class="tr">Soal</span></h3><span class="score"></span></div>
+
+    <div class="q" data-type="mc">
+      <div class="stem"><p>Which symbol means "<b>at most</b>"? <span class="tr">Simbol manakah yang berarti "paling banyak"?</span></p></div>
+      <div class="opts cols2"><div class="o" data-c>\(\le\)</div><div class="o">\(\ge\)</div><div class="o">\(\lt\)</div><div class="o">\(\gt\)</div></div>
+      <div class="exp"><p>"At most" means the value can be equal to the limit or smaller, never bigger. So it is "less than or equal to": \(\le\).
+        <span class="tr">"Paling banyak" berarti nilainya boleh sama dengan batas atau lebih kecil, tidak boleh lebih besar. Jadi "kurang dari atau sama dengan": \(\le\).</span></p></div>
+    </div>
+
+    <div class="q" data-type="multi">
+      <div class="stem"><p>Select <b>all</b> linear inequalities in one variable. <span class="tr">Pilih semua pertidaksamaan linear satu variabel.</span></p></div>
+      <div class="opts cols2">
+        <div class="o" data-c>\(5m - 2 \lt 8\)</div><div class="o" data-c>\(3 \ge 2 - k\)</div><div class="o">\(y^2 + 1 \gt 0\)</div>
+        <div class="o">\(2a + b \le 4\)</div><div class="o">\(7 - 2t = 1\)</div><div class="o">\(9 \gt 4\)</div>
+      </div>
+      <div class="exp"><ul>
+        <li>\(5m - 2 \lt 8\) ✅ one variable \(m\), power 1. <span class="tr">satu variabel \(m\), pangkat 1.</span></li>
+        <li>\(3 \ge 2 - k\) ✅ the variable may be on the right side. <span class="tr">variabel boleh berada di ruas kanan.</span></li>
+        <li>\(y^2 + 1 \gt 0\) ❌ power 2. <span class="tr">pangkat 2.</span></li>
+        <li>\(2a + b \le 4\) ❌ two variables. <span class="tr">dua variabel.</span></li>
+        <li>\(7 - 2t = 1\) ❌ equation. <span class="tr">persamaan.</span></li>
+        <li>\(9 \gt 4\) ❌ no variable. <span class="tr">tidak ada variabel.</span></li>
+      </ul></div>
+    </div>
+
+    <div class="q" data-type="tf" data-ans="F">
+      <div class="stem"><p>\(x + 3 \gt 7\) is an equation. <span class="tr">\(x + 3 \gt 7\) adalah sebuah persamaan.</span></p></div>
+      <div class="exp"><p>An equation uses "\(=\)". \(x + 3 \gt 7\) uses "\(\gt\)", so it is an <b>inequality</b>, not an equation.
+        <span class="tr">Persamaan memakai "\(=\)". \(x + 3 \gt 7\) memakai "\(\gt\)", jadi ini pertidaksamaan, bukan persamaan.</span></p><span class="ans">FALSE / SALAH</span></div>
+    </div>
+
+    <div class="q" data-type="dnd">
+      <div class="stem"><p>Drag each phrase into the correct symbol box. <span class="tr">Seret setiap frasa ke kotak simbol yang benar.</span></p></div>
+      <div class="dnd">
+        <div class="bin" data-bin="gt">\(\gt\)</div><div class="bin" data-bin="lt">\(\lt\)</div>
+        <div class="bin" data-bin="ge">\(\ge\)</div><div class="bin" data-bin="le">\(\le\)</div>
+        <span class="chip" data-bin="gt">older than 12<span class="tr">lebih tua dari 12</span></span>
+        <span class="chip" data-bin="gt">more than 2 m<span class="tr">lebih dari 2 m</span></span>
+        <span class="chip" data-bin="lt">under 5 kg<span class="tr">di bawah 5 kg</span></span>
+        <span class="chip" data-bin="lt">fewer than 30<span class="tr">kurang dari 30</span></span>
+        <span class="chip" data-bin="ge">minimum 3 hours<span class="tr">minimal 3 jam</span></span>
+        <span class="chip" data-bin="ge">at least 18<span class="tr">paling sedikit 18</span></span>
+        <span class="chip" data-bin="le">not exceeding Rp20.000<span class="tr">tidak melebihi Rp20.000</span></span>
+        <span class="chip" data-bin="le">no more than 4<span class="tr">tidak lebih dari 4</span></span>
+      </div>
+      <div class="exp"><ul>
+        <li>\(\gt\): older than, more than (boundary NOT included) <span class="tr">lebih tua dari, lebih dari (batas TIDAK termasuk)</span></li>
+        <li>\(\lt\): under, fewer than <span class="tr">di bawah, kurang dari</span></li>
+        <li>\(\ge\): minimum, at least (boundary included) <span class="tr">minimal, paling sedikit (batas termasuk)</span></li>
+        <li>\(\le\): not exceeding, no more than <span class="tr">tidak melebihi, tidak lebih dari</span></li>
+      </ul></div>
+    </div>
+
+    <div class="q" data-type="fill">
+      <div class="stem"><p>"Three times a number \(x\), increased by 5, is <b>at most</b> 20." Complete the inequality. <span class="tr">"Tiga kali suatu bilangan \(x\), ditambah 5, paling banyak 20." Lengkapi pertidaksamaannya.</span></p>
+        <div class="fillline"><input class="blank" data-ans="3"> \(x + 5 \le\) <input class="blank" data-ans="20"></div></div>
+      <div class="exp"><div class="steps">
+        <div class="st"><div class="m">\(3x\)</div><div class="t">"Three times a number". <span class="tr">"Tiga kali suatu bilangan".</span></div></div>
+        <div class="st"><div class="m">\(3x + 5\)</div><div class="t">"increased by 5". <span class="tr">"ditambah 5".</span></div></div>
+        <div class="st"><div class="m">\(3x + 5 \le 20\)</div><div class="t">"at most 20" \(\to \le 20\). <span class="tr">"paling banyak 20" \(\to \le 20\).</span></div></div>
+      </div></div>
+    </div>
+
+    <div class="q" data-type="pair">
+      <div class="stem"><p>Match each situation with its inequality. <span class="tr">Pasangkan setiap situasi dengan pertidaksamaannya.</span></p></div>
+      <div class="pairs">
+        <div class="pp"><div>Minimum height to ride is 120 cm<span class="tr">Tinggi minimal untuk naik wahana 120 cm</span></div><div>\(h \ge 120\)</div></div>
+        <div class="pp"><div>Speed must be below 40 km/h<span class="tr">Kecepatan harus di bawah 40 km/jam</span></div><div>\(v \lt 40\)</div></div>
+        <div class="pp"><div>A hall holds at most 120 people<span class="tr">Aula menampung paling banyak 120 orang</span></div><div>\(p \le 120\)</div></div>
+        <div class="pp"><div>Temperature is above 30 °C<span class="tr">Suhu di atas 30 °C</span></div><div>\(t \gt 30\)</div></div>
+      </div>
+      <div class="exp"><ul>
+        <li>"Minimum" → \(\ge\): \(h \ge 120\) <span class="tr">"Minimal" → \(\ge\)</span></li>
+        <li>"Below" → \(\lt\): \(v \lt 40\) <span class="tr">"Di bawah" → \(\lt\)</span></li>
+        <li>"At most" → \(\le\): \(p \le 120\) <span class="tr">"Paling banyak" → \(\le\)</span></li>
+        <li>"Above" → \(\gt\): \(t \gt 30\) <span class="tr">"Di atas" → \(\gt\)</span></li>
+      </ul></div>
+    </div>
+
+    <div class="q" data-type="mc">
+      <div class="stem"><p>Which number is <b>NOT</b> a solution of \(x \ge 4\)? <span class="tr">Bilangan manakah yang BUKAN penyelesaian dari \(x \ge 4\)?</span></p></div>
+      <div class="opts cols2"><div class="o" data-c>\(3.9\)</div><div class="o">\(4\)</div><div class="o">\(4.5\)</div><div class="o">\(10\)</div></div>
+      <div class="exp"><p>\(x \ge 4\) means 4 or any number greater than 4. \(4\), \(4.5\), and \(10\) are solutions. \(3.9 \lt 4\), so \(3.9\) is <b>not</b> a solution.
+        <span class="tr">\(x \ge 4\) berarti 4 atau bilangan yang lebih dari 4. \(4\), \(4{,}5\), dan \(10\) adalah penyelesaian. \(3{,}9 \lt 4\), jadi \(3{,}9\) bukan penyelesaian.</span></p></div>
+    </div>
+
+    <div class="q" data-type="tf" data-ans="T">
+      <div class="stem"><p>\(-2 \gt -5\)</p><p class="tr">Decide whether the statement is true or false. / Tentukan benar atau salah pernyataan tersebut.</p></div>
+      <div class="exp"><p>\(-2\) is to the right of \(-5\) on the number line, so \(-2\) is greater: \(-2 \gt -5\) is true.
+        <span class="tr">\(-2\) berada di kanan \(-5\) pada garis bilangan, jadi \(-2\) lebih besar: \(-2 \gt -5\) benar.</span></p>
+        <div class="nl" data-min="-6" data-max="1" data-p="-2" data-dir="N" data-closed="1" data-p2="-5"></div><span class="ans">TRUE / BENAR</span></div>
+    </div>
+
+    <div class="q" data-type="sort">
+      <div class="stem"><p>Arrange the steps for writing a word problem as an inequality. <span class="tr">Urutkan langkah-langkah menulis soal cerita menjadi pertidaksamaan.</span></p></div>
+      <ol class="sortlist">
+        <li>Read and identify the unknown quantity<span class="tr">Baca dan tentukan besaran yang belum diketahui</span></li>
+        <li>Choose a variable for it<span class="tr">Pilih sebuah variabel untuknya</span></li>
+        <li>Find the key phrase (at least, at most, …)<span class="tr">Temukan kata kunci (paling sedikit, paling banyak, …)</span></li>
+        <li>Write the inequality<span class="tr">Tuliskan pertidaksamaannya</span></li>
+      </ol>
+      <div class="exp"><p>You must know <b>what</b> is unknown before you name it, and you must know the key phrase before choosing the sign. These are the 4 steps from the Introduction.
+        <span class="tr">Kamu harus tahu apa yang belum diketahui sebelum memberinya nama, dan harus tahu kata kuncinya sebelum memilih tanda. Ini adalah 4 langkah dari bagian Pengantar.</span></p></div>
+    </div>
+
+    <div class="q" data-type="mc">
+      <div class="stem"><p>"Andi's savings of \(x\) thousand rupiah plus 25 thousand rupiah is <b>not less than</b> 100 thousand rupiah." Which inequality is correct? <span class="tr">"Tabungan Andi sebesar \(x\) ribu rupiah ditambah 25 ribu rupiah tidak kurang dari 100 ribu rupiah." Pertidaksamaan mana yang benar?</span></p></div>
+      <div class="opts cols2"><div class="o" data-c>\(x + 25 \ge 100\)</div><div class="o">\(x + 25 \le 100\)</div><div class="o">\(x + 25 \gt 100\)</div><div class="o">\(x + 25 \lt 100\)</div></div>
+      <div class="exp"><p>"Not less than 100" means it is 100 or more, which is the same as "at least": \(\ge\). So \(x + 25 \ge 100\).
+        <span class="tr">"Tidak kurang dari 100" berarti 100 atau lebih, sama dengan "paling sedikit": \(\ge\). Jadi \(x + 25 \ge 100\).</span></p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TASK 2 ===================== -->
+<section class="sec" id="t2">
+  <div class="sec-head">
+    <span class="time">📒 Task 2 · 10 questions</span>
+    <h2>Task 2 — Properties &amp; One/Two-Step Inequalities<span class="tr">Tugas 2 — Sifat-sifat &amp; Pertidaksamaan Satu/Dua Langkah</span></h2>
+    <p class="goal">Remember: dividing or multiplying by a negative number reverses the sign!
+      <span class="tr">Ingat: membagi atau mengali dengan bilangan negatif membalik tanda!</span></p>
+  </div>
+  <div class="qset" data-task="t2">
+    <div class="qset-head"><h3>Questions <span class="tr">Soal</span></h3><span class="score"></span></div>
+
+    <div class="q" data-type="mc">
+      <div class="stem"><p>Solve \(x + 8 \gt 3\). <span class="tr">Selesaikan \(x + 8 \gt 3\).</span></p></div>
+      <div class="opts cols2"><div class="o" data-c>\(x \gt -5\)</div><div class="o">\(x \gt 5\)</div><div class="o">\(x \lt -5\)</div><div class="o">\(x \gt 11\)</div></div>
+      <div class="exp"><p>\(x + 8 - 8 \gt 3 - 8 \Rightarrow x \gt -5\). Subtracting does not change the sign. <span class="tr">Mengurangi tidak mengubah tanda.</span></p></div>
+    </div>
+
+    <div class="q" data-type="mc">
+      <div class="stem"><p>Solve \(-4x \le 20\). <span class="tr">Selesaikan \(-4x \le 20\).</span></p></div>
+      <div class="opts cols2"><div class="o" data-c>\(x \ge -5\)</div><div class="o">\(x \le -5\)</div><div class="o">\(x \ge 5\)</div><div class="o">\(x \le 5\)</div></div>
+      <div class="exp"><div class="steps">
+        <div class="st"><div class="m">\(\dfrac{-4x}{-4} \ge \dfrac{20}{-4}\)</div><div class="t">Divide by \(-4\): reverse \(\le\) to \(\ge\). <span class="tr">Bagi dengan \(-4\): balik \(\le\) menjadi \(\ge\).</span></div></div>
+        <div class="st"><div class="m">\(x \ge -5\)</div><div class="t">Check \(x = 0\): \(-4(0) = 0 \le 20\) ✓ <span class="tr">Cek \(x = 0\): \(0 \le 20\) ✓</span></div></div>
+      </div></div>
+    </div>
+
+    <div class="q" data-type="fill">
+      <div class="stem"><p>Solve \(3x - 5 \lt 16\). <span class="tr">Selesaikan \(3x - 5 \lt 16\).</span></p>
+        <div class="fillline">\(x \lt\) <input class="blank" data-ans="7"></div></div>
+      <div class="exp"><div class="steps">
+        <div class="st"><div class="m">\(3x \lt 16 + 5 = 21\)</div><div class="t">Add 5 to both sides. <span class="tr">Tambah 5 pada kedua ruas.</span></div></div>
+        <div class="st"><div class="m">\(x \lt \dfrac{21}{3} = 7\)</div><div class="t">Divide by 3 (positive). <span class="tr">Bagi dengan 3 (positif).</span></div></div>
+      </div></div>
+    </div>
+
+    <div class="q" data-type="tf" data-ans="F">
+      <div class="stem"><p>From \(-x \gt 6\) we get \(x \gt -6\). <span class="tr">Dari \(-x \gt 6\) diperoleh \(x \gt -6\).</span></p></div>
+      <div class="exp"><p>Dividing by \(-1\) must reverse the sign: \(-x \gt 6 \Rightarrow x \lt -6\). The statement forgot to reverse the sign. Check: \(x = 0\) satisfies \(x \gt -6\) but \(-0 = 0 \gt 6\) is false.
+        <span class="tr">Membagi dengan \(-1\) harus membalik tanda: \(-x \gt 6 \Rightarrow x \lt -6\). Pernyataan lupa membalik tanda. Cek: \(x = 0\) memenuhi \(x \gt -6\) tetapi \(0 \gt 6\) salah.</span></p><span class="ans">FALSE / SALAH</span></div>
+    </div>
+
+    <div class="q" data-type="pair">
+      <div class="stem"><p>Match each inequality with its solution. <span class="tr">Pasangkan setiap pertidaksamaan dengan penyelesaiannya.</span></p></div>
+      <div class="pairs">
+        <div class="pp"><div>\(\dfrac{x}{2} \ge 3\)</div><div>\(x \ge 6\)</div></div>
+        <div class="pp"><div>\(-\dfrac{x}{3} \gt 1\)</div><div>\(x \lt -3\)</div></div>
+        <div class="pp"><div>\(x - 7 \le -1\)</div><div>\(x \le 6\)</div></div>
+        <div class="pp"><div>\(2x + 1 \lt -7\)</div><div>\(x \lt -4\)</div></div>
+      </div>
+      <div class="exp"><ul>
+        <li>\(\frac{x}{2} \ge 3 \Rightarrow x \ge 3 \times 2 = 6\)</li>
+        <li>\(-\frac{x}{3} \gt 1\): multiply by \(-3\) and reverse → \(x \lt -3\) <span class="tr">kalikan \(-3\) dan balik tanda</span></li>
+        <li>\(x - 7 \le -1 \Rightarrow x \le -1 + 7 = 6\)</li>
+        <li>\(2x + 1 \lt -7 \Rightarrow 2x \lt -8 \Rightarrow x \lt -4\)</li>
+      </ul></div>
+    </div>
+
+    <div class="q" data-type="multi">
+      <div class="stem"><p>Select <b>all</b> operations (on both sides) that keep the inequality sign the same. <span class="tr">Pilih semua operasi (pada kedua ruas) yang membuat tanda pertidaksamaan tetap.</span></p></div>
+      <div class="opts cols2">
+        <div class="o" data-c>Add 5<span class="tr">Tambah 5</span></div>
+        <div class="o" data-c>Subtract \(2x\)<span class="tr">Kurangi \(2x\)</span></div>
+        <div class="o" data-c>Multiply by 3<span class="tr">Kali 3</span></div>
+        <div class="o">Divide by \(-6\)<span class="tr">Bagi \(-6\)</span></div>
+        <div class="o">Multiply by \(-1\)<span class="tr">Kali \(-1\)</span></div>
+        <div class="o" data-c>Divide by \(0.5\)<span class="tr">Bagi \(0{,}5\)</span></div>
+      </div>
+      <div class="exp"><p>Adding or subtracting anything (numbers or terms like \(2x\)) keeps the sign. Multiplying/dividing by a positive number (3, 0.5) keeps the sign. Only \(-6\) and \(-1\) (negative) reverse it.
+        <span class="tr">Menambah atau mengurangi apa pun (bilangan atau suku seperti \(2x\)) tidak mengubah tanda. Mengali/membagi dengan bilangan positif (3; 0,5) tidak mengubah tanda. Hanya \(-6\) dan \(-1\) (negatif) yang membalik.</span></p></div>
+    </div>
+
+    <div class="q" data-type="sort">
+      <div class="stem"><p>Arrange the steps for solving \(9 - 2x \ge 3\). <span class="tr">Urutkan langkah penyelesaian \(9 - 2x \ge 3\).</span></p></div>
+      <ol class="sortlist">
+        <li>\(9 - 2x \ge 3\)</li><li>\(-2x \ge 3 - 9\)</li><li>\(-2x \ge -6\)</li><li>\(x \le 3\)</li>
+      </ol>
+      <div class="exp"><p>Subtract 9 from both sides → simplify → divide by \(-2\) and reverse \(\ge\) to \(\le\): \(x \le \frac{-6}{-2} = 3\).
+        <span class="tr">Kurangi kedua ruas dengan 9 → sederhanakan → bagi dengan \(-2\) dan balik \(\ge\) menjadi \(\le\).</span></p></div>
+    </div>
+
+    <div class="q" data-type="fill">
+      <div class="stem"><p>Solve \(10 - 5x \gt 0\). Type the sign (<b>&lt;</b> or <b>&gt;</b>) and the number. <span class="tr">Selesaikan \(10 - 5x \gt 0\). Ketik tanda (<b>&lt;</b> atau <b>&gt;</b>) dan bilangannya.</span></p>
+        <div class="fillline">\(x\) <input class="blank" data-ans="&lt;"> <input class="blank" data-ans="2"></div></div>
+      <div class="exp"><div class="steps">
+        <div class="st"><div class="m">\(-5x \gt -10\)</div><div class="t">Subtract 10 from both sides. <span class="tr">Kurangi kedua ruas dengan 10.</span></div></div>
+        <div class="st"><div class="m">\(x \lt \dfrac{-10}{-5} = 2\)</div><div class="t">Divide by \(-5\): reverse \(\gt\) to \(\lt\). <span class="tr">Bagi dengan \(-5\): balik \(\gt\) menjadi \(\lt\).</span></div></div>
+      </div><span class="ans">\(x \lt 2\)</span></div>
+    </div>
+
+    <div class="q" data-type="mc">
+      <div class="stem"><p>Which inequality is equivalent to \(6 \lt 2x\)? <span class="tr">Pertidaksamaan mana yang setara dengan \(6 \lt 2x\)?</span></p></div>
+      <div class="opts cols2"><div class="o" data-c>\(x \gt 3\)</div><div class="o">\(x \lt 3\)</div><div class="o">\(x \gt 12\)</div><div class="o">\(x \lt 12\)</div></div>
+      <div class="exp"><p>Divide by 2: \(3 \lt x\). Swap the sides: \(x \gt 3\). (3 is less than \(x\) means \(x\) is greater than 3.)
+        <span class="tr">Bagi 2: \(3 \lt x\). Tukar ruas: \(x \gt 3\). (3 kurang dari \(x\) berarti \(x\) lebih dari 3.)</span></p></div>
+    </div>
+
+    <div class="q" data-type="dnd">
+      <div class="stem"><p>When you solve for \(x\), does the sign stay or reverse at the last step? Drag each inequality into the correct box. <span class="tr">Saat menyelesaikan \(x\), apakah tanda tetap atau dibalik pada langkah terakhir? Seret setiap pertidaksamaan ke kotak yang benar.</span></p></div>
+      <div class="dnd">
+        <div class="bin" data-bin="k">✅ Sign stays<span class="tr">Tanda tetap</span></div>
+        <div class="bin" data-bin="r">🔄 Sign reverses<span class="tr">Tanda dibalik</span></div>
+        <span class="chip" data-bin="k">\(3x \gt 9\)</span><span class="chip" data-bin="k">\(x + 5 \le 2\)</span><span class="chip" data-bin="k">\(\dfrac{x}{5} \lt -2\)</span>
+        <span class="chip" data-bin="r">\(-2x \lt 8\)</span><span class="chip" data-bin="r">\(\dfrac{x}{-4} \ge 1\)</span><span class="chip" data-bin="r">\(-x \gt -1\)</span>
+      </div>
+      <div class="exp"><ul>
+        <li>\(3x \gt 9\): divide by 3 → \(x \gt 3\) (stays / tetap)</li>
+        <li>\(x + 5 \le 2\): subtract 5 → \(x \le -3\) (stays / tetap)</li>
+        <li>\(\frac{x}{5} \lt -2\): multiply by 5 → \(x \lt -10\) (stays — the number \(-2\) being negative does not matter / tetap — bilangan \(-2\) negatif tidak berpengaruh)</li>
+        <li>\(-2x \lt 8\): divide by \(-2\) → \(x \gt -4\) (reverses / dibalik)</li>
+        <li>\(\frac{x}{-4} \ge 1\): multiply by \(-4\) → \(x \le -4\) (reverses / dibalik)</li>
+        <li>\(-x \gt -1\): divide by \(-1\) → \(x \lt 1\) (reverses / dibalik)</li>
+      </ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TASK 3 ===================== -->
+<section class="sec" id="t3">
+  <div class="sec-head">
+    <span class="time">📒 Task 3 · 10 questions</span>
+    <h2>Task 3 — Variables on Both Sides, Brackets &amp; Fractions<span class="tr">Tugas 3 — Variabel di Kedua Ruas, Tanda Kurung &amp; Pecahan</span></h2>
+    <p class="goal">Use all 5 steps: brackets → fractions → collect → divide → solution. <span class="tr">Gunakan 5 langkah: kurung → pecahan → kumpulkan → bagi → penyelesaian.</span></p>
+  </div>
+  <div class="qset" data-task="t3">
+    <div class="qset-head"><h3>Questions <span class="tr">Soal</span></h3><span class="score"></span></div>
+
+    <div class="q" data-type="mc">
+      <div class="stem"><p>Solve \(5x - 3 \gt 2x + 9\). <span class="tr">Selesaikan \(5x - 3 \gt 2x + 9\).</span></p></div>
+      <div class="opts cols2"><div class="o" data-c>\(x \gt 4\)</div><div class="o">\(x \gt 2\)</div><div class="o">\(x \lt 4\)</div><div class="o">\(x \gt \tfrac{12}{7}\)</div></div>
+      <div class="exp"><div class="steps">
+        <div class="st"><div class="m">\(5x - 2x \gt 9 + 3\)</div><div class="t">Subtract \(2x\), add 3. <span class="tr">Kurangi \(2x\), tambah 3.</span></div></div>
+        <div class="st"><div class="m">\(3x \gt 12 \Rightarrow x \gt 4\)</div><div class="t">Divide by 3. <span class="tr">Bagi dengan 3.</span></div></div>
+      </div></div>
+    </div>
+
+    <div class="q" data-type="fill">
+      <div class="stem"><p>Solve \(3(x - 2) \le x + 4\). <span class="tr">Selesaikan \(3(x - 2) \le x + 4\).</span></p>
+        <div class="fillline">\(x \le\) <input class="blank" data-ans="5"></div></div>
+      <div class="exp"><div class="steps">
+        <div class="st"><div class="m">\(3x - 6 \le x + 4\)</div><div class="t">Distribute 3. <span class="tr">Distributifkan 3.</span></div></div>
+        <div class="st"><div class="m">\(3x - x \le 4 + 6\)</div><div class="t">Subtract \(x\), add 6. <span class="tr">Kurangi \(x\), tambah 6.</span></div></div>
+        <div class="st"><div class="m">\(2x \le 10 \Rightarrow x \le 5\)</div><div class="t">Divide by 2. <span class="tr">Bagi dengan 2.</span></div></div>
+      </div></div>
+    </div>
+
+    <div class="q" data-type="mc">
+      <div class="stem"><p>Solve \(2(3 - x) \lt 4x - 12\). <span class="tr">Selesaikan \(2(3 - x) \lt 4x - 12\).</span></p></div>
+      <div class="opts cols2"><div class="o" data-c>\(x \gt 3\)</div><div class="o">\(x \lt 3\)</div><div class="o">\(x \gt -3\)</div><div class="o">\(x \lt -3\)</div></div>
+      <div class="exp"><div class="steps">
+        <div class="st"><div class="m">\(6 - 2x \lt 4x - 12\)</div><div class="t">Distribute 2. <span class="tr">Distributifkan 2.</span></div></div>
+        <div class="st"><div class="m">\(-2x - 4x \lt -12 - 6\)</div><div class="t">Subtract \(4x\) and 6 from both sides. <span class="tr">Kurangi kedua ruas dengan \(4x\) dan 6.</span></div></div>
+        <div class="st"><div class="m">\(-6x \lt -18\)</div><div class="t">Simplify. <span class="tr">Sederhanakan.</span></div></div>
+        <div class="st"><div class="m">\(x \gt 3\)</div><div class="t">Divide by \(-6\): reverse. <span class="tr">Bagi \(-6\): balik tanda.</span></div></div>
+      </div></div>
+    </div>
+
+    <div class="q" data-type="sort">
+      <div class="stem"><p>Arrange the steps for solving \(\dfrac{x + 1}{2} \ge \dfrac{x - 2}{3}\). <span class="tr">Urutkan langkah penyelesaian \(\dfrac{x + 1}{2} \ge \dfrac{x - 2}{3}\).</span></p></div>
+      <ol class="sortlist">
+        <li>\(3(x + 1) \ge 2(x - 2)\)</li>
+        <li>\(3x + 3 \ge 2x - 4\)</li>
+        <li>\(3x - 2x \ge -4 - 3\)</li>
+        <li>\(x \ge -7\)</li>
+      </ol>
+      <div class="exp"><p>Multiply both sides by the LCM 6: \(6 \cdot \frac{x+1}{2} = 3(x+1)\) and \(6 \cdot \frac{x-2}{3} = 2(x-2)\). Then distribute, collect terms, and simplify.
+        <span class="tr">Kalikan kedua ruas dengan KPK 6: \(6 \cdot \frac{x+1}{2} = 3(x+1)\) dan \(6 \cdot \frac{x-2}{3} = 2(x-2)\). Lalu distributifkan, kumpulkan suku, dan sederhanakan.</span></p></div>
+    </div>
+
+    <div class="q" data-type="tf" data-ans="T">
+      <div class="stem"><p>The solution of \(4x + 1 \gt 6x - 7\) is \(x \lt 4\). <span class="tr">Penyelesaian dari \(4x + 1 \gt 6x - 7\) adalah \(x \lt 4\).</span></p></div>
+      <div class="exp"><div class="steps">
+        <div class="st"><div class="m">\(4x - 6x \gt -7 - 1\)</div><div class="t">Subtract \(6x\) and 1. <span class="tr">Kurangi \(6x\) dan 1.</span></div></div>
+        <div class="st"><div class="m">\(-2x \gt -8 \Rightarrow x \lt 4\)</div><div class="t">Divide by \(-2\): reverse. <span class="tr">Bagi \(-2\): balik tanda.</span></div></div>
+      </div><span class="ans">TRUE / BENAR</span></div>
+    </div>
+
+    <div class="q" data-type="fill">
+      <div class="stem"><p>Solve \(\dfrac{x}{3} - 1 \lt \dfrac{x}{6}\). <span class="tr">Selesaikan \(\dfrac{x}{3} - 1 \lt \dfrac{x}{6}\).</span></p>
+        <div class="fillline">\(x \lt\) <input class="blank" data-ans="6"></div></div>
+      <div class="exp"><div class="steps">
+        <div class="st"><div class="m">\(6\cdot\dfrac{x}{3} - 6 \cdot 1 \lt 6\cdot\dfrac{x}{6}\)</div><div class="t">LCM of 3 and 6 is 6. <span class="tr">KPK 3 dan 6 adalah 6.</span></div></div>
+        <div class="st"><div class="m">\(2x - 6 \lt x\)</div><div class="t">Simplify. <span class="tr">Sederhanakan.</span></div></div>
+        <div class="st"><div class="m">\(2x - x \lt 6 \Rightarrow x \lt 6\)</div><div class="t">Subtract \(x\), add 6. <span class="tr">Kurangi \(x\), tambah 6.</span></div></div>
+      </div></div>
+    </div>
+
+    <div class="q" data-type="pair">
+      <div class="stem"><p>Match each inequality with its solution. <span class="tr">Pasangkan setiap pertidaksamaan dengan penyelesaiannya.</span></p></div>
+      <div class="pairs">
+        <div class="pp"><div>\(2x + 3 \gt x + 1\)</div><div>\(x \gt -2\)</div></div>
+        <div class="pp"><div>\(4 - x \le 2x - 5\)</div><div>\(x \ge 3\)</div></div>
+        <div class="pp"><div>\(3(x + 1) \lt 2x\)</div><div>\(x \lt -3\)</div></div>
+        <div class="pp"><div>\(5x - 2 \ge 7x + 4\)</div><div>\(x \le -3\)</div></div>
+      </div>
+      <div class="exp"><ul>
+        <li>\(2x - x \gt 1 - 3 \Rightarrow x \gt -2\)</li>
+        <li>\(-x - 2x \le -5 - 4 \Rightarrow -3x \le -9 \Rightarrow x \ge 3\) (reverse / dibalik)</li>
+        <li>\(3x + 3 \lt 2x \Rightarrow 3x - 2x \lt -3 \Rightarrow x \lt -3\)</li>
+        <li>\(5x - 7x \ge 4 + 2 \Rightarrow -2x \ge 6 \Rightarrow x \le -3\) (reverse / dibalik)</li>
+      </ul></div>
+    </div>
+
+    <div class="q" data-type="multi">
+      <div class="stem"><p>Select <b>all</b> values that satisfy \(2(x + 1) - 3 \ge x + 2\). <span class="tr">Pilih semua nilai yang memenuhi \(2(x + 1) - 3 \ge x + 2\).</span></p></div>
+      <div class="opts cols2">
+        <div class="o" data-c>\(3\)</div><div class="o" data-c>\(4\)</div><div class="o">\(2.5\)</div>
+        <div class="o" data-c>\(10\)</div><div class="o">\(0\)</div><div class="o">\(-3\)</div>
+      </div>
+      <div class="exp"><div class="steps">
+        <div class="st"><div class="m">\(2x + 2 - 3 \ge x + 2\)</div><div class="t">Distribute 2. <span class="tr">Distributifkan 2.</span></div></div>
+        <div class="st"><div class="m">\(2x - 1 \ge x + 2\)</div><div class="t">Simplify \(2 - 3 = -1\). <span class="tr">Sederhanakan \(2 - 3 = -1\).</span></div></div>
+        <div class="st"><div class="m">\(x \ge 3\)</div><div class="t">Subtract \(x\), add 1. <span class="tr">Kurangi \(x\), tambah 1.</span></div></div>
+      </div><p>So \(3, 4, 10\) satisfy it; \(2.5, 0, -3\) are less than 3. <span class="tr">Jadi \(3, 4, 10\) memenuhi; \(2{,}5;\ 0;\ -3\) kurang dari 3.</span></p></div>
+    </div>
+
+    <div class="q" data-type="mc">
+      <div class="stem"><p>A student wrote: <span class="tr">Seorang siswa menulis:</span></p>
+        \[-3x + 2 \gt 11 \;\Rightarrow\; -3x \gt 9 \;\Rightarrow\; x \gt -3\]
+        <p>What is the mistake? <span class="tr">Apa kesalahannya?</span></p></div>
+      <div class="opts">
+        <div class="o" data-c>The sign was not reversed when dividing by \(-3\); the answer should be \(x \lt -3\).<span class="tr">Tanda tidak dibalik saat dibagi \(-3\); seharusnya \(x \lt -3\).</span></div>
+        <div class="o">\(11 - 2\) should be \(13\), so \(-3x \gt 13\).<span class="tr">\(11 - 2\) seharusnya \(13\), jadi \(-3x \gt 13\).</span></div>
+        <div class="o">The answer should be \(x \gt 3\).<span class="tr">Jawabannya seharusnya \(x \gt 3\).</span></div>
+        <div class="o">There is no mistake.<span class="tr">Tidak ada kesalahan.</span></div>
+      </div>
+      <div class="exp"><p>Step 1 is correct: \(-3x \gt 11 - 2 = 9\). In step 2 we divide by \(-3\) (negative), so the sign must reverse: \(x \lt \frac{9}{-3} = -3\). Check: \(x = -4\): \(-3(-4) + 2 = 14 \gt 11\) ✓.
+        <span class="tr">Langkah 1 benar: \(-3x \gt 9\). Pada langkah 2 dibagi \(-3\) (negatif), sehingga tanda harus dibalik: \(x \lt -3\). Cek: \(x = -4\): \(14 \gt 11\) ✓.</span></p></div>
+    </div>
+
+    <div class="q" data-type="fill">
+      <div class="stem"><p>Solve \(0.5x + 2 \le 0.2x + 5\). <span class="tr">Selesaikan \(0{,}5x + 2 \le 0{,}2x + 5\).</span></p>
+        <div class="fillline">\(x \le\) <input class="blank" data-ans="10"></div></div>
+      <div class="exp"><div class="steps">
+        <div class="st"><div class="m">\(5x + 20 \le 2x + 50\)</div><div class="t">Multiply both sides by 10 to remove decimals. <span class="tr">Kalikan kedua ruas dengan 10 untuk menghilangkan desimal.</span></div></div>
+        <div class="st"><div class="m">\(3x \le 30\)</div><div class="t">Subtract \(2x\) and 20. <span class="tr">Kurangi \(2x\) dan 20.</span></div></div>
+        <div class="st"><div class="m">\(x \le 10\)</div><div class="t">Divide by 3. <span class="tr">Bagi dengan 3.</span></div></div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TASK 4 ===================== -->
+<section class="sec" id="t4">
+  <div class="sec-head">
+    <span class="time">📒 Task 4 · 10 questions</span>
+    <h2>Task 4 — Solution Sets &amp; Number Lines<span class="tr">Tugas 4 — Himpunan Penyelesaian &amp; Garis Bilangan</span></h2>
+    <p class="goal">Pay attention to the type of numbers (natural, whole, integers, real) and the circles on the number line.
+      <span class="tr">Perhatikan jenis bilangan (asli, cacah, bulat, real) dan bulatan pada garis bilangan.</span></p>
+  </div>
+  <div class="qset" data-task="t4">
+    <div class="qset-head"><h3>Questions <span class="tr">Soal</span></h3><span class="score"></span></div>
+
+    <div class="q" data-type="mc">
+      <div class="stem"><p>Which number line shows \(x \ge -2\)? <span class="tr">Garis bilangan mana yang menunjukkan \(x \ge -2\)?</span></p></div>
+      <div class="opts cols2">
+        <div class="o" data-c><div class="nl" data-min="-5" data-max="2" data-p="-2" data-dir="R" data-closed="1"></div></div>
+        <div class="o"><div class="nl" data-min="-5" data-max="2" data-p="-2" data-dir="R" data-closed="0"></div></div>
+        <div class="o"><div class="nl" data-min="-5" data-max="2" data-p="-2" data-dir="L" data-closed="1"></div></div>
+        <div class="o"><div class="nl" data-min="-5" data-max="2" data-p="-2" data-dir="L" data-closed="0"></div></div>
+      </div>
+      <div class="exp"><p>\(\ge\) includes \(-2\) → closed circle ●. "Greater than" → arrow to the right. <span class="tr">\(\ge\) memuat \(-2\) → bulatan penuh ●. "Lebih dari" → panah ke kanan.</span></p></div>
+    </div>
+
+    <div class="q" data-type="mc">
+      <div class="stem"><p>Which inequality does this number line show? <span class="tr">Pertidaksamaan apa yang ditunjukkan garis bilangan ini?</span></p>
+        <div class="nl" data-min="-1" data-max="6" data-p="3" data-dir="L" data-closed="0"></div></div>
+      <div class="opts cols2"><div class="o" data-c>\(x \lt 3\)</div><div class="o">\(x \le 3\)</div><div class="o">\(x \gt 3\)</div><div class="o">\(x \ge 3\)</div></div>
+      <div class="exp"><p>Open circle at 3 → 3 is not included (\(\lt\) or \(\gt\)). Arrow to the left → smaller values. So \(x \lt 3\).
+        <span class="tr">Bulatan kosong di 3 → 3 tidak termasuk (\(\lt\) atau \(\gt\)). Panah ke kiri → nilai yang lebih kecil. Jadi \(x \lt 3\).</span></p></div>
+    </div>
+
+    <div class="q" data-type="fill">
+      <div class="stem"><p>Solve \(2x - 1 \lt 7\), where \(x\) is a <b>whole number</b>. Fill in the largest member and the number of members of the solution set. <span class="tr">Selesaikan \(2x - 1 \lt 7\), dengan \(x\) bilangan cacah. Isi anggota terbesar dan banyak anggota himpunan penyelesaian.</span></p>
+        <div class="fillline">Largest member / Anggota terbesar = <input class="blank" data-ans="3"><br>Number of members / Banyak anggota = <input class="blank" data-ans="4"></div></div>
+      <div class="exp"><div class="steps">
+        <div class="st"><div class="m">\(2x \lt 8 \Rightarrow x \lt 4\)</div><div class="t">Add 1, divide by 2. <span class="tr">Tambah 1, bagi dengan 2.</span></div></div>
+        <div class="st"><div class="m">\(\text{HP} = \{0, 1, 2, 3\}\)</div><div class="t">Whole numbers start at 0; 4 is not included. Largest = 3, number of members = 4. <span class="tr">Bilangan cacah dimulai dari 0; 4 tidak termasuk. Terbesar = 3, banyak anggota = 4.</span></div></div>
+      </div></div>
+    </div>
+
+    <div class="q" data-type="multi">
+      <div class="stem"><p>\(5 - x \gt 2\), \(x\) is a whole number. Select <b>all</b> members of the solution set. <span class="tr">\(5 - x \gt 2\), \(x\) bilangan cacah. Pilih semua anggota himpunan penyelesaian.</span></p></div>
+      <div class="opts cols2">
+        <div class="o" data-c>\(0\)</div><div class="o" data-c>\(1\)</div><div class="o" data-c>\(2\)</div>
+        <div class="o">\(3\)</div><div class="o">\(4\)</div><div class="o">\(-1\)</div>
+      </div>
+      <div class="exp"><div class="steps">
+        <div class="st"><div class="m">\(-x \gt 2 - 5 = -3\)</div><div class="t">Subtract 5. <span class="tr">Kurangi 5.</span></div></div>
+        <div class="st"><div class="m">\(x \lt 3\)</div><div class="t">Divide by \(-1\): reverse. <span class="tr">Bagi \(-1\): balik tanda.</span></div></div>
+        <div class="st"><div class="m">\(\text{HP} = \{0, 1, 2\}\)</div><div class="t">\(-1\) is not a whole number; 3 is not less than 3. <span class="tr">\(-1\) bukan bilangan cacah; 3 tidak kurang dari 3.</span></div></div>
+      </div></div>
+    </div>
+
+    <div class="q" data-type="tf" data-ans="F">
+      <div class="stem"><p>On a number line, \(x \le 5\) is drawn with an <b>open</b> circle at 5. <span class="tr">Pada garis bilangan, \(x \le 5\) digambar dengan bulatan kosong di 5.</span></p></div>
+      <div class="exp"><p>\(\le\) means 5 is included, so we draw a <b>closed</b> (filled) circle ● at 5, with an arrow to the left.
+        <span class="tr">\(\le\) berarti 5 termasuk, jadi digambar bulatan penuh ● di 5, dengan panah ke kiri.</span></p>
+        <div class="nl" data-min="1" data-max="8" data-p="5" data-dir="L" data-closed="1"></div><span class="ans">FALSE / SALAH</span></div>
+    </div>
+
+    <div class="q" data-type="pair">
+      <div class="stem"><p>Match each inequality with its number line. <span class="tr">Pasangkan setiap pertidaksamaan dengan garis bilangannya.</span></p></div>
+      <div class="pairs">
+        <div class="pp"><div>\(x \gt 1\)</div><div><div class="nl" data-min="-2" data-max="4" data-p="1" data-dir="R" data-closed="0"></div></div></div>
+        <div class="pp"><div>\(x \le 1\)</div><div><div class="nl" data-min="-2" data-max="4" data-p="1" data-dir="L" data-closed="1"></div></div></div>
+        <div class="pp"><div>\(x \ge 1\)</div><div><div class="nl" data-min="-2" data-max="4" data-p="1" data-dir="R" data-closed="1"></div></div></div>
+        <div class="pp"><div>\(x \lt 1\)</div><div><div class="nl" data-min="-2" data-max="4" data-p="1" data-dir="L" data-closed="0"></div></div></div>
+      </div>
+      <div class="exp"><ul>
+        <li>\(x \gt 1\): open ○, right → <span class="tr">kosong, ke kanan</span></li>
+        <li>\(x \le 1\): closed ●, left ← <span class="tr">penuh, ke kiri</span></li>
+        <li>\(x \ge 1\): closed ●, right → <span class="tr">penuh, ke kanan</span></li>
+        <li>\(x \lt 1\): open ○, left ← <span class="tr">kosong, ke kiri</span></li>
+      </ul></div>
+    </div>
+
+    <div class="q" data-type="mc">
+      <div class="stem"><p>Solve \(3x + 2 \ge 11\) and choose the correct number line. <span class="tr">Selesaikan \(3x + 2 \ge 11\) dan pilih garis bilangan yang benar.</span></p></div>
+      <div class="opts cols2">
+        <div class="o" data-c><div class="nl" data-min="0" data-max="6" data-p="3" data-dir="R" data-closed="1"></div></div>
+        <div class="o"><div class="nl" data-min="0" data-max="6" data-p="3" data-dir="R" data-closed="0"></div></div>
+        <div class="o"><div class="nl" data-min="0" data-max="6" data-p="3" data-dir="L" data-closed="1"></div></div>
+        <div class="o"><div class="nl" data-min="0" data-max="6" data-p="4" data-dir="R" data-closed="1"></div></div>
+      </div>
+      <div class="exp"><div class="steps">
+        <div class="st"><div class="m">\(3x \ge 11 - 2 = 9\)</div><div class="t">Subtract 2. <span class="tr">Kurangi 2.</span></div></div>
+        <div class="st"><div class="m">\(x \ge 3\)</div><div class="t">Divide by 3 → closed circle at 3, arrow right. <span class="tr">Bagi 3 → bulatan penuh di 3, panah ke kanan.</span></div></div>
+      </div></div>
+    </div>
+
+    <div class="q" data-type="fill">
+      <div class="stem"><p>What is the <b>smallest integer</b> that satisfies \(4x - 3 \gt 9\)? <span class="tr">Berapa bilangan bulat terkecil yang memenuhi \(4x - 3 \gt 9\)?</span></p>
+        <div class="fillline">Smallest integer / Bilangan bulat terkecil = <input class="blank" data-ans="4"></div></div>
+      <div class="exp"><div class="steps">
+        <div class="st"><div class="m">\(4x \gt 12 \Rightarrow x \gt 3\)</div><div class="t">Add 3, divide by 4. <span class="tr">Tambah 3, bagi 4.</span></div></div>
+        <div class="st"><div class="m">\(x = 4\)</div><div class="t">3 is NOT included (\(\gt\)), so the next integer is 4. <span class="tr">3 TIDAK termasuk (\(\gt\)), jadi bilangan bulat berikutnya adalah 4.</span></div></div>
+      </div></div>
+    </div>
+
+    <div class="q" data-type="sort">
+      <div class="stem"><p>Arrange the steps to draw \(x \lt -1\) on a number line. <span class="tr">Urutkan langkah menggambar \(x \lt -1\) pada garis bilangan.</span></p></div>
+      <ol class="sortlist">
+        <li>Draw a number line with a scale<span class="tr">Gambar garis bilangan dengan skala</span></li>
+        <li>Locate \(-1\)<span class="tr">Tentukan letak \(-1\)</span></li>
+        <li>Draw an open circle at \(-1\)<span class="tr">Gambar bulatan kosong di \(-1\)</span></li>
+        <li>Draw an arrow to the left<span class="tr">Gambar panah ke kiri</span></li>
+      </ol>
+      <div class="exp"><p>These are the 4 drawing steps from "Review of Prior Knowledge". For \(\lt\): open circle and arrow to the left.
+        <span class="tr">Ini adalah 4 langkah menggambar dari bagian "Mengulas Pengetahuan Sebelumnya". Untuk \(\lt\): bulatan kosong dan panah ke kiri.</span></p>
+        <div class="nl" data-min="-4" data-max="2" data-p="-1" data-dir="L" data-closed="0"></div></div>
+    </div>
+
+    <div class="q" data-type="dnd">
+      <div class="stem"><p>\(\dfrac{x}{2} + 1 \le 3\), \(x\) is an <b>integer</b>. Drag each number into the correct box. <span class="tr">\(\dfrac{x}{2} + 1 \le 3\), \(x\) bilangan bulat. Seret setiap bilangan ke kotak yang benar.</span></p></div>
+      <div class="dnd">
+        <div class="bin" data-bin="y">✅ In the solution set<span class="tr">Anggota HP</span></div>
+        <div class="bin" data-bin="n">❌ Not in the solution set<span class="tr">Bukan anggota HP</span></div>
+        <span class="chip" data-bin="y">\(4\)</span><span class="chip" data-bin="y">\(-10\)</span><span class="chip" data-bin="y">\(0\)</span><span class="chip" data-bin="y">\(3\)</span><span class="chip" data-bin="y">\(-1\)</span>
+        <span class="chip" data-bin="n">\(5\)</span><span class="chip" data-bin="n">\(4.5\)</span><span class="chip" data-bin="n">\(8\)</span>
+      </div>
+      <div class="exp"><div class="steps">
+        <div class="st"><div class="m">\(\dfrac{x}{2} \le 2\)</div><div class="t">Subtract 1. <span class="tr">Kurangi 1.</span></div></div>
+        <div class="st"><div class="m">\(x \le 4\)</div><div class="t">Multiply by 2. <span class="tr">Kalikan 2.</span></div></div>
+      </div>
+      <p>Integers \(\le 4\): \(4, 3, 0, -1, -10\) ✅. \(5\) and \(8\) are greater than 4. \(4.5\) is greater than 4 <b>and</b> not an integer ❌.
+        <span class="tr">Bilangan bulat \(\le 4\): \(4, 3, 0, -1, -10\) ✅. \(5\) dan \(8\) lebih dari 4. \(4{,}5\) lebih dari 4 dan bukan bilangan bulat ❌.</span></p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TASK 5 ===================== -->
+<section class="sec" id="t5">
+  <div class="sec-head">
+    <span class="time">📒 Task 5 · 10 questions</span>
+    <h2>Task 5 — Real-World Word Problems<span class="tr">Tugas 5 — Soal Cerita Kehidupan Nyata</span></h2>
+    <p class="goal">Define the variable → write the inequality → solve → interpret (round down for "at most", up for "at least").
+      <span class="tr">Tentukan variabel → tulis pertidaksamaan → selesaikan → tafsirkan (bulatkan ke bawah untuk "paling banyak", ke atas untuk "paling sedikit").</span></p>
+  </div>
+  <div class="qset" data-task="t5">
+    <div class="qset-head"><h3>Questions <span class="tr">Soal</span></h3><span class="score"></span></div>
+
+    <div class="q" data-type="mc">
+      <div class="stem">
+        <div class="ill"><svg width="200" height="90" viewBox="0 0 200 90"><rect x="30" y="34" width="140" height="34" rx="10" fill="#facc15"/><path d="M60 34l16-20h48l16 20z" fill="#fde047"/><rect x="82" y="18" width="16" height="14" fill="#bae6fd"/><rect x="102" y="18" width="16" height="14" fill="#bae6fd"/><circle cx="64" cy="70" r="12" fill="#1f2937"/><circle cx="136" cy="70" r="12" fill="#1f2937"/><rect x="88" y="4" width="24" height="10" rx="3" fill="#1f2937"/><text x="100" y="12" font-size="8" fill="#facc15" text-anchor="middle">TAXI</text></svg></div>
+        <p>A taxi charges Rp10.000 when you get in, plus Rp5.000 per km. Rani has Rp60.000. What is the <b>maximum</b> distance she can travel? <span class="tr">Taksi mengenakan biaya Rp10.000 saat naik, ditambah Rp5.000 per km. Rani punya Rp60.000. Berapa jarak maksimum yang dapat ia tempuh?</span></p></div>
+      <div class="opts cols2"><div class="o" data-c>10 km</div><div class="o">12 km</div><div class="o">14 km</div><div class="o">8 km</div></div>
+      <div class="exp"><div class="steps">
+        <div class="st"><div class="m">\(10000 + 5000d \le 60000\)</div><div class="t">\(d\) = distance in km. <span class="tr">\(d\) = jarak dalam km.</span></div></div>
+        <div class="st"><div class="m">\(5000d \le 50000\)</div><div class="t">Subtract 10000. <span class="tr">Kurangi 10000.</span></div></div>
+        <div class="st"><div class="m">\(d \le 10\)</div><div class="t">Divide by 5000. Max = 10 km. <span class="tr">Bagi 5000. Maksimum = 10 km.</span></div></div>
+      </div></div>
+    </div>
+
+    <div class="q" data-type="fill">
+      <div class="stem"><p>A lift can carry at most 1000 kg. The operator weighs 80 kg and each box weighs 40 kg. What is the <b>maximum</b> number of boxes? <span class="tr">Sebuah lift dapat mengangkut paling banyak 1000 kg. Berat operator 80 kg dan setiap kotak 40 kg. Berapa banyak kotak maksimum?</span></p>
+        <div class="fillline">Maximum boxes / Kotak maksimum = <input class="blank" data-ans="23"></div></div>
+      <div class="exp"><div class="steps">
+        <div class="st"><div class="m">\(80 + 40n \le 1000\)</div><div class="t">\(n\) = number of boxes. <span class="tr">\(n\) = banyak kotak.</span></div></div>
+        <div class="st"><div class="m">\(40n \le 920\)</div><div class="t">Subtract 80. <span class="tr">Kurangi 80.</span></div></div>
+        <div class="st"><div class="m">\(n \le 23\)</div><div class="t">Divide by 40. Check: \(80 + 40(23) = 1000\) ✓ (exactly the limit is allowed). <span class="tr">Bagi 40. Cek: \(80 + 920 = 1000\) ✓ (tepat di batas diperbolehkan).</span></div></div>
+      </div></div>
+    </div>
+
+    <div class="q" data-type="mc">
+      <div class="stem"><p>The sum of three consecutive integers \(n\), \(n + 1\), \(n + 2\) is less than 45. What is the <b>largest</b> possible value of \(n\)? <span class="tr">Jumlah tiga bilangan bulat berurutan \(n\), \(n + 1\), \(n + 2\) kurang dari 45. Berapa nilai \(n\) terbesar yang mungkin?</span></p></div>
+      <div class="opts cols2"><div class="o" data-c>\(13\)</div><div class="o">\(14\)</div><div class="o">\(15\)</div><div class="o">\(12\)</div></div>
+      <div class="exp"><div class="steps">
+        <div class="st"><div class="m">\(n + (n + 1) + (n + 2) \lt 45\)</div><div class="t">Write the sum. <span class="tr">Tulis jumlahnya.</span></div></div>
+        <div class="st"><div class="m">\(3n + 3 \lt 45 \Rightarrow 3n \lt 42\)</div><div class="t">Collect like terms, subtract 3. <span class="tr">Kumpulkan suku sejenis, kurangi 3.</span></div></div>
+        <div class="st"><div class="m">\(n \lt 14\)</div><div class="t">14 is not allowed, so the largest integer is 13. Check: \(13 + 14 + 15 = 42 \lt 45\) ✓; \(14 + 15 + 16 = 45\), not less than 45 ✗. <span class="tr">14 tidak boleh, jadi bilangan bulat terbesar 13. Cek: \(42 \lt 45\) ✓; \(45\) tidak kurang dari 45 ✗.</span></div></div>
+      </div></div>
+    </div>
+
+    <div class="q" data-type="fill">
+      <div class="stem"><p>The average of 4 tests must be <b>at least</b> 75. The first three scores are 70, 80, and 72. What is the <b>minimum</b> score on the fourth test? <span class="tr">Rata-rata 4 ulangan harus paling sedikit 75. Tiga nilai pertama adalah 70, 80, dan 72. Berapa nilai minimal ulangan keempat?</span></p>
+        <div class="fillline">Minimum score / Nilai minimal = <input class="blank" data-ans="78"></div></div>
+      <div class="exp"><div class="steps">
+        <div class="st"><div class="m">\(\dfrac{70 + 80 + 72 + x}{4} \ge 75\)</div><div class="t">Average of 4 tests. <span class="tr">Rata-rata 4 ulangan.</span></div></div>
+        <div class="st"><div class="m">\(222 + x \ge 300\)</div><div class="t">Multiply by 4; \(70 + 80 + 72 = 222\). <span class="tr">Kalikan 4; \(70 + 80 + 72 = 222\).</span></div></div>
+        <div class="st"><div class="m">\(x \ge 78\)</div><div class="t">Subtract 222. <span class="tr">Kurangi 222.</span></div></div>
+      </div></div>
+    </div>
+
+    <div class="q" data-type="tf" data-ans="T">
+      <div class="stem">
+        <div class="ill"><svg width="220" height="110" viewBox="0 0 220 110"><rect x="30" y="16" width="160" height="66" fill="#fef3c7" stroke="#c2410c" stroke-width="3"/><text x="110" y="102" text-anchor="middle" font-size="15" font-family="serif" font-style="italic">x + 6</text><text x="16" y="54" text-anchor="middle" font-size="15" font-family="serif" font-style="italic">x</text></svg></div>
+        <p>A rectangle has length \((x + 6)\) cm and width \(x\) cm. Its perimeter is at most 40 cm. The maximum width is 7 cm. <span class="tr">Sebuah persegi panjang memiliki panjang \((x + 6)\) cm dan lebar \(x\) cm. Kelilingnya paling banyak 40 cm. Lebar maksimumnya 7 cm.</span></p></div>
+      <div class="exp"><div class="steps">
+        <div class="st"><div class="m">\(2\big((x + 6) + x\big) \le 40\)</div><div class="t">Perimeter \(= 2(p + l)\). <span class="tr">Keliling \(= 2(p + l)\).</span></div></div>
+        <div class="st"><div class="m">\(4x + 12 \le 40\)</div><div class="t">Simplify and distribute. <span class="tr">Sederhanakan dan distributifkan.</span></div></div>
+        <div class="st"><div class="m">\(4x \le 28 \Rightarrow x \le 7\)</div><div class="t">Maximum width = 7 cm ✓ <span class="tr">Lebar maksimum = 7 cm ✓</span></div></div>
+      </div><span class="ans">TRUE / BENAR</span></div>
+    </div>
+
+    <div class="q" data-type="sort">
+      <div class="stem"><p>Arrange the steps for solving a word problem with an inequality. <span class="tr">Urutkan langkah menyelesaikan soal cerita dengan pertidaksamaan.</span></p></div>
+      <ol class="sortlist">
+        <li>Define the variable<span class="tr">Tentukan variabel</span></li>
+        <li>Write the inequality<span class="tr">Tulis pertidaksamaan</span></li>
+        <li>Solve the inequality<span class="tr">Selesaikan pertidaksamaan</span></li>
+        <li>Interpret and check the answer in context<span class="tr">Tafsirkan dan periksa jawaban sesuai konteks</span></li>
+      </ol>
+      <div class="exp"><p>We need a variable before writing the inequality, and we must solve it before we can interpret the answer (e.g., rounding up or down).
+        <span class="tr">Kita perlu variabel sebelum menulis pertidaksamaan, dan harus menyelesaikannya sebelum bisa menafsirkan jawabannya (misalnya pembulatan ke atas atau ke bawah).</span></p></div>
+    </div>
+
+    <div class="q" data-type="multi">
+      <div class="stem"><p>A phone plan costs Rp50.000 per month plus Rp2.000 for each extra GB. Sari's budget is <b>at most</b> Rp80.000. Select <b>all</b> numbers of extra GB (whole numbers) she can buy. <span class="tr">Paket ponsel Rp50.000 per bulan ditambah Rp2.000 untuk setiap GB tambahan. Anggaran Sari paling banyak Rp80.000. Pilih semua banyak GB tambahan (bilangan cacah) yang dapat ia beli.</span></p></div>
+      <div class="opts cols2">
+        <div class="o" data-c>\(0\)</div><div class="o" data-c>\(10\)</div><div class="o" data-c>\(12\)</div>
+        <div class="o" data-c>\(15\)</div><div class="o">\(16\)</div><div class="o">\(20\)</div>
+      </div>
+      <div class="exp"><div class="steps">
+        <div class="st"><div class="m">\(50000 + 2000g \le 80000\)</div><div class="t">\(g\) = extra GB. <span class="tr">\(g\) = GB tambahan.</span></div></div>
+        <div class="st"><div class="m">\(2000g \le 30000 \Rightarrow g \le 15\)</div><div class="t">Subtract 50000, divide by 2000. <span class="tr">Kurangi 50000, bagi 2000.</span></div></div>
+      </div><p>So \(0, 10, 12, 15\) are possible. 16 GB costs \(50000 + 32000 = 82000\), too much. <span class="tr">Jadi \(0, 10, 12, 15\) mungkin. 16 GB menjadi \(82000\), terlalu mahal.</span></p></div>
+    </div>
+
+    <div class="q" data-type="pair">
+      <div class="stem"><p>Match each situation with its inequality (\(x\) is the unknown). <span class="tr">Pasangkan setiap situasi dengan pertidaksamaannya (\(x\) adalah yang dicari).</span></p></div>
+      <div class="pairs">
+        <div class="pp"><div>Tickets cost Rp25.000 each for \(x\) people; budget at most Rp200.000<span class="tr">Tiket Rp25.000 per orang untuk \(x\) orang; anggaran paling banyak Rp200.000</span></div><div>\(25000x \le 200000\)</div></div>
+        <div class="pp"><div>Each game gives 25 points; you need at least 200 points in \(x\) games<span class="tr">Setiap permainan memberi 25 poin; perlu paling sedikit 200 poin dalam \(x\) permainan</span></div><div>\(25x \ge 200\)</div></div>
+        <div class="pp"><div>A 200 L tank already has 25 L; add \(x\) L without overflowing<span class="tr">Tangki 200 L sudah berisi 25 L; tambah \(x\) L tanpa meluap</span></div><div>\(25 + x \le 200\)</div></div>
+        <div class="pp"><div>You have 25 points; your total must be more than 200 after getting \(x\) points<span class="tr">Kamu punya 25 poin; total harus lebih dari 200 setelah mendapat \(x\) poin</span></div><div>\(25 + x \gt 200\)</div></div>
+      </div>
+      <div class="exp"><ul>
+        <li>Cost = price × people: \(25000x\); "at most" → \(\le\). <span class="tr">Biaya = harga × orang; "paling banyak" → \(\le\).</span></li>
+        <li>Points = 25 × games: \(25x\); "at least" → \(\ge\). <span class="tr">Poin = 25 × permainan; "paling sedikit" → \(\ge\).</span></li>
+        <li>Water = 25 + \(x\); not overflow → at most 200 → \(\le\). <span class="tr">Air = 25 + \(x\); tidak meluap → paling banyak 200.</span></li>
+        <li>Total = 25 + \(x\); "more than" → \(\gt\). <span class="tr">Total = 25 + \(x\); "lebih dari" → \(\gt\).</span></li>
+      </ul></div>
+    </div>
+
+    <div class="q" data-type="mc">
+      <div class="stem"><p>Shop A: membership Rp30.000 plus Rp4.000 per item. Shop B: Rp6.000 per item, no membership. For how many items \(n\) is Shop A <b>cheaper</b>? <span class="tr">Toko A: keanggotaan Rp30.000 ditambah Rp4.000 per barang. Toko B: Rp6.000 per barang, tanpa keanggotaan. Untuk berapa banyak barang \(n\) Toko A lebih murah?</span></p></div>
+      <div class="opts cols2">
+        <div class="o" data-c>More than 15 items (\(n \gt 15\))<span class="tr">Lebih dari 15 barang</span></div>
+        <div class="o">Less than 15 items (\(n \lt 15\))<span class="tr">Kurang dari 15 barang</span></div>
+        <div class="o">More than 5 items (\(n \gt 5\))<span class="tr">Lebih dari 5 barang</span></div>
+        <div class="o">Less than 5 items (\(n \lt 5\))<span class="tr">Kurang dari 5 barang</span></div>
+      </div>
+      <div class="exp"><div class="steps">
+        <div class="st"><div class="m">\(30000 + 4000n \lt 6000n\)</div><div class="t">Cost at A is less than cost at B. <span class="tr">Biaya di A kurang dari biaya di B.</span></div></div>
+        <div class="st"><div class="m">\(30000 \lt 2000n\)</div><div class="t">Subtract \(4000n\). <span class="tr">Kurangi \(4000n\).</span></div></div>
+        <div class="st"><div class="m">\(15 \lt n \Rightarrow n \gt 15\)</div><div class="t">Divide by 2000, swap sides. Check \(n = 16\): A = 94000, B = 96000 ✓. <span class="tr">Bagi 2000, tukar ruas. Cek \(n = 16\): A = 94000, B = 96000 ✓.</span></div></div>
+      </div></div>
+    </div>
+
+    <div class="q" data-type="fill">
+      <div class="stem"><p>Siti already has Rp40.000 and saves Rp15.000 every week. What is the <b>minimum</b> number of weeks for her savings to be <b>at least</b> Rp200.000? <span class="tr">Siti sudah punya Rp40.000 dan menabung Rp15.000 setiap minggu. Berapa minggu minimal agar tabungannya paling sedikit Rp200.000?</span></p>
+        <div class="fillline">Minimum weeks / Minggu minimal = <input class="blank" data-ans="11"></div></div>
+      <div class="exp"><div class="steps">
+        <div class="st"><div class="m">\(40000 + 15000w \ge 200000\)</div><div class="t">\(w\) = number of weeks. <span class="tr">\(w\) = banyak minggu.</span></div></div>
+        <div class="st"><div class="m">\(15000w \ge 160000\)</div><div class="t">Subtract 40000. <span class="tr">Kurangi 40000.</span></div></div>
+        <div class="st"><div class="m">\(w \ge 10.67\)</div><div class="t">Divide by 15000. <span class="tr">Bagi 15000.</span></div></div>
+        <div class="st"><div class="m">\(w_{\min} = 11\)</div><div class="t">"At least" → round up. 10 weeks: \(40000 + 150000 = 190000\) ✗; 11 weeks: \(205000\) ✓. <span class="tr">"Paling sedikit" → bulatkan ke atas. 10 minggu: 190000 ✗; 11 minggu: 205000 ✓.</span></div></div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<div class="pnav" id="pnav"><button id="prevBtn">← Previous <i>/ Sebelumnya</i></button><button id="nextBtn">Next <i>/ Berikutnya</i> →</button></div>
+</main>
+</div>
+<footer>© Math Tutoring by Deni · Kurikulum Merdeka — Kelas 8 SMP<span class="tr">Materi interaktif dwibahasa / Bilingual interactive material</span></footer>
+
+<script>
+(function(){
+"use strict";
+var uid = 0;
+function shuffle(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+function shuffledNotIdentity(arr){ // arr of elements with data-i
+  if(arr.length<2) return arr;
+  var r; var tries=0;
+  do { r = shuffle(arr.slice()); tries++; } while(tries<30 && r.every(function(el,i){return +el.dataset.i===i;}));
+  return r;
+}
+function el(tag, cls, html){ var e=document.createElement(tag); if(cls) e.className=cls; if(html!=null) e.innerHTML=html; return e; }
+
+/* ---------- number line SVG ---------- */
+function drawNumberLine(div){
+  var min=+div.dataset.min, max=+div.dataset.max, p=+div.dataset.p, dir=div.dataset.dir, closed=div.dataset.closed==="1";
+  var p2 = div.dataset.p2!==undefined ? +div.dataset.p2 : null;
+  var W=320, H=62, pad=26, y=26, col="#c2410c";
+  var sx=function(v){ return pad + (v-min)*(W-2*pad)/(max-min); };
+  var s='<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="number line">';
+  s+='<line x1="6" y1="'+y+'" x2="'+(W-6)+'" y2="'+y+'" stroke="#1c2333" stroke-width="1.8"/>';
+  s+='<path d="M'+(W-4)+' '+y+'l-9 -5v10z M4 '+y+'l9 -5v10z" fill="#1c2333"/>';
+  for(var v=min; v<=max; v++){
+    var x=sx(v);
+    s+='<line x1="'+x+'" y1="'+(y-6)+'" x2="'+x+'" y2="'+(y+6)+'" stroke="#1c2333" stroke-width="1.4"/>';
+    s+='<text x="'+x+'" y="'+(y+24)+'" font-size="13" text-anchor="middle" fill="#1c2333" font-family="Plus Jakarta Sans, sans-serif">'+(v<0?'−'+(-v):v)+'</text>';
+  }
+  var px=sx(p);
+  if(dir==="R" || dir==="L"){
+    var end = dir==="R" ? W-10 : 10;
+    s+='<line x1="'+px+'" y1="'+y+'" x2="'+end+'" y2="'+y+'" stroke="'+col+'" stroke-width="5" stroke-linecap="round"/>';
+    if(dir==="R") s+='<path d="M'+(W-2)+' '+y+'l-14 -8v16z" fill="'+col+'"/>';
+    else s+='<path d="M2 '+y+'l14 -8v16z" fill="'+col+'"/>';
+  }
+  s+='<circle cx="'+px+'" cy="'+y+'" r="7" fill="'+(closed?col:'#fff')+'" stroke="'+col+'" stroke-width="3"/>';
+  if(p2!==null){ s+='<circle cx="'+sx(p2)+'" cy="'+y+'" r="7" fill="#0f766e" stroke="#0f766e" stroke-width="3"/>'; }
+  s+='</svg>';
+  div.innerHTML=s;
+}
+
+/* ---------- normalisation for fill-in ---------- */
+function norm(s){
+  s=String(s).trim().toLowerCase().replace(/\s+/g,"").replace(/[−–—]/g,"-").replace(/^\+/,"");
+  return s;
+}
+function sameAnswer(user, ans){
+  var u=norm(user), list=ans.split("|").map(norm);
+  for(var i=0;i<list.length;i++){
+    var a=list[i];
+    if(u===a) return true;
+    var un=u.replace(",","."), an=a.replace(",",".");
+    if(/^-?\d+(\.\d+)?$/.test(un) && /^-?\d+(\.\d+)?$/.test(an) && Math.abs(parseFloat(un)-parseFloat(an))<1e-9) return true;
+  }
+  return false;
+}
+
+var TYPE_LABEL={
+  mc:'Multiple choice <i>/ Pilihan ganda</i>',
+  multi:'Checkbox – choose all correct <i>/ Pilih semua yang benar</i>',
+  tf:'True or False <i>/ Benar atau Salah</i>',
+  fill:'Fill in the blank <i>/ Isian singkat</i>',
+  sort:'Sorting <i>/ Mengurutkan</i>',
+  pair:'Pairing <i>/ Menjodohkan</i>',
+  dnd:'Drag and drop <i>/ Seret dan lepas</i>'
+};
+var MSG={
+  ok:'✔ Correct! Great job. <i>/ Benar! Kerja bagus.</i>',
+  bad:'✘ Not quite. Try again or open the explanation. <i>/ Belum tepat. Coba lagi atau buka pembahasan.</i>',
+  incomplete:'⚠ Please complete your answer first. <i>/ Lengkapi jawabanmu terlebih dahulu.</i>'
+};
+
+/* ---------- builders ---------- */
+function buildMC(q, multi){
+  var box=q.querySelector(".opts"); var items=[].slice.call(box.querySelectorAll(":scope > .o"));
+  var name="q"+(++uid);
+  var labels=items.map(function(o){
+    var lab=el("label","opt"); var inp=document.createElement("input"); inp.type=multi?"checkbox":"radio"; inp.name=name;
+    var c=el("span","oc"); while(o.firstChild) c.appendChild(o.firstChild);
+    lab.appendChild(inp); lab.appendChild(c); if(o.hasAttribute("data-c")) lab.dataset.c="1"; return lab;
+  });
+  box.innerHTML=""; shuffle(labels).forEach(function(l){box.appendChild(l);});
+  function clearMarks(){ labels.forEach(function(l){l.classList.remove("ok","bad");}); }
+  labels.forEach(function(l){ l.querySelector("input").addEventListener("change", clearMarks); });
+  return {
+    check:function(){
+      clearMarks();
+      var chosen=labels.filter(function(l){return l.querySelector("input").checked;});
+      if(!chosen.length) return null;
+      var all=true;
+      labels.forEach(function(l){
+        var isC=l.dataset.c==="1", ch=l.querySelector("input").checked;
+        if(ch){ l.classList.add(isC?"ok":"bad"); }
+        if(isC!==ch) all=false;
+      });
+      return all;
+    },
+    reset:function(){ clearMarks(); labels.forEach(function(l){l.querySelector("input").checked=false;}); shuffle(labels).forEach(function(l){box.appendChild(l);}); }
+  };
+}
+function buildTF(q){
+  var ans=q.dataset.ans; var box=el("div","tfbox");
+  var bT=el("button","tfbtn",'True <i>/ Benar</i>'); bT.type="button"; bT.dataset.v="T";
+  var bF=el("button","tfbtn",'False <i>/ Salah</i>'); bF.type="button"; bF.dataset.v="F";
+  var btns=shuffle([bT,bF]); btns.forEach(function(b){box.appendChild(b);});
+  var stem=q.querySelector(".stem"); stem.parentNode.insertBefore(box, stem.nextSibling);
+  var sel=null;
+  btns.forEach(function(b){ b.addEventListener("click",function(){ sel=b.dataset.v; btns.forEach(function(x){x.classList.remove("sel","ok","bad");}); b.classList.add("sel"); }); });
+  return {
+    check:function(){ if(!sel) return null; var b=btns.filter(function(x){return x.dataset.v===sel;})[0]; var ok=sel===ans; b.classList.remove("ok","bad"); b.classList.add(ok?"ok":"bad"); return ok; },
+    reset:function(){ sel=null; btns.forEach(function(x){x.classList.remove("sel","ok","bad");}); shuffle(btns).forEach(function(b){box.appendChild(b);}); }
+  };
+}
+function buildFill(q){
+  var inputs=[].slice.call(q.querySelectorAll("input.blank"));
+  inputs.forEach(function(i){ i.setAttribute("autocomplete","off"); i.setAttribute("placeholder","?"); i.addEventListener("input",function(){i.classList.remove("ok","bad");}); });
+  return {
+    check:function(){
+      if(inputs.some(function(i){return i.value.trim()==="";})) return null;
+      var all=true;
+      inputs.forEach(function(i){ var ok=sameAnswer(i.value, i.dataset.ans); i.classList.remove("ok","bad"); i.classList.add(ok?"ok":"bad"); if(!ok) all=false; });
+      return all;
+    },
+    reset:function(){ inputs.forEach(function(i){ i.value=""; i.classList.remove("ok","bad"); }); }
+  };
+}
+function buildSort(q){
+  var ol=q.querySelector("ol.sortlist");
+  var items=[].slice.call(ol.children);
+  items.forEach(function(li,i){
+    li.dataset.i=i;
+    var c=el("div","sc"); while(li.firstChild) c.appendChild(li.firstChild);
+    var pos=el("span","pos",""); var mv=el("div","mv");
+    var up=el("button",null,"▲"); up.type="button"; up.title="Move up / Naik";
+    var dn=el("button",null,"▼"); dn.type="button"; dn.title="Move down / Turun";
+    mv.appendChild(up); mv.appendChild(dn);
+    li.appendChild(pos); li.appendChild(c); li.appendChild(mv);
+    li.draggable=true;
+    up.addEventListener("click",function(e){ e.stopPropagation(); var p=li.previousElementSibling; if(p){ ol.insertBefore(li,p); refresh(); } });
+    dn.addEventListener("click",function(e){ e.stopPropagation(); var n=li.nextElementSibling; if(n){ ol.insertBefore(n,li); refresh(); } });
+    li.addEventListener("dragstart",function(e){ dragging=li; li.classList.add("drag"); try{e.dataTransfer.setData("text/plain","x");}catch(_){} e.dataTransfer.effectAllowed="move"; });
+    li.addEventListener("dragend",function(){ li.classList.remove("drag"); [].forEach.call(ol.children,function(x){x.classList.remove("over");}); dragging=null; refresh(); });
+    li.addEventListener("dragover",function(e){ if(!dragging||dragging===li) return; e.preventDefault(); li.classList.add("over"); });
+    li.addEventListener("dragleave",function(){ li.classList.remove("over"); });
+    li.addEventListener("drop",function(e){ e.preventDefault(); li.classList.remove("over"); if(!dragging||dragging===li) return;
+      var kids=[].slice.call(ol.children); if(kids.indexOf(dragging)<kids.indexOf(li)) ol.insertBefore(dragging, li.nextSibling); else ol.insertBefore(dragging, li); refresh(); });
+  });
+  var dragging=null;
+  function refresh(){ [].forEach.call(ol.children,function(li,i){ li.querySelector(".pos").textContent=i+1; li.classList.remove("ok","bad"); }); }
+  function place(){ shuffledNotIdentity(items).forEach(function(li){ ol.appendChild(li); }); refresh(); }
+  place();
+  return {
+    check:function(){ var all=true; [].forEach.call(ol.children,function(li,i){ var ok=+li.dataset.i===i; li.classList.add(ok?"ok":"bad"); if(!ok) all=false; }); return all; },
+    reset:function(){ place(); }
+  };
+}
+function buildPair(q){
+  var src=q.querySelector(".pairs"); var rows=[].slice.call(src.querySelectorAll(":scope > .pp"));
+  var grid=el("div","pairgrid"); var colL=el("div","pcol"); var colR=el("div","pcol");
+  colL.appendChild(el("div","ph",'Column A <i>/ Kolom A</i>')); colR.appendChild(el("div","ph",'Column B <i>/ Kolom B</i>'));
+  var L=[], R=[]; var letters="ABCDE";
+  rows.forEach(function(r,i){
+    var a=r.children[0], b=r.children[1];
+    var li=el("div","pit"); li.dataset.i=i; var tg=el("span","tag c"+i, letters[i]); var pc=el("div","pc"); while(a.firstChild) pc.appendChild(a.firstChild); li.appendChild(tg); li.appendChild(pc); L.push(li);
+    var ri=el("div","pit"); ri.dataset.i=i; var tg2=el("span","tag","?"); var pc2=el("div","pc"); while(b.firstChild) pc2.appendChild(b.firstChild); ri.appendChild(tg2); ri.appendChild(pc2); R.push(ri);
+  });
+  L.forEach(function(x){colL.appendChild(x);});
+  function placeR(){ shuffledNotIdentity(R).forEach(function(x){colR.appendChild(x);}); }
+  placeR();
+  grid.appendChild(colL); grid.appendChild(colR); src.parentNode.replaceChild(grid, src);
+  var map={}; // left index -> right element
+  var selL=null;
+  function paint(){
+    R.forEach(function(r){ var t=r.querySelector(".tag"); t.className="tag"; t.textContent="?"; r.classList.remove("ok","bad"); });
+    L.forEach(function(l){ l.classList.remove("ok","bad","sel"); });
+    Object.keys(map).forEach(function(k){ var r=map[k]; var t=r.querySelector(".tag"); t.className="tag c"+k; t.textContent=letters[k]; });
+    if(selL) selL.classList.add("sel");
+  }
+  L.forEach(function(l){ l.addEventListener("click",function(){ selL = (selL===l)?null:l; paint(); }); });
+  R.forEach(function(r){ r.addEventListener("click",function(){
+    if(!selL){ // unassign
+      Object.keys(map).forEach(function(k){ if(map[k]===r) delete map[k]; }); paint(); return; }
+    Object.keys(map).forEach(function(k){ if(map[k]===r) delete map[k]; });
+    map[selL.dataset.i]=r; selL=null; paint();
+  }); });
+  return {
+    check:function(){
+      if(Object.keys(map).length<L.length) return null;
+      var all=true;
+      L.forEach(function(l){ var r=map[l.dataset.i]; var ok=r.dataset.i===l.dataset.i; l.classList.add(ok?"ok":"bad"); r.classList.add(ok?"ok":"bad"); if(!ok) all=false; });
+      return all;
+    },
+    reset:function(){ map={}; selL=null; placeR(); paint(); }
+  };
+}
+function buildDnd(q){
+  var src=q.querySelector(".dnd");
+  var binsSrc=[].slice.call(src.querySelectorAll(":scope > .bin"));
+  var chips=[].slice.call(src.querySelectorAll(":scope > .chip"));
+  var wrap=el("div","dndwrap");
+  var pool=el("div","pool"); pool.appendChild(el("div","ph",'Items <i>/ Item</i> — drag or tap <i>/ seret atau ketuk</i>'));
+  var binsBox=el("div","bins"); var zones=[];
+  binsSrc.forEach(function(b){
+    var z=el("div","bin"); z.dataset.bin=b.dataset.bin; var bl=el("div","bl"); while(b.firstChild) bl.appendChild(b.firstChild); z.appendChild(bl); binsBox.appendChild(z); zones.push(z);
+  });
+  var sel=null, dragging=null;
+  chips.forEach(function(c,i){
+    c.draggable=true; c.dataset.k=i;
+    c.addEventListener("dragstart",function(e){ dragging=c; try{e.dataTransfer.setData("text/plain","c");}catch(_){} });
+    c.addEventListener("dragend",function(){ dragging=null; zones.concat([pool]).forEach(function(z){z.classList.remove("over");}); });
+    c.addEventListener("click",function(e){ e.stopPropagation(); if(sel===c){ c.classList.remove("sel"); sel=null; return; } if(sel) sel.classList.remove("sel"); sel=c; c.classList.add("sel"); });
+  });
+  zones.concat([pool]).forEach(function(z){
+    z.addEventListener("dragover",function(e){ if(!dragging) return; e.preventDefault(); z.classList.add("over"); });
+    z.addEventListener("dragleave",function(){ z.classList.remove("over"); });
+    z.addEventListener("drop",function(e){ e.preventDefault(); z.classList.remove("over"); if(dragging){ z.appendChild(dragging); clearMarks(); } });
+    z.addEventListener("click",function(){ if(sel){ z.appendChild(sel); sel.classList.remove("sel"); sel=null; clearMarks(); } });
+  });
+  function clearMarks(){ chips.forEach(function(c){ c.classList.remove("ok","bad"); }); }
+  function fill(){ shuffle(chips.slice()).forEach(function(c){ pool.appendChild(c); }); }
+  fill();
+  wrap.appendChild(pool); wrap.appendChild(binsBox); src.parentNode.replaceChild(wrap, src);
+  return {
+    check:function(){
+      clearMarks();
+      if(pool.querySelector(".chip")) return null;
+      var all=true;
+      chips.forEach(function(c){ var ok=c.parentNode.dataset.bin===c.dataset.bin; c.classList.add(ok?"ok":"bad"); if(!ok) all=false; });
+      return all;
+    },
+    reset:function(){ if(sel){sel.classList.remove("sel"); sel=null;} clearMarks(); fill(); }
+  };
+}
+
+/* ---------- question wrapper ---------- */
+function updateScore(set){
+  var qs=set.querySelectorAll(".q"); var ok=set.querySelectorAll(".q.is-ok").length;
+  var sc=set.querySelector(".score"); if(sc) sc.innerHTML='Score <i style="font-weight:500">/ Skor</i>: '+ok+' / '+qs.length;
+  var t=set.dataset.task; if(t){ var b=document.querySelector('[data-badge="'+t+'"]'); if(b){ b.textContent=ok+"/"+qs.length; b.classList.toggle("full", ok===qs.length); } }
+}
+function buildQuestion(q, n, set){
+  var type=q.dataset.type;
+  var head=el("div","qh"); head.appendChild(el("span","qn",String(n))); head.appendChild(el("span","qt",TYPE_LABEL[type]||type));
+  q.insertBefore(head, q.firstChild);
+  var api;
+  if(type==="mc") api=buildMC(q,false);
+  else if(type==="multi") api=buildMC(q,true);
+  else if(type==="tf") api=buildTF(q);
+  else if(type==="fill") api=buildFill(q);
+  else if(type==="sort") api=buildSort(q);
+  else if(type==="pair") api=buildPair(q);
+  else if(type==="dnd") api=buildDnd(q);
+  var ctl=el("div","qctl");
+  var bc=el("button","bt chk",'Check <i>/ Periksa</i>'); bc.type="button";
+  var br=el("button","bt rst",'Reset <i>/ Ulangi</i>'); br.type="button";
+  var fb=el("span","fb");
+  ctl.appendChild(bc); ctl.appendChild(br); ctl.appendChild(fb);
+  var exp=q.querySelector(":scope > .exp");
+  if(exp){
+    var d=document.createElement("details"); d.className="exp";
+    var sm=document.createElement("summary"); sm.innerHTML='💡 Explanation <i>/ Pembahasan</i>';
+    var c=el("div","expc"); while(exp.firstChild) c.appendChild(exp.firstChild);
+    d.appendChild(sm); d.appendChild(c); q.replaceChild(d, exp);
+    q.insertBefore(ctl, d);
+  } else q.appendChild(ctl);
+  bc.addEventListener("click",function(){
+    var r=api.check();
+    q.classList.remove("is-ok","is-bad");
+    if(r===null){ fb.className="fb warn"; fb.innerHTML=MSG.incomplete; }
+    else if(r){ fb.className="fb ok"; fb.innerHTML=MSG.ok; q.classList.add("is-ok"); }
+    else { fb.className="fb bad"; fb.innerHTML=MSG.bad; q.classList.add("is-bad"); }
+    updateScore(set);
+  });
+  br.addEventListener("click",function(){ api.reset(); fb.className="fb"; fb.innerHTML=""; q.classList.remove("is-ok","is-bad"); updateScore(set); });
+  q._api=api;
+}
+
+/* ---------- navigation ---------- */
+var order=["s1","s2","s3","s4","s5","s6","s7","t1","t2","t3","t4","t5"];
+var current="s1";
+function show(id, scroll){
+  current=id;
+  order.forEach(function(s){ document.getElementById(s).classList.toggle("show", s===id); });
+  [].forEach.call(document.querySelectorAll(".navbtn"),function(b){ b.classList.toggle("active", b.dataset.go===id); });
+  var i=order.indexOf(id);
+  document.getElementById("prevBtn").style.visibility = i>0 ? "visible":"hidden";
+  document.getElementById("nextBtn").style.visibility = i<order.length-1 ? "visible":"hidden";
+  try{ localStorage.setItem("ptlsv-sec", id); }catch(_){}
+  if(scroll!==false) window.scrollTo({top:0, behavior:"smooth"});
+}
+
+function init(){
+  [].forEach.call(document.querySelectorAll(".nl"), drawNumberLine);
+  if(window.renderMathInElement){
+    try{
+      renderMathInElement(document.body,{delimiters:[{left:"\\[",right:"\\]",display:true},{left:"\\(",right:"\\)",display:false}],throwOnError:false});
+    }catch(e){ console.error(e); }
+  }
+  [].forEach.call(document.querySelectorAll(".qset"),function(set){
+    var n=0; [].forEach.call(set.querySelectorAll(".q"),function(q){ n++; buildQuestion(q,n,set); }); updateScore(set);
+  });
+  [].forEach.call(document.querySelectorAll(".navbtn"),function(b){ b.addEventListener("click",function(){ show(b.dataset.go); }); });
+  document.getElementById("prevBtn").addEventListener("click",function(){ var i=order.indexOf(current); if(i>0) show(order[i-1]); });
+  document.getElementById("nextBtn").addEventListener("click",function(){ var i=order.indexOf(current); if(i<order.length-1) show(order[i+1]); });
+  var m=document.getElementById("rulesModal");
+  document.getElementById("openRules").addEventListener("click",function(){ m.classList.add("show"); });
+  document.getElementById("closeRules").addEventListener("click",function(){ m.classList.remove("show"); });
+  m.addEventListener("click",function(e){ if(e.target===m) m.classList.remove("show"); });
+  document.addEventListener("keydown",function(e){ if(e.key==="Escape") m.classList.remove("show"); });
+  var start="s1"; try{ var s=localStorage.getItem("ptlsv-sec"); if(s && order.indexOf(s)>=0) start=s; }catch(_){}
+  show(start,false);
+}
+if(document.readyState==="loading") document.addEventListener("DOMContentLoaded", init); else init();
+})();
+</script>
+</body>
+</html>
