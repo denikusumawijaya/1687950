@@ -1,0 +1,2305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Relations | Relasi — Math Tutoring by Deni</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pri:#4f46e5; --pri-d:#3730a3; --pri-l:#eef2ff;
+  --teal:#0d9488; --teal-l:#ccfbf1;
+  --amber:#d97706; --amber-l:#fef3c7;
+  --pink:#db2777; --pink-l:#fce7f3;
+  --green:#16a34a; --green-l:#dcfce7;
+  --red:#dc2626; --red-l:#fee2e2;
+  --ink:#1e293b; --muted:#64748b; --line:#e2e8f0; --bg:#f6f7fb; --card:#ffffff;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:'Nunito',system-ui,-apple-system,'Segoe UI',sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;font-size:16px}
+.tr{display:block;font-style:italic;font-size:.86em;color:var(--muted);margin-top:1px;font-weight:400}
+h1 .tr,h2 .tr,h3 .tr,h4 .tr{font-size:.72em;margin-top:2px}
+.katex{font-size:1.07em}
+.katex-display{margin:.6em 0;overflow-x:auto;overflow-y:hidden;padding:4px 0}
+
+/* ===== Header ===== */
+header{position:sticky;top:0;z-index:50;background:linear-gradient(110deg,#312e81 0%,#4f46e5 55%,#0d9488 100%);color:#fff;padding:12px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;box-shadow:0 4px 18px rgba(49,46,129,.25)}
+.brand{display:flex;align-items:center;gap:14px;min-width:0}
+.logo{width:48px;height:48px;flex:0 0 48px;background:#fff;border-radius:14px;display:grid;place-items:center;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.brand-name{font-weight:800;font-size:1.15rem;letter-spacing:.2px}
+.brand-topic{font-size:.92rem;opacity:.95}
+.brand-topic .tr{color:#e0e7ff;font-size:.85rem}
+.btn-rules{background:#fff;color:var(--pri-d);border:none;border-radius:999px;padding:10px 18px;font-weight:800;font-family:inherit;font-size:.95rem;cursor:pointer;display:flex;align-items:center;gap:8px;box-shadow:0 2px 8px rgba(0,0,0,.18);transition:transform .15s}
+.btn-rules:hover{transform:translateY(-2px)}
+.btn-rules small{display:block;font-weight:600;font-style:italic;font-size:.75rem;color:var(--muted)}
+
+/* ===== Modal ===== */
+.modal-bg{position:fixed;inset:0;background:rgba(15,23,42,.55);display:none;align-items:center;justify-content:center;z-index:100;padding:16px}
+.modal-bg.show{display:flex}
+.modal{background:#fff;border-radius:20px;max-width:520px;width:100%;padding:26px 26px 20px;box-shadow:0 20px 60px rgba(0,0,0,.3);animation:pop .25s ease}
+@keyframes pop{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
+.modal h3{margin:0 0 14px;color:var(--pri-d);display:flex;gap:10px;align-items:center}
+.rule{display:flex;gap:14px;align-items:flex-start;padding:12px 14px;border-radius:14px;background:var(--pri-l);margin-bottom:10px}
+.rule .ic{font-size:1.6rem;line-height:1}
+.rule b{font-size:1.02rem}
+.modal .close{margin-top:8px;width:100%;background:var(--pri);color:#fff;border:none;border-radius:12px;padding:11px;font-weight:800;font-family:inherit;cursor:pointer;font-size:1rem}
+
+/* ===== Layout ===== */
+.layout{display:grid;grid-template-columns:1fr 3fr;gap:22px;max-width:1440px;margin:0 auto;padding:22px}
+nav.side{position:sticky;top:96px;align-self:start;background:#fff;border-radius:18px;padding:14px;box-shadow:0 2px 12px rgba(30,41,59,.06);max-height:calc(100vh - 116px);overflow:auto}
+.nav-title{font-weight:800;font-size:.8rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted);padding:6px 10px 2px}
+.nav-title .tr{text-transform:none;letter-spacing:0;font-size:.78rem}
+nav.side button{display:flex;width:100%;text-align:left;gap:10px;align-items:flex-start;border:none;background:none;padding:9px 10px;border-radius:12px;cursor:pointer;font-family:inherit;color:var(--ink);font-size:.93rem;font-weight:700;transition:background .15s}
+nav.side button:hover{background:var(--pri-l)}
+nav.side button.active{background:var(--pri);color:#fff}
+nav.side button.active .tr,nav.side button.active .nt{color:#e0e7ff}
+nav.side .ni{font-size:1.15rem;line-height:1.3}
+nav.side .nt{display:block;font-size:.74rem;color:var(--muted);font-weight:600}
+nav.side .tr{font-size:.8rem}
+nav.side hr{border:none;border-top:1px dashed var(--line);margin:8px 4px}
+
+main{min-width:0}
+section.sec{display:none;animation:fade .3s ease}
+section.sec.show{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.sec-head{background:#fff;border-radius:18px;padding:18px 22px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;border-left:8px solid var(--pri);box-shadow:0 2px 12px rgba(30,41,59,.06)}
+.sec-head h2{margin:0;font-size:1.45rem}
+.time{display:inline-block;background:var(--amber-l);color:#92400e;font-weight:800;font-size:.8rem;border-radius:999px;padding:3px 12px;margin-bottom:6px}
+.score{background:var(--green-l);color:#166534;font-weight:800;border-radius:12px;padding:8px 14px;font-size:.9rem;text-align:center}
+.score .tr{color:#15803d}
+
+.card{background:#fff;border-radius:18px;padding:20px 22px;margin-bottom:18px;box-shadow:0 2px 12px rgba(30,41,59,.06)}
+.card h3{margin:0 0 10px;color:var(--pri-d);font-size:1.18rem;display:flex;gap:10px;align-items:flex-start}
+.card h3 .hi{font-size:1.4rem;line-height:1.1}
+.card h4{margin:16px 0 6px;color:var(--teal);font-size:1.05rem}
+.card p{margin:8px 0}
+.card ul,.card ol{padding-left:22px;margin:6px 0}
+.card li{margin:6px 0}
+
+.formula{background:linear-gradient(135deg,#eef2ff,#f0fdfa);border:2px solid #c7d2fe;border-radius:16px;padding:14px 18px;margin:12px 0}
+.formula .ft{font-weight:800;color:var(--pri-d);font-size:.95rem}
+.note{background:var(--amber-l);border-left:5px solid var(--amber);border-radius:12px;padding:10px 14px;margin:12px 0}
+.tip{background:var(--teal-l);border-left:5px solid var(--teal);border-radius:12px;padding:10px 14px;margin:12px 0}
+.warn{background:var(--pink-l);border-left:5px solid var(--pink);border-radius:12px;padding:10px 14px;margin:12px 0}
+
+.ex{border:2px dashed #c7d2fe;border-radius:16px;padding:14px 18px;margin:14px 0;background:#fcfcff}
+.ex .et{display:inline-block;background:var(--pri);color:#fff;border-radius:8px;padding:2px 10px;font-weight:800;font-size:.85rem;margin-bottom:6px}
+.step{display:flex;gap:12px;margin:10px 0;align-items:flex-start}
+.step .sn{flex:0 0 28px;height:28px;border-radius:50%;background:var(--teal);color:#fff;font-weight:800;display:grid;place-items:center;font-size:.85rem;margin-top:2px}
+.step > div{min-width:0;flex:1}
+.ans{background:var(--green-l);border-radius:10px;padding:8px 12px;margin-top:8px;font-weight:700}
+
+table.tb{border-collapse:collapse;margin:10px 0;width:100%;max-width:640px;font-size:.95rem}
+table.tb th,table.tb td{border:1px solid var(--line);padding:7px 10px;text-align:center}
+table.tb th{background:var(--pri-l);color:var(--pri-d)}
+table.tb td.y{background:var(--green-l);font-weight:800;color:#166534}
+table.tb td.n{color:#94a3b8}
+.tbwrap{overflow-x:auto}
+
+.figrow{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start;justify-content:center;margin:10px 0}
+.figbox{background:#fff;border:1px solid var(--line);border-radius:14px;padding:8px 10px;text-align:center;max-width:100%}
+.figbox .cap{font-size:.85rem;font-weight:700;color:var(--muted)}
+.fig svg{max-width:100%;height:auto;display:block;margin:0 auto}
+
+.hero{display:flex;gap:18px;align-items:center;flex-wrap:wrap;background:linear-gradient(135deg,#eef2ff,#fdf2f8);border-radius:18px;padding:16px 20px;margin-bottom:18px}
+.hero .big{font-size:2.6rem;flex:0 0 auto;min-width:0}
+.hero > div{flex:1;min-width:220px}
+
+/* ===== Questions ===== */
+.qblock-title{display:flex;align-items:center;gap:10px;margin:26px 0 12px}
+.qblock-title h3{margin:0;font-size:1.25rem;color:var(--pink)}
+.q{background:#fff;border-radius:18px;padding:18px 20px;margin-bottom:16px;box-shadow:0 2px 12px rgba(30,41,59,.06);border:2px solid transparent;transition:border-color .2s}
+.q.ok{border-color:#86efac}
+.q.bad{border-color:#fca5a5}
+.qhead{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.qnum{background:var(--pink);color:#fff;font-weight:800;border-radius:10px;padding:3px 12px;font-size:.88rem}
+.qtype{background:var(--pri-l);color:var(--pri-d);font-weight:800;border-radius:999px;padding:3px 12px;font-size:.78rem}
+.qins{font-size:.85rem;color:var(--teal);font-weight:700;margin:4px 0 10px;padding:6px 10px;background:#f0fdfa;border-radius:10px}
+.qins .tr{color:#0f766e}
+.qq{margin-bottom:10px}
+.qo{display:grid;gap:8px}
+label.opt{display:flex;gap:12px;align-items:flex-start;border:2px solid var(--line);border-radius:12px;padding:10px 12px;cursor:pointer;transition:all .15s;background:#fff}
+label.opt:hover{border-color:#a5b4fc;background:#fafaff}
+label.opt input{margin-top:5px;transform:scale(1.25);accent-color:var(--pri)}
+label.opt.sel{border-color:var(--pri);background:var(--pri-l)}
+label.opt.right{border-color:var(--green);background:var(--green-l)}
+label.opt.wrong{border-color:var(--red);background:var(--red-l)}
+.opt .letter{font-weight:800;color:var(--pri);min-width:20px}
+.qo.tf{grid-template-columns:1fr 1fr}
+input.blank-in{border:2px solid #a5b4fc;border-radius:10px;padding:6px 10px;font-family:inherit;font-size:1rem;font-weight:700;text-align:center;min-width:70px;width:90px;background:#fafaff;color:var(--pri-d);margin:2px 4px}
+input.blank-in:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 3px #c7d2fe}
+input.blank-in.right{border-color:var(--green);background:var(--green-l)}
+input.blank-in.wrong{border-color:var(--red);background:var(--red-l)}
+.qf{margin:6px 0}
+.qf .row{margin:8px 0}
+
+.sortlist{display:grid;gap:8px}
+.sitem{display:flex;align-items:center;gap:10px;border:2px solid var(--line);border-radius:12px;padding:8px 10px;background:#fff;cursor:grab}
+.sitem.dragging{opacity:.45}
+.sitem .grip{color:#94a3b8;font-size:1.2rem;user-select:none}
+.sitem .sc{flex:1;min-width:0}
+.sitem .sb{display:flex;flex-direction:column;gap:2px}
+.sitem .sb button{border:none;background:var(--pri-l);color:var(--pri-d);border-radius:6px;cursor:pointer;font-size:.75rem;padding:2px 8px}
+.sitem.right{border-color:var(--green);background:var(--green-l)}
+.sitem.wrong{border-color:var(--red);background:var(--red-l)}
+.sitem .pos{font-weight:800;color:var(--pri);min-width:22px}
+
+.pool{min-height:56px;border:2px dashed #cbd5e1;border-radius:14px;padding:10px;display:flex;flex-wrap:wrap;gap:8px;background:#f8fafc;margin:8px 0}
+.pool-l{font-size:.8rem;font-weight:800;color:var(--muted)}
+.chip{border:2px solid #a5b4fc;background:#fff;border-radius:12px;padding:6px 12px;cursor:grab;font-weight:600;user-select:none;transition:transform .1s;box-shadow:0 1px 3px rgba(0,0,0,.06);max-width:100%}
+.chip:hover{transform:translateY(-1px)}
+.chip.picked{border-color:var(--pink);background:var(--pink-l);box-shadow:0 0 0 3px #fbcfe8}
+.chip.right{border-color:var(--green);background:var(--green-l)}
+.chip.wrong{border-color:var(--red);background:var(--red-l)}
+.bins{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:8px}
+.bin{border:2px solid #c7d2fe;border-radius:14px;background:#fafaff;min-height:120px;display:flex;flex-direction:column}
+.bin .bh{background:var(--pri-l);color:var(--pri-d);font-weight:800;padding:6px 10px;border-radius:12px 12px 0 0;font-size:.92rem}
+.bin .bz{flex:1;padding:8px;display:flex;flex-wrap:wrap;gap:6px;align-content:flex-start;min-height:70px}
+.zone-hover{outline:3px solid #f9a8d4;outline-offset:2px}
+.pairs{display:grid;gap:8px}
+.prow{display:grid;grid-template-columns:1fr 34px 1fr;gap:8px;align-items:center}
+.pleft{border:2px solid var(--line);border-radius:12px;padding:8px 12px;background:#fff}
+.parrow{text-align:center;color:var(--pri);font-weight:800;font-size:1.2rem}
+.slot{min-height:46px;border:2px dashed #a5b4fc;border-radius:12px;padding:4px;display:flex;align-items:center;background:#fafaff}
+.slot:empty::before{content:"drop here / letakkan di sini";color:#94a3b8;font-size:.8rem;font-style:italic;padding-left:8px}
+
+.qbtns{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.btn{border:none;border-radius:12px;padding:9px 16px;font-weight:800;font-family:inherit;cursor:pointer;font-size:.92rem;line-height:1.2}
+.btn small{display:block;font-weight:600;font-style:italic;font-size:.75rem;opacity:.9}
+.btn-check{background:var(--pri);color:#fff}
+.btn-check:hover{background:var(--pri-d)}
+.btn-reset{background:#f1f5f9;color:var(--ink)}
+.btn-reset:hover{background:#e2e8f0}
+.fb{margin-top:10px;border-radius:12px;padding:0;font-weight:700;display:none}
+.fb.show{display:block;padding:9px 14px}
+.fb.ok{background:var(--green-l);color:#166534}
+.fb.bad{background:var(--red-l);color:#991b1b}
+details.exp{margin-top:12px;border:2px solid #fde68a;border-radius:14px;background:#fffbeb;overflow:hidden}
+details.exp summary{cursor:pointer;padding:10px 14px;font-weight:800;color:#92400e;list-style:none;display:flex;gap:8px;align-items:center}
+details.exp summary::-webkit-details-marker{display:none}
+details.exp summary::before{content:"▶";font-size:.75rem;transition:transform .2s}
+details.exp[open] summary::before{transform:rotate(90deg)}
+details.exp .eb{padding:4px 16px 14px;border-top:1px dashed #fde68a}
+details.sol{margin:10px 0;border:2px solid #bbf7d0;border-radius:14px;background:#f0fdf4}
+details.sol summary{cursor:pointer;padding:10px 14px;font-weight:800;color:#166534}
+details.sol .eb{padding:4px 16px 14px}
+
+.navbtns{display:flex;justify-content:space-between;gap:10px;margin:24px 0 10px}
+.navbtns .btn{background:#fff;color:var(--pri-d);box-shadow:0 2px 8px rgba(30,41,59,.08)}
+.navbtns .btn:hover{background:var(--pri-l)}
+textarea.refl{width:100%;min-height:70px;border:2px solid var(--line);border-radius:12px;padding:10px;font-family:inherit;font-size:.95rem;margin-top:6px;resize:vertical}
+.kp{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.kp > div{background:var(--pri-l);border-radius:14px;padding:12px 14px}
+.kp .kn{font-size:1.5rem}
+.vocab{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin:10px 0}
+.vocab div{border:2px solid var(--line);border-radius:12px;padding:8px 12px;background:#fff}
+
+@media (max-width:900px){
+  .layout{grid-template-columns:1fr;padding:12px}
+  nav.side{position:static;max-height:none;display:flex;overflow-x:auto;gap:4px}
+  nav.side .nav-title,nav.side hr{display:none}
+  nav.side button{flex:0 0 auto;width:auto;max-width:200px}
+  header{padding:10px 12px}
+  .brand-name{font-size:1rem}
+  .qo.tf{grid-template-columns:1fr}
+  .prow{grid-template-columns:1fr 24px 1fr}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="logo">
+      <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
+        <ellipse cx="9" cy="17" rx="7" ry="13" fill="#e0e7ff" stroke="#4f46e5" stroke-width="2"/>
+        <ellipse cx="25" cy="17" rx="7" ry="13" fill="#ccfbf1" stroke="#0d9488" stroke-width="2"/>
+        <circle cx="9" cy="10" r="2" fill="#4f46e5"/><circle cx="9" cy="22" r="2" fill="#4f46e5"/>
+        <circle cx="25" cy="13" r="2" fill="#0d9488"/><circle cx="25" cy="24" r="2" fill="#0d9488"/>
+        <path d="M11 10 L22.5 13" stroke="#db2777" stroke-width="1.8"/><path d="M11 22 L22.5 24" stroke="#db2777" stroke-width="1.8"/>
+      </svg>
+    </div>
+    <div>
+      <div class="brand-name">Math Tutoring by Deni</div>
+      <div class="brand-topic">Topic: Relations and Functions — Relations
+        <span class="tr">Topik: Relasi dan Fungsi — Relasi</span></div>
+    </div>
+  </div>
+  <button class="btn-rules" id="openRules"><span style="font-size:1.2rem">📋</span><span>Class Rules<small>Aturan Kelas</small></span></button>
+</header>
+
+<div class="modal-bg" id="rulesModal" role="dialog" aria-modal="true">
+  <div class="modal">
+    <h3><span>📋</span><span>Class Rules<span class="tr">Aturan Kelas</span></span></h3>
+    <div class="rule"><div class="ic">🗣️</div><div><b>Take turns speaking.</b><span class="tr">Berbicara secara bergantian.</span></div></div>
+    <div class="rule"><div class="ic">🙋</div><div><b>Ask for permission if you want to leave the class.</b><span class="tr">Meminta izin jika ingin meninggalkan kelas.</span></div></div>
+    <div class="rule"><div class="ic">🎥</div><div><b>Turn on your microphone and camera when needed.</b><span class="tr">Menyalakan microphone dan camera jika diperlukan.</span></div></div>
+    <button class="close" id="closeRules">Got it! <span style="font-style:italic;font-weight:600">/ Mengerti!</span></button>
+  </div>
+</div>
+
+<div class="layout">
+<nav class="side" id="sidenav">
+  <div class="nav-title">Lesson Flow<span class="tr">Alur Pelajaran</span></div>
+  <button data-go="s1"><span class="ni">🔁</span><span>Spiral Review Warm-up<span class="tr">Pemanasan Review Spiral</span><span class="nt">00:00 – 00:10</span></span></button>
+  <button data-go="s2"><span class="ni">🌏</span><span>Introduction &amp; Real-World Connection<span class="tr">Pengenalan &amp; Kaitan Dunia Nyata</span><span class="nt">00:10 – 00:15</span></span></button>
+  <button data-go="s3"><span class="ni">🧠</span><span>Review of Prior Knowledge<span class="tr">Review Pengetahuan Sebelumnya</span><span class="nt">00:15 – 00:20</span></span></button>
+  <button data-go="s4"><span class="ni">🧩</span><span>Problem Introduction<span class="tr">Pengenalan Masalah</span><span class="nt">00:20 – 00:25</span></span></button>
+  <button data-go="s5"><span class="ni">🤝</span><span>Guided Practice<span class="tr">Latihan Terbimbing</span><span class="nt">00:25 – 00:40</span></span></button>
+  <button data-go="s6"><span class="ni">✍️</span><span>Independent Practice<span class="tr">Latihan Mandiri</span><span class="nt">00:40 – 00:55</span></span></button>
+  <button data-go="s7"><span class="ni">🎯</span><span>Consolidation &amp; Reflection<span class="tr">Konsolidasi &amp; Refleksi</span><span class="nt">00:55 – 01:00</span></span></button>
+  <hr>
+  <div class="nav-title">Tasks<span class="tr">Tugas</span></div>
+  <button data-go="t1"><span class="ni">📝</span><span>Task 1<span class="tr">Tugas 1 — Konsep Relasi</span></span></button>
+  <button data-go="t2"><span class="ni">📝</span><span>Task 2<span class="tr">Tugas 2 — Pasangan Berurutan &amp; Produk Kartesius</span></span></button>
+  <button data-go="t3"><span class="ni">📝</span><span>Task 3<span class="tr">Tugas 3 — Penyajian, Domain, Kodomain, Range</span></span></button>
+  <button data-go="t4"><span class="ni">📝</span><span>Task 4<span class="tr">Tugas 4 — Relasi dari Aturan/Rumus</span></span></button>
+  <button data-go="t5"><span class="ni">📝</span><span>Task 5<span class="tr">Tugas 5 — Campuran &amp; HOTS</span></span></button>
+</nav>
+<main id="main">
+
+<!-- ===================== S1 SPIRAL REVIEW ===================== -->
+<section class="sec" id="s1" data-ql="Exercise|Latihan">
+  <div class="sec-head">
+    <div><span class="time">⏱ 00:00 – 00:10</span><h2>🔁 Spiral Review Warm-up<span class="tr">Pemanasan: Review Spiral</span></h2></div>
+    <div class="score"></div>
+  </div>
+
+  <div class="hero">
+    <div class="big">🧺</div>
+    <div><b>Relations are built from <u>sets</u>. Before we start, let's refresh sets, factors, and multiples — we will use them all lesson long!</b>
+      <span class="tr">Relasi dibangun dari <u>himpunan</u>. Sebelum mulai, mari kita segarkan kembali himpunan, faktor, dan kelipatan — semuanya akan kita pakai sepanjang pelajaran!</span></div>
+  </div>
+
+  <div class="card">
+    <h3><span class="hi">📦</span><span>1. Sets and the Number of Members<span class="tr">1. Himpunan dan Banyak Anggota</span></span></h3>
+    <p>A <b>set</b> is a collection of objects that is clearly defined. We write the members inside curly brackets $\{\ \}$ and name sets with capital letters.
+      <span class="tr"><b>Himpunan</b> adalah kumpulan benda yang terdefinisi dengan jelas. Anggotanya ditulis di dalam kurung kurawal $\{\ \}$ dan himpunan diberi nama dengan huruf kapital.</span></p>
+    <div class="formula">
+      <div class="ft">Important notation / Notasi penting</div>
+      <ul>
+        <li>$a \in A$ means "$a$ is a member of $A$"; $a \notin A$ means "$a$ is not a member of $A$".
+          <span class="tr">$a \in A$ artinya "$a$ anggota $A$"; $a \notin A$ artinya "$a$ bukan anggota $A$".</span></li>
+        <li>$n(A)$ = the number of members of set $A$.<span class="tr">$n(A)$ = banyak anggota himpunan $A$.</span></li>
+        <li>Set-builder notation: $A = \{x \mid \text{condition on } x\}$, read "the set of all $x$ such that …".
+          <span class="tr">Notasi pembentuk himpunan: $A = \{x \mid \text{syarat } x\}$, dibaca "himpunan semua $x$ sedemikian sehingga …".</span></li>
+      </ul>
+    </div>
+    <div class="note">⚠️ <b>Careful with $\lt$ and $\le$!</b> $\;2 \lt x \lt 6$ does <u>not</u> include 2 and 6, but $2 \le x \le 6$ <u>does</u> include them.
+      <span class="tr"><b>Hati-hati dengan $\lt$ dan $\le$!</b> $\;2 \lt x \lt 6$ <u>tidak</u> memuat 2 dan 6, sedangkan $2 \le x \le 6$ <u>memuat</u> keduanya.</span></div>
+
+    <div class="ex"><span class="et">Example 1 / Contoh 1</span>
+      <p>List the members of $P = \{x \mid x \text{ is a prime number}, x \lt 10\}$ and find $n(P)$.
+        <span class="tr">Tuliskan anggota $P = \{x \mid x \text{ bilangan prima}, x \lt 10\}$ dan tentukan $n(P)$.</span></p>
+      <div class="step"><span class="sn">1</span><div>Recall: a prime number has <b>exactly two</b> factors, 1 and itself. So 1 is <b>not</b> prime (it has only one factor).
+        <span class="tr">Ingat: bilangan prima memiliki <b>tepat dua</b> faktor, yaitu 1 dan dirinya sendiri. Jadi 1 <b>bukan</b> bilangan prima (hanya punya satu faktor).</span></div></div>
+      <div class="step"><span class="sn">2</span><div>Check 2 to 9: $2$ ✓, $3$ ✓, $4 = 2\times2$ ✗, $5$ ✓, $6 = 2\times3$ ✗, $7$ ✓, $8 = 2 \times 4$ ✗, $9 = 3\times3$ ✗.
+        <span class="tr">Periksa 2 sampai 9 satu per satu seperti di atas.</span></div></div>
+      <div class="step"><span class="sn">3</span><div>$P = \{2, 3, 5, 7\}$, so $n(P) = 4$.<span class="tr">Jadi $P = \{2, 3, 5, 7\}$ dan $n(P) = 4$.</span></div></div>
+    </div>
+
+    <div class="ex"><span class="et">Example 2 / Contoh 2</span>
+      <p>Find $n(Q)$ for $Q = \{x \mid 2 \le x \le 6, x \text{ natural number}\}$.
+        <span class="tr">Tentukan $n(Q)$ untuk $Q = \{x \mid 2 \le x \le 6, x \text{ bilangan asli}\}$.</span></p>
+      <div class="step"><span class="sn">1</span><div>"$\le$" includes the ends, so $Q = \{2, 3, 4, 5, 6\}$.<span class="tr">"$\le$" memuat ujung-ujungnya, jadi $Q = \{2, 3, 4, 5, 6\}$.</span></div></div>
+      <div class="step"><span class="sn">2</span><div>Count: $n(Q) = 5$. Shortcut for consecutive whole numbers: $$n = \text{last} - \text{first} + 1 = 6 - 2 + 1 = 5$$
+        <span class="tr">Hitung: $n(Q) = 5$. Cara cepat untuk bilangan bulat berurutan: terakhir − pertama + 1.</span></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="hi">🔢</span><span>2. Factors and Multiples<span class="tr">2. Faktor dan Kelipatan</span></span></h3>
+    <div class="formula">
+      <div class="ft">Key rules / Aturan kunci</div>
+      <p>$a$ is a <b>factor</b> of $b$ if $b \div a$ is a whole number (remainder 0).
+        <span class="tr">$a$ adalah <b>faktor</b> dari $b$ jika $b \div a$ menghasilkan bilangan bulat (sisa 0).</span></p>
+      <p>$b$ is a <b>multiple</b> of $a$ if $b = a \times k$ for some natural number $k$.
+        <span class="tr">$b$ adalah <b>kelipatan</b> dari $a$ jika $b = a \times k$ untuk suatu bilangan asli $k$.</span></p>
+      <p>So: "$a$ is a factor of $b$" $\iff$ "$b$ is a multiple of $a$". The direction matters!
+        <span class="tr">Jadi: "$a$ faktor dari $b$" $\iff$ "$b$ kelipatan dari $a$". Arahnya penting!</span></p>
+    </div>
+    <div class="ex"><span class="et">Example 3 / Contoh 3</span>
+      <p>Find all factors of 18.<span class="tr">Tentukan semua faktor dari 18.</span></p>
+      <div class="step"><span class="sn">1</span><div>Use <b>factor pairs</b> (two numbers whose product is 18): $1 \times 18,\ 2 \times 9,\ 3 \times 6$.
+        <span class="tr">Gunakan <b>pasangan faktor</b> (dua bilangan yang hasil kalinya 18): $1 \times 18,\ 2 \times 9,\ 3 \times 6$.</span></div></div>
+      <div class="step"><span class="sn">2</span><div>Check numbers that are not factors, e.g. $18 \div 4 = 4.5$ (not whole) → 4 is not a factor.
+        <span class="tr">Cek bilangan yang bukan faktor, misalnya $18 \div 4 = 4{,}5$ (tidak bulat) → 4 bukan faktor.</span></div></div>
+      <div class="step"><span class="sn">3</span><div>Factors of 18 $= \{1, 2, 3, 6, 9, 18\}$ → there are 6 factors.
+        <span class="tr">Faktor dari 18 $= \{1, 2, 3, 6, 9, 18\}$ → ada 6 faktor.</span></div></div>
+    </div>
+    <div class="ex"><span class="et">Example 4 / Contoh 4</span>
+      <p>Is 12 a multiple of 4? Is 4 a multiple of 12?<span class="tr">Apakah 12 kelipatan 4? Apakah 4 kelipatan 12?</span></p>
+      <div class="step"><span class="sn">1</span><div>$12 = 4 \times 3$ → yes, 12 is a multiple of 4.<span class="tr">$12 = 4 \times 3$ → ya, 12 kelipatan 4.</span></div></div>
+      <div class="step"><span class="sn">2</span><div>$4 = 12 \times k$ has no natural number $k$ ($k = \tfrac13$) → no, 4 is <b>not</b> a multiple of 12. Instead, 4 is a <b>factor</b> of 12.
+        <span class="tr">$4 = 12 \times k$ tidak punya $k$ bilangan asli → bukan, 4 <b>bukan</b> kelipatan 12. Justru 4 adalah <b>faktor</b> dari 12.</span></div></div>
+    </div>
+    <div class="ex"><span class="et">Example 5 / Contoh 5</span>
+      <p>Which set has more members: factors of 8 or factors of 5?<span class="tr">Himpunan mana yang anggotanya lebih banyak: faktor dari 8 atau faktor dari 5?</span></p>
+      <div class="step"><span class="sn">1</span><div>Factors of 8 $= \{1, 2, 4, 8\}$ → $n = 4$. Factors of 5 $= \{1, 5\}$ → $n = 2$.
+        <span class="tr">Faktor 8 $= \{1, 2, 4, 8\}$ → $n = 4$. Faktor 5 $= \{1, 5\}$ → $n = 2$.</span></div></div>
+      <div class="step"><span class="sn">2</span><div>Compare: $2 \lt 4$, so factors of 8 has more members. To <b>order</b> several sets, find each $n$ first, then compare the numbers.
+        <span class="tr">Bandingkan: $2 \lt 4$, jadi faktor 8 lebih banyak. Untuk <b>mengurutkan</b> beberapa himpunan, cari dulu setiap $n$, lalu bandingkan bilangannya.</span></div></div>
+    </div>
+  </div>
+
+  <div class="qblock-title"><span style="font-size:1.5rem">✏️</span><h3>Exercises<span class="tr">Latihan</span></h3></div>
+
+  <div class="q" data-t="mc">
+    <div class="qq">Which set shows the members of $A = \{x \mid x \text{ is a prime number}, x \lt 12\}$?
+      <span class="tr">Himpunan manakah yang menunjukkan anggota $A = \{x \mid x \text{ bilangan prima}, x \lt 12\}$?</span></div>
+    <div class="qo">
+      <div class="o" data-c>$\{2, 3, 5, 7, 11\}$</div>
+      <div class="o">$\{1, 2, 3, 5, 7, 11\}$</div>
+      <div class="o">$\{3, 5, 7, 11\}$</div>
+      <div class="o">$\{2, 3, 5, 7, 9, 11\}$</div>
+    </div>
+    <div class="qe">
+      <div class="step"><span class="sn">1</span><div>A prime has exactly two factors. 1 is not prime; 2 is the only even prime.
+        <span class="tr">Bilangan prima tepat punya dua faktor. 1 bukan prima; 2 satu-satunya prima genap.</span></div></div>
+      <div class="step"><span class="sn">2</span><div>Check 2–11: $2,3,5,7,11$ are prime; $4,6,8,10$ are even (factor 2); $9 = 3 \times 3$ is not prime.
+        <span class="tr">Periksa 2–11: $2,3,5,7,11$ prima; $4,6,8,10$ genap (punya faktor 2); $9 = 3\times 3$ bukan prima.</span></div></div>
+      <div class="ans">$A = \{2, 3, 5, 7, 11\}$</div>
+    </div>
+  </div>
+
+  <div class="q" data-t="ms">
+    <div class="qq">Select <b>all</b> numbers that are factors of 20.<span class="tr">Pilih <b>semua</b> bilangan yang merupakan faktor dari 20.</span></div>
+    <div class="qo">
+      <div class="o" data-c>$1$</div><div class="o" data-c>$2$</div><div class="o">$3$</div>
+      <div class="o" data-c>$4$</div><div class="o" data-c>$5$</div><div class="o">$8$</div>
+      <div class="o" data-c>$10$</div><div class="o">$6$</div>
+    </div>
+    <div class="qe">
+      <div class="step"><span class="sn">1</span><div>Factor pairs of 20: $1\times20,\ 2\times10,\ 4\times5$.<span class="tr">Pasangan faktor 20: $1\times20,\ 2\times10,\ 4\times5$.</span></div></div>
+      <div class="step"><span class="sn">2</span><div>Not factors: $20\div3 = 6.67$, $20\div6 = 3.33$, $20\div8 = 2.5$ (not whole).
+        <span class="tr">Bukan faktor: $20\div3 = 6{,}67$, $20\div6 = 3{,}33$, $20\div8 = 2{,}5$ (tidak bulat).</span></div></div>
+      <div class="ans">Correct: 1, 2, 4, 5, 10 <span class="tr">Jawaban benar: 1, 2, 4, 5, 10</span></div>
+    </div>
+  </div>
+
+  <div class="q" data-t="fill">
+    <div class="qq">Given $B = \{x \mid 3 \le x \le 9, x \text{ natural number}\}$.<span class="tr">Diketahui $B = \{x \mid 3 \le x \le 9, x \text{ bilangan asli}\}$.</span></div>
+    <div class="qf"><div class="row">$n(B) =$ <span class="blank" data-a="7"></span></div></div>
+    <div class="qe">
+      <div class="step"><span class="sn">1</span><div>"$\le$" includes 3 and 9: $B = \{3,4,5,6,7,8,9\}$.<span class="tr">"$\le$" memuat 3 dan 9: $B = \{3,4,5,6,7,8,9\}$.</span></div></div>
+      <div class="step"><span class="sn">2</span><div>$n(B) = 9 - 3 + 1 = 7$.</div></div>
+      <div class="ans">$n(B) = 7$</div>
+    </div>
+  </div>
+
+  <div class="q" data-t="tf" data-a="false">
+    <div class="qq">"6 is a multiple of 12."<span class="tr">"6 adalah kelipatan dari 12."</span></div>
+    <div class="qe">
+      <div class="step"><span class="sn">1</span><div>Multiples of 12 are $12, 24, 36, \dots$ ($12 \times k$). 6 is smaller than 12, so it cannot be $12 \times k$ for a natural $k$.
+        <span class="tr">Kelipatan 12 adalah $12, 24, 36, \dots$. 6 lebih kecil dari 12, jadi tidak mungkin berbentuk $12 \times k$ dengan $k$ bilangan asli.</span></div></div>
+      <div class="step"><span class="sn">2</span><div>The correct statement: 6 is a <b>factor</b> of 12 (and 12 is a multiple of 6).
+        <span class="tr">Pernyataan yang benar: 6 adalah <b>faktor</b> dari 12 (dan 12 kelipatan 6).</span></div></div>
+      <div class="ans">FALSE / SALAH</div>
+    </div>
+  </div>
+
+  <div class="q" data-t="sort">
+    <div class="qq">Arrange the sets from the <b>fewest</b> members to the <b>most</b> members.
+      <span class="tr">Urutkan himpunan dari yang anggotanya <b>paling sedikit</b> ke <b>paling banyak</b>.</span></div>
+    <div class="qs">
+      <div class="o">Factors of 7 <span class="tr">Faktor dari 7</span></div>
+      <div class="o">Factors of 9 <span class="tr">Faktor dari 9</span></div>
+      <div class="o">Odd numbers from 1 to 9 <span class="tr">Bilangan ganjil dari 1 sampai 9</span></div>
+      <div class="o">Factors of 12 <span class="tr">Faktor dari 12</span></div>
+    </div>
+    <div class="qe">
+      <div class="step"><span class="sn">1</span><div>Find each $n$ first:<span class="tr">Cari dulu setiap $n$:</span>
+        <ul>
+          <li>Factors of 7 $= \{1, 7\}$ → $n = 2$</li>
+          <li>Factors of 9 $= \{1, 3, 9\}$ → $n = 3$</li>
+          <li>Odd numbers 1–9 $= \{1, 3, 5, 7, 9\}$ → $n = 5$</li>
+          <li>Factors of 12 $= \{1, 2, 3, 4, 6, 12\}$ → $n = 6$</li>
+        </ul></div></div>
+      <div class="step"><span class="sn">2</span><div>Order: $2 \lt 3 \lt 5 \lt 6$.<span class="tr">Urutan: $2 \lt 3 \lt 5 \lt 6$.</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== S2 INTRODUCTION ===================== -->
+<section class="sec" id="s2" data-ql="Exercise|Latihan">
+  <div class="sec-head">
+    <div><span class="time">⏱ 00:10 – 00:15</span><h2>🌏 Introduction &amp; Real-World Connection<span class="tr">Pengenalan &amp; Kaitan dengan Dunia Nyata</span></h2></div>
+    <div class="score"></div>
+  </div>
+
+  <div class="hero">
+    <div class="big">🧑‍🤝‍🧑⚽</div>
+    <div><b>Relations are everywhere! Students and their favourite sports, countries and their capital cities, people and their phone numbers — each one <u>pairs</u> things from one group with things from another group.</b>
+      <span class="tr">Relasi ada di mana-mana! Siswa dan olahraga favoritnya, negara dan ibu kotanya, orang dan nomor teleponnya — masing-masing <u>memasangkan</u> anggota satu kelompok dengan anggota kelompok lain.</span></div>
+  </div>
+
+  <div class="card">
+    <h3><span class="hi">🔗</span><span>What is a Relation?<span class="tr">Apa itu Relasi?</span></span></h3>
+    <div class="formula">
+      <div class="ft">Definition / Definisi</div>
+      <p>A <b>relation</b> from set $A$ to set $B$ is a rule that <b>pairs</b> members of $A$ with members of $B$.
+        <span class="tr"><b>Relasi</b> dari himpunan $A$ ke himpunan $B$ adalah aturan yang <b>memasangkan</b> anggota-anggota himpunan $A$ dengan anggota-anggota himpunan $B$.</span></p>
+    </div>
+    <p>Example: Ani, Budi, and Citra choose their favourite sports.<span class="tr">Contoh: Ani, Budi, dan Citra memilih olahraga favorit mereka.</span></p>
+    <div class="figrow">
+      <div class="figbox"><div class="fig" data-fig="arrow" data-a="Ani|Budi|Citra" data-b="⚽ Football|🏸 Badminton|🏊 Swimming" data-p="Ani>⚽ Football;Budi>⚽ Football;Budi>🏸 Badminton;Citra>🏊 Swimming" data-n="likes|suka" data-la="A (students)" data-lb="B (sports)"></div>
+        <div class="cap">Arrow diagram: "likes"<span class="tr">Diagram panah: "suka"</span></div></div>
+    </div>
+    <ul>
+      <li>Each <b>arrow</b> goes <b>from</b> a member of $A$ <b>to</b> a member of $B$. Read it as a sentence: "Budi <b>likes</b> Badminton".
+        <span class="tr">Setiap <b>panah</b> berangkat <b>dari</b> anggota $A$ <b>menuju</b> anggota $B$. Bacalah sebagai kalimat: "Budi <b>suka</b> Bulu tangkis".</span></li>
+      <li>A member of $A$ may have <b>more than one</b> partner (Budi has 2), and a member of $B$ may receive <b>several</b> arrows (Football gets 2).
+        <span class="tr">Anggota $A$ boleh punya <b>lebih dari satu</b> pasangan (Budi punya 2), dan anggota $B$ boleh menerima <b>beberapa</b> panah (Sepak bola mendapat 2).</span></li>
+      <li>A member may also have <b>no</b> partner at all. That is still allowed in a relation.
+        <span class="tr">Anggota juga boleh <b>tidak</b> punya pasangan sama sekali. Itu tetap boleh dalam relasi.</span></li>
+      <li>The words on the arrows ("likes") are the <b>name of the relation</b>.<span class="tr">Kata pada panah ("suka") adalah <b>nama relasi</b>.</span></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3><span class="hi">🏷️</span><span>Common Relation Names (for numbers)<span class="tr">Nama-Nama Relasi yang Umum (untuk bilangan)</span></span></h3>
+    <p>To test whether a pair $(a, b)$ fits a relation, put $a$ in the first blank and $b$ in the second blank of the sentence "<b>$a$ … $b$</b>", then check if it is TRUE.
+      <span class="tr">Untuk menguji apakah pasangan $(a, b)$ cocok dengan suatu relasi, letakkan $a$ di tempat pertama dan $b$ di tempat kedua kalimat "<b>$a$ … $b$</b>", lalu cek apakah BENAR.</span></p>
+    <div class="tbwrap"><table class="tb">
+      <tr><th>Relation name<span class="tr">Nama relasi</span></th><th>Meaning<span class="tr">Arti</span></th><th>Example pair<span class="tr">Contoh pasangan</span></th></tr>
+      <tr><td>half of<span class="tr">setengah dari</span></td><td>$b = 2a$</td><td>$(3, 6)$: 3 is half of 6</td></tr>
+      <tr><td>twice of<span class="tr">dua kali dari</span></td><td>$a = 2b$</td><td>$(6, 3)$: 6 is twice 3</td></tr>
+      <tr><td>one less than<span class="tr">satu kurangnya dari</span></td><td>$b = a + 1$</td><td>$(4, 5)$</td></tr>
+      <tr><td>one more than<span class="tr">satu lebihnya dari</span></td><td>$a = b + 1$</td><td>$(5, 4)$</td></tr>
+      <tr><td>factor of<span class="tr">faktor dari</span></td><td>$b \div a$ is whole</td><td>$(3, 12)$</td></tr>
+      <tr><td>multiple of<span class="tr">kelipatan dari</span></td><td>$a = b \times k$</td><td>$(12, 3)$</td></tr>
+      <tr><td>square of<span class="tr">kuadrat dari</span></td><td>$a = b^2$</td><td>$(9, 3)$: $9 = 3^2$</td></tr>
+      <tr><td>less than / more than<span class="tr">kurang dari / lebih dari</span></td><td>$a \lt b$ / $a \gt b$</td><td>$(2, 5)$ / $(5, 2)$</td></tr>
+    </table></div>
+    <div class="warn">🔄 <b>Direction matters!</b> $(3, 6)$ fits "half of", but $(6, 3)$ fits "twice of". Always read from the <b>first</b> set to the <b>second</b> set.
+      <span class="tr"><b>Arah itu penting!</b> $(3, 6)$ cocok dengan "setengah dari", tetapi $(6, 3)$ cocok dengan "dua kali dari". Selalu baca dari himpunan <b>pertama</b> ke himpunan <b>kedua</b>.</span></div>
+
+    <div class="ex"><span class="et">Example 1 / Contoh 1</span>
+      <p>Name the relation from $\{\text{Indonesia}, \text{Japan}\}$ to $\{\text{Jakarta}, \text{Tokyo}\}$ with pairs (Indonesia, Jakarta), (Japan, Tokyo).
+        <span class="tr">Tentukan nama relasi dari $\{\text{Indonesia}, \text{Jepang}\}$ ke $\{\text{Jakarta}, \text{Tokyo}\}$ dengan pasangan (Indonesia, Jakarta), (Jepang, Tokyo).</span></p>
+      <div class="step"><span class="sn">1</span><div>Make sentences starting with the country (first set): "Indonesia <b>has the capital city</b> Jakarta" ✓.
+        <span class="tr">Buat kalimat yang diawali negara (himpunan pertama): "Indonesia <b>beribu kota</b> Jakarta" ✓.</span></div></div>
+      <div class="step"><span class="sn">2</span><div>"Indonesia <b>is the capital of</b> Jakarta" ✗ — wrong direction (that would be from cities to countries).
+        <span class="tr">"Indonesia <b>ibu kota dari</b> Jakarta" ✗ — arahnya terbalik (itu dari kota ke negara).</span></div></div>
+      <div class="ans">Relation: "has the capital city"<span class="tr">Relasi: "beribu kota"</span></div>
+    </div>
+
+    <div class="ex"><span class="et">Example 2 / Contoh 2</span>
+      <p>Name the relation shown by $\{(2,4), (3,6), (5,10)\}$.<span class="tr">Tentukan nama relasi dari $\{(2,4), (3,6), (5,10)\}$.</span></p>
+      <div class="step"><span class="sn">1</span><div>Compare first and second numbers: $4 = 2\times2,\ 6 = 2\times3,\ 10 = 2\times5$. The second is always double the first.
+        <span class="tr">Bandingkan bilangan pertama dan kedua: yang kedua selalu dua kali yang pertama.</span></div></div>
+      <div class="step"><span class="sn">2</span><div>So "2 is <b>half of</b> 4", "3 is half of 6", "5 is half of 10" ✓ for every pair.
+        <span class="tr">Jadi "2 <b>setengah dari</b> 4", dan seterusnya ✓ untuk setiap pasangan.</span></div></div>
+      <div class="ans">"half of"<span class="tr">"setengah dari"</span></div>
+    </div>
+
+    <div class="ex"><span class="et">Example 3 / Contoh 3</span>
+      <p>Draw the relation "factor of" from $A = \{2, 3, 4\}$ to $B = \{4, 6, 8, 9\}$ and count the arrows.
+        <span class="tr">Gambarlah relasi "faktor dari" dari $A = \{2, 3, 4\}$ ke $B = \{4, 6, 8, 9\}$ dan hitung banyak panahnya.</span></p>
+      <div class="step"><span class="sn">1</span><div>Take each member of $A$ and test it against <b>every</b> member of $B$ (divide!):
+        <span class="tr">Ambil setiap anggota $A$ dan uji dengan <b>setiap</b> anggota $B$ (lakukan pembagian!):</span>
+        <div class="tbwrap"><table class="tb">
+          <tr><th>$a \backslash b$</th><th>4</th><th>6</th><th>8</th><th>9</th></tr>
+          <tr><th>2</th><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="n">✗</td></tr>
+          <tr><th>3</th><td class="n">✗</td><td class="y">✓</td><td class="n">✗</td><td class="y">✓</td></tr>
+          <tr><th>4</th><td class="y">✓</td><td class="n">✗</td><td class="y">✓</td><td class="n">✗</td></tr>
+        </table></div></div></div>
+      <div class="step"><span class="sn">2</span><div>Draw one arrow for each ✓.<span class="tr">Gambar satu panah untuk setiap ✓.</span>
+        <div class="figrow"><div class="figbox"><div class="fig" data-fig="arrow" data-a="2|3|4" data-b="4|6|8|9" data-p="2>4;2>6;2>8;3>6;3>9;4>4;4>8" data-n="factor of|faktor dari" data-la="A" data-lb="B"></div></div></div></div></div>
+      <div class="step"><span class="sn">3</span><div>Count the ✓: $3 + 2 + 2 = 7$ arrows.<span class="tr">Hitung ✓: $3 + 2 + 2 = 7$ panah.</span></div></div>
+      <div class="ans">7 arrows / 7 panah</div>
+    </div>
+  </div>
+
+  <div class="qblock-title"><span style="font-size:1.5rem">✏️</span><h3>Exercises<span class="tr">Latihan</span></h3></div>
+
+  <div class="q" data-t="mc">
+    <div class="qq">A relation goes from $A = \{\text{Indonesia}, \text{Japan}, \text{Thailand}\}$ to $B = \{\text{Jakarta}, \text{Tokyo}, \text{Bangkok}\}$ and pairs each country with its capital. What is the best name of the relation from $A$ to $B$?
+      <span class="tr">Sebuah relasi dari $A = \{\text{Indonesia}, \text{Jepang}, \text{Thailand}\}$ ke $B = \{\text{Jakarta}, \text{Tokyo}, \text{Bangkok}\}$ memasangkan setiap negara dengan ibu kotanya. Apa nama relasi yang paling tepat dari $A$ ke $B$?</span></div>
+    <div class="qo">
+      <div class="o" data-c>has the capital city<span class="tr">beribu kota</span></div>
+      <div class="o">is the capital of<span class="tr">ibu kota dari</span></div>
+      <div class="o">is bigger than<span class="tr">lebih besar dari</span></div>
+      <div class="o">is next to<span class="tr">bersebelahan dengan</span></div>
+    </div>
+    <div class="qe">
+      <div class="step"><span class="sn">1</span><div>The relation goes <b>from countries to cities</b>, so every sentence must start with a country.
+        <span class="tr">Relasi berjalan <b>dari negara ke kota</b>, jadi setiap kalimat harus diawali nama negara.</span></div></div>
+      <div class="step"><span class="sn">2</span><div>"Japan has the capital city Tokyo" ✓. "Japan is the capital of Tokyo" ✗ (direction reversed).
+        <span class="tr">"Jepang beribu kota Tokyo" ✓. "Jepang ibu kota dari Tokyo" ✗ (arah terbalik).</span></div></div>
+      <div class="ans">"has the capital city" / "beribu kota"</div>
+    </div>
+  </div>
+
+  <div class="q" data-t="pair">
+    <div class="qq">Match each set of ordered pairs with its relation name (from the first number to the second number).
+      <span class="tr">Pasangkan setiap himpunan pasangan berurutan dengan nama relasinya (dari bilangan pertama ke bilangan kedua).</span></div>
+    <div class="qp">
+      <div class="pr"><div class="l">$\{(2,4), (3,6), (5,10)\}$</div><div class="r">half of<span class="tr">setengah dari</span></div></div>
+      <div class="pr"><div class="l">$\{(4,2), (6,3), (10,5)\}$</div><div class="r">twice of<span class="tr">dua kali dari</span></div></div>
+      <div class="pr"><div class="l">$\{(2,3), (5,6), (7,8)\}$</div><div class="r">one less than<span class="tr">satu kurangnya dari</span></div></div>
+      <div class="pr"><div class="l">$\{(9,3), (16,4), (25,5)\}$</div><div class="r">square of<span class="tr">kuadrat dari</span></div></div>
+    </div>
+    <div class="qe">
+      <p>Test one pair of each set with a sentence "first … second":<span class="tr">Uji satu pasangan dari tiap himpunan dengan kalimat "pertama … kedua":</span></p>
+      <ul>
+        <li>$(2,4)$: $4 = 2 \times 2$ → "2 is <b>half of</b> 4" ✓ (also $3\to6$, $5\to10$).</li>
+        <li>$(4,2)$: $4 = 2 \times 2$ → "4 is <b>twice</b> 2" ✓.</li>
+        <li>$(2,3)$: $3 = 2 + 1$ → "2 is <b>one less than</b> 3" ✓.</li>
+        <li>$(9,3)$: $9 = 3^2$ → "9 is the <b>square of</b> 3" ✓ (also $16 = 4^2$, $25 = 5^2$).</li>
+      </ul>
+      <span class="tr">Selalu cek semua pasangan; satu saja yang tidak cocok berarti nama relasinya salah.</span>
+    </div>
+  </div>
+
+  <div class="q" data-t="tf" data-a="false">
+    <div class="qq">"In a relation from $A$ to $B$, every member of $A$ must have <b>exactly one</b> partner in $B$."
+      <span class="tr">"Dalam relasi dari $A$ ke $B$, setiap anggota $A$ harus mempunyai <b>tepat satu</b> pasangan di $B$."</span></div>
+    <div class="qe">
+      <p>In a relation, a member of $A$ may have <b>one</b>, <b>many</b>, or even <b>no</b> partner. Example: Budi likes 2 sports. So the statement is false.
+        <span class="tr">Dalam relasi, anggota $A$ boleh punya <b>satu</b>, <b>banyak</b>, atau bahkan <b>tidak ada</b> pasangan. Contoh: Budi suka 2 olahraga. Jadi pernyataan salah.</span></p>
+      <div class="note">💡 "Exactly one partner for every member of $A$" is the special rule of a <b>function</b> — our next topic!
+        <span class="tr">"Tepat satu pasangan untuk setiap anggota $A$" adalah aturan khusus <b>fungsi</b> — topik kita berikutnya!</span></div>
+      <div class="ans">FALSE / SALAH</div>
+    </div>
+  </div>
+
+  <div class="q" data-t="ms">
+    <div class="qq">Look at the arrow diagram "chooses" from students to sports. Select <b>all</b> true statements.
+      <span class="tr">Perhatikan diagram panah "memilih" dari siswa ke olahraga. Pilih <b>semua</b> pernyataan yang benar.</span>
+      <div class="figrow"><div class="figbox"><div class="fig" data-fig="arrow" data-a="Dina|Eko|Fajar" data-b="Football|Badminton|Swimming" data-p="Dina>Badminton;Eko>Football;Eko>Swimming;Fajar>Badminton" data-n="chooses|memilih" data-la="Students" data-lb="Sports"></div></div></div></div>
+    <div class="qo">
+      <div class="o" data-c>Eko is paired with two sports.<span class="tr">Eko dipasangkan dengan dua olahraga.</span></div>
+      <div class="o" data-c>Badminton is chosen by Dina and Fajar.<span class="tr">Bulu tangkis dipilih oleh Dina dan Fajar.</span></div>
+      <div class="o" data-c>The relation has 4 pairs (arrows).<span class="tr">Relasi tersebut memiliki 4 pasangan (panah).</span></div>
+      <div class="o">Swimming is chosen by Fajar.<span class="tr">Renang dipilih oleh Fajar.</span></div>
+      <div class="o">Every sport is chosen by exactly one student.<span class="tr">Setiap olahraga dipilih oleh tepat satu siswa.</span></div>
+    </div>
+    <div class="qe">
+      <div class="step"><span class="sn">1</span><div>Read every arrow as a sentence: Dina → Badminton; Eko → Football; Eko → Swimming; Fajar → Badminton.
+        <span class="tr">Baca setiap panah sebagai kalimat: Dina → Bulu tangkis; Eko → Sepak bola; Eko → Renang; Fajar → Bulu tangkis.</span></div></div>
+      <div class="step"><span class="sn">2</span><div>Eko has 2 arrows ✓. Badminton receives arrows from Dina and Fajar ✓. Total arrows = 4 ✓.
+        <span class="tr">Eko punya 2 panah ✓. Bulu tangkis menerima panah dari Dina dan Fajar ✓. Total panah = 4 ✓.</span></div></div>
+      <div class="step"><span class="sn">3</span><div>Swimming is chosen by Eko, not Fajar ✗. Badminton is chosen by 2 students ✗.
+        <span class="tr">Renang dipilih Eko, bukan Fajar ✗. Bulu tangkis dipilih 2 siswa ✗.</span></div></div>
+    </div>
+  </div>
+
+  <div class="q" data-t="fill">
+    <div class="qq">The relation "factor of" goes from $A = \{2, 3, 5\}$ to $B = \{4, 6, 9, 10\}$.
+      <span class="tr">Relasi "faktor dari" berjalan dari $A = \{2, 3, 5\}$ ke $B = \{4, 6, 9, 10\}$.</span></div>
+    <div class="qf"><div class="row">Number of arrows / Banyak panah $=$ <span class="blank" data-a="6"></span></div></div>
+    <div class="qe">
+      <div class="step"><span class="sn">1</span><div>Use a check table (divide each $b$ by $a$):<span class="tr">Gunakan tabel pengecekan (bagi setiap $b$ dengan $a$):</span>
+        <div class="tbwrap"><table class="tb">
+          <tr><th>$a \backslash b$</th><th>4</th><th>6</th><th>9</th><th>10</th></tr>
+          <tr><th>2</th><td class="y">✓</td><td class="y">✓</td><td class="n">✗</td><td class="y">✓</td></tr>
+          <tr><th>3</th><td class="n">✗</td><td class="y">✓</td><td class="y">✓</td><td class="n">✗</td></tr>
+          <tr><th>5</th><td class="n">✗</td><td class="n">✗</td><td class="n">✗</td><td class="y">✓</td></tr>
+        </table></div></div></div>
+      <div class="step"><span class="sn">2</span><div>Count: $3 + 2 + 1 = 6$ arrows.<span class="tr">Hitung: $3 + 2 + 1 = 6$ panah.</span></div></div>
+      <div class="ans">6</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== S3 PRIOR KNOWLEDGE ===================== -->
+<section class="sec" id="s3" data-ql="Exercise|Latihan">
+  <div class="sec-head">
+    <div><span class="time">⏱ 00:15 – 00:20</span><h2>🧠 Review of Prior Knowledge<span class="tr">Review Pengetahuan Sebelumnya</span></h2></div>
+    <div class="score"></div>
+  </div>
+
+  <div class="card">
+    <h3><span class="hi">📍</span><span>1. Ordered Pairs and the Cartesian Plane<span class="tr">1. Pasangan Berurutan dan Bidang Kartesius</span></span></h3>
+    <p>An <b>ordered pair</b> $(x, y)$ is two objects written in a fixed order. The first one is $x$, the second one is $y$.
+      <span class="tr"><b>Pasangan berurutan</b> $(x, y)$ adalah dua objek yang ditulis dengan urutan tetap. Yang pertama $x$, yang kedua $y$.</span></p>
+    <div class="formula"><div class="ft">Order matters! / Urutan itu penting!</div>
+      $$(2, 5) \neq (5, 2)$$
+      <span class="tr">$(2,5)$ dan $(5,2)$ adalah dua titik yang berbeda.</span></div>
+    <p>On the Cartesian plane, point $(x, y)$ is found by moving $x$ units to the <b>right</b> (horizontal axis) and then $y$ units <b>up</b> (vertical axis), starting from the origin $O(0, 0)$.
+      <span class="tr">Pada bidang Kartesius, titik $(x, y)$ ditemukan dengan bergerak $x$ satuan ke <b>kanan</b> (sumbu mendatar) lalu $y$ satuan ke <b>atas</b> (sumbu tegak), mulai dari titik asal $O(0, 0)$.</span></p>
+    <div class="figrow">
+      <div class="figbox"><div class="fig" data-fig="plane" data-max="5" data-pts="A:2,5;B:5,2;C:3,0;D:0,3"></div>
+        <div class="cap">$A(2,5)$ and $B(5,2)$ are different points<span class="tr">$A(2,5)$ dan $B(5,2)$ adalah titik yang berbeda</span></div></div>
+    </div>
+    <div class="ex"><span class="et">Example 1 / Contoh 1</span>
+      <p>How do we plot $(3, 5)$?<span class="tr">Bagaimana cara menggambar titik $(3, 5)$?</span></p>
+      <div class="step"><span class="sn">1</span><div>Start at the origin $O(0,0)$.<span class="tr">Mulai dari titik asal $O(0,0)$.</span></div></div>
+      <div class="step"><span class="sn">2</span><div>Move <b>3</b> units to the right (the $x$-value).<span class="tr">Bergerak <b>3</b> satuan ke kanan (nilai $x$).</span></div></div>
+      <div class="step"><span class="sn">3</span><div>Move <b>5</b> units up (the $y$-value), then draw a dot.<span class="tr">Bergerak <b>5</b> satuan ke atas (nilai $y$), lalu gambar titik.</span></div></div>
+      <div class="tip">📌 A point on the horizontal axis has $y = 0$, e.g. $C(3,0)$. A point on the vertical axis has $x = 0$, e.g. $D(0,3)$.
+        <span class="tr">Titik pada sumbu mendatar memiliki $y = 0$, misalnya $C(3,0)$. Titik pada sumbu tegak memiliki $x = 0$, misalnya $D(0,3)$.</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="hi">✖️</span><span>2. Cartesian Product $A \times B$<span class="tr">2. Produk Kartesius $A \times B$</span></span></h3>
+    <p>The <b>Cartesian product</b> $A \times B$ is the set of <b>all</b> ordered pairs whose first member comes from $A$ and second member comes from $B$.
+      <span class="tr"><b>Produk Kartesius</b> $A \times B$ adalah himpunan <b>semua</b> pasangan berurutan yang anggota pertamanya dari $A$ dan anggota keduanya dari $B$.</span></p>
+    <div class="formula"><div class="ft">Formulas / Rumus</div>
+      $$A \times B = \{(a, b) \mid a \in A,\ b \in B\}$$
+      $$n(A \times B) = n(A) \times n(B)$$
+      <span class="tr">Banyak anggota $A \times B$ sama dengan banyak anggota $A$ dikali banyak anggota $B$.</span></div>
+    <div class="ex"><span class="et">Example 2 / Contoh 2</span>
+      <p>$A = \{1, 2\}$ and $B = \{a, b, c\}$. Find $A \times B$ and $n(A \times B)$.<span class="tr">$A = \{1, 2\}$ dan $B = \{a, b, c\}$. Tentukan $A \times B$ dan $n(A \times B)$.</span></p>
+      <div class="step"><span class="sn">1</span><div>Make a grid: rows = members of $A$, columns = members of $B$.<span class="tr">Buat tabel: baris = anggota $A$, kolom = anggota $B$.</span>
+        <div class="tbwrap"><table class="tb">
+          <tr><th>$\times$</th><th>$a$</th><th>$b$</th><th>$c$</th></tr>
+          <tr><th>$1$</th><td>$(1,a)$</td><td>$(1,b)$</td><td>$(1,c)$</td></tr>
+          <tr><th>$2$</th><td>$(2,a)$</td><td>$(2,b)$</td><td>$(2,c)$</td></tr>
+        </table></div></div></div>
+      <div class="step"><span class="sn">2</span><div>$A \times B = \{(1,a), (1,b), (1,c), (2,a), (2,b), (2,c)\}$</div></div>
+      <div class="step"><span class="sn">3</span><div>Check with the formula: $n(A \times B) = n(A) \times n(B) = 2 \times 3 = 6$ ✓
+        <span class="tr">Cek dengan rumus: $n(A \times B) = 2 \times 3 = 6$ ✓</span></div></div>
+    </div>
+    <div class="ex"><span class="et">Example 3 / Contoh 3</span>
+      <p>Is $(a, 1)$ a member of $A \times B$ in Example 2?<span class="tr">Apakah $(a, 1)$ anggota $A \times B$ pada Contoh 2?</span></p>
+      <div class="step"><span class="sn">1</span><div>Membership test: the <b>first</b> member must be in $A$ and the <b>second</b> member must be in $B$.
+        <span class="tr">Uji keanggotaan: anggota <b>pertama</b> harus di $A$ dan anggota <b>kedua</b> harus di $B$.</span></div></div>
+      <div class="step"><span class="sn">2</span><div>$a \notin A$ → $(a,1) \notin A \times B$. (But $(a,1) \in B \times A$.)
+        <span class="tr">$a \notin A$ → $(a,1)$ bukan anggota $A \times B$. (Tetapi $(a,1) \in B \times A$.)</span></div></div>
+    </div>
+    <div class="ex"><span class="et">Example 4 / Contoh 4</span>
+      <p>$n(A) = 4$ and $n(A \times B) = 20$. Find $n(B)$.<span class="tr">$n(A) = 4$ dan $n(A \times B) = 20$. Tentukan $n(B)$.</span></p>
+      <div class="step"><span class="sn">1</span><div>$n(A \times B) = n(A) \times n(B) \Rightarrow 20 = 4 \times n(B)$</div></div>
+      <div class="step"><span class="sn">2</span><div>$n(B) = \dfrac{20}{4} = 5$</div></div>
+    </div>
+    <div class="warn">🔄 In general $A \times B \neq B \times A$, because the order inside each pair changes. But their <b>number of members</b> is the same: $n(A\times B) = n(B \times A)$.
+      <span class="tr">Secara umum $A \times B \neq B \times A$, karena urutan di dalam pasangan berubah. Tetapi <b>banyak anggotanya</b> sama: $n(A\times B) = n(B \times A)$.</span></div>
+  </div>
+
+  <div class="qblock-title"><span style="font-size:1.5rem">✏️</span><h3>Exercises<span class="tr">Latihan</span></h3></div>
+
+  <div class="q" data-t="fill">
+    <div class="qq">If $n(A) = 4$ and $n(B) = 5$, find $n(A \times B)$.<span class="tr">Jika $n(A) = 4$ dan $n(B) = 5$, tentukan $n(A \times B)$.</span></div>
+    <div class="qf"><div class="row">$n(A \times B) =$ <span class="blank" data-a="20"></span></div></div>
+    <div class="qe">
+      <div class="step"><span class="sn">1</span><div>$n(A \times B) = n(A) \times n(B)$</div></div>
+      <div class="step"><span class="sn">2</span><div>$= 4 \times 5 = 20$</div></div>
+      <div class="ans">20</div>
+    </div>
+  </div>
+
+  <div class="q" data-t="mc">
+    <div class="qq">$A = \{1, 2\}$ and $B = \{3, 4\}$. Which one is $A \times B$?<span class="tr">$A = \{1, 2\}$ dan $B = \{3, 4\}$. Manakah $A \times B$?</span></div>
+    <div class="qo">
+      <div class="o" data-c>$\{(1,3), (1,4), (2,3), (2,4)\}$</div>
+      <div class="o">$\{(3,1), (4,1), (3,2), (4,2)\}$</div>
+      <div class="o">$\{(1,3), (2,4)\}$</div>
+      <div class="o">$\{(1,2), (3,4)\}$</div>
+    </div>
+    <div class="qe">
+      <div class="step"><span class="sn">1</span><div>First member from $A$, second from $B$. Pair 1 with every member of $B$: $(1,3), (1,4)$. Pair 2 with every member of $B$: $(2,3), (2,4)$.
+        <span class="tr">Anggota pertama dari $A$, kedua dari $B$. Pasangkan 1 dengan semua anggota $B$, lalu 2 dengan semua anggota $B$.</span></div></div>
+      <div class="step"><span class="sn">2</span><div>Check: $n = 2 \times 2 = 4$ pairs ✓. The option $\{(3,1),\dots\}$ is $B \times A$, not $A \times B$.
+        <span class="tr">Cek: $n = 2\times 2 = 4$ pasangan ✓. Pilihan $\{(3,1),\dots\}$ adalah $B \times A$, bukan $A \times B$.</span></div></div>
+    </div>
+  </div>
+
+  <div class="q" data-t="tf" data-a="false">
+    <div class="qq">"The ordered pairs $(3, 5)$ and $(5, 3)$ represent the same point."<span class="tr">"Pasangan berurutan $(3, 5)$ dan $(5, 3)$ menyatakan titik yang sama."</span></div>
+    <div class="qe">
+      <p>$(3,5)$: 3 right, 5 up. $(5,3)$: 5 right, 3 up. They are in different places, because order matters: $(3,5) \neq (5,3)$.
+        <span class="tr">$(3,5)$: 3 ke kanan, 5 ke atas. $(5,3)$: 5 ke kanan, 3 ke atas. Letaknya berbeda karena urutan penting.</span></p>
+      <div class="ans">FALSE / SALAH</div>
+    </div>
+  </div>
+
+  <div class="q" data-t="pair">
+    <div class="qq">Match each point on the Cartesian plane with its coordinates.<span class="tr">Pasangkan setiap titik pada bidang Kartesius dengan koordinatnya.</span>
+      <div class="figrow"><div class="figbox"><div class="fig" data-fig="plane" data-max="5" data-pts="P:2,3;Q:3,2;R:0,4;S:4,0"></div></div></div></div>
+    <div class="qp">
+      <div class="pr"><div class="l">Point / Titik $P$</div><div class="r">$(2, 3)$</div></div>
+      <div class="pr"><div class="l">Point / Titik $Q$</div><div class="r">$(3, 2)$</div></div>
+      <div class="pr"><div class="l">Point / Titik $R$</div><div class="r">$(0, 4)$</div></div>
+      <div class="pr"><div class="l">Point / Titik $S$</div><div class="r">$(4, 0)$</div></div>
+    </div>
+    <div class="qe">
+      <p>For each point, read first how far <b>right</b> ($x$), then how far <b>up</b> ($y$).<span class="tr">Untuk setiap titik, baca dulu seberapa jauh ke <b>kanan</b> ($x$), lalu ke <b>atas</b> ($y$).</span></p>
+      <ul>
+        <li>$P$: 2 right, 3 up → $(2,3)$. $Q$: 3 right, 2 up → $(3,2)$.</li>
+        <li>$R$ is on the vertical axis → $x = 0$ → $(0,4)$. $S$ is on the horizontal axis → $y = 0$ → $(4,0)$.
+          <span class="tr">$R$ pada sumbu tegak → $x = 0$. $S$ pada sumbu mendatar → $y = 0$.</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="q" data-t="ms">
+    <div class="qq">$P = \{a, b\}$ and $Q = \{1, 2, 3\}$. Select <b>all</b> members of $P \times Q$.
+      <span class="tr">$P = \{a, b\}$ dan $Q = \{1, 2, 3\}$. Pilih <b>semua</b> anggota $P \times Q$.</span></div>
+    <div class="qo">
+      <div class="o" data-c>$(a, 1)$</div><div class="o" data-c>$(b, 3)$</div><div class="o" data-c>$(a, 3)$</div>
+      <div class="o">$(1, a)$</div><div class="o">$(c, 2)$</div><div class="o">$(b, b)$</div>
+    </div>
+    <div class="qe">
+      <p>Test: first member $\in P = \{a,b\}$ <b>and</b> second member $\in Q = \{1,2,3\}$.<span class="tr">Uji: anggota pertama $\in P$ <b>dan</b> anggota kedua $\in Q$.</span></p>
+      <ul>
+        <li>$(a,1)$ ✓, $(b,3)$ ✓, $(a,3)$ ✓</li>
+        <li>$(1,a)$ ✗ — order reversed (1 is not in $P$). <span class="tr">urutan terbalik.</span></li>
+        <li>$(c,2)$ ✗ — $c \notin P$. $(b,b)$ ✗ — $b \notin Q$.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== S4 PROBLEM INTRODUCTION ===================== -->
+<section class="sec" id="s4" data-ql="Exercise|Latihan">
+  <div class="sec-head">
+    <div><span class="time">⏱ 00:20 – 00:25</span><h2>🧩 Problem Introduction<span class="tr">Pengenalan Masalah</span></h2></div>
+    <div class="score"></div>
+  </div>
+
+  <div class="hero">
+    <div class="big">🤔</div>
+    <div><b>Problem: The relation "half of" goes from $A = \{1, 2, 3, 4\}$ to $B = \{2, 3, 4, 6, 8\}$. Show it in <u>three</u> different ways, then find the domain, codomain, and range.</b>
+      <span class="tr">Masalah: Relasi "setengah dari" berjalan dari $A = \{1, 2, 3, 4\}$ ke $B = \{2, 3, 4, 6, 8\}$. Sajikan dengan <u>tiga</u> cara berbeda, lalu tentukan domain, kodomain, dan daerah hasilnya.</span></div>
+  </div>
+
+  <div class="card">
+    <h3><span class="hi">🔍</span><span>Step 1 — Find the Pairs<span class="tr">Langkah 1 — Cari Pasangannya</span></span></h3>
+    <p>"$a$ is half of $b$" means $b = 2 \times a$. Check each member of $A$:<span class="tr">"$a$ setengah dari $b$" artinya $b = 2 \times a$. Periksa setiap anggota $A$:</span></p>
+    <ul>
+      <li>$1 \to 2 \times 1 = 2 \in B$ ✓</li>
+      <li>$2 \to 2 \times 2 = 4 \in B$ ✓</li>
+      <li>$3 \to 2 \times 3 = 6 \in B$ ✓</li>
+      <li>$4 \to 2 \times 4 = 8 \in B$ ✓</li>
+    </ul>
+    <p>The number 3 in $B$ gets no arrow, because $3 = 2 \times 1.5$ and $1.5 \notin A$.
+      <span class="tr">Bilangan 3 di $B$ tidak mendapat panah, karena $3 = 2 \times 1{,}5$ dan $1{,}5 \notin A$.</span></p>
+  </div>
+
+  <div class="card">
+    <h3><span class="hi">🖼️</span><span>Step 2 — Three Ways to Present a Relation<span class="tr">Langkah 2 — Tiga Cara Menyajikan Relasi</span></span></h3>
+    <div class="figrow">
+      <div class="figbox"><b>① Arrow diagram</b><span class="tr">Diagram panah</span>
+        <div class="fig" data-fig="arrow" data-a="1|2|3|4" data-b="2|3|4|6|8" data-p="1>2;2>4;3>6;4>8" data-n="half of|setengah dari" data-la="A" data-lb="B"></div></div>
+      <div class="figbox"><b>③ Cartesian diagram</b><span class="tr">Diagram Kartesius</span>
+        <div class="fig" data-fig="cart" data-x="1|2|3|4" data-y="2|3|4|6|8" data-p="1>2;2>4;3>6;4>8" data-lx="A" data-ly="B"></div></div>
+    </div>
+    <div class="formula"><div class="ft">② Set of ordered pairs / Himpunan pasangan berurutan</div>
+      $$R = \{(1, 2), (2, 4), (3, 6), (4, 8)\}$$</div>
+    <div class="tbwrap"><table class="tb">
+      <tr><th>Way<span class="tr">Cara</span></th><th>How to make it<span class="tr">Cara membuatnya</span></th></tr>
+      <tr><td>① Arrow diagram<span class="tr">Diagram panah</span></td><td style="text-align:left">Draw two ovals ($A$ left, $B$ right). Draw an arrow from $a$ to $b$ for every pair. Write the relation name.<span class="tr">Gambar dua lingkaran/oval ($A$ kiri, $B$ kanan). Gambar panah dari $a$ ke $b$ untuk setiap pasangan. Tulis nama relasinya.</span></td></tr>
+      <tr><td>② Ordered pairs<span class="tr">Pasangan berurutan</span></td><td style="text-align:left">Write every pair as $(a, b)$ inside $\{\ \}$.<span class="tr">Tulis setiap pasangan sebagai $(a, b)$ di dalam $\{\ \}$.</span></td></tr>
+      <tr><td>③ Cartesian diagram<span class="tr">Diagram Kartesius</span></td><td style="text-align:left">Members of $A$ on the horizontal axis, members of $B$ on the vertical axis. Put a dot at $(a, b)$ for every pair.<span class="tr">Anggota $A$ pada sumbu mendatar, anggota $B$ pada sumbu tegak. Beri noktah di $(a, b)$ untuk setiap pasangan.</span></td></tr>
+    </table></div>
+    <div class="tip">💡 A relation from $A$ to $B$ is always a <b>subset</b> of $A \times B$: we only keep the pairs that satisfy the rule.
+      <span class="tr">Relasi dari $A$ ke $B$ selalu merupakan <b>himpunan bagian</b> dari $A \times B$: kita hanya mengambil pasangan yang memenuhi aturan.</span></div>
+  </div>
+
+  <div class="card">
+    <h3><span class="hi">🗺️</span><span>Step 3 — Domain, Codomain, and Range<span class="tr">Langkah 3 — Domain, Kodomain, dan Daerah Hasil (Range)</span></span></h3>
+    <div class="vocab">
+      <div><b>Domain</b> (daerah asal) = set $A$<span class="tr">Domain = himpunan $A$ (himpunan asal)</span></div>
+      <div><b>Codomain</b> (daerah kawan) = set $B$<span class="tr">Kodomain = himpunan $B$ (himpunan kawan)</span></div>
+      <div><b>Range</b> (daerah hasil) = members of $B$ that <b>receive</b> at least one arrow<span class="tr">Range = anggota $B$ yang <b>mendapat</b> pasangan (paling sedikit satu panah)</span></div>
+    </div>
+    <div class="formula">
+      <p>Domain $= \{1, 2, 3, 4\}$</p>
+      <p>Codomain $= \{2, 3, 4, 6, 8\}$</p>
+      <p>Range $= \{2, 4, 6, 8\}$ <span class="tr">(3 tidak termasuk karena tidak mendapat panah)</span></p>
+      <p>Always: Range $\subseteq$ Codomain.<span class="tr">Selalu: Range merupakan himpunan bagian dari Kodomain.</span></p>
+    </div>
+    <div class="note">📘 In this lesson (following the Indonesian Kurikulum Merdeka book), the <b>domain is the whole set $A$</b>.
+      <span class="tr">Dalam pelajaran ini (mengikuti buku Kurikulum Merdeka), <b>domain adalah seluruh himpunan $A$</b>.</span></div>
+    <h4>How to find the range — 4 steps<span class="tr">Cara menentukan range — 4 langkah</span></h4>
+    <div class="step"><span class="sn">1</span><div>Find all ordered pairs of the relation.<span class="tr">Tentukan semua pasangan berurutan dari relasi.</span></div></div>
+    <div class="step"><span class="sn">2</span><div>Take the <b>second</b> member of each pair.<span class="tr">Ambil anggota <b>kedua</b> dari setiap pasangan.</span></div></div>
+    <div class="step"><span class="sn">3</span><div>Remove any repeated values.<span class="tr">Hapus nilai yang muncul berulang.</span></div></div>
+    <div class="step"><span class="sn">4</span><div>Write them as a set (usually from smallest to largest).<span class="tr">Tulis sebagai himpunan (biasanya dari terkecil ke terbesar).</span></div></div>
+  </div>
+
+  <div class="card">
+    <h3><span class="hi">🕵️</span><span>Finding the Name of a Relation from Its Pairs<span class="tr">Menentukan Nama Relasi dari Pasangannya</span></span></h3>
+    <div class="ex"><span class="et">Example / Contoh</span>
+      <p>Name the relation $\{(1, 4), (2, 5), (3, 6)\}$.<span class="tr">Tentukan nama relasi $\{(1, 4), (2, 5), (3, 6)\}$.</span></p>
+      <div class="step"><span class="sn">1</span><div>Look at the first pair and guess: $(1, 4)$ → "1 is three less than 4"? or "1 is a factor of 4"?
+        <span class="tr">Lihat pasangan pertama dan tebak: "1 tiga kurangnya dari 4"? atau "1 faktor dari 4"?</span></div></div>
+      <div class="step"><span class="sn">2</span><div>Test the guess on <b>every</b> pair. "factor of": $(2, 5)$ → $5 \div 2 = 2.5$ ✗ → rejected. "three less than": $2 + 3 = 5$ ✓, $3 + 3 = 6$ ✓.
+        <span class="tr">Uji tebakan pada <b>setiap</b> pasangan. "faktor dari": $(2,5)$ → $5 \div 2 = 2{,}5$ ✗ → ditolak. "tiga kurangnya dari": ✓ semua.</span></div></div>
+      <div class="ans">"three less than" / "tiga kurangnya dari"</div>
+      <div class="warn">One pair that fails is enough to reject a name!<span class="tr">Satu pasangan yang gagal sudah cukup untuk menolak suatu nama relasi!</span></div>
+    </div>
+  </div>
+
+  <div class="qblock-title"><span style="font-size:1.5rem">✏️</span><h3>Exercises<span class="tr">Latihan</span></h3></div>
+
+  <div class="q" data-t="mc">
+    <div class="qq">What is the name of the relation $\{(1, 3), (2, 4), (3, 5)\}$?<span class="tr">Apa nama relasi $\{(1, 3), (2, 4), (3, 5)\}$?</span></div>
+    <div class="qo">
+      <div class="o" data-c>two less than<span class="tr">dua kurangnya dari</span></div>
+      <div class="o">two more than<span class="tr">dua lebihnya dari</span></div>
+      <div class="o">half of<span class="tr">setengah dari</span></div>
+      <div class="o">factor of<span class="tr">faktor dari</span></div>
+    </div>
+    <div class="qe">
+      <div class="step"><span class="sn">1</span><div>"two less than": $1 + 2 = 3$ ✓, $2 + 2 = 4$ ✓, $3 + 2 = 5$ ✓ → works for every pair.
+        <span class="tr">"dua kurangnya dari": berlaku untuk semua pasangan.</span></div></div>
+      <div class="step"><span class="sn">2</span><div>"factor of": $(3,5)$ → $5 \div 3$ is not whole ✗. "half of": $2 \times 1 = 2 \neq 3$ ✗. "two more than": 1 is not 2 more than 3 ✗.
+        <span class="tr">"faktor dari" gagal di $(3,5)$; "setengah dari" gagal di $(1,3)$; "dua lebihnya dari" terbalik arahnya.</span></div></div>
+    </div>
+  </div>
+
+  <div class="q" data-t="drag">
+    <div class="qq">Drag each description into the correct way of presenting a relation.<span class="tr">Seret setiap deskripsi ke cara penyajian relasi yang tepat.</span></div>
+    <div class="qd">
+      <div class="bin">① Arrow diagram<span class="tr">Diagram panah</span></div>
+      <div class="bin">② Set of ordered pairs<span class="tr">Himpunan pasangan berurutan</span></div>
+      <div class="bin">③ Cartesian diagram<span class="tr">Diagram Kartesius</span></div>
+      <div class="chip" data-b="0">Arrows from members of $A$ to members of $B$<span class="tr">Panah dari anggota $A$ ke anggota $B$</span></div>
+      <div class="chip" data-b="0">Members drawn inside two ovals<span class="tr">Anggota digambar di dalam dua oval</span></div>
+      <div class="chip" data-b="1">Written like $\{(1,2), (2,4)\}$<span class="tr">Ditulis seperti $\{(1,2), (2,4)\}$</span></div>
+      <div class="chip" data-b="1">Uses curly brackets and round brackets<span class="tr">Memakai kurung kurawal dan kurung biasa</span></div>
+      <div class="chip" data-b="2">Each pair is a dot on a grid<span class="tr">Setiap pasangan berupa noktah pada kisi</span></div>
+      <div class="chip" data-b="2">Members of $A$ on the horizontal axis<span class="tr">Anggota $A$ pada sumbu mendatar</span></div>
+    </div>
+    <div class="qe">
+      <ul>
+        <li><b>Arrow diagram</b>: two ovals + arrows.<span class="tr">Diagram panah: dua oval + panah.</span></li>
+        <li><b>Set of ordered pairs</b>: $\{(a,b), \dots\}$ — curly brackets outside, round brackets for each pair.<span class="tr">Kurung kurawal di luar, kurung biasa untuk setiap pasangan.</span></li>
+        <li><b>Cartesian diagram</b>: domain on the horizontal axis, codomain on the vertical axis, dots for pairs.<span class="tr">Domain di sumbu mendatar, kodomain di sumbu tegak, noktah untuk pasangan.</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="q" data-t="fill">
+    <div class="qq">Look at the arrow diagram. Write the range from smallest to largest.<span class="tr">Perhatikan diagram panah. Tulis daerah hasil (range) dari yang terkecil ke terbesar.</span>
+      <div class="figrow"><div class="figbox"><div class="fig" data-fig="arrow" data-a="2|3|4" data-b="1|4|6|8|9" data-p="2>4;3>6;4>8" data-n="half of|setengah dari" data-la="A" data-lb="B"></div></div></div></div>
+    <div class="qf"><div class="row">Range $= \{$ <span class="blank" data-a="4"></span> , <span class="blank" data-a="6"></span> , <span class="blank" data-a="8"></span> $\}$</div></div>
+    <div class="qe">
+      <div class="step"><span class="sn">1</span><div>Pairs: $(2,4), (3,6), (4,8)$.<span class="tr">Pasangan: $(2,4), (3,6), (4,8)$.</span></div></div>
+      <div class="step"><span class="sn">2</span><div>Second members: $4, 6, 8$. The numbers 1 and 9 receive no arrow, so they are in the codomain but <b>not</b> in the range.
+        <span class="tr">Anggota kedua: $4, 6, 8$. Bilangan 1 dan 9 tidak mendapat panah, jadi termasuk kodomain tetapi <b>bukan</b> range.</span></div></div>
+      <div class="ans">Range $= \{4, 6, 8\}$</div>
+    </div>
+  </div>
+
+  <div class="q" data-t="tf" data-a="true">
+    <div class="qq">"The range of a relation is always a subset of its codomain."<span class="tr">"Daerah hasil (range) suatu relasi selalu merupakan himpunan bagian dari kodomainnya."</span></div>
+    <div class="qe">
+      <p>The range contains only members of $B$ that receive an arrow, so every member of the range is also in $B$ (the codomain): Range $\subseteq$ Codomain.
+        <span class="tr">Range hanya berisi anggota $B$ yang mendapat panah, jadi setiap anggota range juga anggota $B$ (kodomain).</span></p>
+      <div class="ans">TRUE / BENAR</div>
+    </div>
+  </div>
+
+  <div class="q" data-t="sort">
+    <div class="qq">Arrange the steps to find the range of a relation in the correct order.<span class="tr">Susun langkah-langkah menentukan range suatu relasi dengan urutan yang benar.</span></div>
+    <div class="qs">
+      <div class="o">Find all ordered pairs of the relation.<span class="tr">Tentukan semua pasangan berurutan relasi.</span></div>
+      <div class="o">Take the second member of each pair.<span class="tr">Ambil anggota kedua dari setiap pasangan.</span></div>
+      <div class="o">Remove repeated values.<span class="tr">Hapus nilai yang berulang.</span></div>
+      <div class="o">Write the values as a set.<span class="tr">Tulis nilai-nilai itu sebagai himpunan.</span></div>
+    </div>
+    <div class="qe">
+      <p>We need the pairs first, then their second members; repeats are removed before writing the final set (members of a set are written only once).
+        <span class="tr">Kita perlu pasangannya dulu, lalu anggota keduanya; nilai berulang dihapus sebelum menulis himpunan akhir (anggota himpunan ditulis sekali saja).</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== S5 GUIDED PRACTICE ===================== -->
+<section class="sec" id="s5" data-ql="Exercise|Latihan">
+  <div class="sec-head">
+    <div><span class="time">⏱ 00:25 – 00:40</span><h2>🤝 Guided Practice<span class="tr">Latihan Terbimbing</span></h2></div>
+    <div class="score"></div>
+  </div>
+
+  <div class="card">
+    <h3><span class="hi">🧭</span><span>The 5-Step Method for Any Relation<span class="tr">Metode 5 Langkah untuk Relasi Apa Pun</span></span></h3>
+    <div class="step"><span class="sn">1</span><div>Write down set $A$ (domain) and set $B$ (codomain).<span class="tr">Tuliskan himpunan $A$ (domain) dan himpunan $B$ (kodomain).</span></div></div>
+    <div class="step"><span class="sn">2</span><div>Test <b>each</b> member of $A$ with <b>each</b> member of $B$ using the rule (a check table helps!).<span class="tr">Uji <b>setiap</b> anggota $A$ dengan <b>setiap</b> anggota $B$ memakai aturannya (tabel pengecekan sangat membantu!).</span></div></div>
+    <div class="step"><span class="sn">3</span><div>Write the pairs that pass the test.<span class="tr">Tulis pasangan yang lolos uji.</span></div></div>
+    <div class="step"><span class="sn">4</span><div>Find the range (second members, no repeats).<span class="tr">Tentukan range (anggota kedua, tanpa pengulangan).</span></div></div>
+    <div class="step"><span class="sn">5</span><div>Draw the diagram if asked.<span class="tr">Gambar diagramnya jika diminta.</span></div></div>
+  </div>
+
+  <div class="card">
+    <h3><span class="hi">📒</span><span>Worked Examples<span class="tr">Contoh Soal dan Penyelesaian</span></span></h3>
+
+    <div class="ex"><span class="et">Example 1 — "factor of" / Contoh 1 — "faktor dari"</span>
+      <p>$A = \{2, 3, 4, 5\}$, $B = \{2, 4, 6, 8, 10\}$. Find the pairs and the range of "factor of".<span class="tr">Tentukan pasangan dan range relasi "faktor dari".</span></p>
+      <div class="step"><span class="sn">1</span><div>Check table ($b \div a$ whole?):<span class="tr">Tabel pengecekan ($b \div a$ bulat?):</span>
+        <div class="tbwrap"><table class="tb">
+          <tr><th>$a \backslash b$</th><th>2</th><th>4</th><th>6</th><th>8</th><th>10</th></tr>
+          <tr><th>2</th><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td></tr>
+          <tr><th>3</th><td class="n">✗</td><td class="n">✗</td><td class="y">✓</td><td class="n">✗</td><td class="n">✗</td></tr>
+          <tr><th>4</th><td class="n">✗</td><td class="y">✓</td><td class="n">✗</td><td class="y">✓</td><td class="n">✗</td></tr>
+          <tr><th>5</th><td class="n">✗</td><td class="n">✗</td><td class="n">✗</td><td class="n">✗</td><td class="y">✓</td></tr>
+        </table></div>
+        Remember: every number is a factor of itself ($2 \div 2 = 1$).<span class="tr">Ingat: setiap bilangan adalah faktor dari dirinya sendiri.</span></div></div>
+      <div class="step"><span class="sn">2</span><div>$R = \{(2,2), (2,4), (2,6), (2,8), (2,10), (3,6), (4,4), (4,8), (5,10)\}$ → $5 + 1 + 2 + 1 = 9$ pairs.</div></div>
+      <div class="step"><span class="sn">3</span><div>Range $= \{2, 4, 6, 8, 10\}$ (each appears at least once).<span class="tr">Range $= \{2, 4, 6, 8, 10\}$ (masing-masing muncul paling sedikit sekali).</span></div></div>
+    </div>
+
+    <div class="ex"><span class="et">Example 2 — "more than" / Contoh 2 — "lebih dari"</span>
+      <p>$P = \{3, 5, 7\}$, $Q = \{2, 4, 6\}$. List the pairs of "more than" from $P$ to $Q$.<span class="tr">Tuliskan pasangan relasi "lebih dari" dari $P$ ke $Q$.</span></p>
+      <div class="step"><span class="sn">1</span><div>$3 \gt 2$ ✓; $5 \gt 2, 5 \gt 4$ ✓✓; $7 \gt 2, 7 \gt 4, 7 \gt 6$ ✓✓✓.</div></div>
+      <div class="step"><span class="sn">2</span><div>$R = \{(3,2), (5,2), (5,4), (7,2), (7,4), (7,6)\}$ → 6 pairs.</div></div>
+      <div class="note">For "less than", flip the test: $(a, b)$ is a pair when $a \lt b$. Example: $(1, 2)$ ✓ but $(3, 2)$ ✗.
+        <span class="tr">Untuk "kurang dari", balik ujinya: $(a, b)$ pasangan jika $a \lt b$. Contoh: $(1, 2)$ ✓ tetapi $(3, 2)$ ✗.</span></div>
+    </div>
+
+    <div class="ex"><span class="et">Example 3 — rule with a formula / Contoh 3 — aturan berupa rumus</span>
+      <p>The relation $y = 2x + 1$ goes from $A = \{0, 1, 2, 3\}$ to $B = \{1, 2, 3, 4, 5, 6, 7\}$.<span class="tr">Relasi $y = 2x + 1$ dari $A$ ke $B$.</span></p>
+      <div class="step"><span class="sn">1</span><div>Substitute each $x$:<span class="tr">Substitusikan setiap $x$:</span>
+        $$\begin{aligned} x=0 &: y = 2(0)+1 = 1\\ x=1 &: y = 2(1)+1 = 3\\ x=2 &: y = 2(2)+1 = 5\\ x=3 &: y = 2(3)+1 = 7 \end{aligned}$$</div></div>
+      <div class="step"><span class="sn">2</span><div>Pairs: $\{(0,1), (1,3), (2,5), (3,7)\}$; Range $= \{1, 3, 5, 7\}$.</div></div>
+    </div>
+
+    <div class="ex"><span class="et">Example 4 — squares and negative numbers / Contoh 4 — kuadrat dan bilangan negatif</span>
+      <p>The relation $y = x^2$ goes from $A = \{-1, 0, 1, 2\}$ to $B = \{0, 1, 2, 3, 4\}$. Find the range.<span class="tr">Relasi $y = x^2$ dari $A$ ke $B$. Tentukan range-nya.</span></p>
+      <div class="step"><span class="sn">1</span><div>$(-1)^2 = (-1)\times(-1) = 1$ (negative × negative = positive!), $0^2 = 0$, $1^2 = 1$, $2^2 = 4$.
+        <span class="tr">negatif × negatif = positif!</span></div></div>
+      <div class="step"><span class="sn">2</span><div>Pairs: $\{(-1,1), (0,0), (1,1), (2,4)\}$.</div></div>
+      <div class="step"><span class="sn">3</span><div>Second members: $1, 0, 1, 4$ → remove the repeated 1 → Range $= \{0, 1, 4\}$.
+        <span class="tr">Anggota kedua: $1, 0, 1, 4$ → hapus 1 yang berulang → Range $= \{0, 1, 4\}$.</span></div></div>
+    </div>
+
+    <div class="ex"><span class="et">Example 5 — reading a Cartesian diagram / Contoh 5 — membaca diagram Kartesius</span>
+      <div class="figrow"><div class="figbox"><div class="fig" data-fig="cart" data-x="1|2|3" data-y="1|2|3|4|5|6" data-p="1>3;2>4;3>5" data-lx="A" data-ly="B"></div></div></div>
+      <div class="step"><span class="sn">1</span><div>Read each dot: go down to the horizontal axis for $x$, go left to the vertical axis for $y$: $(1,3), (2,4), (3,5)$.
+        <span class="tr">Baca setiap noktah: turun ke sumbu mendatar untuk $x$, ke kiri ke sumbu tegak untuk $y$.</span></div></div>
+      <div class="step"><span class="sn">2</span><div>Which formula fits? $y = 3x$: $3(1) = 3$ ✓ but $3(2) = 6 \neq 4$ ✗. $y = x + 2$: $3$ ✓, $4$ ✓, $5$ ✓.
+        <span class="tr">Rumus mana yang cocok? $y = 3x$ gagal di $x = 2$. $y = x + 2$ cocok untuk semua.</span></div></div>
+      <div class="ans">$y = x + 2$ ("two less than" / "dua kurangnya dari")</div>
+    </div>
+  </div>
+
+  <div class="qblock-title"><span style="font-size:1.5rem">✏️</span><h3>Exercises<span class="tr">Latihan</span></h3></div>
+
+  <div class="q" data-t="fill">
+    <div class="qq">The relation "factor of" goes from $A = \{2, 3, 4\}$ to $B = \{3, 4, 6, 8, 9\}$. How many ordered pairs are there?
+      <span class="tr">Relasi "faktor dari" dari $A = \{2, 3, 4\}$ ke $B = \{3, 4, 6, 8, 9\}$. Berapa banyak pasangan berurutannya?</span></div>
+    <div class="qf"><div class="row">Number of pairs / Banyak pasangan $=$ <span class="blank" data-a="8"></span></div></div>
+    <div class="qe">
+      <div class="tbwrap"><table class="tb">
+        <tr><th>$a \backslash b$</th><th>3</th><th>4</th><th>6</th><th>8</th><th>9</th></tr>
+        <tr><th>2</th><td class="n">✗</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="n">✗</td></tr>
+        <tr><th>3</th><td class="y">✓</td><td class="n">✗</td><td class="y">✓</td><td class="n">✗</td><td class="y">✓</td></tr>
+        <tr><th>4</th><td class="n">✗</td><td class="y">✓</td><td class="n">✗</td><td class="y">✓</td><td class="n">✗</td></tr>
+      </table></div>
+      <p>Pairs: $(2,4),(2,6),(2,8),(3,3),(3,6),(3,9),(4,4),(4,8)$ → $3 + 3 + 2 = 8$.</p>
+      <div class="ans">8</div>
+    </div>
+  </div>
+
+  <div class="q" data-t="ms">
+    <div class="qq">The relation "less than" goes from $A = \{1, 3, 5\}$ to $B = \{2, 4\}$. Select <b>all</b> pairs of the relation.
+      <span class="tr">Relasi "kurang dari" dari $A = \{1, 3, 5\}$ ke $B = \{2, 4\}$. Pilih <b>semua</b> pasangan relasinya.</span></div>
+    <div class="qo">
+      <div class="o" data-c>$(1, 2)$</div><div class="o" data-c>$(1, 4)$</div><div class="o" data-c>$(3, 4)$</div>
+      <div class="o">$(3, 2)$</div><div class="o">$(5, 4)$</div><div class="o">$(2, 1)$</div>
+    </div>
+    <div class="qe">
+      <ul>
+        <li>$1 \lt 2$ ✓, $1 \lt 4$ ✓</li>
+        <li>$3 \lt 2$ ✗, $3 \lt 4$ ✓</li>
+        <li>$5 \lt 2$ ✗, $5 \lt 4$ ✗ → 5 has no partner.<span class="tr">5 tidak punya pasangan.</span></li>
+        <li>$(2,1)$: first member must come from $A$, but $2 \notin A$ ✗.<span class="tr">Anggota pertama harus dari $A$, tetapi $2 \notin A$.</span></li>
+      </ul>
+      <div class="ans">$\{(1,2), (1,4), (3,4)\}$</div>
+    </div>
+  </div>
+
+  <div class="q" data-t="mc">
+    <div class="qq">The relation $y = x^2$ goes from $A = \{-2, -1, 0, 1, 2\}$ to $B = \{0, 1, 2, 3, 4\}$. What is the range?
+      <span class="tr">Relasi $y = x^2$ dari $A = \{-2, -1, 0, 1, 2\}$ ke $B = \{0, 1, 2, 3, 4\}$. Apa daerah hasilnya?</span></div>
+    <div class="qo">
+      <div class="o" data-c>$\{0, 1, 4\}$</div>
+      <div class="o">$\{0, 1, 2, 3, 4\}$</div>
+      <div class="o">$\{-2, -1, 0, 1, 2\}$</div>
+      <div class="o">$\{1, 4\}$</div>
+    </div>
+    <div class="qe">
+      <div class="step"><span class="sn">1</span><div>$(-2)^2 = 4,\ (-1)^2 = 1,\ 0^2 = 0,\ 1^2 = 1,\ 2^2 = 4$.</div></div>
+      <div class="step"><span class="sn">2</span><div>Second members: $4, 1, 0, 1, 4$ → remove repeats → $\{0, 1, 4\}$.
+        <span class="tr">Anggota kedua: $4, 1, 0, 1, 4$ → hapus pengulangan → $\{0, 1, 4\}$.</span></div></div>
+      <div class="step"><span class="sn">3</span><div>$\{0,1,2,3,4\}$ is the codomain (2 and 3 get no arrow). $\{1,4\}$ forgets $0^2 = 0$.
+        <span class="tr">$\{0,1,2,3,4\}$ adalah kodomain (2 dan 3 tidak mendapat panah). $\{1,4\}$ melupakan $0^2 = 0$.</span></div></div>
+    </div>
+  </div>
+
+  <div class="q" data-t="pair">
+    <div class="qq">Each relation goes from $A = \{1, 2, 3\}$. Match each formula with its set of ordered pairs.
+      <span class="tr">Setiap relasi berasal dari $A = \{1, 2, 3\}$. Pasangkan setiap rumus dengan himpunan pasangan berurutannya.</span></div>
+    <div class="qp">
+      <div class="pr"><div class="l">$y = 2x$</div><div class="r">$\{(1,2), (2,4), (3,6)\}$</div></div>
+      <div class="pr"><div class="l">$y = x + 1$</div><div class="r">$\{(1,2), (2,3), (3,4)\}$</div></div>
+      <div class="pr"><div class="l">$y = x + 3$</div><div class="r">$\{(1,4), (2,5), (3,6)\}$</div></div>
+      <div class="pr"><div class="l">$y = 3x$</div><div class="r">$\{(1,3), (2,6), (3,9)\}$</div></div>
+    </div>
+    <div class="qe">
+      <p>Substitute $x = 1, 2, 3$ into each formula:<span class="tr">Substitusikan $x = 1, 2, 3$ ke setiap rumus:</span></p>
+      <ul>
+        <li>$y = 2x$: $2, 4, 6$</li>
+        <li>$y = x + 1$: $2, 3, 4$</li>
+        <li>$y = x + 3$: $4, 5, 6$</li>
+        <li>$y = 3x$: $3, 6, 9$</li>
+      </ul>
+      <div class="warn">$(1,2)$ appears in both $y = 2x$ and $y = x + 1$ — that's why you must check <b>all</b> pairs, not just the first!
+        <span class="tr">$(1,2)$ muncul pada $y = 2x$ dan $y = x + 1$ — karena itu kamu harus memeriksa <b>semua</b> pasangan, bukan hanya yang pertama!</span></div>
+    </div>
+  </div>
+
+  <div class="q" data-t="tf" data-a="false">
+    <div class="qq">The Cartesian diagram shows the relation "half of" from $A = \{1, 2, 3, 4\}$ to $B = \{1, 2, \dots, 8\}$.<br>Statement: "The range of this relation is $\{1, 2, 3, 4\}$."
+      <span class="tr">Diagram Kartesius menunjukkan relasi "setengah dari" dari $A$ ke $B$. Pernyataan: "Daerah hasil relasi ini adalah $\{1, 2, 3, 4\}$."</span>
+      <div class="figrow"><div class="figbox"><div class="fig" data-fig="cart" data-x="1|2|3|4" data-y="1|2|3|4|5|6|7|8" data-p="1>2;2>4;3>6;4>8" data-lx="A" data-ly="B"></div></div></div></div>
+    <div class="qe">
+      <div class="step"><span class="sn">1</span><div>Read the dots: $(1,2), (2,4), (3,6), (4,8)$.<span class="tr">Baca noktah: $(1,2), (2,4), (3,6), (4,8)$.</span></div></div>
+      <div class="step"><span class="sn">2</span><div>Range = second members $= \{2, 4, 6, 8\}$ (read on the <b>vertical</b> axis). $\{1,2,3,4\}$ is the <b>domain</b>.
+        <span class="tr">Range = anggota kedua (dibaca pada sumbu <b>tegak</b>). $\{1,2,3,4\}$ adalah <b>domain</b>.</span></div></div>
+      <div class="ans">FALSE / SALAH</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== S6 INDEPENDENT PRACTICE ===================== -->
+<section class="sec" id="s6" data-ql="Exercise|Latihan">
+  <div class="sec-head">
+    <div><span class="time">⏱ 00:40 – 00:55</span><h2>✍️ Independent Practice<span class="tr">Latihan Mandiri</span></h2></div>
+    <div class="score"></div>
+  </div>
+
+  <div class="card">
+    <h3><span class="hi">🚀</span><span>Strategies for Harder Questions<span class="tr">Strategi untuk Soal yang Lebih Sulit</span></span></h3>
+
+    <div class="ex"><span class="et">Strategy 1 — Relation on one set / Strategi 1 — Relasi pada satu himpunan</span>
+      <p>A relation can go from a set to <b>itself</b>. Find "factor of" from $K = \{1, 2, 4\}$ to $K$.
+        <span class="tr">Relasi bisa berjalan dari suatu himpunan ke <b>dirinya sendiri</b>. Tentukan "faktor dari" dari $K = \{1, 2, 4\}$ ke $K$.</span></p>
+      <div class="tbwrap"><table class="tb">
+        <tr><th>$a \backslash b$</th><th>1</th><th>2</th><th>4</th></tr>
+        <tr><th>1</th><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td></tr>
+        <tr><th>2</th><td class="n">✗</td><td class="y">✓</td><td class="y">✓</td></tr>
+        <tr><th>4</th><td class="n">✗</td><td class="n">✗</td><td class="y">✓</td></tr>
+      </table></div>
+      <p>$R = \{(1,1), (1,2), (1,4), (2,2), (2,4), (4,4)\}$ → 6 pairs. Notice: 1 is a factor of <b>every</b> number, and every number is a factor of itself.
+        <span class="tr">6 pasangan. Perhatikan: 1 faktor dari <b>semua</b> bilangan, dan setiap bilangan faktor dari dirinya sendiri.</span></p>
+    </div>
+
+    <div class="ex"><span class="et">Strategy 2 — Find a missing number in a formula / Strategi 2 — Mencari bilangan yang hilang dalam rumus</span>
+      <p>$R = \{(1, 5), (2, 8), (3, 11)\}$ follows $y = 3x + c$. Find $c$.<span class="tr">$R$ mengikuti $y = 3x + c$. Tentukan $c$.</span></p>
+      <div class="step"><span class="sn">1</span><div>Use one pair, e.g. $(1, 5)$: $5 = 3(1) + c \Rightarrow c = 5 - 3 = 2$.<span class="tr">Gunakan satu pasangan, misalnya $(1,5)$.</span></div></div>
+      <div class="step"><span class="sn">2</span><div>Check the others: $3(2) + 2 = 8$ ✓, $3(3) + 2 = 11$ ✓.<span class="tr">Cek pasangan lain: ✓.</span></div></div>
+      <div class="formula">$$c = y - (\text{coefficient}) \times x$$<span class="tr">$c = y$ dikurangi (koefisien) $\times x$</span></div>
+    </div>
+
+    <div class="ex"><span class="et">Strategy 3 — Range vs codomain / Strategi 3 — Range vs kodomain</span>
+      <p>"two less than" from $A = \{1, 2, 3\}$ to $B = \{1, 2, 3, 4, 5, 6\}$: $1 \to 3,\ 2 \to 4,\ 3 \to 5$.<span class="tr">"dua kurangnya dari" dari $A$ ke $B$.</span></p>
+      <p>Range $= \{3, 4, 5\}$. Members of the codomain that are <b>not</b> in the range: $1, 2, 6$ (no arrow reaches them).
+        <span class="tr">Anggota kodomain yang <b>bukan</b> anggota range: $1, 2, 6$ (tidak ada panah yang menuju ke sana).</span></p>
+    </div>
+
+    <div class="ex"><span class="et">Strategy 4 — How many relations are possible? / Strategi 4 — Berapa banyak relasi yang mungkin?</span>
+      <p>Every relation from $A$ to $B$ is a subset of $A \times B$. Each of the $n(A) \times n(B)$ pairs can be <b>chosen</b> or <b>not chosen</b> (2 choices each).
+        <span class="tr">Setiap relasi dari $A$ ke $B$ adalah himpunan bagian dari $A \times B$. Setiap pasangan dari $n(A) \times n(B)$ pasangan bisa <b>dipilih</b> atau <b>tidak dipilih</b> (2 pilihan).</span></p>
+      <div class="formula"><div class="ft">Number of possible relations / Banyak relasi yang mungkin</div>
+        $$2^{\,n(A) \times n(B)}$$</div>
+      <p>Example: $A = \{1, 2\}$, $B = \{a\}$ → $A \times B = \{(1,a), (2,a)\}$ → $2^{2} = 4$ relations: $\varnothing$, $\{(1,a)\}$, $\{(2,a)\}$, $\{(1,a),(2,a)\}$.
+        <span class="tr">Contoh: ada $2^2 = 4$ relasi (termasuk relasi kosong $\varnothing$).</span></p>
+      <p>If $n(A) = 2$ and $n(B) = 2$: $n(A \times B) = 4$, so there are $2^4 = 16$ possible relations.<span class="tr">Jika $n(A) = 2$ dan $n(B) = 2$: ada $2^4 = 16$ relasi.</span></p>
+    </div>
+
+    <div class="ex"><span class="et">Strategy 5 — Range of a formula, step by step / Strategi 5 — Range dari rumus, langkah demi langkah</span>
+      <p>$y = x^2 + 1$ from $A = \{-1, 0, 1\}$.</p>
+      <div class="step"><span class="sn">1</span><div>Write the domain members: $-1, 0, 1$.<span class="tr">Tulis anggota domain.</span></div></div>
+      <div class="step"><span class="sn">2</span><div>Substitute each $x$: $(-1)^2 + 1 = 2$, $0^2 + 1 = 1$, $1^2 + 1 = 2$.<span class="tr">Substitusikan setiap $x$.</span></div></div>
+      <div class="step"><span class="sn">3</span><div>Write the ordered pairs: $(-1,2), (0,1), (1,2)$.<span class="tr">Tulis pasangan berurutannya.</span></div></div>
+      <div class="step"><span class="sn">4</span><div>Collect the $y$-values and remove repeats: $2, 1, 2 \to 1, 2$.<span class="tr">Kumpulkan nilai $y$ dan hapus pengulangan.</span></div></div>
+      <div class="step"><span class="sn">5</span><div>Write the range: $\{1, 2\}$.<span class="tr">Tulis range-nya: $\{1, 2\}$.</span></div></div>
+    </div>
+  </div>
+
+  <div class="qblock-title"><span style="font-size:1.5rem">✏️</span><h3>Exercises<span class="tr">Latihan</span></h3></div>
+
+  <div class="q" data-t="mc">
+    <div class="qq">The relation "factor of" goes from $K = \{1, 2, 3, 6\}$ to $K$ itself. How many ordered pairs does it have?
+      <span class="tr">Relasi "faktor dari" dari $K = \{1, 2, 3, 6\}$ ke $K$ sendiri. Berapa banyak pasangan berurutannya?</span></div>
+    <div class="qo">
+      <div class="o" data-c>$9$</div><div class="o">$8$</div><div class="o">$10$</div><div class="o">$7$</div>
+    </div>
+    <div class="qe">
+      <div class="tbwrap"><table class="tb">
+        <tr><th>$a \backslash b$</th><th>1</th><th>2</th><th>3</th><th>6</th></tr>
+        <tr><th>1</th><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td></tr>
+        <tr><th>2</th><td class="n">✗</td><td class="y">✓</td><td class="n">✗</td><td class="y">✓</td></tr>
+        <tr><th>3</th><td class="n">✗</td><td class="n">✗</td><td class="y">✓</td><td class="y">✓</td></tr>
+        <tr><th>6</th><td class="n">✗</td><td class="n">✗</td><td class="n">✗</td><td class="y">✓</td></tr>
+      </table></div>
+      <p>$4 + 2 + 2 + 1 = 9$ pairs. Don't forget pairs like $(2,2)$, $(3,3)$, $(6,6)$!<span class="tr">Jangan lupa pasangan seperti $(2,2)$, $(3,3)$, $(6,6)$!</span></p>
+    </div>
+  </div>
+
+  <div class="q" data-t="fill">
+    <div class="qq">The relation $R = \{(2, 5), (3, 7), (4, 9), (5, 11)\}$ follows the rule $y = 2x + c$. Find $c$.
+      <span class="tr">Relasi $R$ mengikuti aturan $y = 2x + c$. Tentukan $c$.</span></div>
+    <div class="qf"><div class="row">$c =$ <span class="blank" data-a="1"></span></div></div>
+    <div class="qe">
+      <div class="step"><span class="sn">1</span><div>Use $(2, 5)$: $5 = 2(2) + c \Rightarrow c = 5 - 4 = 1$.</div></div>
+      <div class="step"><span class="sn">2</span><div>Check: $2(3)+1 = 7$ ✓, $2(4)+1 = 9$ ✓, $2(5)+1 = 11$ ✓.</div></div>
+      <div class="ans">$c = 1$, so $y = 2x + 1$</div>
+    </div>
+  </div>
+
+  <div class="q" data-t="drag">
+    <div class="qq">The relation "half of" goes from $A = \{1, 2, 3, 4, 5\}$ to $B = \{2, 4, 6, 8, 10, 12, 14\}$. Drag each number into the correct group.
+      <span class="tr">Relasi "setengah dari" dari $A$ ke $B$. Seret setiap bilangan ke kelompok yang benar.</span></div>
+    <div class="qd">
+      <div class="bin">In the range<span class="tr">Anggota range</span></div>
+      <div class="bin">In the codomain but NOT in the range<span class="tr">Anggota kodomain tetapi BUKAN range</span></div>
+      <div class="chip" data-b="0">$4$</div><div class="chip" data-b="0">$6$</div><div class="chip" data-b="0">$8$</div>
+      <div class="chip" data-b="0">$10$</div><div class="chip" data-b="1">$12$</div><div class="chip" data-b="1">$14$</div>
+    </div>
+    <div class="qe">
+      <div class="step"><span class="sn">1</span><div>Pairs: $1\to2,\ 2\to4,\ 3\to6,\ 4\to8,\ 5\to10$.</div></div>
+      <div class="step"><span class="sn">2</span><div>Range $= \{2, 4, 6, 8, 10\}$. $12 = 2 \times 6$ and $14 = 2 \times 7$, but $6, 7 \notin A$ → 12 and 14 get no arrow.
+        <span class="tr">$12 = 2\times6$ dan $14 = 2\times 7$, tetapi $6, 7 \notin A$ → 12 dan 14 tidak mendapat panah.</span></div></div>
+    </div>
+  </div>
+
+  <div class="q" data-t="ms">
+    <div class="qq">$n(A) = 3$ and $n(B) = 2$. Select <b>all</b> true statements.<span class="tr">$n(A) = 3$ dan $n(B) = 2$. Pilih <b>semua</b> pernyataan yang benar.</span></div>
+    <div class="qo">
+      <div class="o" data-c>$n(A \times B) = 6$</div>
+      <div class="o" data-c>$n(B \times A) = 6$</div>
+      <div class="o" data-c>There are $64$ possible relations from $A$ to $B$.<span class="tr">Ada $64$ relasi yang mungkin dari $A$ ke $B$.</span></div>
+      <div class="o">$A \times B = B \times A$ always.<span class="tr">$A \times B = B \times A$ selalu.</span></div>
+      <div class="o">Every relation from $A$ to $B$ has exactly 6 pairs.<span class="tr">Setiap relasi dari $A$ ke $B$ memiliki tepat 6 pasangan.</span></div>
+    </div>
+    <div class="qe">
+      <ul>
+        <li>$n(A \times B) = 3 \times 2 = 6$ ✓ and $n(B \times A) = 2 \times 3 = 6$ ✓.</li>
+        <li>Possible relations $= 2^{6} = 64$ ✓.<span class="tr">Banyak relasi yang mungkin $= 2^6 = 64$.</span></li>
+        <li>$A \times B \neq B \times A$ in general (order in pairs changes) ✗.<span class="tr">Secara umum tidak sama ✗.</span></li>
+        <li>A relation is a <b>subset</b> of $A \times B$, so it can have 0 to 6 pairs ✗.<span class="tr">Relasi adalah himpunan bagian, jadi banyak pasangannya 0 sampai 6 ✗.</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="q" data-t="sort">
+    <div class="qq">Arrange the steps to find the range of $y = x^2 - 1$ from $A = \{-1, 0, 1, 2\}$.<span class="tr">Susun langkah-langkah menentukan range $y = x^2 - 1$ dari $A = \{-1, 0, 1, 2\}$.</span></div>
+    <div class="qs">
+      <div class="o">Write the domain members: $-1, 0, 1, 2$.<span class="tr">Tulis anggota domain.</span></div>
+      <div class="o">Substitute: $0, -1, 0, 3$.<span class="tr">Substitusikan setiap $x$.</span></div>
+      <div class="o">Write the pairs: $(-1,0), (0,-1), (1,0), (2,3)$.<span class="tr">Tulis pasangan berurutannya.</span></div>
+      <div class="o">Remove repeated $y$-values: $-1, 0, 3$.<span class="tr">Hapus nilai $y$ yang berulang.</span></div>
+      <div class="o">Range $= \{-1, 0, 3\}$.<span class="tr">Tulis range-nya.</span></div>
+    </div>
+    <div class="qe">
+      <p>$(-1)^2 - 1 = 0$, $0^2 - 1 = -1$, $1^2 - 1 = 0$, $2^2 - 1 = 3$. The value 0 appears twice, so the range is $\{-1, 0, 3\}$. This follows Strategy 5.
+        <span class="tr">Nilai 0 muncul dua kali, jadi range $= \{-1, 0, 3\}$. Ini mengikuti Strategi 5.</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== S7 CONSOLIDATION ===================== -->
+<section class="sec" id="s7" data-ql="Exit Ticket|Tiket Keluar">
+  <div class="sec-head">
+    <div><span class="time">⏱ 00:55 – 01:00</span><h2>🎯 Consolidation &amp; Reflection<span class="tr">Konsolidasi &amp; Refleksi</span></h2></div>
+    <div class="score"></div>
+  </div>
+
+  <div class="card">
+    <h3><span class="hi">⭐</span><span>Key Points<span class="tr">Poin Penting</span></span></h3>
+    <div class="kp">
+      <div><span class="kn">🔗</span><br><b>A relation</b> from $A$ to $B$ pairs members of $A$ with members of $B$. A member may have one, many, or no partner.
+        <span class="tr"><b>Relasi</b> dari $A$ ke $B$ memasangkan anggota $A$ dengan anggota $B$. Anggota boleh punya satu, banyak, atau tidak ada pasangan.</span></div>
+      <div><span class="kn">🖼️</span><br><b>Three ways</b>: arrow diagram, set of ordered pairs, Cartesian diagram.
+        <span class="tr"><b>Tiga cara</b>: diagram panah, himpunan pasangan berurutan, diagram Kartesius.</span></div>
+      <div><span class="kn">🗺️</span><br>Domain $= A$, Codomain $= B$, Range = members of $B$ that get a partner; Range $\subseteq$ Codomain.
+        <span class="tr">Domain $= A$, Kodomain $= B$, Range = anggota $B$ yang mendapat pasangan.</span></div>
+      <div><span class="kn">✖️</span><br>$n(A \times B) = n(A) \times n(B)$; a relation is a subset of $A \times B$.
+        <span class="tr">Relasi adalah himpunan bagian dari $A \times B$.</span></div>
+      <div><span class="kn">🔄</span><br>Order matters: $(a, b) \neq (b, a)$; "half of" $\neq$ "twice of".
+        <span class="tr">Urutan penting: $(a,b) \neq (b,a)$; "setengah dari" $\neq$ "dua kali dari".</span></div>
+      <div><span class="kn">🧮</span><br>Possible relations from $A$ to $B$: $2^{\,n(A)\times n(B)}$.
+        <span class="tr">Banyak relasi yang mungkin dari $A$ ke $B$: $2^{\,n(A)\times n(B)}$.</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="hi">💭</span><span>Reflection Questions<span class="tr">Pertanyaan Refleksi</span></span></h3>
+    <ol>
+      <li>Give one example of a relation in your daily life. What are set $A$, set $B$, and the relation name?
+        <span class="tr">Berikan satu contoh relasi dalam kehidupanmu sehari-hari. Apa himpunan $A$, himpunan $B$, dan nama relasinya?</span>
+        <textarea class="refl" placeholder="Write your answer... / Tulis jawabanmu..."></textarea></li>
+      <li>Which way of presenting a relation do you find the easiest? Why?
+        <span class="tr">Cara penyajian relasi mana yang menurutmu paling mudah? Mengapa?</span>
+        <textarea class="refl" placeholder="Write your answer... / Tulis jawabanmu..."></textarea></li>
+      <li>Explain the difference between the codomain and the range in your own words.
+        <span class="tr">Jelaskan perbedaan kodomain dan daerah hasil (range) dengan kata-katamu sendiri.</span>
+        <textarea class="refl" placeholder="Write your answer... / Tulis jawabanmu..."></textarea></li>
+      <li>What mistake might a friend make when naming a relation like "half of"? How can they avoid it?
+        <span class="tr">Kesalahan apa yang mungkin dilakukan temanmu saat memberi nama relasi seperti "setengah dari"? Bagaimana cara menghindarinya?</span>
+        <textarea class="refl" placeholder="Write your answer... / Tulis jawabanmu..."></textarea></li>
+    </ol>
+  </div>
+
+  <div class="qblock-title"><span style="font-size:1.5rem">🎟️</span><h3>Exit Ticket<span class="tr">Tiket Keluar</span></h3></div>
+
+  <div class="q" data-t="mc">
+    <div class="qq">$n(A) = 3$ and $n(B) = 4$. What is $n(A \times B)$?<span class="tr">$n(A) = 3$ dan $n(B) = 4$. Berapakah $n(A \times B)$?</span></div>
+    <div class="qo"><div class="o" data-c>$12$</div><div class="o">$7$</div><div class="o">$1$</div><div class="o">$81$</div></div>
+    <div class="qe"><p>$n(A \times B) = n(A) \times n(B) = 3 \times 4 = 12$. ($7$ is $3 + 4$ — adding is wrong; we multiply.)
+      <span class="tr">$7$ adalah $3 + 4$ — menjumlahkan itu salah; kita mengalikan.</span></p></div>
+  </div>
+
+  <div class="q" data-t="fill">
+    <div class="qq">The relation "two more than" goes from $A = \{3, 4, 5\}$ to $B = \{1, 2, 3, 4\}$. Write the range from smallest to largest.
+      <span class="tr">Relasi "dua lebihnya dari" dari $A = \{3, 4, 5\}$ ke $B = \{1, 2, 3, 4\}$. Tulis range dari terkecil ke terbesar.</span></div>
+    <div class="qf"><div class="row">Range $= \{$ <span class="blank" data-a="1"></span> , <span class="blank" data-a="2"></span> , <span class="blank" data-a="3"></span> $\}$</div></div>
+    <div class="qe">
+      <p>"$a$ is two more than $b$" means $a = b + 2$, so $b = a - 2$: $3 \to 1$, $4 \to 2$, $5 \to 3$.
+        <span class="tr">"$a$ dua lebihnya dari $b$" artinya $a = b + 2$, jadi $b = a - 2$.</span></p>
+      <div class="ans">Range $= \{1, 2, 3\}$ (4 gets no arrow / 4 tidak mendapat panah)</div>
+    </div>
+  </div>
+
+  <div class="q" data-t="tf" data-a="true">
+    <div class="qq">"For the relation 'factor of' from $\{2, 3\}$ to $\{4, 9\}$, the pairs are exactly $(2, 4)$ and $(3, 9)$."
+      <span class="tr">"Untuk relasi 'faktor dari' dari $\{2, 3\}$ ke $\{4, 9\}$, pasangannya tepat $(2, 4)$ dan $(3, 9)$."</span></div>
+    <div class="qe"><p>$4 \div 2 = 2$ ✓, $9 \div 2 = 4.5$ ✗, $4 \div 3 = 1.33$ ✗, $9 \div 3 = 3$ ✓. Only $(2,4)$ and $(3,9)$.
+      <span class="tr">Hanya $(2,4)$ dan $(3,9)$.</span></p><div class="ans">TRUE / BENAR</div></div>
+  </div>
+
+  <div class="card">
+    <h3><span class="hi">📚</span><span>Follow-Up Practice (Homework)<span class="tr">Latihan Lanjutan (Pekerjaan Rumah)</span></span></h3>
+    <ol>
+      <li>Present the relation "half of" from $A = \{1, 2, 3, 4, 5\}$ to $B = \{1, 2, \dots, 10\}$ in three ways.
+        <span class="tr">Sajikan relasi "setengah dari" dari $A$ ke $B$ dengan tiga cara.</span>
+        <details class="sol"><summary>Solution / Pembahasan</summary><div class="eb">
+          <p>$b = 2a$: $R = \{(1,2), (2,4), (3,6), (4,8), (5,10)\}$; Range $= \{2, 4, 6, 8, 10\}$.</p>
+          <div class="figrow"><div class="figbox"><div class="fig" data-fig="arrow" data-a="1|2|3|4|5" data-b="1|2|3|4|5|6|7|8|9|10" data-p="1>2;2>4;3>6;4>8;5>10" data-n="half of|setengah dari" data-la="A" data-lb="B"></div></div>
+            <div class="figbox"><div class="fig" data-fig="cart" data-x="1|2|3|4|5" data-y="1|2|3|4|5|6|7|8|9|10" data-p="1>2;2>4;3>6;4>8;5>10" data-lx="A" data-ly="B"></div></div></div>
+        </div></details></li>
+      <li>$n(A \times B) = 35$ and $n(B) = 7$. Find $n(A)$.<span class="tr">Tentukan $n(A)$.</span>
+        <details class="sol"><summary>Solution / Pembahasan</summary><div class="eb">$35 = n(A) \times 7 \Rightarrow n(A) = \dfrac{35}{7} = 5$.</div></details></li>
+      <li>The relation $y = 4 - x$ goes from $A = \{0, 1, 2, 3, 4\}$ to $B = \{0, 1, 2, 3, 4\}$. List the pairs and the range.
+        <span class="tr">Tuliskan pasangan dan range-nya.</span>
+        <details class="sol"><summary>Solution / Pembahasan</summary><div class="eb">
+          $4-0=4,\ 4-1=3,\ 4-2=2,\ 4-3=1,\ 4-4=0$ → $R = \{(0,4), (1,3), (2,2), (3,1), (4,0)\}$; Range $= \{0, 1, 2, 3, 4\}$ (= codomain / sama dengan kodomain).</div></details></li>
+      <li>How many pairs does "multiple of" from $P = \{4, 6, 8, 9\}$ to $Q = \{2, 3\}$ have?
+        <span class="tr">Berapa banyak pasangan relasi "kelipatan dari" dari $P$ ke $Q$?</span>
+        <details class="sol"><summary>Solution / Pembahasan</summary><div class="eb">
+          $4 = 2\times2$ ✓; $6 = 2\times3$ ✓ and $6 = 3\times2$ ✓; $8 = 2\times4$ ✓; $9 = 3\times3$ ✓. Not: $(4,3), (8,3), (9,2)$.<br>
+          $R = \{(4,2), (6,2), (6,3), (8,2), (9,3)\}$ → <b>5 pairs / 5 pasangan</b>.</div></details></li>
+      <li>$n(A) = 2$ and $n(B) = 2$. How many relations from $A$ to $B$ are possible?<span class="tr">Berapa banyak relasi yang mungkin dari $A$ ke $B$?</span>
+        <details class="sol"><summary>Solution / Pembahasan</summary><div class="eb">$n(A\times B) = 2 \times 2 = 4$ → $2^4 = 16$ relations / relasi.</div></details></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ===================== TASK 1 ===================== -->
+<section class="sec" id="t1" data-ql="Question|Soal">
+  <div class="sec-head">
+    <div><span class="time">📝 Task 1 · 10 questions / <i>Tugas 1 · 10 soal</i></span><h2>Task 1 — The Concept of Relations<span class="tr">Tugas 1 — Konsep Relasi</span></h2></div>
+    <div class="score"></div>
+  </div>
+
+  <div class="q" data-t="mc">
+    <div class="qq">$A = \{2, 3, 4\}$, $B = \{4, 6, 8\}$, and the relation is $\{(2, 4), (3, 6), (4, 8)\}$. What is the relation name?
+      <span class="tr">Relasinya adalah $\{(2, 4), (3, 6), (4, 8)\}$. Apa nama relasinya?</span></div>
+    <div class="qo">
+      <div class="o" data-c>half of<span class="tr">setengah dari</span></div>
+      <div class="o">twice of<span class="tr">dua kali dari</span></div>
+      <div class="o">factor of<span class="tr">faktor dari</span></div>
+      <div class="o">one more than<span class="tr">satu lebihnya dari</span></div>
+    </div>
+    <div class="qe">
+      <div class="step"><span class="sn">1</span><div>$4 = 2\times2$, $6 = 2\times3$, $8 = 2\times4$ → "2 is half of 4" ✓ for every pair.<span class="tr">"setengah dari" cocok untuk semua pasangan.</span></div></div>
+      <div class="step"><span class="sn">2</span><div>Why not "factor of"? With "factor of", 2 would also pair with 6 and 8 ($6\div2 = 3$, $8\div2 = 4$), and 4 with 8 — but $(2,6), (2,8)$ are not in the set. So "factor of" would give a <b>different</b> set.
+        <span class="tr">Mengapa bukan "faktor dari"? Dengan "faktor dari", 2 juga berpasangan dengan 6 dan 8 — tetapi $(2,6), (2,8)$ tidak ada di himpunan. Jadi hasilnya berbeda.</span></div></div>
+    </div>
+  </div>
+
+  <div class="q" data-t="tf" data-a="true">
+    <div class="qq">"A relation from set $A$ to set $B$ is a rule that pairs members of $A$ with members of $B$."
+      <span class="tr">"Relasi dari himpunan $A$ ke himpunan $B$ adalah aturan yang memasangkan anggota $A$ dengan anggota $B$."</span></div>
+    <div class="qe"><p>This is exactly the definition of a relation.<span class="tr">Ini tepat definisi relasi.</span></p><div class="ans">TRUE / BENAR</div></div>
+  </div>
+
+  <div class="q" data-t="ms">
+    <div class="qq">Look at the arrow diagram "has the hobby" from students to hobbies. Select <b>all</b> true statements.
+      <span class="tr">Perhatikan diagram panah "memiliki hobi" dari siswa ke hobi. Pilih <b>semua</b> pernyataan yang benar.</span>
+      <div class="figrow"><div class="figbox"><div class="fig" data-fig="arrow" data-a="Gilang|Hana|Intan|Joko" data-b="📖 Reading|🎨 Drawing|⚽ Football" data-p="Gilang>📖 Reading;Gilang>🎨 Drawing;Hana>⚽ Football;Intan>📖 Reading" data-n="has the hobby|memiliki hobi" data-la="Students" data-lb="Hobbies"></div></div></div></div>
+    <div class="qo">
+      <div class="o" data-c>Gilang has two hobbies in the diagram.<span class="tr">Gilang memiliki dua hobi dalam diagram.</span></div>
+      <div class="o" data-c>Joko is not paired with any hobby.<span class="tr">Joko tidak dipasangkan dengan hobi apa pun.</span></div>
+      <div class="o" data-c>Football is paired with Hana only.<span class="tr">Sepak bola hanya dipasangkan dengan Hana.</span></div>
+      <div class="o">Reading is paired with only one student.<span class="tr">Membaca hanya dipasangkan dengan satu siswa.</span></div>
+      <div class="o">Every student has exactly one hobby.<span class="tr">Setiap siswa memiliki tepat satu hobi.</span></div>
+    </div>
+    <div class="qe">
+      <p>Arrows: Gilang → Reading, Gilang → Drawing, Hana → Football, Intan → Reading. Joko has no arrow.
+        <span class="tr">Panah: Gilang → Membaca, Gilang → Menggambar, Hana → Sepak bola, Intan → Membaca. Joko tidak punya panah.</span></p>
+      <p>Reading receives 2 arrows (Gilang, Intan) ✗. Gilang has 2 hobbies and Joko has 0, so "exactly one" ✗.
+        <span class="tr">Membaca menerima 2 panah ✗. Gilang punya 2 hobi dan Joko 0, jadi "tepat satu" ✗.</span></p>
+    </div>
+  </div>
+
+  <div class="q" data-t="fill">
+    <div class="qq">The relation "two more than" goes from $P = \{3, 4, 5, 6\}$ to $Q = \{1, 2, 3, 4\}$.
+      <span class="tr">Relasi "dua lebihnya dari" dari $P = \{3, 4, 5, 6\}$ ke $Q = \{1, 2, 3, 4\}$.</span></div>
+    <div class="qf">
+      <div class="row">a) Number of pairs / Banyak pasangan $=$ <span class="blank" data-a="4"></span></div>
+      <div class="row">b) The partner of 5 / Pasangan dari 5 $=$ <span class="blank" data-a="3"></span></div>
+    </div>
+    <div class="qe">
+      <div class="step"><span class="sn">1</span><div>"$a$ is two more than $b$" → $a = b + 2$ → $b = a - 2$.</div></div>
+      <div class="step"><span class="sn">2</span><div>$3\to1$, $4\to2$, $5\to3$, $6\to4$ (all in $Q$) → 4 pairs. Partner of 5 is $5 - 2 = 3$.
+        <span class="tr">Semua ada di $Q$ → 4 pasangan. Pasangan 5 adalah $5 - 2 = 3$.</span></div></div>
+    </div>
+  </div>
+
+  <div class="q" data-t="pair">
+    <div class="qq">Match each set of ordered pairs with its relation name.<span class="tr">Pasangkan setiap himpunan pasangan berurutan dengan nama relasinya.</span></div>
+    <div class="qp">
+      <div class="pr"><div class="l">$\{(1,3), (2,6), (3,9)\}$</div><div class="r">one-third of<span class="tr">sepertiga dari</span></div></div>
+      <div class="pr"><div class="l">$\{(3,1), (6,2), (9,3)\}$</div><div class="r">three times<span class="tr">tiga kali dari</span></div></div>
+      <div class="pr"><div class="l">$\{(1,2), (2,3), (3,4)\}$</div><div class="r">one less than<span class="tr">satu kurangnya dari</span></div></div>
+      <div class="pr"><div class="l">$\{(5,4), (6,5), (7,6)\}$</div><div class="r">one more than<span class="tr">satu lebihnya dari</span></div></div>
+    </div>
+    <div class="qe">
+      <ul>
+        <li>$(1,3)$: $3 = 3\times1$ → 1 is <b>one-third of</b> 3.</li>
+        <li>$(3,1)$: $3 = 3\times1$ → 3 is <b>three times</b> 1.</li>
+        <li>$(1,2)$: $2 = 1 + 1$ → 1 is <b>one less than</b> 2.</li>
+        <li>$(5,4)$: $5 = 4 + 1$ → 5 is <b>one more than</b> 4.</li>
+      </ul>
+      <span class="tr">Selalu baca dari bilangan pertama ke bilangan kedua.</span>
+    </div>
+  </div>
+
+  <div class="q" data-t="mc">
+    <div class="qq">A relation from $\{\text{Bandung}, \text{Bogor}, \text{Malang}\}$ to $\{\text{West Java}, \text{East Java}\}$ has pairs (Bandung, West Java), (Bogor, West Java), (Malang, East Java). What is the best relation name?
+      <span class="tr">Relasi dari $\{\text{Bandung}, \text{Bogor}, \text{Malang}\}$ ke $\{\text{Jawa Barat}, \text{Jawa Timur}\}$ memiliki pasangan (Bandung, Jawa Barat), (Bogor, Jawa Barat), (Malang, Jawa Timur). Nama relasi yang paling tepat?</span></div>
+    <div class="qo">
+      <div class="o" data-c>is located in<span class="tr">terletak di</span></div>
+      <div class="o">is the capital of<span class="tr">ibu kota dari</span></div>
+      <div class="o">is larger than<span class="tr">lebih luas dari</span></div>
+      <div class="o">is next to<span class="tr">bersebelahan dengan</span></div>
+    </div>
+    <div class="qe">
+      <p>Test each pair as a sentence: "Bogor is located in West Java" ✓, "Malang is located in East Java" ✓.
+        <span class="tr">"Bogor terletak di Jawa Barat" ✓, "Malang terletak di Jawa Timur" ✓.</span></p>
+      <p>"is the capital of" fails: Bogor is not the capital of West Java and Malang is not the capital of East Java.
+        <span class="tr">"ibu kota dari" gagal: Bogor bukan ibu kota Jawa Barat dan Malang bukan ibu kota Jawa Timur.</span></p>
+    </div>
+  </div>
+
+  <div class="q" data-t="tf" data-a="true">
+    <div class="qq">"For the relation 'factor of' from $A = \{2, 3\}$ to $B = \{5, 7\}$, there are no arrows at all."
+      <span class="tr">"Untuk relasi 'faktor dari' dari $A = \{2, 3\}$ ke $B = \{5, 7\}$, tidak ada panah sama sekali."</span></div>
+    <div class="qe">
+      <p>$5 \div 2 = 2.5$, $7 \div 2 = 3.5$, $5 \div 3 = 1.67$, $7 \div 3 = 2.33$ — none is whole. The relation is empty: $R = \varnothing$. That is still a valid relation.
+        <span class="tr">Tidak ada yang bulat. Relasinya kosong: $R = \varnothing$. Itu tetap relasi yang sah.</span></p>
+      <div class="ans">TRUE / BENAR</div>
+    </div>
+  </div>
+
+  <div class="q" data-t="sort">
+    <div class="qq">Arrange the steps to draw an arrow diagram in the correct order.<span class="tr">Susun langkah-langkah menggambar diagram panah dengan urutan yang benar.</span></div>
+    <div class="qs">
+      <div class="o">Draw two ovals and label them $A$ and $B$.<span class="tr">Gambar dua oval dan beri label $A$ dan $B$.</span></div>
+      <div class="o">Write the members of $A$ in the left oval and the members of $B$ in the right oval.<span class="tr">Tulis anggota $A$ di oval kiri dan anggota $B$ di oval kanan.</span></div>
+      <div class="o">Test each pair $(a, b)$ with the relation rule.<span class="tr">Uji setiap pasangan $(a, b)$ dengan aturan relasi.</span></div>
+      <div class="o">Draw an arrow from $a$ to $b$ for every pair that passes the test.<span class="tr">Gambar panah dari $a$ ke $b$ untuk setiap pasangan yang lolos uji.</span></div>
+    </div>
+    <div class="qe"><p>We need the ovals before the members, the members before testing, and the test result before drawing arrows.
+      <span class="tr">Oval dulu, lalu anggota, lalu pengujian, baru menggambar panah.</span></p></div>
+  </div>
+
+  <div class="q" data-t="drag">
+    <div class="qq">The relation "factor of" goes from $A = \{2, 3, 5\}$ to $B = \{6, 10, 15\}$. Drag each pair into the correct group.
+      <span class="tr">Relasi "faktor dari" dari $A$ ke $B$. Seret setiap pasangan ke kelompok yang benar.</span></div>
+    <div class="qd">
+      <div class="bin">Member of the relation<span class="tr">Anggota relasi</span></div>
+      <div class="bin">Not a member<span class="tr">Bukan anggota</span></div>
+      <div class="chip" data-b="0">$(2, 6)$</div><div class="chip" data-b="1">$(2, 15)$</div><div class="chip" data-b="0">$(3, 15)$</div>
+      <div class="chip" data-b="1">$(3, 10)$</div><div class="chip" data-b="0">$(5, 10)$</div><div class="chip" data-b="1">$(5, 6)$</div>
+    </div>
+    <div class="qe"><ul>
+      <li>$6 \div 2 = 3$ ✓, $15 \div 3 = 5$ ✓, $10 \div 5 = 2$ ✓ → members.<span class="tr">anggota.</span></li>
+      <li>$15 \div 2 = 7.5$ ✗, $10 \div 3 = 3.33$ ✗, $6 \div 5 = 1.2$ ✗ → not members.<span class="tr">bukan anggota.</span></li>
+    </ul></div>
+  </div>
+
+  <div class="q" data-t="ms">
+    <div class="qq">The relation "is a multiple of" goes from $A = \{4, 6, 9\}$ to $B = \{2, 3\}$. Select <b>all</b> pairs of the relation.
+      <span class="tr">Relasi "kelipatan dari" dari $A = \{4, 6, 9\}$ ke $B = \{2, 3\}$. Pilih <b>semua</b> pasangan relasinya.</span></div>
+    <div class="qo">
+      <div class="o" data-c>$(4, 2)$</div><div class="o">$(4, 3)$</div><div class="o" data-c>$(6, 2)$</div>
+      <div class="o" data-c>$(6, 3)$</div><div class="o" data-c>$(9, 3)$</div><div class="o">$(9, 2)$</div>
+    </div>
+    <div class="qe"><ul>
+      <li>$4 = 2 \times 2$ ✓; $4 = 3 \times k$? no ✗</li>
+      <li>$6 = 2 \times 3$ ✓; $6 = 3 \times 2$ ✓</li>
+      <li>$9 = 3 \times 3$ ✓; $9 = 2 \times 4.5$ ✗</li>
+    </ul><div class="ans">$\{(4,2), (6,2), (6,3), (9,3)\}$</div></div>
+  </div>
+</section>
+
+<!-- ===================== TASK 2 ===================== -->
+<section class="sec" id="t2" data-ql="Question|Soal">
+  <div class="sec-head">
+    <div><span class="time">📝 Task 2 · 10 questions / <i>Tugas 2 · 10 soal</i></span><h2>Task 2 — Ordered Pairs &amp; Cartesian Product<span class="tr">Tugas 2 — Pasangan Berurutan &amp; Produk Kartesius</span></h2></div>
+    <div class="score"></div>
+  </div>
+
+  <div class="q" data-t="fill">
+    <div class="qq">$n(A) = 3$ and $n(B) = 7$. Find $n(A \times B)$.<span class="tr">Tentukan $n(A \times B)$.</span></div>
+    <div class="qf"><div class="row">$n(A \times B) =$ <span class="blank" data-a="21"></span></div></div>
+    <div class="qe"><p>$n(A \times B) = n(A) \times n(B) = 3 \times 7 = 21$.</p></div>
+  </div>
+
+  <div class="q" data-t="mc">
+    <div class="qq">$A = \{p, q\}$ and $B = \{1, 2, 3\}$. Which one is $B \times A$?<span class="tr">Manakah $B \times A$?</span></div>
+    <div class="qo">
+      <div class="o" data-c>$\{(1,p), (1,q), (2,p), (2,q), (3,p), (3,q)\}$</div>
+      <div class="o">$\{(p,1), (p,2), (p,3), (q,1), (q,2), (q,3)\}$</div>
+      <div class="o">$\{(p,1), (q,2)\}$</div>
+      <div class="o">$\{(1,p), (2,q), (3,p)\}$</div>
+    </div>
+    <div class="qe">
+      <p>In $B \times A$ the <b>first</b> member comes from $B$ and the <b>second</b> from $A$. Pair each of $1, 2, 3$ with both $p$ and $q$: $3 \times 2 = 6$ pairs.
+        <span class="tr">Pada $B \times A$, anggota <b>pertama</b> dari $B$ dan <b>kedua</b> dari $A$. Pasangkan $1, 2, 3$ masing-masing dengan $p$ dan $q$.</span></p>
+      <p>The option starting with $(p,1)$ is $A \times B$.<span class="tr">Pilihan yang diawali $(p,1)$ adalah $A \times B$.</span></p>
+    </div>
+  </div>
+
+  <div class="q" data-t="tf" data-a="true">
+    <div class="qq">"If $A = \{1, 2\}$ and $B = \{1, 2\}$, then $A \times B$ has 4 members, including $(1, 1)$ and $(2, 2)$."
+      <span class="tr">"Jika $A = \{1, 2\}$ dan $B = \{1, 2\}$, maka $A \times B$ memiliki 4 anggota, termasuk $(1,1)$ dan $(2,2)$."</span></div>
+    <div class="qe"><p>$A \times B = \{(1,1), (1,2), (2,1), (2,2)\}$ → $2 \times 2 = 4$ members, and both $(1,1)$ and $(2,2)$ are there.
+      <span class="tr">Ada 4 anggota, dan $(1,1)$ serta $(2,2)$ termasuk di dalamnya.</span></p><div class="ans">TRUE / BENAR</div></div>
+  </div>
+
+  <div class="q" data-t="ms">
+    <div class="qq">$A = \{x \mid x \text{ even}, 1 \lt x \lt 7\}$ and $B = \{1, 3\}$. Select <b>all</b> members of $A \times B$.
+      <span class="tr">$A = \{x \mid x \text{ genap}, 1 \lt x \lt 7\}$ dan $B = \{1, 3\}$. Pilih <b>semua</b> anggota $A \times B$.</span></div>
+    <div class="qo">
+      <div class="o" data-c>$(2, 1)$</div><div class="o" data-c>$(4, 3)$</div><div class="o" data-c>$(6, 1)$</div>
+      <div class="o">$(3, 4)$</div><div class="o">$(5, 1)$</div><div class="o">$(6, 6)$</div>
+    </div>
+    <div class="qe">
+      <div class="step"><span class="sn">1</span><div>$A = \{2, 4, 6\}$ (even numbers between 1 and 7).<span class="tr">$A = \{2, 4, 6\}$ (bilangan genap antara 1 dan 7).</span></div></div>
+      <div class="step"><span class="sn">2</span><div>First $\in \{2,4,6\}$, second $\in \{1,3\}$: $(2,1)$ ✓, $(4,3)$ ✓, $(6,1)$ ✓.<br>$(3,4)$ ✗ ($3 \notin A$), $(5,1)$ ✗ ($5 \notin A$), $(6,6)$ ✗ ($6 \notin B$).</div></div>
+    </div>
+  </div>
+
+  <div class="q" data-t="pair">
+    <div class="qq">Match each point with its coordinates.<span class="tr">Pasangkan setiap titik dengan koordinatnya.</span>
+      <div class="figrow"><div class="figbox"><div class="fig" data-fig="plane" data-max="5" data-pts="A:1,4;B:4,1;C:3,3;D:0,2"></div></div></div></div>
+    <div class="qp">
+      <div class="pr"><div class="l">Point / Titik $A$</div><div class="r">$(1, 4)$</div></div>
+      <div class="pr"><div class="l">Point / Titik $B$</div><div class="r">$(4, 1)$</div></div>
+      <div class="pr"><div class="l">Point / Titik $C$</div><div class="r">$(3, 3)$</div></div>
+      <div class="pr"><div class="l">Point / Titik $D$</div><div class="r">$(0, 2)$</div></div>
+    </div>
+    <div class="qe"><p>Read right first ($x$), then up ($y$). $A$: 1 right, 4 up. $B$: 4 right, 1 up. $C$: 3 right, 3 up. $D$ is on the vertical axis, 2 up → $(0, 2)$.
+      <span class="tr">Baca ke kanan dulu ($x$), lalu ke atas ($y$). $D$ ada di sumbu tegak → $x = 0$.</span></p></div>
+  </div>
+
+  <div class="q" data-t="fill">
+    <div class="qq">$n(A \times B) = 24$ and $n(A) = 6$. Find $n(B)$.<span class="tr">Tentukan $n(B)$.</span></div>
+    <div class="qf"><div class="row">$n(B) =$ <span class="blank" data-a="4"></span></div></div>
+    <div class="qe"><p>$24 = 6 \times n(B) \Rightarrow n(B) = \dfrac{24}{6} = 4$.</p></div>
+  </div>
+
+  <div class="q" data-t="tf" data-a="false">
+    <div class="qq">"$A \times B = B \times A$ for all sets $A$ and $B$."<span class="tr">"$A \times B = B \times A$ untuk semua himpunan $A$ dan $B$."</span></div>
+    <div class="qe"><p>Counter-example: $A = \{1\}$, $B = \{2\}$. $A \times B = \{(1,2)\}$ but $B \times A = \{(2,1)\}$, and $(1,2) \neq (2,1)$.
+      <span class="tr">Contoh penyangkal: $A \times B = \{(1,2)\}$ tetapi $B \times A = \{(2,1)\}$. Hanya banyak anggotanya yang selalu sama.</span></p><div class="ans">FALSE / SALAH</div></div>
+  </div>
+
+  <div class="q" data-t="drag">
+    <div class="qq">$A = \{1, 2\}$ and $B = \{2, 3\}$. Drag each ordered pair into the correct group.<span class="tr">Seret setiap pasangan berurutan ke kelompok yang benar.</span></div>
+    <div class="qd">
+      <div class="bin">Only in $A \times B$<span class="tr">Hanya di $A \times B$</span></div>
+      <div class="bin">Only in $B \times A$<span class="tr">Hanya di $B \times A$</span></div>
+      <div class="bin">In both<span class="tr">Di keduanya</span></div>
+      <div class="chip" data-b="0">$(1, 2)$</div><div class="chip" data-b="0">$(1, 3)$</div><div class="chip" data-b="0">$(2, 3)$</div>
+      <div class="chip" data-b="1">$(2, 1)$</div><div class="chip" data-b="1">$(3, 1)$</div><div class="chip" data-b="2">$(2, 2)$</div>
+    </div>
+    <div class="qe">
+      <p>$A \times B = \{(1,2), (1,3), (2,2), (2,3)\}$</p>
+      <p>$B \times A = \{(2,1), (2,2), (3,1), (3,2)\}$</p>
+      <p>Only $(2, 2)$ is in both, because $2$ belongs to both $A$ and $B$.<span class="tr">Hanya $(2,2)$ yang ada di keduanya, karena 2 anggota $A$ sekaligus $B$.</span></p>
+    </div>
+  </div>
+
+  <div class="q" data-t="sort">
+    <div class="qq">Arrange from the <b>smallest</b> to the <b>largest</b> value of $n(A \times B)$.<span class="tr">Urutkan dari nilai $n(A \times B)$ <b>terkecil</b> ke <b>terbesar</b>.</span></div>
+    <div class="qs">
+      <div class="o">$n(A) = 2,\ n(B) = 3$</div>
+      <div class="o">$n(A) = 3,\ n(B) = 3$</div>
+      <div class="o">$n(A) = 5,\ n(B) = 2$</div>
+      <div class="o">$n(A) = 4,\ n(B) = 4$</div>
+    </div>
+    <div class="qe"><p>Multiply: $2\times3 = 6$, $3\times3 = 9$, $5\times2 = 10$, $4\times4 = 16$. Order: $6 \lt 9 \lt 10 \lt 16$.
+      <span class="tr">Kalikan, lalu urutkan.</span></p></div>
+  </div>
+
+  <div class="q" data-t="mc">
+    <div class="qq">A point is 3 units to the right of the origin and 5 units up. What are its coordinates?
+      <span class="tr">Sebuah titik berada 3 satuan ke kanan dari titik asal dan 5 satuan ke atas. Apa koordinatnya?</span></div>
+    <div class="qo"><div class="o" data-c>$(3, 5)$</div><div class="o">$(5, 3)$</div><div class="o">$(-3, 5)$</div><div class="o">$(3, -5)$</div></div>
+    <div class="qe"><p>Right is the $x$-value (first), up is the $y$-value (second): $(3, 5)$. Left or down would give negative numbers.
+      <span class="tr">Ke kanan = nilai $x$ (pertama), ke atas = nilai $y$ (kedua). Ke kiri atau ke bawah memberi bilangan negatif.</span></p></div>
+  </div>
+</section>
+
+<!-- ===================== TASK 3 ===================== -->
+<section class="sec" id="t3" data-ql="Question|Soal">
+  <div class="sec-head">
+    <div><span class="time">📝 Task 3 · 10 questions / <i>Tugas 3 · 10 soal</i></span><h2>Task 3 — Presenting Relations; Domain, Codomain, Range<span class="tr">Tugas 3 — Penyajian Relasi; Domain, Kodomain, Range</span></h2></div>
+    <div class="score"></div>
+  </div>
+
+  <div class="q" data-t="mc">
+    <div class="qq">Look at the arrow diagram. What is the range?<span class="tr">Perhatikan diagram panah. Apa daerah hasilnya?</span>
+      <div class="figrow"><div class="figbox"><div class="fig" data-fig="arrow" data-a="1|2|3|4" data-b="1|2|3|4|5|6" data-p="1>2;2>4;3>6" data-n="half of|setengah dari" data-la="A" data-lb="B"></div></div></div></div>
+    <div class="qo">
+      <div class="o" data-c>$\{2, 4, 6\}$</div><div class="o">$\{1, 2, 3, 4, 5, 6\}$</div><div class="o">$\{1, 2, 3\}$</div><div class="o">$\{2, 4, 6, 8\}$</div>
+    </div>
+    <div class="qe">
+      <p>Members of $B$ that receive an arrow: 2, 4, 6. The member 4 of $A$ would need partner 8, but $8 \notin B$, so 4 has no arrow. $\{1,\dots,6\}$ is the codomain.
+        <span class="tr">Anggota $B$ yang menerima panah: 2, 4, 6. Anggota 4 di $A$ butuh pasangan 8, tetapi $8 \notin B$. $\{1,\dots,6\}$ adalah kodomain.</span></p>
+    </div>
+  </div>
+
+  <div class="q" data-t="fill">
+    <div class="qq">Look at the Cartesian diagram of a relation from $A = \{1, 2, 3, 4\}$ to $B = \{1, 2, 3, 4, 5\}$.
+      <span class="tr">Perhatikan diagram Kartesius relasi dari $A$ ke $B$.</span>
+      <div class="figrow"><div class="figbox"><div class="fig" data-fig="cart" data-x="1|2|3|4" data-y="1|2|3|4|5" data-p="1>2;2>2;3>4;4>5" data-lx="A" data-ly="B"></div></div></div></div>
+    <div class="qf">
+      <div class="row">a) $n(\text{codomain}) =$ <span class="blank" data-a="5"></span></div>
+      <div class="row">b) $n(\text{range}) =$ <span class="blank" data-a="3"></span></div>
+    </div>
+    <div class="qe">
+      <div class="step"><span class="sn">1</span><div>Dots: $(1,2), (2,2), (3,4), (4,5)$.</div></div>
+      <div class="step"><span class="sn">2</span><div>Codomain $= B = \{1,2,3,4,5\}$ → 5 members.<span class="tr">Kodomain $= B$ → 5 anggota.</span></div></div>
+      <div class="step"><span class="sn">3</span><div>Second members: $2, 2, 4, 5$ → remove repeat → Range $= \{2, 4, 5\}$ → 3 members.
+        <span class="tr">Anggota kedua: $2, 2, 4, 5$ → hapus pengulangan → 3 anggota.</span></div></div>
+    </div>
+  </div>
+
+  <div class="q" data-t="tf" data-a="true">
+    <div class="qq">"The relation $R = \{(2, 3), (4, 5), (6, 7)\}$ from $A = \{2, 4, 6\}$ to $B = \{1, 3, 5, 7, 9\}$ has range $\{3, 5, 7\}$."
+      <span class="tr">"Relasi $R$ dari $A$ ke $B$ memiliki range $\{3, 5, 7\}$."</span></div>
+    <div class="qe"><p>Second members of the pairs: 3, 5, 7. The numbers 1 and 9 get no partner.<span class="tr">Anggota kedua pasangan: 3, 5, 7. Bilangan 1 dan 9 tidak mendapat pasangan.</span></p><div class="ans">TRUE / BENAR</div></div>
+  </div>
+
+  <div class="q" data-t="drag">
+    <div class="qq">Drag each description to the correct term.<span class="tr">Seret setiap deskripsi ke istilah yang tepat.</span></div>
+    <div class="qd">
+      <div class="bin">Domain<span class="tr">Daerah asal</span></div>
+      <div class="bin">Codomain<span class="tr">Daerah kawan</span></div>
+      <div class="bin">Range<span class="tr">Daerah hasil</span></div>
+      <div class="chip" data-b="0">The whole set $A$<span class="tr">Seluruh himpunan $A$</span></div>
+      <div class="chip" data-b="0">The set the arrows start from<span class="tr">Himpunan tempat panah berangkat</span></div>
+      <div class="chip" data-b="1">The whole set $B$<span class="tr">Seluruh himpunan $B$</span></div>
+      <div class="chip" data-b="1">All possible partners, used or not<span class="tr">Semua calon pasangan, terpakai atau tidak</span></div>
+      <div class="chip" data-b="2">Members of $B$ that receive an arrow<span class="tr">Anggota $B$ yang menerima panah</span></div>
+      <div class="chip" data-b="2">Always a subset of the codomain<span class="tr">Selalu himpunan bagian dari kodomain</span></div>
+    </div>
+    <div class="qe"><ul>
+      <li><b>Domain</b> = set $A$, where arrows start.<span class="tr">Domain = himpunan $A$, tempat panah berangkat.</span></li>
+      <li><b>Codomain</b> = set $B$, every possible partner.<span class="tr">Kodomain = himpunan $B$, semua calon pasangan.</span></li>
+      <li><b>Range</b> = only the members of $B$ that actually get an arrow, so Range $\subseteq$ Codomain.<span class="tr">Range = hanya anggota $B$ yang benar-benar mendapat panah.</span></li>
+    </ul></div>
+  </div>
+
+  <div class="q" data-t="mc">
+    <div class="qq">The Cartesian diagram shows a relation from $A = \{1, 2, 3\}$ to $B = \{1, 2, 3, 4, 5, 6\}$. What is the relation name?
+      <span class="tr">Diagram Kartesius menunjukkan relasi dari $A$ ke $B$. Apa nama relasinya?</span>
+      <div class="figrow"><div class="figbox"><div class="fig" data-fig="cart" data-x="1|2|3" data-y="1|2|3|4|5|6" data-p="1>3;2>4;3>5" data-lx="A" data-ly="B"></div></div></div></div>
+    <div class="qo">
+      <div class="o" data-c>two less than<span class="tr">dua kurangnya dari</span></div>
+      <div class="o">two more than<span class="tr">dua lebihnya dari</span></div>
+      <div class="o">half of<span class="tr">setengah dari</span></div>
+      <div class="o">factor of<span class="tr">faktor dari</span></div>
+    </div>
+    <div class="qe">
+      <div class="step"><span class="sn">1</span><div>Read the dots: $(1,3), (2,4), (3,5)$.<span class="tr">Baca noktah: $(1,3), (2,4), (3,5)$.</span></div></div>
+      <div class="step"><span class="sn">2</span><div>$1 + 2 = 3$, $2 + 2 = 4$, $3 + 2 = 5$ → "two less than" ✓.</div></div>
+      <div class="step"><span class="sn">3</span><div>"factor of" would also give $(1,1), (1,2), \dots, (2,2), (2,6), (3,6)$… and $5 \div 3$ is not whole ✗.
+        <span class="tr">"faktor dari" akan memberi pasangan lain juga, dan $5 \div 3$ tidak bulat ✗.</span></div></div>
+    </div>
+  </div>
+
+  <div class="q" data-t="ms">
+    <div class="qq">The relation $R = \{(a, 1), (b, 1), (c, 3)\}$ goes from $A = \{a, b, c, d\}$ to $B = \{1, 2, 3\}$. Select <b>all</b> true statements.
+      <span class="tr">Relasi $R$ dari $A$ ke $B$. Pilih <b>semua</b> pernyataan yang benar.</span></div>
+    <div class="qo">
+      <div class="o" data-c>Range $= \{1, 3\}$</div>
+      <div class="o" data-c>Codomain $= \{1, 2, 3\}$</div>
+      <div class="o" data-c>$d$ has no partner.<span class="tr">$d$ tidak punya pasangan.</span></div>
+      <div class="o">$2$ is in the range.<span class="tr">$2$ anggota range.</span></div>
+      <div class="o">Range $= \{1, 2, 3\}$</div>
+    </div>
+    <div class="qe">
+      <p>Second members: $1, 1, 3$ → Range $= \{1, 3\}$. Codomain $= B = \{1,2,3\}$. $d$ appears in no pair. 2 gets no arrow, so it is <b>not</b> in the range.
+        <span class="tr">Anggota kedua: $1, 1, 3$ → Range $= \{1, 3\}$. $d$ tidak muncul di pasangan mana pun. 2 tidak mendapat panah, jadi <b>bukan</b> anggota range.</span></p>
+    </div>
+  </div>
+
+  <div class="q" data-t="fill">
+    <div class="qq">The relation "square of" goes from $A = \{1, 4, 9, 16\}$ to $B = \{1, 2, 3, 4, 5\}$. Write the range from smallest to largest.
+      <span class="tr">Relasi "kuadrat dari" dari $A$ ke $B$. Tulis range dari terkecil ke terbesar.</span></div>
+    <div class="qf"><div class="row">Range $= \{$ <span class="blank" data-a="1"></span> , <span class="blank" data-a="2"></span> , <span class="blank" data-a="3"></span> , <span class="blank" data-a="4"></span> $\}$</div></div>
+    <div class="qe">
+      <p>"$a$ is the square of $b$" means $a = b^2$: $1 = 1^2$, $4 = 2^2$, $9 = 3^2$, $16 = 4^2$.
+        <span class="tr">"$a$ kuadrat dari $b$" artinya $a = b^2$.</span></p>
+      <p>Pairs: $(1,1), (4,2), (9,3), (16,4)$ → Range $= \{1, 2, 3, 4\}$. (5 gets no arrow since $25 \notin A$.)
+        <span class="tr">5 tidak mendapat panah karena $25 \notin A$.</span></p>
+    </div>
+  </div>
+
+  <div class="q" data-t="sort">
+    <div class="qq">Arrange the steps to find the range from an arrow diagram.<span class="tr">Susun langkah-langkah menentukan range dari diagram panah.</span></div>
+    <div class="qs">
+      <div class="o">Identify set $B$ (the codomain, right oval).<span class="tr">Kenali himpunan $B$ (kodomain, oval kanan).</span></div>
+      <div class="o">Look at each member of $B$ one by one.<span class="tr">Perhatikan setiap anggota $B$ satu per satu.</span></div>
+      <div class="o">Keep only the members that receive at least one arrow.<span class="tr">Ambil hanya anggota yang menerima paling sedikit satu panah.</span></div>
+      <div class="o">Write those members in set notation.<span class="tr">Tulis anggota-anggota itu dalam notasi himpunan.</span></div>
+    </div>
+    <div class="qe"><p>The range lives inside $B$, so start from $B$, check each member for arrows, keep those with arrows, and finally write the set.
+      <span class="tr">Range berada di dalam $B$, jadi mulai dari $B$, cek panah tiap anggota, ambil yang berpanah, lalu tulis himpunannya.</span></p></div>
+  </div>
+
+  <div class="q" data-t="pair">
+    <div class="qq">Match each relation with its range.<span class="tr">Pasangkan setiap relasi dengan range-nya.</span></div>
+    <div class="qp">
+      <div class="pr"><div class="l">$\{(1,2), (2,2), (3,4)\}$</div><div class="r">$\{2, 4\}$</div></div>
+      <div class="pr"><div class="l">$\{(1,1), (2,3), (3,5)\}$</div><div class="r">$\{1, 3, 5\}$</div></div>
+      <div class="pr"><div class="l">$\{(1,5), (2,5), (3,5)\}$</div><div class="r">$\{5\}$</div></div>
+      <div class="pr"><div class="l">$\{(2,1), (2,3), (4,3)\}$</div><div class="r">$\{1, 3\}$</div></div>
+    </div>
+    <div class="qe"><p>Take the second member of every pair and remove repeats:<span class="tr">Ambil anggota kedua setiap pasangan dan hapus pengulangan:</span></p>
+      <ul><li>$2, 2, 4 \to \{2,4\}$</li><li>$1, 3, 5 \to \{1,3,5\}$</li><li>$5, 5, 5 \to \{5\}$</li><li>$1, 3, 3 \to \{1,3\}$</li></ul></div>
+  </div>
+
+  <div class="q" data-t="tf" data-a="false">
+    <div class="qq">"The range of a relation can have more members than its codomain."<span class="tr">"Range suatu relasi bisa memiliki anggota lebih banyak daripada kodomainnya."</span></div>
+    <div class="qe"><p>Range $\subseteq$ Codomain, so $n(\text{range}) \le n(\text{codomain})$. It can be equal or smaller, never bigger.
+      <span class="tr">Range himpunan bagian dari kodomain, jadi banyak anggotanya bisa sama atau lebih sedikit, tidak pernah lebih banyak.</span></p><div class="ans">FALSE / SALAH</div></div>
+  </div>
+</section>
+
+<!-- ===================== TASK 4 ===================== -->
+<section class="sec" id="t4" data-ql="Question|Soal">
+  <div class="sec-head">
+    <div><span class="time">📝 Task 4 · 10 questions / <i>Tugas 4 · 10 soal</i></span><h2>Task 4 — Relations from Rules and Formulas<span class="tr">Tugas 4 — Relasi dari Aturan dan Rumus</span></h2></div>
+    <div class="score"></div>
+  </div>
+
+  <div class="q" data-t="mc">
+    <div class="qq">The relation $y = 2x - 1$ goes from $A = \{1, 2, 3, 4\}$. Which set of ordered pairs is correct?
+      <span class="tr">Relasi $y = 2x - 1$ dari $A = \{1, 2, 3, 4\}$. Himpunan pasangan berurutan mana yang benar?</span></div>
+    <div class="qo">
+      <div class="o" data-c>$\{(1,1), (2,3), (3,5), (4,7)\}$</div>
+      <div class="o">$\{(1,3), (2,5), (3,7), (4,9)\}$</div>
+      <div class="o">$\{(1,1), (2,2), (3,3), (4,4)\}$</div>
+      <div class="o">$\{(1,0), (2,1), (3,2), (4,3)\}$</div>
+    </div>
+    <div class="qe">
+      $$\begin{aligned} x=1 &: 2(1)-1 = 1\\ x=2 &: 2(2)-1 = 3\\ x=3 &: 2(3)-1 = 5\\ x=4 &: 2(4)-1 = 7 \end{aligned}$$
+      <p>$\{(1,3),\dots\}$ comes from $y = 2x + 1$; $\{(1,0),\dots\}$ comes from $y = x - 1$.<span class="tr">Pilihan lain berasal dari rumus yang berbeda.</span></p>
+    </div>
+  </div>
+
+  <div class="q" data-t="fill">
+    <div class="qq">The relation "factor of" goes from $A = \{1, 2, 3, 4, 5, 6\}$ to $A$ itself. How many ordered pairs are there?
+      <span class="tr">Relasi "faktor dari" dari $A = \{1, 2, 3, 4, 5, 6\}$ ke $A$ sendiri. Berapa banyak pasangan berurutannya?</span></div>
+    <div class="qf"><div class="row">Number of pairs / Banyak pasangan $=$ <span class="blank" data-a="14"></span></div></div>
+    <div class="qe">
+      <ul>
+        <li>1 → 1, 2, 3, 4, 5, 6 (6 pairs)</li>
+        <li>2 → 2, 4, 6 (3 pairs)</li>
+        <li>3 → 3, 6 (2 pairs)</li>
+        <li>4 → 4 (1) · 5 → 5 (1) · 6 → 6 (1)</li>
+      </ul>
+      <p>$6 + 3 + 2 + 1 + 1 + 1 = 14$</p>
+    </div>
+  </div>
+
+  <div class="q" data-t="ms">
+    <div class="qq">The relation $x + y = 6$ goes from $A = \{1, 2, 3, 4\}$ to $B = \{2, 3, 4, 5\}$. Select <b>all</b> pairs of the relation.
+      <span class="tr">Relasi $x + y = 6$ dari $A$ ke $B$. Pilih <b>semua</b> pasangan relasinya.</span></div>
+    <div class="qo">
+      <div class="o" data-c>$(1, 5)$</div><div class="o" data-c>$(2, 4)$</div><div class="o" data-c>$(3, 3)$</div>
+      <div class="o" data-c>$(4, 2)$</div><div class="o">$(2, 3)$</div><div class="o">$(5, 1)$</div>
+    </div>
+    <div class="qe">
+      <p>$y = 6 - x$: $1\to5$, $2\to4$, $3\to3$, $4\to2$ — all in $B$ ✓.<span class="tr">Semua ada di $B$.</span></p>
+      <p>$(2,3)$: $2 + 3 = 5 \neq 6$ ✗. $(5,1)$: $5 \notin A$ (and $1 \notin B$) ✗.</p>
+    </div>
+  </div>
+
+  <div class="q" data-t="tf" data-a="true">
+    <div class="qq">"For the relation $y = x^2$ from $A = \{-2, -1, 0, 1, 2\}$ to $B = \{0, 1, 2, 3, 4\}$, the members $-2$ and $2$ have the same partner."
+      <span class="tr">"Untuk relasi $y = x^2$ dari $A$ ke $B$, anggota $-2$ dan $2$ memiliki pasangan yang sama."</span></div>
+    <div class="qe"><p>$(-2)^2 = 4$ and $2^2 = 4$. Both are paired with 4.<span class="tr">Keduanya dipasangkan dengan 4.</span></p><div class="ans">TRUE / BENAR</div></div>
+  </div>
+
+  <div class="q" data-t="pair">
+    <div class="qq">Each relation goes from $A = \{3, 4, 5\}$. Match each formula with its ordered pairs.
+      <span class="tr">Setiap relasi dari $A = \{3, 4, 5\}$. Pasangkan setiap rumus dengan pasangan berurutannya.</span></div>
+    <div class="qp">
+      <div class="pr"><div class="l">$y = x - 2$</div><div class="r">$\{(3,1), (4,2), (5,3)\}$</div></div>
+      <div class="pr"><div class="l">$y = 2x - 2$</div><div class="r">$\{(3,4), (4,6), (5,8)\}$</div></div>
+      <div class="pr"><div class="l">$y = x + 2$</div><div class="r">$\{(3,5), (4,6), (5,7)\}$</div></div>
+      <div class="pr"><div class="l">$y = 10 - x$</div><div class="r">$\{(3,7), (4,6), (5,5)\}$</div></div>
+    </div>
+    <div class="qe"><ul>
+      <li>$y = x - 2$: $1, 2, 3$</li>
+      <li>$y = 2x - 2$: $2(3)-2 = 4,\ 2(4)-2 = 6,\ 2(5)-2 = 8$</li>
+      <li>$y = x + 2$: $5, 6, 7$</li>
+      <li>$y = 10 - x$: $7, 6, 5$</li>
+    </ul><span class="tr">Pasangan $(4,6)$ muncul di tiga himpunan, jadi periksa semua pasangan!</span></div>
+  </div>
+
+  <div class="q" data-t="fill">
+    <div class="qq">The relation is $y = 3x + 2$.<span class="tr">Relasinya adalah $y = 3x + 2$.</span></div>
+    <div class="qf">
+      <div class="row">a) The partner of $x = 4$ is / Pasangan dari $x = 4$ adalah <span class="blank" data-a="14"></span></div>
+      <div class="row">b) The value of $x$ whose partner is $11$ / Nilai $x$ yang pasangannya $11$ adalah <span class="blank" data-a="3"></span></div>
+    </div>
+    <div class="qe">
+      <p>a) $y = 3(4) + 2 = 12 + 2 = 14$.</p>
+      <p>b) $11 = 3x + 2 \Rightarrow 3x = 9 \Rightarrow x = 3$. Check: $3(3) + 2 = 11$ ✓.</p>
+    </div>
+  </div>
+
+  <div class="q" data-t="mc">
+    <div class="qq">The relation "less than" goes from $A = \{2, 4, 6\}$ to $B = \{3, 5, 7\}$. How many ordered pairs are there?
+      <span class="tr">Relasi "kurang dari" dari $A$ ke $B$. Berapa banyak pasangan berurutannya?</span></div>
+    <div class="qo"><div class="o" data-c>$6$</div><div class="o">$5$</div><div class="o">$9$</div><div class="o">$3$</div></div>
+    <div class="qe"><p>$2 \lt 3, 5, 7$ (3 pairs); $4 \lt 5, 7$ (2 pairs); $6 \lt 7$ (1 pair). Total $3 + 2 + 1 = 6$. (9 is $n(A\times B)$, all possible pairs.)
+      <span class="tr">Total 6. (9 adalah $n(A \times B)$, semua pasangan yang mungkin.)</span></p></div>
+  </div>
+
+  <div class="q" data-t="drag">
+    <div class="qq">The relation $y = x + 3$ goes from $A = \{0, 1, 2, 3\}$ to $B = \{1, 2, 3, 4, 5, 6, 7\}$. Drag each number into the correct group.
+      <span class="tr">Relasi $y = x + 3$ dari $A$ ke $B$. Seret setiap bilangan ke kelompok yang benar.</span></div>
+    <div class="qd">
+      <div class="bin">In the range<span class="tr">Anggota range</span></div>
+      <div class="bin">Not in the range<span class="tr">Bukan anggota range</span></div>
+      <div class="chip" data-b="1">$1$</div><div class="chip" data-b="0">$3$</div><div class="chip" data-b="0">$5$</div>
+      <div class="chip" data-b="0">$6$</div><div class="chip" data-b="1">$7$</div><div class="chip" data-b="1">$2$</div>
+    </div>
+    <div class="qe"><p>$0+3 = 3$, $1+3 = 4$, $2+3 = 5$, $3+3 = 6$ → Range $= \{3, 4, 5, 6\}$. So $1, 2, 7$ are not in the range.
+      <span class="tr">Jadi $1, 2, 7$ bukan anggota range.</span></p></div>
+  </div>
+
+  <div class="q" data-t="sort">
+    <div class="qq">For the relation $y = 10 - 2x$ from $A = \{1, 2, 3, 4\}$, arrange the values of $x$ by their partner $y$, from the <b>smallest</b> $y$ to the <b>largest</b> $y$.
+      <span class="tr">Untuk relasi $y = 10 - 2x$ dari $A$, urutkan nilai $x$ berdasarkan pasangannya $y$, dari $y$ <b>terkecil</b> ke <b>terbesar</b>.</span></div>
+    <div class="qs">
+      <div class="o">$x = 4$</div><div class="o">$x = 3$</div><div class="o">$x = 2$</div><div class="o">$x = 1$</div>
+    </div>
+    <div class="qe">
+      $$\begin{aligned} x=1 &: 10-2(1) = 8\\ x=2 &: 10-2(2) = 6\\ x=3 &: 10-2(3) = 4\\ x=4 &: 10-2(4) = 2 \end{aligned}$$
+      <p>From the smallest $y$: $2\,(x=4),\ 4\,(x=3),\ 6\,(x=2),\ 8\,(x=1)$.<span class="tr">Dari $y$ terkecil: $x = 4, 3, 2, 1$.</span></p>
+    </div>
+  </div>
+
+  <div class="q" data-t="tf" data-a="true">
+    <div class="qq">"The relation 'is a multiple of' from $A = \{6, 8\}$ to $B = \{2, 3, 4\}$ has exactly 4 pairs."
+      <span class="tr">"Relasi 'kelipatan dari' dari $A = \{6, 8\}$ ke $B = \{2, 3, 4\}$ memiliki tepat 4 pasangan."</span></div>
+    <div class="qe">
+      <p>6: $6 = 2\times3$ ✓, $6 = 3\times2$ ✓, $6 = 4\times1.5$ ✗. 8: $8 = 2\times4$ ✓, $8 = 3\times2.67$ ✗, $8 = 4\times2$ ✓.</p>
+      <p>$R = \{(6,2), (6,3), (8,2), (8,4)\}$ → 4 pairs.</p>
+      <div class="ans">TRUE / BENAR</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TASK 5 ===================== -->
+<section class="sec" id="t5" data-ql="Question|Soal">
+  <div class="sec-head">
+    <div><span class="time">📝 Task 5 · 10 questions / <i>Tugas 5 · 10 soal</i></span><h2>Task 5 — Mixed Review &amp; HOTS<span class="tr">Tugas 5 — Campuran &amp; HOTS</span></h2></div>
+    <div class="score"></div>
+  </div>
+
+  <div class="q" data-t="mc">
+    <div class="qq">$n(A) = 2$ and $n(B) = 3$. How many different relations from $A$ to $B$ are possible?
+      <span class="tr">$n(A) = 2$ dan $n(B) = 3$. Berapa banyak relasi berbeda yang mungkin dari $A$ ke $B$?</span></div>
+    <div class="qo"><div class="o" data-c>$64$</div><div class="o">$6$</div><div class="o">$8$</div><div class="o">$9$</div></div>
+    <div class="qe">
+      <div class="step"><span class="sn">1</span><div>$n(A \times B) = 2 \times 3 = 6$ pairs.</div></div>
+      <div class="step"><span class="sn">2</span><div>Each pair is chosen or not → $2^{6} = 64$ relations.<span class="tr">Setiap pasangan dipilih atau tidak → $2^6 = 64$ relasi.</span></div></div>
+      <p>6 is only $n(A \times B)$; 8 $= 2^3$ and 9 $= 3^2$ use the wrong exponent.<span class="tr">6 hanya $n(A \times B)$; 8 dan 9 memakai pangkat yang salah.</span></p>
+    </div>
+  </div>
+
+  <div class="q" data-t="ms">
+    <div class="qq">Eka, Fadil, and Gina join school clubs as shown. Select <b>all</b> true statements.
+      <span class="tr">Eka, Fadil, dan Gina mengikuti ekstrakurikuler seperti pada diagram. Pilih <b>semua</b> pernyataan yang benar.</span>
+      <div class="figrow"><div class="figbox"><div class="fig" data-fig="arrow" data-a="Eka|Fadil|Gina" data-b="🔬 Science|🎨 Art|🎵 Music|🏀 Sport" data-p="Eka>🔬 Science;Fadil>🔬 Science;Fadil>🎨 Art;Gina>🎵 Music" data-n="joins|mengikuti" data-la="Students" data-lb="Clubs"></div></div></div></div>
+    <div class="qo">
+      <div class="o" data-c>Range $=$ {Science, Art, Music}<span class="tr">Range $=$ {Sains, Seni, Musik}</span></div>
+      <div class="o" data-c>The relation has 4 pairs.<span class="tr">Relasi memiliki 4 pasangan.</span></div>
+      <div class="o" data-c>Fadil appears in 2 pairs.<span class="tr">Fadil muncul di 2 pasangan.</span></div>
+      <div class="o">The relation has 3 pairs.<span class="tr">Relasi memiliki 3 pasangan.</span></div>
+      <div class="o">Sport is in the range.<span class="tr">Olahraga anggota range.</span></div>
+      <div class="o">Gina joins Art.<span class="tr">Gina mengikuti Seni.</span></div>
+    </div>
+    <div class="qe">
+      <p>Pairs: (Eka, Science), (Fadil, Science), (Fadil, Art), (Gina, Music) → 4 pairs. Sport receives no arrow, so Range = {Science, Art, Music}.
+        <span class="tr">Ada 4 pasangan (jangan hitung siswa, hitung panah!). Olahraga tidak mendapat panah.</span></p>
+    </div>
+  </div>
+
+  <div class="q" data-t="fill">
+    <div class="qq">The relation $y = 2x + 1$ goes from $A = \{1, 2, 3, 4, 5\}$ to $B = \{1, 2, 3, \dots, 12\}$.
+      <span class="tr">Relasi $y = 2x + 1$ dari $A$ ke $B$.</span></div>
+    <div class="qf">
+      <div class="row">a) The largest member of the range / Anggota range terbesar $=$ <span class="blank" data-a="11"></span></div>
+      <div class="row">b) $n(\text{range}) =$ <span class="blank" data-a="5"></span></div>
+    </div>
+    <div class="qe">
+      <p>$y$: $3, 5, 7, 9, 11$ (all $\le 12$, so all in $B$). Range $= \{3, 5, 7, 9, 11\}$ → largest 11, $n = 5$.
+        <span class="tr">Semua $\le 12$ sehingga semuanya di $B$. Terbesar 11, banyaknya 5.</span></p>
+    </div>
+  </div>
+
+  <div class="q" data-t="tf" data-a="true">
+    <div class="qq">"If $n(A \times B) = 15$ and $n(A) = 5$, then $n(B) = 3$."<span class="tr">"Jika $n(A \times B) = 15$ dan $n(A) = 5$, maka $n(B) = 3$."</span></div>
+    <div class="qe"><p>$15 = 5 \times n(B) \Rightarrow n(B) = 3$.</p><div class="ans">TRUE / BENAR</div></div>
+  </div>
+
+  <div class="q" data-t="pair">
+    <div class="qq">Match each set of pairs with its relation name (from first to second).<span class="tr">Pasangkan setiap himpunan pasangan dengan nama relasinya (dari pertama ke kedua).</span></div>
+    <div class="qp">
+      <div class="pr"><div class="l">$\{(3,9), (4,16)\}$</div><div class="r">square root of<span class="tr">akar kuadrat dari</span></div></div>
+      <div class="pr"><div class="l">$\{(2,8), (3,12)\}$</div><div class="r">one-fourth of<span class="tr">seperempat dari</span></div></div>
+      <div class="pr"><div class="l">$\{(10,5), (8,4)\}$</div><div class="r">twice of<span class="tr">dua kali dari</span></div></div>
+      <div class="pr"><div class="l">$\{(7,5), (4,2)\}$</div><div class="r">two more than<span class="tr">dua lebihnya dari</span></div></div>
+    </div>
+    <div class="qe"><ul>
+      <li>$3^2 = 9$, $4^2 = 16$ → 3 is the <b>square root of</b> 9.</li>
+      <li>$2 \times 4 = 8$, $3 \times 4 = 12$ → 2 is <b>one-fourth of</b> 8.</li>
+      <li>$10 = 2 \times 5$, $8 = 2 \times 4$ → 10 is <b>twice</b> 5.</li>
+      <li>$7 = 5 + 2$, $4 = 2 + 2$ → 7 is <b>two more than</b> 5.</li>
+    </ul></div>
+  </div>
+
+  <div class="q" data-t="mc">
+    <div class="qq">The Cartesian diagram shows a relation from $A = \{1, 2, 3, 4\}$ to $A$. What is the relation name?
+      <span class="tr">Diagram Kartesius menunjukkan relasi dari $A$ ke $A$. Apa nama relasinya?</span>
+      <div class="figrow"><div class="figbox"><div class="fig" data-fig="cart" data-x="1|2|3|4" data-y="1|2|3|4" data-p="1>1;1>2;1>3;1>4;2>2;2>4;3>3;4>4" data-lx="A" data-ly="A"></div></div></div></div>
+    <div class="qo">
+      <div class="o" data-c>factor of<span class="tr">faktor dari</span></div>
+      <div class="o">multiple of<span class="tr">kelipatan dari</span></div>
+      <div class="o">less than<span class="tr">kurang dari</span></div>
+      <div class="o">less than or equal to<span class="tr">kurang dari atau sama dengan</span></div>
+    </div>
+    <div class="qe">
+      <p>Dots: $(1,1),(1,2),(1,3),(1,4),(2,2),(2,4),(3,3),(4,4)$.</p>
+      <ul>
+        <li>"factor of": 1 divides all; 2 divides 2 and 4; 3 divides 3; 4 divides 4 ✓ — exactly these 8 dots.</li>
+        <li>"multiple of" would contain $(2,1)$ ✗. "less than" would not contain $(1,1)$ ✗. "less than or equal to" would contain $(2,3)$ ✗.
+          <span class="tr">Relasi lain gagal karena ada pasangan yang hilang atau berlebih.</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="q" data-t="fill">
+    <div class="qq">Set $A$ has 3 members. Consider relations from $A$ to $A$.<span class="tr">Himpunan $A$ memiliki 3 anggota. Perhatikan relasi dari $A$ ke $A$.</span></div>
+    <div class="qf">
+      <div class="row">a) $n(A \times A) =$ <span class="blank" data-a="9"></span></div>
+      <div class="row">b) Number of possible relations / Banyak relasi yang mungkin $=$ <span class="blank" data-a="512"></span></div>
+    </div>
+    <div class="qe"><p>a) $n(A \times A) = 3 \times 3 = 9$. b) $2^{9} = 512$.
+      <span class="tr">Setiap dari 9 pasangan bisa dipilih atau tidak.</span></p></div>
+  </div>
+
+  <div class="q" data-t="drag">
+    <div class="qq">Each relation goes from $A = \{1, 2, 3\}$ to $B = \{2, 4, 6\}$. Is the range equal to the codomain?
+      <span class="tr">Setiap relasi dari $A$ ke $B$. Apakah range sama dengan kodomain?</span></div>
+    <div class="qd">
+      <div class="bin">Range $=$ Codomain<span class="tr">Range sama dengan kodomain</span></div>
+      <div class="bin">Range $\neq$ Codomain<span class="tr">Range tidak sama dengan kodomain</span></div>
+      <div class="chip" data-b="0">$\{(1,2), (2,4), (3,6)\}$</div>
+      <div class="chip" data-b="1">$\{(1,2), (2,2), (3,4)\}$</div>
+      <div class="chip" data-b="0">$\{(1,6), (2,4), (3,2)\}$</div>
+      <div class="chip" data-b="1">$\{(1,4), (3,4)\}$</div>
+      <div class="chip" data-b="0">$\{(1,2), (1,4), (2,6)\}$</div>
+      <div class="chip" data-b="1">$\{(2,6), (3,6)\}$</div>
+    </div>
+    <div class="qe">
+      <p>Codomain $= \{2, 4, 6\}$. Find the range of each (second members, no repeats):<span class="tr">Kodomain $= \{2,4,6\}$. Cari range masing-masing:</span></p>
+      <ul>
+        <li>$\{2,4,6\}$ ✓ · $\{2,4\}$ ✗ · $\{6,4,2\} = \{2,4,6\}$ ✓</li>
+        <li>$\{4\}$ ✗ · $\{2,4,6\}$ ✓ · $\{6\}$ ✗</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="q" data-t="sort">
+    <div class="qq">For $A = B = \{1, 2, 3, 4\}$, arrange the relations from the <b>fewest</b> pairs to the <b>most</b> pairs.
+      <span class="tr">Untuk $A = B = \{1, 2, 3, 4\}$, urutkan relasi dari pasangan <b>paling sedikit</b> ke <b>paling banyak</b>.</span></div>
+    <div class="qs">
+      <div class="o">"equal to"<span class="tr">"sama dengan"</span></div>
+      <div class="o">"less than"<span class="tr">"kurang dari"</span></div>
+      <div class="o">"factor of"<span class="tr">"faktor dari"</span></div>
+      <div class="o">"less than or equal to"<span class="tr">"kurang dari atau sama dengan"</span></div>
+    </div>
+    <div class="qe"><ul>
+      <li>"equal to": $(1,1),(2,2),(3,3),(4,4)$ → 4</li>
+      <li>"less than": $3 + 2 + 1 = 6$</li>
+      <li>"factor of": $4 + 2 + 1 + 1 = 8$</li>
+      <li>"less than or equal to": $6 + 4 = 10$</li>
+    </ul><p>Order: $4 \lt 6 \lt 8 \lt 10$.</p></div>
+  </div>
+
+  <div class="q" data-t="tf" data-a="true">
+    <div class="qq">"A relation from $A$ to $B$ is always a subset of $A \times B$."<span class="tr">"Relasi dari $A$ ke $B$ selalu merupakan himpunan bagian dari $A \times B$."</span></div>
+    <div class="qe"><p>$A \times B$ contains every possible pair; a relation just picks some of them (even none or all).
+      <span class="tr">$A \times B$ memuat semua pasangan yang mungkin; relasi hanya memilih sebagian (bahkan tidak ada atau semuanya).</span></p><div class="ans">TRUE / BENAR</div></div>
+  </div>
+</section>
+
+<div class="navbtns" id="navbtns">
+  <button class="btn" id="prevBtn">◀ Previous<small>Sebelumnya</small></button>
+  <button class="btn" id="nextBtn">Next ▶<small>Berikutnya</small></button>
+</div>
+</main>
+</div>
+
+<script>
+(function(){
+"use strict";
+/* ---------- helpers ---------- */
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function el(tag,cls,html){const e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e;}
+function bi(en,id){return en+'<span class="tr">'+id+'</span>';}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+const SVGNS='http://www.w3.org/2000/svg';
+
+/* ---------- figures ---------- */
+function arrowFig(d){
+  const A=d.a.split('|'),B=d.b.split('|');
+  const P=(d.p||'').split(';').filter(Boolean).map(s=>s.split('>'));
+  const name=(d.n||'').split('|');
+  const m=Math.max(A.length,B.length);
+  const W=430,cx1=105,cx2=325,rx=78,top=62;
+  const ry=Math.max(58,(m*34+24)/2),cy=top+ry,H=cy+ry+12;
+  const posY=(arr,i)=>{const g=Math.min(34,(2*ry-34)/Math.max(arr.length-1,1));return cy-(arr.length-1)*g/2+i*g;};
+  let s='<svg xmlns="'+SVGNS+'" viewBox="0 0 '+W+' '+H+'" width="'+W+'" role="img">';
+  const id='ah'+Math.random().toString(36).slice(2,8);
+  s+='<defs><marker id="'+id+'" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#db2777"/></marker></defs>';
+  if(name[0]){s+='<text x="'+(W/2)+'" y="18" text-anchor="middle" font-size="14" font-weight="800" fill="#db2777">'+esc(name[0])+'</text>';}
+  if(name[1]){s+='<text x="'+(W/2)+'" y="34" text-anchor="middle" font-size="12" font-style="italic" fill="#64748b">'+esc(name[1])+'</text>';}
+  s+='<ellipse cx="'+cx1+'" cy="'+cy+'" rx="'+rx+'" ry="'+ry+'" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/>';
+  s+='<ellipse cx="'+cx2+'" cy="'+cy+'" rx="'+rx+'" ry="'+ry+'" fill="#f0fdfa" stroke="#0d9488" stroke-width="2"/>';
+  s+='<text x="'+cx1+'" y="'+(top-8)+'" text-anchor="middle" font-size="13" font-weight="800" fill="#3730a3">'+esc(d.la||'A')+'</text>';
+  s+='<text x="'+cx2+'" y="'+(top-8)+'" text-anchor="middle" font-size="13" font-weight="800" fill="#0f766e">'+esc(d.lb||'B')+'</text>';
+  const dx1=cx1+50,dx2=cx2-50;
+  A.forEach((v,i)=>{const y=posY(A,i);s+='<text x="'+(dx1-9)+'" y="'+(y+5)+'" text-anchor="end" font-size="14" font-weight="700" fill="#1e293b">'+esc(v)+'</text><circle cx="'+dx1+'" cy="'+y+'" r="3.5" fill="#4f46e5"/>';});
+  B.forEach((v,i)=>{const y=posY(B,i);s+='<circle cx="'+dx2+'" cy="'+y+'" r="3.5" fill="#0d9488"/><text x="'+(dx2+9)+'" y="'+(y+5)+'" text-anchor="start" font-size="14" font-weight="700" fill="#1e293b">'+esc(v)+'</text>';});
+  P.forEach(([a,b])=>{const i=A.indexOf(a),j=B.indexOf(b);if(i<0||j<0){console.warn('bad pair',a,b);return;}
+    s+='<line x1="'+(dx1+4)+'" y1="'+posY(A,i)+'" x2="'+(dx2-5)+'" y2="'+posY(B,j)+'" stroke="#db2777" stroke-width="1.8" marker-end="url(#'+id+')"/>';});
+  s+='</svg>';return s;
+}
+function cartFig(d){
+  let X=d.x.split('|'),Y=d.y.split('|');
+  const isNum=arr=>arr.every(v=>/^-?\d+$/.test(v.trim()));
+  const fill=arr=>{const n=arr.map(Number),lo=Math.min(...n),hi=Math.max(...n),o=[];for(let k=lo;k<=hi;k++)o.push(String(k));return o;};
+  if(isNum(X)) X=fill(X); if(isNum(Y)) Y=fill(Y);
+  const P=(d.p||'').split(';').filter(Boolean).map(s=>s.split('>'));
+  const maxLen=Math.max(...X.map(v=>v.length));
+  const cw=Math.max(44,maxLen*9+16),ch=Y.length>8?26:32;
+  const x0=48,top=24,plotW=(X.length+0.6)*cw,plotH=(Y.length+0.6)*ch,y0=top+plotH;
+  const W=x0+plotW+34,H=y0+44;
+  const xp=i=>x0+(i+1)*cw*0.95,yp=j=>y0-(j+1)*ch*0.95;
+  const id='ax'+Math.random().toString(36).slice(2,8);
+  let s='<svg xmlns="'+SVGNS+'" viewBox="0 0 '+W+' '+H+'" width="'+W+'" role="img">';
+  s+='<defs><marker id="'+id+'" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#334155"/></marker></defs>';
+  X.forEach((v,i)=>{s+='<line x1="'+xp(i)+'" y1="'+top+'" x2="'+xp(i)+'" y2="'+y0+'" stroke="#cbd5e1" stroke-dasharray="4 4"/>';
+    s+='<text x="'+xp(i)+'" y="'+(y0+18)+'" text-anchor="middle" font-size="13" font-weight="700" fill="#3730a3">'+esc(v)+'</text>';});
+  Y.forEach((v,j)=>{s+='<line x1="'+x0+'" y1="'+yp(j)+'" x2="'+(x0+plotW)+'" y2="'+yp(j)+'" stroke="#cbd5e1" stroke-dasharray="4 4"/>';
+    s+='<text x="'+(x0-8)+'" y="'+(yp(j)+4)+'" text-anchor="end" font-size="13" font-weight="700" fill="#0f766e">'+esc(v)+'</text>';});
+  s+='<line x1="'+x0+'" y1="'+y0+'" x2="'+(x0+plotW+14)+'" y2="'+y0+'" stroke="#334155" stroke-width="2" marker-end="url(#'+id+')"/>';
+  s+='<line x1="'+x0+'" y1="'+y0+'" x2="'+x0+'" y2="'+(top-12)+'" stroke="#334155" stroke-width="2" marker-end="url(#'+id+')"/>';
+  s+='<text x="'+(x0+plotW+16)+'" y="'+(y0+18)+'" font-size="13" font-weight="800" fill="#3730a3">'+esc(d.lx||'A')+'</text>';
+  s+='<text x="'+(x0+8)+'" y="'+(top-6)+'" font-size="13" font-weight="800" fill="#0f766e">'+esc(d.ly||'B')+'</text>';
+  P.forEach(([a,b])=>{const i=X.indexOf(a),j=Y.indexOf(b);if(i<0||j<0){console.warn('bad cart pair',a,b);return;}
+    s+='<circle cx="'+xp(i)+'" cy="'+yp(j)+'" r="6" fill="#db2777" stroke="#fff" stroke-width="2"/>';});
+  s+='</svg>';return s;
+}
+function planeFig(d){
+  const N=parseInt(d.max||5,10),u=40,ox=40,oy=20+N*u+10,W=ox+N*u+40,H=oy+36;
+  const id='pl'+Math.random().toString(36).slice(2,8);
+  let s='<svg xmlns="'+SVGNS+'" viewBox="0 0 '+W+' '+H+'" width="'+W+'" role="img">';
+  s+='<defs><marker id="'+id+'" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#334155"/></marker></defs>';
+  for(let k=0;k<=N;k++){
+    s+='<line x1="'+(ox+k*u)+'" y1="'+(oy-N*u)+'" x2="'+(ox+k*u)+'" y2="'+oy+'" stroke="#e2e8f0"/>';
+    s+='<line x1="'+ox+'" y1="'+(oy-k*u)+'" x2="'+(ox+N*u)+'" y2="'+(oy-k*u)+'" stroke="#e2e8f0"/>';
+    s+='<text x="'+(ox+k*u)+'" y="'+(oy+17)+'" text-anchor="middle" font-size="12" fill="#475569">'+k+'</text>';
+    if(k>0)s+='<text x="'+(ox-8)+'" y="'+(oy-k*u+4)+'" text-anchor="end" font-size="12" fill="#475569">'+k+'</text>';
+  }
+  s+='<line x1="'+ox+'" y1="'+oy+'" x2="'+(ox+N*u+22)+'" y2="'+oy+'" stroke="#334155" stroke-width="2" marker-end="url(#'+id+')"/>';
+  s+='<line x1="'+ox+'" y1="'+oy+'" x2="'+ox+'" y2="'+(oy-N*u-18)+'" stroke="#334155" stroke-width="2" marker-end="url(#'+id+')"/>';
+  s+='<text x="'+(ox+N*u+26)+'" y="'+(oy+4)+'" font-size="13" font-style="italic" font-weight="700">x</text>';
+  s+='<text x="'+(ox+6)+'" y="'+(oy-N*u-10)+'" font-size="13" font-style="italic" font-weight="700">y</text>';
+  s+='<text x="'+(ox-12)+'" y="'+(oy+16)+'" font-size="12" fill="#475569">O</text>';
+  (d.pts||'').split(';').filter(Boolean).forEach(t=>{const [lab,xy]=t.split(':');const [x,y]=xy.split(',').map(Number);
+    const px=ox+x*u,py=oy-y*u;
+    s+='<circle cx="'+px+'" cy="'+py+'" r="6" fill="#db2777" stroke="#fff" stroke-width="2"/>';
+    s+='<text x="'+(px+8)+'" y="'+(py-8)+'" font-size="14" font-weight="800" font-style="italic" fill="#be185d">'+esc(lab)+'</text>';});
+  s+='</svg>';return s;
+}
+function drawFigs(){
+  document.querySelectorAll('.fig').forEach(f=>{
+    const d=f.dataset;
+    try{ f.innerHTML = d.fig==='arrow'?arrowFig(d):d.fig==='cart'?cartFig(d):planeFig(d); }catch(e){console.error('fig error',e,f);}
+  });
+}
+
+/* ---------- questions ---------- */
+const TYPE={
+  mc:['Multiple choice','Pilihan ganda','Choose ONE correct answer.','Pilih SATU jawaban yang benar.'],
+  ms:['Checkbox','Pilihan ganda kompleks','Choose ALL correct answers (there may be more than one).','Pilih SEMUA jawaban yang benar (bisa lebih dari satu).'],
+  tf:['True / False','Benar / Salah','Decide whether the statement is True or False.','Tentukan apakah pernyataan tersebut Benar atau Salah.'],
+  fill:['Fill in the blank','Isian','Type your answer in each box (numbers only, use - for negative).','Ketik jawabanmu di setiap kotak (angka saja, gunakan - untuk negatif).'],
+  sort:['Sorting','Mengurutkan','Arrange the items in the correct order: drag them, or use ▲ ▼.','Susun dengan urutan yang benar: seret, atau gunakan ▲ ▼.'],
+  pair:['Pairing','Menjodohkan','Match each left item with a card: drag a card into a slot, or tap a card then tap a slot.','Jodohkan setiap item kiri dengan kartu: seret kartu ke slot, atau ketuk kartu lalu ketuk slot.'],
+  drag:['Drag & drop','Seret & lepas','Put every card into the correct group: drag it, or tap a card then tap a group.','Masukkan setiap kartu ke kelompok yang benar: seret, atau ketuk kartu lalu ketuk kelompok.']
+};
+let picked=null, dragged=null;
+
+function clearPick(){ if(picked){picked.classList.remove('picked');picked=null;} }
+function placeChip(chip,zone){
+  if(!chip||!zone||chip.closest('.q')!==zone.closest('.q'))return;
+  const body=zone.classList.contains('bin')?zone.querySelector('.bz'):zone;
+  if(zone.classList.contains('slot')){
+    const ex=zone.querySelector('.chip');
+    if(ex&&ex!==chip){ const pool=zone.closest('.q').querySelector('.pool'); pool.appendChild(ex); }
+  }
+  body.appendChild(chip);
+  clearPick();
+  zone.closest('.q').querySelectorAll('.chip').forEach(c=>c.classList.remove('right','wrong'));
+}
+function makeZone(z){
+  z.addEventListener('dragover',e=>{e.preventDefault();z.classList.add('zone-hover');});
+  z.addEventListener('dragleave',()=>z.classList.remove('zone-hover'));
+  z.addEventListener('drop',e=>{e.preventDefault();z.classList.remove('zone-hover');placeChip(dragged,z);dragged=null;});
+  z.addEventListener('click',e=>{ if(picked && !e.target.closest('.chip')) placeChip(picked,z); else if(picked && e.target.closest('.chip')!==picked && z.classList.contains('slot')) placeChip(picked,z); });
+}
+function makeChip(c){
+  c.setAttribute('draggable','true');
+  c.addEventListener('dragstart',e=>{dragged=c;e.dataTransfer.effectAllowed='move';try{e.dataTransfer.setData('text/plain','chip');}catch(_){} });
+  c.addEventListener('dragend',()=>{dragged=null;});
+  c.addEventListener('click',e=>{
+    e.stopPropagation();
+    if(picked===c){clearPick();return;}
+    if(picked && picked.closest('.q')===c.closest('.q') && c.parentElement.classList.contains('slot')){ placeChip(picked,c.parentElement); return; }
+    clearPick(); picked=c; c.classList.add('picked');
+  });
+}
+
+function initQ(q, num, label){
+  const t=q.dataset.t, T=TYPE[t];
+  const qq=q.querySelector('.qq'), qe=q.querySelector('.qe');
+  const head=el('div','qhead','<span class="qnum">'+label[0]+' '+num+' · '+label[1]+' '+num+'</span><span class="qtype">'+T[0]+' · <i>'+T[1]+'</i></span>');
+  const ins=el('div','qins','👉 '+bi(T[2],T[3]));
+  q.insertBefore(ins,q.firstChild); q.insertBefore(head,q.firstChild);
+  let area;
+  if(t==='mc'||t==='ms'){
+    area=q.querySelector('.qo');
+    const name='n'+Math.random().toString(36).slice(2,9);
+    [...area.querySelectorAll('.o')].forEach(o=>{
+      const lab=el('label','opt'); const inp=el('input'); inp.type=(t==='mc'?'radio':'checkbox'); inp.name=name;
+      lab.dataset.c=o.hasAttribute('data-c')?'1':'0';
+      const body=el('div'); while(o.firstChild) body.appendChild(o.firstChild);
+      lab.appendChild(inp); lab.appendChild(el('span','letter','')); lab.appendChild(body);
+      inp.addEventListener('change',()=>{area.querySelectorAll('label.opt').forEach(l=>{l.classList.toggle('sel',l.querySelector('input').checked);l.classList.remove('right','wrong');});});
+      o.replaceWith(lab);
+    });
+  } else if(t==='tf'){
+    area=el('div','qo tf'); const name='n'+Math.random().toString(36).slice(2,9);
+    [['true','✅ True','Benar'],['false','❌ False','Salah']].forEach(([v,en,id])=>{
+      const lab=el('label','opt'); lab.dataset.c=(q.dataset.a===v)?'1':'0';
+      const inp=el('input'); inp.type='radio'; inp.name=name;
+      lab.appendChild(inp); lab.appendChild(el('span','letter','')); lab.appendChild(el('div','',bi('<b>'+en+'</b>',id)));
+      inp.addEventListener('change',()=>{area.querySelectorAll('label.opt').forEach(l=>{l.classList.toggle('sel',l.querySelector('input').checked);l.classList.remove('right','wrong');});});
+      area.appendChild(lab);
+    });
+    qq.after(area);
+  } else if(t==='fill'){
+    q.querySelectorAll('.blank').forEach(b=>{
+      const inp=el('input','blank-in'); inp.type='text'; inp.setAttribute('inputmode','text'); inp.autocomplete='off';
+      inp.dataset.a=b.dataset.a; const w=Math.max(70,String(b.dataset.a).split('|')[0].length*14+46); inp.style.width=w+'px';
+      inp.addEventListener('input',()=>inp.classList.remove('right','wrong'));
+      inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();check(q);}});
+      b.replaceWith(inp);
+    });
+    area=q.querySelector('.qf');
+  } else if(t==='sort'){
+    area=q.querySelector('.qs'); area.classList.add('sortlist');
+    [...area.querySelectorAll('.o')].forEach((o,i)=>{
+      const it=el('div','sitem'); it.dataset.i=i; it.setAttribute('draggable','true');
+      const c=el('div','sc'); while(o.firstChild) c.appendChild(o.firstChild);
+      const bs=el('div','sb','<button type="button" aria-label="up">▲</button><button type="button" aria-label="down">▼</button>');
+      it.appendChild(el('span','pos','')); it.appendChild(el('span','grip','⠿')); it.appendChild(c); it.appendChild(bs);
+      bs.children[0].addEventListener('click',()=>{const p=it.previousElementSibling;if(p){area.insertBefore(it,p);sortChanged(q);}});
+      bs.children[1].addEventListener('click',()=>{const n=it.nextElementSibling;if(n){area.insertBefore(n,it);sortChanged(q);}});
+      it.addEventListener('dragstart',e=>{dragged=it;it.classList.add('dragging');try{e.dataTransfer.setData('text/plain','s');}catch(_){} });
+      it.addEventListener('dragend',()=>{it.classList.remove('dragging');dragged=null;sortChanged(q);});
+      it.addEventListener('dragover',e=>{
+        if(!dragged||!dragged.classList.contains('sitem')||dragged.parentElement!==area||dragged===it)return;
+        e.preventDefault(); const r=it.getBoundingClientRect();
+        if(e.clientY<r.top+r.height/2) area.insertBefore(dragged,it); else area.insertBefore(dragged,it.nextSibling);
+      });
+      o.replaceWith(it);
+    });
+  } else if(t==='pair'){
+    const src=q.querySelector('.qp'); area=el('div','');
+    const rows=el('div','pairs'); const pool=el('div','pool');
+    [...src.querySelectorAll('.pr')].forEach((pr,i)=>{
+      const row=el('div','prow'); const l=el('div','pleft'); while(pr.querySelector('.l').firstChild) l.appendChild(pr.querySelector('.l').firstChild);
+      const slot=el('div','slot'); slot.dataset.want=i;
+      row.appendChild(l); row.appendChild(el('div','parrow','→')); row.appendChild(slot); rows.appendChild(row); makeZone(slot);
+      const chip=el('div','chip'); chip.dataset.id=i; const r=pr.querySelector('.r'); while(r.firstChild) chip.appendChild(r.firstChild);
+      makeChip(chip); pool.appendChild(chip);
+    });
+    makeZone(pool);
+    area.appendChild(el('div','pool-l',bi('Cards','Kartu'))); area.appendChild(pool); area.appendChild(rows);
+    src.replaceWith(area);
+  } else if(t==='drag'){
+    const src=q.querySelector('.qd'); area=el('div','');
+    const pool=el('div','pool'); const bins=el('div','bins');
+    [...src.querySelectorAll('.bin')].forEach((b,k)=>{
+      const bin=el('div','bin'); bin.dataset.bin=k; const bh=el('div','bh'); while(b.firstChild) bh.appendChild(b.firstChild);
+      bin.appendChild(bh); bin.appendChild(el('div','bz')); bins.appendChild(bin); makeZone(bin);
+    });
+    [...src.querySelectorAll('.chip')].forEach(c=>{const chip=el('div','chip'); chip.dataset.b=c.dataset.b; while(c.firstChild) chip.appendChild(c.firstChild); makeChip(chip); pool.appendChild(chip);});
+    makeZone(pool);
+    area.appendChild(el('div','pool-l',bi('Cards','Kartu'))); area.appendChild(pool); area.appendChild(bins);
+    src.replaceWith(area);
+  }
+  q._area=area;
+  const btns=el('div','qbtns');
+  const bc=el('button','btn btn-check','✔ Check<small>Periksa</small>'); bc.type='button';
+  const br=el('button','btn btn-reset','↻ Try again (reshuffle)<small>Ulangi (acak ulang)</small>'); br.type='button';
+  btns.appendChild(bc); btns.appendChild(br);
+  const fb=el('div','fb');
+  const det=el('details','exp'); det.appendChild(el('summary','',bi('💡 Explanation &amp; step-by-step solution','Pembahasan &amp; langkah penyelesaian')));
+  const eb=el('div','eb'); while(qe.firstChild) eb.appendChild(qe.firstChild); det.appendChild(eb); qe.remove();
+  q.appendChild(btns); q.appendChild(fb); q.appendChild(det);
+  q._fb=fb;
+  bc.addEventListener('click',()=>check(q));
+  br.addEventListener('click',()=>reset(q));
+  randomize(q);
+}
+function sortChanged(q){ q.querySelectorAll('.sitem').forEach((it,i)=>{it.querySelector('.pos').textContent=(i+1)+'.';it.classList.remove('right','wrong');}); }
+function letters(q){ q._area.querySelectorAll('label.opt .letter').forEach((s,i)=>s.textContent=String.fromCharCode(65+i)+'.'); }
+function randomize(q){
+  const t=q.dataset.t, a=q._area;
+  if(t==='mc'||t==='ms'||t==='tf'){ shuffle([...a.querySelectorAll('label.opt')]).forEach(l=>a.appendChild(l)); letters(q); }
+  else if(t==='sort'){ let items=[...a.querySelectorAll('.sitem')]; let tries=0;
+    do{ shuffle(items); tries++; }while(items.every((it,i)=>+it.dataset.i===i) && tries<20);
+    items.forEach(it=>a.appendChild(it)); sortChanged(q); }
+  else if(t==='pair'||t==='drag'){ const pool=a.querySelector('.pool'); shuffle([...a.querySelectorAll('.chip')]).forEach(c=>pool.appendChild(c)); }
+}
+function norm(s){return String(s).toLowerCase().replace(/\s+/g,'').replace(/[−–—]/g,'-').replace(/,/g,'.');}
+function check(q){
+  const t=q.dataset.t,a=q._area; let ok=false, msg='';
+  if(t==='mc'||t==='tf'||t==='ms'){
+    const labs=[...a.querySelectorAll('label.opt')];
+    const any=labs.some(l=>l.querySelector('input').checked);
+    if(!any){ return feedback(q,null,bi('⚠️ Please choose an answer first.','Silakan pilih jawaban terlebih dahulu.')); }
+    ok=labs.every(l=>(l.dataset.c==='1')===l.querySelector('input').checked);
+    labs.forEach(l=>{const c=l.querySelector('input').checked;l.classList.remove('right','wrong');
+      if(c) l.classList.add(l.dataset.c==='1'?'right':'wrong');});
+    if(!ok && t==='ms'){ const nc=labs.filter(l=>l.dataset.c==='1').length; msg=' '+bi('Hint: there are '+nc+' correct answers.','Petunjuk: ada '+nc+' jawaban benar.'); }
+  } else if(t==='fill'){
+    const ins=[...a.querySelectorAll('input.blank-in')];
+    if(ins.some(i=>!i.value.trim())) return feedback(q,null,bi('⚠️ Please fill in every box.','Silakan isi semua kotak.'));
+    ok=true; ins.forEach(i=>{const good=i.dataset.a.split('|').map(norm).includes(norm(i.value)); i.classList.remove('right','wrong'); i.classList.add(good?'right':'wrong'); if(!good)ok=false;});
+  } else if(t==='sort'){
+    const items=[...a.querySelectorAll('.sitem')]; ok=true;
+    items.forEach((it,i)=>{const g=+it.dataset.i===i; it.classList.remove('right','wrong'); it.classList.add(g?'right':'wrong'); if(!g)ok=false;});
+  } else if(t==='pair'){
+    const slots=[...a.querySelectorAll('.slot')];
+    if(slots.some(s=>!s.querySelector('.chip'))) return feedback(q,null,bi('⚠️ Please fill every slot first.','Silakan isi semua slot terlebih dahulu.'));
+    ok=true; slots.forEach(s=>{const c=s.querySelector('.chip');const g=c.dataset.id===s.dataset.want;c.classList.remove('right','wrong');c.classList.add(g?'right':'wrong');if(!g)ok=false;});
+  } else if(t==='drag'){
+    if(a.querySelector('.pool .chip')) return feedback(q,null,bi('⚠️ Please place every card into a group first.','Silakan masukkan semua kartu ke kelompok terlebih dahulu.'));
+    ok=true; a.querySelectorAll('.bin').forEach(b=>b.querySelectorAll('.chip').forEach(c=>{const g=c.dataset.b===b.dataset.bin;c.classList.remove('right','wrong');c.classList.add(g?'right':'wrong');if(!g)ok=false;}));
+  }
+  feedback(q,ok, ok? bi('🎉 Correct! Great job!','Benar! Kerja bagus!') : bi('❌ Not quite. Check the red parts, then open the explanation below.','Belum tepat. Periksa bagian yang merah, lalu buka pembahasan di bawah.')+msg);
+}
+function feedback(q,ok,html){
+  const fb=q._fb; fb.className='fb show '+(ok===true?'ok':'bad'); fb.innerHTML=html;
+  if(ok!==null){ q.classList.toggle('ok',ok); q.classList.toggle('bad',!ok); q.dataset.ok=ok?'1':'0'; updateScore(q.closest('section')); }
+}
+function reset(q){
+  const t=q.dataset.t,a=q._area;
+  a.querySelectorAll('input').forEach(i=>{ if(i.type==='text') i.value=''; else i.checked=false; });
+  a.querySelectorAll('.right,.wrong,.sel').forEach(e=>e.classList.remove('right','wrong','sel'));
+  q.classList.remove('ok','bad'); delete q.dataset.ok; q._fb.className='fb'; q._fb.innerHTML='';
+  randomize(q); updateScore(q.closest('section'));
+}
+function updateScore(sec){
+  if(!sec)return; const qs=sec.querySelectorAll('.q'); if(!qs.length)return;
+  const ok=[...qs].filter(q=>q.dataset.ok==='1').length; const s=sec.querySelector('.score');
+  if(s) s.innerHTML=bi('⭐ Score: '+ok+' / '+qs.length,'Skor: '+ok+' / '+qs.length);
+}
+
+/* ---------- navigation ---------- */
+const order=['s1','s2','s3','s4','s5','s6','s7','t1','t2','t3','t4','t5'];
+let cur=0;
+function show(i){
+  cur=Math.max(0,Math.min(order.length-1,i));
+  document.querySelectorAll('section.sec').forEach(s=>s.classList.toggle('show',s.id===order[cur]));
+  document.querySelectorAll('nav.side button').forEach(b=>b.classList.toggle('active',b.dataset.go===order[cur]));
+  document.getElementById('prevBtn').style.visibility=cur===0?'hidden':'visible';
+  document.getElementById('nextBtn').style.visibility=cur===order.length-1?'hidden':'visible';
+  const act=document.querySelector('nav.side button.active'); if(act&&window.innerWidth<=900) act.scrollIntoView({inline:'center',block:'nearest'});
+  window.scrollTo({top:0,behavior:'smooth'});
+  try{ history.replaceState(null,'','#'+order[cur]); }catch(_){}
+}
+
+function init(){
+  drawFigs();
+  document.querySelectorAll('section.sec').forEach(sec=>{
+    const lab=(sec.dataset.ql||'Question|Soal').split('|');
+    sec.querySelectorAll('.q').forEach((q,i)=>initQ(q,i+1,lab));
+    updateScore(sec);
+    sec.querySelectorAll('.score').forEach(s=>{ if(!sec.querySelector('.q')) s.remove(); });
+  });
+  document.querySelectorAll('nav.side button').forEach(b=>b.addEventListener('click',()=>show(order.indexOf(b.dataset.go))));
+  document.getElementById('prevBtn').addEventListener('click',()=>show(cur-1));
+  document.getElementById('nextBtn').addEventListener('click',()=>show(cur+1));
+  const m=document.getElementById('rulesModal');
+  document.getElementById('openRules').addEventListener('click',()=>m.classList.add('show'));
+  document.getElementById('closeRules').addEventListener('click',()=>m.classList.remove('show'));
+  m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('show');});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')m.classList.remove('show');});
+  document.addEventListener('click',e=>{ if(picked && !e.target.closest('.chip,.slot,.bin,.pool')) clearPick(); });
+  const h=(location.hash||'').slice(1); show(order.indexOf(h)>=0?order.indexOf(h):0);
+  renderMath();
+}
+let mathTries=0;
+function renderMath(){
+  if(window.renderMathInElement){
+    renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false,ignoredTags:['script','noscript','style','textarea','pre','code','option','input']});
+  } else if(mathTries++<100){ setTimeout(renderMath,100); }
+}
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
+})();
+</script>
+</body>
+</html>
